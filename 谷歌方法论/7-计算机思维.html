@@ -805,7 +805,7 @@ let saAnswered = {};
 function renderQuiz(){
 let mcHtml = '';
 mcQuestions.forEach((q,i)=>{
-mcHtml += `<div class="card" style="margin-bottom:10px" id="mc-${i}">
+mcHtml += `<div class="quiz-card" style="margin-bottom:10px" id="mc-${i}">
 <p><strong>${i+1}.</strong> ${q.q}</p>`;
 q.opts.forEach((o,j)=>{
 mcHtml += `<button class="q-option" id="mc-${i}-${j}" onclick="answerMC(${i},${j})">${'ABCD'[j]}. ${o}</button>`;
@@ -901,7 +901,7 @@ html += `<button class="q-option" id="ex-mc-${qi}-${j}" onclick="examAnswerMC('$
 html += `</div>`;
 });
 saPool.forEach((qi,i)=>{
-html += `<div class="card" style="margin-bottom:8px"><p><strong>${i+7+1}.</strong> ${saQuestions[qi].q}</p><textarea class="sa-input" id="ex-sa-${qi}"></textarea></div>`;
+html += `<div class="quiz-card" style="margin-bottom:8px"><p><strong>${i+7+1}.</strong> ${saQuestions[qi].q}</p><textarea class="sa-input" id="ex-sa-${qi}"></textarea></div>`;
 });
 html += `<button class="btn" onclick="submitExam()">提交答卷</button>`;
 ec.innerHTML = html;
