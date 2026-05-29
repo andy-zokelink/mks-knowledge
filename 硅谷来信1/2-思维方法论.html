@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思维方法论 — MKS 学习系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fdf6ec;color:#3d2f2f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7}
+.container{max-width:960px;margin:0 auto;padding:0 16px}
+.back-link{display:inline-block;margin:16px 0;color:#c0392b;text-decoration:none;font-size:14px;opacity:.7}
+.back-link:hover{opacity:1}
+h1{text-align:center;font-size:clamp(1.5rem,4vw,2.2rem);color:#c0392b;margin:24px 0 8px;font-weight:700}
+.subtitle{text-align:center;font-size:clamp(.85rem,2vw,1rem);color:#8a7a6a;margin-bottom:24px}
+.tab-bar{position:sticky;top:0;z-index:100;background:#fdf6ec;display:flex;gap:4px;overflow-x:auto;padding:8px 0;border-bottom:2px solid #e8d5c4;-webkit-overflow-scrolling:touch}
+.tab-btn{flex-shrink:0;padding:8px 16px;border:1px solid #e8d5c4;background:#fffaf2;border-radius:8px 8px 0 0;cursor:pointer;font-size:clamp(.75rem,1.5vw,.9rem);color:#6b5b4b;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{background:#fce4dc}
+.tab-btn.active{background:#c0392b;color:#fff;border-color:#c0392b}
+.tab-content{display:none;padding:24px 0;animation:fadeIn .4s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#fffaf2;border:1px solid #e8d5c4;border-radius:12px;padding:20px;margin-bottom:16px}
+.card h3{color:#c0392b;margin-bottom:8px;font-size:clamp(1rem,2.5vw,1.2rem)}
+.card p,.card li{font-size:clamp(.85rem,2vw,.95rem);color:#4a3a3a}
+.badge{display:inline-block;background:#c0392b;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;margin-right:6px}
+.badge-star{background:#f39c12}
+.mks-core{border-left:4px solid #c0392b;padding-left:12px;margin:8px 0}
+ul{padding-left:20px;margin:8px 0}
+li{margin:4px 0}
+.flip-card{perspective:1000px;height:220px;margin-bottom:16px;cursor:pointer}
+.flip-card-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
+.flip-card-front,.flip-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;padding:20px;overflow-y:auto;border:1px solid #e8d5c4}
+.flip-card-front{background:#fffaf2;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.flip-card-front .concept-icon{font-size:2rem;margin-bottom:8px}
+.flip-card-front .concept-label{font-size:.75rem;color:#8a7a6a}
+.flip-card-back{background:#fffaf2;transform:rotateY(180deg)}
+.flip-card-back h4{color:#c0392b;margin-bottom:6px;font-size:.95rem}
+.flip-card-back p{font-size:.85rem;line-height:1.6;margin-bottom:6px}
+.flip-card-back .label{font-weight:600;color:#6b5b4b}
+.quiz-option{display:block;width:100%;text-align:left;background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px;padding:10px 14px;margin:6px 0;cursor:pointer;font-size:clamp(.85rem,2vw,.95rem);transition:all .2s}
+.quiz-option:hover{background:#fce4dc;border-color:#c0392b}
+.quiz-option.selected{background:#fce4dc;border-color:#c0392b}
+.quiz-option.correct{background:#d4edda;border-color:#27ae60;color:#155724}
+.quiz-option.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24}
+.quiz-option:disabled{cursor:default;opacity:.85}
+.explanation{background:#fdf6ec;border-left:4px solid #c0392b;padding:12px;margin:8px 0;border-radius:0 8px 8px 0;font-size:.9rem}
+.timer-bar{background:#e8d5c4;height:6px;border-radius:3px;margin:8px 0;overflow:hidden}
+.timer-fill{background:#c0392b;height:100%;transition:width 1s linear;width:100%}
+.btn{background:#c0392b;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:.9rem;transition:background .2s}
+.btn:hover{background:#a93226}
+.btn-outline{background:transparent;border:1px solid #c0392b;color:#c0392b}
+.btn-outline:hover{background:#fce4dc}
+.btn-success{background:#27ae60}
+.btn-success:hover{background:#219a52}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.score-display{text-align:center;padding:20px;font-size:clamp(1rem,3vw,1.4rem)}
+.score-display .num{font-size:clamp(2rem,5vw,3.5rem);color:#c0392b;font-weight:700}
+.svg-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+.svg-wrapper svg{min-width:600px;max-width:900px;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:12px;padding:12px;background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px;margin:12px 0}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.8rem}
+.legend-dot{width:14px;height:14px;border-radius:50%;display:inline-block}
+.mind-map-node{cursor:pointer;user-select:none}
+.mind-map-node .toggle{display:inline-block;width:20px;text-align:center;color:#c0392b;font-weight:700}
+.mind-map-node .node-label{padding:4px 10px;border-radius:6px;display:inline-block;margin:2px 0}
+.mind-map-children{padding-left:24px;border-left:2px solid #e8d5c4;margin:4px 0 4px 12px}
+.mind-map-children.collapsed{display:none}
+.collapsible-header{background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px;padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin:4px 0;font-size:.9rem}
+.collapsible-header:hover{background:#fce4dc}
+.collapsible-body{padding:12px;border:1px solid #e8d5c4;border-top:none;border-radius:0 0 8px 8px;margin-top:-4px;margin-bottom:8px;background:#fffaf2;font-size:.88rem;line-height:1.7}
+.collapsible-body.hidden{display:none}
+.simulation-option{display:block;width:100%;text-align:left;background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px;padding:12px;margin:6px 0;cursor:pointer;font-size:.9rem;transition:all .2s}
+.simulation-option:hover{background:#fce4dc}
+.simulation-option.selected{background:#fce4dc;border-color:#c0392b}
+.simulation-option:disabled{cursor:default}
+.stage-card{background:#fffaf2;border:1px solid #e8d5c4;border-radius:12px;padding:16px;margin-bottom:12px}
+.stage-card h4{color:#c0392b;font-size:1rem}
+.stage-card .stage-num{display:inline-block;background:#c0392b;color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:14px;margin-right:8px}
+.short-answer-box{background:#fff;border:1px solid #e8d5c4;border-radius:8px;padding:12px;width:100%;min-height:80px;font-size:.9rem;margin:8px 0;resize:vertical;font-family:inherit}
+.progress-bar{background:#e8d5c4;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}
+.progress-fill{background:#c0392b;height:100%;border-radius:5px;transition:width .5s}
+.boundary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.boundary-item{background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px;padding:12px;font-size:.85rem}
+.boundary-item h5{color:#c0392b;margin-bottom:4px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:12px 0}
+.stat-card{background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px;padding:14px;text-align:center}
+.stat-card .stat-num{font-size:clamp(1.3rem,3vw,2rem);color:#c0392b;font-weight:700}
+.stat-card .stat-label{font-size:.8rem;color:#8a7a6a;margin-top:2px}
+.socratic-question{margin:8px 0;font-size:.9rem}
+.socratic-question .q{font-weight:600;color:#3d2f2f;cursor:pointer;padding:8px;background:#fdf6ec;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
+.socratic-question .q:hover{background:#fce4dc}
+.socratic-question .a{padding:8px 12px;font-size:.85rem;line-height:1.6;color:#4a3a3a}
+.socratic-question .a.hidden{display:none}
+.fade-in{animation:fadeIn .5s ease}
+.wrong-review-item{border-left:3px solid #c0392b;padding:10px;margin:6px 0;background:#fffaf2;border-radius:0 8px 8px 0}
+@media(max-width:640px){.tab-btn{padding:6px 10px;font-size:.8rem}.card{padding:14px}.flip-card{height:260px}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="index.html" class="back-link" id="backLink">&#8592; 返回知识主板</a>
+<h1>思维方法论</h1>
+<p class="subtitle">吴军·硅谷来信 &mdash; 最小知识集（MKS）学习系统</p>
+
+<div class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="tab1">概念卡片</button>
+<button class="tab-btn" data-tab="tab2">选择题</button>
+<button class="tab-btn" data-tab="tab3">简答题</button>
+<button class="tab-btn" data-tab="tab4">关系图</button>
+<button class="tab-btn" data-tab="tab5">思维导图</button>
+<button class="tab-btn" data-tab="tab6">苏格拉底问答</button>
+<button class="tab-btn" data-tab="tab7">案例分析</button>
+<button class="tab-btn" data-tab="tab8">决策模拟</button>
+<button class="tab-btn" data-tab="tab9">学习路径</button>
+</div>
+
+<div class="tab-content active" id="tab1">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem)">核心概念卡片 <span style="font-size:.8rem;color:#8a7a6a;font-weight:400">点击翻转</span></h2>
+<div>
+<button class="btn btn-outline" id="resetLearned" style="font-size:.8rem;padding:6px 12px">重置进度</button>
+</div>
+</div>
+<div class="stats-grid" id="conceptStats">
+<div class="stat-card"><div class="stat-num" id="learnedCount">0</div><div class="stat-label">已掌握</div></div>
+<div class="stat-card"><div class="stat-num">10</div><div class="stat-label">总概念</div></div>
+<div class="stat-card"><div class="stat-num" id="progressPercent">0%</div><div class="stat-label">进度</div></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div id="flashcardContainer"></div>
+</div>
+
+<div class="tab-content" id="tab2">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem)">选择题测验</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn btn-outline" id="startQuiz" style="font-size:.8rem;padding:6px 12px">开始计时</button>
+<button class="btn btn-success" id="resetQuiz" style="font-size:.8rem;padding:6px 12px">重新答题</button>
+</div>
+</div>
+<div id="timerDisplay" style="text-align:right;font-size:.85rem;color:#8a7a6a;margin-bottom:4px"></div>
+<div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+<div id="questionContainer"></div>
+<div id="quizResult" style="display:none"></div>
+<div class="stats-grid" id="wrongStats" style="display:none">
+<div class="stat-card"><div class="stat-num" id="wrongCount">0</div><div class="stat-label">错题数</div></div>
+<button class="btn btn-outline" id="reviewWrong" style="font-size:.8rem;padding:6px 12px;grid-column:span 2">复习错题</button>
+</div>
+</div>
+
+<div class="tab-content" id="tab3">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:16px">简答题</h2>
+<p style="font-size:.9rem;color:#8a7a6a;margin-bottom:12px">阅读问题，思考后在脑海中组织答案，点击"查看答案"参考模型回答。</p>
+<div id="shortAnswerContainer"></div>
+</div>
+
+<div class="tab-content" id="tab4">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:16px">概念关系图</h2>
+<p style="font-size:.85rem;color:#8a7a6a;margin-bottom:8px">思维方法论核心结构：看问题的方法 × 做事的方法 → 认知操作系统 → 命运</p>
+<div class="svg-wrapper" id="svgContainer"></div>
+<div class="legend">
+<div class="legend-item"><span class="legend-dot" style="background:#2980b9"></span> 看问题方法</div>
+<div class="legend-item"><span class="legend-dot" style="background:#e67e22"></span> 做事方法</div>
+<div class="legend-item"><span class="legend-dot" style="background:#8e44ad"></span> 认知操作系统</div>
+<div class="legend-item"><span class="legend-dot" style="background:#c0392b"></span> 命运</div>
+<div class="legend-item"><span style="border-bottom:2px solid #27ae60;width:20px;display:inline-block"></span> 因果关系</div>
+<div class="legend-item"><span style="border-bottom:2px dashed #c0392b;width:20px;display:inline-block"></span> 核心维度</div>
+</div>
+</div>
+
+<div class="tab-content" id="tab5">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:16px">思维导图 <span style="font-size:.8rem;color:#8a7a6a;font-weight:400">点击节点展开/折叠</span></h2>
+<div id="mindMapContainer"></div>
+</div>
+
+<div class="tab-content" id="tab6">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:16px">苏格拉底式问答</h2>
+<p style="font-size:.85rem;color:#8a7a6a;margin-bottom:12px">逐层深入的追问，帮你建立真正的理解。点击问题展开答案。</p>
+<div id="socraticContainer"></div>
+</div>
+
+<div class="tab-content" id="tab7">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:16px">案例深度分析</h2>
+<p style="font-size:.85rem;color:#8a7a6a;margin-bottom:12px">运用MKS四维框架剖析真实案例</p>
+<div id="caseStudyContainer"></div>
+</div>
+
+<div class="tab-content" id="tab8">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:8px">决策模拟</h2>
+<p style="font-size:.85rem;color:#8a7a6a;margin-bottom:16px">三轮战略决策场景，每个场景有3种选择，测试你的思维方法论应用能力。</p>
+<div id="simulationContainer"></div>
+</div>
+
+<div class="tab-content" id="tab9">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:16px">五阶段学习路径</h2>
+<p style="font-size:.85rem;color:#8a7a6a;margin-bottom:12px">按推荐顺序逐步掌握十大核心概念</p>
+<div id="learningPathContainer"></div>
+<div style="margin-top:24px">
+<h2 style="color:#c0392b;font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:12px">边界知识清单</h2>
+<p style="font-size:.85rem;color:#8a7a6a;margin-bottom:12px">拓展视野的15个关键知识点</p>
+<div id="boundaryContainer" class="boundary-grid"></div>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ===== CONSTANTS ===== */
+var CONCEPTS = [
+{id:'falsify',name:'证伪思维',icon:'🔬',star:true,
+ def:'科学理论必须可被证明错误。不可证伪的命题（如算命、占星）不是科学，而是伪科学。这是区分科学与非科学的根本标准。',
+ analogy:'就像法庭上的"无罪推定"——控方必须提供可被反驳的证据，而不是让被告自证清白。科学也需要随时准备接受"反证"。',
+ example:'爱因斯坦的广义相对论预言光线会在引力场中弯曲——这是一个可证伪的预测。1919年日食观测证实了它。如果观测结果不符，理论就会被推翻。',
+ counter:'"明天可能下雨也可能不下"——这个陈述永远正确，但毫无信息量，因为它不可证伪。算命先生说"你近期会有贵人相助"同样无法被证明错误。'},
+{id:'logic',name:'逻辑判断',icon:'🧠',star:true,
+ def:'运用逻辑推理筛选信息，识别论证中的矛盾、谬误和不合理假设。在信息过载时代，这是最稀缺的过滤能力。',
+ analogy:'像一个思维"筛子"——把信息放进去，筛掉那些逻辑不自洽的，留下经得起推敲的。好的论证像精密的瑞士手表，每个齿轮都咬合紧密。',
+ example:'面对"罗斯柴尔德家族财富以6%年增长率持续200年已达几十万亿美元"的说法，吴军用逻辑反驳：如果陶朱公1两银子以6%增长2500年，财富将达10^63两，远超宇宙原子总数，由此揭露指数增长在现实中的荒谬性。',
+ counter:'"英国靠老处女称霸世界"——猫多→老鼠少→蜜蜂多→苜蓿多→牛多→牛肉多→水手强→海军强→称霸。每步仅有微弱相关性，经多轮传递后关联近乎为零，是典型过度解读。'},
+{id:'cost',name:'成本思维',icon:'💰',star:false,
+ def:'通过分析行为背后的投入-产出逻辑，判断动机的合理性。理解"没有免费的午餐"，透过表面看本质。',
+ analogy:'如同一副"商业透视镜"——戴上它，你看到的不再是销售人员热情的笑脸，而是他投入的时间成本和获客成本，以及这些成本最终由谁买单。',
+ example:'老年人购买保健品：销售人员投入大量时间陪伴老人（时间成本），失败推销的成本需分摊到成交客户身上（获客成本），而保健品公司"出事即跑路"（犯错成本极低）。三方面揭示"关心"背后的逐利本质。',
+ counter:'明星媒体人创业失败——原以为名气=能力，但忽略了原单位平台提供的背书价值。一旦脱离平台，维持名气的成本剧增而收益锐减。'},
+{id:'cross',name:'跨界思维',icon:'🔄',star:false,
+ def:'跨领域融合产生创新，打破单一思维定式。真正的跨界是结果而非目的，需要扎实的原领域基础。',
+ analogy:'如同生物界的"杂交优势"——两种不同基因的植物杂交，往往产生更优秀的后代。但前提是每一方的基因都足够优秀和稳定。',
+ example:'贾里尼克（通信领域专家）将人工智能视为通信/数据问题而非模仿人类智能，突破传统计算机科学家的思维定式。特斯拉将IT领域的锂电池技术引入汽车行业，解决传统车企铅酸电池续航难题。',
+ counter:'跨界不是"浅尝辄止"。爱因斯坦的小提琴仅为爱好（水平不高），不是真正的跨界。真正的跨界如冯·诺依曼——在数学、计算机、物理、博弈论等多个领域都有深刻建树。'},
+{id:'subtract',name:'减法思维',icon:'➖',star:true,
+ def:'生命有限，主动舍弃无关紧要的事务，聚焦核心目标。"吾生也有涯，而知也无涯"——以有限追无限，必败。',
+ analogy:'就像整理一个塞满杂物的房间——不是往里添置新柜子，而是果断扔掉不需要的东西。腾出的空间才是真正的收获。',
+ example:'吴军2014年底从Google辞职：常规思维是高薪工作应优先保障，但他以"时间价值最大化"为标准，发现占用最多时间的高薪工作恰恰是需要舍弃的对象。硅谷一家视频识别公司从长长的任务清单减到仅保留1件核心事，最终被亚马逊高价收购。',
+ counter:'同时做很多事的"低水平忙碌"——两倍时间仅获两倍收益。而集中时间做好一件事，两倍时间可获10倍收益。捡芝麻的人永远没有时间捡西瓜。'},
+{id:'common',name:'常识判断',icon:'💡',star:true,
+ def:'常识优于复杂模型，简单规律胜过新奇解释。经过长期证伪筛选的常识，往往比"专家"的复杂理论更可靠。',
+ analogy:'就像天气预报——老祖宗看云识天气的经验（"朝霞不出门，晚霞行千里"）有时比复杂的数值预报模型还准。常识是千百年经验浓缩的智慧。',
+ example:'巴菲特不看《华尔街日报》、不信股评、不画K线。他通过逛百货店观察商品受欢迎程度、看店铺顾客数量来判断投资标的。2008年通过比较苹果店与微软店的顾客流量，准确预测苹果市值将超越微软。',
+ counter:'过度解读的"新奇解释"——如将温州个别老板跑路推导为中国经济寒冬，忽视数十万家企业中个别案例不具统计意义。常识告诉我们：个别企业破产是行业整合常态。'},
+{id:'professional',name:'专业素养',icon:'🏆',star:false,
+ def:'稳定性 + 流程化 + 体系知识 + 持续学习。职业选手与业余选手的本质区别不在于偶尔的超常发挥，而在于持续稳定的高水平输出。',
+ analogy:'就像一个顶级钢琴家演奏简单的《小奏鸣曲》——看似平凡的曲目，却能弹出丰富的层次感和情感张力。真正的专业是在简单事物上展现极致水准。',
+ example:'吴军与职业高尔夫教练杰夫同场竞技：杰夫9洞成绩-3杆（持续稳定），而吴军+9杆（好球与坏球交替）。职业选手的稳定发挥来自于严格遵循流程、情绪控制和系统的做事方法。约翰·霍普金斯名医检查近视时先系统排查罕见风险再定位病因，而普通医生缺乏章法。',
+ counter:'业余爱好者可能偶尔打出"神仙球"，但无法复制。就像"民间科学家"可能碰巧说对一件事，但缺乏系统方法和可重复性，无法稳定输出。'},
+{id:'gradual',name:'渐进改良',icon:'📈',star:false,
+ def:'"最好是更好的敌人"——过度追求完美可能导致一事无成，接受阶段性改进反而更有效。迭代优于一步到位。',
+ analogy:'就像手机系统更新——不是等一个"完美版本"再发布，而是每周/每月推送小更新，不断修复bug、增加功能。多次"更好"的累积最终超越一次"最好"。',
+ example:'美国禁枪法案：民主党追求全面禁枪（"最好"），共和党只同意背景调查（"更好"），双方互不让步导致法案均未通过，禁枪改革完全失败。如果接受部分改进（如对不良记录者禁枪），至少能实现有限成果。Google核心服务每周更新一次，即使部分功能未交付也按时上线。',
+ counter:'特斯拉电动车：存在做工粗糙、系统死机等问题，但通过持续迭代5年间品质提升速度远超传统车企。若追求初始完美，可能"十几年造不出车"。'},
+{id:'expectation',name:'期望值最大化',icon:'📊',star:false,
+ def:'通过定义合理的收益函数驱动系统自动优化。在组织管理中，设定正确的激励机制比"教育员工"更有效。',
+ analogy:'就像设计一个自动导航系统——你不需要手动控制每一个操作，只需设定好目的地（收益函数），导航系统会自动计算出最优路径并不断调整方向。',
+ example:'高考政策：若体育成绩占高考50%，家长就会自动让孩子参加体育锻炼，学校会加大体育投入，全社会资源向体育倾斜——不需要任何行政命令，收益函数自然驱动。Google将专利奖励从降至1万美元/专利，专利数量立刻跃居全球前十。IBM将专利申请与绩效挂钩，成为美国专利数量冠军。',
+ counter:'只讲价值观不设计激励——很多公司天天开会"教育员工"要创新、要合作，但考核体系却只奖励短期业绩。员工行为会向收益函数方向优化，而非口头说教的方向。'},
+{id:'tenk',name:'一万小时定律',icon:'⏱',star:false,
+ def:'技能精进需要有效积累而非简单重复。避免四大误区：简单重复、习惯性失败、林黛玉式困境（自我封闭）、狗熊掰棒子（无积累）。',
+ analogy:'就像运动员训练——不是每天跑同样的距离就叫训练，而是要有针对性地突破自己的极限。有效的一万小时像是雕刻家反复雕琢，无效的一万小时像是水流反复冲刷同一块石头。',
+ example:'吴军提出"三板斧"破解四大困境：第一板斧"愿景-目标-道路"避免简单重复；第二板斧"从不同意见中找合理之处"打破习惯性失败和林黛玉式困境；第三板斧"凡事做记录"解决狗熊掰棒子问题。',
+ counter:'伪工作者：每天加班到很晚，但做的都是简单重复的"伪工作"，遇到困难不学习不请教，十年经验相当于一年经验重复了十次。'}
+];
+
+var MCQS = [{"q":"关于\"证伪思维\"，以下哪项理解是正确的？","opts":["科学理论必须可被证明错误","科学理论必须被证明正确才能成立","不可证伪的陈述也可能是科学理论","证伪与证实是同一回事"],"ans":0,"exp":"证伪思维的核心是卡尔·波普尔提出的\"可证伪性\"标准：一个理论只有具备被事实证明为错误的可能性，才是科学的。例如\"明天可能下雨\"不可证伪（永远正确），而\"水在标准大气压下100°C沸腾\"可证伪。"},{"q":"减法思维的核心哲学依据来自哪里？","opts":["庄子的\"吾生也有涯，而知也无涯\"","孔子的\"学而不思则罔\"","老子的\"道可道非常道\"","孟子的\"鱼与熊掌不可兼得\""],"ans":0,"exp":"庄子在《养生主》中写道：\"吾生也有涯，而知也无涯，以有涯随无涯，殆矣。\"意为生命有限而知识/事务无限，以有限追求无限必然失败。这是减法思维的哲学根基——必须学会舍弃。"},{"q":"为什么\"最好的医生不一定是救人最多的医生\"？","opts":["名医与普通好医生的差距在于治疗效果的稳定性和可预期性","名医运气更好","普通医生更努力","名医只治疗简单的病"],"ans":0,"exp":"名医与普通好医生的差异不在于能否治好绝症（绝症谁也无法），而在于治疗效果的稳定性和可预期性。专业素养体现在稳定高质量的输出，而非偶尔的超常发挥。这呼应了职业选手vs业余选手的核心差异。"},{"q":"\"以正合，以奇胜\"中\"奇\"字的正确读法和含义是什么？","opts":["读jī，意为\"多余的\"、补充手段","读qí，意为出乎意料的策略","读qí，意为奇怪的战术","读jī，意为奇袭和偷袭"],"ans":0,"exp":"孙子兵法中的\"奇\"读jī（不是qí），指\"多余的\"即机动兵力或补充手段。核心理念是先掌握根本（正），再考虑补充（奇），而非本末倒置追求\"出奇制胜\"。唐朝名将李靖在《唐太宗李靖问对》中有权威诠释。"},{"q":"富兰克林的成功五要素中，最核心的一条是什么？","opts":["掌握稀缺技能","不断跳槽寻找更好机会","不争功，敢于肯定他人贡献","多读书"],"ans":0,"exp":"富兰克林选择当时新大陆稀缺的印刷术并成为行业专家，通过稀缺技能获得不可替代性。吴军也凭借稀缺的自然语言处理技术进入早期Google。稀缺技能是安身立命的根本，是财务自由的起点，也是其他四要素的基础。"},{"q":"\"英国靠老处女称霸世界\"这个推导最典型的逻辑谬误是什么？","opts":["循环论证","过度解读与牵强因果","以偏概全","偷换概念"],"ans":1,"exp":"推导链条\"老处女多→猫多→老鼠少→蜜蜂多→苜蓿多→牛多→牛肉好→水手强→海军强\"每步仅有微弱相关性，经多轮传递后关联性近乎为零。这是典型的过度解读和牵强附会，是\"弱关联因果链\"的逻辑谬误。"},{"q":"巴菲特最推崇的投资智慧是什么？","opts":["精通K线技术分析","依靠常识判断","掌握复杂的数学模型","听从经济学家建议"],"ans":1,"exp":"巴菲特不看《华尔街日报》、不信股评、不画K线。他通过逛百货店观察顾客数量、看产品受欢迎程度来做投资判断。他的经验证明：常识（低买高卖、从生活中观察）比任何复杂模型都更可靠。"},{"q":"渐进改良的核心思想\"最好是更好的敌人\"在禁枪法案中如何体现？","opts":["禁枪法案本就不该提出","双方互不让步导致任何法案都未通过，禁枪改革完全失败","共和党的方案更好","民主党的方案最好"],"ans":1,"exp":"民主党追求全面禁枪（\"最好\"），共和党只要背景调查（\"更好\"），双方拒绝折中，结果两个法案均未通过。若双方接受部分改进（如对不良记录者禁枪），至少能实现有限成果。\"最好是更好的敌人\"——追求完美可能导致一事无成。"},{"q":"期望值最大化原理在组织管理中最重要的启示是什么？","opts":["管理者应多开会对员工进行教育","设计科学的收益函数（激励机制），系统会自动优化","给员工更高的薪水","让员工自主决定工作内容"],"ans":1,"exp":"组织设计的激励机制就是\"收益函数\"，员工行为会自动向最大化该函数的方向调整。与其开会\"教育员工\"，不如设计合理的考核标准。如IBM将专利申请与绩效挂钩→成为专利冠军；Google提高专利奖励→专利数量跃居全球前十。"},{"q":"托勒密的地心说虽然被推翻，但它仍然被认为是科学典范，为什么？","opts":["因为它被使用了很长时间","因为它具有可证伪性，且在当时具备数学正确性和预测精度","因为它是教会的官方理论","因为它很简单"],"ans":1,"exp":"托勒密地心说构建了精妙的数学模型，每100年误差不超过1天，具备可证伪性和可验证的预测能力。虽然后来被日心说推翻，但符合科学方法的本质要求——可检验、可证伪。科学方法比结论更重要。"},{"q":"为什么保健品销售人员的\"关心\"需要用成本思维来审视？","opts":["因为他们不专业","因为他们卖的产品太贵","因为他们投入大量时间陪伴老人，这些成本最终由消费者承担","因为他们不了解老人的真实需求"],"ans":2,"exp":"成本思维揭示：销售人员投入大量时间陪伴老人（时间成本）、失败推销需分摊到成交客户（获客成本）、\"出事即跑路\"（犯错成本极低）。三方面都说明\"关心\"背后是逐利驱动，而非真正关爱。"},{"q":"职业选手与业余选手最本质的区别是什么？","opts":["职业选手更有天赋","职业选手训练时间更长","稳定性——持续稳定地高水平发挥","职业选手更年轻"],"ans":2,"exp":"以高尔夫为例：业余选手好球与坏球交替出现（如+9杆），职业选手持续稳定（-3杆）。专业素养的核心是稳定性、流程化方法、情绪控制和系统知识，而非偶尔的超常发挥。专业素养的四大支柱：工作优先、严格流程、主动求优、体系知识。"},{"q":"一万小时定律的\"三板斧\"中，哪一板斧专门解决\"狗熊掰棒子\"问题？","opts":["愿景-目标-道路规划","从不同意见中找合理性","凡事做记录","专注一个领域不跨界"],"ans":2,"exp":"第三板斧\"凡事做记录\"专门破解\"狗熊掰棒子\"（无积累效应）。通过系统性记录实现经验积累与传承，避免同一问题反复解决。记录过程本身也是深化思考的过程，加速进步。"},{"q":"以下哪个陈述符合\"可证伪性\"标准？","opts":["上帝是全能的","明天要么下雨要么不下雨","广义相对论预言光线在引力场中弯曲","心诚则灵"],"ans":2,"exp":"爱因斯坦的预言\"光线会在引力场中弯曲\"可被观测检验（1919年日食证实），如果观测不符理论就被推翻。而\"上帝全能\"\"心诚则灵\"等陈述无论如何都无法被证明错误，因此不是科学命题。\"明天要么下雨要么不下雨\"是永真命题，无实际意义。"},{"q":"\"不选择反而获得幸福\"这一研究结论背后的核心机制是什么？","opts":["选择越多人越懒","不选择是因为没有能力","选择少时人们更注重经营现有的关系和工作","选择多会导致破产"],"ans":2,"exp":"奚恺元教授研究发现：印度人婚姻满意度不低于美国人，因选择少（种姓制度限制），更注重经营婚姻。同理，选择少的印度裔员工因无退路，更专注于职业发展。幸福感与成就更多是\"经营\"的结果，而非反复选择的结果。"},{"q":"真正有效的跨界需要什么先决条件？","opts":["有多个领域的兴趣","认识很多不同领域的人","有跨学科的学位","在原领域具备扎实的专业素养和成功基础"],"ans":3,"exp":"吴军强调：跨界是结果而非目的，前提是在原领域具备专业素养和成功基础。如摩尔斯（画家→电报发明人）在绘画领域已成名，华盛顿（勘测员→将军）具备扎实的地形知识和数学能力。没有原领域的\"正\"，跨界的\"奇\"就失去了根基。"},{"q":"吴军用\"陶朱公1两银子增长2500年\"的类比是为了反驳什么？","opts":["通货膨胀理论","中国历史上的财富积累","银子的购买力变化","罗斯柴尔德家族财富持续指数增长的说法"],"ans":3,"exp":"有人声称罗斯柴尔德家族财富以6%年增长率持续200年已达几十万亿美元。吴军以陶朱公为例证：1两银子以6%增长2500年后达10^63两，远超宇宙原子总数。现实中无任何实体可实现长期指数增长，由此揭露阴谋论的荒谬。"},{"q":"第欧根尼的极简生活哲学对现代人的核心启示是什么？","opts":["所有人都应该住木桶","拒绝所有社交活动","不要工作只追求享乐","减少对物质的过度关注以提升精神自由"],"ans":3,"exp":"第欧根尼主张\"钱财应改善生活而非增加负担\"，多数物质享受\"可有可无\"。吴军将其发展为减法思维：舍弃\"花精力却未必有价值\"的事务，将有限时间集中于真正重要的事情。物质减法带来精神加法，这是\"做减法\"的人生哲学。"},{"q":"莱特兄弟成功发明飞机的关键方法论是什么？","opts":["运气特别好","资金非常充足","政府的支持","充分准备、理论指导、科学方法（风洞试验）"],"ans":3,"exp":"莱特兄弟的三大方法论：1）充分准备——宁可做700-1000次滑翔试验也不仓促试飞；2）理论指导——系统学习空气动力学，修正李林塔尔升力计算误差（多算60%）；3）科学方法——通过风洞进行可重复试验，测试200多种翼形。这是专业方法论战胜\"民间科学家\"的经典案例。"},{"q":"为什么\"给员工少一点选择\"反而能提升管理效率？","opts":["员工不喜欢选择","这样做可以节省公司成本","员工会感恩公司","选择越少，员工越专注于手头工作，满意度反而更高"],"ans":3,"exp":"腾讯旅游福利案例：提供北海道滑雪和普吉岛两个选项→员工互相羡慕后悔；改为仅保留一个目的地→满意度反而更高。幸福学原理：选择多导致\"这山望着那山高\"，降低满足感。限制选择反而提升管理效率，本田汽车短产品线策略同理。"}];
+
+var SHORT_ANSWERS = [
+{q:'请简述证伪思维的核心要义，并举例说明一个不可证伪的命题。',
+ model:'证伪思维（Falsifiability）由卡尔·波普尔提出，核心要义是：科学理论必须可被证明错误。一个理论只有具备被事实证明为错误的可能性，才是科学的。不可证伪的命题包括：算命先生的模糊预言（"你近期会有贵人相助"）、永真命题（"明天要么下雨要么不下雨"）、诉诸神秘（"心诚则灵"等）。证伪思维是区分科学与伪科学的根本标准。',
+ rubric:'核心定义（40%）：准确表述"可被证明错误"的含义；举例（30%）：给出贴切的不可证伪案例；理解深度（30%）：说明为什么可证伪性对科学重要。'},
+{q:'请用成本思维分析：为什么保健品销售人员对老人特别"关心"？',
+ model:'成本思维三分析：1）时间成本——销售人员投入大量时间陪伴老人（聊天、上门、送礼），这些时间成本最终需从老人消费中覆盖（类比北京保姆薪资水平）；2）获客成本——多数被推销者不会购买，失败推销的成本需分摊到成交客户身上，推高产品实际价格；3）犯错成本——医院受医德、晋升、医闹约束犯错成本高，而保健品公司"出事即跑路"责任风险极低。三方面揭示"关心"本质是商业驱动的逐利行为，而非真正关爱。',
+ rubric:'时间成本维度（30%）；获客成本维度（30%）；犯错成本维度（30%）；综合理解（10%）。'},
+{q:'什么是"林黛玉式困境"？在一万小时训练中应如何避免？',
+ model:'林黛玉式困境比喻一个人的知识内涵越丰富，外延就越窄，最后无法与其他领域交流。从《红楼梦》林黛玉的性格特点引申：她的世界太窄，除了诗词和宝玉，几乎无法和其他人交流。在一万小时训练中，需用"第二板斧"破解：从不同意见中找合理之处。具体做法：1）换位思考理解对方立场；2）假设"我错了"重新审视；3）即使对方观点错误也要分析其行为合理性。开放心态吸收外部反馈，避免自我封闭。',
+ rubric:'概念定义（30%）；方法论（40%）；举例或深度理解（30%）。'},
+{q:'请解释"最好是更好的敌人"的含义，并举一个现实案例。',
+ model:'"最好是更好的敌人"（The Best Is the Enemy of the Better）是保守主义核心格言，意思是过度追求"最好"的完美方案，可能导致连"更好"的改进都无法实现，最终一事无成。现实案例——美国禁枪法案：民主党追求全面禁枪（"最好"方案），共和党只同意购前背景调查（"更好"方案），双方拒绝折中，结果两个法案均未通过，禁枪改革完全失败。如果接受部分改进，至少能对不良记录者禁枪。多次"更好"的累积价值可能超过单次"最好"的追求。',
+ rubric:'定义准确（40%）；案例完整（40%）；阐释深度（20%）。'},
+{q:'吴军如何运用逻辑判断反驳"罗斯柴尔德家族财富持续增长"的说法？',
+ model:'逻辑反驳步骤：1）提取对方核心假设——罗斯柴尔德家族财富以每年6%速度持续递增一两百年；2）类比推导——以中国春秋时期陶朱公（范蠡）为例，若1两银子以6%年增长率持续2500年，后代财富将达10^63两银子；3）量化对比——10^63两是全球总财富的10^49倍，是宇宙原子数量的10^6倍，明显违背现实；4）结论——无任何实体可实现长期指数增长，企业增长需依赖新旧更替。关键洞察：指数增长的假设在有限资源世界中必然荒谬。',
+ rubric:'提取假设（25%）；类比推导（30%）；量化对比（25%）；结论与洞察（20%）。'},
+{q:'请从跨界思维的角度分析：为什么IT背景的特斯拉能解决传统车企解决不了的问题？',
+ model:'传统车企（如GM）长期专注于汽车工程领域，受限于铅酸电池技术的思维定式。特斯拉创始人艾伯哈德和马斯克具有IT背景，将消费电子领域的锂电池技术跨界引入汽车行业。跨界创新的核心逻辑：1）打破思维定式——IT人看待汽车不是"机械产品"而是"带轮子的电脑"；2）引入外来技术——锂电池能量密度远超铅酸电池，解决续航难题；3）高势能向低势能跨越——IT行业的快速迭代思维应用到传统汽车业，实现比传统车企更快的改进速度。跨界的前提：IT背景的创始人在原领域已具备成功基础。',
+ rubric:'跨界原理（30%）；案例细节（40%）；洞察深度（30%）。'},
+{q:'富兰克林通过什么系统方法培养13种美德？这种方法对我们有何启示？',
+ model:'富兰克林的方法论：1）细化美德——将13种美德每种仅含简单清晰的外延（如"节制：食不可饱，酒不过量"），便于自我检查；2）周期化训练——每周专注1种美德，13周为一周期，一年完成4个周期；3）自我监控——每日检查行为，未达标则标记黑点，睡前评分。启示：1）好品格的养成需要系统方法而非空谈；2）一次只专注一件事而非同时培养多种；3）持续记录和反馈是行为改变的关键。做到其方法的1/10即可与不注重自我进步者拉开显著差距。',
+ rubric:'方法论细节（40%）；工具与周期（30%）；启示（30%）。'},
+{q:'请用减法思维分析吴军从Google辞职的决策逻辑。',
+ model:'吴军的决策逻辑突破了常规思维陷阱：1）常规思维——高薪工作应优先保障，其他事务用"业余时间"处理；2）逆向思考——若时间比金钱更重要，占用最多时间的高薪工作恰恰是需要"舍弃"的对象；3）核心标准——从"这件事是否该做"转为"不做这件事是否影响核心目标"。减法思维的本质不是消极放弃，而是主动聚焦。通过舍弃占用量大但边际价值低的事务，释放时间去做10倍收益的事。这个决策体现了庄子的智慧："吾生也有涯，而知也无涯，以有涯随无涯，殆矣。"',
+ rubric:'常规vs逆向思维（30%）；决策标准（30%）；本质理解（20%）；哲学引用（20%）。'},
+{q:'什么是"期望值最大化原理"？它如何应用于企业管理？',
+ model:'期望值最大化原理是最优化理论中的核心方法：1）定义收益函数（或利润/成本函数）；2）每一时刻计算最大化收益的方向；3）沿该方向迭代优化，收敛至全局最优解。在企业管理中的应用：组织设定的激励机制就是"收益函数"，员工行为会自动向最大化该函数的方向调整。关键启示——与其开会"教育"员工，不如设计合理的考核制度。案例：IBM将专利申请与绩效挂钩成为专利冠军；Google提高专利奖励后专利数量跃居全球前十。核心：规则设定比口头说教更有力量。',
+ rubric:'原理定义（40%）；管理应用（40%）；案例分析（20%）。'},
+{q:'请用"看问题的方法"和"做事的方法"两个维度分析莱特兄弟成功发明飞机的原因。',
+ model:'莱特兄弟的成功体现了"看问题方法×做事方法"的完美结合。看问题方法：1）科学态度——系统学习凯利的空气动力学理论，而非凭经验摸索；2）逻辑判断——通过风洞试验修正李林塔尔的升力计算误差（多算60%）；3）证伪思维——用可重复试验验证每一个假设。做事方法：1）充分准备（减法思维）——宁可做700-1000次滑翔试验，不仓促试飞；2）专业素养——科学方法进行200多种翼形测试；3）渐进改良——从风筝→滑翔机→动力飞机，逐步迭代。两者结合，形成强大的"认知操作系统"，最终改变了人类交通史。',
+ rubric:'看问题方法维度（40%）；做事方法维度（40%）；综合理解（20%）。'}
+];
+
+var SOCRATIC = [
+{concept:'证伪思维',qas:[
+ {q:'第一层：什么是"不可证伪"？为什么说算命先生的预言不可证伪？',
+  a:'不可证伪意味着一个陈述无法被任何可观测的事实证明为错误。算命先生说"你近期会有贵人相助"——如果没遇到，他可以说"贵人已经出现但你没认出来"或者"还没到近期"。这个说法总能找到借口自圆其说，所以不可证伪。相比之下，医生说"你的血压是140/90mmHg"是可证伪的——换一台血压计测就能验证。'},
+ {q:'第二层：可证伪性是不是要求每个科学理论都必须是"错的"？',
+  a:'不是。可证伪性不是要求理论必须是错的，而是要求它具备"被证明为错的可能性"。就像说"这个箱子装着一只猫"——你可以打开箱子验证，可能看到猫（证实），也可能没看到（证伪）。但如果说"这个箱子里有一个看不见摸不着的精灵"，就无法验证。科学理论的强大恰恰在于它敢于接受最严格的检验。爱因斯坦预言行星光线的弯曲，就是把自己的理论放在被证伪的位置上。'},
+ {q:'第三层：如果科学理论最终都可能被推翻，我们为什么要学习当前的科学知识？',
+  a:'这是一个深刻的问题。科学的进步不是简单地否定过去，而是在保留已有正确内容的基础上扩展。牛顿力学在高速微观世界被相对论和量子力学修正，但在地球上的日常应用中，牛顿力学依然是精确的。科学知识的价值不在于"永远正确"，而在于它是目前经过最严格检验的认识。就像你使用的地图——虽然可能不完美（新路没标注），但比没有地图强一万倍，而且会不断更新。'}
+]},
+{concept:'逻辑判断',qas:[
+ {q:'第一层：为什么说"逻辑判断"是信息时代最稀缺的能力？',
+  a:'因为我们每天接收的信息量是古人一年的量。面对大量相互矛盾的观点（"专家"说法常对立）、精心包装的伪科学、煽动情绪的标题党，如果没有逻辑筛选能力，就像在信息洪流中没有救生圈。逻辑判断提供了一个"最低成本"的过滤器——不需要你是每个领域的专家，只需要你能识别论证中的矛盾、谬误和不合理假设。判断对错的难度远低于解决问题本身（就像不需要会解二次方程也能验证X=2是否成立）。'},
+ {q:'第二层：如何区分"相关性"和"因果性"？为什么这个区分如此重要？',
+  a:'相关性指两件事同时发生或关联变化，因果性则是一件事导致另一件事。冰淇淋销量和溺水率高度相关——是因为夏天热，两者都增加，而不是冰淇淋导致溺水。混淆两者的后果严重：如有人发现"喝红酒的人更长寿"，其实是喝红酒的人往往收入更高、医疗条件更好。"老处女导致英国称霸"就是典型的将弱相关性当作因果关系的荒唐案例。核心原则：时间上原因在前结果在后；有合理的机制解释；排除其他可能性。'},
+ {q:'第三层：当面对两个逻辑上都成立但结论相反的理论（如凯恩斯主义vs哈耶克理论），应该如何判断？',
+  a:'需要理解"逻辑自洽≠绝对正确"。凯恩斯主义和哈耶克理论在各自预设前提下都是逻辑严密的。判断方式：1）考察前提假设在当下的适用性（如是否是经济危机时期）；2）看实证证据（哪种政策在类似国家/时期产生过更好效果）；3）理解理论的边界条件（没有放之四海皆准的理论）。关键思维：不是非此即彼，而是在具体情境中判断哪个理论的假设更贴近现实。就像工具——锤子和螺丝刀哪个更好？取决于你要钉钉子还是拧螺丝。'}
+]},
+{concept:'成本思维',qas:[
+ {q:'第一层：为什么说分析行为背后的"投入-产出"逻辑就能判断动机？',
+  a:'因为任何理性行为都有成本。如果一个人长期投入大量时间精力做某件事，必定有相应的收益来源。保健品销售人员每天花几小时陪老人聊天、送小礼品——如果这些投入不能从老人身上赚回数倍的钱，他的行为在经济上就是不可持续的。成本思维就是透过表面的"善意"看穿背后的商业逻辑。当然这不是说所有善意都是假的，而是说持续的、大量的投入一定有其经济基础支撑。'},
+ {q:'第二层："免费"的内容为什么往往是最贵的？',
+  a:'从成本思维分析：优质内容的创作需要时间、专业知识和精力投入。如果创作者长期"免费"产出，他的时间成本无法覆盖，要么降低质量，要么找到其他盈利模式（广告、诱导消费等）。免费的代价往往是：1）你的注意力被卖给广告商；2）你需要花大量时间筛选劣质信息；3）你可能被诱导做出不利的消费决策。免费获取转载内容需付出"筛选时间成本"，与直接付费的总成本相近。这就是"天下没有免费的午餐"。'},
+ {q:'第三层：成本思维有什么局限性？当成本和收益难以量化时怎么办？',
+  a:'成本思维的主要局限：1）非经济动机——有些行为由情感、信仰、好奇心驱动（如志愿者工作），不能单纯用经济成本解释；2）量化困难——时间成本、情感成本难以精确衡量；3）长期vs短期——短期成本高但长期收益大的行为（如学习）可能被误判。应对方法：对可量化的用成本分析（商业行为），对不可量化的辅以其他判断工具（价值观、常识、逻辑）。成本思维是一个强大的分析起点，但不是唯一的判断标准。'}
+]},
+{concept:'减法思维',qas:[
+ {q:'第一层：庄子说"吾生也有涯，而知也无涯"，这个"知"具体指什么？',
+  a:'庄子的"知"不仅指知识，更包括所有可能做的事情、想追求的目标、想拥有的东西。现代社会尤甚——好书读不完、好课上不完、社交应酬不完美、工作机会抓不完。如果试图什么都做、什么都学、什么都拥有，结果一定是每件事都做不好、学不精、得不到。庄子的洞见在于：不是鼓励我们不学习，而是提醒我们——因为生命有限，所以必须做出取舍，把有限的时间花在真正重要的事情上。'},
+ {q:'第二层："做减法"表面上是放弃，为什么实际上是一种积极的策略？',
+  a:'因为减法不是消极地"什么都不做"，而是主动地"选择做什么"。减法思维的核心是"少做事情，做好事情"。把精力从10件事分散到每件上，每件只能做到60分；集中到3件事上，每件可以做到90分。后者带来的总价值远高于前者。硅谷创业公司的案例最有说服力：从长长的任务清单一路减到只剩下1件"减掉就不再是自己"的核心事，最终被高价收购。放弃次要目标，才能确保核心目标的达成。'},
+ {q:'第三层：在现实中，如何区分"应该减掉的"和"应该坚持的"？有没有决策框架？',
+  a:'吴军提供了关键转换：从"这件事是否该做"转为"不做这件事是否影响核心目标"。具体框架：1）明确你的核心目标——一年后、五年后你希望成为什么样的人、达成什么事；2）列出所有当前占用的时间和精力项；3）对每一项问：如果砍掉它，我的核心目标会受多大影响？4）砍掉那些"不影响核心目标"或"影响很小"的事项。另一个标准：收益非线性——在低水平上做很多事，两倍时间仅获两倍收益；集中时间做好一件事，两倍时间可获10倍收益。选择"西瓜"而非"芝麻"。'}
+]},
+{concept:'常识判断',qas:[
+ {q:'第一层：什么是"常识"？它和"专业知识"是什么关系？',
+  a:'常识是经过长期实践检验、被广泛认可的基本道理。它和专业知识的根本区别在于：常识是"门槛级"的可靠认知，不需要深入学习特定领域的理论就能理解和运用。如"低买高卖赚钱"是投资常识，"朝霞不出门，晚霞行千里"是气象常识。常识和专业不是对立关系，而是互补——常识提供基础框架，专业知识在常识基础上深化。问题是很多人连常识都不用，一味追求复杂的"新奇理论"。'},
+ {q:'第二层：为什么吴军说"常识优于复杂模型"？难道科学模型不比常识更准确吗？',
+  a:'关键不在于常识比模型更"准确"，而在于：1）常识的适用范围更广——不会用错语境。复杂模型的前提假设一旦不成立，结论就完全错误。2）常识经过千百年证伪筛选——存活下来的常识通常经得起考验。3）常识的"简洁性"本身就是优势——越复杂的模型越容易过度拟合。巴菲特的例子最好说明：他通过逛百货店观察顾客来投资，比依靠复杂金融模型的投行表现更好。当然，在工程和科学前沿，专业模型不可或缺。但日常生活中，常识通常够用且更可靠。'},
+ {q:'第三层：如何辨别"真常识"和"伪常识"（即那些听起来像常识但其实是偏见/谬误的说法）？',
+  a:'这是一个重要的批判性问题。辨别框架：1）可证伪性检验——这个说法能被证明错误吗？"十个光头九个富"怎么证伪？2）来源追溯——它是来自长期经验总结还是某个人的断言？3）逻辑检验——"不吃主食能减肥"在逻辑上说得通吗（短期脱水减重≠长期减脂）？4）反例搜索——有没有明显反例？批评性思维不是拒绝常识，而是对常识保持适当的审视。真正的常识经得起反复检验，伪常识一戳就破。'}
+]},
+{concept:'专业素养',qas:[
+ {q:'第一层：专业和业余的本质区别究竟是什么？难道不是技能水平吗？',
+  a:'技能水平只是表象。本质区别在于三点：1）稳定性——业余选手可能偶尔打出"神仙球"但无法复制，职业选手持续稳定发挥。2）流程化——业余者靠感觉和天赋，职业者靠系统方法论。3）情绪控制——业余被打坏球影响心态，职业不受单次结果干扰。吴军与职业高尔夫教练的对决最能说明：职业选手-3杆稳定发挥，业余+9杆大起大落。专业不是"顶峰更高"，而是"底线更高"。'},
+ {q:'第二层：专业素养的四大支柱中，哪一条最容易被忽视？为什么？',
+  a:'"成体系的知识"最容易被忽视。人们常以为专业人士就是"懂得多"，但关键不是知识点的数量，而是知识之间的系统关联。业余法律爱好者只能处理见过的案例（如特定财产纠纷），专业律师能应用广博知识解决千奇百怪的新问题（如Google遇到的无先例专利纠纷）。零散知识点像一堆砖头，成体系知识才是用砖头建起的房子。这就是为什么"民间科学家"即使看再多科普书，也无法与正规训练的科学家相比。'},
+ {q:'第三层：在快速变化的时代，"专业素养"会不会变成"僵化的包袱"？如何平衡专业与灵活？',
+  a:'这是一个深刻的问题。专业素养的第四大支柱已经给出了答案："持续学习与技术更新"是专业素养的保鲜剂。吴军的斯坦福毕业牙医15年来不断学习新技术（牙根治疗、植牙等），而那些停止进步的医生被淘汰。专业素养不是固守一套方法，而是拥有"持续进化的方法论"。专业者与业余者的另一个关键差异：专业者知道什么时候该打破规则。真正的专业素养=扎实的根基知识+系统的学习方法+开放的更新心态。'}
+]},
+{concept:'渐进改良',qas:[
+ {q:'第一层：为什么说"最好是更好的敌人"？追求完美有什么问题？',
+  a:'问题不在于"追求完美"这个目标本身，而在于它在行动上导致的后果：1）因为无法一步到位而迟迟不行动，导致完全无进展；2）各方都要"最好方案"，拒绝折中，导致连"更好"也无法实现；3）把时间和资源耗尽在一两个"完美"细节上，忽略了整体改进。禁枪法案就是典型：民主党的"全面禁枪"和共和党的"背景调查"——双方坚持各自"最好"，结果什么也没通过。追求完美是好的，但别让它成为行动的敌人。'},
+ {q:'第二层：信息时代与工业时代的方法论差异说明了什么？',
+  a:'工业时代产品缺陷成本高（需要召回、重做），所以追求"一步到位"是理性的。但信息时代产品（软件、互联网服务）可以通过快速迭代低成本修正，使得"先上线再改进"成为更优策略。Google每周更新一次核心服务，特斯拉5年间品质飞速提升。这说明：方法论不是绝对的，而是要适应时代的技术条件。当试错成本降低时，渐进改良的优势就超过了"一步到位"。核心洞察：不是"哪个方法更好"，而是"哪个方法更适合当下的约束条件"。'},
+ {q:'第三层：渐进改良是否意味着放弃远大理想？它和"追求卓越"矛盾吗？',
+  a:'完全不矛盾。渐进改良是"怎么走"的问题，追求卓越解决的是"往哪走"的问题。远大理想是方向，渐进改良是方法。"以追求卓越为目标，以渐进改良为手段"——在固定时间和成本约束下，接受"这次做不到100分，但要比上次好"，持续迭代最终会逼近卓越。吴军的经验：20%收益的"更好"改进×2次（总40%）优于30%收益的"最好"改进（即2+2>3）。这不是放弃，而是更聪明的坚持。'}
+]},
+{concept:'跨界思维',qas:[
+ {q:'第一层：为什么说"跨界是结果而非目的"？刻意追求跨界有什么风险？',
+  a:'因为真正的跨界成功者都不是为了"跨界"而跨界。摩尔斯因通信延迟未能见妻子最后一面，被激发出电报发明的动机——这是问题驱动而非标签驱动。刻意追求跨界的风险：在原领域缺乏专业素养就跨界的，往往是两头落空（新领域无基础，原领域技能丢失）。就像吴军警告的：若因原领域做不好而跨界，结果只会更糟。跨界的前提是在原领域已经证明了自己的专业素养和做事能力。跨界不是逃避，而是进阶。'},
+ {q:'第二层：跨界创新的"高势能向低势能"规律是什么？为什么物理学家容易转生物/金融？',
+  a:'高势能向低势能跨界指：从更难、更具基础性的学科向相对容易、应用性强的学科迁移更容易成功。物理学需要极强的数学工具和抽象思维，这些能力可以直接迁移到生物学（如DNA结构发现者多为物理学家）和金融学（大量诺贝尔经济学奖得主有数学背景）。反过来几乎不可能（生物学家转为顶尖物理学家？极少）。因为高势能学科训练的是"更底层、更抽象的思维能力"，这种能力是通用的。'},
+ {q:'第三层：在人工智能时代，跨界能力的价值是增加了还是减少了？个人应如何培养跨界思维？',
+  a:'AI时代跨界能力的价值大大增加了。原因：1）AI擅长单一领域的重复性工作，而创新恰恰发生在领域交界处；2）AI工具降低了进入新领域的门槛，使得跨界更可行；3）最前沿的突破（如AI+生物医药、AI+材料科学）都在跨界地带。培养跨界思维的方法：1）先在主领域建立扎实的专业素养——这是跨界的"根据地"；2）保持开放心态，主动关注其他领域的发展；3）系统学习新领域知识（而非"看几本书"的皮毛）；4）关注"交界处"的问题——别人解决不了的往往是因为只从一个角度看。'}
+]},
+{concept:'期望值最大化',qas:[
+ {q:'第一层：什么是"收益函数"？为什么说它是系统自动优化的核心？',
+  a:'收益函数是衡量系统输出"好坏"的量化标准。在数学形式中，它是一个将系统状态映射到数值的函数——数值越大表示越"好"。系统的自动优化，就是不断调整参数以使这个函数的值最大化。就像AlphaGo的收益函数是"赢棋概率"——它所有的自我对弈都是在寻找让赢棋概率最大的走法。在社会系统中，收益函数就是"激励机制"——员工的行为会自然朝向让奖金最大化的方向。所以，设计对的人比教导对的人更有效。'},
+ {q:'第二层：为什么说"创始人基因决定公司基因"？收益函数如何影响公司文化？',
+  a:'因为公司早期设定的考核标准（收益函数）会决定所有员工的行为方向，这些行为长期积累就形成了公司文化。Google早期奖励优质单元测试、惩戒代码错误→形成了重视工程质量的文化。Facebook强调产品迭代速度→发展为产品驱动型公司。短视型公司以销售指标为核心KPI→组织行为聚焦短期利益。创始人设定的第一个考核标准，就像给公司植入了"基因"——后续的招聘、晋升、资源分配都围绕这个标准展开，最终固化为文化。所以创始人要极其慎重地设计第一个收益函数。'},
+ {q:'第三层：期望值最大化原理在个人成长中如何应用？',
+  a:'应用这个原理，你可以为自己设计一个"个人成长收益函数"：1）明确你的长期目标（如"三年内成为领域专家"）；2）拆解为可量化的指标（如每年完成2个核心项目、读20本专业书、获得1项认证）；3）每天问自己：今天我做的事情是否在最大化这个"收益函数"？这套方法的关键在于：把抽象的目标转化为具体的、可度量的行动指标，然后让日常行为自然向这些指标靠拢。就像导航系统——你不用时刻思考"我该往哪走"，系统会自动指引你。设计好你的"人生收益函数"，行为就会自动优化。'}
+]}
+];
+
+var CASE_STUDY = {
+title:'纽约犯罪率下降原因分析（1990年代）',
+background:'1990年代纽约市犯罪率显著下降，从1994年开始大幅改善。对此现象有多个自洽的解释，但我们如何运用MKS四维框架（证伪思维、逻辑判断、成本思维、常识判断）来筛选真正的原因？',
+analysis:[
+ {dim:'证伪思维',content:'面对多个看似合理的解释，"堕胎合法化论"称70年代堕胎合法化→非婚生子女减少→犯罪率下降。但：1）美国其他城市堕胎同样合法化但犯罪率未同步下降；2）非婚生子女比例未减少，拉丁裔反而上升；3）堕胎率高峰（1980-1995）与犯罪率下降时间错位。该解释虽自洽但可证伪——通过横向比较和时序分析即可推翻。"摄像头监控论"也被证伪：纽约大规模安装摄像头在2001年"9·11"之后，晚于犯罪率下降起始点（1994年），且芝加哥安装摄像头后治安未改善。'},
+ {dim:'逻辑判断',content:'运用逻辑推理分析因果关系。"朱利安尼铁腕治理论"经得住逻辑检验：1）时间吻合——1994年朱利安尼上任与犯罪率大幅下降同时发生；2）空间一致性——纽约犯罪率全国排名从top3降至第16名；3）机制合理——打击轻微犯罪（强行洗车、涂鸦、妓女工会）形成威慑效应。而其他解释要么时间错位、要么缺乏空间一致性、要么因果机制不清晰。逻辑判断告诉我们：时间+空间+机制三吻合的解释最可信。'},
+ {dim:'成本思维',content:'从成本收益角度看：犯罪分子之所以选择犯罪，是基于"收益>成本"的理性计算。朱利安尼的"破窗效应"策略——严厉打击轻微违法行为（如逃票、涂鸦）——增加了犯罪行为的"被抓成本"和"惩罚成本"。当违法成本显著上升，即使收益不变，理性计算也会导致犯罪率下降。这个解释符合成本思维的底层逻辑：行为受成本收益驱动。而摄像头论之所以不成立，是因为单纯监控不直接增加违法成本——除非有人现场执法。'},
+ {dim:'常识判断',content:'常识告诉我们：1）越严厉的执法→越低的犯罪率——这是最直接的因果关系，不需要复杂理论；2）犯罪率高发地区往往是执法松弛的地区；3）看不见的"抓手"（如堕胎）与看得见的"治理"相比，后者显然更可信。巴菲特式的"常识判断"在这里非常有效：如果你看到一个城市换了市长后犯罪率大幅下降，最直接的常识就是——这位市长的治理有效。复杂解释往往不如简单直接的解释可靠。'}
+],
+conclusion:'通过MKS四维分析，"朱利安尼铁腕治理"是纽约犯罪率下降的最合理解释。证伪思维排除了时间错位的理论；逻辑判断确定了因果关系；成本思维解释了机制；常识判断选择了最直接的归因。四维交叉验证，结论坚实。'
+};
+
+var SIMULATIONS = [
+{title:'场景一：创业公司的战略聚焦',
+ context:'你是一家AI创业公司的CEO，团队20人，融资500万美元。面对三个可能的战略方向：A）开发通用AI平台（大市场但竞争激烈）；B）专注医疗影像AI诊断（细分市场但需求明确）；C）同时推进多个AI应用快速变现（现金流好但资源分散）。',
+ options:[
+  {text:'选择A：开发通用AI平台——先做大再做精，瞄准最大的市场',feedback:'通用AI平台需要大量资金、人才和数据资源，以20人团队和500万美元融资，大概率会被大公司（Google、微软等）碾压。这不是"捡西瓜"而是"被大象踩"。你的商业模式缺乏聚焦，不符合减法思维。',mks:'减法思维：资源有限时应聚焦核心价值点；常识判断：小公司不要和大公司在同一赛道正面竞争。'},
+  {text:'选择B：专注医疗影像AI诊断——聚焦单点突破，建立壁垒',feedback:'优秀！在有限资源下选择最有可能建立壁垒的细分领域。医疗影像AI有明确的需求、付费意愿强、大公司暂时不重点关注。团队可集中所有资源打磨单一产品，符合减法思维和渐进改良的迭代策略。',mks:'减法思维（少做事情做好事情）+ 专业素养（建立领域深度）+ 渐进改良（迭代优化）。'},
+  {text:'选择C：同时推进多个AI应用——快速赚钱，维持现金流',feedback:'多个方向同时推进等于每个方向都投入不足，结果是每个产品都是"半吊子"。这犯了典型的"芝麻思维"——看起来每个方向都有收入，但没有一个能形成核心竞争力。初创公司最忌讳资源分散。',mks:'减法思维的反面——捡芝麻丢西瓜。一万小时定律说明：没有足够聚焦，无法形成有效积累。'}
+ ]
+},
+{title:'场景二：个人职业发展的十字路口',
+ context:'你是一名有5年经验的软件工程师，面临三个选择：A）留在现公司等待晋升（稳定但缓慢）；B）跳槽去一家AI创业公司（高风险高回报）；C）跨界转型做技术管理（脱离一线 coding）。',
+ options:[
+  {text:'选择A：留在现公司等待晋升——追求确定性和稳定性',feedback:'稳定但需警惕"温水煮青蛙"。如果现公司技术栈陈旧、晋升通道狭窄，5年后你的技能可能严重过时。一万小时定律告诉你：有效积累比稳定更重要。如果留下，要确保工作内容有挑战性、能持续学习。',mks:'一万小时定律（有效积累而非简单重复）+ 渐进改良（不一定跳槽但要在现岗位持续进化）。'},
+  {text:'选择B：跳槽去AI创业公司——挑战与成长并存',feedback:'这可能是最优选择——如果创业公司的方向靠谱且团队优秀。AI领域正是风口，早期加入意味着更多责任和更快的成长。但需要运用"成本思维"评估：降薪多少？股票期权的实际价值？创业公司的存活率？跨界到AI需要系统学习吗？',mks:'成本思维（投入产出分析）+ 跨界思维（技术领域的自然延伸）+ 一万小时（在新领域重新积累）。'},
+  {text:'选择C：转型做技术管理——从个人贡献者到团队领导者',feedback:'技术管理是职业发展的自然路径，但需注意：吴军警告"不能因原领域做不好而跨界"。如果你的代码能力尚未达到顶尖水平就急于转型管理，可能两头落空。建议先成为团队中公认的技术骨干，再考虑管理转型。',mks:'跨界思维（跨界是结果而非目的）+ 专业素养（先在一个领域做到极致再扩展）。'}
+ ]
+},
+{title:'场景三：投资决策——面对方兴未艾的新技术',
+ context:'2018年，你有一笔50万元的闲置资金，看到三个投资机会：A）买入比特币（过去一年涨了10倍，人人都在谈论）；B）定投指数基金（年化8-10%，巴菲特推荐）；C）投资自己——报一个系统的AI课程+参加行业会议。',
+ options:[
+  {text:'选择A：买入比特币——追逐热点，期望短期暴富',feedback:'期望值最大化原理告诉你：追逐已经被过度关注的热点，回报的期望值已经被市场消化。而且比特币的极高波动性意味着巨大的下行风险。成本思维揭示：你在赌运气而非在做理性投资。历史上追涨杀跌的散户90%以上亏损。',mks:'期望值最大化（收益函数设计）+ 常识判断（低买高卖而非高买更高卖）+ 逻辑判断（幸存者偏差——只看到暴富的少数）。'},
+  {text:'选择B：定投指数基金——遵循常识，长期稳健增值',feedback:'优秀的决策！巴菲特多次推荐普通投资者定投指数基金。逻辑判断：大量数据证明积极管理的基金长期跑不赢指数。常识判断：股市长期向上（美国45年年均回报7%）。期望值最大化：放弃择时——时间在你这边的确定性远高于猜测市场。',mks:'常识判断（简单规律胜过复杂模型）+ 期望值最大化（长期收益函数最优）+ 渐进改良（累积复利增长）。'},
+  {text:'选择C：投资自己——提升能力，增加未来收入',feedback:'这是长期回报率最高的选择，但没有之一！成本思维：50万投入AI课程和行业学习，可能使你的年薪从30万涨到60万+，而且这是持续性的收入提升，而非一次性资本利得。一万小时：这笔投资帮你加速有效积累。但需要减法思维——要真学而非买课不学。',mks:'成本思维（投资自己的回报率最高）+ 一万小时（加速技能积累）+ 减法思维（聚焦最有价值的投资）。'}
+ ]
+}
+];
+
+var LEARNING_PATH = [
+{stage:1,title:'基础奠基',concepts:['证伪思维','逻辑判断'],desc:'从思维方式的两大根基开始。证伪思维教你区分科学与伪科学，建立批判性思考的基础；逻辑判断教你用推理筛除信息噪音。两者共同构成"看问题的方法"的底层操作系统。',activities:['完成证伪思维和逻辑判断的概念卡片学习','做第1-4道选择题','阅读《硅谷来信》第37、39封相关原文','练习：找3个网络上的"不可证伪"说法并分析']},
+{stage:2,title:'分析工具',concepts:['成本思维','常识判断'],desc:'掌握两种强大的分析工具。成本思维让你透过现象看本质，识别行为背后的真实动机；常识判断让你在复杂信息面前保持清醒，不被花哨理论迷惑。这两者都是"看问题方法"的高级应用。',activities:['学习成本思维和常识判断的卡片','做第5-8道选择题','分析：从成本角度观察一个生活中的销售行为','完成简答题第1、2题']},
+{stage:3,title:'行动实践',concepts:['减法思维','专业素养'],desc:'从"看问题"到"做事"的转变。减法思维教你聚焦——在有限的生命中做出取舍，做少而精的事；专业素养教你如何稳定、系统地输出高水平成果。两者结合，进入"做事方法"的正轨。',activities:['学习减法思维和专业素养的卡片','做第9-12道选择题','梳理你当前的时间分配，用减法思维砍掉3件不必要的事','完成案例分析的学习']},
+{stage:4,title:'成长进阶',concepts:['渐进改良','跨界思维'],desc:'突破瓶颈的方法论。渐进改良教你不要被"完美主义"困住——迭代优于一步到位；跨界思维教你打破领域边界，在交叉地带创造新价值。这一阶段从"做好"迈向"突破"。',activities:['学习渐进改良和跨界思维的卡片','做第13-16道选择题','完成决策模拟3个场景','尝试：在你熟悉的领域找一个跨界创新的机会点']},
+{stage:5,title:'系统掌控',concepts:['期望值最大化','一万小时定律'],desc:'最高层的方法论。期望值最大化教你设计系统——用规则而非说教驱动优化；一万小时定律教你如何有效积累——避免四大误区，用"三板斧"实现精进。掌握这两者，你拥有了持续进化的元能力。',activities:['学习期望值最大化和一万小时的卡片','做第17-20道选择题','完成全部简答题','设计一个个人成长的"收益函数"']}
+];
+
+var BOUNDARY = [
+{title:'卡尔·波普尔与证伪主义',usage:'理解科学哲学基础，区分科学与伪科学。可用于评估任何声称"科学"的理论。'},
+{title:'奥卡姆剃刀原则',usage:'如无必要，勿增实体。在判断多种解释时，最简单的往往最可靠。——与常识判断呼应。'},
+{title:'汉隆剃刀',usage:'能用愚蠢解释的，不要用恶意解释。用于人际关系判断，避免过度归因于他人恶意。'},
+{title:'帕累托法则（二八定律）',usage:'80%的成果来自20%的努力。用于优先级排序，是减法思维的数据支撑。'},
+{title:'邓巴数（150定律）',usage:'人类有效社交上限约150人。用于理解组织管理、社交关系维护中的减法必要性。'},
+{title:'复利思维',usage:'长期稳定增长的力量。用于投资、学习、健康——与渐进改良、一万小时精神相通。'},
+{title:'沉默螺旋理论',usage:'强势观点会压制不同声音，导致"假共识"。用于信息甄别——看到的"主流"未必是真实多数。'},
+{title:'幸存者偏差',usage:'只看到成功者，忽视失败者。用于评估成功学、投资建议——那些失败的案例才是关键。'},
+{title:'破窗效应',usage:'小混乱会引发大混乱。用于理解朱利安尼治理纽约的逻辑，以及日常环境管理。'},
+{title:'路径依赖理论',usage:'初始选择会"锁定"后续发展路径。用于理解为什么早期决策（如公司收益函数、个人习惯）如此重要。'},
+{title:'庞氏骗局的特征识别',usage:'依赖新资金覆盖旧承诺，不可持续。用于识别金融骗局——与逻辑判断结合使用。'},
+{title:'信息论——香农熵',usage:'信息量的度量。用于理解为什么公开的"技术指标"无效（信息已被市场消化）。'},
+{title:'马斯洛需求层次',usage:'从生理到自我实现的需求分层。用于理解行为动机——销售人员为何能突破理性防线（情感需求）。'},
+{title:'囚徒困境与博弈论',usage:'个体理性导致集体非理性。用于理解合作难题、制度设计（设置收益函数破解困境）。'},
+{title:'牛顿冷却定律（社会传播）',usage:'热点话题热度随时间自然衰减。用于判断舆论走向，避免追涨杀跌式决策。'}
+];
+
+/* ===== STATE ===== */
+var state = {
+ learned: JSON.parse(localStorage.getItem('mks_thinking_progress')||'[]'),
+ wrong: JSON.parse(localStorage.getItem('mks_thinking_wrong')||'[]'),
+ stats: JSON.parse(localStorage.getItem('mks_thinking_stats')||'{"quiz":0,"correct":0,"wrong":0,"maxWrong":10}')
+};
+
+function saveState(){
+ localStorage.setItem('mks_thinking_progress',JSON.stringify(state.learned));
+ localStorage.setItem('mks_thinking_wrong',JSON.stringify(state.wrong));
+ localStorage.setItem('mks_thinking_stats',JSON.stringify(state.stats));
+}
+
+function shuffleArray(arr){
+ for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}
+ return arr;
+}
+
+/* ===== TAB SWITCHING ===== */
+var tabBtns=document.querySelectorAll('.tab-btn');
+var tabContents=document.querySelectorAll('.tab-content');
+tabBtns.forEach(function(btn){
+ btn.addEventListener('click',function(){
+  var tabId=this.getAttribute('data-tab');
+  tabBtns.forEach(function(b){b.classList.remove('active');});
+  tabContents.forEach(function(c){c.classList.remove('active');});
+  this.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+ });
+});
+
+/* ===== FLASHCARDS ===== */
+function renderFlashcards(){
+ var c=document.getElementById('flashcardContainer');
+ var html='';
+ CONCEPTS.forEach(function(con,idx){
+  var learned=state.learned.indexOf(con.id)>=0;
+  html+='<div class="flip-card'+(learned?' flipped':'')+'" data-idx="'+idx+'" data-id="'+con.id+'">';
+  html+='<div class="flip-card-inner">';
+  html+='<div class="flip-card-front" onclick="handleFlip('+idx+')">';
+  html+='<div class="concept-icon">'+con.icon+'</div>';
+  html+='<div style="font-size:1.2rem;font-weight:600;color:#c0392b;margin:8px 0">'+con.name+'</div>';
+  if(con.star)html+='<span class="badge badge-star">MKS核心</span>';
+  html+='<div class="concept-label">点击翻转查看详情</div>';
+  html+='</div>';
+  html+='<div class="flip-card-back">';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+  html+='<h4>'+con.icon+' '+con.name+'</h4>';
+  html+='<button class="badge" onclick="event.stopPropagation();toggleLearned('+idx+')" style="cursor:pointer;background:'+(learned?'#27ae60':'#c0392b')+'">'+(learned?'已掌握 ✓':'标记掌握')+'</button>';
+  html+='</div>';
+  html+='<p><span class="label">定义：</span>'+con.def+'</p>';
+  html+='<p><span class="label">类比：</span>'+con.analogy+'</p>';
+  html+='<p><span class="label">案例：</span>'+con.example+'</p>';
+  html+='<p><span class="label">反例/边界：</span>'+con.counter+'</p>';
+  html+='</div></div></div>';
+ });
+ c.innerHTML=html;
+ updateProgress();
+}
+function handleFlip(idx){
+ var card=document.querySelectorAll('.flip-card')[idx];
+ if(card)card.classList.toggle('flipped');
+}
+function toggleLearned(idx){
+ var con=CONCEPTS[idx];
+ var pos=state.learned.indexOf(con.id);
+ if(pos>=0)state.learned.splice(pos,1);
+ else state.learned.push(con.id);
+ saveState();
+ renderFlashcards();
+}
+function updateProgress(){
+ var pct=Math.round(state.learned.length/CONCEPTS.length*100);
+ document.getElementById('learnedCount').textContent=state.learned.length;
+ document.getElementById('progressPercent').textContent=pct+'%';
+ document.getElementById('progressFill').style.width=pct+'%';
+}
+document.getElementById('resetLearned').addEventListener('click',function(){
+ if(confirm('确定重置所有学习进度？')){
+  state.learned=[];
+  saveState();
+  renderFlashcards();
+ }
+});
+
+/* ===== MCQ ===== */
+var answeredCount=0;
+var quizStarted=false;
+
+function renderMCQs(){
+ var c=document.getElementById('questionContainer');
+ var html='';
+ MCQS.forEach(function(q,idx){
+  var wr=state.wrong.indexOf(idx)>=0;
+  html+='<div class="card" id="qcard-'+idx+'">';
+  html+='<h3>第'+(idx+1)+'题 <span style="font-size:.8rem;color:#8a7a6a">('+q.q.substring(0,10)+'...)</span></h3>';
+  html+='<p style="margin-bottom:8px">'+q.q+'</p>';
+  q.opts.forEach(function(o,oi){
+   html+='<button class="quiz-option" id="q'+idx+'o'+oi+'" onclick="selectMCQ('+idx+','+oi+')" disabled>'+
+    String.fromCharCode(65+oi)+'. '+o+'</button>';
+  });
+  html+='<div id="qexp-'+idx+'" style="display:none" class="explanation">'+q.exp+'</div>';
+  html+='</div>';
+ });
+ c.innerHTML=html;
+ document.getElementById('startQuiz').textContent='开始计时';
+ quizStarted=false;
+}
+
+function startTimer(){
+ if(quizStarted)return;
+ quizStarted=true;
+ document.getElementById('startQuiz').textContent='计时中...';
+ document.getElementById('startQuiz').disabled=true;
+ var tEl=document.getElementById('timerDisplay');
+ var fill=document.getElementById('timerFill');
+ var sec=0;
+ fill.style.width='100%';
+ var interval=setInterval(function(){
+  sec++;
+  var m=Math.floor(sec/60);
+  var s=sec%60;
+  tEl.textContent='⏱ '+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  var remaining=Math.max(0,1-sec/900);
+  fill.style.width=(remaining*100)+'%';
+  if(sec>=900){clearInterval(interval);fill.style.width='0%';}
+ },1000);
+ window.quizTimer=interval;
+ window.quizSeconds=function(){return sec;};
+}
+
+document.getElementById('startQuiz').addEventListener('click',function(){
+ var allOptions=document.querySelectorAll('#questionContainer .quiz-option');
+ allOptions.forEach(function(o){o.disabled=false;});
+ startTimer();
+});
+
+function selectMCQ(qidx,oi){
+ var btns=document.querySelectorAll('#qcard-'+qidx+' .quiz-option');
+ if(btns[0].disabled)return;
+ btns.forEach(function(b){b.disabled=true;});
+ var correct=MCQS[qidx].ans;
+ btns.forEach(function(b,bi){
+  if(bi===correct)b.classList.add('correct');
+  if(bi===oi && bi!==correct)b.classList.add('wrong');
+  if(bi===oi)b.classList.add('selected');
+ });
+ document.getElementById('qexp-'+qidx).style.display='block';
+ answeredCount++;
+ state.stats.quiz++;
+ if(oi!==correct){
+  state.stats.wrong++;
+  if(state.wrong.indexOf(qidx)<0){
+   state.wrong.push(qidx);
+   if(state.wrong.length>state.stats.maxWrong)state.stats.maxWrong=state.wrong.length;
+  }
+ }else{
+  state.stats.correct++;
+ }
+ saveState();
+ checkQuizComplete();
+}
+
+function checkQuizComplete(){
+ if(answeredCount>=MCQS.length){
+  var total=state.stats.correct+state.stats.wrong;
+  var pct=total>0?Math.round(state.stats.correct/total*100):0;
+  var resultEl=document.getElementById('quizResult');
+  var wrongStats=document.getElementById('wrongStats');
+  resultEl.style.display='block';
+  resultEl.innerHTML='<div class="score-display"><div class="num">'+state.stats.correct+'/'+total+'</div><div>正确率 '+pct+'%</div><div style="font-size:.8rem;color:#8a7a6a;margin-top:4px">错题数: '+state.stats.wrong+'</div></div>';
+  if(state.stats.wrong>0){
+   wrongStats.style.display='grid';
+   document.getElementById('wrongCount').textContent=state.stats.wrong;
+  }
+  if(window.quizTimer)clearInterval(window.quizTimer);
+ }
+}
+
+document.getElementById('resetQuiz').addEventListener('click',function(){
+ if(confirm('确定重置所有答题状态？重新答题前将清除之前的记录。')){
+  answeredCount=0;
+  state.stats.quiz=0;state.stats.correct=0;state.stats.wrong=0;
+  state.wrong=[];
+  saveState();
+  renderMCQs();
+  document.getElementById('quizResult').style.display='none';
+  document.getElementById('wrongStats').style.display='none';
+  document.getElementById('startQuiz').disabled=false;
+  document.getElementById('startQuiz').textContent='开始计时';
+  document.getElementById('timerDisplay').textContent='';
+  if(window.quizTimer)clearInterval(window.quizTimer);
+  quizStarted=false;
+ }
+});
+
+document.getElementById('reviewWrong').addEventListener('click',function(){
+ var c=document.getElementById('questionContainer');
+ var html='<h3 style="margin:12px 0;color:#c0392b">错题复习</h3>';
+ state.wrong.forEach(function(idx){
+  var q=MCQS[idx];
+  html+='<div class="wrong-review-item"><strong>第'+(idx+1)+'题：</strong>'+q.q+'<br><span style="color:#27ae60">正确答案：'+String.fromCharCode(65+q.ans)+'. '+q.opts[q.ans]+'</span><br><span style="font-size:.8rem;color:#666">'+q.exp+'</span></div>';
+ });
+ if(state.wrong.length===0)html+='<p style="color:#27ae60">暂无错题！</p>';
+ c.innerHTML+=html;
+});
+
+/* ===== SHORT ANSWER ===== */
+function renderShortAnswer(){
+ var c=document.getElementById('shortAnswerContainer');
+ var html='';
+ SHORT_ANSWERS.forEach(function(q,idx){
+  html+='<div class="card">';
+  html+='<h3>简答题 '+(idx+1)+'</h3>';
+  html+='<p style="margin-bottom:8px">'+q.q+'</p>';
+  html+='<textarea class="short-answer-box" placeholder="在此写下你的思考要点..." id="sa-'+idx+'"></textarea>';
+  html+='<button class="btn btn-outline" onclick="revealSA('+idx+')" style="font-size:.8rem;padding:6px 12px">查看参考答案</button>';
+  html+='<div id="sa-ans-'+idx+'" style="display:none;margin-top:10px;background:#fdf6ec;border-left:4px solid #27ae60;padding:12px;border-radius:0 8px 8px 0">';
+  html+='<p style="font-weight:600;color:#27ae60;margin-bottom:4px">模型答案：</p>';
+  html+='<p style="font-size:.85rem;margin-bottom:6px">'+q.model+'</p>';
+  html+='<p style="font-weight:600;color:#c0392b;margin-bottom:2px">评分标准：</p>';
+  html+='<p style="font-size:.8rem;color:#666">'+q.rubric+'</p>';
+  html+='</div></div>';
+ });
+ c.innerHTML=html;
+}
+function revealSA(idx){
+ var el=document.getElementById('sa-ans-'+idx);
+ el.style.display=el.style.display==='none'?'block':'none';
+}
+
+/* ===== SVG DIAGRAM ===== */
+function renderSVG(){
+ var c=document.getElementById('svgContainer');
+ var svg='<svg viewBox="0 0 800 580" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif">';
+ svg+='<defs><marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>';
+ svg+='<marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2980b9"/></marker>';
+ svg+='<marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#e67e22"/></marker>';
+ svg+='<marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#27ae60"/></marker>';
+ svg+='<marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#8e44ad"/></marker>';
+ svg+='</defs>';
+
+ svg+='<rect x="10" y="10" width="780" height="560" rx="12" fill="#fdf6ec" stroke="#e8d5c4" stroke-width="1"/>';
+
+ // Central convergence
+ svg+='<ellipse cx="400" cy="310" rx="95" ry="40" fill="#8e44ad" opacity=".15" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4,3"/>';
+ svg+='<text x="400" y="303" text-anchor="middle" fill="#8e44ad" font-weight="700" font-size="14">认知操作系统</text>';
+ svg+='<text x="400" y="322" text-anchor="middle" fill="#8e44ad" font-weight="600" font-size="12">(思维 × 行为)</text>';
+
+ // Destiny arrow
+ svg+='<line x1="400" y1="350" x2="400" y2="430" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowRed)"/>';
+ svg+='<ellipse cx="400" cy="450" rx="45" ry="22" fill="#c0392b" opacity=".08"/>';
+ svg+='<text x="400" y="455" text-anchor="middle" fill="#c0392b" font-weight="700" font-size="16">命 运</text>';
+
+ // Left column: 看问题方法
+ svg+='<rect x="30" y="60" width="170" height="36" rx="8" fill="#2980b9" opacity=".12"/>';
+ svg+='<text x="115" y="84" text-anchor="middle" fill="#2980b9" font-weight="700" font-size="14">看问题的方法</text>';
+
+ var leftConcepts=[
+  {x:45,y:130,label:'证伪思维'},
+  {x:45,y:180,label:'逻辑判断'},
+  {x:45,y:230,label:'成本思维'},
+  {x:45,y:280,label:'常识判断'},
+  {x:45,y:330,label:'期望值最大化'}
+ ];
+ leftConcepts.forEach(function(con){
+  svg+='<rect x="'+con.x+'" y="'+con.y+'" width="140" height="32" rx="6" fill="#2980b9" opacity=".08" stroke="#2980b9" stroke-width="1"/>';
+  svg+='<text x="'+con.x+'" y="'+con.y+'" fill="#2980b9" font-weight="600" font-size="11" transform="translate(70,21)" text-anchor="middle">'+con.label+'</text>';
+  svg+='<line x1="'+con.x+'" y1="'+(con.y+16)+'" x2="305" y2="310" stroke="#2980b9" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrowBlue)" opacity=".5"/>';
+ });
+
+ // Right column: 做事方法
+ svg+='<rect x="600" y="60" width="170" height="36" rx="8" fill="#e67e22" opacity=".12"/>';
+ svg+='<text x="685" y="84" text-anchor="middle" fill="#e67e22" font-weight="700" font-size="14">做事的方法</text>';
+
+ var rightConcepts=[
+  {x:615,y:130,label:'减法思维'},
+  {x:615,y:180,label:'跨界思维'},
+  {x:615,y:230,label:'专业素养'},
+  {x:615,y:280,label:'渐进改良'},
+  {x:615,y:330,label:'一万小时定律'}
+ ];
+ rightConcepts.forEach(function(con){
+  svg+='<rect x="'+con.x+'" y="'+con.y+'" width="140" height="32" rx="6" fill="#e67e22" opacity=".08" stroke="#e67e22" stroke-width="1"/>';
+  svg+='<text x="'+con.x+'" y="'+con.y+'" fill="#e67e22" font-weight="600" font-size="11" transform="translate(70,21)" text-anchor="middle">'+con.label+'</text>';
+  svg+='<line x1="'+con.x+'" y1="'+(con.y+16)+'" x2="495" y2="310" stroke="#e67e22" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrowOrange)" opacity=".5"/>';
+ });
+
+ // Stars on core concepts
+ svg+='<text x="40" y="375" fill="#c0392b" font-size="10" opacity=".6">★ = MKS 核心概念</text>';
+ svg+='<text x="200" y="375" fill="#c0392b" font-size="10" opacity=".6">四个核心贯穿始终</text>';
+
+ // Top dimension labels
+ svg+='<text x="400" y="50" text-anchor="middle" fill="#c0392b" font-weight="700" font-size="14">认知维度 × 行为维度 → 认知操作系统 → 命运</text>';
+
+ // Central × symbol
+ svg+='<text x="400" y="270" text-anchor="middle" fill="#c0392b" font-weight="700" font-size="22" opacity=".6">×</text>';
+
+ // Bottom annotation: 大富靠命小富靠运
+ svg+='<rect x="250" y="490" width="300" height="30" rx="6" fill="#fce4dc" opacity=".7"/>';
+ svg+='<text x="400" y="510" text-anchor="middle" fill="#c0392b" font-weight="600" font-size="12">"大富靠命，小富靠运" —— 吴军</text>';
+
+ svg+='<text x="400" y="545" text-anchor="middle" fill="#8a7a6a" font-size="10">思维方法论 | 吴军·硅谷来信 第3模块</text>';
+
+ svg+='</svg>';
+ c.innerHTML=svg;
+}
+
+/* ===== MIND MAP ===== */
+function renderMindMap(){
+ var c=document.getElementById('mindMapContainer');
+ var data={
+  label:'思维方法论',
+  children:[
+   {label:'看问题的方法',cls:'blue',children:[
+    {label:'证伪思维 ★',cls:'core',children:[
+     {label:'可证伪性是科学标准'},
+     {label:'区分科学与伪科学'},
+     {label:'波普尔科学哲学'}
+    ]},
+    {label:'逻辑判断 ★',cls:'core',children:[
+     {label:'识别论证中的矛盾'},
+     {label:'相关性vs因果性'},
+     {label:'指数增长谬误识别'}
+    ]},
+    {label:'成本思维',cls:'',children:[
+     {label:'投入-产出分析'},
+     {label:'动机合理性判断'},
+     {label:'时间成本/获客成本/犯错成本'}
+    ]},
+    {label:'常识判断 ★',cls:'core',children:[
+     {label:'简单规律胜复杂模型'},
+     {label:'巴菲特式投资智慧'},
+     {label:'长期经验证伪的可靠性'}
+    ]},
+    {label:'期望值最大化',cls:'',children:[
+     {label:'收益函数驱动行为'},
+     {label:'激励机制设计'},
+     {label:'系统自动优化原理'}
+    ]}
+   ]},
+   {label:'做事的方法',cls:'orange',children:[
+    {label:'减法思维 ★',cls:'core',children:[
+     {label:'庄子"有涯逐无涯"'},
+     {label:'少做事情做好事情'},
+     {label:'捡西瓜而非捡芝麻'}
+    ]},
+    {label:'跨界思维',cls:'',children:[
+     {label:'跨界是结果而非目的'},
+     {label:'高势能向低势能'},
+     {label:'打破思维定式'}
+    ]},
+    {label:'专业素养',cls:'',children:[
+     {label:'稳定性与流程化'},
+     {label:'成体系知识'},
+     {label:'持续学习与更新'}
+    ]},
+    {label:'渐进改良',cls:'',children:[
+     {label:'"最好是更好的敌人"'},
+     {label:'迭代优于一步到位'},
+     {label:'信息时代vs工业时代'}
+    ]},
+    {label:'一万小时定律',cls:'',children:[
+     {label:'有效积累非简单重复'},
+     {label:'三板斧破四困境'},
+     {label:'愿景-目标-道路'}
+    ]}
+   ]}
+  ]
+ };
+ function renderNode(node,depth){
+  if(depth>3)return '';
+  var h='<div class="mind-map-node" style="margin:'+(depth>0?'4px 0':'')+'">';
+  if(node.children && node.children.length>0){
+   h+='<span class="toggle" onclick="toggleMindMapChildren(this)">▼</span>';
+  }else{
+   h+='<span style="display:inline-block;width:20px"></span>';
+  }
+  var cls='node-label';
+  if(node.cls==='core')cls+='' //handled by star
+  var style='';
+  if(depth===0)style='background:#c0392b;color:#fff;font-weight:700;font-size:1rem;padding:6px 14px';
+  else if(depth===1)style='background:'+(node.cls==='blue'?'#2980b9':'#e67e22')+';color:#fff;font-weight:600;font-size:.9rem';
+  else if(depth===2)style='background:#fce4dc;color:#3d2f2f;font-size:.85rem';
+  else style='background:#fdf6ec;color:#666;font-size:.8rem';
+  h+='<span class="'+cls+'" style="'+style+'">'+node.label+'</span>';
+  if(node.children && node.children.length>0){
+   h+='<div class="mind-map-children">';
+   node.children.forEach(function(ch){h+=renderNode(ch,depth+1);});
+   h+='</div>';
+  }
+  h+='</div>';
+  return h;
+ }
+ var html=renderNode(data,0);
+ c.innerHTML=html;
+}
+function toggleMindMapChildren(el){
+ var children=el.parentElement.querySelector('.mind-map-children');
+ if(children){
+  children.classList.toggle('collapsed');
+  el.textContent=children.classList.contains('collapsed')?'▶':'▼';
+ }
+}
+
+/* ===== SOCRATIC ===== */
+function renderSocratic(){
+ var c=document.getElementById('socraticContainer');
+ var html='';
+ SOCRATIC.forEach(function(s,si){
+  html+='<div class="card"><h3 style="display:flex;align-items:center;gap:8px">';
+  var con=CONCEPTS.find(function(x){return x.name===s.concept;});
+  html+=con?con.icon:'';
+  html+=s.concept+'</h3>';
+  s.qas.forEach(function(qa,qi){
+   html+='<div class="socratic-question">';
+   html+='<div class="q" onclick="toggleSocratic(this)">'+qa.q+'<span style="font-size:.8rem;color:#c0392b">▼</span></div>';
+   html+='<div class="a hidden">'+qa.a+'</div>';
+   html+='</div>';
+  });
+  html+='</div>';
+ });
+ c.innerHTML=html;
+}
+function toggleSocratic(el){
+ var a=el.nextElementSibling;
+ if(a)a.classList.toggle('hidden');
+}
+
+/* ===== CASE STUDY ===== */
+function renderCaseStudy(){
+ var c=document.getElementById('caseStudyContainer');
+ var cs=CASE_STUDY;
+ var html='<div class="card"><h3>📋 '+cs.title+'</h3><p style="margin-bottom:12px;font-size:.9rem">'+cs.background+'</p>';
+ html+='<div class="mks-core" style="padding:8px 12px;background:#fdf6ec;border-radius:0 8px 8px 0"><strong>MKS 四维分析框架：</strong></div>';
+ cs.analysis.forEach(function(a){
+  html+='<div style="margin:10px 0;padding:12px;background:#fffaf2;border:1px solid #e8d5c4;border-radius:8px">';
+  html+='<strong style="color:#c0392b">🔍 '+a.dim+'</strong>';
+  html+='<p style="margin-top:6px;font-size:.88rem">'+a.content+'</p></div>';
+ });
+ html+='<div style="margin-top:12px;padding:14px;background:#d4edda;border:1px solid #27ae60;border-radius:8px">';
+ html+='<strong style="color:#27ae60">结论：</strong><span style="font-size:.88rem">'+cs.conclusion+'</span></div></div>';
+ c.innerHTML=html;
+}
+
+/* ===== SIMULATIONS ===== */
+function renderSimulations(){
+ var c=document.getElementById('simulationContainer');
+ var html='';
+ SIMULATIONS.forEach(function(s,si){
+  html+='<div class="card" id="sim-'+si+'">';
+  html+='<h3>'+s.title+'</h3>';
+  html+='<p style="margin-bottom:10px;font-size:.9rem">'+s.context+'</p>';
+  s.options.forEach(function(o,oi){
+   html+='<button class="simulation-option" id="sim'+si+'opt'+oi+'" onclick="selectSim('+si+','+oi+')">';
+   html+=String.fromCharCode(65+oi)+'. '+o.text+'</button>';
+  });
+  html+='<div id="sim-fb-'+si+'" style="display:none"></div>';
+  html+='</div>';
+ });
+ c.innerHTML=html;
+}
+function selectSim(si,oi){
+ var sim=SIMULATIONS[si];
+ var opt=sim.options[oi];
+ var btns=document.querySelectorAll('#sim-'+si+' .simulation-option');
+ btns.forEach(function(b,bi){
+  b.disabled=true;
+  if(bi===oi)b.classList.add('selected');
+ });
+ var fb=document.getElementById('sim-fb-'+si);
+ fb.style.display='block';
+ fb.innerHTML='<div style="margin-top:10px;padding:12px;background:#fdf6ec;border-radius:8px;border-left:4px solid '+
+  (oi===1?'#27ae60':'#c0392b')+'">'+
+  '<p><strong>你的选择：</strong>'+String.fromCharCode(65+oi)+'. '+opt.text+'</p>'+
+  '<p style="margin-top:6px"><strong>反馈：</strong>'+opt.feedback+'</p>'+
+  '<p style="margin-top:6px;color:#c0392b;font-size:.85rem"><strong>MKS分析：</strong>'+opt.mks+'</p></div>';
+}
+
+/* ===== LEARNING PATH ===== */
+function renderLearningPath(){
+ var c=document.getElementById('learningPathContainer');
+ var html='';
+ LEARNING_PATH.forEach(function(stage){
+  html+='<div class="stage-card">';
+  html+='<h4><span class="stage-num">'+stage.stage+'</span>'+stage.title+'</h4>';
+  html+='<div style="margin:6px 0;display:flex;flex-wrap:wrap;gap:4px">';
+  stage.concepts.forEach(function(cn){
+   var icon='';
+   CONCEPTS.forEach(function(con){
+    if(con.name===cn)icon=con.icon;
+   });
+   html+='<span class="badge" style="background:#8a7a6a">'+icon+' '+cn+'</span>';
+  });
+  html+='</div>';
+  html+='<p style="font-size:.88rem;margin:6px 0">'+stage.desc+'</p>';
+  html+='<div style="font-size:.83rem;color:#6b5b4b"><strong>学习活动：</strong><ul>';
+  stage.activities.forEach(function(a){
+   html+='<li>'+a+'</li>';
+  });
+  html+='</ul></div></div>';
+ });
+ c.innerHTML=html;
+}
+
+/* ===== BOUNDARY ===== */
+function renderBoundary(){
+ var c=document.getElementById('boundaryContainer');
+ var html='';
+ BOUNDARY.forEach(function(b){
+  html+='<div class="boundary-item"><h5>'+b.title+'</h5><p style="font-size:.8rem;color:#666">'+b.usage+'</p></div>';
+ });
+ c.innerHTML=html;
+}
+
+/* ===== INIT ===== */
+renderFlashcards();
+renderMCQs();
+renderShortAnswer();
+renderSVG();
+renderMindMap();
+renderSocratic();
+renderCaseStudy();
+renderSimulations();
+renderLearningPath();
+renderBoundary();
+
+/* Expose functions globally */
+window.handleFlip=handleFlip;
+window.toggleLearned=toggleLearned;
+window.selectMCQ=selectMCQ;
+window.revealSA=revealSA;
+window.toggleMindMapChildren=toggleMindMapChildren;
+window.toggleSocratic=toggleSocratic;
+window.selectSim=selectSim;
+
+})();
+</script>
+</body>
+</html>

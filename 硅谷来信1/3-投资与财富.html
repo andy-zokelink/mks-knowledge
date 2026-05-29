@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最小知识集 · 投资与财富——理解财富的底层逻辑</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent2: #d4a76a;
+  --text: #3d2f2f;
+  --text2: #6b5a5a;
+  --border: #e8d5c0;
+  --success: #2d7d46;
+  --warn: #b8860b;
+  --mks: #c0392b;
+  --shadow: 0 2px 12px rgba(61,47,47,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Serif SC","Source Han Serif SC",Georgia,"Songti SC",serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,2vw,24px)}
+header{text-align:center;padding:clamp(24px,4vw,48px) 0 clamp(16px,3vw,32px)}
+header h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);margin-bottom:8px}
+header .sub{font-size:clamp(0.85rem,1.5vw,1rem);color:var(--text2)}
+header .home-link{display:inline-block;margin-top:10px;font-size:0.85rem;color:var(--accent2);text-decoration:none;border:1px solid var(--accent2);padding:4px 14px;border-radius:20px;transition:all .2s}
+header .home-link:hover{background:var(--accent2);color:#fff}
+
+/* Tabs */
+.tab-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:8px 0;margin-bottom:20px}
+.tab-nav button{flex:1;min-width:70px;padding:8px 6px;font-size:clamp(0.7rem,1.2vw,0.82rem);border:none;background:transparent;color:var(--text2);cursor:pointer;border-radius:6px 6px 0 0;transition:all .2s;font-family:inherit;white-space:nowrap}
+.tab-nav button:hover{color:var(--accent);background:rgba(192,57,43,0.05)}
+.tab-nav button.active{color:var(--accent);font-weight:700;border-bottom:3px solid var(--accent);background:rgba(192,57,43,0.06)}
+
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(14px,2vw,24px);margin-bottom:16px;box-shadow:var(--shadow)}
+.card h2{font-size:clamp(1.1rem,2vw,1.35rem);color:var(--accent);margin-bottom:10px;border-left:4px solid var(--accent);padding-left:12px}
+.card h3{font-size:clamp(0.95rem,1.6vw,1.1rem);color:var(--text);margin:12px 0 6px}
+.card p,.card li{font-size:clamp(0.85rem,1.4vw,0.95rem);color:var(--text2)}
+
+.mks-badge{display:inline-block;background:var(--accent);color:#fff;font-size:0.75rem;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+
+/* Concept Grid */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:16px 0}
+.concept-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.concept-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(61,47,47,0.12)}
+.concept-card .icon{font-size:2rem;margin-bottom:6px}
+.concept-card .name{font-weight:700;color:var(--accent);font-size:1rem}
+.concept-card .brief{font-size:0.8rem;color:var(--text2);margin-top:4px}
+
+.mks-core{background:linear-gradient(135deg,#fff5f0,#fffaf2);border:2px solid var(--accent)}
+.mks-core .name{font-size:1.05rem}
+
+/* Progress */
+.progress-wrap{margin:12px 0}
+.progress-wrap .label{display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text2);margin-bottom:4px}
+.progress-bar{height:10px;background:#e8d5c0;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:5px;transition:width .5s}
+
+/* SVG Map */
+.svg-wrap{overflow-x:auto;margin:16px 0;text-align:center}
+.svg-wrap svg{max-width:100%;height:auto}
+
+/* Boundary Table */
+.boundary-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0}
+.boundary-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+.boundary-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:rgba(212,167,106,0.08)}
+
+/* Flip Cards */
+.flip-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto}
+.flip-card{position:relative;width:100%;height:320px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-card.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-shadow:var(--shadow)}
+.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700;text-align:center}
+.flip-back{background:var(--card);border:2px solid var(--accent);transform:rotateY(180deg);text-align:left;justify-content:flex-start;overflow-y:auto;font-size:0.9rem;line-height:1.6}
+.flip-back h4{color:var(--accent);margin:6px 0 2px;font-size:0.95rem}
+.flip-back .tag{display:inline-block;font-size:0.7rem;padding:1px 8px;border-radius:10px;margin:2px 2px;color:#fff}
+.tag-def{background:#2d7d46}.tag-analogy{background:#b8860b}.tag-example{background:#6b5a5a}.tag-counter{background:var(--accent)}
+
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav button{padding:8px 18px;border:1px solid var(--border);background:var(--card);border-radius:20px;cursor:pointer;font-size:0.9rem;color:var(--text);transition:all .2s}
+.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.flip-nav .counter{font-size:0.9rem;color:var(--text2)}
+.flip-nav .learned-btn{background:var(--success);color:#fff;border-color:var(--success)}
+.flip-nav .learned-btn.learned{background:var(--card);color:var(--success)}
+
+/* Quiz */
+.quiz-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:14px 0;box-shadow:var(--shadow)}
+.quiz-card .q-num{font-size:0.85rem;color:var(--accent2);margin-bottom:6px}
+.quiz-card .q-text{font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+.quiz-card .option{display:block;width:100%;text-align:left;padding:10px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;font-size:0.9rem;transition:all .15s;color:var(--text)}
+.quiz-card .option:hover{border-color:var(--accent2);background:#fff8f0}
+.quiz-card .option.correct{border-color:var(--success);background:#e8f5e9;color:var(--success);font-weight:700}
+.quiz-card .option.wrong{border-color:var(--accent);background:#fde8e8;color:var(--accent)}
+.quiz-card .option:disabled{cursor:default}
+.quiz-card .feedback{font-size:0.85rem;margin-top:8px;padding:8px 12px;border-radius:8px;display:none}
+.quiz-card .feedback.show{display:block}
+.quiz-card .feedback.correct-msg{background:#e8f5e9;color:var(--success)}
+.quiz-card .feedback.wrong-msg{background:#fde8e8;color:var(--accent)}
+.quiz-card .short-answer{width:100%;min-height:80px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;background:var(--card)}
+.quiz-card .show-answer{font-size:0.85rem;color:var(--accent);cursor:pointer;margin-top:6px;text-decoration:underline}
+
+/* Exam */
+.exam-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.exam-timer{font-size:1.3rem;font-weight:700;color:var(--accent)}
+.exam-timer.warning{animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:0.5}}
+.exam-submit{padding:12px 32px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;transition:all .2s}
+.exam-submit:hover{background:#a93226}
+
+/* Stats */
+.stat-row{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0}
+.stat-box{flex:1;min-width:120px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.stat-box .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-box .tag{font-size:0.8rem;color:var(--text2)}
+
+/* Mind Map Tree */
+.tree{font-size:0.9rem}
+.tree-node{margin:2px 0}
+.tree-toggle{cursor:pointer;color:var(--accent);font-weight:700;font-size:1rem;margin-right:4px;user-select:none;transition:transform .2s;display:inline-block}
+.tree-toggle.open{transform:rotate(90deg)}
+.tree-children{display:none;margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-children.open{display:block}
+.tree-leaf{color:var(--text2);padding:2px 0}
+
+/* Socratic */
+.socratic-item{margin:10px 0}
+.socratic-q{background:var(--card);border:1px solid var(--border);padding:12px 16px;border-radius:8px;cursor:pointer;font-weight:700;color:var(--accent);transition:all .2s;font-size:0.95rem}
+.socratic-q:hover{background:#fff8f0}
+.socratic-a{display:none;padding:10px 16px;font-size:0.9rem;color:var(--text2);background:#fdf8f2;border-radius:0 0 8px 8px;margin-top:-4px;border:1px solid var(--border);border-top:none}
+.socratic-a.open{display:block}
+
+/* Decision */
+.decision-round{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:14px 0;box-shadow:var(--shadow)}
+.decision-round h3{color:var(--accent);margin-bottom:8px}
+.decision-round .scenario{font-size:0.95rem;color:var(--text);margin-bottom:12px;line-height:1.7}
+.decision-round .choice-btn{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:1px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;font-size:0.9rem;transition:all .15s}
+.decision-round .choice-btn:hover{border-color:var(--accent2);background:#fff8f0}
+.decision-round .result-box{display:none;padding:14px;border-radius:8px;margin-top:10px;font-size:0.9rem}
+.decision-round .result-box.show{display:block}
+
+/* Btn */
+.btn{padding:8px 20px;border:1px solid var(--border);background:var(--card);border-radius:20px;cursor:pointer;font-size:0.9rem;color:var(--text);transition:all .2s;font-family:inherit}
+.btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-accent:hover{background:#a93226}
+
+/* Responsive */
+@media(max-width:600px){
+  .concept-grid{grid-template-columns:repeat(2,1fr)}
+  .flip-card{height:360px}
+  .tab-nav button{font-size:0.7rem;padding:6px 4px}
+}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;font-size:0.8rem;color:var(--text2);margin-top:8px}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .line{display:inline-block;width:20px;height:3px;border-radius:2px}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 24px;border-radius:20px;font-size:0.85rem;z-index:999;opacity:0;transition:opacity .3s}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>投资与财富 · 最小知识集</h1>
+  <p class="sub">吴军·硅谷来信第一季 —— 从巴菲特午餐到卡尼曼，投资不仅是赚钱更是思维方式</p>
+  <p class="sub" style="font-size:0.8rem;margin-top:4px">理解财富的底层逻辑 · 42篇笔记提炼</p>
+  <a href="index.html" class="home-link" title="返回知识主板">← 返回知识主板</a>
+</header>
+
+<nav class="tab-nav" id="tabNav"></nav>
+
+<!-- TAB 1: Dashboard -->
+<section class="tab-content active" id="tab1">
+  <div class="card">
+    <h2>核心目标</h2>
+    <p style="font-size:1.05rem;color:var(--text)">理解金钱与投资的底层规律，识别认知偏差，建立长期稳定的财富增长框架——投资不是赌运气，而是用理性驾驭人性。</p>
+  </div>
+
+  <div class="card">
+    <h2>10个核心概念</h2>
+    <div class="concept-grid" id="conceptGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>★ 最小知识集核心（骨架中的骨架）</h2>
+    <div class="concept-grid" id="mksGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>学习进度</h2>
+    <div class="progress-wrap"><div class="label"><span>概念掌握</span><span id="conceptPct">0%</span></div><div class="progress-bar"><div class="progress-fill" id="conceptBar" style="width:0%"></div></div></div>
+    <div class="progress-wrap"><div class="label"><span>题库完成</span><span id="quizPct">0%</span></div><div class="progress-bar"><div class="progress-fill" id="quizBar" style="width:0%"></div></div></div>
+    <div class="progress-wrap"><div class="label"><span>总体进度</span><span id="totalPct">0%</span></div><div class="progress-bar"><div class="progress-fill" id="totalBar" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="card">
+    <h2>概念关系图</h2>
+    <div class="svg-wrap" id="svgMap"></div>
+    <div class="legend">
+      <span><span class="line" style="background:#c0392b"></span> 对立/张力</span>
+      <span><span class="line" style="background:#2d7d46"></span> 支撑/推导</span>
+      <span><span class="line" style="background:#b8860b"></span> 应用/实践</span>
+      <span><span class="line" style="background:#6b5a5a;border-style:dashed;height:0;border-top:2px dashed #6b5a5a"></span> 关联/影响</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>边界知识（15条）</h2>
+    <table class="boundary-table"><thead><tr><th>知识点</th><th>使用场景 / 只需知道</th></tr></thead><tbody id="boundaryBody"></tbody></table>
+  </div>
+
+  <div class="card">
+    <h2>推荐学习路径（5阶段）</h2>
+    <ol style="padding-left:20px;line-height:2.2;font-size:0.95rem;color:var(--text2)">
+      <li><strong>认知唤醒</strong>：先学卡尼曼三封信，理解框架效应、沉没成本、证实偏见——为什么聪明人也会犯傻</li>
+      <li><strong>工具武装</strong>：掌握财报分析（现金流+应收账款）、资产配置（股债比例+再平衡）、夏普比率</li>
+      <li><strong>策略内化</strong>：深入巴菲特午餐三封+《漫步华尔街》，建立指数定投+长期主义的操作系统</li>
+      <li><strong>防骗免疫</strong>：学习庞氏骗局识别、对敲机制、水变油案例——骗局的核心套路万年不变</li>
+      <li><strong>哲学升华</strong>：读《货殖列传》+金钱观+家族财富，将投资思维迁移到人生决策</li>
+    </ol>
+  </div>
+</section>
+
+<!-- TAB 2: Knowledge Cards -->
+<section class="tab-content" id="tab2">
+  <div class="card" style="text-align:center">
+    <p style="color:var(--text2)">点击卡片翻转查看四维度解析（定义·类比·示例·反例）</p>
+  </div>
+  <div class="flip-container">
+    <div class="flip-card" id="flipCard" onclick="flipCard()">
+      <div class="flip-front" id="flipFront"></div>
+      <div class="flip-back" id="flipBack"></div>
+    </div>
+  </div>
+  <div class="flip-nav">
+    <button onclick="prevCard()">◀ 上一张</button>
+    <span class="counter" id="flipCounter">1 / 10</span>
+    <button onclick="nextCard()">下一张 ▶</button>
+  </div>
+  <div class="flip-nav">
+    <button class="learned-btn" id="learnedBtn" onclick="markLearned()">✔ 标记「已学习」</button>
+  </div>
+</section>
+
+<!-- TAB 3: Question Bank -->
+<section class="tab-content" id="tab3">
+  <div class="card"><h2>选择题（20题）</h2><p style="color:var(--text2)">点击选项即时判分，错题自动收入错题本</p></div>
+  <div id="mcQuestions"></div>
+  <div class="card" style="margin-top:20px"><h2>简答题（10题）</h2><p style="color:var(--text2)">输入你的答案后点击「查看参考答案」对比</p></div>
+  <div id="shortQuestions"></div>
+</section>
+
+<!-- TAB 4: Exam Mode -->
+<section class="tab-content" id="tab4">
+  <div class="card">
+    <h2>模拟考试</h2>
+    <p style="color:var(--text2)">从题库随机抽取7道选择+3道简答，限时15分钟</p>
+    <div class="exam-header">
+      <span class="exam-timer" id="examTimer">15:00</span>
+      <button class="btn-accent" onclick="startExam()" id="examStartBtn">开始考试</button>
+      <button class="exam-submit" onclick="submitExam()" id="examSubmitBtn" style="display:none">提交答卷</button>
+    </div>
+    <div id="examContent"></div>
+    <div id="examResult" style="display:none"></div>
+  </div>
+</section>
+
+<!-- TAB 5: Review Mode -->
+<section class="tab-content" id="tab5">
+  <div class="card"><h2>错题本</h2><div id="errorBook"></div></div>
+  <div class="card"><h2>概念薄弱点分析</h2><div id="weaknessChart"></div></div>
+  <div class="card"><h2>学习统计</h2><div class="stat-row" id="statsRow"></div></div>
+</section>
+
+<!-- TAB 6: Mind Map -->
+<section class="tab-content" id="tab6">
+  <div class="card"><h2>投资与财富 · 思维导图</h2><p style="color:var(--text2);margin-bottom:12px">点击 ▶ 展开/折叠节点</p><div class="tree" id="mindmap"></div></div>
+</section>
+
+<!-- TAB 7: Socratic Q&A -->
+<section class="tab-content" id="tab7">
+  <div class="card"><h2>深度追问 · 苏格拉底问答</h2><p style="color:var(--text2);margin-bottom:12px">点击问题展开层进式追问与答案</p><div id="socraticList"></div></div>
+</section>
+
+<!-- TAB 8: Case Analysis -->
+<section class="tab-content" id="tab8">
+  <div class="card"><h2>案例分析：安然公司破产</h2><p style="color:var(--text2);margin-bottom:12px">用MKS四维度拆解真实投资案例</p><div id="caseStudy"></div></div>
+</section>
+
+<!-- TAB 9: Decision Simulation -->
+<section class="tab-content" id="tab9">
+  <div class="card"><h2>实战决策模拟</h2><p style="color:var(--text2);margin-bottom:12px">3轮投资决策，每轮3选项+即时反馈+MKS分析</p><div id="decisionRounds"></div></div>
+</section>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+// ===== DATA =====
+
+const concepts = [
+  {name:'认知偏差',brief:'框架效应·沉没成本·证实偏见·情感偏见',icon:'🧠',mks:true},
+  {name:'价值投资',brief:'能力圈·安全边际·长期持有·现金流至上',icon:'💎',mks:true},
+  {name:'风险控制',brief:'夏普比率·资产配置·止损纪律·不杠杆',icon:'🛡️',mks:true},
+  {name:'复利思维',brief:'长期主义·时间价值·指数增长·代际传承',icon:'📈',mks:true},
+  {name:'财报分析',brief:'现金流·应收账款·关联交易·审计意见',icon:'📊'},
+  {name:'行为经济学',brief:'损失厌恶·框架效应·心理账户·过度自信',icon:'🔬'},
+  {name:'防骗机制',brief:'庞氏骗局·对敲识别·尽职调查·常识检验',icon:'🔍'},
+  {name:'资产配置',brief:'股债比例·再平衡·年龄策略·现金流匹配',icon:'⚖️'},
+  {name:'财富传承',brief:'价值观传递·配偶选择·家族文化·时间复利',icon:'🏛️'},
+  {name:'市场规律',brief:'市场永远是对的·不可预测·经济周期·均值回归',icon:'🌊'}
+];
+
+const mksConcepts = concepts.filter(c=>c.mks);
+
+const flipCards = [
+  {
+    front:'认知偏差',
+    def:'人类在决策时系统性偏离理性的心理模式，由进化形成的思维"快捷方式"导致',
+    analogy:'好比相机的自动模式——大部分时候够用，但遇到逆光/夜景等复杂场景就会拍出错误曝光的照片。投资就是"复杂场景"，自动模式不够用',
+    example:'卡尼曼实验：600人瘟疫，方案A"保住200人"vs方案B"1/3概率保住所有人"，80%选A。换个说法"400人会死"vs"1/3概率无人死"，80%选B——同一问题，表述不同，选择相反',
+    counter:'理工科教授觉得自己很理性，但在网络争论中同样情绪化——学历不保证理性'
+  },
+  {
+    front:'框架效应',
+    def:'同一信息的不同表述方式（收益/损失框架）会显著改变决策偏好',
+    analogy:'"99%无脂肪"比"含1%脂肪"更好卖——本质上完全相同，但前者触发"收益感"，后者触发"损失感"',
+    example:'洪灾报道"粮食减产一成"vs"粮食抢救回九成"，后者显然更正面——同一事实，换框如换刀',
+    counter:'理性决策应该关注绝对数值和数学期望，而非表述方式'
+  },
+  {
+    front:'沉没成本谬误',
+    def:'因已投入不可收回的成本（时间/金钱/感情）而继续坚持错误决策',
+    analogy:'买了难吃的菜硬着头皮吃完——"已经花了钱"不应成为"继续受罪"的理由',
+    example:'协和式飞机：英法政府明知无法盈利仍持续填补资金漏洞——因为"已经投了那么多"',
+    counter:'正确的决策只看未来收益与成本，过去的投入与当前决策无关'
+  },
+  {
+    front:'价值投资',
+    def:'以低于内在价值的价格购买优质资产，长期持有等待价值回归与增长',
+    analogy:'买房子看地段和建筑质量，而不是听中介说"明天要涨价"——买股票就是买公司的一部分所有权',
+    example:'巴菲特2016年大举增持苹果：不是因为iPhone刚出来时最性感，而是等苹果证明了"现金奶牛"属性——稳定分红+持续回购+利润增长',
+    counter:'追涨杀跌的技术派——看K线图买卖，不知道公司做什么，本质上是在赌别人的出价'
+  },
+  {
+    front:'能力圈',
+    def:'只在自己真正理解的领域内做决策，对圈外之事说"不"',
+    analogy:'医生不会因为看到律师赚钱多就去打官司——知道自己懂什么比知道自己不懂什么更难',
+    example:'段永平拒绝自建广告公司：虽然每年投数亿广告费，但"不懂广告行业"。逻辑检验：如果自建广告公司划算，可口可乐应该拥有全球最大广告公司',
+    counter:'万达联合百度腾讯投200亿做电商（腾百万），两年后无声解散——都是顶级公司，但不在能力圈内'
+  },
+  {
+    front:'复利思维',
+    def:'财富增长的核心不是"抓住时机"而是"持续在场"，时间是指数增长的引擎',
+    analogy:'滚雪球——需要的是足够长的坡道（时间）和足够湿的雪（收益率），而非频繁换赛道',
+    example:'华盛顿就职时（1789年）投资100美元于美国股市，到2017年价值约20亿美元——230年，年均约8%',
+    counter:'追求"每年翻倍"的短线交易者——一年翻倍容易，十年不亏极难。中国股市波动幅度是收益的6倍'
+  },
+  {
+    front:'资产配置',
+    def:'将资金分配到不同资产类别（股票/债券/现金），通过比例控制风险而非单押',
+    analogy:'饮食均衡——不是找"最有营养的一道菜"顿顿吃，而是主食+蛋白质+蔬菜合理搭配',
+    example:'年轻长期投资者：80%指数基金+15%国库券+5%现金。每年再平衡一次：股市大涨后卖出部分股票补债券，大跌时反向操作——实践"别人贪婪时恐惧"',
+    counter:'全仓押注单一股票或贷款买房——短期可能暴富，但一次黑天鹅就归零（安然从90美元到1美元仅一周）'
+  },
+  {
+    front:'庞氏骗局识别',
+    def:'依赖新投资者资金支付旧投资者"收益"，无真实价值创造，终将崩溃',
+    analogy:'击鼓传花——音乐停时拿着花的人买单。关键不是花多好看，而是自己能否在音乐停前传出去',
+    example:'乐视：持续借新还旧，无法偿还债务。三大特征：奢华人脉+依赖新投资者+账面利润与现金流脱节。对比特斯拉：创造不可替代价值+创始人投入70%个人财产',
+    counter:'健康企业：具备自我造血能力，达到一定阶段后无需依赖新投资，利润来自经营而非资本运作'
+  },
+  {
+    front:'市场有效性',
+    def:'市场价格已反映所有已知信息。对普通人而言，试图"打败市场"是徒劳的',
+    analogy:'天气预报说70%概率下雨——你可以带伞或不带，结果下雨/不下雨都不能否定预报的合理性。市场预测类似：不是预测结果，而是管理概率',
+    example:'仅5%散户表现超过指数，60%散户亏损。巴菲特的遗产安排：要求后代投资标普500指数基金，而非"继续我的方法"——因为他知道投资能力不可遗传',
+    counter:'"我能在崩盘前逃顶"——过度自信：70%-80%的人认为自己比平均水平聪明'
+  },
+  {
+    front:'金钱观',
+    def:'钱是对资源所有权与使用权的量化度量——花出去才是自己的，挣效率比省更重要',
+    analogy:'钱是选票——你花的每一分钱都在为想要的世界投票。闲置的选票等于放弃了投票权',
+    example:'马尔科姆·麦克莱恩（集装箱发明者）：巅峰时美国首富之一，因石油投资失败破产负债十几亿。钱花不光（不吸毒不赌博前提下），但可以迅速投资/投机投光',
+    counter:'省吃俭用买大房子，10年不换车用宜家简易家具——钱本应提升生活品质，却带来了麻烦'
+  }
+];
+
+// Multiple choice: 20 questions, correct answer indices evenly distributed
+// idx 0: 1,5,9,13,17 (5 questions)
+// idx 1: 2,6,10,14,18 (5 questions)
+// idx 2: 3,7,11,15,19 (5 questions)
+// idx 3: 4,8,12,16,20 (5 questions)
+const mcQuestions = [
+  {
+    q:'卡尼曼的"框架效应"实验表明，同一治疗方案用"存活率"和"死亡率"描述时，人们的选择会反转。这说明什么？',
+    opts:['决策受信息表述方式影响，而非仅受客观事实影响','人们缺乏基本的数学能力','医疗决策过于复杂，普通人无法理解','实验设计存在问题，结论不可靠'],
+    ans:0,
+    concept:'认知偏差',
+    explain:'框架效应揭示了人类决策的基本特点：我们不是纯粹理性的计算机，表述方式（框架）会显著改变偏好。同一数学期望，正面框架下偏好确定性收益，负面框架下偏好风险赌博。'
+  },
+  {
+    q:'卡尼曼的CRT测试中，"球拍+球=11美元，球拍比球贵10美元，网球多少钱？"多数人直觉回答1美元，正确答案是？',
+    opts:['1美元','1.5美元','2美元','0.5美元'],
+    ans:3,
+    concept:'认知偏差',
+    explain:'x+(x+10)=11 → x=0.5。直觉系统（系统1）忽略了"贵10美元"是差价而非绝对值，需要调用理性系统（系统2）做代数运算。MIT学生平均分也不到2.5/3。'
+  },
+  {
+    q:'巴菲特三大人生禁忌不包括以下哪一项？',
+    opts:['不做自己不懂的事情','永远不要做空股票','永远不要用杠杆投资','永远不要投资科技股'],
+    ans:3,
+    concept:'价值投资',
+    explain:'巴菲特三大禁忌是：不做自己不懂的事情、永远不要做空股票、永远不要用杠杆投资。他后来也投资了IBM、英特尔和苹果，所以"不投科技股"并非绝对原则。'
+  },
+  {
+    q:'普通投资者为什么最适合指数基金定投？',
+    opts:['指数基金费用低且长期稳定增长','指数基金随时可以高价卖出','指数基金由专业人士每天调仓','指数基金保证每年正收益'],
+    ans:0,
+    concept:'资产配置',
+    explain:'马尔基尔《漫步华尔街》和巴菲特均认可：指数基金交易成本极低，能分享经济长期增长，且95%的主动基金经理长期跑不赢指数。对大多数人来说，不折腾才是最优策略。'
+  },
+  {
+    q:'以下哪项不属于"证实偏见"的表现？',
+    opts:['投资者只收集支持自己判断的信息','卡尼曼实验中只测试奇数验证"奇数序列"规律','庞氏骗局参与者寻找"有接盘者"的证据自我说服','主动寻找反例检验自己的投资假设'],
+    ans:3,
+    concept:'认知偏差',
+    explain:'证实偏见是指倾向于寻找支持已有假设的证据，而忽视反例。主动寻找反例正是卡尼曼推崇的克服证实偏见的方法——实验中突破者就是通过测试12（得到肯定）和-1（得到否定）发现正确规律的。'
+  },
+  {
+    q:'公司财报中，巴菲特认为检验真实性的最关键指标是？',
+    opts:['净利润','营业额增长率','现金流','市盈率'],
+    ans:2,
+    concept:'财报分析',
+    explain:'巴菲特认为营业额和利润都可能通过做账造假（如安然），但现金流无法造假。一个公司的现金是否来自经营活动（而非卖资产或融资），是判断其健康与否的核心标准。'
+  },
+  {
+    q:'乐视被作者判断为"现代庞氏骗局"的核心依据是？',
+    opts:['公司亏损严重','媒体负面报道多','持续借新还旧且无法偿还债务','创始人没有技术背景'],
+    ans:2,
+    concept:'防骗机制',
+    explain:'作者的核心判断标准：持续借新还旧且无法偿还债务的模式，无论是否包装"做正事"，本质上就是庞氏骗局。健康企业具备自我造血能力，到一定阶段无需依赖新投资。'
+  },
+  {
+    q:'中美贸易战中，中国对美出口4700亿美元，约为美国GDP的多少？实际影响有多大？',
+    opts:['约10%，影响巨大','约5%，有一定影响','约2.6%，影响有限','约1%，几乎无影响'],
+    ans:2,
+    concept:'市场规律',
+    explain:'美国人均中国商品消费1500美元/年，仅占人均国民收入5.56万美元的2.6%。如果替代国商品价格翻倍，对生活质量的影响远小于房价等其他因素。数据比"感觉"更真实。'
+  },
+  {
+    q:'"协和效应"是哪个认知偏差的典型案例？',
+    opts:['沉没成本谬误','框架效应','证实偏见','对比效应'],
+    ans:0,
+    concept:'认知偏差',
+    explain:'协和式飞机案例：英法政府明知无法盈利，仍因"不想已投入的资金打水漂"而持续填补资金漏洞。这是沉没成本谬误的经典案例——已投入的不可收回，却继续影响后续决策。'
+  },
+  {
+    q:'以下关于"水变油"骗局的分析，哪个是正确的？',
+    opts:['骗子掌握了尚未公开的前沿科技','水分解需要耗能≥燃烧产热，违反能量守恒','催化剂可以让水无耗能分解','水中氘氚确实可实现常温核聚变'],
+    ans:1,
+    concept:'防骗机制',
+    explain:'水变油骗局的核心漏洞：水由氢氧组成，分解水所消耗的能量≥氢气燃烧释放的能量（能量守恒定律+热力学第二定律）。催化剂不改变反应的能量需求，常温核聚变技术至今未突破。'
+  },
+  {
+    q:'BCG"全球制造业成本竞争力指数"的主要缺陷是什么？',
+    opts:['数据来源不可靠','计算公式过于简单','只包含人工+电力+天然气三项成本，忽略土地/煤炭等关键因素','统计的时间范围太短'],
+    ans:2,
+    concept:'市场规律',
+    explain:'BCG指数仅含三项成本且采用误导性的调整常数（美国成本+调整常数=100%，各国统一使用美国常数），刻意忽略土地、煤炭等中国制造业的关键成本因素，导致"中国成本接近美国"的结论与3000多亿贸易逆差矛盾。'
+  },
+  {
+    q:'巴菲特认为投资是"艺术而非技术"，这意味着什么？',
+    opts:['投资需要美术基础','技术分析比价值投资更优','投资与艺术品的价格波动规律一致','投资能力像艺术天赋，大部分人学不会，不可批量复制'],
+    ans:3,
+    concept:'价值投资',
+    explain:'巴菲特用肖邦的钢琴技艺类比：99%的人无论怎么训练都达不到肖邦的水平，投资同理。这也是为什么他的遗产安排是让后代买指数基金——自己不在了，没人能复制他的"艺术"。'
+  },
+  {
+    q:'《货殖列传》中司马迁提出的五种管理境界从高到低依次是？',
+    opts:['因之、利道之、教诲之、整齐之、与之争','教诲之、利道之、因之、整齐之、与之争','整齐之、因之、利道之、教诲之、与之争','与之争、整齐之、教诲之、利道之、因之'],
+    ans:0,
+    concept:'财富传承',
+    explain:'原文："善者因之，其次利道之，其次教诲之，其次整齐之，最下者与之争。"最高境界是顺应自然规律不干预（如硅谷模式），最差是与民争利。这位2000年前的史学家已洞见"理性经济人"假设。'
+  },
+  {
+    q:'关于资产配置中的"再平衡"操作，以下描述正确的是？',
+    opts:['股市大涨时继续加仓股票','股市大涨时卖出部分股票补债券，恢复原定比例','每年更换全部持仓','一旦设定就不再调整'],
+    ans:1,
+    concept:'资产配置',
+    explain:'再平衡是实践巴菲特"别人贪婪时我恐惧，别人恐惧时我贪婪"的具体方法：当股票比例因上涨而超标时卖股补债，因下跌而不足时用债买股，每年微调一次。'
+  },
+  {
+    q:'安然公司财务造假的核心手段是什么？',
+    opts:['虚构海外客户','通过子公司间高价资产循环交易创造虚假利润','修改银行对账单','贿赂审计师篡改财报数字'],
+    ans:1,
+    concept:'财报分析',
+    explain:'安然通过子公司间"击鼓传花"式的高价资产循环交易创造虚假利润——现金收入来自资产出售而非主营业务，违背能源公司客户稳定、现金流持续的基本特征。'
+  },
+  {
+    q:'吴军的金钱观中，"钱只有花出去才是自己的"强调的是？',
+    opts:['鼓励铺张浪费','有效花钱=有效利用社会资源，可能带来更多财富','钱存银行最安全','消费比投资更重要'],
+    ans:1,
+    concept:'金钱观',
+    explain:'核心逻辑：钱是对资源所有权的量化度量，"花出去"意味着实际调动了社会资源为你服务。闲置的钱等于放弃了资源使用权。有效花钱（如投资自己、提升生活品质）可能带来良性循环。'
+  },
+  {
+    q:'美国"防御性驾驶"（Defensive Drive）的核心理念是什么？',
+    opts:['只要自己遵守交规就安全了','开得越快越安全','不仅遵守法规，还要防范他人违规','只在高速公路上需要防御性驾驶'],
+    ans:2,
+    concept:'风险控制',
+    explain:'防御性驾驶的核心是：即使你遵守所有规则，仍要假设其他人可能违规。绿灯启动前确认安全、远离行为异常的司机——这种思维方式同样适用于投资：假设市场会出现极端情况，提前做好风险准备。'
+  },
+  {
+    q:'风险投资为什么"总是有泡沫"？作者给出的核心原因是？',
+    opts:['投资人普遍缺乏金融知识','新技术需要大量人员和资源投入试错，泡沫是风投常态','政府过度补贴导致的','媒体炒作误导投资者'],
+    ans:1,
+    concept:'风险控制',
+    explain:'新技术存在不足，需要大量人员和资源投入试错，制造泡沫是风险投资的常态。泡沫有双重性：促进技术发展，但也必然伴随破灭。美国仅1%的获投公司能上市，48%的风投基金亏钱。'
+  },
+  {
+    q:'关于中国是否会掉入"中等收入陷阱"，吴军的核心判断依据是？',
+    opts:['中国属于"内在动力型"国家——民众有强烈劳动致富意愿','中国有丰富的自然资源','中国的人口红利将持续50年','国际社会对中国有特殊照顾'],
+    ans:0,
+    concept:'市场规律',
+    explain:'作者将国家分为"外在动力型"（依赖资源或外部加工，如拉美）和"内在动力型"（民众有强烈劳动致富意愿，如荷兰、英国、美国、日本、韩国、中国）。中国商人主动开拓国际市场，从八亿件衬衫换波音到机电产品成为顺差主力，体现内在动力。'
+  },
+  {
+    q:'"市场永远是对的"这句话在投资中的正确理解是？',
+    opts:['市场价格总是等于内在价值','任何时候都应按市场价格买卖','市场不会出现泡沫','当你的预测与市场不一致时，首先反思自己的模型是否有问题'],
+    ans:3,
+    concept:'市场规律',
+    explain:'这不是说市场定价永远合理，而是说：当你的预测模型与市场实际走势不一致时，错的是你的模型，不是市场。市场是千万参与者用真金白银投票的结果，忽视市场信号等于"削足适履"。'
+  }
+];
+
+const shortQuestions = [
+  {
+    q:'请用你自己的话解释"框架效应"，并举一个生活中遇到的例子。',
+    ref:'框架效应指同一信息的表述方式（收益/损失框架）会改变决策偏好。如"手术存活率90%"比"手术死亡率10%"更容易被接受，尽管数学上等价。关键在于人们厌恶确定性损失、偏好确定性收益。'
+  },
+  {
+    q:'为什么巴菲特说"永远不要用杠杆投资"？',
+    ref:'杠杆放大收益的同时也放大亏损。股票上涨空间理论上无上限（做空风险无穷大），下跌时杠杆加速"见外婆"（Wipe Off）。人性在盈利时归功自己、亏损时归咎大盘，这种心态下使用杠杆极易倾家荡产。2015年中国股灾中杠杆投资者损失惨重。'
+  },
+  {
+    q:'"证实偏见"在投资中如何体现？如何克服？',
+    ref:'投资者倾向于只收集支持自己判断的信息（如买入后只看利好消息），忽视反例。克服方法：主动寻找反例验证假设（如卡尼曼实验中测试非奇数），像科学家一样"假设-验证-修正"。'
+  },
+  {
+    q:'简述安然公司破产案给投资者的三大教训。',
+    ref:'①现金流比利润更真实——安然利润来自资产出售而非主营业务；②警惕"创新"标签掩盖财务造假——连年获奖的公司也可能是个骗局；③单一资产配置极度危险——安然员工持股+工作双失。'
+  },
+  {
+    q:'为什么司马迁的"善者因之，其次利道之，其次教诲之，其次整齐之，最下者与之争"对投资也有启示？',
+    ref:'这五种管理境界对应投资管理的不同层次：最好的投资策略是顺应经济规律（如指数定投），其次用利益引导（如股息再投资），再其次灌输式学习，再其次纪律约束，最差的是与市场对抗（如频繁交易试图打败市场）。'
+  },
+  {
+    q:'什么是"能力圈"？请举例说明不在能力圈内却强行投资的后果。',
+    ref:'能力圈指只在自己真正理解的领域做决策。巴菲特的"不做自己不懂的事情"。反例：万达联合百度腾讯投200亿做电商（腾百万），巨头联手但不在能力圈内，两年后无声解散。'
+  },
+  {
+    q:'结合"对比效应"和"沉没成本谬误"，分析散户常见的错误投资链条。',
+    ref:'①对比效应→选错标的（因历史价格低而"抄底"）；②情感偏见→长期持有后产生"感情"，高估价值；③沉没成本→亏损后舍不得割肉，错失其他机会。三者形成恶性循环，最终的理性选择（卡尼曼+马尔基尔）是指数定投。'
+  },
+  {
+    q:'什么是"夏普比率"？为什么它比单纯看回报更有意义？',
+    ref:'夏普比率=(投资回报-无风险回报)/波动性标准差，综合衡量"每冒一单位风险能获得多少超额回报"。两只基金同样回报10%，波动性分别为5%和20%——前者夏普比率更高，意味着实现回报的路径更平稳。'
+  },
+  {
+    q:'为什么吴军说"投资不当比消费更危险"？结合集装箱发明者麦克莱恩的例子说明。',
+    ref:'正常消费很难花光巨额财富（不吸毒不赌博前提下），但一次失败的投资可以让人从首富变负债。麦克莱恩发明集装箱后成为美国首富之一，因石油投资失败破产负债十几亿美元。'
+  },
+  {
+    q:'请解释"时间（而非时机）是投资核心盟友"的含义。',
+    ref:'长期稳定复合增长比试图精准择时重要得多。华盛顿1789年投资100美元于美股→2017年约20亿美元，靠的不是"买在最低点"，而是230年的复利。绝大多数人无法持续抓住时机，所谓"成功经验"多属事后诸葛亮。'
+  }
+];
+
+const boundaryKnowledge = [
+  {name:'资本层级与清偿顺序',scene:'比股票更优先的高级债务和债券在破产时先获清偿，股民排最后'},
+  {name:'伦敦银行间同业拆借利率（LIBOR）',scene:'作为浮动利率债券和衍生品的基准参考'},
+  {name:'期权与期货的基本概念',scene:'买方有权利/义务在未来以特定价格买卖标的资产，散户不建议参与'},
+  {name:'优先股与普通股的区别',scene:'优先股固定股息、清偿顺序优先于普通股，巴菲特投资高盛时选择优先股'},
+  {name:'美国1934年证券法',scene:'奠定内幕交易判定基础——操纵性和欺诈性行为均属非法'},
+  {name:'萨班斯-奥克斯利法案',scene:'安然事件后美国最深远商业改革，严惩上市公司造假'},
+  {name:'英美法系vs大陆法系对内幕交易的差异',scene:'英美法系用判例可灵活应对新手法，大陆法系依赖成文法易被钻空子'},
+  {name:'梵高指数',scene:'通过梵高等后期印象派作品价格反映经济状况——日本泡沫期天价，衰退后暴跌'},
+  {name:'CRT认知反射测试',scene:'3道题快速测试直觉vs理性思维差异，MIT学生均分<2.5/3'},
+  {name:'独角兽公司生态',scene:'估值超10亿美元的未上市初创公司，死亡率远高于成功上市率'},
+  {name:'美国失业率统计口径陷阱',scene:'放弃找工作者不计入失业人口，导致官方失业率下降但就业人口比例反降'},
+  {name:'人民币汇率形成机制',scene:'有管理的浮动汇率制度，央行通过中间价和波动区间进行调控'},
+  {name:'GDP与股市的非线性关系',scene:'股市可能因前期高估/GDP结构原因而不反映经济增长，美国标普500一半收入来自海外'},
+  {name:'美国国债市场规模与流动性',scene:'21万亿美元规模，完全市场化高流动性产品，中国持仓仅占5%'},
+  {name:'有机食品vs天然食品的标准差异',scene:'美国对Organic要求严格（物种/水土/种植方式），All Nature标准较低'}
+];
+
+// ===== CORE LOGIC =====
+
+let currentTab = 0;
+let currentCard = 0;
+let cardFlipped = false;
+let learnedCards = JSON.parse(localStorage.getItem('wj_wealth_learned')||'[]');
+let mcAnswers = JSON.parse(localStorage.getItem('wj_wealth_mc')||'{}');
+let shortAnswers = JSON.parse(localStorage.getItem('wj_wealth_short')||'{}');
+let errorBook = JSON.parse(localStorage.getItem('wj_wealth_errors')||'[]');
+let examState = null;
+
+function save(k,v){localStorage.setItem('wj_wealth_'+k,JSON.stringify(v))}
+
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2000);
+}
+
+// ===== TAB SWITCHING =====
+function initTabs(){
+  var labels=[
+    '📋 总览','🃏 知识卡片','📝 题库','⏱️ 考试',
+    '🔄 复习','🗺️ 思维导图','❓ 深度追问','📖 案例分析','🎯 实战决策'
+  ];
+  var nav=document.getElementById('tabNav');
+  labels.forEach(function(l,i){
+    var btn=document.createElement('button');
+    btn.textContent=l;
+    btn.onclick=function(){switchTab(i)};
+    if(i===0)btn.classList.add('active');
+    nav.appendChild(btn);
+  });
+}
+function switchTab(i){
+  currentTab=i;
+  document.querySelectorAll('.tab-nav button').forEach(function(b,j){b.classList.toggle('active',j===i)});
+  document.querySelectorAll('.tab-content').forEach(function(c,j){c.classList.toggle('active',j===i)});
+  if(i===4)renderReview();
+  if(i===5)initMindmap();
+}
+
+// ===== TAB 1: DASHBOARD =====
+function renderDashboard(){
+  // Concept grid
+  var grid=document.getElementById('conceptGrid');
+  concepts.forEach(function(c){
+    var div=document.createElement('div');
+    div.className='concept-card';
+    div.innerHTML='<div class="icon">'+c.icon+'</div><div class="name">'+c.name+'</div><div class="brief">'+c.brief+'</div>';
+    div.onclick=function(){switchTab(1);setTimeout(function(){goToCard(concepts.indexOf(c))},100)};
+    grid.appendChild(div);
+  });
+
+  // MKS grid
+  var mg=document.getElementById('mksGrid');
+  mksConcepts.forEach(function(c){
+    var div=document.createElement('div');
+    div.className='concept-card mks-core';
+    div.innerHTML='<div class="icon">'+c.icon+'</div><div class="name">★ '+c.name+'</div><div class="brief">'+c.brief+'</div>';
+    div.onclick=function(){switchTab(1);setTimeout(function(){goToCard(concepts.indexOf(c))},100)};
+    mg.appendChild(div);
+  });
+
+  // Boundary
+  var bb=document.getElementById('boundaryBody');
+  boundaryKnowledge.forEach(function(b){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><strong>'+b.name+'</strong></td><td>'+b.scene+'</td>';
+    bb.appendChild(tr);
+  });
+
+  // SVG map
+  renderSVGMap();
+  updateProgress();
+}
+
+function renderSVGMap(){
+  var svg='<svg viewBox="0 0 800 620" xmlns="http://www.w3.org/2000/svg" style="font-family:&quot;Noto Serif SC&quot;,serif">';
+
+  // Background
+  svg+='<rect width="800" height="620" fill="#fdf6ec" rx="12"/>';
+
+  // Defs
+  svg+='<defs>';
+  svg+='<filter id="shadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>';
+  svg+='<marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>';
+  svg+='<marker id="arrGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2d7d46"/></marker>';
+  svg+='<marker id="arrGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#b8860b"/></marker>';
+  svg+='</defs>';
+
+  // Title
+  svg+='<text x="400" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#3d2f2f">投资与财富 · 概念关系图</text>';
+
+  // ROOT: 财富底层逻辑 (center top)
+  svg+='<ellipse cx="400" cy="85" rx="90" ry="28" fill="#c0392b" filter="url(#shadow)"/>';
+  svg+='<text x="400" y="81" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">财富底层逻辑</text>';
+  svg+='<text x="400" y="97" text-anchor="middle" font-size="10" fill="#fdd">人性偏差 ↔ 理性纪律</text>';
+
+  // BRANCH 1: 认知陷阱 (left)
+  svg+='<ellipse cx="185" cy="180" rx="72" ry="24" fill="#a93226" filter="url(#shadow)"/>';
+  svg+='<text x="185" y="176" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">认知陷阱</text>';
+  svg+='<text x="185" y="192" text-anchor="middle" font-size="9" fill="#fcc">人类天性的偏差</text>';
+  // Line root→陷阱
+  svg+='<line x1="340" y1="102" x2="240" y2="162" stroke="#c0392b" stroke-width="2" marker-end="url(#arrRed)"/>';
+
+  // Sub-nodes under 认知陷阱
+  var traps=[{x:70,y:245,t:'框架效应'},{x:185,y:255,t:'沉没成本'},{x:300,y:245,t:'证实偏见'}];
+  traps.forEach(function(n){
+    svg+='<rect x="'+(n.x-40)+'" y="'+(n.y-14)+'" width="80" height="28" rx="14" fill="#fffaf2" stroke="#c0392b" stroke-width="1.5" filter="url(#shadow)"/>';
+    svg+='<text x="'+n.x+'" y="'+(n.y+4)+'" text-anchor="middle" font-size="11" fill="#c0392b">'+n.t+'</text>';
+    svg+='<line x1="185" y1="200" x2="'+n.x+'" y2="'+(n.y-14)+'" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,2"/>';
+  });
+
+  // BRANCH 2: 理性工具 (right)
+  svg+='<ellipse cx="615" cy="180" rx="72" ry="24" fill="#2d7d46" filter="url(#shadow)"/>';
+  svg+='<text x="615" y="176" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">理性工具</text>';
+  svg+='<text x="615" y="192" text-anchor="middle" font-size="9" fill="#cfc">克服偏差的武器</text>';
+  svg+='<line x1="460" y1="102" x2="560" y2="162" stroke="#2d7d46" stroke-width="2" marker-end="url(#arrGreen)"/>';
+
+  var tools=[{x:500,y:245,t:'价值投资'},{x:615,y:255,t:'财报分析'},{x:730,y:245,t:'风险控制'}];
+  tools.forEach(function(n){
+    svg+='<rect x="'+(n.x-40)+'" y="'+(n.y-14)+'" width="80" height="28" rx="14" fill="#fffaf2" stroke="#2d7d46" stroke-width="1.5" filter="url(#shadow)"/>';
+    svg+='<text x="'+n.x+'" y="'+(n.y+4)+'" text-anchor="middle" font-size="11" fill="#2d7d46">'+n.t+'</text>';
+    svg+='<line x1="615" y1="200" x2="'+n.x+'" y2="'+(n.y-14)+'" stroke="#2d7d46" stroke-width="1.2" stroke-dasharray="4,2"/>';
+  });
+
+  // Tension line between 认知陷阱 and 理性工具
+  svg+='<line x1="257" y1="175" x2="543" y2="175" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="6,3"/>';
+  svg+='<text x="400" y="168" text-anchor="middle" font-size="10" fill="#c0392b" font-style="italic">持续博弈</text>';
+  svg+='<text x="375" y="172" text-anchor="middle" font-size="14" fill="#c0392b">⟷</text>';
+
+  // BRANCH 3: 投资策略 (center bottom)
+  svg+='<ellipse cx="400" cy="330" rx="75" ry="24" fill="#b8860b" filter="url(#shadow)"/>';
+  svg+='<text x="400" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">投资策略</text>';
+  svg+='<text x="400" y="342" text-anchor="middle" font-size="9" fill="#ffe">理性工具的具体实现</text>';
+  svg+='<line x1="400" y1="113" x2="400" y2="306" stroke="#b8860b" stroke-width="2" marker-end="url(#arrGold)"/>';
+
+  var strats=[{x:235,y:390,t:'指数定投'},{x:400,y:400,t:'资产配置'},{x:565,y:390,t:'长期主义'}];
+  strats.forEach(function(n){
+    svg+='<rect x="'+(n.x-44)+'" y="'+(n.y-14)+'" width="88" height="28" rx="14" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5" filter="url(#shadow)"/>';
+    svg+='<text x="'+n.x+'" y="'+(n.y+4)+'" text-anchor="middle" font-size="11" fill="#b8860b">'+n.t+'</text>';
+    svg+='<line x1="400" y1="350" x2="'+n.x+'" y2="'+(n.y-14)+'" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="4,2"/>';
+  });
+
+  // BRANCH 4: 防骗意识 (bottom right)
+  svg+='<ellipse cx="660" cy="460" rx="65" ry="22" fill="#6b5a5a" filter="url(#shadow)"/>';
+  svg+='<text x="660" y="456" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">防骗意识</text>';
+  svg+='<text x="660" y="470" text-anchor="middle" font-size="9" fill="#ddd">庞氏·对敲·常识检验</text>';
+  svg+='<line x1="600" y1="340" x2="640" y2="442" stroke="#6b5a5a" stroke-width="1.5" stroke-dasharray="5,3"/>';
+
+  // BRANCH 5: 财富传承 (bottom left)
+  svg+='<ellipse cx="140" cy="460" rx="65" ry="22" fill="#6b5a5a" filter="url(#shadow)"/>';
+  svg+='<text x="140" y="456" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">财富传承</text>';
+  svg+='<text x="140" y="470" text-anchor="middle" font-size="9" fill="#ddd">价值观·时间·家族文化</text>';
+  svg+='<line x1="200" y1="340" x2="160" y2="442" stroke="#6b5a5a" stroke-width="1.5" stroke-dasharray="5,3"/>';
+
+  // Bottom connection line
+  svg+='<line x1="205" y1="460" x2="595" y2="460" stroke="#6b5a5a" stroke-width="1.2" stroke-dasharray="5,3"/>';
+
+  // MKS stars
+  svg+='<text x="400" y="530" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="700">★ 最小知识集核心：认知偏差 · 价值投资 · 风险意识 · 复利思维</text>';
+  svg+='<text x="400" y="555" text-anchor="middle" font-size="11" fill="#3d2f2f">投资决策的质量 = 理性工具掌握度 - 认知偏差干扰度</text>';
+  svg+='<text x="400" y="580" text-anchor="middle" font-size="10" fill="#6b5a5a">基于吴军·硅谷来信第一季 42 篇笔记提炼 — 概念结构从专题内部提取</text>';
+
+  svg+='</svg>';
+  document.getElementById('svgMap').innerHTML=svg;
+}
+
+function updateProgress(){
+  var cPct=Math.round(learnedCards.length/concepts.length*100);
+  var totalAnswered=Object.keys(mcAnswers).length+Object.keys(shortAnswers).length;
+  var qPct=Math.round(totalAnswered/30*100);
+  var tPct=Math.round((cPct+qPct)/2);
+  document.getElementById('conceptPct').textContent=cPct+'%';
+  document.getElementById('quizPct').textContent=qPct+'%';
+  document.getElementById('totalPct').textContent=tPct+'%';
+  document.getElementById('conceptBar').style.width=cPct+'%';
+  document.getElementById('quizBar').style.width=qPct+'%';
+  document.getElementById('totalBar').style.width=tPct+'%';
+}
+
+// ===== TAB 2: FLIP CARDS =====
+function goToCard(i){
+  currentCard=i;
+  cardFlipped=false;
+  renderCard();
+}
+
+function renderCard(){
+  var c=flipCards[currentCard];
+  document.getElementById('flipFront').textContent=c.front;
+  var back='<h4><span class="tag tag-def">定义</span></h4><p>'+c.def+'</p>';
+  back+='<h4><span class="tag tag-analogy">类比</span></h4><p>'+c.analogy+'</p>';
+  back+='<h4><span class="tag tag-example">示例</span></h4><p>'+c.example+'</p>';
+  back+='<h4><span class="tag tag-counter">反例</span></h4><p>'+c.counter+'</p>';
+  document.getElementById('flipBack').innerHTML=back;
+  document.getElementById('flipCounter').textContent=(currentCard+1)+' / '+flipCards.length;
+  var card=document.getElementById('flipCard');
+  card.classList.toggle('flipped',cardFlipped);
+  var lb=document.getElementById('learnedBtn');
+  var isLearned=learnedCards.indexOf(currentCard)>=0;
+  lb.textContent=isLearned?'✔ 已学习':'✔ 标记「已学习」';
+  lb.classList.toggle('learned',isLearned);
+}
+
+function flipCard(){
+  cardFlipped=!cardFlipped;
+  document.getElementById('flipCard').classList.toggle('flipped',cardFlipped);
+}
+
+function prevCard(){
+  currentCard=(currentCard-1+flipCards.length)%flipCards.length;
+  cardFlipped=false;
+  renderCard();
+}
+
+function nextCard(){
+  currentCard=(currentCard+1)%flipCards.length;
+  cardFlipped=false;
+  renderCard();
+}
+
+function markLearned(){
+  var idx=learnedCards.indexOf(currentCard);
+  if(idx>=0){learnedCards.splice(idx,1);toast('已取消学习标记')}
+  else{learnedCards.push(currentCard);toast('已标记为已学习 ✓')}
+  save('learned',learnedCards);
+  renderCard();
+  updateProgress();
+}
+
+// ===== TAB 3: QUESTION BANK =====
+function renderQuestionBank(){
+  var mcDiv=document.getElementById('mcQuestions');
+  mcQuestions.forEach(function(q,i){
+    var card=document.createElement('div');
+    card.className='quiz-card';
+    card.id='mc-'+i;
+    card.innerHTML='<div class="q-num">选择题 #'+(i+1)+' · '+q.concept+'</div><div class="q-text">'+q.q+'</div>';
+    var opts=q.opts.map(function(o,j){
+      return '<button class="option" id="mc-'+i+'-opt-'+j+'">'+'ABCD'[j]+'. '+o+'</button>';
+    }).join('');
+    card.innerHTML+=opts+'<div class="feedback" id="mc-'+i+'-fb"></div>';
+
+    mcDiv.appendChild(card);
+
+    // Bind after DOM
+    q.opts.forEach(function(_,j){
+      document.getElementById('mc-'+i+'-opt-'+j).onclick=function(){answerMC(i,j)};
+    });
+  });
+
+  // Check saved
+  Object.keys(mcAnswers).forEach(function(k){
+    var i=parseInt(k);
+    var a=mcAnswers[k];
+    var fb=document.getElementById('mc-'+i+'-fb');
+    var correct=a===mcQuestions[i].ans;
+    fb.textContent=correct?'✓ 正确！':'✗ 错误。正确答案：'+'ABCD'[mcQuestions[i].ans]+'。'+mcQuestions[i].explain;
+    fb.className='feedback show '+(correct?'correct-msg':'wrong-msg');
+    q.opts.forEach(function(_,j){
+      var btn=document.getElementById('mc-'+i+'-opt-'+j);
+      btn.disabled=true;
+      if(j===mcQuestions[i].ans)btn.classList.add('correct');
+      if(j===a&&j!==mcQuestions[i].ans)btn.classList.add('wrong');
+    });
+  });
+
+  // Short answer
+  var sqDiv=document.getElementById('shortQuestions');
+  shortQuestions.forEach(function(q,i){
+    var card=document.createElement('div');
+    card.className='quiz-card';
+    card.id='sq-'+i;
+    card.innerHTML='<div class="q-num">简答题 #'+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+    card.innerHTML+='<textarea class="short-answer" id="sq-'+i+'-input" placeholder="输入你的答案...">'+(shortAnswers[i]||'')+'</textarea>';
+    card.innerHTML+='<span class="show-answer" id="sq-'+i+'-toggle" onclick="toggleReference('+i+')">查看参考答案</span>';
+    card.innerHTML+='<div class="feedback" id="sq-'+i+'-ref" style="background:#fdf8f2;color:var(--text2)">'+q.ref+'</div>';
+    sqDiv.appendChild(card);
+
+    document.getElementById('sq-'+i+'-input').oninput=function(){
+      var val=this.value.trim();
+      if(val){
+        shortAnswers[i]=val;
+        save('short',shortAnswers);
+        updateProgress();
+      }
+    };
+  });
+}
+
+function answerMC(i,j){
+  if(mcAnswers[i]!==undefined)return;
+  mcAnswers[i]=j;
+  save('mc',mcAnswers);
+  var correct=j===mcQuestions[i].ans;
+  var fb=document.getElementById('mc-'+i+'-fb');
+  fb.textContent=correct?'✓ 正确！':'✗ 错误。正确答案：'+'ABCD'[mcQuestions[i].ans]+'。'+mcQuestions[i].explain;
+  fb.className='feedback show '+(correct?'correct-msg':'wrong-msg');
+  mcQuestions[i].opts.forEach(function(_,k){
+    var btn=document.getElementById('mc-'+i+'-opt-'+k);
+    btn.disabled=true;
+    if(k===mcQuestions[i].ans)btn.classList.add('correct');
+    if(k===j&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){
+    errorBook.push({type:'mc',index:i,answer:j,time:Date.now()});
+    save('errors',errorBook);
+  }
+  updateProgress();
+}
+
+function toggleReference(i){
+  var ref=document.getElementById('sq-'+i+'-ref');
+  var isOpen=ref.classList.contains('show');
+  ref.classList.toggle('show',!isOpen);
+  document.getElementById('sq-'+i+'-toggle').textContent=isOpen?'查看参考答案':'隐藏参考答案';
+}
+
+// ===== TAB 4: EXAM =====
+function startExam(){
+  // Pick 7 MC + 3 short randomly
+  var mcIndices=[];
+  while(mcIndices.length<7){
+    var r=Math.floor(Math.random()*mcQuestions.length);
+    if(mcIndices.indexOf(r)<0)mcIndices.push(r);
+  }
+  var sqIndices=[];
+  while(sqIndices.length<3){
+    var r=Math.floor(Math.random()*shortQuestions.length);
+    if(sqIndices.indexOf(r)<0)sqIndices.push(r);
+  }
+
+  examState={
+    mcIndices:mcIndices,
+    sqIndices:sqIndices,
+    mcAnswers:{},
+    sqAnswers:{},
+    startTime:Date.now(),
+    timeLimit:15*60,
+    timer:null
+  };
+
+  var content=document.getElementById('examContent');
+  content.innerHTML='';
+  mcIndices.forEach(function(origIdx,i){
+    var q=mcQuestions[origIdx];
+    var card=document.createElement('div');
+    card.className='quiz-card';
+    card.id='exam-mc-'+i;
+    card.innerHTML='<div class="q-num">选择题 #'+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+    q.opts.forEach(function(o,j){
+      card.innerHTML+='<button class="option" id="exam-mc-'+i+'-opt-'+j+'" onclick="examAnswerMC('+i+','+j+')">'+'ABCD'[j]+'. '+o+'</button>';
+    });
+    content.appendChild(card);
+  });
+
+  sqIndices.forEach(function(origIdx,i){
+    var q=shortQuestions[origIdx];
+    var card=document.createElement('div');
+    card.className='quiz-card';
+    card.id='exam-sq-'+i;
+    card.innerHTML='<div class="q-num">简答题 #'+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+    card.innerHTML+='<textarea class="short-answer" id="exam-sq-'+i+'-input" placeholder="输入你的答案..."></textarea>';
+    content.appendChild(card);
+  });
+
+  document.getElementById('examStartBtn').style.display='none';
+  document.getElementById('examSubmitBtn').style.display='inline-block';
+  document.getElementById('examResult').style.display='none';
+  document.getElementById('examResult').innerHTML='';
+
+  var timerEl=document.getElementById('examTimer');
+  timerEl.classList.remove('warning');
+  var remaining=examState.timeLimit;
+  updateTimer(remaining);
+  examState.timer=setInterval(function(){
+    remaining--;
+    updateTimer(remaining);
+    if(remaining<=0){submitExam()}
+  },1000);
+}
+
+function updateTimer(s){
+  var m=Math.floor(s/60);
+  var sec=s%60;
+  var el=document.getElementById('examTimer');
+  el.textContent=m+':'+(sec<10?'0':'')+sec;
+  if(s<60)el.classList.add('warning');
+}
+
+function examAnswerMC(i,j){
+  if(examState.mcAnswers[i]!==undefined)return;
+  examState.mcAnswers[i]=j;
+  examState.mcIndices.forEach(function(_,k){
+  });
+  // Highlight selection
+  mcQuestions[examState.mcIndices[i]].opts.forEach(function(_,k){
+    var btn=document.getElementById('exam-mc-'+i+'-opt-'+k);
+    btn.style.background=k===j?'#fff8f0':'';
+    btn.style.borderColor=k===j?'var(--accent2)':'';
+  });
+}
+
+function submitExam(){
+  if(examState&&examState.timer){clearInterval(examState.timer);examState.timer=null}
+  if(!examState)return;
+
+  // Collect short answers
+  examState.sqIndices.forEach(function(_,i){
+    var el=document.getElementById('exam-sq-'+i+'-input');
+    if(el)examState.sqAnswers[i]=el.value.trim();
+  });
+
+  // Score
+  var mcCorrect=0;
+  var mcResults=[];
+  examState.mcIndices.forEach(function(origIdx,i){
+    var userAns=examState.mcAnswers[i];
+    var correctAns=mcQuestions[origIdx].ans;
+    var isCorrect=userAns===correctAns;
+    if(isCorrect)mcCorrect++;
+    mcResults.push({q:mcQuestions[origIdx],userAns:userAns,correctAns:correctAns,isCorrect:isCorrect});
+    if(!isCorrect){
+      errorBook.push({type:'exam_mc',index:origIdx,answer:userAns,time:Date.now()});
+    }
+  });
+  save('errors',errorBook);
+
+  var elapsed=Math.round((Date.now()-examState.startTime)/1000);
+  var m=Math.floor(elapsed/60);
+  var s=elapsed%60;
+
+  var resultDiv=document.getElementById('examResult');
+  resultDiv.style.display='block';
+  var html='<div class="card" style="margin-top:20px">';
+  html+='<h2>考试结果</h2>';
+  html+='<div class="stat-row">';
+  html+='<div class="stat-box"><div class="num">'+mcCorrect+'/7</div><div class="tag">选择题正确</div></div>';
+  html+='<div class="stat-box"><div class="num">'+(mcCorrect>=5?'通过 ✓':'需加强')+'</div><div class="tag">综合评价</div></div>';
+  html+='<div class="stat-box"><div class="num">'+m+'分'+s+'秒</div><div class="tag">用时</div></div>';
+  html+='</div>';
+
+  html+='<h3>选择题解析</h3>';
+  mcResults.forEach(function(r){
+    html+='<div class="quiz-card"><div class="q-text">'+r.q.q+'</div>';
+    html+='<p style="font-size:0.85rem;color:'+(r.isCorrect?'var(--success)':'var(--accent)')+'">';
+    if(r.isCorrect){
+      html+='✓ 你的答案：'+'ABCD'[r.userAns]+' 正确';
+    }else{
+      html+='✗ 你的答案：'+(r.userAns!==undefined?'ABCD'[r.userAns]:'未作答')+' | 正确答案：'+'ABCD'[r.correctAns];
+      html+='<br>'+r.q.explain;
+    }
+    html+='</p></div>';
+  });
+
+  html+='<h3>简答题参考</h3>';
+  examState.sqIndices.forEach(function(origIdx,i){
+    var q=shortQuestions[origIdx];
+    html+='<div class="quiz-card"><div class="q-text">'+q.q+'</div>';
+    html+='<p style="font-size:0.85rem"><strong>你的答案：</strong>'+(examState.sqAnswers[i]||'未作答')+'</p>';
+    html+='<p style="font-size:0.85rem;color:var(--text2);margin-top:8px"><strong>参考答案：</strong>'+q.ref+'</p></div>';
+  });
+
+  html+='</div>';
+  resultDiv.innerHTML=html;
+
+  document.getElementById('examSubmitBtn').style.display='none';
+  document.getElementById('examStartBtn').style.display='inline-block';
+  document.getElementById('examTimer').textContent='15:00';
+  document.getElementById('examTimer').classList.remove('warning');
+  examState=null;
+}
+
+// ===== TAB 5: REVIEW =====
+function renderReview(){
+  // Error book
+  var ebDiv=document.getElementById('errorBook');
+  if(errorBook.length===0){
+    ebDiv.innerHTML='<p style="color:var(--text2);text-align:center;padding:20px">暂无错题，继续保持！</p>';
+  }else{
+    var html='';
+    var unique=new Map();
+    errorBook.slice().reverse().forEach(function(e){
+      var key=e.type+'-'+e.index;
+      if(!unique.has(key)){
+        unique.set(key,e);
+        var q=e.type.includes('mc')?mcQuestions[e.index]:null;
+        if(q){
+          html+='<div class="quiz-card"><div class="q-text">'+q.q+'</div>';
+          html+='<p style="font-size:0.85rem;color:var(--accent)">你的答案：'+(e.answer!==undefined?'ABCD'[e.answer]:'未作答')+' | 正确答案：'+'ABCD'[q.ans]+'</p>';
+          html+='<p style="font-size:0.85rem;color:var(--text2)">'+q.explain+'</p>';
+          html+='<button class="btn" onclick="retryError('+e.index+')">重新作答</button></div>';
+        }
+      }
+    });
+    ebDiv.innerHTML=html;
+  }
+
+  // Weakness analysis
+  var wcDiv=document.getElementById('weaknessChart');
+  var conceptErrors={};
+  concepts.forEach(function(c){conceptErrors[c.name]=0});
+  errorBook.forEach(function(e){
+    var q=e.type.includes('mc')?mcQuestions[e.index]:null;
+    if(q&&q.concept&&conceptErrors[q.concept]!==undefined)conceptErrors[q.concept]++;
+  });
+  var sorted=Object.entries(conceptErrors).filter(function(e){return e[1]>0}).sort(function(a,b){return b[1]-a[1]});
+  if(sorted.length===0){
+    wcDiv.innerHTML='<p style="color:var(--text2);text-align:center;padding:20px">各概念掌握良好，暂无薄弱点</p>';
+  }else{
+    var wh='';
+    sorted.forEach(function(e){
+      var max=sorted[0][1];
+      var pct=Math.round(e[1]/max*100);
+      wh+='<div class="progress-wrap"><div class="label"><span>'+e[0]+'</span><span>'+e[1]+'题</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:linear-gradient(90deg,#b8860b,var(--accent))"></div></div></div>';
+    });
+    wcDiv.innerHTML=wh;
+  }
+
+  // Stats
+  var totalAnswered=Object.keys(mcAnswers).length;
+  var totalShort=Object.keys(shortAnswers).length;
+  var correct=0;
+  Object.keys(mcAnswers).forEach(function(k){
+    if(mcAnswers[k]===mcQuestions[parseInt(k)].ans)correct++;
+  });
+  var accuracy=totalAnswered>0?Math.round(correct/totalAnswered*100):0;
+  var statsDiv=document.getElementById('statsRow');
+  statsDiv.innerHTML='<div class="stat-box"><div class="num">'+totalAnswered+'</div><div class="tag">选择题完成</div></div>';
+  statsDiv.innerHTML+='<div class="stat-box"><div class="num">'+accuracy+'%</div><div class="tag">选择题正确率</div></div>';
+  statsDiv.innerHTML+='<div class="stat-box"><div class="num">'+totalShort+'</div><div class="tag">简答题作答</div></div>';
+  statsDiv.innerHTML+='<div class="stat-box"><div class="num">'+errorBook.length+'</div><div class="tag">累计错题</div></div>';
+  statsDiv.innerHTML+='<div class="stat-box"><div class="num">'+learnedCards.length+'/'+concepts.length+'</div><div class="tag">概念已学</div></div>';
+}
+
+function retryError(index){
+  switchTab(2);
+  setTimeout(function(){
+    var el=document.getElementById('mc-'+index);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  },200);
+}
+
+// ===== TAB 6: MIND MAP =====
+function initMindmap(){
+  if(document.getElementById('mindmap').children.length>0)return;
+  var tree=[
+    {label:'财富底层逻辑',open:true,children:[
+      {label:'认知偏差（人性天敌）',open:true,children:[
+        {leaf:'框架效应：表述方式改变决策偏好'},
+        {leaf:'沉没成本谬误：已投入≠该继续'},
+        {leaf:'证实偏见：只找支持自己的证据'},
+        {leaf:'情感偏见：日久生情，越看越爱'},
+        {leaf:'对比效应：错误对标导致误判'},
+        {leaf:'过度自信：70%的人认为自己比平均聪明'}
+      ]},
+      {label:'价值投资（核心方法论）',open:false,children:[
+        {leaf:'能力圈：不做自己不懂的事'},
+        {leaf:'安全边际：以低于内在价值的价格买入'},
+        {leaf:'现金流至上：利润可造假，现金不会'},
+        {leaf:'长期持有：时间是优质企业的朋友'},
+        {leaf:'不做空不杠杆：避免一次满盘皆输'},
+        {leaf:'投资是艺术：不可批量复制'}
+      ]},
+      {label:'风险控制（生存第一）',open:false,children:[
+        {leaf:'夏普比率：风险调整后回报衡量'},
+        {leaf:'资产配置：股债比例决定80%收益'},
+        {leaf:'再平衡：每年一次，实践反人性操作'},
+        {leaf:'防御性思维：假设最坏情况会发生'},
+        {leaf:'指数定投：消灭选股和择时的双重风险'}
+      ]},
+      {label:'财报分析（排雷工具）',open:false,children:[
+        {leaf:'现金流：经营/融资/投资三种来源'},
+        {leaf:'应收账款：过高比例=促销或造假'},
+        {leaf:'关联交易：自家买自家，警惕利益输送'},
+        {leaf:'审计意见：带强调事项段=红色警报'},
+        {leaf:'创始人行为：套现=信心不足'}
+      ]},
+      {label:'防骗机制（免疫系统）',open:false,children:[
+        {leaf:'庞氏骗局：借新还旧+无造血能力'},
+        {leaf:'对敲：自买自卖推高股价后套现'},
+        {leaf:'水变油逻辑：违反基本科学定律'},
+        {leaf:'共享经济拷贝：不懂深层逻辑的模仿'},
+        {leaf:'麦道夫骗局：600亿美元，旧骗局新包装'}
+      ]},
+      {label:'市场规律（宏观认知）',open:false,children:[
+        {leaf:'市场永远是对的：模型错≠市场错'},
+        {leaf:'不可预测性：短期波动是噪音'},
+        {leaf:'复利的力量：230年100→20亿美元'},
+        {leaf:'中等收入陷阱：内在动力vs外在依赖'},
+        {leaf:'全球化底层逻辑：要素自由流动'}
+      ]},
+      {label:'财富哲学（人生迁移）',open:false,children:[
+        {leaf:'金钱观：钱是资源调动能力的量度'},
+        {leaf:'司马迁五境界：善者因之，最下与之争'},
+        {leaf:'家族传承：价值观>金钱，配偶选择很关键'},
+        {leaf:'挣钱效率：稀缺技能决定单位时间价值'},
+        {leaf:'投资自己：对工薪族是最好的投资'}
+      ]}
+    ]}
+  ];
+
+  var container=document.getElementById('mindmap');
+  function buildTree(nodes){
+    var ul=document.createElement('ul');
+    ul.style.cssText='list-style:none;padding-left:0';
+    nodes.forEach(function(n){
+      var li=document.createElement('li');
+      li.className='tree-node';
+      if(n.children){
+        var toggle=document.createElement('span');
+        toggle.className='tree-toggle'+(n.open?' open':'');
+        toggle.textContent='▶';
+        var label=document.createElement('span');
+        label.style.cssText='font-weight:700;color:var(--accent);cursor:pointer';
+        label.textContent=' '+n.label;
+        label.onclick=function(){toggle.click()};
+
+        var childrenDiv=document.createElement('div');
+        childrenDiv.className='tree-children'+(n.open?' open':'');
+        childrenDiv.appendChild(buildTree(n.children));
+
+        toggle.onclick=function(){
+          toggle.classList.toggle('open');
+          childrenDiv.classList.toggle('open');
+        };
+
+        li.appendChild(toggle);
+        li.appendChild(label);
+        li.appendChild(childrenDiv);
+      }else if(n.leaf){
+        li.className='tree-leaf';
+        li.textContent='· '+n.leaf;
+      }
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+  container.appendChild(buildTree(tree));
+}
+
+// ===== TAB 7: SOCRATIC =====
+function renderSocratic(){
+  var items=[
+    {
+      q:'第1层：为什么聪明人也会犯低级投资错误？',
+      a:'因为人类大脑进化出"快捷方式"（系统1）来处理日常决策——省能量、速度快，但遇到复杂的投资问题时，系统1的直觉经常出错（框架效应、证实偏见等）。聪明不等于理性，理性是一种需要刻意练习的思维习惯。',
+      deeper:[
+        {q:'第2层：那么如何训练"理性思维习惯"？',a:'卡尼曼建议：①积累基础知识（数学、逻辑、常识）——CRT测试中MIT学生也犯错，因为缺乏基本数学常识；②主动寻找反例——像科学家一样"假设-验证-修正"而非"假设-证实-停止"；③在重要决策前强制停顿——给系统2一个介入的机会。'},
+        {q:'第2层：既然理性这么"反人性"，我们真的能做到吗？',a:'卡尼曼自己也承认理性思维"有悖于人类习惯"，但他认为通过刻意练习可以转化为思维习惯。类比：开车时看后视镜最初也很"反人性"，但经过训练就能自动执行。查理·芒格的"人类误判心理学"清单，就是理性思维的训练工具。'}
+      ]
+    },
+    {
+      q:'第1层：巴菲特为什么给后代推荐指数基金，而不是"继续我的投资方法"？',
+      a:'因为巴菲特深知投资是"艺术"而非"技术"——像肖邦的钢琴技艺，无法通过培训班生产。他自己能获得年均22%回报，但他清楚这种能力不可遗传。指数基金是"技术"——规则明确、可复制的方案，适合没有艺术天赋的普通人。',
+      deeper:[
+        {q:'第2层：这是否意味着普通人永远无法成为优秀的投资者？',a:'不是"永远无法"，而是"不需要成为"。投资的目的是实现财务目标，而非"成为股神"。普通人通过指数定投+长期坚持，完全可以获得8%-10%的年化回报，这足以实现养老自由（30年年投2万，8%回报→136万）。把精力花在提升自己的职业收入上，回报率远高于研究股票。'},
+        {q:'第2层：但总有人能"战胜市场"啊？',a:'是的，但比例极低（美国仅5%的散户跑赢指数），且你无法提前识别谁会是那5%。更重要的是，短期战胜市场的人中，"运气"成分远高于"能力"——连续15年跑赢标普500的比尔·米勒，在2008年金融危机中损失惨重。巴菲特自己也说：如果能少犯错误，伯克希尔规模将远超当前。'}
+      ]
+    },
+    {
+      q:'第1层：为什么"时间"比"时机"重要？',
+      a:'因为精准择时在数学上几乎不可能——你需要连续两次做对（低点买+高点卖）。假设每次判断的正确率是70%，两次都对的概率只有49%。而长期持有的策略只需要做对一个判断（"经济长期向上"），这个判断的历史正确率接近100%。',
+      deeper:[
+        {q:'第2层：如果我在2007年A股6000点时买入呢？那岂不是被套十几年？',a:'这就是为什么需要"资产配置"和"定投"而非"一次性全仓买入"。如果你在2007年开始每月定投，你的平均成本会远低于6000点——因为你在低点买入了更多份额。这正是定投的优势：不需要预测市场，你自动"低点多买、高点少买"。'},
+        {q:'第2层：但我听说有人极精准地抄底逃顶？',a:'幸存者偏差。你听到的是成功者的故事——失败者不会到处说。而且，即使同一个人在上一轮做到了，下一轮大概率做不到。凯恩斯说："市场保持非理性的时间，可能比你保持偿付能力的时间更长。"即使你判断对了方向，时机不对也可能破产。'}
+      ]
+    },
+    {
+      q:'第1层："不做的智慧"为什么比"做什么"更重要？',
+      a:'因为在投资中，"不做"能让你避免致命错误，而一次致命错误就能抹去无数次成功的积累。巴菲特三大禁忌（不懂不做、不做空、不杠杆）的目的不是提高收益，而是降低"出局"的概率。只要不出局，复利就会为你工作。',
+      deeper:[
+        {q:'第2层：那为什么这么多人仍然选择"做什么"而非"不做什么"？',a:'①FOMO（害怕错过）——看到别人赚钱比自己亏钱更难受；②过度自信——相信自己"不一样"；③行动偏差——人类倾向于"做点什么"而非"什么都不做"，尤其在压力下。巴菲特的智慧恰恰在于对抗这些本能：在别人贪婪时恐惧，在别人恐惧时贪婪——而这首先需要"不做"的纪律。'}
+      ]
+    }
+  ];
+
+  var list=document.getElementById('socraticList');
+  items.forEach(function(item){
+    var div=document.createElement('div');
+    div.className='socratic-item';
+
+    var qEl=document.createElement('div');
+    qEl.className='socratic-q';
+    qEl.textContent=item.q;
+    qEl.onclick=function(){aEl.classList.toggle('open')};
+
+    var aEl=document.createElement('div');
+    aEl.className='socratic-a';
+    aEl.innerHTML='<p>'+item.a+'</p>';
+
+    if(item.deeper){
+      item.deeper.forEach(function(d){
+        aEl.innerHTML+='<div class="socratic-item" style="margin-top:12px"><div class="socratic-q" style="font-size:0.9rem" onclick="var n=this.nextElementSibling;n.classList.toggle(\'open\')">'+d.q+'</div><div class="socratic-a">'+d.a+'</div></div>';
+      });
+    }
+
+    div.appendChild(qEl);
+    div.appendChild(aEl);
+    list.appendChild(div);
+  });
+}
+
+// ===== TAB 8: CASE STUDY =====
+function renderCaseStudy(){
+  var div=document.getElementById('caseStudy');
+  div.innerHTML=`
+    <div class="card" style="border-left:5px solid var(--accent)">
+      <h3>案例：安然公司破产（2001年）</h3>
+      <p style="color:var(--text2)">巅峰市值700亿美元，道琼斯30成分股，连续六年"最具创新精神公司"——一周内股价从90美元跌至1美元以下。</p>
+    </div>
+
+    <h3>MKS 四维度拆解</h3>
+
+    <div class="card"><h4>维度一：认知偏差——"创新"标签如何蒙蔽理性？</h4>
+    <p>安然被包装为"能源交易的颠覆者"，其商业模式（跨区域电力倒卖）确实具有创新性。但<strong>创新≠盈利能力</strong>。投资者陷入<strong>证实偏见</strong>——只关注"最具创新精神"的称号和漂亮的营收数字，而忽视了《财富》小记者指出的<strong>现金流异常</strong>：一个能源公司，现金收入竟然主要来自卖资产而非主营业务。</p></div>
+
+    <div class="card"><h4>维度二：财报分析——三个致命信号</h4>
+    <p>①<strong>现金流来源</strong>：收入依赖子公司间"击鼓传花"式的高价资产循环交易，而非稳定的能源销售；②<strong>利益共同体</strong>：华尔街分析师持续高评级，安达信参与造假，银行明知有问题仍放贷（期待股价上涨后转股获利）；③<strong>高管行为</strong>：CEO、CFO通过虚增利润获取高额奖金后套现，与创始人信心正相关原则完全违背。</p></div>
+
+    <div class="card"><h4>维度三：风险控制——为什么"专业人士"也栽了？</h4>
+    <p>①<strong>单一资产配置</strong>：安然员工大量持有公司股票，工作+退休金全部绑定——公司破产后血本无归；②<strong>忽视夏普比率</strong>：表面高增长背后是极高的"波动性风险"（会计造假被揭发的概率）；③<strong>缺乏防御性思维</strong>：没有假设"如果财报是假的呢？"——即使是最受尊敬的公司也可能造假。</p></div>
+
+    <div class="card"><h4>维度四：投资策略——对中国投资者的启示</h4>
+    <p>①<strong>远离"概念股"</strong>：中国市场大量公司存在"概念炒作"+"利益共同体捧场"模式，与安然类似；②<strong>现金流检验</strong>：无论公司讲什么故事，先看现金流是否来自经营而非融资或卖资产；③<strong>指数化投资</strong>：如果你无法像巴菲特一样深度研究公司（十年只研究少数股票），<strong>指数基金是你最好的选择</strong>——它自动排除了安然这类被退市的公司。</p></div>
+  `;
+}
+
+// ===== TAB 9: DECISION SIMULATION =====
+function renderDecisions(){
+  var rounds=[
+    {
+      title:'第1轮：你是一名普通投资者',
+      scenario:'你有50万积蓄，刚看到新闻说某"AI概念股"半年涨了200%，周围同事都在讨论这只股票。你的朋友建议你全仓买入"搏一把"。你怎么做？',
+      choices:[
+        {text:'全仓买入——机会不等人，错过就没了',result:'错误。这正是FOMO（害怕错过）驱动下的典型非理性决策。AI概念股的高涨幅可能来自对敲或市场炒作，半年涨200%意味着"别人已经赚完了"。全仓单一标的=赌博而非投资，一次黑天鹅就归零。',rating:'bad',mks:'认知偏差（FOMO+证实偏见）→违背资产配置原则→忽视风险控制'},
+        {text:'用20%资金买入，其余配置指数基金和国库券',result:'较好的选择。你既没有完全错过机会（小仓位参与），也保持了资产的安全性（80%在低风险工具）。这是"资产配置"思维的具体应用——不要把所有鸡蛋放在一个篮子里。但需要问自己：20%的资金投资一只概念股，你真的了解这家公司吗？',rating:'good',mks:'资产配置→不把鸡蛋放在一个篮子里→保留大部分资金在能力圈内'},
+        {text:'不买——这只股票我不了解，继续做指数基金定投',result:'这是最符合巴菲特"能力圈"原则的选择。50万做指数定投，假设年化8%，30年后≈500万。这不需要你"打败市场"，只需要你持续在场。记住：仅5%的散户跑赢指数。不熟悉的钱不赚，是投资中最难但最重要的事。',rating:'best',mks:'能力圈+价值投资→不懂不做→长期复利是最确定的路'}
+      ]
+    },
+    {
+      title:'第2轮：你持有的股票跌了30%',
+      scenario:'你买入的一只蓝筹股从买入价跌了30%。你研究了公司的财报，发现：①营收仍在增长；②现金流正常来自经营；③行业前景没有根本变化。下跌原因是整个市场在调整。你怎么做？',
+      choices:[
+        {text:'立即卖出止损——跌了30%还不够吗',result:'这是"损失厌恶"的典型表现。如果公司基本面没有变化，股价下跌反而是"打折促销"的机会。巴菲特说："在别人恐惧时贪婪。"但前提是你确认基本面没问题——这正是你做功课的意义。',rating:'bad',mks:'损失厌恶驱动→没有区分"价格波动"和"价值变化"→错失低成本买入机会'},
+        {text:'什么都不做——继续持有等待回升',result:'可以接受。如果你确认公司基本面没问题，市场调整是暂时的，那持有等待是合理的。但这没有充分利用市场给你的机会——如果这是你资产配置中的一部分，再平衡策略会建议你用债券/现金适当补仓。',rating:'good',mks:'长期持有→区分噪音和信号→但未充分把握市场低迷的机会'},
+        {text:'按再平衡策略，用一部分债券/现金补仓该股票',result:'最优选择。这正是巴菲特"别人恐惧时我贪婪"的具体操作。但前提是：①你之前做了资产配置（有债券/现金可用）；②你确认公司基本面没问题（在能力圈内）；③你控制补仓比例（不打破资产配置的股债比例）。',rating:'best',mks:'再平衡→基本面分析+情绪纪律→市场恐惧时你贪婪→低价增持优质资产'}
+      ]
+    },
+    {
+      title:'第3轮：一个朋友邀请你投资他的创业项目',
+      scenario:'你的大学同学辞职创业，项目是"区块链+AI+共享经济"平台。他说目前天使轮估值5000万，已经有三位知名投资人确认参与。他给你一周时间考虑，投资门槛20万。你怎么做？',
+      choices:[
+        {text:'拒绝——我不懂区块链也不懂AI创业，超出了我的能力圈',result:'巴菲特的答案。记住他的三大禁忌之首："不做自己不懂的事情"。即使这个项目将来大获成功，也不代表你的决策错了——你只是拒绝了一个"不理解的赌局"。20万对你可能是大钱，但对天使投资人来说只是一笔小赌注——你们的处境不同。',rating:'best',mks:'能力圈→不懂不做→拒绝FOMO→保护本金'},
+        {text:'看看其他投资人的背景，如果确实知名就投',result:'有风险。塞让诺斯（Theranos）的站台阵容包括基辛格和马克·安德森——全明星阵容不等于项目靠谱（董事会无一人有技术背景）。"跟风投资"本质上是把决策权交给了别人，但亏损的责任仍在你。如果亏了20万，你无法去找基辛格要回来。',rating:'bad',mks:'对比效应→用"名人光环"替代"独立判断"→缺乏尽职调查'},
+        {text:'深入了解项目商业模式，如果逻辑自洽就投',result:'可以但需谨慎。风险投资的不确定性极高——即使商业模式"逻辑自洽"，90%以上的创业公司最终失败。你需要问自己几个问题：①20万占你总资产多大比例？（应不超过5%）②你能承受全部损失吗？③你能锁定至少7年不动用这笔钱吗？（风险投资流动性极差）如果不能全部回答Yes，建议不投。',rating:'good',mks:'尽职调查→评估风险承受力→清醒认识风险投资的高失败率'}
+      ]
+    }
+  ];
+
+  var container=document.getElementById('decisionRounds');
+  rounds.forEach(function(r,i){
+    var div=document.createElement('div');
+    div.className='decision-round';
+    div.innerHTML='<h3>'+r.title+'</h3><div class="scenario">'+r.scenario+'</div>';
+    r.choices.forEach(function(c,j){
+      div.innerHTML+='<button class="choice-btn" id="dec-'+i+'-btn-'+j+'" onclick="decide('+i+','+j+')">'+(j+1)+'. '+c.text+'</button>';
+    });
+    div.innerHTML+='<div class="result-box" id="dec-'+i+'-result"></div>';
+    container.appendChild(div);
+  });
+
+  // Store rounds data
+  window._decisionRounds=rounds;
+}
+
+function decide(roundIdx,choiceIdx){
+  var r=window._decisionRounds[roundIdx];
+  var c=r.choices[choiceIdx];
+  var resultBox=document.getElementById('dec-'+roundIdx+'-result');
+  var bg={best:'#e8f5e9',good:'#fff8e0',bad:'#fde8e8'};
+  var border={best:'var(--success)',good:'var(--accent2)',bad:'var(--accent)'};
+  resultBox.innerHTML='<strong>'+(choiceIdx+1)+'. '+c.text+'</strong><p style="margin-top:6px">'+c.result+'</p><p style="margin-top:4px;font-size:0.85rem;color:var(--accent)"><strong>MKS分析：</strong>'+c.mks+'</p>';
+  resultBox.style.background=bg[c.rating];
+  resultBox.style.border='1px solid '+border[c.rating];
+  resultBox.classList.add('show');
+
+  // Disable buttons
+  for(var j=0;j<3;j++){
+    document.getElementById('dec-'+roundIdx+'-btn-'+j).disabled=true;
+    document.getElementById('dec-'+roundIdx+'-btn-'+j).style.opacity=j===choiceIdx?'1':'0.5';
+  }
+}
+
+// ===== INIT =====
+function init(){
+  initTabs();
+  renderDashboard();
+  renderCard();
+  renderQuestionBank();
+  renderSocratic();
+  renderCaseStudy();
+  renderDecisions();
+  switchTab(0);
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
