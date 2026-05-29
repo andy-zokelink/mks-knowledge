@@ -8,65 +8,89 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
 --bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
---text:#3d2f2f;--sub:#6b5b5b;--light:#faf3e6;--border:#e0d5c5;
---green:#2d7d46;--blue:#3a6ea5;--star:#d4890e;
+--text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--gold:#b8860b;
+--shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
+--green:#2d7d46;--blue:#3a6ea5;
 }
-body{font-family:"Noto Serif SC","Source Han Serif SC","STSong",Georgia,"Times New Roman",serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
-.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,28px)}
-h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);text-align:center;margin:0.5em 0 0.2em;letter-spacing:0.04em}
-.subtitle{text-align:center;color:var(--sub);font-size:clamp(0.85rem,2vw,1rem);margin-bottom:clamp(16px,3vw,28px)}
-.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px 4px;background:var(--bg);border-bottom:2px solid var(--border);margin-bottom:clamp(12px,2vw,24px)}
-.tab-btn{padding:6px 12px;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;cursor:pointer;font-size:clamp(0.72rem,1.5vw,0.88rem);white-space:nowrap;transition:all .2s;font-family:inherit}
-.tab-btn:hover,.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+
+header{text-align:center;padding:clamp(24px,5vh,48px) 0 clamp(16px,3vh,32px)}
+header h1{font-size:clamp(1.5rem,3.5vw,2rem);color:var(--accent);margin-bottom:8px}
+header .sub{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2)}
+header .home-link{display:inline-block;margin-top:12px;padding:6px 20px;border:2px solid var(--accent);border-radius:20px;color:var(--accent);text-decoration:none;font-size:.88rem;transition:all .25s}
+header .home-link:hover{background:var(--accent);color:#fff}
+
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
+.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
+.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff}
+
 .tab-content{display:none;animation:fadeIn .35s ease}
 .tab-content.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(14px,2.5vw,24px);margin-bottom:clamp(12px,2vw,20px);box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.card h2{color:var(--accent);font-size:clamp(1.1rem,2.2vw,1.4rem);margin-bottom:0.6em;border-bottom:2px solid var(--accent2);padding-bottom:0.3em}
-.card h3{color:var(--text);font-size:clamp(1rem,2vw,1.15rem);margin:0.5em 0 0.4em}
-.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px}
-.concept-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:transform .15s,box-shadow .15s;cursor:default}
-.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
-.concept-card .icon{font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:6px}
-.concept-card .name{font-weight:700;color:var(--accent);font-size:clamp(0.9rem,1.8vw,1.05rem)}
-.concept-card .brief{font-size:clamp(0.72rem,1.3vw,0.82rem);color:var(--sub);margin-top:4px}
-.mks-star{position:relative;border-color:var(--star)}
-.mks-star::before{content:"★";position:absolute;top:-8px;right:-4px;color:var(--star);font-size:1.6rem;line-height:1}
-.progress-bar{width:100%;height:18px;background:var(--light);border-radius:9px;overflow:hidden;margin:8px 0}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:9px;transition:width .5s}
-.progress-text{font-size:0.82rem;color:var(--sub);text-align:right;margin-top:2px}
-.svg-wrap{overflow-x:auto;margin:0 -8px;padding:0 8px}
-.svg-wrap svg{min-width:560px;display:block;margin:0 auto}
-.legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:0.8rem;color:var(--sub);margin-top:8px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+h2{font-size:clamp(1.2rem,2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent2)}
+h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
+
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s;text-align:left}
+.concept-card:hover{transform:translateY(-2px)}
+.concept-card.mks{border-left-color:var(--gold);position:relative}
+.concept-card.mks::after{content:'★';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
+.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
+.concept-card .icon{font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:4px;display:block}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-core{background:#fde8e8;color:var(--accent)}
+.badge-mks{background:#fef3cd;color:var(--gold)}
+.badge-boundary{background:#e8f0fe;color:#3a6ea5}
+
+.progress-wrap{margin:16px 0}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
+.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
 .legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
 .legend .line{display:inline-block;width:20px;height:3px;border-radius:2px}
+
 .boundary-table{overflow-x:auto}
 .boundary-table table{width:100%;border-collapse:collapse;font-size:clamp(0.75rem,1.4vw,0.9rem)}
 .boundary-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
 .boundary-table td{padding:7px 12px;border-bottom:1px solid var(--border)}
-.boundary-table tr:nth-child(even){background:var(--light)}
+.boundary-table tr:nth-child(even){background:#fef9f4}
+
 .path-steps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .path-step{flex:1 1 140px;max-width:200px;background:var(--card);border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center}
 .path-step .num{display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:0.85rem;margin-bottom:6px}
 .path-step h4{color:var(--accent);font-size:0.92rem;margin:4px 0}
-.path-step p{font-size:0.78rem;color:var(--sub)}
+.path-step p{font-size:0.78rem;color:var(--text2)}
 .flip-container{perspective:800px;width:100%;max-width:400px;height:280px;margin:16px auto;cursor:pointer}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
 .flip-container.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border:2px solid var(--border)}
-.flip-front{background:var(--card);border-color:var(--accent2)}
-.flip-front h3{color:var(--accent);font-size:1.3rem}
-.flip-front .hint{color:var(--sub);font-size:0.8rem;margin-top:8px}
-.flip-back{background:var(--light);transform:rotateY(180deg);justify-content:flex-start;text-align:left;font-size:0.88rem;overflow-y:auto}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-shadow:var(--shadow)}
+.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700}
+.flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:.85rem;line-height:1.6;align-items:flex-start;text-align:left;overflow-y:auto}
 .flip-back h4{color:var(--accent);font-size:1rem;margin:6px 0 4px}
 .flip-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0}
-.flip-nav button{padding:6px 16px;border:1px solid var(--border);background:var(--card);border-radius:6px;cursor:pointer;font-size:1.1rem;color:var(--text)}
+.flip-nav button{padding:8px 20px;border-radius:20px;border:2px solid var(--accent);background:var(--card);color:var(--accent);cursor:pointer;font-size:.85rem;transition:all .2s}
 .flip-nav button:hover{background:var(--accent);color:#fff}
-.flip-nav .counter{font-size:0.85rem;color:var(--sub)}
+.flip-nav .counter{font-size:0.85rem;color:var(--text2)}
 .learned-btn{padding:6px 20px;background:var(--green);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.9rem;margin-top:8px}
 .quiz-option{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:1px solid var(--border);background:var(--card);border-radius:8px;cursor:pointer;font-size:clamp(0.82rem,1.5vw,0.95rem);transition:all .2s}
-.quiz-option:hover{background:var(--light);border-color:var(--accent2)}
-.quiz-option.correct{background:#d4edda;border-color:var(--green);color:var(--green)}
+.quiz-option:hover{background:#fef9f4;border-color:var(--accent2)}
+.quiz-option.correct{background:#d4edda;border-color:#4caf50;color:#2e7d32}
 .quiz-option.wrong{background:#f8d7da;border-color:var(--accent);color:var(--accent)}
 .quiz-option:disabled{cursor:default}
 .quiz-feedback{padding:10px;border-radius:8px;margin:8px 0;font-size:0.88rem}
@@ -83,7 +107,7 @@ h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);text-align:center;margin
 .tree-toggle.open::before{transform:rotate(90deg)}
 .tree-children{display:none}
 .tree-children.show{display:block}
-.socratic-q{margin:12px 0;padding:10px;border-left:3px solid var(--accent2);background:var(--light);border-radius:0 8px 8px 0}
+.socratic-q{margin:12px 0;padding:10px;border-left:3px solid var(--accent2);background:#fef9f4;border-radius:0 8px 8px 0}
 .socratic-q .question{cursor:pointer;font-weight:700;color:var(--accent);font-size:0.95rem}
 .socratic-q .answer{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.88rem;color:var(--text)}
 .socratic-q .answer.show{display:block}
@@ -96,52 +120,51 @@ h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);text-align:center;margin
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
 .stat-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
 .stat-item .value{font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--accent);font-weight:700}
-.stat-item .label{font-size:0.8rem;color:var(--sub)}
-.home-link{display:inline-block;margin:0 auto;padding:6px 18px;border:1px dashed var(--accent2);border-radius:20px;color:var(--accent);font-size:0.82rem;text-decoration:none;text-align:center}
-.home-link:hover{background:var(--light)}
+.stat-item .label{font-size:0.8rem;color:var(--text2)}
+.home-link{display:inline-block;margin:0 auto;padding:6px 18px;border:2px solid var(--accent);border-radius:20px;color:var(--accent);font-size:0.82rem;text-decoration:none;text-align:center}
+.home-link:hover{background:var(--accent);color:#fff}
 .text-center{text-align:center}
 .mt-12{margin-top:12px}
 .mb-12{margin-bottom:12px}
+.hidden{display:none}
 @media(max-width:600px){
 .flip-container{height:320px}
 .tab-btn{font-size:0.7rem;padding:5px 8px}
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <div class="container">
+<header>
 <h1>吴军·谷歌方法论 — 计算机思维</h1>
-<p class="subtitle">最小知识集 · 78篇笔记提炼 | 计算核心驱动现实决策</p>
-<div class="text-center mb-12"><a class="home-link" href="#" onclick="alert('知识主板首页即将构建')">← 返回知识主板</a></div>
-<div class="tab-bar" id="tabBar"></div>
+<div class="sub">最小知识集 · 78篇笔记提炼 | 计算核心驱动现实决策</div>
+<a href="#" class="home-link" onclick="switchTab(0);return false">← 返回首页</a>
+</header>
+
+<nav class="tab-bar" id="tabBar"></nav>
 
 <!-- ======== TAB 1: 知识集总览 ======== -->
 <div class="tab-content active" id="tab-0">
 <div class="card">
 <h2>核心目标</h2>
-<p style="font-size:clamp(1rem,2vw,1.2rem)">将<strong>计算机的底层思维方式</strong>（递归、分治、等价转换、量级思维、信息论）迁移到现实世界的问题解决中——用算法的眼睛看世界，用数据的方法做决策。</p>
+<p style="font-size:1.05rem">将<strong>计算机的底层思维方式</strong>（递归、分治、等价转换、量级思维、信息论）迁移到现实世界的问题解决中——用算法的眼睛看世界，用数据的方法做决策。</p>
 </div>
 
-<h2 style="color:var(--accent);margin-top:16px">10个核心概念</h2>
-<div class="dashboard-grid" id="conceptGrid"></div>
+<h2>10个核心概念</h2>
+<div class="grid3" id="conceptGrid"></div>
 
-<h2 style="color:var(--accent);margin-top:16px">★ MKS 核心骨架（4个必须深刻理解的元概念）</h2>
-<div class="dashboard-grid" id="mksStars"></div>
-
-<div class="card">
-<h2>学习进度</h2>
-<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-<p class="progress-text" id="progressText">已学习 0/10 概念 · 正确率 --% · 持续 0 天</p>
-</div>
+<h2>★ MKS 核心骨架（4个必须深刻理解的元概念）</h2>
+<div class="grid2" id="mksStars"></div>
 
 <div class="card">
 <h2>概念关系图</h2>
 <div class="svg-wrap" id="svgMap"></div>
 <div class="legend">
-<span><i class="line" style="background:#a0522d"></i> 核心驱动</span>
-<span><i class="line" style="background:#c0392b"></i> 层级/组合</span>
-<span><i class="line" style="background:#d4a574;border-style:dashed"></i> 映射/等价</span>
-<span><i class="line" style="background:#d4890e"></i> MKS概念 · 应用实践</span>
+<span><span class="dot" style="background:#c0392b"></span> 核心驱动</span>
+<span><span class="dot" style="background:#b8860b"></span> MKS概念</span>
+<span><span class="dot" style="background:#3a6ea5"></span> 映射/等价</span>
+<span><span class="dot" style="background:#6b8e23"></span> 应用实践</span>
 </div>
 </div>
 
@@ -158,6 +181,12 @@ h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);text-align:center;margin
 <div class="card">
 <h2>学习路径（5阶段推荐顺序）</h2>
 <div class="path-steps" id="pathSteps"></div>
+</div>
+
+<h2>学习进度</h2>
+<div class="progress-wrap">
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="progress-label" id="progressText">已学习 0/10 概念 · 正确率 --% · 持续 0 天</div>
 </div>
 </div>
 
@@ -380,259 +409,287 @@ function renderDashboard(){
 // Concept grid
 let cg = document.getElementById('conceptGrid');
 cg.innerHTML = allConcepts.map(c=>`
-<div class="concept-card${c.mks?' mks-star':''}">
-<div class="icon">${c.icon}</div>
-<div class="name">${c.name}</div>
-<div class="brief">${c.brief}</div>
+<div class="concept-card${c.mks?' mks':''}">
+<span class="icon">${c.icon}</span>
+<h4>${c.name}</h4>
+<p>${c.brief}</p>
 </div>`).join('');
 
 // MKS stars
 let ms = document.getElementById('mksStars');
 ms.innerHTML = mksConcepts.map(c=>`
-<div class="concept-card mks-star">
-<div class="icon">${c.icon}</div>
-<div class="name">${c.name}</div>
-<div class="brief">${c.brief.split('——')[0]}</div>
-<p style="font-size:0.73rem;color:var(--sub);margin-top:6px">${c.brief.split('——')[1]||''}</p>
+<div class="concept-card mks">
+<span class="icon">${c.icon}</span>
+<h4>${c.name}</h4>
+<p>${c.brief}<br><span class="badge badge-mks" style="margin-top:6px">骨架概念</span></p>
 </div>`).join('');
 
 // SVG concept map
 let svg = document.getElementById('svgMap');
-svg.innerHTML = `<svg width="503pt" height="464pt"
- viewBox="0.00 0.00 503.40 464.42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 460.42)">
+svg.innerHTML = `<svg width="100%" height="auto"
+ viewBox="0.00 0.00 485.50 361.82" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 357.82)">
 <title>G</title>
-<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-460.42 499.4,-460.42 499.4,4 -4,4"/>
-<!-- abstract -->
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-357.82 481.5,-357.82 481.5,4 -4,4"/>
+<!-- root -->
 <g id="node1" class="node">
-<title>abstract</title>
-<ellipse fill="#a0522d" stroke="black" stroke-width="2" cx="162.4" cy="-429.55" rx="62.45" ry="26.74"/>
-<text text-anchor="middle" x="162.4" y="-433.35" font-family="Noto Serif SC" font-size="14.00" fill="white">抽象化建模</text>
-<text text-anchor="middle" x="162.4" y="-418.35" font-family="Noto Serif SC" font-size="14.00" fill="white">核心驱动力</text>
+<title>root</title>
+<ellipse fill="#c0392b" stroke="black" stroke-width="2" cx="194.5" cy="-326.95" rx="112.36" ry="26.74"/>
+<text text-anchor="middle" x="194.5" y="-330.75" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">抽象化建模</text>
+<text text-anchor="middle" x="194.5" y="-315.75" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">计算机思维核心驱动力</text>
 </g>
 <!-- scale -->
 <g id="node2" class="node">
 <title>scale</title>
-<ellipse fill="#c0392b" stroke="black" cx="162.4" cy="-341.22" rx="74.91" ry="25.41"/>
-<text text-anchor="middle" x="162.4" y="-344.82" font-family="Noto Serif SC" font-size="13.00" fill="white">效率量级</text>
-<text text-anchor="middle" x="162.4" y="-330.82" font-family="Noto Serif SC" font-size="13.00" fill="white">从O(2ⁿ)到O(n)</text>
+<ellipse fill="#a93226" stroke="black" cx="194.5" cy="-240.04" rx="65.11" ry="24.08"/>
+<text text-anchor="middle" x="194.5" y="-243.44" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">效率量级</text>
+<text text-anchor="middle" x="194.5" y="-230.44" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">从O(2ⁿ)到O(n)</text>
 </g>
-<!-- abstract&#45;&gt;scale -->
+<!-- root&#45;&gt;scale -->
 <g id="edge1" class="edge">
-<title>abstract&#45;&gt;scale</title>
-<path fill="none" stroke="#a0522d" stroke-width="1.8" d="M162.4,-402.65C162.4,-394.6 162.4,-385.59 162.4,-377.03"/>
-<polygon fill="#a0522d" stroke="#a0522d" stroke-width="1.8" points="165.9,-376.92 162.4,-366.92 158.9,-376.92 165.9,-376.92"/>
+<title>root&#45;&gt;scale</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M194.5,-300.02C194.5,-291.9 194.5,-282.83 194.5,-274.29"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="198,-274.23 194.5,-264.23 191,-274.23 198,-274.23"/>
 </g>
 <!-- recursion -->
 <g id="node3" class="node">
 <title>recursion</title>
-<ellipse fill="#d4890e" stroke="#8b6914" stroke-width="2.5" cx="59.4" cy="-257.14" rx="59.29" ry="22.76"/>
-<text text-anchor="middle" x="59.4" y="-260.34" font-family="Noto Serif SC" font-size="11.00" fill="white">递归思维</text>
-<text text-anchor="middle" x="59.4" y="-248.34" font-family="Noto Serif SC" font-size="11.00" fill="white">自顶向下分解</text>
+<path fill="#b8860b" stroke="black" stroke-width="2.5" d="M279.5,-180C279.5,-180 219.5,-180 219.5,-180 213.5,-180 207.5,-174 207.5,-168 207.5,-168 207.5,-156 207.5,-156 207.5,-150 213.5,-144 219.5,-144 219.5,-144 279.5,-144 279.5,-144 285.5,-144 291.5,-150 291.5,-156 291.5,-156 291.5,-168 291.5,-168 291.5,-174 285.5,-180 279.5,-180"/>
+<text text-anchor="middle" x="249.5" y="-165.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">递归思维</text>
+<text text-anchor="middle" x="249.5" y="-153.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">自顶向下分解</text>
 </g>
 <!-- scale&#45;&gt;recursion -->
 <g id="edge2" class="edge">
 <title>scale&#45;&gt;recursion</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M133.98,-317.57C121.06,-307.28 105.7,-295.03 92.28,-284.34"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="94.22,-281.41 84.22,-277.92 89.86,-286.89 94.22,-281.41"/>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M210.7,-216.64C217.04,-207.87 224.35,-197.77 230.9,-188.71"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="233.87,-190.58 236.9,-180.42 228.2,-186.47 233.87,-190.58"/>
 </g>
 <!-- divide -->
 <g id="node4" class="node">
 <title>divide</title>
-<ellipse fill="#d4890e" stroke="#8b6914" stroke-width="2.5" cx="289.4" cy="-257.14" rx="72.66" ry="22.76"/>
-<text text-anchor="middle" x="289.4" y="-260.34" font-family="Noto Serif SC" font-size="11.00" fill="white">分治策略</text>
-<text text-anchor="middle" x="289.4" y="-248.34" font-family="Noto Serif SC" font-size="11.00" fill="white">MapReduce范式</text>
+<path fill="#b8860b" stroke="black" stroke-width="2.5" d="M177.5,-180C177.5,-180 103.5,-180 103.5,-180 97.5,-180 91.5,-174 91.5,-168 91.5,-168 91.5,-156 91.5,-156 91.5,-150 97.5,-144 103.5,-144 103.5,-144 177.5,-144 177.5,-144 183.5,-144 189.5,-150 189.5,-156 189.5,-156 189.5,-168 189.5,-168 189.5,-174 183.5,-180 177.5,-180"/>
+<text text-anchor="middle" x="140.5" y="-165.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">分治策略</text>
+<text text-anchor="middle" x="140.5" y="-153.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">MapReduce范式</text>
 </g>
 <!-- scale&#45;&gt;divide -->
 <g id="edge3" class="edge">
 <title>scale&#45;&gt;divide</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M196.1,-318.44C212.74,-307.68 232.92,-294.64 250.25,-283.44"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="252.52,-286.14 259.02,-277.77 248.72,-280.26 252.52,-286.14"/>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M178.59,-216.64C172.37,-207.87 165.19,-197.77 158.76,-188.71"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="161.52,-186.55 152.87,-180.42 155.81,-190.6 161.52,-186.55"/>
 </g>
 <!-- info -->
 <g id="node5" class="node">
 <title>info</title>
-<ellipse fill="#d4890e" stroke="#8b6914" stroke-width="2.5" cx="152.4" cy="-175.88" rx="59.29" ry="22.76"/>
-<text text-anchor="middle" x="152.4" y="-179.08" font-family="Noto Serif SC" font-size="11.00" fill="white">信息论</text>
-<text text-anchor="middle" x="152.4" y="-167.08" font-family="Noto Serif SC" font-size="11.00" fill="white">消除不确定性</text>
+<path fill="#b8860b" stroke="black" stroke-width="2.5" d="M404,-180C404,-180 321,-180 321,-180 315,-180 309,-174 309,-168 309,-168 309,-156 309,-156 309,-150 315,-144 321,-144 321,-144 404,-144 404,-144 410,-144 416,-150 416,-156 416,-156 416,-168 416,-168 416,-174 410,-180 404,-180"/>
+<text text-anchor="middle" x="362.5" y="-165.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">信息论</text>
+<text text-anchor="middle" x="362.5" y="-153.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">信息消除不确定性</text>
 </g>
 <!-- scale&#45;&gt;info -->
 <g id="edge4" class="edge">
 <title>scale&#45;&gt;info</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M160.9,-315.77C159.16,-287.35 156.28,-240.35 154.36,-209"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="157.83,-208.39 153.73,-198.63 150.85,-208.82 157.83,-208.39"/>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M234.31,-221.02C258.68,-209.99 289.99,-195.82 315.56,-184.24"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="317.04,-187.42 324.7,-180.11 314.15,-181.04 317.04,-187.42"/>
 </g>
-<!-- equivalence -->
+<!-- scale_mind -->
 <g id="node6" class="node">
-<title>equivalence</title>
-<ellipse fill="#e8b4b0" stroke="black" stroke-dasharray="5,2" cx="66.4" cy="-94.63" rx="43.68" ry="22.76"/>
-<text text-anchor="middle" x="66.4" y="-97.83" font-family="Noto Serif SC" font-size="11.00">等价迁移</text>
-<text text-anchor="middle" x="66.4" y="-85.83" font-family="Noto Serif SC" font-size="11.00">问题映射</text>
+<title>scale_mind</title>
+<path fill="#b8860b" stroke="black" stroke-width="2.5" d="M61,-180C61,-180 12,-180 12,-180 6,-180 0,-174 0,-168 0,-168 0,-156 0,-156 0,-150 6,-144 12,-144 12,-144 61,-144 61,-144 67,-144 73,-150 73,-156 73,-156 73,-168 73,-168 73,-174 67,-180 61,-180"/>
+<text text-anchor="middle" x="36.5" y="-165.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">量级思维</text>
+<text text-anchor="middle" x="36.5" y="-153.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">芝麻vs西瓜</text>
 </g>
-<!-- recursion&#45;&gt;equivalence -->
+<!-- scale&#45;&gt;scale_mind -->
 <g id="edge5" class="edge">
-<title>recursion&#45;&gt;equivalence</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M60.34,-234.49C61.54,-206.97 63.62,-159.22 65.01,-127.53"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="68.51,-127.59 65.45,-117.44 61.51,-127.28 68.51,-127.59"/>
+<title>scale&#45;&gt;scale_mind</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M155.85,-220.44C133.27,-209.57 104.67,-195.81 81.13,-184.48"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="82.58,-181.29 72.05,-180.11 79.54,-187.6 82.58,-181.29"/>
 </g>
 <!-- datastruct -->
-<g id="node8" class="node">
+<g id="node7" class="node">
 <title>datastruct</title>
-<ellipse fill="#f5c6a0" stroke="black" cx="289.4" cy="-175.88" rx="48.58" ry="22.76"/>
-<text text-anchor="middle" x="289.4" y="-179.08" font-family="Noto Serif SC" font-size="11.00">数据结构</text>
-<text text-anchor="middle" x="289.4" y="-167.08" font-family="Noto Serif SC" font-size="11.00">树/堆/哈希</text>
+<polygon fill="#3a6ea5" stroke="black" points="172,-108 109,-108 109,-72 172,-72 172,-108"/>
+<text text-anchor="middle" x="140.5" y="-93" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">数据结构</text>
+<text text-anchor="middle" x="140.5" y="-82" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">树/堆/哈希</text>
 </g>
 <!-- recursion&#45;&gt;datastruct -->
 <g id="edge6" class="edge">
 <title>recursion&#45;&gt;datastruct</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M102.12,-241.42C141.69,-227.78 200.45,-207.53 241.57,-193.36"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="242.79,-196.64 251.11,-190.08 240.51,-190.03 242.79,-196.64"/>
+<path fill="none" stroke="#b8860b" stroke-width="1.3" d="M222.84,-143.88C208.72,-134.81 191.19,-123.55 175.94,-113.76"/>
+<polygon fill="#b8860b" stroke="#b8860b" stroke-width="1.3" points="177.57,-110.65 167.27,-108.19 173.79,-116.54 177.57,-110.65"/>
 </g>
-<!-- amdahl -->
-<g id="node7" class="node">
-<title>amdahl</title>
-<ellipse fill="#e8b4b0" stroke="black" stroke-dasharray="5,2" cx="411.4" cy="-175.88" rx="43.68" ry="22.76"/>
-<text text-anchor="middle" x="411.4" y="-179.08" font-family="Noto Serif SC" font-size="11.00">阿姆达尔</text>
-<text text-anchor="middle" x="411.4" y="-167.08" font-family="Noto Serif SC" font-size="11.00">瓶颈优先</text>
+<!-- equivalence -->
+<g id="node9" class="node">
+<title>equivalence</title>
+<polygon fill="#3a6ea5" stroke="black" points="372,-108 287,-108 287,-72 372,-72 372,-108"/>
+<text text-anchor="middle" x="329.5" y="-93" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">等价性问题</text>
+<text text-anchor="middle" x="329.5" y="-82" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">未知→已知映射</text>
 </g>
-<!-- divide&#45;&gt;amdahl -->
+<!-- recursion&#45;&gt;equivalence -->
 <g id="edge7" class="edge">
-<title>divide&#45;&gt;amdahl</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M319.87,-236.34C337.09,-225.15 358.69,-211.12 376.59,-199.5"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="378.56,-202.39 385.04,-194.01 374.74,-196.52 378.56,-202.39"/>
+<title>recursion&#45;&gt;equivalence</title>
+<path fill="none" stroke="#b8860b" stroke-width="1.3" stroke-dasharray="5,2" d="M269.28,-143.7C279.25,-134.97 291.51,-124.24 302.36,-114.75"/>
+<polygon fill="#b8860b" stroke="#b8860b" stroke-width="1.3" points="304.73,-117.32 309.95,-108.1 300.12,-112.06 304.73,-117.32"/>
 </g>
 <!-- divide&#45;&gt;datastruct -->
 <g id="edge8" class="edge">
 <title>divide&#45;&gt;datastruct</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M289.4,-234.48C289.4,-226.53 289.4,-217.36 289.4,-208.7"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="292.9,-208.51 289.4,-198.51 285.9,-208.51 292.9,-208.51"/>
+<path fill="none" stroke="#b8860b" stroke-width="1.3" d="M140.5,-143.7C140.5,-135.98 140.5,-126.71 140.5,-118.11"/>
+<polygon fill="#b8860b" stroke="#b8860b" stroke-width="1.3" points="144,-118.1 140.5,-108.1 137,-118.1 144,-118.1"/>
+</g>
+<!-- amdahl -->
+<g id="node10" class="node">
+<title>amdahl</title>
+<polygon fill="#3a6ea5" stroke="black" points="91,-108 16,-108 16,-72 91,-72 91,-108"/>
+<text text-anchor="middle" x="53.5" y="-93" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">阿姆达尔法则</text>
+<text text-anchor="middle" x="53.5" y="-82" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">瓶颈优先优化</text>
+</g>
+<!-- divide&#45;&gt;amdahl -->
+<g id="edge9" class="edge">
+<title>divide&#45;&gt;amdahl</title>
+<path fill="none" stroke="#b8860b" stroke-width="1.3" d="M118.99,-143.7C108.04,-134.88 94.55,-124.03 82.68,-114.47"/>
+<polygon fill="#b8860b" stroke="#b8860b" stroke-width="1.3" points="84.74,-111.65 74.76,-108.1 80.36,-117.1 84.74,-111.65"/>
 </g>
 <!-- info&#45;&gt;equivalence -->
-<g id="edge9" class="edge">
+<g id="edge10" class="edge">
 <title>info&#45;&gt;equivalence</title>
-<path fill="none" stroke="#a0522d" stroke-width="1.3" stroke-dasharray="5,2" d="M130.25,-154.47C119.31,-144.39 105.99,-132.12 94.35,-121.39"/>
-<polygon fill="#a0522d" stroke="#a0522d" stroke-width="1.3" points="96.72,-118.81 86.99,-114.61 91.97,-123.96 96.72,-118.81"/>
+<path fill="none" stroke="#3a6ea5" stroke-width="1.3" stroke-dasharray="5,2" d="M354.34,-143.7C350.59,-135.73 346.05,-126.1 341.88,-117.26"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" stroke-width="1.3" points="344.99,-115.66 337.56,-108.1 338.66,-118.64 344.99,-115.66"/>
 </g>
 <!-- engineering -->
-<g id="node10" class="node">
+<g id="node11" class="node">
 <title>engineering</title>
-<ellipse fill="#f5c6a0" stroke="black" cx="192.4" cy="-94.63" rx="43.68" ry="22.76"/>
-<text text-anchor="middle" x="192.4" y="-97.83" font-family="Noto Serif SC" font-size="11.00">工程边界</text>
-<text text-anchor="middle" x="192.4" y="-85.83" font-family="Noto Serif SC" font-size="11.00">约束最优</text>
+<polygon fill="#3a6ea5" stroke="black" points="465,-108 390,-108 390,-72 465,-72 465,-108"/>
+<text text-anchor="middle" x="427.5" y="-93" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">工程思维</text>
+<text text-anchor="middle" x="427.5" y="-82" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">边界内最优解</text>
 </g>
 <!-- info&#45;&gt;engineering -->
-<g id="edge10" class="edge">
+<g id="edge11" class="edge">
 <title>info&#45;&gt;engineering</title>
-<path fill="none" stroke="#a0522d" stroke-width="1.3" stroke-dasharray="5,2" d="M163.33,-153.23C167.58,-144.79 172.54,-134.98 177.14,-125.86"/>
-<polygon fill="#a0522d" stroke="#a0522d" stroke-width="1.3" points="180.38,-127.21 181.76,-116.71 174.13,-124.06 180.38,-127.21"/>
+<path fill="none" stroke="#3a6ea5" stroke-width="1.3" stroke-dasharray="5,2" d="M378.57,-143.7C386.44,-135.22 396.06,-124.86 404.67,-115.58"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" stroke-width="1.3" points="407.38,-117.81 411.62,-108.1 402.25,-113.05 407.38,-117.81"/>
 </g>
-<!-- speech -->
-<g id="node11" class="node">
-<title>speech</title>
-<path fill="#fdf0d5" stroke="black" d="M53.4,-36C53.4,-36 15.4,-36 15.4,-36 9.4,-36 3.4,-30 3.4,-24 3.4,-24 3.4,-12 3.4,-12 3.4,-6 9.4,0 15.4,0 15.4,0 53.4,0 53.4,0 59.4,0 65.4,-6 65.4,-12 65.4,-12 65.4,-24 65.4,-24 65.4,-30 59.4,-36 53.4,-36"/>
-<text text-anchor="middle" x="34.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">语音识别</text>
-<text text-anchor="middle" x="34.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">机器翻译</text>
-</g>
-<!-- equivalence&#45;&gt;speech -->
-<g id="edge14" class="edge">
-<title>equivalence&#45;&gt;speech</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M57.31,-72.44C53.77,-64.18 49.66,-54.6 45.92,-45.86"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="49.04,-44.27 41.88,-36.46 42.61,-47.03 49.04,-44.27"/>
-</g>
-<!-- product -->
-<g id="node15" class="node">
-<title>product</title>
-<path fill="#fdf0d5" stroke="black" d="M235.4,-36C235.4,-36 197.4,-36 197.4,-36 191.4,-36 185.4,-30 185.4,-24 185.4,-24 185.4,-12 185.4,-12 185.4,-6 191.4,0 197.4,0 197.4,0 235.4,0 235.4,0 241.4,0 247.4,-6 247.4,-12 247.4,-12 247.4,-24 247.4,-24 247.4,-30 241.4,-36 235.4,-36"/>
-<text text-anchor="middle" x="216.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">产品设计</text>
-<text text-anchor="middle" x="216.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">投资决策</text>
-</g>
-<!-- equivalence&#45;&gt;product -->
-<g id="edge15" class="edge">
-<title>equivalence&#45;&gt;product</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M97.11,-78.35C119.91,-67 151.22,-51.43 176.04,-39.08"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="177.81,-42.11 185.21,-34.52 174.69,-35.84 177.81,-42.11"/>
+<!-- scale_mind&#45;&gt;amdahl -->
+<g id="edge12" class="edge">
+<title>scale_mind&#45;&gt;amdahl</title>
+<path fill="none" stroke="#b8860b" stroke-width="1.3" d="M40.7,-143.7C42.6,-135.9 44.88,-126.51 46.98,-117.83"/>
+<polygon fill="#b8860b" stroke="#b8860b" stroke-width="1.3" points="50.39,-118.65 49.35,-108.1 43.58,-117 50.39,-118.65"/>
 </g>
 <!-- index_search -->
-<g id="node9" class="node">
+<g id="node8" class="node">
 <title>index_search</title>
-<ellipse fill="#f5c6a0" stroke="black" cx="374.4" cy="-94.63" rx="45.92" ry="22.76"/>
-<text text-anchor="middle" x="374.4" y="-97.83" font-family="Noto Serif SC" font-size="11.00">索引查找</text>
-<text text-anchor="middle" x="374.4" y="-85.83" font-family="Noto Serif SC" font-size="11.00">二分/哈希</text>
-</g>
-<!-- amdahl&#45;&gt;index_search -->
-<g id="edge11" class="edge">
-<title>amdahl&#45;&gt;index_search</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M401.48,-153.64C397.54,-145.2 392.93,-135.33 388.65,-126.15"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="391.74,-124.51 384.34,-116.92 385.4,-127.47 391.74,-124.51"/>
-</g>
-<!-- optimize -->
-<g id="node12" class="node">
-<title>optimize</title>
-<path fill="#fdf0d5" stroke="black" d="M483.4,-36C483.4,-36 445.4,-36 445.4,-36 439.4,-36 433.4,-30 433.4,-24 433.4,-24 433.4,-12 433.4,-12 433.4,-6 439.4,0 445.4,0 445.4,0 483.4,0 483.4,0 489.4,0 495.4,-6 495.4,-12 495.4,-12 495.4,-24 495.4,-24 495.4,-30 489.4,-36 483.4,-36"/>
-<text text-anchor="middle" x="464.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">系统优化</text>
-<text text-anchor="middle" x="464.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">资源调配</text>
-</g>
-<!-- amdahl&#45;&gt;optimize -->
-<g id="edge16" class="edge">
-<title>amdahl&#45;&gt;optimize</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M419.96,-153.42C426.5,-137.04 434.4,-117.25 434.4,-117.25 434.4,-117.25 447.34,-74.85 456.23,-45.76"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="459.6,-46.7 459.17,-36.11 452.9,-44.66 459.6,-46.7"/>
+<polygon fill="#3a6ea5" stroke="black" points="269,-108 190,-108 190,-72 269,-72 269,-108"/>
+<text text-anchor="middle" x="229.5" y="-93" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">索引查找</text>
+<text text-anchor="middle" x="229.5" y="-82" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00" fill="white">二分/哈希定位</text>
 </g>
 <!-- datastruct&#45;&gt;index_search -->
 <g id="edge13" class="edge">
 <title>datastruct&#45;&gt;index_search</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M310.41,-155.29C321.22,-145.21 334.54,-132.79 346.23,-121.89"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="348.7,-124.37 353.63,-114.99 343.93,-119.25 348.7,-124.37"/>
+<path fill="none" stroke="#3a6ea5" stroke-width="1.3" d="M172.14,-90C174.59,-90 177.05,-90 179.51,-90"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" stroke-width="1.3" points="179.61,-93.5 189.61,-90 179.61,-86.5 179.61,-93.5"/>
 </g>
 <!-- datastruct&#45;&gt;engineering -->
-<g id="edge12" class="edge">
+<g id="edge14" class="edge">
 <title>datastruct&#45;&gt;engineering</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M265.92,-155.7C252.98,-145.13 236.77,-131.89 222.87,-120.53"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="224.95,-117.71 214.99,-114.09 220.52,-123.13 224.95,-117.71"/>
+<path fill="none" stroke="#3a6ea5" stroke-width="1.3" d="M159.37,-108.24C167.87,-115.23 178.47,-122.38 189.5,-126 228.14,-138.67 333.53,-137.62 372.5,-126 381.32,-123.37 390.04,-118.82 397.85,-113.83"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" stroke-width="1.3" points="399.97,-116.62 406.24,-108.08 396.01,-110.85 399.97,-116.62"/>
 </g>
 <!-- search_eng -->
-<g id="node13" class="node">
+<g id="node15" class="node">
 <title>search_eng</title>
-<path fill="#fdf0d5" stroke="black" d="M366.4,-36C366.4,-36 328.4,-36 328.4,-36 322.4,-36 316.4,-30 316.4,-24 316.4,-24 316.4,-12 316.4,-12 316.4,-6 322.4,0 328.4,0 328.4,0 366.4,0 366.4,0 372.4,0 378.4,-6 378.4,-12 378.4,-12 378.4,-24 378.4,-24 378.4,-30 372.4,-36 366.4,-36"/>
-<text text-anchor="middle" x="347.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">搜索引擎</text>
-<text text-anchor="middle" x="347.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">推荐系统</text>
+<polygon fill="#e8f5e9" stroke="black" points="196.5,-36 148.5,-36 148.5,0 202.5,0 202.5,-30 196.5,-36"/>
+<polyline fill="none" stroke="black" points="196.5,-36 196.5,-30 "/>
+<polyline fill="none" stroke="black" points="202.5,-30 196.5,-30 "/>
+<text text-anchor="middle" x="175.5" y="-20.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">搜索引擎</text>
+<text text-anchor="middle" x="175.5" y="-10.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">推荐系统</text>
 </g>
 <!-- datastruct&#45;&gt;search_eng -->
-<g id="edge17" class="edge">
+<g id="edge19" class="edge">
 <title>datastruct&#45;&gt;search_eng</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M294.7,-153.06C302.04,-122.86 314.4,-72 314.4,-72 314.4,-72 322.96,-58.24 331.37,-44.75"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="334.46,-46.4 336.77,-36.06 328.52,-42.7 334.46,-46.4"/>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M149.15,-71.7C153.14,-63.73 157.95,-54.1 162.37,-45.26"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="165.61,-46.61 166.95,-36.1 159.35,-43.48 165.61,-46.61"/>
 </g>
 <!-- index_search&#45;&gt;search_eng -->
-<g id="edge18" class="edge">
-<title>index_search&#45;&gt;search_eng</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M366.59,-72.04C363.63,-63.87 360.23,-54.47 357.12,-45.88"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="360.34,-44.49 353.65,-36.28 353.76,-46.87 360.34,-44.49"/>
-</g>
-<!-- crypto -->
-<g id="node14" class="node">
-<title>crypto</title>
-<path fill="#fdf0d5" stroke="black" d="M144.4,-36C144.4,-36 106.4,-36 106.4,-36 100.4,-36 94.4,-30 94.4,-24 94.4,-24 94.4,-12 94.4,-12 94.4,-6 100.4,0 106.4,0 106.4,0 144.4,0 144.4,0 150.4,0 156.4,-6 156.4,-12 156.4,-12 156.4,-24 156.4,-24 156.4,-30 150.4,-36 144.4,-36"/>
-<text text-anchor="middle" x="125.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">加密安全</text>
-<text text-anchor="middle" x="125.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">区块链</text>
-</g>
-<!-- engineering&#45;&gt;crypto -->
 <g id="edge20" class="edge">
-<title>engineering&#45;&gt;crypto</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M174.44,-73.63C166.12,-64.36 156.16,-53.27 147.39,-43.5"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="149.96,-41.12 140.67,-36.02 144.75,-45.8 149.96,-41.12"/>
+<title>index_search&#45;&gt;search_eng</title>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M216.15,-71.7C209.74,-63.39 201.94,-53.28 194.89,-44.14"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="197.57,-41.88 188.69,-36.1 192.03,-46.16 197.57,-41.88"/>
+</g>
+<!-- speech -->
+<g id="node12" class="node">
+<title>speech</title>
+<polygon fill="#e8f5e9" stroke="black" points="327.5,-36 279.5,-36 279.5,0 333.5,0 333.5,-30 327.5,-36"/>
+<polyline fill="none" stroke="black" points="327.5,-36 327.5,-30 "/>
+<polyline fill="none" stroke="black" points="333.5,-30 327.5,-30 "/>
+<text text-anchor="middle" x="306.5" y="-20.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">语音识别</text>
+<text text-anchor="middle" x="306.5" y="-10.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">机器翻译</text>
+</g>
+<!-- equivalence&#45;&gt;speech -->
+<g id="edge16" class="edge">
+<title>equivalence&#45;&gt;speech</title>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M323.81,-71.7C321.25,-63.9 318.17,-54.51 315.32,-45.83"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="318.57,-44.51 312.12,-36.1 311.92,-46.7 318.57,-44.51"/>
+</g>
+<!-- product -->
+<g id="node13" class="node">
+<title>product</title>
+<polygon fill="#e8f5e9" stroke="black" points="471.5,-36 423.5,-36 423.5,0 477.5,0 477.5,-30 471.5,-36"/>
+<polyline fill="none" stroke="black" points="471.5,-36 471.5,-30 "/>
+<polyline fill="none" stroke="black" points="477.5,-30 471.5,-30 "/>
+<text text-anchor="middle" x="450.5" y="-20.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">产品设计</text>
+<text text-anchor="middle" x="450.5" y="-10.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">投资决策</text>
+</g>
+<!-- equivalence&#45;&gt;product -->
+<g id="edge17" class="edge">
+<title>equivalence&#45;&gt;product</title>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M359.1,-71.88C375.78,-62.23 396.75,-50.1 414.39,-39.89"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="416.37,-42.79 423.27,-34.75 412.87,-36.73 416.37,-42.79"/>
+</g>
+<!-- amdahl&#45;&gt;index_search -->
+<g id="edge15" class="edge">
+<title>amdahl&#45;&gt;index_search</title>
+<path fill="none" stroke="#3a6ea5" stroke-width="1.3" d="M74.76,-108.08C84.41,-115.13 96.36,-122.38 108.5,-126 135.33,-134 144.57,-133.68 171.5,-126 180.79,-123.35 190.05,-118.74 198.34,-113.68"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" stroke-width="1.3" points="200.46,-116.48 206.93,-108.09 196.64,-110.61 200.46,-116.48"/>
+</g>
+<!-- optimize -->
+<g id="node14" class="node">
+<title>optimize</title>
+<polygon fill="#e8f5e9" stroke="black" points="74.5,-36 26.5,-36 26.5,0 80.5,0 80.5,-30 74.5,-36"/>
+<polyline fill="none" stroke="black" points="74.5,-36 74.5,-30 "/>
+<polyline fill="none" stroke="black" points="80.5,-30 74.5,-30 "/>
+<text text-anchor="middle" x="53.5" y="-20.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">系统优化</text>
+<text text-anchor="middle" x="53.5" y="-10.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">资源调配</text>
+</g>
+<!-- amdahl&#45;&gt;optimize -->
+<g id="edge18" class="edge">
+<title>amdahl&#45;&gt;optimize</title>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M53.5,-71.7C53.5,-63.98 53.5,-54.71 53.5,-46.11"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="57,-46.1 53.5,-36.1 50,-46.1 57,-46.1"/>
 </g>
 <!-- engineering&#45;&gt;product -->
-<g id="edge19" class="edge">
+<g id="edge22" class="edge">
 <title>engineering&#45;&gt;product</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M199.34,-72.04C201.97,-63.87 204.99,-54.47 207.75,-45.88"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="211.11,-46.87 210.84,-36.28 204.45,-44.73 211.11,-46.87"/>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M433.19,-71.7C435.75,-63.9 438.83,-54.51 441.68,-45.83"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="445.08,-46.7 444.88,-36.1 438.43,-44.51 445.08,-46.7"/>
+</g>
+<!-- crypto -->
+<g id="node16" class="node">
+<title>crypto</title>
+<polygon fill="#e8f5e9" stroke="black" points="399.5,-36 351.5,-36 351.5,0 405.5,0 405.5,-30 399.5,-36"/>
+<polyline fill="none" stroke="black" points="399.5,-36 399.5,-30 "/>
+<polyline fill="none" stroke="black" points="405.5,-30 399.5,-30 "/>
+<text text-anchor="middle" x="378.5" y="-20.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">加密安全</text>
+<text text-anchor="middle" x="378.5" y="-10.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2e7d32">区块链</text>
+</g>
+<!-- engineering&#45;&gt;crypto -->
+<g id="edge21" class="edge">
+<title>engineering&#45;&gt;crypto</title>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" d="M415.39,-71.7C409.63,-63.47 402.64,-53.48 396.29,-44.42"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="399.08,-42.29 390.47,-36.1 393.34,-46.3 399.08,-42.29"/>
 </g>
 <!-- crypto&#45;&gt;product -->
-<g id="edge21" class="edge">
+<g id="edge23" class="edge">
 <title>crypto&#45;&gt;product</title>
-<path fill="none" stroke="#8b6914" stroke-width="1.2" stroke-dasharray="5,2" d="M156.48,-18C159.03,-18 167.64,-18 174.92,-18"/>
-<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="174.98,-21.5 184.98,-18 174.98,-14.5 174.98,-21.5"/>
+<path fill="none" stroke="#6b8e23" stroke-width="1.2" stroke-dasharray="5,2" d="M405.78,-18C408.24,-18 410.69,-18 413.15,-18"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" stroke-width="1.2" points="413.25,-21.5 423.25,-18 413.25,-14.5 413.25,-21.5"/>
 </g>
 </g>
 </svg>`;
@@ -659,7 +716,7 @@ document.getElementById('progressText').textContent = `已学习 ${lpct}/10 概�
 // ======== TAB 1: FLIP CARDS ========
 function renderFlipCard(){
 let c = allConcepts[currentCard];
-document.getElementById('flipFront').innerHTML = `<h3>${c.icon} ${c.name}</h3><p class="hint">点击翻转查看四维解析</p>`;
+document.getElementById('flipFront').innerHTML = `<h3>${c.icon} ${c.name}</h3><p style="font-size:0.8rem;opacity:0.85;margin-top:8px">点击翻转查看四维解析</p>`;
 document.getElementById('flipBack').innerHTML = `
 <h4>📖 定义</h4><p>${c.long}</p>
 <h4>💼 类比（商业/财务场景）</h4><p>${c.analogy}</p>

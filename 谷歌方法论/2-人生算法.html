@@ -55,16 +55,21 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 .progress-bar { height:8px; background:var(--border); border-radius:4px; margin:8px 0; overflow:hidden; }
 .progress-fill { height:100%; background:var(--accent); border-radius:4px; transition:width .5s; }
 
-.svg-wrap { overflow-x:auto; margin:16px 0; }
-.svg-wrap svg { min-width:700px; display:block; }
+.svg-wrap { overflow-x:auto; margin:16px 0; border-radius:12px; background:var(--card); padding:16px; -webkit-overflow-scrolling:touch; }
+.svg-wrap svg { min-width:700px; display:block; margin:0 auto; }
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
 
 /* Flip card */
-.flip-container { perspective:1000px; width:100%; max-width:400px; margin:24px auto; }
-.flipper { position:relative; width:100%; height:280px; transition:transform .6s; transform-style:preserve-3d; cursor:pointer; }
+.flip-container { perspective:1000px; width:100%; max-width:500px; margin:20px auto; }
+.flipper { position:relative; width:100%; height:340px; transition:transform .6s; transform-style:preserve-3d; cursor:pointer; }
 .flipper.flipped { transform:rotateY(180deg); }
 .flip-front,.flip-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:12px; padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; border:1px solid var(--border); }
 .flip-front { background:var(--card); z-index:2; }
-.flip-back { background:var(--card); transform:rotateY(180deg); overflow-y:auto; align-items:flex-start; }
+.flip-back { background:var(--card); transform:rotateY(180deg); overflow-y:auto; max-height:340px; align-items:flex-start; justify-content:flex-start; }
 .flip-front h3 { font-size:20px; color:var(--accent); text-align:center; }
 .flip-back h4 { color:var(--accent); margin-bottom:4px; font-size:14px; }
 .flip-back p { font-size:13px; color:var(--text); line-height:1.6; margin-bottom:8px; }
@@ -101,13 +106,15 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 .tree .children li::before { content:'· '; color:var(--accent); }
 
 /* Socratic */
-.socratic-q { background:var(--card); border-left:3px solid var(--accent); padding:12px 16px; margin:12px 0; border-radius:0 8px 8px 0; cursor:pointer; }
-.socratic-q h4 { font-size:15px; margin:0; color:var(--text); }
-.socratic-a { display:none; padding:12px 16px; font-size:14px; color:var(--sub); line-height:1.7; border-bottom:1px solid var(--border); }
+.socratic-q { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; margin:12px 0; cursor:pointer; transition:all .2s; font-weight:700; }
+.socratic-q:hover { border-color:var(--accent2); }
+.socratic-q::before { content:'❓ '; }
+.socratic-q h4 { font-size:15px; margin:0; color:var(--text); display:inline; }
+.socratic-a { display:none; padding:12px 16px; background:#fef9f4; border-radius:0 0 12px 12px; font-size:.85rem; color:var(--sub); line-height:1.7; }
 .socratic-a.open { display:block; }
 
 /* Case analysis */
-.case-table { width:100%; border-collapse:separate; border-spacing:0; }
+.case-table { width:100%; border-collapse:separate; border-spacing:0; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.04); }
 .case-table th { background:var(--accent); color:#fff; padding:10px 12px; font-size:13px; text-align:left; }
 .case-table th:first-child { border-radius:8px 0 0 0; }
 .case-table th:last-child { border-radius:0 8px 0 0; }
@@ -116,18 +123,18 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 .case-table tr:last-child td:last-child { border-radius:0 0 8px 0; }
 
 /* Decision sim */
-.sim-scenario { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; margin:16px 0; }
+.sim-scenario { background:var(--card); border-radius:12px; padding:20px; box-shadow:0 2px 12px rgba(60,30,20,.08); margin-bottom:16px; border:1px solid var(--border); }
 .sim-scenario h3 { color:var(--accent); margin-bottom:12px; }
 .sim-scenario p { line-height:1.7; margin-bottom:16px; }
 .sim-options { display:flex; flex-direction:column; gap:8px; }
-.sim-opt { padding:12px 16px; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#fff; transition:all .2s; font-size:14px; }
-.sim-opt:hover { border-color:var(--accent); }
-.sim-opt.chosen { border-color:var(--accent); background:#fef5f5; }
-.sim-feedback { margin-top:12px; padding:16px; border-radius:8px; display:none; line-height:1.7; font-size:14px; }
+.sim-opt { padding:10px 14px; margin:6px 0; border-radius:8px; cursor:pointer; border:1px solid var(--border); transition:all .2s; font-size:14px; background:#fff; }
+.sim-opt:hover { border-color:var(--accent2); background:#fef9f4; }
+.sim-opt.chosen { border-color:var(--accent); background:#fde8e8; }
+.sim-feedback { margin-top:12px; padding:14px; border-radius:8px; display:none; line-height:1.7; font-size:14px; }
 .sim-feedback.show { display:block; }
-.sim-feedback.good { background:#eafaf1; }
-.sim-feedback.meh { background:#fff8e1; }
-.sim-feedback.bad { background:#fef0f0; }
+.sim-feedback.good { background:#e8f5e9; color:#2e7d32; }
+.sim-feedback.meh { background:#fef9f4; }
+.sim-feedback.bad { background:#ffebee; color:var(--accent); }
 
 .btn { padding:10px 24px; border-radius:20px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; font-size:14px; transition:all .2s; font-family:inherit; }
 .btn:hover { opacity:.9; }
@@ -161,7 +168,7 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 </head>
 <body>
 
-<a href="#" class="home-link" title="返回首页" onclick="alert('预留返回首页入口 — 可替换为实际首页链接')">← 返回首页</a>
+<a href="index.html" class="home-link" title="返回首页">← 返回首页</a>
 
 <div class="container">
 <header>
@@ -211,6 +218,14 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 
   <h2 class="section-title">概念关系图</h2>
   <div class="svg-wrap" id="svgContainer"></div>
+  <div class="legend">
+    <span><span class="dot" style="background:#c0392b"></span> 核心驱动</span>
+    <span><span class="dot" style="background:#d4a574"></span> 六大维度</span>
+    <span><span class="dot" style="background:#e67e22"></span> 认知→行动</span>
+    <span><span class="dot" style="background:#27ae60"></span> 行动→价值</span>
+    <span><span class="dot" style="background:#2980b9"></span> 价值→原则</span>
+    <span><span class="dot" style="background:#8e44ad"></span> 原则→关系</span>
+  </div>
 
   <h2 class="section-title">学习进度</h2>
   <div class="card">
@@ -1093,7 +1108,7 @@ function renderSocratic() {
   ];
   let html = '';
   qas.forEach(qa=>{
-    html += '<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle(\'open\');this.querySelector(\'span\').textContent=this.nextElementSibling.classList.contains(\'open\')?\'▼ \':\'▶ \'"><h4><span>▶ </span>'+qa.q+'</h4></div>';
+    html += '<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle(\'open\')"><h4>'+qa.q+'</h4></div>';
     html += '<div class="socratic-a">'+qa.a+'</div>';
   });
   document.getElementById('socratic').innerHTML = html;

@@ -50,7 +50,7 @@ body{background:#0a1a0a;color:#e0e0e0;display:flex;flex-direction:column;user-se
 
 /* SVG component hover */
 .comp-group{cursor:pointer;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
-.comp-group:hover{transform:scale(1.08);transform-origin:center}
+.comp-group:hover{transform:scale(1.03);transform-origin:center}
 .comp-group:hover .comp-glow{opacity:1}
 .comp-glow{opacity:0.3;transition:opacity 0.3s ease}
 
@@ -473,13 +473,13 @@ body{background:#0a1a0a;color:#e0e0e0;display:flex;flex-direction:column;user-se
 
   // ── Component data ──
   var components = [
-    { id:'cpu', label:'CPU 中央处理器', topic:'计算机思维', concepts:['递归与分治','抽象与封装','算法思维'], color:'#00e5ff', link:'吴军谷歌方法论_计算机思维_v1.html' },
-    { id:'ram', label:'RAM 内存条', topic:'硅谷与Google', concepts:['工程师文化','OKR管理','创新生态'], color:'#ffd700', link:'吴军谷歌方法论_硅谷与Google_v1.html' },
-    { id:'gpu', label:'GPU 图形处理器', topic:'发明与创新', concepts:['第一性原理','跨界思维','试错迭代'], color:'#ff00ff', link:'吴军谷歌方法论_发明与创新_v1.html' },
-    { id:'ssd', label:'SSD 固态硬盘阵列', topic:'世界名校', concepts:['通识教育','批判性思维','终身学习'], color:'#00ff88', link:'吴军谷歌方法论_世界名校_v1.html' },
-    { id:'nic', label:'NIC 网卡', topic:'投资与决策', concepts:['风险回报','信息不对称','长期主义'], color:'#ff8c00', link:'吴军谷歌方法论_投资与决策_v1.html' },
-    { id:'psu12v', label:'+12V 电源轨', topic:'人生算法', concepts:['期望值决策','复利效应','反脆弱性'], color:'#ff4444', link:'吴军谷歌方法论_人生算法_v1.html' },
-    { id:'psu5v', label:'+5V 电源轨', topic:'文明与全球化', concepts:['比较优势','网络效应','文明演进'], color:'#4488ff', link:'吴军谷歌方法论_文明与全球化_v1.html' }
+    { id:'cpu', label:'CPU 中央处理器', topic:'计算机思维', concepts:['递归与分治','抽象与封装','算法思维'], color:'#00e5ff', link:'7-计算机思维.html' },
+    { id:'ram', label:'RAM 内存条', topic:'硅谷与Google', concepts:['工程师文化','OKR管理','创新生态'], color:'#ffd700', link:'6-硅谷与Google.html' },
+    { id:'gpu', label:'GPU 图形处理器', topic:'发明与创新', concepts:['第一性原理','跨界思维','试错迭代'], color:'#ff00ff', link:'3-发明与创新.html' },
+    { id:'ssd', label:'SSD 固态硬盘阵列', topic:'世界名校', concepts:['通识教育','批判性思维','终身学习'], color:'#00ff88', link:'1-世界名校.html' },
+    { id:'nic', label:'NIC 网卡', topic:'投资与决策', concepts:['风险回报','信息不对称','长期主义'], color:'#ff8c00', link:'4-投资与决策.html' },
+    { id:'psu12v', label:'+12V 电源轨', topic:'人生算法', concepts:['期望值决策','复利效应','反脆弱性'], color:'#ff4444', link:'2-人生算法.html' },
+    { id:'psu5v', label:'+5V 电源轨', topic:'文明与全球化', concepts:['比较优势','网络效应','文明演进'], color:'#4488ff', link:'5-文明与全球化.html' }
   ];
 
   var STORAGE_PREFIX = 'wujun_board_visited_';
@@ -541,7 +541,7 @@ body{background:#0a1a0a;color:#e0e0e0;display:flex;flex-direction:column;user-se
     if (!comp) return;
     localStorage.setItem(STORAGE_PREFIX + comp.id, '1');
     updateAllLEDs();
-    window.open(comp.link, '_blank');
+    window.location.href = comp.link;
   }
 
   function updateAllLEDs(){

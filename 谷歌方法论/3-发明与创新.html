@@ -42,16 +42,19 @@ header .sub{font-size:clamp(0.78rem,2vw,0.9rem);opacity:.85;margin-top:4px}
 .btn-outline:hover{background:var(--accent);color:#fff}
 .btn-sm{padding:5px 12px;font-size:.75rem}
 .btn-gold{background:var(--gold)}
-.svg-wrap{overflow-x:auto;margin:16px 0;-webkit-overflow-scrolling:touch}
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:12px;background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
 .svg-wrap svg{min-width:700px;display:block;margin:0 auto}
-.flip-card{perspective:1000px;width:100%;max-width:480px;margin:20px auto;min-height:280px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
+.flip-card{perspective:1000px;width:100%;max-width:480px;margin:20px auto;min-height:280px;max-height:600px;overflow:hidden}
 .flip-inner{position:relative;width:100%;min-height:280px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
 .flip-inner.flipped{transform:rotateY(180deg)}
 .flip-front,.flip-back{position:absolute;width:100%;min-height:280px;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center}
 .flip-front{background:linear-gradient(135deg,var(--accent),#922b21);color:#fff;font-size:1.3rem;font-weight:700;z-index:2}
-.flip-back{background:var(--card);border:2px solid var(--border);transform:rotateY(180deg);text-align:left;align-items:flex-start;font-size:.82rem;line-height:1.6}
+.flip-back{background:var(--card);border:2px solid var(--border);transform:rotateY(180deg);text-align:left;align-items:flex-start;font-size:.82rem;line-height:1.6;overflow-y:auto;max-height:600px}
 .flip-back .dim{color:var(--accent);font-weight:600;margin-top:6px;font-size:.78rem}
-.flip-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0}
+.flip-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;position:relative;z-index:10}
 .flip-nav .page-info{font-size:.82rem;color:var(--muted)}
 .quiz-option{padding:10px 14px;margin:6px 0;background:var(--bg);border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.85rem}
 .quiz-option:hover{border-color:var(--accent);background:#fff5f5}
@@ -71,13 +74,15 @@ header .sub{font-size:clamp(0.78rem,2vw,0.9rem);opacity:.85;margin-top:4px}
 .tree .toggle.open::before{transform:rotate(90deg)}
 .tree .children{display:none}
 .tree .children.open{display:block}
-.socratic-q{background:var(--card);border-left:4px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;cursor:pointer}
-.socratic-q .q{font-weight:600;color:var(--accent);font-size:.88rem}
-.socratic-a{display:none;padding:10px 14px;background:var(--bg);border-radius:0 0 8px 8px;margin-top:-2px;font-size:.82rem;line-height:1.7}
+.socratic-q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin:10px 0;cursor:pointer;transition:all .2s;font-weight:700}
+.socratic-q:hover{border-color:var(--accent2)}
+.socratic-q::before{content:'❓ '}
+.socratic-q .q{font-weight:600;color:var(--accent);font-size:.88rem;display:inline}
+.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 12px 12px;margin-top:-2px;font-size:.82rem;line-height:1.7;color:var(--muted)}
 .socratic-a.open{display:block}
-.decision-option{padding:12px 16px;margin:8px 0;background:var(--bg);border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s}
-.decision-option:hover{border-color:var(--accent2)}
-.decision-feedback{margin-top:10px;padding:12px;background:#fff5e6;border-radius:8px;font-size:.84rem;display:none}
+.decision-option{padding:10px 14px;margin:6px 0;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s}
+.decision-option:hover{border-color:var(--accent2);background:#fef9f4}
+.decision-feedback{margin-top:10px;padding:14px;background:#fef9f4;border-radius:8px;font-size:.84rem;display:none;line-height:1.7}
 .boundary-table{width:100%;border-collapse:collapse;font-size:.82rem}
 .boundary-table td,.boundary-table th{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
 .boundary-table th{color:var(--accent);font-weight:600;font-size:.78rem}
@@ -107,7 +112,7 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 <body>
 
 <header>
-<a href="#" class="home-link" title="返回首页">&#8592; 首页</a>
+<a href="index.html" class="home-link" title="返回首页">&#8592; 首页</a>
 <h1>发明与创新 · 最小知识集</h1>
 <div class="sub">GPU 并行探索：从多条路径同时探索「如何从 0 到 1」</div>
 <div><span class="entry-chip">30 篇笔记提炼</span> <span class="entry-chip">吴军·谷歌方法论</span></div>
@@ -145,20 +150,15 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 </div>
 
 <div class="card">
-<h3>学习进度</h3>
-<div class="progress-wrap">
-<div class="progress-label"><span>卡片学习</span><span id="cardProgress">0/10</span></div>
-<div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
-</div>
-<div class="progress-wrap">
-<div class="progress-label"><span>题目完成</span><span id="quizProgress">0/30</span></div>
-<div class="progress-bar"><div class="fill" id="quizBar" style="width:0%"></div></div>
-</div>
-</div>
-
-<div class="card">
 <h3>概念关系图</h3>
 <div class="svg-wrap" id="svgContainer"></div>
+<div class="legend">
+<span><span class="dot" style="background:#c0392b"></span> 核心驱动（红色）</span>
+<span><span class="dot" style="background:#d4a574"></span> MKS骨架（金色/棕色）</span>
+<span><span class="dot" style="background:#2980b9"></span> 关系路径（蓝色）</span>
+<span><span class="dot" style="background:#27ae60"></span> 价值放大（绿色）</span>
+<span><span class="dot" style="background:#8e44ad"></span> 社会认可（紫色）</span>
+</div>
 </div>
 
 <div class="card">
@@ -169,6 +169,18 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 <div class="card">
 <h3>学习路径（5 阶段）</h3>
 <div class="stage-path" id="stagePath"></div>
+</div>
+
+<div class="card">
+<h3>学习进度</h3>
+<div class="progress-wrap">
+<div class="progress-label"><span>卡片学习</span><span id="cardProgress">0/10</span></div>
+<div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
+</div>
+<div class="progress-wrap">
+<div class="progress-label"><span>题目完成</span><span id="quizProgress">0/30</span></div>
+<div class="progress-bar"><div class="fill" id="quizBar" style="width:0%"></div></div>
+</div>
 </div>
 </div>
 

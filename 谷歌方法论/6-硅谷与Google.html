@@ -171,15 +171,15 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
   </div>
 
   <div class="tab-bar" id="tabBar">
-    <button class="tab-btn active" data-tab="0">📊 知识总览</button>
-    <button class="tab-btn" data-tab="1">🃏 知识卡片</button>
-    <button class="tab-btn" data-tab="2">✍️ 选择题库</button>
-    <button class="tab-btn" data-tab="3">📝 简答题库</button>
-    <button class="tab-btn" data-tab="4">🎯 考试模式</button>
-    <button class="tab-btn" data-tab="5">📕 错题本</button>
-    <button class="tab-btn" data-tab="6">🧠 思维导图</button>
-    <button class="tab-btn" data-tab="7">🔍 苏格拉底</button>
-    <button class="tab-btn" data-tab="8">💼 案例实战</button>
+    <button class="tab-btn active" data-tab="0">知识集总览</button>
+    <button class="tab-btn" data-tab="1">知识卡片</button>
+    <button class="tab-btn" data-tab="2">题库系统</button>
+    <button class="tab-btn" data-tab="3">考试模式</button>
+    <button class="tab-btn" data-tab="4">复习模式</button>
+    <button class="tab-btn" data-tab="5">思维导图</button>
+    <button class="tab-btn" data-tab="6">深度追问</button>
+    <button class="tab-btn" data-tab="7">案例分析</button>
+    <button class="tab-btn" data-tab="8">实战决策</button>
   </div>
 
   <!-- TAB 0: 知识总览 -->
@@ -194,11 +194,6 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
 
     <h3 style="margin-bottom:8px;">★ MKS 骨架概念（必须深刻理解）</h3>
     <div class="concept-grid" id="mksGrid"></div>
-
-    <div class="progress-wrap">
-      <div class="progress-label"><span>学习进度</span><span id="progressPct">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-    </div>
 
     <div class="card">
       <h3>概念关系图</h3>
@@ -246,11 +241,16 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
         <div style="display:flex;align-items:center;gap:12px;"><span style="background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;">5</span><div><strong>个人实践</strong><span style="color:var(--muted);font-size:0.82rem;"> — 用牙刷原则审视自己产品 → 用ARPU值评估社交质量 → 用超越免费四大策略构建不可替代性。</span></div></div>
       </div>
     </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>学习进度</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
   </div>
 
   <!-- TAB 1: 知识卡片 -->
   <div class="tab-panel" data-panel="1">
-    <div class="flip-container" id="flipCard">
+    <div class="flip-container" id="flipCard" onclick="document.getElementById('flipCard').classList.toggle('flipped')">
       <div class="flip-inner">
         <div class="flip-front"><div style="font-size:2rem;" id="fcIcon"></div><div style="font-size:1.2rem;font-weight:bold;color:var(--accent);margin-top:12px;" id="fcName"></div><p style="font-size:0.82rem;color:var(--muted);margin-top:8px;">点击翻转查看详情</p></div>
         <div class="flip-back" id="fcBack"></div>
@@ -267,7 +267,7 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
     </div>
   </div>
 
-  <!-- TAB 2: 选择题库 -->
+  <!-- TAB 2: 题库系统 -->
   <div class="tab-panel" data-panel="2">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
       <span style="font-weight:bold;">共20道选择题</span>
@@ -278,16 +278,14 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
       <button class="btn btn-primary" onclick="checkAllMCQ()">提交全部选择题</button>
       <span style="margin-left:12px;font-size:0.85rem;color:var(--muted);" id="mcqScore"></span>
     </div>
-  </div>
 
-  <!-- TAB 3: 简答题库 -->
-  <div class="tab-panel" data-panel="3">
-    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">共10道简答题，点击题目展开参考答案。用于自我检测理解深度。</p>
+    <h3 style="margin-top:24px;margin-bottom:8px;">简答题（10道）</h3>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">点击题目展开参考答案。用于自我检测理解深度。</p>
     <div id="saList"></div>
   </div>
 
-  <!-- TAB 4: 考试模式 -->
-  <div class="tab-panel" data-panel="4">
+  <!-- TAB 3: 考试模式 -->
+  <div class="tab-panel" data-panel="3">
     <div class="card" style="text-align:center;">
       <h3>模拟考试</h3>
       <p style="font-size:0.9rem;">从题库随机抽取10题（7选择 + 3简答），限时15分钟</p>
@@ -302,8 +300,8 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
     </div>
   </div>
 
-  <!-- TAB 5: 错题本 -->
-  <div class="tab-panel" data-panel="5">
+  <!-- TAB 4: 复习模式 -->
+  <div class="tab-panel" data-panel="4">
     <h3 style="margin-bottom:12px;">学习统计</h3>
     <div class="stat-grid" id="statsGrid"></div>
     <h3 style="margin-bottom:12px;">错题回顾</h3>
@@ -314,27 +312,33 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
     </div>
   </div>
 
-  <!-- TAB 6: 思维导图 -->
-  <div class="tab-panel" data-panel="6">
+  <!-- TAB 5: 思维导图 -->
+  <div class="tab-panel" data-panel="5">
     <div class="card">
       <div class="tree tree-root" id="mindMap"></div>
     </div>
   </div>
 
-  <!-- TAB 7: 苏格拉底问答 -->
-  <div class="tab-panel" data-panel="7">
+  <!-- TAB 6: 深度追问 -->
+  <div class="tab-panel" data-panel="6">
     <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">对每个MKS核心概念进行2-3层追问，点击展开回答。苏格拉底式的深度追问帮你真正"想通"而非"记住"。</p>
     <div id="socraticList"></div>
   </div>
 
-  <!-- TAB 8: 案例实战 -->
-  <div class="tab-panel" data-panel="8">
+  <!-- TAB 7: 案例分析 -->
+  <div class="tab-panel" data-panel="7">
     <div class="case-tabs">
       <button class="case-tab active" data-case="0">🔍 Google搜索广告</button>
       <button class="case-tab" data-case="1">⚔️ Facebook vs Google</button>
       <button class="case-tab" data-case="2">🚀 IPO拍卖定价</button>
     </div>
     <div id="casePanels"></div>
+  </div>
+
+  <!-- TAB 8: 实战决策 -->
+  <div class="tab-panel" data-panel="8">
+    <div class="card"><h3>投资决策模拟（3轮）</h3><p style="font-size:.82rem;color:var(--muted);">每个场景做出选择，查看MKS分析反馈</p></div>
+    <div id="decisionSim"></div>
   </div>
 </div>
 
@@ -437,10 +441,10 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.add('active');
     const p = document.querySelector('[data-panel="' + btn.dataset.tab + '"]');
     if (p) p.classList.add('active');
-    if (btn.dataset.tab === '5') renderWrongBook();
-    if (btn.dataset.tab === '2') renderMCQ();
-    if (btn.dataset.tab === '3') renderSA();
+    if (btn.dataset.tab === '4') renderWrongBook();
+    if (btn.dataset.tab === '2') { renderMCQ(); renderSA(); }
     if (btn.dataset.tab === '0') renderDashboard();
+    if (btn.dataset.tab === '8') renderDecisionSim();
   });
 });
 
@@ -1210,6 +1214,61 @@ document.querySelectorAll('.case-tab').forEach(btn => {
   });
 });
 
+// ============ DECISION SIM (Tab 8) ============
+const decisionScenarios = [
+  {
+    title: '第1轮：创业方向选择',
+    desc: '你是Google早期产品经理。公司有两个方向：A) 做门户网站（雅虎模式，展示广告盈利）；B) 聚焦搜索+关键词广告（将用户意图直接变现）。资源有限，只能选一个。',
+    choices: [
+      { text: 'A. 做门户网站——展示广告市场规模更大', fb: '❌ 短视。展示广告ARPU值远低于搜索广告。做门户意味着"浏览器→门户→搜索"的路径——Google将失去对用户入口的控制。后来雅虎/MSN在搜索上陷入被动正是因为游戏规则已被Google制定。', level: 'bad' },
+      { text: 'B. 聚焦搜索+关键词广告', fb: '✅ Google的真实选择。核心逻辑：①搜索=用户主动表达需求（高意图流量），转化率远超展示广告；②关键词广告将"搜索行为"变成"购买信号"；③Google浏览量不及雅虎却能产生两倍利润。《华尔街日报》评价佩奇"将搜索广告变成金矿"。', level: 'good' },
+      { text: 'C. 同时做门户和搜索——两条腿走路更稳妥', fb: '⚠ 中庸但危险。资源分散导致两线作战。Google当时仅2000人，同时挑战雅虎和Inktomi几乎不可能。吴军启示："企业基因决定边界"，什么都想做往往什么都做不好。', level: 'bad' },
+    ]
+  },
+  {
+    title: '第2轮：人才招聘决策',
+    desc: '你需要为团队招聘一名核心工程师。候选人A：顶级名校博士，技术极强但性格孤傲；候选人B：技术扎实、性格谦逊、团队协作好；候选人C：有创业公司从0到1经验，但缺乏大厂背景。',
+    choices: [
+      { text: 'A. 选顶级名校博士——技术天花板最高', fb: '⚠ Google的"博士军团"策略证明顶级人才确实能"带领团队到无人去过的地方"。但需注意：Google要求博士"研发不分家"，如果候选人抗拒一线开发，可能不适合。奥格威定律的另一面：雇更强的人，但前提是能融入团队。', level: 'mid' },
+      { text: 'B. 选技术扎实的协作型工程师', fb: '⚠ 看似安全但可能是"武大郎开店"心态。如果你的目标是行业第一，"够用"的人才永远不够。参考奥格威定律：雇用比你小的人→矮人公司；雇用比你高大的人→巨人公司。', level: 'mid' },
+      { text: 'C. 选有从0到1经验的创业型人才', fb: '✅ 公司当前阶段最需要的是"攻城"能力而非"守城"能力。从0到1的经验意味着候选人习惯在资源受限的条件下创新——这正是Google早期工程文化的核心（"瑞士制造"精神：花更少资源做出更好的东西）。', level: 'good' },
+    ]
+  },
+  {
+    title: '第3轮：产品定价策略',
+    desc: '你开发了一款企业级SaaS产品。竞品全部免费（开源替代品）。你的产品在可靠性和用户体验上显著优于竞品。你应该如何定价？',
+    choices: [
+      { text: 'A. 免费——先占领市场再考虑变现', fb: '❌ "超越免费"的反面案例。免费获取的用户没有切换成本，随时可能流失。Red Hat的启示：Linux免费但Red Hat的安装手册卖1万美元——通过"可靠性"将免费品包装为付费品。', level: 'bad' },
+      { text: 'B. 按竞品价格的一半定价——用价格战取胜', fb: '⚠ 价格战是零和博弈。你降价→竞品跟进→利润归零→所有人受损。参考"旅行者困境"：竞相降价最终导致双输。而且低价格会降低用户对产品价值的感知（"便宜没好货"的心理锚定）。', level: 'mid' },
+      { text: 'C. 按为用户创造的价值定价——远高于竞品', fb: '✅ 这就是"超越免费"中"可靠性+个性化"策略。Red Hat和日本二手车的经验：为可靠性付费3000-5000美元，比免费的N手车划算。你的产品"可靠性和体验显著优于竞品"本身就是定价权。关键不是比竞品便宜，而是证明你的产品创造的价值远超价格。', level: 'good' },
+    ]
+  }
+];
+
+function renderDecisionSim() {
+  const container = document.getElementById('decisionSim');
+  if (!container) return;
+  container.innerHTML = decisionScenarios.map((sc, si) => `
+    <div class="quiz-card" style="margin-bottom:16px">
+      <h3 style="color:var(--accent);margin-bottom:8px">${sc.title}</h3>
+      <p style="font-size:.85rem;margin-bottom:10px">${sc.desc}</p>
+      ${sc.choices.map((ch, ci) => `<button class="case-choice" onclick="chooseDecisionSim(${si},${ci},this)" style="display:block;width:100%;text-align:left;">${ch.text}</button>`).join('')}
+      <div class="case-result" id="decSimRes_${si}"></div>
+    </div>
+  `).join('');
+}
+
+function chooseDecisionSim(si, ci, btn) {
+  const siblings = btn.parentElement.querySelectorAll('.case-choice');
+  siblings.forEach(s => { s.style.pointerEvents = 'none'; s.style.opacity = '0.6'; });
+  const ch = decisionScenarios[si].choices[ci];
+  btn.style.borderColor = ch.level === 'good' ? '#4caf50' : ch.level === 'mid' ? '#e67e22' : '#e74c3c';
+  const result = document.getElementById('decSimRes_' + si);
+  result.innerHTML = '<strong>' + ch.fb + '</strong>';
+  result.classList.add('show');
+  result.style.background = ch.level === 'good' ? '#e8f5e9' : ch.level === 'mid' ? '#fff3e0' : '#ffebee';
+}
+
 // ============ INIT ============
 function init() {
   // Track study day
@@ -1229,6 +1288,7 @@ function init() {
   renderSocratic();
   renderCases();
   renderWrongBook();
+  renderDecisionSim();
 
   // Ensure tab 0 visible
   document.querySelector('[data-panel="0"]').classList.add('active');

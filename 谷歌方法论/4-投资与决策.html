@@ -108,7 +108,7 @@ body{
 .flip-back h4{color:var(--accent);margin:6px 0 2px;font-size:.9rem}
 .flip-back p{font-size:.82rem;color:var(--text2);margin-bottom:4px}
 
-.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;position:relative;z-index:10;margin-top:16px;margin-bottom:12px}
 .flip-nav button{
   padding:8px 18px;border:1px solid var(--border);border-radius:20px;
   background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem;transition:all .2s;
@@ -327,13 +327,16 @@ body{
 
 <!-- ========== TAB 4: 复习模式 ========== -->
 <section class="tab-content" data-tab="4">
-  <div class="card">
-    <h2>错题本</h2>
-    <div id="wrongBook"><p style="color:var(--text2)">暂无错题记录。去题库练习吧！</p></div>
-  </div>
-  <div class="card">
-    <h2>学习统计</h2>
-    <div id="statsPanel"></div>
+  <h2>学习统计</h2>
+  <div id="statsPanel"></div>
+
+  <h2 style="margin-top:20px">错题本</h2>
+  <div id="wrongBook"><p style="color:var(--text2)">暂无错题记录。去题库练习吧！</p></div>
+
+  <h2 style="margin-top:20px">概念薄弱点</h2>
+  <div id="weakConcepts"></div>
+  <div style="margin-top:16px">
+    <button class="btn btn-outline btn-sm" onclick="resetReview()">重置全部进度</button>
   </div>
 </section>
 
@@ -1010,15 +1013,38 @@ function renderReview(){
   const accuracy=totalMC?Math.round(correctMC/totalMC*100):0;
   const days=state.examHistory.length;
   sp.innerHTML=`
-    <table class="stat-table">
-      <tr><th>指标</th><th>数值</th></tr>
-      <tr><td>总做题数（选择题）</td><td>${totalMC} / 20</td></tr>
-      <tr><td>正确率</td><td>${accuracy}%</td></tr>
-      <tr><td>错题数</td><td>${state.wrongList.length}</td></tr>
-      <tr><td>完成考试次数</td><td>${days}</td></tr>
-      <tr><td>已学概念</td><td>${concepts.filter(c=>state.learned[c.id]).length} / ${concepts.length}</td></tr>
-    </table>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+      <div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">${totalMC}</div><div style="font-size:.78rem;color:var(--text2)">总做题数</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">${accuracy}%</div><div style="font-size:.78rem;color:var(--text2)">正确率</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">${state.wrongList.length}</div><div style="font-size:.78rem;color:var(--text2)">错题数</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">${days}</div><div style="font-size:.78rem;color:var(--text2)">考试次数</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">${concepts.filter(c=>state.learned[c.id]).length}/${concepts.length}</div><div style="font-size:.78rem;color:var(--text2)">已学概念</div></div>
+    </div>
   `;
+
+  // Weak concepts
+  const wc=document.getElementById('weakConcepts');
+  const errorTopics={};
+  state.wrongList.forEach(w=>{
+    const topic=w.q.split('？')[0].split('的是')[0].slice(0,15);
+    errorTopics[topic]=(errorTopics[topic]||0)+1;
+  });
+  const sorted=Object.entries(errorTopics).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  if(sorted.length===0){
+    wc.innerHTML='<p style="color:var(--text2)">暂无薄弱概念数据，多做几道题试试。</p>';
+  }else{
+    wc.innerHTML=sorted.map(([t,n])=>`<div class="card" style="border-left:4px solid var(--accent);padding:10px 14px;margin:6px 0"><strong>${t}</strong> — 错误${n}次</div>`).join('');
+  }
+}
+
+function resetReview(){
+  if(confirm('确定要重置所有学习进度、错题和考试记录吗？此操作不可恢复。')){
+    state={learned:{},quizDone:{},wrongList:[],examHistory:[],simProgress:0};
+    saveState(state);
+    renderReview();
+    renderQuiz();
+    renderDashboard();
+  }
 }
 
 // ==================== TAB 5: MINDMAP ====================
