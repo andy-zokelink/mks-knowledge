@@ -10,7 +10,6 @@
 --bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
 --text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--gold:#b8860b;
 --shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
---green:#2d7d46;--blue:#3a6ea5;
 }
 html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
 body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
@@ -24,7 +23,7 @@ header .home-link:hover{background:var(--accent);color:#fff}
 
 .tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
 .tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
-.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.tab-btn:hover{ border-color:var(--accent2);color:var(--accent)}
 .tab-btn.active{background:var(--accent);color:#fff}
 
 .tab-content{display:none;animation:fadeIn .35s ease}
@@ -40,13 +39,12 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
 
-.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s;text-align:left}
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s}
 .concept-card:hover{transform:translateY(-2px)}
 .concept-card.mks{border-left-color:var(--gold);position:relative}
 .concept-card.mks::after{content:'★';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
 .concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
 .concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
-.concept-card .icon{font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:4px;display:block}
 
 .badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
 .badge-core{background:#fde8e8;color:var(--accent)}
@@ -58,80 +56,135 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 .progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
 .progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
 
+/* SVG */
 .svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
 .svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+/* Flip Card */
+.flip-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto}
+.flip-inner{position:relative;width:100%;height:300px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;box-shadow:var(--shadow)}
+.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700}
+.flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:.85rem;line-height:1.6;align-items:flex-start;text-align:left;overflow-y:auto}
+.flip-back .dim-label{font-weight:700;color:var(--accent);font-size:.8rem}
+.flip-nav{display:flex;justify-content:center;gap:16px;margin-top:12px}
+.flip-nav button{padding:8px 20px;border-radius:20px;border:2px solid var(--accent);background:var(--card);color:var(--accent);cursor:pointer;font-size:.85rem;transition:all .2s}
+.flip-nav button:hover{background:var(--accent);color:#fff}
+.flip-nav button.learned{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+
+/* Quiz */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-card .q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
+.q-mc{background:#fde8e8;color:var(--accent)}
+.q-sa{background:#e8f0fe;color:#3a6ea5}
+.quiz-card .q-text{font-weight:700;margin-bottom:12px}
+.quiz-card .q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border);font-size:.85rem}
+.quiz-card .q-option:hover{border-color:var(--accent2);background:#fef9f4}
+.quiz-card .q-option.selected{border-color:var(--accent);background:#fde8e8}
+.quiz-card .q-option.correct{ border-color:#4caf50;background:#e8f5e9}
+.quiz-card .q-option.wrong{border-color:var(--accent);background:#ffebee}
+.quiz-card .q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
+.quiz-card .q-feedback.show{display:block}
+.quiz-card .q-feedback.right{background:#e8f5e9;color:#2e7d32}
+.quiz-card .q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
+.quiz-card .sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
+.quiz-card .sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
+.quiz-card .sa-reveal.show{display:block}
+
+/* Tree */
+.tree-wrap{font-size:.88rem;line-height:1.8}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;color:var(--accent);font-weight:700;user-select:none}
+.tree-toggle::before{content:'▸ ';display:inline-block;transition:transform .2s}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-leaf{color:var(--text2)}
+
+/* Socratic */
+.socratic-item{margin-bottom:12px}
+.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700;transition:all .2s}
+.socratic-q:hover{border-color:var(--accent2)}
+.socratic-q::before{content:'❓ '}
+.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
+
+/* Decision */
+.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
+.decision-round .d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
+.decision-round .d-option:hover{border-color:var(--accent2);background:#fef9f4}
+.decision-round .d-option.chosen{border-color:var(--accent);background:#fde8e8}
+.decision-round .d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
+.decision-round .d-result.show{display:block}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.tbl th,.tbl td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+.tbl th{background:var(--accent);color:#fff;font-weight:600}
+.tbl tr:nth-child(even){background:#fef9f4}
+
+@media(max-width:640px){
+.tab-bar{gap:2px;padding:6px 2px}
+.tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
+.flip-inner{height:320px}
+.flip-front{font-size:1.1rem}
+}
+
+.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
+.timer.warning{animation:pulse .5s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.5}}
+
+.btn{padding:10px 24px;border-radius:20px;border:2px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+.btn:hover{background:#a93226;border-color:#a93226}
+.btn-outline{background:transparent;color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+button:disabled{opacity:.5;cursor:not-allowed}
+
 .legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
 .legend span{display:flex;align-items:center;gap:4px}
 .legend .dot{width:10px;height:10px;border-radius:50%}
-.legend .line{display:inline-block;width:20px;height:3px;border-radius:2px}
 
+.hidden{display:none}
+
+
+/* Boundary table */
 .boundary-table{overflow-x:auto}
 .boundary-table table{width:100%;border-collapse:collapse;font-size:clamp(0.75rem,1.4vw,0.9rem)}
 .boundary-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
 .boundary-table td{padding:7px 12px;border-bottom:1px solid var(--border)}
 .boundary-table tr:nth-child(even){background:#fef9f4}
 
+/* Case study */
+.case-section{margin:20px 0}
+.case-section h2{font-size:clamp(1.1rem,1.8vw,1.3rem);margin-bottom:12px;color:var(--accent)}
+
+/* Path steps */
 .path-steps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .path-step{flex:1 1 140px;max-width:200px;background:var(--card);border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center}
 .path-step .num{display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:0.85rem;margin-bottom:6px}
 .path-step h4{color:var(--accent);font-size:0.92rem;margin:4px 0}
 .path-step p{font-size:0.78rem;color:var(--text2)}
-.flip-container{perspective:800px;width:100%;max-width:400px;height:280px;margin:16px auto;cursor:pointer}
-.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
-.flip-container.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-shadow:var(--shadow)}
-.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700}
-.flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:.85rem;line-height:1.6;align-items:flex-start;text-align:left;overflow-y:auto}
-.flip-back h4{color:var(--accent);font-size:1rem;margin:6px 0 4px}
-.flip-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0}
-.flip-nav button{padding:8px 20px;border-radius:20px;border:2px solid var(--accent);background:var(--card);color:var(--accent);cursor:pointer;font-size:.85rem;transition:all .2s}
-.flip-nav button:hover{background:var(--accent);color:#fff}
-.flip-nav .counter{font-size:0.85rem;color:var(--text2)}
-.learned-btn{padding:6px 20px;background:var(--green);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.9rem;margin-top:8px}
-.quiz-option{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:1px solid var(--border);background:var(--card);border-radius:8px;cursor:pointer;font-size:clamp(0.82rem,1.5vw,0.95rem);transition:all .2s}
-.quiz-option:hover{background:#fef9f4;border-color:var(--accent2)}
-.quiz-option.correct{background:#d4edda;border-color:#4caf50;color:#2e7d32}
-.quiz-option.wrong{background:#f8d7da;border-color:var(--accent);color:var(--accent)}
-.quiz-option:disabled{cursor:default}
-.quiz-feedback{padding:10px;border-radius:8px;margin:8px 0;font-size:0.88rem}
-.short-answer-box{width:100%;min-height:80px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;background:var(--card)}
-.btn{padding:8px 20px;border:none;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:inherit;transition:opacity .2s}
-.btn:hover{opacity:.85}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-secondary{background:var(--border);color:var(--text)}
-.btn-green{background:var(--green);color:#fff}
-.timer{font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--accent);text-align:center;font-weight:700;margin:8px 0}
-.tree-node{margin-left:20px;border-left:1px dashed var(--border);padding-left:10px}
-.tree-toggle{cursor:pointer;user-select:none;color:var(--accent);font-weight:700;font-size:0.95rem}
-.tree-toggle::before{content:"▸ ";display:inline-block;transition:transform .2s;font-size:0.75rem}
-.tree-toggle.open::before{transform:rotate(90deg)}
-.tree-children{display:none}
-.tree-children.show{display:block}
-.socratic-q{margin:12px 0;padding:10px;border-left:3px solid var(--accent2);background:#fef9f4;border-radius:0 8px 8px 0}
-.socratic-q .question{cursor:pointer;font-weight:700;color:var(--accent);font-size:0.95rem}
-.socratic-q .answer{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.88rem;color:var(--text)}
-.socratic-q .answer.show{display:block}
-.case-section{margin:10px 0}
-.case-section h4{color:var(--accent);font-size:0.95rem;margin:8px 0 4px}
-.decision-option{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid var(--border);background:var(--card);border-radius:8px;cursor:pointer;font-size:0.9rem;transition:all .2s}
-.decision-option:hover{border-color:var(--accent2)}
-.decision-feedback{padding:10px;border-radius:8px;margin:8px 0;font-size:0.88rem;display:none}
-.decision-feedback.show{display:block}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
-.stat-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
-.stat-item .value{font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--accent);font-weight:700}
-.stat-item .label{font-size:0.8rem;color:var(--text2)}
-.home-link{display:inline-block;margin:0 auto;padding:6px 18px;border:2px solid var(--accent);border-radius:20px;color:var(--accent);font-size:0.82rem;text-decoration:none;text-align:center}
-.home-link:hover{background:var(--accent);color:#fff}
-.text-center{text-align:center}
+
+/* Learned button state */
+.learned-btn{background:#e8f5e9!important;border-color:#4caf50!important;color:#2e7d32!important}
+
+/* Tree children toggle */
+.tree-children{display:none;margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-children.open{display:block}
+
+/* Legend line */
+.legend .line{display:inline-block;width:20px;height:3px;border-radius:2px}
+
+/* Case concept cards (for case studies in computer thinking) */
+.concept-card .icon{font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:4px;display:block}
 .mt-12{margin-top:12px}
-.mb-12{margin-bottom:12px}
-.hidden{display:none}
-@media(max-width:600px){
-.flip-container{height:320px}
-.tab-btn{font-size:0.7rem;padding:5px 8px}
-.grid2,.grid3,.grid4{grid-template-columns:1fr}
-}
 </style>
 </head>
 <body>
@@ -199,10 +252,10 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 </div>
 <div class="flip-nav">
 <button onclick="prevCard(event)">◀</button>
-<span class="counter" id="flipCounter">1/10</span>
+<span style="font-size:1.5rem;font-weight:700;color:var(--accent)" id="flipCounter">1/10</span>
 <button onclick="nextCard(event)">▶</button>
 </div>
-<button class="learned-btn" onclick="markLearned()">✓ 标记「已学习」</button>
+<button class="learned" onclick="markLearned()">✓ 标记「已学习」</button>
 </div>
 </div>
 
@@ -223,7 +276,7 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 <div class="card text-center">
 <h2>限时考试 · 15分钟 · 10题（7选+3简）</h2>
 <div class="timer" id="examTimer">15:00</div>
-<button class="btn btn-primary" id="startExamBtn" onclick="startExam()">开始考试</button>
+<button class="btn" id="startExamBtn" onclick="startExam()">开始考试</button>
 <div id="examContent" style="display:none"></div>
 <div id="examResult" style="display:none"></div>
 </div>
@@ -233,7 +286,7 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 <div class="tab-content" id="tab-4">
 <div class="card"><h2>错题本</h2><div id="wrongBook"></div></div>
 <div class="card"><h2>概念薄弱点分析</h2><div id="weakAnalysis"></div></div>
-<div class="card"><h2>学习统计</h2><div class="stats-grid" id="statsGrid"></div></div>
+<div class="card"><h2>学习统计</h2><div class="stat-grid" id="statsGrid"></div></div>
 </div>
 
 <!-- ======== TAB 6: 思维导图 ======== -->
@@ -755,9 +808,9 @@ mcQuestions.forEach((q,i)=>{
 mcHtml += `<div class="card" style="margin-bottom:10px" id="mc-${i}">
 <p><strong>${i+1}.</strong> ${q.q}</p>`;
 q.opts.forEach((o,j)=>{
-mcHtml += `<button class="quiz-option" id="mc-${i}-${j}" onclick="answerMC(${i},${j})">${'ABCD'[j]}. ${o}</button>`;
+mcHtml += `<button class="q-option" id="mc-${i}-${j}" onclick="answerMC(${i},${j})">${'ABCD'[j]}. ${o}</button>`;
 });
-mcHtml += `<div class="quiz-feedback" id="mc-fb-${i}" style="display:none"></div></div>`;
+mcHtml += `<div class="q-feedback" id="mc-fb-${i}" style="display:none"></div></div>`;
 });
 document.getElementById('mcQuestions').innerHTML = mcHtml;
 
@@ -765,9 +818,9 @@ let saHtml = '';
 saQuestions.forEach((q,i)=>{
 saHtml += `<div class="card" style="margin-bottom:10px">
 <p><strong>${i+1}.</strong> ${q.q}</p>
-<textarea class="short-answer-box" id="sa-${i}" placeholder="输入你的回答..."></textarea>
-<button class="btn btn-green mt-12" onclick="checkSA(${i})">对比参考答案</button>
-<div class="quiz-feedback" id="sa-fb-${i}" style="display:none">${q.ref}</div>
+<textarea class="sa-input" id="sa-${i}" placeholder="输入你的回答..."></textarea>
+<button class="btn" onclick="checkSA(${i})">对比参考答案</button>
+<div class="q-feedback" id="sa-fb-${i}" style="display:none">${q.ref}</div>
 </div>`;
 });
 document.getElementById('saQuestions').innerHTML = saHtml;
@@ -779,7 +832,7 @@ let fb = document.getElementById('mc-fb-'+k);
 if(btn && fb && mcAnswered[k]!==undefined){
 let ans = mcAnswered[k];
 let correct = mcQuestions[parseInt(k)].ans;
-let btns = document.querySelectorAll('#mc-'+k+' .quiz-option');
+let btns = document.querySelectorAll('#mc-+k+' .q-option');
 btns.forEach(b=>b.disabled=true);
 if(btns[ans]) btns[ans].classList.add(ans===correct?'correct':'wrong');
 if(btns[correct]) btns[correct].classList.add('correct');
@@ -794,7 +847,7 @@ if(mcAnswered[qi]!==undefined) return;
 mcAnswered[qi] = ans;
 let q = mcQuestions[qi];
 let correct = q.ans;
-let btns = document.querySelectorAll('#mc-'+qi+' .quiz-option');
+let btns = document.querySelectorAll('#mc-+qi+' .q-option');
 btns.forEach(b=>b.disabled=true);
 btns[ans].classList.add(ans===correct?'correct':'wrong');
 if(ans!==correct) btns[correct].classList.add('correct');
@@ -843,14 +896,14 @@ mcPool.forEach((qi,i)=>{
 let q = mcQuestions[qi];
 html += `<div class="card" style="margin-bottom:8px"><p><strong>${i+1}.</strong> ${q.q}</p>`;
 q.opts.forEach((o,j)=>{
-html += `<button class="quiz-option" id="ex-mc-${qi}-${j}" onclick="examAnswerMC('${qi}',${j})">${'ABCD'[j]}. ${o}</button>`;
+html += `<button class="q-option" id="ex-mc-${qi}-${j}" onclick="examAnswerMC('${qi}',${j})">${'ABCD'[j]}. ${o}</button>`;
 });
 html += `</div>`;
 });
 saPool.forEach((qi,i)=>{
-html += `<div class="card" style="margin-bottom:8px"><p><strong>${i+7+1}.</strong> ${saQuestions[qi].q}</p><textarea class="short-answer-box" id="ex-sa-${qi}"></textarea></div>`;
+html += `<div class="card" style="margin-bottom:8px"><p><strong>${i+7+1}.</strong> ${saQuestions[qi].q}</p><textarea class="sa-input" id="ex-sa-${qi}"></textarea></div>`;
 });
-html += `<button class="btn btn-primary mt-12" onclick="submitExam()">提交答卷</button>`;
+html += `<button class="btn" onclick="submitExam()">提交答卷</button>`;
 ec.innerHTML = html;
 }
 
@@ -951,11 +1004,11 @@ sorted.map(([name,cnt])=>`<tr><td><strong>${name}</strong></td><td>${cnt}</td><t
 
 // Stats
 document.getElementById('statsGrid').innerHTML = `
-<div class="stat-item"><div class="value">${appData.totalAnswered}</div><div class="label">总答题数</div></div>
-<div class="stat-item"><div class="value">${appData.totalAnswered>0?Math.round(appData.totalCorrect/appData.totalAnswered*100):'--'}%</div><div class="label">正确率</div></div>
-<div class="stat-item"><div class="value">${appData.loginDays}</div><div class="label">学习天数</div></div>
-<div class="stat-item"><div class="value">${appData.learned.length}/10</div><div class="label">概念掌握</div></div>
-<div class="stat-item"><div class="value">${unique.length}</div><div class="label">待复习错题</div></div>
+<div class="stat-card"><div class="num">${appData.totalAnswered}</div><div class="label">总答题数</div></div>
+<div class="stat-card"><div class="num">${appData.totalAnswered>0?Math.round(appData.totalCorrect/appData.totalAnswered*100):'--'}%</div><div class="label">正确率</div></div>
+<div class="stat-card"><div class="num">${appData.loginDays}</div><div class="label">学习天数</div></div>
+<div class="stat-card"><div class="num">${appData.learned.length}/10</div><div class="label">概念掌握</div></div>
+<div class="stat-card"><div class="num">${unique.length}</div><div class="label">待复习错题</div></div>
 `;
 }
 
@@ -1053,8 +1106,8 @@ sq.innerHTML = qas.map(item=>`
 <h3>${item.concept}</h3>
 ${item.qs.map((qa,i)=>`
 <div class="socratic-q">
-<div class="question" onclick="this.nextElementSibling.classList.toggle('show')">Q${i+1}: ${qa.q}</div>
-<div class="answer">${qa.a}</div>
+<div class="q-text" onclick="this.nextElementSibling.classList.toggle('show')">Q${i+1}: ${qa.q}</div>
+<div class="sa-reveal show">${qa.a}</div>
 </div>`).join('')}
 </div>`).join('');
 }
@@ -1101,10 +1154,10 @@ ds.innerHTML = `
 <h3>第1轮：技术架构选择</h3>
 <p>你是一家创业公司的CTO，需要选择一个核心技术栈来构建产品。你的产品预计初期1000用户，但目标是6个月内增长到100万用户。</p>
 <p><strong>你会选择？</strong></p>
-<button class="decision-option" onclick="makeDecision(0,0)">A. 用最快上手的框架快速上线，业务验证后再考虑扩展</button>
-<button class="decision-option" onclick="makeDecision(0,1)">B. 从一开始就设计可扩展的分布式架构，预留100万用户容量</button>
-<button class="decision-option" onclick="makeDecision(0,2)">C. 选用行业内验证过的最成熟方案，先把产品做好再谈规模</button>
-<div class="decision-feedback" id="decision-fb-0"></div>
+<button class="d-option" onclick="makeDecision(0,0)">A. 用最快上手的框架快速上线，业务验证后再考虑扩展</button>
+<button class="d-option" onclick="makeDecision(0,1)">B. 从一开始就设计可扩展的分布式架构，预留100万用户容量</button>
+<button class="d-option" onclick="makeDecision(0,2)">C. 选用行业内验证过的最成熟方案，先把产品做好再谈规模</button>
+<div class="d-result" id="decision-fb-0"></div>
 </div></div>`;
 }
 
@@ -1119,7 +1172,7 @@ let feedbacks = {
 };
 fb.innerHTML = feedbacks[round+'-'+choice] || '';
 decisionState[round] = choice;
-fb.innerHTML += '<button class="btn btn-primary mt-12" onclick="nextDecision()">下一轮</button>';
+fb.innerHTML += '<button class="btn" onclick="nextDecision()">下一轮</button>';
 }
 
 function nextDecision(){
@@ -1130,7 +1183,7 @@ ds.innerHTML += `<div class="card" style="margin-top:16px;text-align:center">
 <h3>🎯 三轮决策完成</h3>
 <p>你经历了从技术选型到战略定位的完整决策链。</p>
 <p style="color:var(--accent);font-weight:700">核心收获：每一轮决策的背后都是「量级思维」「信息论」「等价性」「工程边界」的组合运用——这不是单一技巧，而是一套完整的思维操作系统。</p>
-<button class="btn btn-primary" onclick="renderDecision()">重新开始</button>
+<button class="btn" onclick="renderDecision()">重新开始</button>
 </div>`;
 return;
 }
@@ -1141,8 +1194,8 @@ let scenarios = [
 if(nextRound < scenarios.length){
 let s = scenarios[nextRound];
 let html = `<div class="card"><h3>${s.title}</h3><p>${s.desc}</p><p><strong>你会选择？</strong></p>`;
-s.opts.forEach((o,i)=>{ html += `<button class="decision-option" onclick="makeDecision(${nextRound},${i})">${o}</button>`; });
-html += `<div class="decision-feedback" id="decision-fb-${nextRound}"></div></div>`;
+s.opts.forEach((o,i)=>{ html += `<button class="d-option" onclick="makeDecision(${nextRound},${i})">${o}</button>`; });
+html += `<div class="d-result" id="decision-fb-${nextRound}"></div></div>`;
 ds.innerHTML += html;
 }
 }
