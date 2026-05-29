@@ -1,724 +1,501 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>「谷歌方法论」知识主板 — 吴军·硅谷来信</title>
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',system-ui,-apple-system,sans-serif}
-body{background:#0a1a0a;color:#e0e0e0;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none}
-
-/* Header / BIOS-style bar */
-.header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:linear-gradient(180deg,rgba(0,0,0,0.85) 0%,rgba(0,20,0,0.7) 100%);border-bottom:1px solid rgba(201,168,76,0.2);backdrop-filter:blur(10px);flex-shrink:0;min-height:56px}
-.header-left{display:flex;flex-direction:column;gap:2px}
-.header-title{font-size:1.15rem;font-weight:700;letter-spacing:0.05em;color:#f0f0ea;display:flex;align-items:center;gap:8px}
-.header-title .icon{font-size:1.3rem}
-.header-title .accent{color:#c9a84c}
-.header-subtitle{font-size:0.78rem;color:#8a9a8a;letter-spacing:0.08em}
-.header-right{display:flex;align-items:center;gap:16px}
-.status-label{font-size:0.7rem;color:#6a8a6a;letter-spacing:0.05em;text-transform:uppercase}
-.status-leds{display:flex;gap:6px}
-.status-led{width:8px;height:8px;border-radius:50%;background:#333;box-shadow:inset 0 0 3px rgba(0,0,0,0.5);transition:all 0.4s ease}
-.status-led.visited{box-shadow:0 0 6px 2px currentColor}
-.status-led[data-id="cpu"]{color:#00e5ff}
-.status-led[data-id="ram"]{color:#ffd700}
-.status-led[data-id="gpu"]{color:#ff00ff}
-.status-led[data-id="ssd"]{color:#00ff88}
-.status-led[data-id="nic"]{color:#ff8c00}
-.status-led[data-id="psu12v"]{color:#ff4444}
-.status-led[data-id="psu5v"]{color:#4488ff}
-.status-led.visited{background:currentColor}
-
-/* Main container */
-.main{flex:1;position:relative;overflow:hidden;min-height:0}
-
-/* Canvas particles */
-#particlesCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
-
-/* SVG board */
-#boardSvg{position:relative;z-index:1;width:100%;height:100%}
-
-/* Tooltip */
-.tooltip{position:absolute;z-index:20;pointer-events:none;opacity:0;transform:translate(-50%,-120%);transition:opacity 0.2s ease;padding:12px 16px;background:rgba(10,15,10,0.95);border:1px solid rgba(201,168,76,0.4);border-radius:8px;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 20px rgba(201,168,76,0.1);white-space:nowrap;max-width:260px}
-.tooltip.visible{opacity:1}
-.tooltip .tt-chip{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;margin-bottom:4px}
-.tooltip .tt-topic{font-size:0.85rem;font-weight:600;color:#f0f0ea;margin-bottom:6px}
-.tooltip .tt-concepts{display:flex;flex-wrap:wrap;gap:4px}
-.tooltip .tt-concept{font-size:0.7rem;padding:2px 8px;border-radius:10px;background:rgba(201,168,76,0.1);color:#c9a84c;border:1px solid rgba(201,168,76,0.2);white-space:nowrap}
-.tooltip::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid rgba(10,15,10,0.95)}
-
-/* SVG component hover */
-.comp-group{cursor:pointer;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
-.comp-group:hover{transform:scale(1.015);transform-origin:center}
-.comp-group:hover .comp-glow{opacity:1}
-.comp-glow{opacity:0.3;transition:opacity 0.3s ease}
-
-/* Mobile cards */
-.mobile-cards{display:none;position:relative;z-index:1;padding:16px;overflow-y:auto;height:100%;flex-direction:column;gap:12px}
-@media(max-width:768px){
-  .header{padding:10px 14px;min-height:52px}
-  .header-title{font-size:1rem}
-  .header-subtitle{font-size:0.7rem}
-  .status-label{display:none}
-  .header-right{gap:8px}
-  #boardSvg{display:none}
-  .mobile-cards{display:flex}
-}
-@media(min-width:769px){
-  .mobile-cards{display:none}
-}
-.mobile-card{position:relative;border-radius:10px;padding:16px;background:rgba(26,26,46,0.85);border:1px solid;cursor:pointer;transition:all 0.25s ease;backdrop-filter:blur(8px);display:flex;align-items:center;gap:14px}
-.mobile-card:active{transform:scale(0.99)}
-.mobile-card .mc-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-.mobile-card .mc-info{flex:1;min-width:0}
-.mobile-card .mc-label{font-size:0.85rem;font-weight:700;letter-spacing:0.05em}
-.mobile-card .mc-topic{font-size:0.75rem;color:#aabaaa;margin-top:2px}
-.mobile-card .mc-concepts{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.mobile-card .mc-concept{font-size:0.68rem;padding:1px 7px;border-radius:8px;background:rgba(201,168,76,0.08);color:#c9a84c;border:1px solid rgba(201,168,76,0.15)}
-.mobile-connector{width:2px;height:16px;margin:0 auto;background:linear-gradient(180deg,rgba(201,168,76,0.4),transparent)}
-
-/* Animations */
-@keyframes breathing{0%,100%{opacity:0.6}50%{opacity:1}}
-@keyframes tracePulse{0%{stroke-dashoffset:0}100%{stroke-dashoffset:-200}}
-@keyframes flicker{0%,100%{opacity:1}50%{opacity:0.4}}
-.breathing{animation:breathing 4s ease-in-out infinite}
-.flicker-fast{animation:flicker 0.06s steps(1) infinite}
-</style>
-</head>
-<body>
-
-<header class="header">
-  <div class="header-left">
-    <div class="header-title">
-      <span class="icon">&#9900;</span>
-      <span>「<span class="accent">谷歌方法论</span>」知识主板</span>
-      <span style="font-size:0.7rem;color:#6a8a6a;font-weight:400">— 吴军·硅谷来信</span>
-    </div>
-    <div class="header-subtitle">用计算机思维理解世界</div>
-  </div>
-  <div class="header-right">
-    <span class="status-label">System Status</span>
-    <div class="status-leds" id="statusLeds"></div>
-  </div>
-</header>
-
-<div class="main">
-  <canvas id="particlesCanvas"></canvas>
-
-  <svg id="boardSvg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <!-- Glow filters -->
-      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="glowStrong" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="traceGlow" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur stdDeviation="1.5" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="dropGlow" x="-30%" y="-30%" width="160%" height="160%">
-        <feDropShadow dx="0" dy="0" stdDeviation="8" flood-opacity="0.5"/>
-      </filter>
-
-      <!-- Pulse dot -->
-      <radialGradient id="pulseGrad">
-        <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
-        <stop offset="40%" stop-color="#c9a84c" stop-opacity="0.8"/>
-        <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
-      </radialGradient>
-
-      <!-- Board texture gradient -->
-      <linearGradient id="boardGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#0d1f0d"/>
-        <stop offset="30%" stop-color="#0a1a0a"/>
-        <stop offset="70%" stop-color="#0c1c0c"/>
-        <stop offset="100%" stop-color="#091809"/>
-      </linearGradient>
-    </defs>
-
-    <!-- Board background -->
-    <rect x="20" y="20" width="1160" height="760" rx="16" fill="url(#boardGrad)" stroke="#1a3a1a" stroke-width="2"/>
-    <rect x="24" y="24" width="1152" height="752" rx="14" fill="none" stroke="rgba(26,58,26,0.5)" stroke-width="1"/>
-
-    <!-- Mounting holes -->
-    <g fill="#0a1a0a" stroke="#1a3a1a" stroke-width="1.5">
-      <circle cx="48" cy="48" r="8"/><circle cx="48" cy="48" r="4" fill="#1a3a1a"/>
-      <circle cx="1152" cy="48" r="8"/><circle cx="1152" cy="48" r="4" fill="#1a3a1a"/>
-      <circle cx="48" cy="752" r="8"/><circle cx="48" cy="752" r="4" fill="#1a3a1a"/>
-      <circle cx="1152" cy="752" r="8"/><circle cx="1152" cy="752" r="4" fill="#1a3a1a"/>
-    </g>
-
-    <!-- Decorative PCB elements: silkscreen labels -->
-    <text x="60" y="40" fill="rgba(255,255,255,0.08)" font-size="8" font-family="monospace">REV 1.0</text>
-    <text x="1080" y="40" fill="rgba(255,255,255,0.08)" font-size="8" font-family="monospace">MKS-001</text>
-
-    <!-- Small decorative SMD components scattered -->
-    <g opacity="0.15">
-      <rect x="80" y="100" width="10" height="5" rx="1" fill="#666"/><rect x="80" y="98" width="3" height="9" rx="1" fill="#aaa"/><rect x="87" y="98" width="3" height="9" rx="1" fill="#aaa"/>
-      <rect x="1100" y="200" width="10" height="5" rx="1" fill="#666"/><rect x="1100" y="198" width="3" height="9" rx="1" fill="#aaa"/><rect x="1107" y="198" width="3" height="9" rx="1" fill="#aaa"/>
-      <rect x="100" y="700" width="10" height="5" rx="1" fill="#666"/><rect x="100" y="698" width="3" height="9" rx="1" fill="#aaa"/><rect x="107" y="698" width="3" height="9" rx="1" fill="#aaa"/>
-      <rect x="1050" y="620" width="10" height="5" rx="1" fill="#666"/><rect x="1050" y="618" width="3" height="9" rx="1" fill="#aaa"/><rect x="1057" y="618" width="3" height="9" rx="1" fill="#aaa"/>
-      <rect x="200" y="350" width="10" height="5" rx="1" fill="#666"/><rect x="200" y="348" width="3" height="9" rx="1" fill="#aaa"/><rect x="207" y="348" width="3" height="9" rx="1" fill="#aaa"/>
-    </g>
-
-    <!-- ============ CIRCUIT TRACES (base layer) ============ -->
-    <g fill="none" stroke="#8a6a2a" stroke-width="2.5" opacity="0.5" filter="url(#traceGlow)">
-      <!-- Decorative bus traces from CPU -->
-      <path d="M550,370 L550,500 L300,500"/>
-      <path d="M650,370 L650,500 L900,500"/>
-      <path d="M530,300 L300,300 L200,350"/>
-      <path d="M670,300 L900,300 L1000,380"/>
-    </g>
-
-    <!-- ============ ACTIVE TRACES (bright, with animation) ============ -->
-    <g fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.7" filter="url(#traceGlow)">
-      <!-- Trace: CPU → RAM -->
-      <path id="trace-ram" d="M530,275 L400,275 L340,190 L280,152"/>
-      <!-- Trace: CPU → GPU -->
-      <path id="trace-gpu" d="M670,275 L800,275 L880,200 L945,175"/>
-      <!-- Trace: CPU → NIC -->
-      <path id="trace-nic" d="M530,345 L400,345 L300,420 L230,502"/>
-      <!-- Trace: CPU → SSD -->
-      <path id="trace-ssd" d="M670,335 L800,335 L880,420 L930,497"/>
-      <!-- Trace: CPU → PSU +12V -->
-      <path id="trace-psu12v" d="M630,370 L630,520 L800,520 L915,550 L915,640"/>
-      <!-- Trace: CPU → PSU +5V -->
-      <path id="trace-psu5v" d="M570,370 L570,520 L400,520 L295,550 L295,640"/>
-    </g>
-
-    <!-- Traces: Via points -->
-    <g fill="#1a1a2e" stroke="#c9a84c" stroke-width="1.2">
-      <circle cx="400" cy="275" r="3.5"/><circle cx="800" cy="275" r="3.5"/>
-      <circle cx="400" cy="345" r="3.5"/><circle cx="800" cy="335" r="3.5"/>
-      <circle cx="630" cy="520" r="3.5"/><circle cx="570" cy="520" r="3.5"/>
-      <circle cx="800" cy="520" r="3.5"/><circle cx="400" cy="520" r="3.5"/>
-      <circle cx="340" cy="190" r="3.5"/><circle cx="300" cy="420" r="3.5"/>
-      <circle cx="880" cy="200" r="3.5"/><circle cx="880" cy="420" r="3.5"/>
-    </g>
-
-    <!-- ============ PULSE DOTS on traces ============ -->
-    <!-- RAM trace pulse -->
-    <circle r="4" fill="#ffd700" filter="url(#glowStrong)">
-      <animateMotion dur="2.5s" repeatCount="indefinite" path="M530,275 L400,275 L340,190 L280,152"/>
-    </circle>
-    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
-      <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.8s" path="M530,275 L400,275 L340,190 L280,152"/>
-    </circle>
-    <!-- GPU trace pulse -->
-    <circle r="4" fill="#ff00ff" filter="url(#glowStrong)">
-      <animateMotion dur="3s" repeatCount="indefinite" path="M670,275 L800,275 L880,200 L945,175"/>
-    </circle>
-    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
-      <animateMotion dur="3s" repeatCount="indefinite" begin="1.2s" path="M670,275 L800,275 L880,200 L945,175"/>
-    </circle>
-    <!-- NIC trace pulse -->
-    <circle r="4" fill="#ff8c00" filter="url(#glowStrong)">
-      <animateMotion dur="3.5s" repeatCount="indefinite" path="M530,345 L400,345 L300,420 L230,502"/>
-    </circle>
-    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
-      <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.4s" path="M530,345 L400,345 L300,420 L230,502"/>
-    </circle>
-    <!-- SSD trace pulse -->
-    <circle r="4" fill="#00ff88" filter="url(#glowStrong)">
-      <animateMotion dur="2.8s" repeatCount="indefinite" path="M670,335 L800,335 L880,420 L930,497"/>
-    </circle>
-    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
-      <animateMotion dur="2.8s" repeatCount="indefinite" begin="1s" path="M670,335 L800,335 L880,420 L930,497"/>
-    </circle>
-    <!-- PSU+12V trace pulse -->
-    <circle r="4" fill="#ff4444" filter="url(#glowStrong)">
-      <animateMotion dur="4s" repeatCount="indefinite" path="M630,370 L630,520 L800,520 L915,550 L915,640"/>
-    </circle>
-    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
-      <animateMotion dur="4s" repeatCount="indefinite" begin="1.6s" path="M630,370 L630,520 L800,520 L915,550 L915,640"/>
-    </circle>
-    <!-- PSU+5V trace pulse -->
-    <circle r="4" fill="#4488ff" filter="url(#glowStrong)">
-      <animateMotion dur="3.2s" repeatCount="indefinite" path="M570,370 L570,520 L400,520 L295,550 L295,640"/>
-    </circle>
-    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
-      <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.8s" path="M570,370 L570,520 L400,520 L295,550 L295,640"/>
-    </circle>
-
-    <!-- ============ COMPONENT: CPU (Central Processor) ============ -->
-    <g class="comp-group" data-id="cpu" transform="translate(530,250)">
-      <!-- Glow aura -->
-      <rect x="-10" y="-10" width="160" height="140" rx="8" fill="none" stroke="#00e5ff" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)" style="transition:opacity 0.3s"/>
-      <!-- Main chip body -->
-      <rect x="0" y="0" width="140" height="120" rx="4" fill="#1a1a2e" stroke="#00e5ff" stroke-width="2" filter="url(#glow)"/>
-      <!-- Heat spreader -->
-      <rect x="15" y="15" width="110" height="60" rx="2" fill="#222236" stroke="#2a3a4a" stroke-width="1"/>
-      <rect x="18" y="18" width="104" height="54" rx="1" fill="#252535"/>
-      <!-- Heat spreader text -->
-      <text x="70" y="50" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700" letter-spacing="0.15em">CPU</text>
-      <text x="70" y="62" text-anchor="middle" fill="#668888" font-size="6" letter-spacing="0.1em">CENTRAL PROCESSOR</text>
-      <!-- Pins: top -->
-      <g fill="#c9a84c">
-        <rect x="5" y="-6" width="3" height="6"/><rect x="15" y="-6" width="3" height="6"/>
-        <rect x="25" y="-6" width="3" height="6"/><rect x="35" y="-6" width="3" height="6"/>
-        <rect x="45" y="-6" width="3" height="6"/><rect x="55" y="-6" width="3" height="6"/>
-        <rect x="65" y="-6" width="3" height="6"/><rect x="75" y="-6" width="3" height="6"/>
-        <rect x="85" y="-6" width="3" height="6"/><rect x="95" y="-6" width="3" height="6"/>
-        <rect x="105" y="-6" width="3" height="6"/><rect x="115" y="-6" width="3" height="6"/>
-        <rect x="125" y="-6" width="3" height="6"/><rect x="132" y="-6" width="3" height="6"/>
-        <!-- Pins: bottom -->
-        <rect x="5" y="120" width="3" height="6"/><rect x="15" y="120" width="3" height="6"/>
-        <rect x="25" y="120" width="3" height="6"/><rect x="35" y="120" width="3" height="6"/>
-        <rect x="45" y="120" width="3" height="6"/><rect x="55" y="120" width="3" height="6"/>
-        <rect x="65" y="120" width="3" height="6"/><rect x="75" y="120" width="3" height="6"/>
-        <rect x="85" y="120" width="3" height="6"/><rect x="95" y="120" width="3" height="6"/>
-        <rect x="105" y="120" width="3" height="6"/><rect x="115" y="120" width="3" height="6"/>
-        <rect x="125" y="120" width="3" height="6"/><rect x="132" y="120" width="3" height="6"/>
-        <!-- Pins: left -->
-        <rect x="-6" y="8" width="6" height="3"/><rect x="-6" y="18" width="6" height="3"/>
-        <rect x="-6" y="28" width="6" height="3"/><rect x="-6" y="38" width="6" height="3"/>
-        <rect x="-6" y="48" width="6" height="3"/><rect x="-6" y="58" width="6" height="3"/>
-        <rect x="-6" y="68" width="6" height="3"/><rect x="-6" y="78" width="6" height="3"/>
-        <rect x="-6" y="88" width="6" height="3"/><rect x="-6" y="98" width="6" height="3"/>
-        <rect x="-6" y="108" width="6" height="3"/>
-        <!-- Pins: right -->
-        <rect x="140" y="8" width="6" height="3"/><rect x="140" y="18" width="6" height="3"/>
-        <rect x="140" y="28" width="6" height="3"/><rect x="140" y="38" width="6" height="3"/>
-        <rect x="140" y="48" width="6" height="3"/><rect x="140" y="58" width="6" height="3"/>
-        <rect x="140" y="68" width="6" height="3"/><rect x="140" y="78" width="6" height="3"/>
-        <rect x="140" y="88" width="6" height="3"/><rect x="140" y="98" width="6" height="3"/>
-        <rect x="140" y="108" width="6" height="3"/>
-      </g>
-      <!-- Topic label below chip -->
-      <text x="70" y="150" text-anchor="middle" fill="#00e5ff" font-size="9" opacity="0.7">计算机思维</text>
-    </g>
-
-    <!-- ============ COMPONENT: RAM (Memory) ============ -->
-    <g class="comp-group" data-id="ram" transform="translate(120,125)">
-      <rect x="-8" y="-8" width="176" height="71" rx="4" fill="none" stroke="#ffd700" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
-      <!-- PCB board -->
-      <rect x="0" y="0" width="160" height="55" rx="2" fill="#0d2a0d" stroke="#ffd700" stroke-width="2" filter="url(#glow)"/>
-      <!-- Memory chips on the DIMM -->
-      <rect x="8" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <rect x="30" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <rect x="52" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <rect x="74" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <rect x="96" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <rect x="118" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <rect x="140" y="8" width="12" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
-      <!-- Chip labels -->
-      <text x="17" y="17" text-anchor="middle" fill="#ffd700" font-size="4" opacity="0.6">IC</text>
-      <text x="39" y="17" text-anchor="middle" fill="#ffd700" font-size="4" opacity="0.6">IC</text>
-      <text x="61" y="17" text-anchor="middle" fill="#ffd700" font-size="4" opacity="0.6">IC</text>
-      <!-- Gold contact pins -->
-      <g fill="#c9a84c">
-        <rect x="4" y="55" width="3" height="5"/><rect x="10" y="55" width="3" height="5"/>
-        <rect x="16" y="55" width="3" height="5"/><rect x="22" y="55" width="3" height="5"/>
-        <rect x="28" y="55" width="3" height="5"/><rect x="34" y="55" width="3" height="5"/>
-        <rect x="40" y="55" width="3" height="5"/><rect x="46" y="55" width="3" height="5"/>
-        <rect x="52" y="55" width="3" height="5"/><rect x="58" y="55" width="3" height="5"/>
-        <rect x="64" y="55" width="3" height="5"/><rect x="70" y="55" width="3" height="5"/>
-        <rect x="76" y="55" width="3" height="5"/><rect x="82" y="55" width="3" height="5"/>
-        <rect x="88" y="55" width="3" height="5"/><rect x="94" y="55" width="3" height="5"/>
-        <rect x="100" y="55" width="3" height="5"/><rect x="106" y="55" width="3" height="5"/>
-        <rect x="112" y="55" width="3" height="5"/><rect x="118" y="55" width="3" height="5"/>
-        <rect x="124" y="55" width="3" height="5"/><rect x="130" y="55" width="3" height="5"/>
-        <rect x="136" y="55" width="3" height="5"/><rect x="142" y="55" width="3" height="5"/>
-        <rect x="148" y="55" width="3" height="5"/><rect x="153" y="55" width="3" height="5"/>
-      </g>
-      <!-- RAM label on board -->
-      <text x="80" y="48" text-anchor="middle" fill="#ffd700" font-size="9" font-weight="700" letter-spacing="0.15em">RAM</text>
-      <text x="80" y="72" text-anchor="middle" fill="#ffd700" font-size="8" opacity="0.6">硅谷与Google</text>
-    </g>
-
-    <!-- ============ COMPONENT: GPU (Graphics Processor) ============ -->
-    <g class="comp-group" data-id="gpu" transform="translate(945,125)">
-      <rect x="-10" y="-10" width="130" height="120" rx="6" fill="none" stroke="#ff00ff" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
-      <rect x="0" y="0" width="110" height="100" rx="4" fill="#1a1a2e" stroke="#ff00ff" stroke-width="2" filter="url(#glow)"/>
-      <rect x="12" y="12" width="86" height="50" rx="2" fill="#222236" stroke="#3a2a3a" stroke-width="1"/>
-      <rect x="15" y="15" width="80" height="44" rx="1" fill="#252535"/>
-      <text x="55" y="40" text-anchor="middle" fill="#ff00ff" font-size="9" font-weight="700" letter-spacing="0.15em">GPU</text>
-      <text x="55" y="52" text-anchor="middle" fill="#886688" font-size="5.5" letter-spacing="0.1em">GRAPHICS UNIT</text>
-      <!-- Pins -->
-      <g fill="#c9a84c">
-        <rect x="4" y="-6" width="3" height="6"/><rect x="14" y="-6" width="3" height="6"/>
-        <rect x="24" y="-6" width="3" height="6"/><rect x="34" y="-6" width="3" height="6"/>
-        <rect x="44" y="-6" width="3" height="6"/><rect x="54" y="-6" width="3" height="6"/>
-        <rect x="64" y="-6" width="3" height="6"/><rect x="74" y="-6" width="3" height="6"/>
-        <rect x="84" y="-6" width="3" height="6"/><rect x="94" y="-6" width="3" height="6"/>
-        <rect x="104" y="-6" width="3" height="6"/>
-        <rect x="4" y="100" width="3" height="6"/><rect x="14" y="100" width="3" height="6"/>
-        <rect x="24" y="100" width="3" height="6"/><rect x="34" y="100" width="3" height="6"/>
-        <rect x="44" y="100" width="3" height="6"/><rect x="54" y="100" width="3" height="6"/>
-        <rect x="64" y="100" width="3" height="6"/><rect x="74" y="100" width="3" height="6"/>
-        <rect x="84" y="100" width="3" height="6"/><rect x="94" y="100" width="3" height="6"/>
-        <rect x="104" y="100" width="3" height="6"/>
-        <rect x="-6" y="8" width="6" height="3"/><rect x="-6" y="18" width="6" height="3"/>
-        <rect x="-6" y="28" width="6" height="3"/><rect x="-6" y="38" width="6" height="3"/>
-        <rect x="-6" y="48" width="6" height="3"/><rect x="-6" y="58" width="6" height="3"/>
-        <rect x="-6" y="68" width="6" height="3"/><rect x="-6" y="78" width="6" height="3"/>
-        <rect x="-6" y="88" width="6" height="3"/>
-        <rect x="110" y="8" width="6" height="3"/><rect x="110" y="18" width="6" height="3"/>
-        <rect x="110" y="28" width="6" height="3"/><rect x="110" y="38" width="6" height="3"/>
-        <rect x="110" y="48" width="6" height="3"/><rect x="110" y="58" width="6" height="3"/>
-        <rect x="110" y="68" width="6" height="3"/><rect x="110" y="78" width="6" height="3"/>
-        <rect x="110" y="88" width="6" height="3"/>
-      </g>
-      <text x="55" y="126" text-anchor="middle" fill="#ff00ff" font-size="8" opacity="0.6">发明与创新</text>
-    </g>
-
-    <!-- ============ COMPONENT: NIC (Network Interface Card) ============ -->
-    <g class="comp-group" data-id="nic" transform="translate(90,470)">
-      <rect x="-8" y="-8" width="156" height="81" rx="4" fill="none" stroke="#ff8c00" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
-      <rect x="0" y="0" width="140" height="65" rx="3" fill="#1a1a2e" stroke="#ff8c00" stroke-width="2" filter="url(#glow)"/>
-      <!-- PCB detail -->
-      <rect x="8" y="8" width="90" height="30" rx="2" fill="#222236" stroke="#3a302a" stroke-width="1"/>
-      <!-- RJ45 port shape -->
-      <rect x="12" y="12" width="24" height="22" rx="2" fill="#111" stroke="#888" stroke-width="1"/>
-      <rect x="16" y="16" width="16" height="14" rx="1" fill="#0a0a0a"/>
-      <!-- LED indicators -->
-      <circle cx="42" cy="18" r="3" fill="#00ff00" opacity="0.8" class="flicker-fast"/>
-      <circle cx="42" cy="28" r="3" fill="#ff8c00" opacity="0.5"/>
-      <!-- Chip on card -->
-      <rect x="55" y="10" width="36" height="26" rx="2" fill="#1a1a2e" stroke="#555" stroke-width="0.5"/>
-      <text x="73" y="27" text-anchor="middle" fill="#ff8c00" font-size="6" font-weight="700">NIC</text>
-      <!-- Bracket -->
-      <rect x="115" y="0" width="25" height="65" rx="1" fill="#2a2a2a" stroke="#555" stroke-width="1"/>
-      <rect x="120" y="10" width="15" height="14" rx="1" fill="#0a0a0a" stroke="#666" stroke-width="0.5"/>
-      <rect x="120" y="30" width="15" height="14" rx="1" fill="#0a0a0a" stroke="#666" stroke-width="0.5"/>
-      <!-- Label -->
-      <text x="70" y="75" text-anchor="middle" fill="#ff8c00" font-size="8" opacity="0.6">投资与决策</text>
-    </g>
-
-    <!-- ============ COMPONENT: SSD (Solid State Drive array) ============ -->
-    <g class="comp-group" data-id="ssd" transform="translate(930,460)">
-      <rect x="-10" y="-10" width="160" height="95" rx="4" fill="none" stroke="#00ff88" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
-      <!-- Main substrate -->
-      <rect x="0" y="0" width="140" height="75" rx="3" fill="#1a1a2e" stroke="#00ff88" stroke-width="2" filter="url(#glow)"/>
-      <!-- 4 NAND chips in 2x2 grid -->
-      <rect x="6" y="6" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
-      <rect x="6" y="8" width="60" height="22" rx="1" fill="#1a2a2e"/>
-      <text x="36" y="22" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
-      <rect x="74" y="6" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
-      <rect x="74" y="8" width="60" height="22" rx="1" fill="#1a2a2e"/>
-      <text x="104" y="22" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
-      <rect x="6" y="40" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
-      <rect x="6" y="42" width="60" height="22" rx="1" fill="#1a2a2e"/>
-      <text x="36" y="56" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
-      <rect x="74" y="40" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
-      <rect x="74" y="42" width="60" height="22" rx="1" fill="#1a2a2e"/>
-      <text x="104" y="56" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
-      <!-- SSD label -->
-      <text x="70" y="90" text-anchor="middle" fill="#00ff88" font-size="7" font-weight="700" letter-spacing="0.1em">SSD</text>
-      <text x="70" y="102" text-anchor="middle" fill="#00ff88" font-size="7" opacity="0.5">世界名校</text>
-    </g>
-
-    <!-- ============ COMPONENT: PSU +12V (Power Supply Rail 1) ============ -->
-    <g class="comp-group" data-id="psu12v" transform="translate(850,640)">
-      <rect x="-6" y="-6" width="112" height="82" rx="4" fill="none" stroke="#ff4444" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
-      <rect x="0" y="0" width="100" height="70" rx="3" fill="#1a1a2e" stroke="#ff4444" stroke-width="2" filter="url(#glow)"/>
-      <!-- VRM phases -->
-      <rect x="8" y="8" width="22" height="20" rx="2" fill="#2a1a1a" stroke="#ff4444" stroke-width="0.8"/>
-      <rect x="8" y="10" width="22" height="16" rx="1" fill="#2a2020"/>
-      <rect x="36" y="8" width="22" height="20" rx="2" fill="#2a1a1a" stroke="#ff4444" stroke-width="0.8"/>
-      <rect x="36" y="10" width="22" height="16" rx="1" fill="#2a2020"/>
-      <rect x="64" y="8" width="28" height="20" rx="2" fill="#2a1a1a" stroke="#ff4444" stroke-width="0.8"/>
-      <rect x="64" y="10" width="28" height="16" rx="1" fill="#2a2020"/>
-      <!-- Capacitors -->
-      <circle cx="16" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <circle cx="34" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <circle cx="52" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <circle cx="70" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <!-- Labels -->
-      <text x="50" y="62" text-anchor="middle" fill="#ff4444" font-size="8" font-weight="700">+12V PSU</text>
-      <text x="50" y="82" text-anchor="middle" fill="#ff4444" font-size="7" opacity="0.5">人生算法</text>
-    </g>
-
-    <!-- ============ COMPONENT: PSU +5V (Power Supply Rail 2) ============ -->
-    <g class="comp-group" data-id="psu5v" transform="translate(250,640)">
-      <rect x="-6" y="-6" width="112" height="82" rx="4" fill="none" stroke="#4488ff" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
-      <rect x="0" y="0" width="100" height="70" rx="3" fill="#1a1a2e" stroke="#4488ff" stroke-width="2" filter="url(#glow)"/>
-      <rect x="8" y="8" width="22" height="20" rx="2" fill="#1a1a2a" stroke="#4488ff" stroke-width="0.8"/>
-      <rect x="8" y="10" width="22" height="16" rx="1" fill="#20202a"/>
-      <rect x="36" y="8" width="22" height="20" rx="2" fill="#1a1a2a" stroke="#4488ff" stroke-width="0.8"/>
-      <rect x="36" y="10" width="22" height="16" rx="1" fill="#20202a"/>
-      <rect x="64" y="8" width="28" height="20" rx="2" fill="#1a1a2a" stroke="#4488ff" stroke-width="0.8"/>
-      <rect x="64" y="10" width="28" height="16" rx="1" fill="#20202a"/>
-      <circle cx="16" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <circle cx="34" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <circle cx="52" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <circle cx="70" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
-      <text x="50" y="62" text-anchor="middle" fill="#4488ff" font-size="8" font-weight="700">+5V PSU</text>
-      <text x="50" y="82" text-anchor="middle" fill="#4488ff" font-size="7" opacity="0.5">文明与全球化</text>
-    </g>
-
-    <!-- Breath glow overlay on board -->
-    <rect x="20" y="20" width="1160" height="760" rx="16" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.15" class="breathing" pointer-events="none"/>
-  </svg>
-
-  <!-- Tooltip -->
-  <div class="tooltip" id="tooltip">
-    <div class="tt-chip" id="ttChip"></div>
-    <div class="tt-topic" id="ttTopic"></div>
-    <div class="tt-concepts" id="ttConcepts"></div>
-  </div>
-
-  <!-- Mobile cards -->
-  <div class="mobile-cards" id="mobileCards"></div>
-</div>
-
-<script>
-(function(){
-  'use strict';
-
-  // ── Component data ──
-  var components = [
-    { id:'cpu', label:'CPU 中央处理器', topic:'计算机思维', concepts:['递归与分治','抽象与封装','算法思维'], color:'#00e5ff', link:'7-计算机思维.html' },
-    { id:'ram', label:'RAM 内存条', topic:'硅谷与Google', concepts:['工程师文化','OKR管理','创新生态'], color:'#ffd700', link:'6-硅谷与Google.html' },
-    { id:'gpu', label:'GPU 图形处理器', topic:'发明与创新', concepts:['第一性原理','跨界思维','试错迭代'], color:'#ff00ff', link:'3-发明与创新.html' },
-    { id:'ssd', label:'SSD 固态硬盘阵列', topic:'世界名校', concepts:['通识教育','批判性思维','终身学习'], color:'#00ff88', link:'1-世界名校.html' },
-    { id:'nic', label:'NIC 网卡', topic:'投资与决策', concepts:['风险回报','信息不对称','长期主义'], color:'#ff8c00', link:'4-投资与决策.html' },
-    { id:'psu12v', label:'+12V 电源轨', topic:'人生算法', concepts:['期望值决策','复利效应','反脆弱性'], color:'#ff4444', link:'2-人生算法.html' },
-    { id:'psu5v', label:'+5V 电源轨', topic:'文明与全球化', concepts:['比较优势','网络效应','文明演进'], color:'#4488ff', link:'5-文明与全球化.html' }
-  ];
-
-  var STORAGE_PREFIX = 'wujun_board_visited_';
-
-  // ── Status LEDs ──
-  var ledsContainer = document.getElementById('statusLeds');
-  components.forEach(function(c){
-    var dot = document.createElement('span');
-    dot.className = 'status-led';
-    dot.setAttribute('data-id', c.id);
-    dot.title = c.topic;
-    if (localStorage.getItem(STORAGE_PREFIX + c.id)) {
-      dot.classList.add('visited');
-    }
-    ledsContainer.appendChild(dot);
-  });
-
-  // ── Tooltip logic ──
-  var tooltip = document.getElementById('tooltip');
-  var ttChip = document.getElementById('ttChip');
-  var ttTopic = document.getElementById('ttTopic');
-  var ttConcepts = document.getElementById('ttConcepts');
-  var activeTooltipComp = null;
-
-  function showTooltip(comp, evt){
-    activeTooltipComp = comp;
-    ttChip.textContent = comp.label;
-    ttChip.style.color = comp.color;
-    ttTopic.textContent = '专题：' + comp.topic;
-    ttConcepts.innerHTML = comp.concepts.map(function(cn){
-      return '<span class="tt-concept">' + cn + '</span>';
-    }).join('');
-    tooltip.classList.add('visible');
-    positionTooltip(evt);
-  }
-
-  function positionTooltip(evt){
-    var x = evt.clientX;
-    var y = evt.clientY - 16;
-    var tw = tooltip.offsetWidth;
-    var th = tooltip.offsetHeight;
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    if (x - tw/2 < 10) x = tw/2 + 10;
-    if (x + tw/2 > vw - 10) x = vw - tw/2 - 10;
-    if (y - th < 10) y = th + evt.clientY + 20;
-    tooltip.style.left = x + 'px';
-    tooltip.style.top = y + 'px';
-  }
-
-  function hideTooltip(){
-    activeTooltipComp = null;
-    tooltip.classList.remove('visible');
-  }
-
-  // ── Click handler ──
-  function handleClick(compId){
-    var comp = components.find(function(c){ return c.id === compId; });
-    if (!comp) return;
-    localStorage.setItem(STORAGE_PREFIX + comp.id, '1');
-    updateAllLEDs();
-    window.location.href = comp.link;
-  }
-
-  function updateAllLEDs(){
-    var dots = document.querySelectorAll('.status-led');
-    dots.forEach(function(dot){
-      var id = dot.getAttribute('data-id');
-      if (localStorage.getItem(STORAGE_PREFIX + id)) {
-        dot.classList.add('visited');
-      }
-    });
-  }
-
-  // ── Attach events to SVG component groups ──
-  var compGroups = document.querySelectorAll('.comp-group');
-  compGroups.forEach(function(group){
-    var compId = group.getAttribute('data-id');
-    var comp = components.find(function(c){ return c.id === compId; });
-
-    group.addEventListener('mouseenter', function(evt){
-      if (comp) showTooltip(comp, evt);
-    });
-    group.addEventListener('mousemove', function(evt){
-      if (activeTooltipComp === comp) positionTooltip(evt);
-    });
-    group.addEventListener('mouseleave', function(){
-      hideTooltip();
-    });
-    group.addEventListener('click', function(evt){
-      evt.stopPropagation();
-      handleClick(compId);
-    });
-  });
-
-  // Hide tooltip when leaving SVG
-  var boardSvg = document.getElementById('boardSvg');
-  boardSvg.addEventListener('mouseleave', function(){
-    hideTooltip();
-  });
-
-  // ── Particle background ──
-  var canvas = document.getElementById('particlesCanvas');
-  var ctx = canvas.getContext('2d');
-  var particles = [];
-  var PARTICLE_COUNT = 50;
-
-  function resizeCanvas(){
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  function createParticle(){
-    return {
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3 - 0.1,
-      size: Math.random() * 1.5 + 0.5,
-      opacity: Math.random() * 0.4 + 0.1
-    };
-  }
-
-  for (var i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push(createParticle());
-  }
-
-  function animateParticles(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (var i = 0; i < particles.length; i++) {
-      var p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-
-      // Wrap around
-      if (p.x < -10) p.x = canvas.width + 10;
-      if (p.x > canvas.width + 10) p.x = -10;
-      if (p.y < -10) p.y = canvas.height + 10;
-      if (p.y > canvas.height + 10) p.y = -10;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(201,168,76,' + p.opacity + ')';
-      ctx.fill();
-
-      // Draw connections between nearby particles
-      for (var j = i + 1; j < particles.length; j++) {
-        var p2 = particles[j];
-        var dx = p.x - p2.x;
-        var dy = p.y - p2.y;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 80) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = 'rgba(201,168,76,' + (0.08 * (1 - dist/80)) + ')';
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      }
-    }
-
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
-
-  // ── Mobile cards ──
-  var mobileCards = document.getElementById('mobileCards');
-  components.forEach(function(c, idx){
-    var card = document.createElement('div');
-    card.className = 'mobile-card';
-    card.style.borderColor = c.color;
-    card.style.boxShadow = '0 0 12px ' + c.color + '22';
-
-    var dot = document.createElement('div');
-    dot.className = 'mc-dot';
-    dot.style.background = c.color;
-    dot.style.boxShadow = '0 0 8px ' + c.color;
-
-    var info = document.createElement('div');
-    info.className = 'mc-info';
-
-    var label = document.createElement('div');
-    label.className = 'mc-label';
-    label.style.color = c.color;
-    label.textContent = c.label;
-
-    var topic = document.createElement('div');
-    topic.className = 'mc-topic';
-    topic.textContent = '专题：' + c.topic;
-
-    var conceptsDiv = document.createElement('div');
-    conceptsDiv.className = 'mc-concepts';
-    c.concepts.forEach(function(cn){
-      var span = document.createElement('span');
-      span.className = 'mc-concept';
-      span.textContent = cn;
-      conceptsDiv.appendChild(span);
-    });
-
-    info.appendChild(label);
-    info.appendChild(topic);
-    info.appendChild(conceptsDiv);
-
-    card.appendChild(dot);
-    card.appendChild(info);
-
-    card.addEventListener('click', function(){
-      handleClick(c.id);
-    });
-
-    mobileCards.appendChild(card);
-
-    // Connector between cards
-    if (idx < components.length - 1) {
-      var connector = document.createElement('div');
-      connector.className = 'mobile-connector';
-      mobileCards.appendChild(connector);
-    }
-  });
-
-  // ── Keyboard shortcut ──
-  document.addEventListener('keydown', function(evt){
-    // Ctrl+Shift+R: reset all visited states
-    if (evt.ctrlKey && evt.shiftKey && evt.key === 'R') {
-      evt.preventDefault();
-      components.forEach(function(c){
-        localStorage.removeItem(STORAGE_PREFIX + c.id);
-      });
-      updateAllLEDs();
-      console.log('[Board] All visit states reset.');
-    }
-  });
-
-})();
-</script>
-
-</body>
-</html>
+     1|<!DOCTYPE html>
+     2|<html lang="zh-CN">
+     3|<head>
+     4|<meta charset="UTF-8">
+     5|<meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6|<title>「谷歌方法论」知识主板 — 吴军·硅谷来信</title>
+     7|<style>
+     8|*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+     9|html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',system-ui,-apple-system,sans-serif}
+    10|body{background:#0a1a0a;color:#e0e0e0;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none}
+    11|
+    12|/* Header / BIOS-style bar */
+    13|.header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:linear-gradient(180deg,rgba(0,0,0,0.85) 0%,rgba(0,20,0,0.7) 100%);border-bottom:1px solid rgba(201,168,76,0.2);backdrop-filter:blur(10px);flex-shrink:0;min-height:56px}
+    14|.header-left{display:flex;flex-direction:column;gap:2px}
+    15|.header-title{font-size:1.15rem;font-weight:700;letter-spacing:0.05em;color:#f0f0ea;display:flex;align-items:center;gap:8px}
+    16|.header-title .icon{font-size:1.3rem}
+    17|.header-title .accent{color:#c9a84c}
+    18|.header-subtitle{font-size:0.78rem;color:#8a9a8a;letter-spacing:0.08em}
+    19|.header-right{display:flex;align-items:center;gap:16px}
+    20|.status-label{font-size:0.7rem;color:#6a8a6a;letter-spacing:0.05em;text-transform:uppercase}
+    21|.status-leds{display:flex;gap:6px}
+    22|.status-led{width:8px;height:8px;border-radius:50%;background:#333;box-shadow:inset 0 0 3px rgba(0,0,0,0.5);transition:all 0.4s ease}
+    23|.status-led.visited{box-shadow:0 0 6px 2px currentColor}
+    24|.status-led[data-id="cpu"]{color:#00e5ff}
+    25|.status-led[data-id="ram"]{color:#ffd700}
+    26|.status-led[data-id="gpu"]{color:#ff00ff}
+    27|.status-led[data-id="ssd"]{color:#00ff88}
+    28|.status-led[data-id="nic"]{color:#ff8c00}
+    29|.status-led[data-id="psu12v"]{color:#ff4444}
+    30|.status-led[data-id="psu5v"]{color:#4488ff}
+    31|.status-led.visited{background:currentColor}
+    32|
+    33|/* Main container */
+    34|.main{flex:1;position:relative;overflow:hidden;min-height:0}
+    35|
+    36|/* Canvas particles */
+    37|#particlesCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+    38|
+    39|/* SVG board */
+    40|#boardSvg{position:relative;z-index:1;width:100%;height:100%}
+    41|
+    42|/* Tooltip */
+    43|.tooltip{position:absolute;z-index:20;pointer-events:none;opacity:0;transform:translate(-50%,-120%);transition:opacity 0.2s ease;padding:12px 16px;background:rgba(10,15,10,0.95);border:1px solid rgba(201,168,76,0.4);border-radius:8px;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 20px rgba(201,168,76,0.1);white-space:nowrap;max-width:260px}
+    44|.tooltip.visible{opacity:1}
+    45|.tooltip .tt-chip{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;margin-bottom:4px}
+    46|.tooltip .tt-topic{font-size:0.85rem;font-weight:600;color:#f0f0ea;margin-bottom:6px}
+    47|.tooltip .tt-concepts{display:flex;flex-wrap:wrap;gap:4px}
+    48|.tooltip .tt-concept{font-size:0.7rem;padding:2px 8px;border-radius:10px;background:rgba(201,168,76,0.1);color:#c9a84c;border:1px solid rgba(201,168,76,0.2);white-space:nowrap}
+    49|.tooltip::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid rgba(10,15,10,0.95)}
+    50|
+    51|/* SVG component hover */
+    52|.comp-group{cursor:pointer}
+    53|.comp-group:hover .comp-glow{opacity:1}
+    54|.comp-group:hover .comp-body{filter:brightness(1.25)}
+    55|.comp-glow{opacity:0.15;transition:opacity 0.3s ease}
+    56|.comp-body{transition:filter 0.2s ease}
+    57|
+    58|/* Mobile cards */
+    59|.mobile-cards{display:none;position:relative;z-index:1;padding:16px;overflow-y:auto;height:100%;flex-direction:column;gap:12px}
+    60|@media(max-width:768px){
+    61|  .header{padding:10px 14px;min-height:52px}
+    62|  .header-title{font-size:1rem}
+    63|  .header-subtitle{font-size:0.7rem}
+    64|  .status-label{display:none}
+    65|  .header-right{gap:8px}
+    66|  #boardSvg{display:none}
+    67|  .mobile-cards{display:flex}
+    68|}
+    69|@media(min-width:769px){
+    70|  .mobile-cards{display:none}
+    71|}
+    72|.mobile-card{position:relative;border-radius:10px;padding:16px;background:rgba(26,26,46,0.85);border:1px solid;cursor:pointer;transition:all 0.25s ease;backdrop-filter:blur(8px);display:flex;align-items:center;gap:14px}
+    73|.mobile-card:active{transform:scale(0.99)}
+    74|.mobile-card .mc-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+    75|.mobile-card .mc-info{flex:1;min-width:0}
+    76|.mobile-card .mc-label{font-size:0.85rem;font-weight:700;letter-spacing:0.05em}
+    77|.mobile-card .mc-topic{font-size:0.75rem;color:#aabaaa;margin-top:2px}
+    78|.mobile-card .mc-concepts{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+    79|.mobile-card .mc-concept{font-size:0.68rem;padding:1px 7px;border-radius:8px;background:rgba(201,168,76,0.08);color:#c9a84c;border:1px solid rgba(201,168,76,0.15)}
+    80|.mobile-connector{width:2px;height:16px;margin:0 auto;background:linear-gradient(180deg,rgba(201,168,76,0.4),transparent)}
+    81|
+    82|/* Animations */
+    83|@keyframes breathing{0%,100%{opacity:0.6}50%{opacity:1}}
+    84|@keyframes tracePulse{0%{stroke-dashoffset:0}100%{stroke-dashoffset:-200}}
+    85|@keyframes flicker{0%,100%{opacity:1}50%{opacity:0.4}}
+    86|.breathing{animation:breathing 4s ease-in-out infinite}
+    87|.flicker-fast{animation:flicker 0.06s steps(1) infinite}
+    88|</style>
+    89|</head>
+    90|<body>
+    91|
+    92|<header class="header">
+    93|  <div class="header-left">
+    94|    <div class="header-title">
+    95|      <span class="icon">&#9900;</span>
+    96|      <span>「<span class="accent">谷歌方法论</span>」知识主板</span>
+    97|      <span style="font-size:0.7rem;color:#6a8a6a;font-weight:400">— 吴军·硅谷来信</span>
+    98|    </div>
+    99|    <div class="header-subtitle">用计算机思维理解世界</div>
+   100|  </div>
+   101|  <div class="header-right">
+   102|    <span class="status-label">System Status</span>
+   103|    <div class="status-leds" id="statusLeds"></div>
+   104|  </div>
+   105|</header>
+   106|
+   107|<div class="main">
+   108|  <canvas id="particlesCanvas"></canvas>
+   109|
+   110|  <svg id="boardSvg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+   111|    <defs>
+   112|      <!-- Glow filters -->
+   113|      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+   114|        <feGaussianBlur stdDeviation="3" result="blur"/>
+   115|        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+   116|      </filter>
+   117|      <filter id="glowStrong" x="-50%" y="-50%" width="200%" height="200%">
+   118|        <feGaussianBlur stdDeviation="6" result="blur"/>
+   119|        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+   120|      </filter>
+   121|      <filter id="traceGlow" x="-20%" y="-20%" width="140%" height="140%">
+   122|        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+   123|        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+   124|      </filter>
+   125|      <filter id="dropGlow" x="-30%" y="-30%" width="160%" height="160%">
+   126|        <feDropShadow dx="0" dy="0" stdDeviation="8" flood-opacity="0.5"/>
+   127|      </filter>
+   128|
+   129|      <!-- Pulse dot -->
+   130|      <radialGradient id="pulseGrad">
+   131|        <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+   132|        <stop offset="40%" stop-color="#c9a84c" stop-opacity="0.8"/>
+   133|        <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+   134|      </radialGradient>
+   135|
+   136|      <!-- Board texture gradient -->
+   137|      <linearGradient id="boardGrad" x1="0" y1="0" x2="1" y2="1">
+   138|        <stop offset="0%" stop-color="#0d1f0d"/>
+   139|        <stop offset="30%" stop-color="#0a1a0a"/>
+   140|        <stop offset="70%" stop-color="#0c1c0c"/>
+   141|        <stop offset="100%" stop-color="#091809"/>
+   142|      </linearGradient>
+   143|    </defs>
+   144|
+   145|    <!-- Board background -->
+   146|    <rect x="20" y="20" width="1160" height="760" rx="16" fill="url(#boardGrad)" stroke="#1a3a1a" stroke-width="2"/>
+   147|    <rect x="24" y="24" width="1152" height="752" rx="14" fill="none" stroke="rgba(26,58,26,0.5)" stroke-width="1"/>
+   148|
+   149|    <!-- Mounting holes -->
+   150|    <g fill="#0a1a0a" stroke="#1a3a1a" stroke-width="1.5">
+   151|      <circle cx="48" cy="48" r="8"/><circle cx="48" cy="48" r="4" fill="#1a3a1a"/>
+   152|      <circle cx="1152" cy="48" r="8"/><circle cx="1152" cy="48" r="4" fill="#1a3a1a"/>
+   153|      <circle cx="48" cy="752" r="8"/><circle cx="48" cy="752" r="4" fill="#1a3a1a"/>
+   154|      <circle cx="1152" cy="752" r="8"/><circle cx="1152" cy="752" r="4" fill="#1a3a1a"/>
+   155|    </g>
+   156|
+   157|    <!-- Decorative PCB elements: silkscreen labels -->
+   158|    <text x="60" y="40" fill="rgba(255,255,255,0.08)" font-size="8" font-family="monospace">REV 1.0</text>
+   159|    <text x="1080" y="40" fill="rgba(255,255,255,0.08)" font-size="8" font-family="monospace">MKS-001</text>
+   160|
+   161|    <!-- Small decorative SMD components scattered -->
+   162|    <g opacity="0.15">
+   163|      <rect x="80" y="100" width="10" height="5" rx="1" fill="#666"/><rect x="80" y="98" width="3" height="9" rx="1" fill="#aaa"/><rect x="87" y="98" width="3" height="9" rx="1" fill="#aaa"/>
+   164|      <rect x="1100" y="200" width="10" height="5" rx="1" fill="#666"/><rect x="1100" y="198" width="3" height="9" rx="1" fill="#aaa"/><rect x="1107" y="198" width="3" height="9" rx="1" fill="#aaa"/>
+   165|      <rect x="100" y="700" width="10" height="5" rx="1" fill="#666"/><rect x="100" y="698" width="3" height="9" rx="1" fill="#aaa"/><rect x="107" y="698" width="3" height="9" rx="1" fill="#aaa"/>
+   166|      <rect x="1050" y="620" width="10" height="5" rx="1" fill="#666"/><rect x="1050" y="618" width="3" height="9" rx="1" fill="#aaa"/><rect x="1057" y="618" width="3" height="9" rx="1" fill="#aaa"/>
+   167|      <rect x="200" y="350" width="10" height="5" rx="1" fill="#666"/><rect x="200" y="348" width="3" height="9" rx="1" fill="#aaa"/><rect x="207" y="348" width="3" height="9" rx="1" fill="#aaa"/>
+   168|    </g>
+   169|
+   170|    <!-- ============ CIRCUIT TRACES (base layer) ============ -->
+   171|    <g fill="none" stroke="#8a6a2a" stroke-width="2.5" opacity="0.5" filter="url(#traceGlow)">
+   172|      <!-- Decorative bus traces from CPU -->
+   173|      <path d="M550,370 L550,500 L300,500"/>
+   174|      <path d="M650,370 L650,500 L900,500"/>
+   175|      <path d="M530,300 L300,300 L200,350"/>
+   176|      <path d="M670,300 L900,300 L1000,380"/>
+   177|    </g>
+   178|
+   179|    <!-- ============ ACTIVE TRACES (bright, with animation) ============ -->
+   180|    <g fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.7" filter="url(#traceGlow)">
+   181|      <!-- Trace: CPU → RAM -->
+   182|      <path id="trace-ram" d="M530,275 L400,275 L340,190 L280,152"/>
+   183|      <!-- Trace: CPU → GPU -->
+   184|      <path id="trace-gpu" d="M670,275 L800,275 L880,200 L945,175"/>
+   185|      <!-- Trace: CPU → NIC -->
+   186|      <path id="trace-nic" d="M530,345 L400,345 L300,420 L230,502"/>
+   187|      <!-- Trace: CPU → SSD -->
+   188|      <path id="trace-ssd" d="M670,335 L800,335 L880,420 L930,497"/>
+   189|      <!-- Trace: CPU → PSU +12V -->
+   190|      <path id="trace-psu12v" d="M630,370 L630,520 L800,520 L915,550 L915,640"/>
+   191|      <!-- Trace: CPU → PSU +5V -->
+   192|      <path id="trace-psu5v" d="M570,370 L570,520 L400,520 L295,550 L295,640"/>
+   193|    </g>
+   194|
+   195|    <!-- Traces: Via points -->
+   196|    <g fill="#1a1a2e" stroke="#c9a84c" stroke-width="1.2">
+   197|      <circle cx="400" cy="275" r="3.5"/><circle cx="800" cy="275" r="3.5"/>
+   198|      <circle cx="400" cy="345" r="3.5"/><circle cx="800" cy="335" r="3.5"/>
+   199|      <circle cx="630" cy="520" r="3.5"/><circle cx="570" cy="520" r="3.5"/>
+   200|      <circle cx="800" cy="520" r="3.5"/><circle cx="400" cy="520" r="3.5"/>
+   201|      <circle cx="340" cy="190" r="3.5"/><circle cx="300" cy="420" r="3.5"/>
+   202|      <circle cx="880" cy="200" r="3.5"/><circle cx="880" cy="420" r="3.5"/>
+   203|    </g>
+   204|
+   205|    <!-- ============ PULSE DOTS on traces ============ -->
+   206|    <!-- RAM trace pulse -->
+   207|    <circle r="4" fill="#ffd700" filter="url(#glowStrong)">
+   208|      <animateMotion dur="2.5s" repeatCount="indefinite" path="M530,275 L400,275 L340,190 L280,152"/>
+   209|    </circle>
+   210|    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
+   211|      <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.8s" path="M530,275 L400,275 L340,190 L280,152"/>
+   212|    </circle>
+   213|    <!-- GPU trace pulse -->
+   214|    <circle r="4" fill="#ff00ff" filter="url(#glowStrong)">
+   215|      <animateMotion dur="3s" repeatCount="indefinite" path="M670,275 L800,275 L880,200 L945,175"/>
+   216|    </circle>
+   217|    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
+   218|      <animateMotion dur="3s" repeatCount="indefinite" begin="1.2s" path="M670,275 L800,275 L880,200 L945,175"/>
+   219|    </circle>
+   220|    <!-- NIC trace pulse -->
+   221|    <circle r="4" fill="#ff8c00" filter="url(#glowStrong)">
+   222|      <animateMotion dur="3.5s" repeatCount="indefinite" path="M530,345 L400,345 L300,420 L230,502"/>
+   223|    </circle>
+   224|    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
+   225|      <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.4s" path="M530,345 L400,345 L300,420 L230,502"/>
+   226|    </circle>
+   227|    <!-- SSD trace pulse -->
+   228|    <circle r="4" fill="#00ff88" filter="url(#glowStrong)">
+   229|      <animateMotion dur="2.8s" repeatCount="indefinite" path="M670,335 L800,335 L880,420 L930,497"/>
+   230|    </circle>
+   231|    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
+   232|      <animateMotion dur="2.8s" repeatCount="indefinite" begin="1s" path="M670,335 L800,335 L880,420 L930,497"/>
+   233|    </circle>
+   234|    <!-- PSU+12V trace pulse -->
+   235|    <circle r="4" fill="#ff4444" filter="url(#glowStrong)">
+   236|      <animateMotion dur="4s" repeatCount="indefinite" path="M630,370 L630,520 L800,520 L915,550 L915,640"/>
+   237|    </circle>
+   238|    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
+   239|      <animateMotion dur="4s" repeatCount="indefinite" begin="1.6s" path="M630,370 L630,520 L800,520 L915,550 L915,640"/>
+   240|    </circle>
+   241|    <!-- PSU+5V trace pulse -->
+   242|    <circle r="4" fill="#4488ff" filter="url(#glowStrong)">
+   243|      <animateMotion dur="3.2s" repeatCount="indefinite" path="M570,370 L570,520 L400,520 L295,550 L295,640"/>
+   244|    </circle>
+   245|    <circle r="3" fill="#c9a84c" filter="url(#glow)" opacity="0.6">
+   246|      <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.8s" path="M570,370 L570,520 L400,520 L295,550 L295,640"/>
+   247|    </circle>
+   248|
+   249|    <!-- ============ COMPONENT: CPU (Central Processor) ============ -->
+   250|    <g class="comp-group" data-id="cpu" transform="translate(530,250)">
+   251|      <!-- Glow aura -->
+   252|      <rect x="-10" y="-10" width="160" height="140" rx="8" fill="none" stroke="#00e5ff" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)" style="transition:opacity 0.3s"/>
+   253|      <!-- Main chip body -->
+   254|      <rect x="0" y="0" width="140" height="120" rx="4" fill="#1a1a2e" stroke="#00e5ff" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   255|      <!-- Heat spreader -->
+   256|      <rect x="15" y="15" width="110" height="60" rx="2" fill="#222236" stroke="#2a3a4a" stroke-width="1"/>
+   257|      <rect x="18" y="18" width="104" height="54" rx="1" fill="#252535"/>
+   258|      <!-- Heat spreader text -->
+   259|      <text x="70" y="50" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700" letter-spacing="0.15em">CPU</text>
+   260|      <text x="70" y="62" text-anchor="middle" fill="#668888" font-size="6" letter-spacing="0.1em">CENTRAL PROCESSOR</text>
+   261|      <!-- Pins: top -->
+   262|      <g fill="#c9a84c">
+   263|        <rect x="5" y="-6" width="3" height="6"/><rect x="15" y="-6" width="3" height="6"/>
+   264|        <rect x="25" y="-6" width="3" height="6"/><rect x="35" y="-6" width="3" height="6"/>
+   265|        <rect x="45" y="-6" width="3" height="6"/><rect x="55" y="-6" width="3" height="6"/>
+   266|        <rect x="65" y="-6" width="3" height="6"/><rect x="75" y="-6" width="3" height="6"/>
+   267|        <rect x="85" y="-6" width="3" height="6"/><rect x="95" y="-6" width="3" height="6"/>
+   268|        <rect x="105" y="-6" width="3" height="6"/><rect x="115" y="-6" width="3" height="6"/>
+   269|        <rect x="125" y="-6" width="3" height="6"/><rect x="132" y="-6" width="3" height="6"/>
+   270|        <!-- Pins: bottom -->
+   271|        <rect x="5" y="120" width="3" height="6"/><rect x="15" y="120" width="3" height="6"/>
+   272|        <rect x="25" y="120" width="3" height="6"/><rect x="35" y="120" width="3" height="6"/>
+   273|        <rect x="45" y="120" width="3" height="6"/><rect x="55" y="120" width="3" height="6"/>
+   274|        <rect x="65" y="120" width="3" height="6"/><rect x="75" y="120" width="3" height="6"/>
+   275|        <rect x="85" y="120" width="3" height="6"/><rect x="95" y="120" width="3" height="6"/>
+   276|        <rect x="105" y="120" width="3" height="6"/><rect x="115" y="120" width="3" height="6"/>
+   277|        <rect x="125" y="120" width="3" height="6"/><rect x="132" y="120" width="3" height="6"/>
+   278|        <!-- Pins: left -->
+   279|        <rect x="-6" y="8" width="6" height="3"/><rect x="-6" y="18" width="6" height="3"/>
+   280|        <rect x="-6" y="28" width="6" height="3"/><rect x="-6" y="38" width="6" height="3"/>
+   281|        <rect x="-6" y="48" width="6" height="3"/><rect x="-6" y="58" width="6" height="3"/>
+   282|        <rect x="-6" y="68" width="6" height="3"/><rect x="-6" y="78" width="6" height="3"/>
+   283|        <rect x="-6" y="88" width="6" height="3"/><rect x="-6" y="98" width="6" height="3"/>
+   284|        <rect x="-6" y="108" width="6" height="3"/>
+   285|        <!-- Pins: right -->
+   286|        <rect x="140" y="8" width="6" height="3"/><rect x="140" y="18" width="6" height="3"/>
+   287|        <rect x="140" y="28" width="6" height="3"/><rect x="140" y="38" width="6" height="3"/>
+   288|        <rect x="140" y="48" width="6" height="3"/><rect x="140" y="58" width="6" height="3"/>
+   289|        <rect x="140" y="68" width="6" height="3"/><rect x="140" y="78" width="6" height="3"/>
+   290|        <rect x="140" y="88" width="6" height="3"/><rect x="140" y="98" width="6" height="3"/>
+   291|        <rect x="140" y="108" width="6" height="3"/>
+   292|      </g>
+   293|      <!-- Topic label below chip -->
+   294|      <text x="70" y="150" text-anchor="middle" fill="#00e5ff" font-size="9" opacity="0.7">计算机思维</text>
+   295|    </g>
+   296|
+   297|    <!-- ============ COMPONENT: RAM (Memory) ============ -->
+   298|    <g class="comp-group" data-id="ram" transform="translate(120,125)">
+   299|      <rect x="-8" y="-8" width="176" height="71" rx="4" fill="none" stroke="#ffd700" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
+   300|      <!-- PCB board -->
+   301|      <rect x="0" y="0" width="160" height="55" rx="2" fill="#0d2a0d" stroke="#ffd700" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   302|      <!-- Memory chips on the DIMM -->
+   303|      <rect x="8" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   304|      <rect x="30" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   305|      <rect x="52" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   306|      <rect x="74" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   307|      <rect x="96" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   308|      <rect x="118" y="8" width="18" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   309|      <rect x="140" y="8" width="12" height="14" rx="1" fill="#1a1a2e" stroke="#444" stroke-width="0.5"/>
+   310|      <!-- Chip labels -->
+   311|      <text x="17" y="17" text-anchor="middle" fill="#ffd700" font-size="4" opacity="0.6">IC</text>
+   312|      <text x="39" y="17" text-anchor="middle" fill="#ffd700" font-size="4" opacity="0.6">IC</text>
+   313|      <text x="61" y="17" text-anchor="middle" fill="#ffd700" font-size="4" opacity="0.6">IC</text>
+   314|      <!-- Gold contact pins -->
+   315|      <g fill="#c9a84c">
+   316|        <rect x="4" y="55" width="3" height="5"/><rect x="10" y="55" width="3" height="5"/>
+   317|        <rect x="16" y="55" width="3" height="5"/><rect x="22" y="55" width="3" height="5"/>
+   318|        <rect x="28" y="55" width="3" height="5"/><rect x="34" y="55" width="3" height="5"/>
+   319|        <rect x="40" y="55" width="3" height="5"/><rect x="46" y="55" width="3" height="5"/>
+   320|        <rect x="52" y="55" width="3" height="5"/><rect x="58" y="55" width="3" height="5"/>
+   321|        <rect x="64" y="55" width="3" height="5"/><rect x="70" y="55" width="3" height="5"/>
+   322|        <rect x="76" y="55" width="3" height="5"/><rect x="82" y="55" width="3" height="5"/>
+   323|        <rect x="88" y="55" width="3" height="5"/><rect x="94" y="55" width="3" height="5"/>
+   324|        <rect x="100" y="55" width="3" height="5"/><rect x="106" y="55" width="3" height="5"/>
+   325|        <rect x="112" y="55" width="3" height="5"/><rect x="118" y="55" width="3" height="5"/>
+   326|        <rect x="124" y="55" width="3" height="5"/><rect x="130" y="55" width="3" height="5"/>
+   327|        <rect x="136" y="55" width="3" height="5"/><rect x="142" y="55" width="3" height="5"/>
+   328|        <rect x="148" y="55" width="3" height="5"/><rect x="153" y="55" width="3" height="5"/>
+   329|      </g>
+   330|      <!-- RAM label on board -->
+   331|      <text x="80" y="48" text-anchor="middle" fill="#ffd700" font-size="9" font-weight="700" letter-spacing="0.15em">RAM</text>
+   332|      <text x="80" y="72" text-anchor="middle" fill="#ffd700" font-size="8" opacity="0.6">硅谷与Google</text>
+   333|    </g>
+   334|
+   335|    <!-- ============ COMPONENT: GPU (Graphics Processor) ============ -->
+   336|    <g class="comp-group" data-id="gpu" transform="translate(945,125)">
+   337|      <rect x="-10" y="-10" width="130" height="120" rx="6" fill="none" stroke="#ff00ff" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
+   338|      <rect x="0" y="0" width="110" height="100" rx="4" fill="#1a1a2e" stroke="#ff00ff" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   339|      <rect x="12" y="12" width="86" height="50" rx="2" fill="#222236" stroke="#3a2a3a" stroke-width="1"/>
+   340|      <rect x="15" y="15" width="80" height="44" rx="1" fill="#252535"/>
+   341|      <text x="55" y="40" text-anchor="middle" fill="#ff00ff" font-size="9" font-weight="700" letter-spacing="0.15em">GPU</text>
+   342|      <text x="55" y="52" text-anchor="middle" fill="#886688" font-size="5.5" letter-spacing="0.1em">GRAPHICS UNIT</text>
+   343|      <!-- Pins -->
+   344|      <g fill="#c9a84c">
+   345|        <rect x="4" y="-6" width="3" height="6"/><rect x="14" y="-6" width="3" height="6"/>
+   346|        <rect x="24" y="-6" width="3" height="6"/><rect x="34" y="-6" width="3" height="6"/>
+   347|        <rect x="44" y="-6" width="3" height="6"/><rect x="54" y="-6" width="3" height="6"/>
+   348|        <rect x="64" y="-6" width="3" height="6"/><rect x="74" y="-6" width="3" height="6"/>
+   349|        <rect x="84" y="-6" width="3" height="6"/><rect x="94" y="-6" width="3" height="6"/>
+   350|        <rect x="104" y="-6" width="3" height="6"/>
+   351|        <rect x="4" y="100" width="3" height="6"/><rect x="14" y="100" width="3" height="6"/>
+   352|        <rect x="24" y="100" width="3" height="6"/><rect x="34" y="100" width="3" height="6"/>
+   353|        <rect x="44" y="100" width="3" height="6"/><rect x="54" y="100" width="3" height="6"/>
+   354|        <rect x="64" y="100" width="3" height="6"/><rect x="74" y="100" width="3" height="6"/>
+   355|        <rect x="84" y="100" width="3" height="6"/><rect x="94" y="100" width="3" height="6"/>
+   356|        <rect x="104" y="100" width="3" height="6"/>
+   357|        <rect x="-6" y="8" width="6" height="3"/><rect x="-6" y="18" width="6" height="3"/>
+   358|        <rect x="-6" y="28" width="6" height="3"/><rect x="-6" y="38" width="6" height="3"/>
+   359|        <rect x="-6" y="48" width="6" height="3"/><rect x="-6" y="58" width="6" height="3"/>
+   360|        <rect x="-6" y="68" width="6" height="3"/><rect x="-6" y="78" width="6" height="3"/>
+   361|        <rect x="-6" y="88" width="6" height="3"/>
+   362|        <rect x="110" y="8" width="6" height="3"/><rect x="110" y="18" width="6" height="3"/>
+   363|        <rect x="110" y="28" width="6" height="3"/><rect x="110" y="38" width="6" height="3"/>
+   364|        <rect x="110" y="48" width="6" height="3"/><rect x="110" y="58" width="6" height="3"/>
+   365|        <rect x="110" y="68" width="6" height="3"/><rect x="110" y="78" width="6" height="3"/>
+   366|        <rect x="110" y="88" width="6" height="3"/>
+   367|      </g>
+   368|      <text x="55" y="126" text-anchor="middle" fill="#ff00ff" font-size="8" opacity="0.6">发明与创新</text>
+   369|    </g>
+   370|
+   371|    <!-- ============ COMPONENT: NIC (Network Interface Card) ============ -->
+   372|    <g class="comp-group" data-id="nic" transform="translate(90,470)">
+   373|      <rect x="-8" y="-8" width="156" height="81" rx="4" fill="none" stroke="#ff8c00" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
+   374|      <rect x="0" y="0" width="140" height="65" rx="3" fill="#1a1a2e" stroke="#ff8c00" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   375|      <!-- PCB detail -->
+   376|      <rect x="8" y="8" width="90" height="30" rx="2" fill="#222236" stroke="#3a302a" stroke-width="1"/>
+   377|      <!-- RJ45 port shape -->
+   378|      <rect x="12" y="12" width="24" height="22" rx="2" fill="#111" stroke="#888" stroke-width="1"/>
+   379|      <rect x="16" y="16" width="16" height="14" rx="1" fill="#0a0a0a"/>
+   380|      <!-- LED indicators -->
+   381|      <circle cx="42" cy="18" r="3" fill="#00ff00" opacity="0.8" class="flicker-fast"/>
+   382|      <circle cx="42" cy="28" r="3" fill="#ff8c00" opacity="0.5"/>
+   383|      <!-- Chip on card -->
+   384|      <rect x="55" y="10" width="36" height="26" rx="2" fill="#1a1a2e" stroke="#555" stroke-width="0.5"/>
+   385|      <text x="73" y="27" text-anchor="middle" fill="#ff8c00" font-size="6" font-weight="700">NIC</text>
+   386|      <!-- Bracket -->
+   387|      <rect x="115" y="0" width="25" height="65" rx="1" fill="#2a2a2a" stroke="#555" stroke-width="1"/>
+   388|      <rect x="120" y="10" width="15" height="14" rx="1" fill="#0a0a0a" stroke="#666" stroke-width="0.5"/>
+   389|      <rect x="120" y="30" width="15" height="14" rx="1" fill="#0a0a0a" stroke="#666" stroke-width="0.5"/>
+   390|      <!-- Label -->
+   391|      <text x="70" y="75" text-anchor="middle" fill="#ff8c00" font-size="8" opacity="0.6">投资与决策</text>
+   392|    </g>
+   393|
+   394|    <!-- ============ COMPONENT: SSD (Solid State Drive array) ============ -->
+   395|    <g class="comp-group" data-id="ssd" transform="translate(930,460)">
+   396|      <rect x="-10" y="-10" width="160" height="95" rx="4" fill="none" stroke="#00ff88" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
+   397|      <!-- Main substrate -->
+   398|      <rect x="0" y="0" width="140" height="75" rx="3" fill="#1a1a2e" stroke="#00ff88" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   399|      <!-- 4 NAND chips in 2x2 grid -->
+   400|      <rect x="6" y="6" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
+   401|      <rect x="6" y="8" width="60" height="22" rx="1" fill="#1a2a2e"/>
+   402|      <text x="36" y="22" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
+   403|      <rect x="74" y="6" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
+   404|      <rect x="74" y="8" width="60" height="22" rx="1" fill="#1a2a2e"/>
+   405|      <text x="104" y="22" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
+   406|      <rect x="6" y="40" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
+   407|      <rect x="6" y="42" width="60" height="22" rx="1" fill="#1a2a2e"/>
+   408|      <text x="36" y="56" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
+   409|      <rect x="74" y="40" width="60" height="26" rx="2" fill="#0d2a1a" stroke="#00ff88" stroke-width="1" opacity="0.8"/>
+   410|      <rect x="74" y="42" width="60" height="22" rx="1" fill="#1a2a2e"/>
+   411|      <text x="104" y="56" text-anchor="middle" fill="#00ff88" font-size="6" font-weight="700">NAND</text>
+   412|      <!-- SSD label -->
+   413|      <text x="70" y="90" text-anchor="middle" fill="#00ff88" font-size="7" font-weight="700" letter-spacing="0.1em">SSD</text>
+   414|      <text x="70" y="102" text-anchor="middle" fill="#00ff88" font-size="7" opacity="0.5">世界名校</text>
+   415|    </g>
+   416|
+   417|    <!-- ============ COMPONENT: PSU +12V (Power Supply Rail 1) ============ -->
+   418|    <g class="comp-group" data-id="psu12v" transform="translate(850,640)">
+   419|      <rect x="-6" y="-6" width="112" height="82" rx="4" fill="none" stroke="#ff4444" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
+   420|      <rect x="0" y="0" width="100" height="70" rx="3" fill="#1a1a2e" stroke="#ff4444" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   421|      <!-- VRM phases -->
+   422|      <rect x="8" y="8" width="22" height="20" rx="2" fill="#2a1a1a" stroke="#ff4444" stroke-width="0.8"/>
+   423|      <rect x="8" y="10" width="22" height="16" rx="1" fill="#2a2020"/>
+   424|      <rect x="36" y="8" width="22" height="20" rx="2" fill="#2a1a1a" stroke="#ff4444" stroke-width="0.8"/>
+   425|      <rect x="36" y="10" width="22" height="16" rx="1" fill="#2a2020"/>
+   426|      <rect x="64" y="8" width="28" height="20" rx="2" fill="#2a1a1a" stroke="#ff4444" stroke-width="0.8"/>
+   427|      <rect x="64" y="10" width="28" height="16" rx="1" fill="#2a2020"/>
+   428|      <!-- Capacitors -->
+   429|      <circle cx="16" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   430|      <circle cx="34" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   431|      <circle cx="52" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   432|      <circle cx="70" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   433|      <!-- Labels -->
+   434|      <text x="50" y="62" text-anchor="middle" fill="#ff4444" font-size="8" font-weight="700">+12V PSU</text>
+   435|      <text x="50" y="82" text-anchor="middle" fill="#ff4444" font-size="7" opacity="0.5">人生算法</text>
+   436|    </g>
+   437|
+   438|    <!-- ============ COMPONENT: PSU +5V (Power Supply Rail 2) ============ -->
+   439|    <g class="comp-group" data-id="psu5v" transform="translate(250,640)">
+   440|      <rect x="-6" y="-6" width="112" height="82" rx="4" fill="none" stroke="#4488ff" stroke-width="3" opacity="0" class="comp-glow" filter="url(#glowStrong)"/>
+   441|      <rect x="0" y="0" width="100" height="70" rx="3" fill="#1a1a2e" stroke="#4488ff" stroke-width="2" filter="url(#glow)" class="comp-body"/>
+   442|      <rect x="8" y="8" width="22" height="20" rx="2" fill="#1a1a2a" stroke="#4488ff" stroke-width="0.8"/>
+   443|      <rect x="8" y="10" width="22" height="16" rx="1" fill="#20202a"/>
+   444|      <rect x="36" y="8" width="22" height="20" rx="2" fill="#1a1a2a" stroke="#4488ff" stroke-width="0.8"/>
+   445|      <rect x="36" y="10" width="22" height="16" rx="1" fill="#20202a"/>
+   446|      <rect x="64" y="8" width="28" height="20" rx="2" fill="#1a1a2a" stroke="#4488ff" stroke-width="0.8"/>
+   447|      <rect x="64" y="10" width="28" height="16" rx="1" fill="#20202a"/>
+   448|      <circle cx="16" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   449|      <circle cx="34" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   450|      <circle cx="52" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   451|      <circle cx="70" cy="44" r="6" fill="none" stroke="#aaa" stroke-width="1"/>
+   452|      <text x="50" y="62" text-anchor="middle" fill="#4488ff" font-size="8" font-weight="700">+5V PSU</text>
+   453|      <text x="50" y="82" text-anchor="middle" fill="#4488ff" font-size="7" opacity="0.5">文明与全球化</text>
+   454|    </g>
+   455|
+   456|    <!-- Breath glow overlay on board -->
+   457|    <rect x="20" y="20" width="1160" height="760" rx="16" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.15" class="breathing" pointer-events="none"/>
+   458|  </svg>
+   459|
+   460|  <!-- Tooltip -->
+   461|  <div class="tooltip" id="tooltip">
+   462|    <div class="tt-chip" id="ttChip"></div>
+   463|    <div class="tt-topic" id="ttTopic"></div>
+   464|    <div class="tt-concepts" id="ttConcepts"></div>
+   465|  </div>
+   466|
+   467|  <!-- Mobile cards -->
+   468|  <div class="mobile-cards" id="mobileCards"></div>
+   469|</div>
+   470|
+   471|<script>
+   472|(function(){
+   473|  'use strict';
+   474|
+   475|  // ── Component data ──
+   476|  var components = [
+   477|    { id:'cpu', label:'CPU 中央处理器', topic:'计算机思维', concepts:['递归与分治','抽象与封装','算法思维'], color:'#00e5ff', link:'7-计算机思维.html' },
+   478|    { id:'ram', label:'RAM 内存条', topic:'硅谷与Google', concepts:['工程师文化','OKR管理','创新生态'], color:'#ffd700', link:'6-硅谷与Google.html' },
+   479|    { id:'gpu', label:'GPU 图形处理器', topic:'发明与创新', concepts:['第一性原理','跨界思维','试错迭代'], color:'#ff00ff', link:'3-发明与创新.html' },
+   480|    { id:'ssd', label:'SSD 固态硬盘阵列', topic:'世界名校', concepts:['通识教育','批判性思维','终身学习'], color:'#00ff88', link:'1-世界名校.html' },
+   481|    { id:'nic', label:'NIC 网卡', topic:'投资与决策', concepts:['风险回报','信息不对称','长期主义'], color:'#ff8c00', link:'4-投资与决策.html' },
+   482|    { id:'psu12v', label:'+12V 电源轨', topic:'人生算法', concepts:['期望值决策','复利效应','反脆弱性'], color:'#ff4444', link:'2-人生算法.html' },
+   483|    { id:'psu5v', label:'+5V 电源轨', topic:'文明与全球化', concepts:['比较优势','网络效应','文明演进'], color:'#4488ff', link:'5-文明与全球化.html' }
+   484|  ];
+   485|
+   486|  var STORAGE_PREFIX = 'wujun_board_visited_';
+   487|
+   488|  // ── Status LEDs ──
+   489|  var ledsContainer = document.getElementById('statusLeds');
+   490|  components.forEach(function(c){
+   491|    var dot = document.createElement('span');
+   492|    dot.className = 'status-led';
+   493|    dot.setAttribute('data-id', c.id);
+   494|    dot.title = c.topic;
+   495|    if (localStorage.getItem(STORAGE_PREFIX + c.id)) {
+   496|      dot.classList.add('visited');
+   497|    }
+   498|    ledsContainer.appendChild(dot);
+   499|  });
+   500|
+   501|
