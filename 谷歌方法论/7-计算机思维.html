@@ -832,7 +832,7 @@ let fb = document.getElementById('mc-fb-'+k);
 if(btn && fb && mcAnswered[k]!==undefined){
 let ans = mcAnswered[k];
 let correct = mcQuestions[parseInt(k)].ans;
-let btns = document.querySelectorAll('#mc-+k+' .q-option');
+let btns = document.querySelectorAll('#mc-'+k+' .q-option');
 btns.forEach(b=>b.disabled=true);
 if(btns[ans]) btns[ans].classList.add(ans===correct?'correct':'wrong');
 if(btns[correct]) btns[correct].classList.add('correct');
@@ -847,7 +847,7 @@ if(mcAnswered[qi]!==undefined) return;
 mcAnswered[qi] = ans;
 let q = mcQuestions[qi];
 let correct = q.ans;
-let btns = document.querySelectorAll('#mc-+qi+' .q-option');
+let btns = document.querySelectorAll('#mc-'+qi+' .q-option');
 btns.forEach(b=>b.disabled=true);
 btns[ans].classList.add(ans===correct?'correct':'wrong');
 if(ans!==correct) btns[correct].classList.add('correct');
