@@ -458,14 +458,45 @@ a:hover { text-decoration: underline; }
   transition: transform 0.6s; transform-style: preserve-3d;
 }
 .flipper.flipped { transform: rotateY(180deg); }
+.flip-front {
+  background: linear-gradient(160deg, #3d2f2f 0%, #5a3e2b 50%, #7a5230 100%);
+  color: #fdf6ec; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  min-height: 320px; position: relative; overflow: hidden;
+}
+.flip-front::before {
+  content: &#x27;&#x27;; position: absolute; top: -30%; right: -20%;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,165,116,0.15) 0%, transparent 70%);
+}
+.flip-front .concept-icon {
+  font-size: 40px; margin-bottom: 16px; opacity: 0.7;
+}
+.flip-front .concept-name {
+  font-size: clamp(20px, 4vw, 28px); font-weight: 700;
+  letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.flip-front .star-badge-front {
+  display: inline-block; background: #c0392b; color: #fdf6ec;
+  font-size: 12px; padding: 2px 10px; border-radius: 10px;
+  letter-spacing: 0.1em;
+}
+.flip-front .hint {
+  position: absolute; bottom: 16px; font-size: 12px;
+  color: rgba(253,246,236,0.4); letter-spacing: 0.08em;
+}
 .flip-front, .flip-back {
   position: absolute; width: 100%; backface-visibility: hidden;
   border-radius: var(--radius); padding: 24px;
   background: var(--card); box-shadow: var(--shadow);
   border: 1px solid var(--border); min-height: 280px;
 }
-.flip-back { transform: rotateY(180deg); }
+.flip-back { transform: rotateY(180deg); min-height: 320px; }
 .flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
+.flip-btn {
+  background: var(--accent); color: #fff;
+}
+.flip-btn:hover { background: #a93226; }
 .flip-nav button {
   padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
   color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
@@ -555,7 +586,34 @@ th { color: var(--accent); font-weight: 600; }
   .container { padding: 0 8px 40px; }
   .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
-  .flip-front, .flip-back { padding: 16px; min-height: 320px; }
+  .flip-front {
+  background: linear-gradient(160deg, #3d2f2f 0%, #5a3e2b 50%, #7a5230 100%);
+  color: #fdf6ec; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  min-height: 320px; position: relative; overflow: hidden;
+}
+.flip-front::before {
+  content: &#x27;&#x27;; position: absolute; top: -30%; right: -20%;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,165,116,0.15) 0%, transparent 70%);
+}
+.flip-front .concept-icon {
+  font-size: 40px; margin-bottom: 16px; opacity: 0.7;
+}
+.flip-front .concept-name {
+  font-size: clamp(20px, 4vw, 28px); font-weight: 700;
+  letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.flip-front .star-badge-front {
+  display: inline-block; background: #c0392b; color: #fdf6ec;
+  font-size: 12px; padding: 2px 10px; border-radius: 10px;
+  letter-spacing: 0.1em;
+}
+.flip-front .hint {
+  position: absolute; bottom: 16px; font-size: 12px;
+  color: rgba(253,246,236,0.4); letter-spacing: 0.08em;
+}
+.flip-front, .flip-back { padding: 16px; min-height: 320px; }
 }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -644,17 +702,18 @@ th { color: var(--accent); font-weight: 600; }
   &lt;p style=&quot;text-align:center;color:var(--text-light);&quot;&gt;点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;flip-container&quot; id=&quot;flipContainer&quot;&gt;
-  &lt;div class=&quot;flipper&quot; id=&quot;flipper&quot;&gt;
+  &lt;div class=&quot;flipper&quot; id=&quot;flipper&quot; onclick=&quot;flipCard()&quot;&gt;
     &lt;div class=&quot;flip-front&quot; id=&quot;flipFront&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;flip-back&quot; id=&quot;flipBack&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;flip-nav&quot;&gt;
   &lt;button onclick=&quot;prevCard()&quot;&gt;◀ 上一个&lt;/button&gt;
+  &lt;button class=&quot;flip-btn&quot; onclick=&quot;flipCard()&quot;&gt;🔄 翻转&lt;/button&gt;
   &lt;button class=&quot;learned-btn&quot; id=&quot;learnedBtn&quot; onclick=&quot;toggleLearned()&quot;&gt;✓ 标记已学习&lt;/button&gt;
   &lt;button onclick=&quot;nextCard()&quot;&gt;下一个 ▶&lt;/button&gt;
 &lt;/div&gt;
-&lt;p style=&quot;text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;&quot;&gt;当前：&lt;span id=&quot;cardIndex&quot;&gt;1/10&lt;/span&gt; &amp;nbsp; 点击卡片翻转查看背面&lt;/p&gt;
+&lt;p style=&quot;text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;&quot;&gt;当前：&lt;span id=&quot;cardIndex&quot;&gt;1/10&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;!-- ==================== TAB 2: 题库系统 ==================== --&gt;
@@ -1206,18 +1265,26 @@ function updateProgress() {
 let currentCardIdx = 0;
 let cardFlipped = false;
 
+
+function flipCard() {
+  document.getElementById(&#x27;flipper&#x27;).classList.toggle(&#x27;flipped&#x27;);
+  cardFlipped = !cardFlipped;
+}
 function renderCard() {
   const c = concepts[currentCardIdx];
+  const icons = [&#x27;🔬&#x27;,&#x27;⚙️&#x27;,&#x27;📡&#x27;,&#x27;🧬&#x27;,&#x27;🔗&#x27;,&#x27;💡&#x27;,&#x27;📊&#x27;,&#x27;🛡️&#x27;,&#x27;🤝&#x27;,&#x27;🎯&#x27;];
+  const icon = icons[currentCardIdx % icons.length];
   document.getElementById(&#x27;flipFront&#x27;).innerHTML = `
-    &lt;h3 style=&quot;color:var(--accent);margin-bottom:10px;&quot;&gt;${c.name}&lt;/h3&gt;
-    &lt;p style=&quot;font-size:15px;&quot;&gt;${c.short}&lt;/p&gt;
-    &lt;p style=&quot;margin-top:20px;font-size:12px;color:var(--text-light);&quot;&gt;点击卡片翻转查看详情&lt;/p&gt;
+    &lt;div class=&quot;concept-icon&quot;&gt;${icon}&lt;/div&gt;
+    &lt;div class=&quot;concept-name&quot;&gt;${c.name}&lt;/div&gt;
+    ${c.star ? &#x27;&lt;div class=&quot;star-badge-front&quot;&gt;★ 核心概念&lt;/div&gt;&#x27; : &#x27;&#x27;}
+    &lt;div class=&quot;hint&quot;&gt;点击翻转&lt;/div&gt;
   `;
   document.getElementById(&#x27;flipBack&#x27;).innerHTML = `
-    &lt;h3 style=&quot;color:var(--accent);margin-bottom:8px;&quot;&gt;${c.name}&lt;/h3&gt;
-    &lt;div style=&quot;font-size:13px;&quot;&gt;
+    &lt;h3 style=&quot;color:var(--accent);margin-bottom:10px;font-size:16px;&quot;&gt;${c.name}&lt;/h3&gt;
+    &lt;div style=&quot;font-size:13px;line-height:1.8;&quot;&gt;
       &lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt;${c.def}&lt;/p&gt;
-      &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;类比（商业场景）：&lt;/strong&gt;${c.analogy}&lt;/p&gt;
+      &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;类比：&lt;/strong&gt;${c.analogy}&lt;/p&gt;
       &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;示例：&lt;/strong&gt;${c.example}&lt;/p&gt;
       &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;反例：&lt;/strong&gt;${c.counter}&lt;/p&gt;
     &lt;/div&gt;
@@ -1994,6 +2061,10 @@ a:hover { text-decoration: underline; }
 }
 .flip-back { transform: rotateY(180deg); }
 .flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
+.flip-btn {
+  background: var(--accent); color: #fff;
+}
+.flip-btn:hover { background: #a93226; }
 .flip-nav button {
   padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
   color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
@@ -2171,17 +2242,18 @@ th { color: var(--accent); font-weight: 600; }
   &lt;p style=&quot;text-align:center;color:var(--text-light);&quot;&gt;点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;flip-container&quot; id=&quot;flipContainer&quot;&gt;
-  &lt;div class=&quot;flipper&quot; id=&quot;flipper&quot;&gt;
+  &lt;div class=&quot;flipper&quot; id=&quot;flipper&quot; onclick=&quot;flipCard()&quot;&gt;
     &lt;div class=&quot;flip-front&quot; id=&quot;flipFront&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;flip-back&quot; id=&quot;flipBack&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;flip-nav&quot;&gt;
   &lt;button onclick=&quot;prevCard()&quot;&gt;◀ 上一个&lt;/button&gt;
+  &lt;button class=&quot;flip-btn&quot; onclick=&quot;flipCard()&quot;&gt;🔄 翻转&lt;/button&gt;
   &lt;button class=&quot;learned-btn&quot; id=&quot;learnedBtn&quot; onclick=&quot;toggleLearned()&quot;&gt;✓ 标记已学习&lt;/button&gt;
   &lt;button onclick=&quot;nextCard()&quot;&gt;下一个 ▶&lt;/button&gt;
 &lt;/div&gt;
-&lt;p style=&quot;text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;&quot;&gt;当前：&lt;span id=&quot;cardIndex&quot;&gt;1/10&lt;/span&gt; &amp;nbsp; 点击卡片翻转查看背面&lt;/p&gt;
+&lt;p style=&quot;text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;&quot;&gt;当前：&lt;span id=&quot;cardIndex&quot;&gt;1/10&lt;/span&gt; &amp;nbsp; &lt;/p&gt;
 &lt;/div&gt;
 
 &lt;!-- ==================== TAB 2: 题库系统 ==================== --&gt;
@@ -2682,12 +2754,19 @@ function updateProgress() {
 let currentCardIdx = 0;
 let cardFlipped = false;
 
+function flipCard() {
+  document.getElementById(&#x27;flipper&#x27;).classList.toggle(&#x27;flipped&#x27;);
+  cardFlipped = !cardFlipped;
+}
 function renderCard() {
+  const icons = [&#x27;🔬&#x27;,&#x27;⚙️&#x27;,&#x27;📡&#x27;,&#x27;🧬&#x27;,&#x27;🔗&#x27;,&#x27;💡&#x27;,&#x27;📊&#x27;,&#x27;🛡️&#x27;,&#x27;🤝&#x27;,&#x27;🎯&#x27;];
+  const icon = icons[currentCardIdx % icons.length];
   const c = concepts[currentCardIdx];
   document.getElementById(&#x27;flipFront&#x27;).innerHTML = `
-    &lt;h3 style=&quot;color:var(--accent);margin-bottom:10px;&quot;&gt;${c.name}&lt;/h3&gt;
-    &lt;p style=&quot;font-size:15px;&quot;&gt;${c.short}&lt;/p&gt;
-    &lt;p style=&quot;margin-top:20px;font-size:12px;color:var(--text-light);&quot;&gt;点击卡片翻转查看详情&lt;/p&gt;
+    &lt;div class=&quot;concept-icon&quot;&gt;${icon}&lt;/div&gt;
+    &lt;div class=&quot;concept-name&quot;&gt;${c.name}&lt;/div&gt;
+    ${c.star ? &#x27;&lt;div class=&quot;star-badge-front&quot;&gt;★ 核心概念&lt;/div&gt;&#x27; : &#x27;&#x27;}
+    &lt;div class=&quot;hint&quot;&gt;点击翻转&lt;/div&gt;
   `;
   document.getElementById(&#x27;flipBack&#x27;).innerHTML = `
     &lt;h3 style=&quot;color:var(--accent);margin-bottom:8px;&quot;&gt;${c.name}&lt;/h3&gt;
@@ -3549,7 +3628,8 @@ header .home-link:hover{background:var(--accent2);color:#fff}
   &lt;/div&gt;
   &lt;div class=&quot;flip-nav&quot;&gt;
     &lt;button onclick=&quot;prevCard()&quot;&gt;◀ 上一张&lt;/button&gt;
-    &lt;span class=&quot;counter&quot; id=&quot;flipCounter&quot;&gt;1 / 10&lt;/span&gt;
+  &lt;button class=&quot;flip-btn&quot; onclick=&quot;flipCard()&quot;&gt;🔄 翻转&lt;/button&gt;
+  &lt;span class=&quot;counter&quot; id=&quot;flipCounter&quot;&gt;1 / 10&lt;/span&gt;
     &lt;button onclick=&quot;nextCard()&quot;&gt;下一张 ▶&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;flip-nav&quot;&gt;
@@ -5743,7 +5823,8 @@ function switchTab(idx){
     &lt;/div&gt;
     &lt;div class=&quot;flip-nav&quot;&gt;
       &lt;button onclick=&quot;prevCard()&quot;&gt;◀ 上一张&lt;/button&gt;
-      &lt;span id=&quot;cardIdx&quot; style=&quot;font-size:var(--fs-sm)&quot;&gt;1 / 10&lt;/span&gt;
+  &lt;button class=&quot;flip-btn&quot; onclick=&quot;flipCard()&quot;&gt;🔄 翻转&lt;/button&gt;
+  &lt;span id=&quot;cardIdx&quot; style=&quot;font-size:var(--fs-sm)&quot;&gt;1 / 10&lt;/span&gt;
       &lt;button onclick=&quot;nextCard()&quot;&gt;下一张 ▶&lt;/button&gt;
       &lt;button class=&quot;learned-btn&quot; id=&quot;learnedBtn&quot; onclick=&quot;markLearned()&quot;&gt;✓ 标记已学习&lt;/button&gt;
     &lt;/div&gt;
@@ -6486,6 +6567,10 @@ a:hover { text-decoration: underline; }
 }
 .flip-back { transform: rotateY(180deg); }
 .flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
+.flip-btn {
+  background: var(--accent); color: #fff;
+}
+.flip-btn:hover { background: #a93226; }
 .flip-nav button {
   padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
   color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
@@ -6664,17 +6749,18 @@ th { color: var(--accent); font-weight: 600; }
   &lt;p style=&quot;text-align:center;color:var(--text-light);&quot;&gt;点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;flip-container&quot; id=&quot;flipContainer&quot;&gt;
-  &lt;div class=&quot;flipper&quot; id=&quot;flipper&quot;&gt;
+  &lt;div class=&quot;flipper&quot; id=&quot;flipper&quot; onclick=&quot;flipCard()&quot;&gt;
     &lt;div class=&quot;flip-front&quot; id=&quot;flipFront&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;flip-back&quot; id=&quot;flipBack&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;flip-nav&quot;&gt;
   &lt;button onclick=&quot;prevCard()&quot;&gt;◀ 上一个&lt;/button&gt;
+  &lt;button class=&quot;flip-btn&quot; onclick=&quot;flipCard()&quot;&gt;🔄 翻转&lt;/button&gt;
   &lt;button class=&quot;learned-btn&quot; id=&quot;learnedBtn&quot; onclick=&quot;toggleLearned()&quot;&gt;✓ 标记已学习&lt;/button&gt;
   &lt;button onclick=&quot;nextCard()&quot;&gt;下一个 ▶&lt;/button&gt;
 &lt;/div&gt;
-&lt;p style=&quot;text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;&quot;&gt;当前：&lt;span id=&quot;cardIndex&quot;&gt;1/10&lt;/span&gt; &amp;nbsp; 点击卡片翻转查看背面&lt;/p&gt;
+&lt;p style=&quot;text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;&quot;&gt;当前：&lt;span id=&quot;cardIndex&quot;&gt;1/10&lt;/span&gt; &amp;nbsp; &lt;/p&gt;
 &lt;/div&gt;
 
 &lt;!-- ==================== TAB 2: 题库系统 ==================== --&gt;
@@ -7226,18 +7312,25 @@ function updateProgress() {
 let currentCardIdx = 0;
 let cardFlipped = false;
 
+function flipCard() {
+  document.getElementById(&#x27;flipper&#x27;).classList.toggle(&#x27;flipped&#x27;);
+  cardFlipped = !cardFlipped;
+}
 function renderCard() {
+  const icons = [&#x27;🔬&#x27;,&#x27;⚙️&#x27;,&#x27;📡&#x27;,&#x27;🧬&#x27;,&#x27;🔗&#x27;,&#x27;💡&#x27;,&#x27;📊&#x27;,&#x27;🛡️&#x27;,&#x27;🤝&#x27;,&#x27;🎯&#x27;];
+  const icon = icons[currentCardIdx % icons.length];
   const c = concepts[currentCardIdx];
   document.getElementById(&#x27;flipFront&#x27;).innerHTML = `
-    &lt;h3 style=&quot;color:var(--accent);margin-bottom:10px;&quot;&gt;${c.name}&lt;/h3&gt;
-    &lt;p style=&quot;font-size:15px;&quot;&gt;${c.short}&lt;/p&gt;
-    &lt;p style=&quot;margin-top:20px;font-size:12px;color:var(--text-light);&quot;&gt;点击卡片翻转查看详情&lt;/p&gt;
+    &lt;div class=&quot;concept-icon&quot;&gt;${icon}&lt;/div&gt;
+    &lt;div class=&quot;concept-name&quot;&gt;${c.name}&lt;/div&gt;
+    ${c.star ? &#x27;&lt;div class=&quot;star-badge-front&quot;&gt;★ 核心概念&lt;/div&gt;&#x27; : &#x27;&#x27;}
+    &lt;div class=&quot;hint&quot;&gt;点击翻转&lt;/div&gt;
   `;
   document.getElementById(&#x27;flipBack&#x27;).innerHTML = `
     &lt;h3 style=&quot;color:var(--accent);margin-bottom:8px;&quot;&gt;${c.name}&lt;/h3&gt;
     &lt;div style=&quot;font-size:13px;&quot;&gt;
       &lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt;${c.def}&lt;/p&gt;
-      &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;类比（商业场景）：&lt;/strong&gt;${c.analogy}&lt;/p&gt;
+      &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;类比：&lt;/strong&gt;${c.analogy}&lt;/p&gt;
       &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;示例：&lt;/strong&gt;${c.example}&lt;/p&gt;
       &lt;p style=&quot;margin-top:8px;&quot;&gt;&lt;strong&gt;反例：&lt;/strong&gt;${c.counter}&lt;/p&gt;
     &lt;/div&gt;
@@ -8093,7 +8186,7 @@ body{background:var(--bg);color:var(--text);font-family:&quot;PingFang SC&quot;,
 &lt;!-- ========== TAB 1: 知识卡片 ========== --&gt;
 &lt;div class=&quot;tab-content&quot; data-tab=&quot;1&quot;&gt;
 &lt;h3 style=&quot;margin-bottom:10px&quot;&gt;🃏 翻转知识卡片&lt;/h3&gt;
-&lt;p style=&quot;color:var(--sub);font-size:.85rem;margin-bottom:14px&quot;&gt;点击卡片翻转查看详情，翻页浏览全部核心概念&lt;/p&gt;
+&lt;p style=&quot;color:var(--sub);font-size:.85rem;margin-bottom:14px&quot;&gt;，翻页浏览全部核心概念&lt;/p&gt;
 &lt;div class=&quot;flip-wrap&quot;&gt;
   &lt;div class=&quot;flip-card&quot; id=&quot;flipCard&quot; onclick=&quot;flipCard()&quot;&gt;
     &lt;div class=&quot;flip-front&quot;&gt;&lt;h3 id=&quot;flipTitle&quot;&gt;&lt;/h3&gt;&lt;p style=&quot;font-size:.85rem;opacity:.8&quot;&gt;点击翻转 →&lt;/p&gt;&lt;/div&gt;
@@ -8102,6 +8195,7 @@ body{background:var(--bg);color:var(--text);font-family:&quot;PingFang SC&quot;,
 &lt;/div&gt;
 &lt;div class=&quot;flip-nav&quot;&gt;
   &lt;button onclick=&quot;prevCard()&quot;&gt;◀ 上一个&lt;/button&gt;
+  &lt;button class=&quot;flip-btn&quot; onclick=&quot;flipCard()&quot;&gt;🔄 翻转&lt;/button&gt;
   &lt;span style=&quot;font-size:.85rem;color:var(--sub)&quot; id=&quot;cardIdx&quot;&gt;1 / 10&lt;/span&gt;
   &lt;button class=&quot;learn-btn&quot; id=&quot;learnBtn&quot; onclick=&quot;markLearned()&quot;&gt;✔ 标记已学习&lt;/button&gt;
   &lt;button onclick=&quot;nextCard()&quot;&gt;下一个 ▶&lt;/button&gt;

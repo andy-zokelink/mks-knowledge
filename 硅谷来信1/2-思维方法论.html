@@ -129,6 +129,10 @@ a:hover { text-decoration: underline; }
 }
 .flip-back { transform: rotateY(180deg); }
 .flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
+.flip-btn {
+  background: var(--accent); color: #fff;
+}
+.flip-btn:hover { background: #a93226; }
 .flip-nav button {
   padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
   color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
@@ -306,17 +310,18 @@ th { color: var(--accent); font-weight: 600; }
   <p style="text-align:center;color:var(--text-light);">点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度</p>
 </div>
 <div class="flip-container" id="flipContainer">
-  <div class="flipper" id="flipper">
+  <div class="flipper" id="flipper" onclick="flipCard()">
     <div class="flip-front" id="flipFront"></div>
     <div class="flip-back" id="flipBack"></div>
   </div>
 </div>
 <div class="flip-nav">
   <button onclick="prevCard()">◀ 上一个</button>
+  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
   <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">✓ 标记已学习</button>
   <button onclick="nextCard()">下一个 ▶</button>
 </div>
-<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span> &nbsp; 点击卡片翻转查看背面</p>
+<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span> &nbsp; </p>
 </div>
 
 <!-- ==================== TAB 2: 题库系统 ==================== -->
@@ -817,12 +822,19 @@ function updateProgress() {
 let currentCardIdx = 0;
 let cardFlipped = false;
 
+function flipCard() {
+  document.getElementById('flipper').classList.toggle('flipped');
+  cardFlipped = !cardFlipped;
+}
 function renderCard() {
+  const icons = ['🔬','⚙️','📡','🧬','🔗','💡','📊','🛡️','🤝','🎯'];
+  const icon = icons[currentCardIdx % icons.length];
   const c = concepts[currentCardIdx];
   document.getElementById('flipFront').innerHTML = `
-    <h3 style="color:var(--accent);margin-bottom:10px;">${c.name}</h3>
-    <p style="font-size:15px;">${c.short}</p>
-    <p style="margin-top:20px;font-size:12px;color:var(--text-light);">点击卡片翻转查看详情</p>
+    <div class="concept-icon">${icon}</div>
+    <div class="concept-name">${c.name}</div>
+    ${c.star ? '<div class="star-badge-front">★ 核心概念</div>' : ''}
+    <div class="hint">点击翻转</div>
   `;
   document.getElementById('flipBack').innerHTML = `
     <h3 style="color:var(--accent);margin-bottom:8px;">${c.name}</h3>
