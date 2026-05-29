@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科技与趋势 — 最小知识集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
+--text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--gold:#b8860b;
+--shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
+}
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;padding-top:50px}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+
+header{text-align:center;padding:clamp(24px,5vh,48px) 0 clamp(16px,3vh,32px)}
+header h1{font-size:clamp(1.5rem,3.5vw,2rem);color:var(--accent);margin-bottom:8px}
+header .sub{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2)}
+header .home-link{display:inline-block;margin-top:12px;padding:6px 20px;border:2px solid var(--accent);border-radius:20px;color:var(--accent);text-decoration:none;font-size:.88rem;transition:all .25s}
+header .home-link:hover{background:var(--accent);color:#fff}
+
+.tab-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
+.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
+.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff}
+
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+h2{font-size:clamp(1.2rem,2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent2)}
+h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
+
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s;cursor:pointer}
+.concept-card:hover{transform:translateY(-2px)}
+.concept-card.mks{border-left-color:var(--gold);position:relative}
+.concept-card.mks::after{content:'\2605';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
+.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-core{background:#fde8e8;color:var(--accent)}
+.badge-mks{background:#fef3cd;color:var(--gold)}
+.badge-boundary{background:#e8f0fe;color:#3a6ea5}
+
+.progress-wrap{margin:16px 0}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
+.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+/* Flip Card */
+.flip-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto}
+.flip-inner{position:relative;width:100%;min-height:420px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;box-shadow:var(--shadow)}
+.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700}
+.flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:.85rem;line-height:1.6;align-items:flex-start;text-align:left;overflow-y:auto}
+.flip-back .dim-label{font-weight:700;color:var(--accent);font-size:.8rem}
+.flip-nav{display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap}
+.flip-nav button{padding:8px 20px;border-radius:20px;border:2px solid var(--accent);background:var(--card);color:var(--accent);cursor:pointer;font-size:.85rem;transition:all .2s}
+.flip-nav button:hover{background:var(--accent);color:#fff}
+.flip-nav button.learned{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+
+/* Quiz */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-card .q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
+.q-mc{background:#fde8e8;color:var(--accent)}
+.q-sa{background:#e8f0fe;color:#3a6ea5}
+.quiz-card .q-text{font-weight:700;margin-bottom:12px}
+.quiz-card .q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border);font-size:.85rem}
+.quiz-card .q-option:hover{border-color:var(--accent2);background:#fef9f4}
+.quiz-card .q-option.selected{border-color:var(--accent);background:#fde8e8}
+.quiz-card .q-option.correct{border-color:#4caf50;background:#e8f5e9}
+.quiz-card .q-option.wrong{border-color:var(--accent);background:#ffebee}
+.quiz-card .q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
+.quiz-card .q-feedback.show{display:block}
+.quiz-card .q-feedback.right{background:#e8f5e9;color:#2e7d32}
+.quiz-card .q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
+.quiz-card .sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
+.quiz-card .sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
+.quiz-card .sa-reveal.show{display:block}
+
+/* Tree */
+.tree-wrap{font-size:.88rem;line-height:1.8}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;color:var(--accent);font-weight:700;user-select:none}
+.tree-toggle::before{content:'\25B8 ';display:inline-block;transition:transform .2s}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-leaf{color:var(--text2)}
+
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-toggle.open{color:#c0392b}
+
+
+/* Socratic */
+.socratic-item{margin-bottom:12px}
+.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700;transition:all .2s}
+.socratic-q:hover{border-color:var(--accent2)}
+.socratic-q::before{content:'\2753 '}
+.socratic-q.open{color:var(--accent)}
+.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
+
+/* Decision */
+.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
+.decision-round .d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s;font-size:.85rem}
+.decision-round .d-option:hover{border-color:var(--accent2);background:#fef9f4}
+.decision-round .d-option.chosen{border-color:var(--accent);background:#fde8e8}
+.decision-round .d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
+.decision-round .d-result.show{display:block}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.tbl th,.tbl td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+.tbl th{background:var(--accent);color:#fff;font-weight:600}
+.tbl tr:nth-child(even){background:#fef9f4}
+
+@media(max-width:640px){
+.tab-bar{gap:2px;padding:6px 2px}
+.tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
+.flip-inner{min-height:240px}
+.flip-front{font-size:1.1rem}
+.flip-back{font-size:.78rem}
+}
+
+.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
+.timer.warning{animation:pulse .5s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.5}}
+
+.btn{padding:10px 24px;border-radius:20px;border:2px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+.btn:hover{background:#a93226;border-color:#a93226}
+.btn-outline{background:transparent;color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
+
+.hidden{display:none}
+.tree-children{display:none}
+.push10{margin-top:10px}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>吴军·硅谷来信³ — 科技与趋势</h1>
+<div class="sub">最小知识集 · 39篇笔记提炼 | 从碳中和到脑机接口，从AI到6G</div>
+<div class="sub" style="font-size:.78rem;margin-top:4px">核心驱动：技术供给规律（零边际成本·数据驱动） ↔ 商业转化逻辑（垄断·竞争·价值创造）</div>
+<a href="index.html" class="home-link">← 返回知识主板</a>
+</header>
+
+<nav class="tab-bar" id="tabBar">
+<button class="tab-btn active" onclick="switchTab(0)">知识集总览</button>
+<button class="tab-btn" onclick="switchTab(1)">知识卡片</button>
+<button class="tab-btn" onclick="switchTab(2)">题库系统</button>
+<button class="tab-btn" onclick="switchTab(3)">考试模式</button>
+<button class="tab-btn" onclick="switchTab(4)">复习模式</button>
+<button class="tab-btn" onclick="switchTab(5)">思维导图</button>
+<button class="tab-btn" onclick="switchTab(6)">深度追问</button>
+<button class="tab-btn" onclick="switchTab(7)">案例分析</button>
+<button class="tab-btn" onclick="switchTab(8)">实战决策</button>
+</nav>
+
+<!-- ========== TAB 0 ========== -->
+<section class="tab-content active" id="tab0">
+<div class="card">
+<h2>核心目标</h2>
+<p style="font-size:1.05rem">理解<strong>前沿科技的发展规律与商业转化逻辑</strong>：掌握碳中和、储能、AI、6G、脑机接口、mRNA等关键技术的底层原理和产业趋势；学会用「动力-条件-空间」模型评估技术前景；认知科技发展的系统性约束（物理极限、经济成本、制度设计），成为能<strong>理性判断科技趋势、做出明智产业决策</strong>的前沿观察者。</p>
+</div>
+
+<h2>10个核心概念</h2>
+<div class="grid2" id="conceptGrid"><div class="concept-card mks" onclick="switchTab(1);currentFlip=0;renderFlipCard()"><h4>碳中和系统</h4><p>碳排放与吸收的平衡体系</p></div>
+<div class="concept-card " onclick="switchTab(1);currentFlip=1;renderFlipCard()"><h4>绿色氢计划</h4><p>碳氢氧闭环能源循环</p></div>
+<div class="concept-card mks" onclick="switchTab(1);currentFlip=2;renderFlipCard()"><h4>储能技术</h4><p>锂电池物理极限与下一代突破</p></div>
+<div class="concept-card " onclick="switchTab(1);currentFlip=3;renderFlipCard()"><h4>纳米材料应用</h4><p>跨领域颠覆：口罩·服装·过滤·电极</p></div>
+<div class="concept-card mks" onclick="switchTab(1);currentFlip=4;renderFlipCard()"><h4>AI三波发展</h4><p>规则系统→统计学习→人类推理</p></div>
+<div class="concept-card " onclick="switchTab(1);currentFlip=5;renderFlipCard()"><h4>GPT-3与语言模型</h4><p>1750亿参数的自回归生成式模型</p></div>
+<div class="concept-card " onclick="switchTab(1);currentFlip=6;renderFlipCard()"><h4>6G通信</h4><p>太赫兹·VR/XR·1Tbps速率</p></div>
+<div class="concept-card mks" onclick="switchTab(1);currentFlip=7;renderFlipCard()"><h4>脑机接口</h4><p>单向/双向神经连接与修复</p></div>
+<div class="concept-card " onclick="switchTab(1);currentFlip=8;renderFlipCard()"><h4>mRNA疫苗</h4><p>信使RNA技术平台：安全·抗变异·低成本</p></div>
+<div class="concept-card " onclick="switchTab(1);currentFlip=9;renderFlipCard()"><h4>科技预测模型</h4><p>动力-条件-空间三要素评估法</p></div>
+</div>
+
+<h2>概念关系图</h2>
+<div class="svg-wrap" id="svgContainer"><svg width="2281pt" height="207pt"
+ viewBox="0.00 0.00 2281.00 207.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 203)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-203 2277,-203 2277,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2" d="M1174.5,-199C1174.5,-199 1021.5,-199 1021.5,-199 1015.5,-199 1009.5,-193 1009.5,-187 1009.5,-187 1009.5,-175 1009.5,-175 1009.5,-169 1015.5,-163 1021.5,-163 1021.5,-163 1174.5,-163 1174.5,-163 1180.5,-163 1186.5,-169 1186.5,-175 1186.5,-175 1186.5,-187 1186.5,-187 1186.5,-193 1180.5,-199 1174.5,-199"/>
+<text text-anchor="middle" x="1098" y="-184.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">科技思维 × 人类未来</text>
+<text text-anchor="middle" x="1098" y="-172.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">从碳中和到脑机接口，从AI到6G</text>
+</g>
+<!-- t1_energy -->
+<g id="node2" class="node">
+<title>t1_energy</title>
+<path fill="#d4a574" stroke="black" d="M407,-126C407,-126 291,-126 291,-126 285,-126 279,-120 279,-114 279,-114 279,-102 279,-102 279,-96 285,-90 291,-90 291,-90 407,-90 407,-90 413,-90 419,-96 419,-102 419,-102 419,-114 419,-114 419,-120 413,-126 407,-126"/>
+<text text-anchor="middle" x="349" y="-111.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">能源与环境</text>
+<text text-anchor="middle" x="349" y="-99.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">碳中和·绿色氢·储能·CCS</text>
+</g>
+<!-- root&#45;&gt;t1_energy -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;t1_energy</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1009.14,-171.58C862.17,-157.65 570.72,-130.02 429.47,-116.63"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="429.44,-113.11 419.16,-115.65 428.78,-120.08 429.44,-113.11"/>
+</g>
+<!-- t1_info -->
+<g id="node3" class="node">
+<title>t1_info</title>
+<path fill="#d4a574" stroke="black" d="M1055.5,-126C1055.5,-126 936.5,-126 936.5,-126 930.5,-126 924.5,-120 924.5,-114 924.5,-114 924.5,-102 924.5,-102 924.5,-96 930.5,-90 936.5,-90 936.5,-90 1055.5,-90 1055.5,-90 1061.5,-90 1067.5,-96 1067.5,-102 1067.5,-102 1067.5,-114 1067.5,-114 1067.5,-120 1061.5,-126 1055.5,-126"/>
+<text text-anchor="middle" x="996" y="-111.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">信息与智能</text>
+<text text-anchor="middle" x="996" y="-99.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">AI·6G·脑机接口·定位技术</text>
+</g>
+<!-- root&#45;&gt;t1_info -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;t1_info</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1073.57,-162.99C1060.17,-153.67 1043.37,-141.97 1028.84,-131.86"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1030.79,-128.95 1020.59,-126.11 1026.79,-134.7 1030.79,-128.95"/>
+</g>
+<!-- t1_bio -->
+<g id="node4" class="node">
+<title>t1_bio</title>
+<path fill="#d4a574" stroke="black" d="M1474,-126C1474,-126 1350,-126 1350,-126 1344,-126 1338,-120 1338,-114 1338,-114 1338,-102 1338,-102 1338,-96 1344,-90 1350,-90 1350,-90 1474,-90 1474,-90 1480,-90 1486,-96 1486,-102 1486,-102 1486,-114 1486,-114 1486,-120 1480,-126 1474,-126"/>
+<text text-anchor="middle" x="1412" y="-111.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">材料与生物</text>
+<text text-anchor="middle" x="1412" y="-99.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">纳米材料·mRNA·人工器官</text>
+</g>
+<!-- root&#45;&gt;t1_bio -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;t1_bio</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1173.21,-162.99C1219.89,-152.44 1279.95,-138.86 1328.16,-127.96"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1328.96,-131.36 1337.95,-125.74 1327.42,-124.54 1328.96,-131.36"/>
+</g>
+<!-- t1_system -->
+<g id="node5" class="node">
+<title>t1_system</title>
+<path fill="#d4a574" stroke="black" d="M1948,-126C1948,-126 1798,-126 1798,-126 1792,-126 1786,-120 1786,-114 1786,-114 1786,-102 1786,-102 1786,-96 1792,-90 1798,-90 1798,-90 1948,-90 1948,-90 1954,-90 1960,-96 1960,-102 1960,-102 1960,-114 1960,-114 1960,-120 1954,-126 1948,-126"/>
+<text text-anchor="middle" x="1873" y="-111.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">制度与方法</text>
+<text text-anchor="middle" x="1873" y="-99.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">科研体制·试错法·系统论·信息论</text>
+</g>
+<!-- root&#45;&gt;t1_system -->
+<g id="edge4" class="edge">
+<title>root&#45;&gt;t1_system</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1186.52,-171.89C1332.8,-158.49 1623.83,-131.83 1775.68,-117.92"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1776.29,-121.38 1785.92,-116.98 1775.65,-114.4 1776.29,-121.38"/>
+</g>
+<!-- t2_ccs -->
+<g id="node6" class="node">
+<title>t2_ccs</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M122,-40C122,-40 12,-40 12,-40 6,-40 0,-34 0,-28 0,-28 0,-16 0,-16 0,-10 6,-4 12,-4 12,-4 122,-4 122,-4 128,-4 134,-10 134,-16 134,-16 134,-28 134,-28 134,-34 128,-40 122,-40"/>
+<text text-anchor="middle" x="67" y="-25.2" font-family="Noto Sans SC" font-size="11.00">CCS碳捕获</text>
+<text text-anchor="middle" x="67" y="-13.2" font-family="Noto Sans SC" font-size="11.00">玄武岩矿化·CO2变石头</text>
+</g>
+<!-- t1_energy&#45;&gt;t2_ccs -->
+<g id="edge5" class="edge">
+<title>t1_energy&#45;&gt;t2_ccs</title>
+<path fill="none" stroke="#d4a574" d="M291.59,-89.9C245.94,-76.3 182,-57.25 134.01,-42.96"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="134.91,-39.58 124.33,-40.08 132.91,-46.29 134.91,-39.58"/>
+</g>
+<!-- t2_hydrogen -->
+<g id="node7" class="node">
+<title>t2_hydrogen</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M262,-44C262,-44 164,-44 164,-44 158,-44 152,-38 152,-32 152,-32 152,-12 152,-12 152,-6 158,0 164,0 164,0 262,0 262,0 268,0 274,-6 274,-12 274,-12 274,-32 274,-32 274,-38 268,-44 262,-44"/>
+<text text-anchor="middle" x="213" y="-31.2" font-family="Noto Sans SC" font-size="11.00">绿色氢计划</text>
+<text text-anchor="middle" x="213" y="-19.2" font-family="Noto Sans SC" font-size="11.00">电解水制氢·合成燃料</text>
+<text text-anchor="middle" x="213" y="-7.2" font-family="Noto Sans SC" font-size="11.00">碳氢氧闭环</text>
+</g>
+<!-- t1_energy&#45;&gt;t2_hydrogen -->
+<g id="edge6" class="edge">
+<title>t1_energy&#45;&gt;t2_hydrogen</title>
+<path fill="none" stroke="#d4a574" d="M321.15,-89.8C302.3,-78.16 277.03,-62.55 255.66,-49.35"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="257.43,-46.33 247.08,-44.05 253.75,-52.28 257.43,-46.33"/>
+</g>
+<!-- t2_scope -->
+<g id="node8" class="node">
+<title>t2_scope</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M393.5,-44C393.5,-44 304.5,-44 304.5,-44 298.5,-44 292.5,-38 292.5,-32 292.5,-32 292.5,-12 292.5,-12 292.5,-6 298.5,0 304.5,0 304.5,0 393.5,0 393.5,0 399.5,0 405.5,-6 405.5,-12 405.5,-12 405.5,-32 405.5,-32 405.5,-38 399.5,-44 393.5,-44"/>
+<text text-anchor="middle" x="349" y="-31.2" font-family="Noto Sans SC" font-size="11.00">碳中和三阶段</text>
+<text text-anchor="middle" x="349" y="-19.2" font-family="Noto Sans SC" font-size="11.00">运营→业务→供应链</text>
+<text text-anchor="middle" x="349" y="-7.2" font-family="Noto Sans SC" font-size="11.00">碳配额交易</text>
+</g>
+<!-- t1_energy&#45;&gt;t2_scope -->
+<g id="edge7" class="edge">
+<title>t1_energy&#45;&gt;t2_scope</title>
+<path fill="none" stroke="#d4a574" d="M349,-89.6C349,-79.41 349,-66.25 349,-54.32"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="352.5,-54.26 349,-44.26 345.5,-54.26 352.5,-54.26"/>
+</g>
+<!-- t2_storage -->
+<g id="node9" class="node">
+<title>t2_storage</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M534,-44C534,-44 436,-44 436,-44 430,-44 424,-38 424,-32 424,-32 424,-12 424,-12 424,-6 430,0 436,0 436,0 534,0 534,0 540,0 546,-6 546,-12 546,-12 546,-32 546,-32 546,-38 540,-44 534,-44"/>
+<text text-anchor="middle" x="485" y="-31.2" font-family="Noto Sans SC" font-size="11.00">储能技术</text>
+<text text-anchor="middle" x="485" y="-19.2" font-family="Noto Sans SC" font-size="11.00">锂空气电池·寿命优先</text>
+<text text-anchor="middle" x="485" y="-7.2" font-family="Noto Sans SC" font-size="11.00">纳米硅负极</text>
+</g>
+<!-- t1_energy&#45;&gt;t2_storage -->
+<g id="edge8" class="edge">
+<title>t1_energy&#45;&gt;t2_storage</title>
+<path fill="none" stroke="#d4a574" d="M376.85,-89.8C395.7,-78.16 420.97,-62.55 442.34,-49.35"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="444.25,-52.28 450.92,-44.05 440.57,-46.33 444.25,-52.28"/>
+</g>
+<!-- t2_aiwave -->
+<g id="node10" class="node">
+<title>t2_aiwave</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M677.5,-44C677.5,-44 576.5,-44 576.5,-44 570.5,-44 564.5,-38 564.5,-32 564.5,-32 564.5,-12 564.5,-12 564.5,-6 570.5,0 576.5,0 576.5,0 677.5,0 677.5,0 683.5,0 689.5,-6 689.5,-12 689.5,-12 689.5,-32 689.5,-32 689.5,-38 683.5,-44 677.5,-44"/>
+<text text-anchor="middle" x="627" y="-31.2" font-family="Noto Sans SC" font-size="11.00">AI三波演进</text>
+<text text-anchor="middle" x="627" y="-19.2" font-family="Noto Sans SC" font-size="11.00">规则→统计→因果推理</text>
+<text text-anchor="middle" x="627" y="-7.2" font-family="Noto Sans SC" font-size="11.00">GPT&#45;3·多技能AI</text>
+</g>
+<!-- t1_info&#45;&gt;t2_aiwave -->
+<g id="edge9" class="edge">
+<title>t1_info&#45;&gt;t2_aiwave</title>
+<path fill="none" stroke="#d4a574" d="M924.3,-93.38C892.84,-87.19 855.51,-79.58 822,-72 781.39,-62.82 736.28,-51.55 699.69,-42.14"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="700.17,-38.65 689.61,-39.54 698.42,-45.43 700.17,-38.65"/>
+</g>
+<!-- t2_6g -->
+<g id="node11" class="node">
+<title>t2_6g</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M848,-44C848,-44 756,-44 756,-44 750,-44 744,-38 744,-32 744,-32 744,-12 744,-12 744,-6 750,0 756,0 756,0 848,0 848,0 854,0 860,-6 860,-12 860,-12 860,-32 860,-32 860,-38 854,-44 848,-44"/>
+<text text-anchor="middle" x="802" y="-31.2" font-family="Noto Sans SC" font-size="11.00">6G太赫兹通信</text>
+<text text-anchor="middle" x="802" y="-19.2" font-family="Noto Sans SC" font-size="11.00">比5G快50倍·1Tbps</text>
+<text text-anchor="middle" x="802" y="-7.2" font-family="Noto Sans SC" font-size="11.00">VR全息·端到端AI</text>
+</g>
+<!-- t1_info&#45;&gt;t2_6g -->
+<g id="edge10" class="edge">
+<title>t1_info&#45;&gt;t2_6g</title>
+<path fill="none" stroke="#d4a574" d="M924.2,-102.75C894.89,-98.22 861.88,-89.32 836,-72 828.64,-67.07 822.4,-59.97 817.36,-52.69"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="820.29,-50.78 811.99,-44.19 814.37,-54.52 820.29,-50.78"/>
+</g>
+<!-- t2_bci -->
+<g id="node12" class="node">
+<title>t2_bci</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M976,-44C976,-44 890,-44 890,-44 884,-44 878,-38 878,-32 878,-32 878,-12 878,-12 878,-6 884,0 890,0 890,0 976,0 976,0 982,0 988,-6 988,-12 988,-12 988,-32 988,-32 988,-38 982,-44 976,-44"/>
+<text text-anchor="middle" x="933" y="-31.2" font-family="Noto Sans SC" font-size="11.00">脑机接口BCI</text>
+<text text-anchor="middle" x="933" y="-19.2" font-family="Noto Sans SC" font-size="11.00">意念控制·感官修复</text>
+<text text-anchor="middle" x="933" y="-7.2" font-family="Noto Sans SC" font-size="11.00">双向闭环系统</text>
+</g>
+<!-- t1_info&#45;&gt;t2_bci -->
+<g id="edge11" class="edge">
+<title>t1_info&#45;&gt;t2_bci</title>
+<path fill="none" stroke="#d4a574" d="M982.95,-89.6C974.92,-78.9 964.43,-64.91 955.14,-52.52"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="957.74,-50.16 948.94,-44.26 952.14,-54.36 957.74,-50.16"/>
+</g>
+<!-- t2_position -->
+<g id="node13" class="node">
+<title>t2_position</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1101.5,-44C1101.5,-44 1018.5,-44 1018.5,-44 1012.5,-44 1006.5,-38 1006.5,-32 1006.5,-32 1006.5,-12 1006.5,-12 1006.5,-6 1012.5,0 1018.5,0 1018.5,0 1101.5,0 1101.5,0 1107.5,0 1113.5,-6 1113.5,-12 1113.5,-12 1113.5,-32 1113.5,-32 1113.5,-38 1107.5,-44 1101.5,-44"/>
+<text text-anchor="middle" x="1060" y="-31.2" font-family="Noto Sans SC" font-size="11.00">高精度定位</text>
+<text text-anchor="middle" x="1060" y="-19.2" font-family="Noto Sans SC" font-size="11.00">激光冷却·毫米级</text>
+<text text-anchor="middle" x="1060" y="-7.2" font-family="Noto Sans SC" font-size="11.00">RKP/PPP技术演进</text>
+</g>
+<!-- t1_info&#45;&gt;t2_position -->
+<g id="edge12" class="edge">
+<title>t1_info&#45;&gt;t2_position</title>
+<path fill="none" stroke="#d4a574" d="M1009.26,-89.6C1017.41,-78.9 1028.07,-64.91 1037.51,-52.52"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1040.53,-54.33 1043.8,-44.26 1034.96,-50.09 1040.53,-54.33"/>
+</g>
+<!-- t2_remote -->
+<g id="node14" class="node">
+<title>t2_remote</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1232,-44C1232,-44 1144,-44 1144,-44 1138,-44 1132,-38 1132,-32 1132,-32 1132,-12 1132,-12 1132,-6 1138,0 1144,0 1144,0 1232,0 1232,0 1238,0 1244,-6 1244,-12 1244,-12 1244,-32 1244,-32 1244,-38 1238,-44 1232,-44"/>
+<text text-anchor="middle" x="1188" y="-31.2" font-family="Noto Sans SC" font-size="11.00">事务远程化</text>
+<text text-anchor="middle" x="1188" y="-19.2" font-family="Noto Sans SC" font-size="11.00">远程医疗·RPM系统</text>
+<text text-anchor="middle" x="1188" y="-7.2" font-family="Noto Sans SC" font-size="11.00">通用平台整合</text>
+</g>
+<!-- t1_info&#45;&gt;t2_remote -->
+<g id="edge13" class="edge">
+<title>t1_info&#45;&gt;t2_remote</title>
+<path fill="none" stroke="#d4a574" d="M1035.32,-89.8C1062.76,-77.79 1099.83,-61.58 1130.57,-48.13"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1132.13,-51.26 1139.89,-44.05 1129.32,-44.85 1132.13,-51.26"/>
+</g>
+<!-- t2_nano -->
+<g id="node15" class="node">
+<title>t2_nano</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1366,-44C1366,-44 1274,-44 1274,-44 1268,-44 1262,-38 1262,-32 1262,-32 1262,-12 1262,-12 1262,-6 1268,0 1274,0 1274,0 1366,0 1366,0 1372,0 1378,-6 1378,-12 1378,-12 1378,-32 1378,-32 1378,-38 1372,-44 1366,-44"/>
+<text text-anchor="middle" x="1320" y="-31.2" font-family="Noto Sans SC" font-size="11.00">纳米材料</text>
+<text text-anchor="middle" x="1320" y="-19.2" font-family="Noto Sans SC" font-size="11.00">过滤·保暖·储能电极</text>
+<text text-anchor="middle" x="1320" y="-7.2" font-family="Noto Sans SC" font-size="11.00">小缝隙+低纤维占比</text>
+</g>
+<!-- t1_bio&#45;&gt;t2_nano -->
+<g id="edge14" class="edge">
+<title>t1_bio&#45;&gt;t2_nano</title>
+<path fill="none" stroke="#d4a574" d="M1392.94,-89.6C1380.77,-78.49 1364.72,-63.83 1350.77,-51.1"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1353.03,-48.41 1343.28,-44.26 1348.31,-53.58 1353.03,-48.41"/>
+</g>
+<!-- t2_mrna -->
+<g id="node16" class="node">
+<title>t2_mrna</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1495.5,-44C1495.5,-44 1408.5,-44 1408.5,-44 1402.5,-44 1396.5,-38 1396.5,-32 1396.5,-32 1396.5,-12 1396.5,-12 1396.5,-6 1402.5,0 1408.5,0 1408.5,0 1495.5,0 1495.5,0 1501.5,0 1507.5,-6 1507.5,-12 1507.5,-12 1507.5,-32 1507.5,-32 1507.5,-38 1501.5,-44 1495.5,-44"/>
+<text text-anchor="middle" x="1452" y="-31.2" font-family="Noto Sans SC" font-size="11.00">mRNA疫苗技术</text>
+<text text-anchor="middle" x="1452" y="-19.2" font-family="Noto Sans SC" font-size="11.00">信使RNA·刺突蛋白</text>
+<text text-anchor="middle" x="1452" y="-7.2" font-family="Noto Sans SC" font-size="11.00">低成本·抗变异</text>
+</g>
+<!-- t1_bio&#45;&gt;t2_mrna -->
+<g id="edge15" class="edge">
+<title>t1_bio&#45;&gt;t2_mrna</title>
+<path fill="none" stroke="#d4a574" d="M1420.29,-89.6C1425.24,-79.21 1431.66,-65.72 1437.43,-53.6"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1440.74,-54.79 1441.88,-44.26 1434.42,-51.78 1440.74,-54.79"/>
+</g>
+<!-- t2_placenta -->
+<g id="node17" class="node">
+<title>t2_placenta</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1624,-44C1624,-44 1538,-44 1538,-44 1532,-44 1526,-38 1526,-32 1526,-32 1526,-12 1526,-12 1526,-6 1532,0 1538,0 1538,0 1624,0 1624,0 1630,0 1636,-6 1636,-12 1636,-12 1636,-32 1636,-32 1636,-38 1630,-44 1624,-44"/>
+<text text-anchor="middle" x="1581" y="-31.2" font-family="Noto Sans SC" font-size="11.00">人工胎盘</text>
+<text text-anchor="middle" x="1581" y="-19.2" font-family="Noto Sans SC" font-size="11.00">纳米输氧·体外孕育</text>
+<text text-anchor="middle" x="1581" y="-7.2" font-family="Noto Sans SC" font-size="11.00">拯救早产儿</text>
+</g>
+<!-- t1_bio&#45;&gt;t2_placenta -->
+<g id="edge16" class="edge">
+<title>t1_bio&#45;&gt;t2_placenta</title>
+<path fill="none" stroke="#d4a574" d="M1446.61,-89.8C1470.45,-77.95 1502.55,-61.99 1529.4,-48.65"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1531.25,-51.63 1538.65,-44.05 1528.14,-45.37 1531.25,-51.63"/>
+</g>
+<!-- t2_forecast -->
+<g id="node18" class="node">
+<title>t2_forecast</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1744,-44C1744,-44 1666,-44 1666,-44 1660,-44 1654,-38 1654,-32 1654,-32 1654,-12 1654,-12 1654,-6 1660,0 1666,0 1666,0 1744,0 1744,0 1750,0 1756,-6 1756,-12 1756,-12 1756,-32 1756,-32 1756,-38 1750,-44 1744,-44"/>
+<text text-anchor="middle" x="1705" y="-31.2" font-family="Noto Sans SC" font-size="11.00">技术预测框架</text>
+<text text-anchor="middle" x="1705" y="-19.2" font-family="Noto Sans SC" font-size="11.00">动力×条件×空间</text>
+<text text-anchor="middle" x="1705" y="-7.2" font-family="Noto Sans SC" font-size="11.00">50%按预期发展</text>
+</g>
+<!-- t1_system&#45;&gt;t2_forecast -->
+<g id="edge17" class="edge">
+<title>t1_system&#45;&gt;t2_forecast</title>
+<path fill="none" stroke="#d4a574" d="M1838.6,-89.8C1814.9,-77.95 1782.99,-61.99 1756.3,-48.65"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1757.61,-45.39 1747.1,-44.05 1754.48,-51.65 1757.61,-45.39"/>
+</g>
+<!-- t2_trial -->
+<g id="node19" class="node">
+<title>t2_trial</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1884,-44C1884,-44 1786,-44 1786,-44 1780,-44 1774,-38 1774,-32 1774,-32 1774,-12 1774,-12 1774,-6 1780,0 1786,0 1786,0 1884,0 1884,0 1890,0 1896,-6 1896,-12 1896,-12 1896,-32 1896,-32 1896,-38 1890,-44 1884,-44"/>
+<text text-anchor="middle" x="1835" y="-31.2" font-family="Noto Sans SC" font-size="11.00">科学试错法</text>
+<text text-anchor="middle" x="1835" y="-19.2" font-family="Noto Sans SC" font-size="11.00">杜威五步法·逐项迭代</text>
+<text text-anchor="middle" x="1835" y="-7.2" font-family="Noto Sans SC" font-size="11.00">聚焦单变量突破</text>
+</g>
+<!-- t1_system&#45;&gt;t2_trial -->
+<g id="edge18" class="edge">
+<title>t1_system&#45;&gt;t2_trial</title>
+<path fill="none" stroke="#d4a574" d="M1865.13,-89.6C1860.43,-79.21 1854.32,-65.72 1848.84,-53.6"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1851.93,-51.92 1844.62,-44.26 1845.55,-54.81 1851.93,-51.92"/>
+</g>
+<!-- t2_shannon -->
+<g id="node20" class="node">
+<title>t2_shannon</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M2001.5,-44C2001.5,-44 1926.5,-44 1926.5,-44 1920.5,-44 1914.5,-38 1914.5,-32 1914.5,-32 1914.5,-12 1914.5,-12 1914.5,-6 1920.5,0 1926.5,0 1926.5,0 2001.5,0 2001.5,0 2007.5,0 2013.5,-6 2013.5,-12 2013.5,-12 2013.5,-32 2013.5,-32 2013.5,-38 2007.5,-44 2001.5,-44"/>
+<text text-anchor="middle" x="1964" y="-31.2" font-family="Noto Sans SC" font-size="11.00">信息论基础</text>
+<text text-anchor="middle" x="1964" y="-19.2" font-family="Noto Sans SC" font-size="11.00">香农定律·信息熵</text>
+<text text-anchor="middle" x="1964" y="-7.2" font-family="Noto Sans SC" font-size="11.00">消除不确定性</text>
+</g>
+<!-- t1_system&#45;&gt;t2_shannon -->
+<g id="edge19" class="edge">
+<title>t1_system&#45;&gt;t2_shannon</title>
+<path fill="none" stroke="#d4a574" d="M1891.86,-89.6C1903.89,-78.49 1919.77,-63.83 1933.56,-51.1"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1936,-53.61 1940.97,-44.26 1931.25,-48.47 1936,-53.61"/>
+</g>
+<!-- t2_bayh -->
+<g id="node21" class="node">
+<title>t2_bayh</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M2132.5,-44C2132.5,-44 2043.5,-44 2043.5,-44 2037.5,-44 2031.5,-38 2031.5,-32 2031.5,-32 2031.5,-12 2031.5,-12 2031.5,-6 2037.5,0 2043.5,0 2043.5,0 2132.5,0 2132.5,0 2138.5,0 2144.5,-6 2144.5,-12 2144.5,-12 2144.5,-32 2144.5,-32 2144.5,-38 2138.5,-44 2132.5,-44"/>
+<text text-anchor="middle" x="2088" y="-31.2" font-family="Noto Sans SC" font-size="11.00">贝赫&#45;多尔法案</text>
+<text text-anchor="middle" x="2088" y="-19.2" font-family="Noto Sans SC" font-size="11.00">发明人&gt;机构&gt;政府</text>
+<text text-anchor="middle" x="2088" y="-7.2" font-family="Noto Sans SC" font-size="11.00">专利下放·知本家</text>
+</g>
+<!-- t1_system&#45;&gt;t2_bayh -->
+<g id="edge20" class="edge">
+<title>t1_system&#45;&gt;t2_bayh</title>
+<path fill="none" stroke="#d4a574" d="M1916.77,-89.9C1947.74,-77.8 1989.77,-61.38 2024.43,-47.84"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="2025.96,-51 2034,-44.1 2023.41,-44.48 2025.96,-51"/>
+</g>
+<!-- t2_darpa -->
+<g id="node22" class="node">
+<title>t2_darpa</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M2261,-44C2261,-44 2175,-44 2175,-44 2169,-44 2163,-38 2163,-32 2163,-32 2163,-12 2163,-12 2163,-6 2169,0 2175,0 2175,0 2261,0 2261,0 2267,0 2273,-6 2273,-12 2273,-12 2273,-32 2273,-32 2273,-38 2267,-44 2261,-44"/>
+<text text-anchor="middle" x="2218" y="-31.2" font-family="Noto Sans SC" font-size="11.00">万尼瓦尔·布什体制</text>
+<text text-anchor="middle" x="2218" y="-19.2" font-family="Noto Sans SC" font-size="11.00">政府支持基础研究</text>
+<text text-anchor="middle" x="2218" y="-7.2" font-family="Noto Sans SC" font-size="11.00">NSF·DARPA·NIH</text>
+</g>
+<!-- t1_system&#45;&gt;t2_darpa -->
+<g id="edge21" class="edge">
+<title>t1_system&#45;&gt;t2_darpa</title>
+<path fill="none" stroke="#d4a574" d="M1959,-89.97C2012.39,-78.86 2082.53,-63.33 2153,-44.17"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="2154.23,-47.46 2162.94,-41.44 2152.37,-40.71 2154.23,-47.46"/>
+</g>
+<!-- t2_storage&#45;&gt;t2_nano -->
+<g id="edge22" class="edge">
+<title>t2_storage&#45;&gt;t2_nano</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M546.25,-42.13C549.2,-42.82 552.12,-43.45 555,-44 704.3,-72.55 1084.97,-72.98 1251.81,-43.92"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="1252.56,-47.34 1261.77,-42.1 1251.3,-40.46 1252.56,-47.34"/>
+<text text-anchor="middle" x="868" y="-64.8" font-family="Noto Sans SC" font-size="9.00">纳米电极材料</text>
+</g>
+<!-- t2_aiwave&#45;&gt;t2_6g -->
+<g id="edge23" class="edge">
+<title>t2_aiwave&#45;&gt;t2_6g</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M689.68,-22C703.89,-22 719.05,-22 733.48,-22"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="733.84,-25.5 743.84,-22 733.84,-18.5 733.84,-25.5"/>
+<text text-anchor="middle" x="716.75" y="-27.8" font-family="Noto Sans SC" font-size="9.00">端到端AI</text>
+</g>
+<!-- t2_shannon&#45;&gt;t2_aiwave -->
+<g id="edge24" class="edge">
+<title>t2_shannon&#45;&gt;t2_aiwave</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M1914.43,-41.76C1911.27,-42.62 1908.11,-43.38 1905,-44 1905,-44 735,-44 735,-44 723.42,-42.61 711.24,-40.63 699.39,-38.43"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="700.02,-34.99 689.54,-36.53 698.7,-41.86 700.02,-34.99"/>
+<text text-anchor="middle" x="1307" y="-64.8" font-family="Noto Sans SC" font-size="9.00">信息换能量</text>
+</g>
+</g>
+</svg>
+</div>
+<div class="legend">
+<span><span class="dot" style="background:#c0392b"></span> 核心驱动/跨域关联</span>
+<span><span class="dot" style="background:#d4a574"></span> 方法论/派生关系</span>
+<span><span class="dot" style="background:#8b7355"></span> 应用/产物关系</span>
+</div>
+
+<h2>★ 4个MKS核心骨架</h2>
+<div class="grid2" id="mksGrid"><div class="concept-card mks"><h4>★ 碳中和系统</h4><p>企业分三阶段实现碳中和：运营碳中和→业务全链条碳中和→供应链碳中和，碳配额交易成为新商业形态。CCS技术将CO2注入玄武岩矿化，2年内95%转化为矿物质。...</p></div>
+<div class="concept-card mks"><h4>★ 储能技术</h4><p>电池无摩尔定律，单位容量年降仅3%，能量密度提升空间≤1倍。锂空气电池理论可提升5-15倍。磷酸铁锂用于大规模储能（更安全），三元锂用于移动设备（高密度）。...</p></div>
+<div class="concept-card mks"><h4>★ AI三波发展</h4><p>第一波基于规则（专家系统），第二波基于统计模型和机器学习（当前接近尾声），第三波实现人类推理能力（DARPA「AI Next」计划2年投20亿美元突破）。...</p></div>
+<div class="concept-card mks"><h4>★ 脑机接口</h4><p>实现大脑与外部设备间信息传递。单向输出（意念控制打字），单向输入（电子眼帮色盲患者听到颜色）。双向实现闭环控制（智能假肢同时接收运动指令和触觉反馈）。...</p></div>
+</div>
+
+<h2>边界知识表（15条）</h2>
+<div style="overflow-x:auto">
+<table class="tbl"><thead><tr><th>知识点</th><th>使用场景</th><th>只需知道</th></tr></thead><tbody><tr><td><strong>卡尔达肖夫指数</strong></td><td>评估文明等级的框架</td><td>人类尚未达到第一型文明，对自然能量的利用能力仍有限</td></tr>
+<tr><td><strong>RKP精确定位</strong></td><td>自动驾驶和地理测绘</td><td>依赖地面基站，精度10厘米级，乡村和军事场景成本高</td></tr>
+<tr><td><strong>PPP精确定位</strong></td><td>全球范围GNSS应用</td><td>厘米级，但无法突破原子震荡导致的物理极限</td></tr>
+<tr><td><strong>激光冷却技术</strong></td><td>毫米级定位的未来方向</td><td>朱棣文研究成果，已应用于太空空间站建设</td></tr>
+<tr><td><strong>数据信托</strong></td><td>隐私保护和数据权益分配</td><td>三方契约结构：用户→信托→企业，类似工会角色</td></tr>
+<tr><td><strong>信使RNA非疫苗应用</strong></td><td>制药行业技术平台</td><td>不仅可制造疫苗，还能助力其他药品研发</td></tr>
+<tr><td><strong>人造光合作用</strong></td><td>大气温室气体减排</td><td>纳米材料催化，将CO2转化为有用物质</td></tr>
+<tr><td><strong>端到端AI</strong></td><td>6G时代的个人设备</td><td>减少云端依赖，实现本地智能处理和安全认证</td></tr>
+<tr><td><strong>香农第二定律</strong></td><td>通信系统的物理极限</td><td>传递更多信息需更高带宽，存在物理极限</td></tr>
+<tr><td><strong>增强型归因系统</strong></td><td>网络安全和威胁追踪</td><td>DARPA开发，实时识别跟踪恶意网络用户</td></tr>
+<tr><td><strong>锂空气电池</strong></td><td>下一代储能技术</td><td>理论能量密度可提升5-15倍，目前处于实验室阶段</td></tr>
+<tr><td><strong>细胞Pro申诉案</strong></td><td>科研成果权益司法实践</td><td>确立政府不介入专利授权裁决的先例</td></tr>
+<tr><td><strong>视察者悖论</strong></td><td>统计偏差的认知陷阱</td><td>通过统计得到的结果与实际情况系统性不符</td></tr>
+<tr><td><strong>贝叶斯分类法</strong></td><td>模式识别和错误率权衡</td><td>P1和P2不可同时为零，需根据损失不对称性选择最优策略</td></tr>
+<tr><td><strong>休谟的叉子</strong></td><td>知识分类和认知方法选择</td><td>区分观念知识（理性主导）和经验知识（经验主导）</td></tr>
+</tbody></table>
+</div>
+
+<h2>学习路径（5阶段）</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin:16px 0"><div class="card" style="flex:1;min-width:140px;text-align:center"><h4 style="color:var(--accent)">阶段1</h4><p style="font-weight:700">能源技术的底层原理</p><p style="font-size:.78rem;color:var(--text2)">先理解碳中和、绿色氢和储能的基础物理化学约束</p></div>
+<div class="card" style="flex:1;min-width:140px;text-align:center"><h4 style="color:var(--accent)">阶段2</h4><p style="font-weight:700">信息技术的演进逻辑</p><p style="font-size:.78rem;color:var(--text2)">掌握AI三波发展脉络和6G的技术架构特征</p></div>
+<div class="card" style="flex:1;min-width:140px;text-align:center"><h4 style="color:var(--accent)">阶段3</h4><p style="font-weight:700">生物技术的平台思维</p><p style="font-size:.78rem;color:var(--text2)">理解mRNA和脑机接口作为技术平台的跨领域潜力</p></div>
+<div class="card" style="flex:1;min-width:140px;text-align:center"><h4 style="color:var(--accent)">阶段4</h4><p style="font-weight:700">创新体系的制度设计</p><p style="font-size:.78rem;color:var(--text2)">学习DARPA模式、贝赫-多尔法案和科技预测方法论</p></div>
+<div class="card" style="flex:1;min-width:140px;text-align:center"><h4 style="color:var(--accent)">阶段5</h4><p style="font-weight:700">系统思维的实战应用</p><p style="font-size:.78rem;color:var(--text2)">用科学试错、工程思维和全局视角分析科技商业案例</p></div>
+</div>
+
+<h2>学习进度</h2>
+<div class="progress-wrap">
+<div class="progress-bar"><div class="progress-fill" id="overallProgress" style="width:0%"></div></div>
+<div class="progress-label" id="progressLabel">已学习 0/10 个概念</div>
+</div>
+</section>
+
+<!-- ========== TAB 1 ========== -->
+<section class="tab-content" id="tab1">
+<div class="card" style="text-align:center">
+<div class="flip-container">
+<div class="flip-inner" id="flipCard" onclick="toggleFlip()">
+<div class="flip-front" id="flipFront">碳中和系统</div>
+<div class="flip-back" id="flipBack"></div>
+</div>
+</div>
+<div class="flip-nav">
+<button onclick="flipPrev()">◀ 上一个</button>
+<button onclick="toggleFlip()">翻转卡片</button>
+<button onclick="markLearned()" id="learnedBtn">✓ 已学习</button>
+<button onclick="flipNext()">下一个 ▶</button>
+</div>
+<p style="font-size:.78rem;color:var(--text2)">点击卡片翻转 | <span id="flipProgress">1/10</span></p>
+</div>
+</section>
+
+<!-- ========== TAB 2 ========== -->
+<section class="tab-content" id="tab2">
+<div class="card">
+<h2>选择题（20道）<span class="badge badge-core" style="margin-left:8px">即时判分</span></h2>
+<div id="mcqContainer"></div>
+<h2 style="margin-top:24px">简答题（10道）<span class="badge badge-boundary" style="margin-left:8px">点击查看要点</span></h2>
+<div id="saqContainer"></div>
+</div>
+</section>
+
+<!-- ========== TAB 3 ========== -->
+<section class="tab-content" id="tab3">
+<div class="card">
+<div style="text-align:center;padding:20px">
+<h2>模拟考试</h2>
+<p style="color:var(--text2)">从题库随机抽取 7道选择 + 3道简答 | 限时15分钟</p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn" onclick="startExam()" id="examStartBtn">开始考试</button>
+<div id="examArea"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 4 ========== -->
+<section class="tab-content" id="tab4">
+<h2>学习统计</h2>
+<div class="stat-grid" id="statsGrid"></div>
+
+<h2 style="margin-top:20px">错题本</h2>
+<div id="errorBook"></div>
+<p style="font-size:.82rem;color:var(--text2)" id="emptyError">暂无错题，继续保持！</p>
+
+<h2 style="margin-top:20px">概念薄弱点</h2>
+<div id="weakConcepts"></div>
+<div style="margin-top:16px">
+<button class="btn btn-outline btn-sm" onclick="resetProgress()">重置全部进度</button>
+</div>
+</section>
+
+<!-- ========== TAB 5 ========== -->
+<section class="tab-content" id="tab5">
+<div class="card"><div class="tree-wrap">
+<div class="tree-toggle open" onclick="toggleTree(this)">科技前沿观察与趋势洞察（根节点）</div>
+<div class="tree-children show">
+  <div class="tree-node">
+    <div class="tree-toggle" onclick="toggleTree(this)">能源与环境技术</div>
+    <div class="tree-children">
+      <div class="tree-node tree-leaf">碳中和系统 → CCS碳捕获（玄武岩矿化·2年95%）</div>
+      <div class="tree-node tree-leaf">绿色氢计划 → 碳氢氧闭环循环</div>
+      <div class="tree-node tree-leaf">储能技术 → 锂空气电池·磷酸铁锂</div>
+      <div class="tree-node tree-leaf">纳米材料应用 → 口罩·服装·过滤·电极</div>
+    </div>
+  </div>
+  <div class="tree-node">
+    <div class="tree-toggle" onclick="toggleTree(this)">信息与智能技术</div>
+    <div class="tree-children">
+      <div class="tree-node">
+        <div class="tree-toggle" onclick="toggleTree(this)">AI发展脉络</div>
+        <div class="tree-children">
+          <div class="tree-node tree-leaf">第一波：规则系统（专家系统）</div>
+          <div class="tree-node tree-leaf">第二波：统计学习（机器学习）</div>
+          <div class="tree-node tree-leaf">第三波：推理能力（DARPA突破中）</div>
+        </div>
+      </div>
+      <div class="tree-node tree-leaf">GPT-3 → 1750亿参数·自回归语言模型</div>
+      <div class="tree-node tree-leaf">6G通信 → 太赫兹·VR/XR·1Tbps</div>
+      <div class="tree-node tree-leaf">脑机接口 → 单向/双向·神经修复</div>
+      <div class="tree-node tree-leaf">高精度定位 → 激光冷却·毫米级</div>
+    </div>
+  </div>
+  <div class="tree-node">
+    <div class="tree-toggle" onclick="toggleTree(this)">生物与医疗技术</div>
+    <div class="tree-children">
+      <div class="tree-node tree-leaf">mRNA疫苗 → 信使RNA·抗变异·低成本</div>
+      <div class="tree-node tree-leaf">人工胎盘 → 纳米输氧·早产儿拯救</div>
+      <div class="tree-node tree-leaf">纳米医学 → 药物递送·环境治理</div>
+    </div>
+  </div>
+  <div class="tree-node">
+    <div class="tree-toggle" onclick="toggleTree(this)">创新体系与政策</div>
+    <div class="tree-children">
+      <div class="tree-node tree-leaf">科技预测模型 → 动力-条件-空间三要素</div>
+      <div class="tree-node tree-leaf">贝赫-多尔法案 → 发明人第一·知本家崛起</div>
+      <div class="tree-node tree-leaf">DARPA体系 → 前沿投资·产学研分工</div>
+      <div class="tree-node tree-leaf">全球化2.0 → 区域化·供应链多元</div>
+      <div class="tree-node tree-leaf">科创评估 → 人口·教育·专利·宜居</div>
+    </div>
+  </div>
+</div>
+</div></div>
+</section>
+
+<!-- ========== TAB 6 ========== -->
+<section class="tab-content" id="tab6">
+<div id="socraticContainer"><div class="card"><h3>碳中和真的可能实现吗？</h3><div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">如果碳中和如此困难，为什么各国还要承诺？</div><div class="socratic-a">国际承诺既是政治表态也是经济博弈——承诺不代表能轻松实现。据崔屹教授观点，国内媒体对碳中和多持乐观态度，但实际难度远超普遍预期。2030年是关键评估节点。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">如果没有碳中和约束，市场会自行解决能源问题吗？</div><div class="socratic-a">市场会追求最便宜的能源而非最清洁的能源。当前太阳能发电成本已接近煤电，但输电、储能和入网率才是真正瓶颈。没有政策推动，储能技术投资不足，市场不会自发完成能源转型。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">碳中和的本质是技术问题还是政治经济问题？</div><div class="socratic-a">三者皆有。技术上有解决方案（CCS、绿色氢、储能），但经济成本巨大（电价可能翻倍），政治上涉及国际博弈和国内利益分配。本质上是人类能否用系统工程思维解决一个全球公共品难题的考验。</div></div>
+</div>
+<div class="card"><h3>AI会不会统治人类？</h3><div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">GPT-3这么强，为什么说AI离人类智能还很远？</div><div class="socratic-a">GPT-3的本质是自回归语言模型——它只知其然不知其所以然。问它「脚有多少眼睛」会回答「两只眼睛」，说明它没有常识推理。当前所有AI都是单一功能系统，整体智力远低于人类。人类眼睛分辨率不及老鹰十分之一却不会被老鹰统治——单一优势不等于整体优势。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">那为什么34%的科学家认为「少数人通过超级智能统治多数人」是很大问题？</div><div class="socratic-a">风险不在于AI本身，而在于掌握AI的人。算法推荐系统已证明少数工程师可以通过算法影响数十亿用户的信息获取和行为选择。权力集中是真实威胁，但它是人的问题而非机器的问题。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">我们该如何平衡AI发展与安全？</div><div class="socratic-a">DARPA的路径值得参考：在推进AI能力的同时，发展增强型归因系统等安全技术，确保AI为多数人福祉服务而非少数人控制工具。关键是保持技术发展的同时，构建制衡机制。</div></div>
+</div>
+<div class="card"><h3>脑机接口会让人类变成「半机械人」吗？</h3><div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">现在的脑机接口技术到底达到什么水平？</div><div class="socratic-a">已从科幻走向实验验证阶段。斯坦福实现了意念控制键盘打字（单向输出），欧洲电子眼帮助色盲患者「听到颜色」（单向输入）。双向接口（如智能假肢）仍在实验室阶段，核心难点是信号噪音过滤和动作控制精度。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">马斯克的公司在这个领域有多大贡献？</div><div class="socratic-a">宣传价值大于实际意义。IEEE 2020年研讨会的学术报告才是核心技术进展的来源。脑机接口的基础研究主要由大学和学术机构推动。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">这项技术最可能率先在哪落地？</div><div class="socratic-a">医疗康复领域——帮助瘫痪患者恢复运动功能、修复神经系统损伤。但要达到「人机结合体」的科幻水平，时间节点无人能准确预测。</div></div>
+</div>
+<div class="card"><h3>科技发展真的让社会更公平吗？</h3><div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">数据上看，技术进步与不平等是什么关系？</div><div class="socratic-a">技术进步增加了人类总体福祉，但加剧了社会不公平。全球仅51.4%的人口能接触互联网；美国CEO与普通员工薪酬比320:1；招行0.06%的私人银行客户掌握31%的个人客户资产。知识和财富从源头向下传递，离源头越近越受益。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">既然加剧不平等，我们应该放慢技术进步吗？</div><div class="socratic-a">技术倒退或减速不是答案。专家六大建议中的核心是：创造更多机会（不仅是高端岗位）、营造公平环境、加强团队合作。要确保技术围绕人的需求发展，而非单纯追求效率或利润。</div></div>
+<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show');this.classList.toggle('open')">个人如何在这种趋势下不被落下？</div><div class="socratic-a">核心原则：尽量靠近信息、创新、财富、教育的源头。正确理解「机会」——不是只指一夜暴富，任何能改善自身处境的机会都值得认真对待。同时建立自己的「基本盘」，实现进可攻退可守。</div></div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 7 ========== -->
+<section class="tab-content" id="tab7">
+<div id="caseContainer"><div class="card"><h3>案例1：Netflix：从DVD邮寄到万亿市值的进化</h3>
+<p style="font-size:.85rem;color:var(--text2);margin-bottom:12px">Netflix从90年代末的线上DVD租赁起步，经历两次关键转型：2008年推出在线观看（市值增长近10倍），2013年转型内容自制（《纸牌屋》全球爆红，2019年销售额超200亿美元）。</p>
+<div class="grid2">
+<div class="card"><h4 style="color:var(--accent)">概念</h4><p style="font-size:.82rem">持续创新的互联网基因+差异化竞争+杠杆化优势</p></div>
+<div class="card"><h4 style="color:var(--accent2)">类比</h4><p style="font-size:.82rem">一个租碟小店如何打败9000家门店的巨头百视达——不是靠更低价格，而是靠更匹配新时代的商业模式</p></div>
+<div class="card"><h4 style="color:#3a6ea5">示例</h4><p style="font-size:.82rem">百视达拒绝以5000万美元收购Netflix，最终Netflix市值达2000亿美元（40个百视达巅峰）；自制内容占比不足千分之一却成为核心竞争壁垒</p></div>
+<div class="card"><h4 style="color:#8b7355">边界</h4><p style="font-size:.82rem">互联网基因的五大特征（自下而上驱动、高工资无绩效奖金、灵活休假、松耦合协作、精英人才策略）是转型基础，简单模仿难以复制</p></div>
+</div></div>
+<div class="card"><h3>案例2：DARPA：美国科技霸权的制度发动机</h3>
+<p style="font-size:.85rem;color:var(--text2);margin-bottom:12px">DARPA前身ARPA创建了互联网，后续支持了AI（语音识别/机器学习）、VR技术等重大突破。其运作模式由万尼瓦尔·布什设计：仅负责确定研究方向和分配经费，具体研究由大学和私营机构完成。</p>
+<div class="grid2">
+<div class="card"><h4 style="color:var(--accent)">概念</h4><p style="font-size:.82rem">政府投资基础研究而不参与市场竞争——「上帝的归上帝，凯撒的归凯撒」</p></div>
+<div class="card"><h4 style="color:var(--accent2)">类比</h4><p style="font-size:.82rem">像一个只负责播种和浇水的园丁，绝不自己去抢占阳光——种出来的果实归研究人员和企业</p></div>
+<div class="card"><h4 style="color:#3a6ea5">示例</h4><p style="font-size:.82rem">DARPA的「AI Next」计划2年投20亿美元支持44个项目（26个大学、10个小公司），定位为「高风险、高回报」；互联网从军事目的转化为民用和商业网络的整个过程</p></div>
+<div class="card"><h4 style="color:#8b7355">边界</h4><p style="font-size:.82rem">敏感项目仅限美国公民参与；大学和企业长期存在对外籍人士的信息访问限制</p></div>
+</div></div>
+</div>
+</section>
+
+<!-- ========== TAB 8 ========== -->
+<section class="tab-content" id="tab8">
+<div id="decisionContainer"><div class="decision-round" id="round0"><div class="scenario">第1轮：你是一家传统制造企业的CTO，董事会要求5年内实现碳中和。当前年碳排放500万吨，利润仅3亿美元。你的第一个决策是什么？</div><div class="d-option" onclick="chooseDecision(0,0,this,'✓ 很好的选择！这是技术路径中最直接的方式。但需注意CCS会多消耗10-40%燃料，运营成本将大幅增加。冰岛的经验表明2年内可实现95%转化率，是可行的参考路径。','MKS分析：碳中和是系统性工程——CCS处理排放端（治标），但长远看需要配合能源结构转型（治本）。第一阶段应优先解决最大排放源。')">A. 优先投资CCS碳捕获设备，直接从排放端解决问题</div>
+<div class="d-option" onclick="chooseDecision(0,1,this,'⚠ 短期可行但风险大。碳中和第三阶段要求供应链也达到碳中和，外包只是把问题推迟。就像劳动法规收紧时转移用工模式，最终仍需承担连带责任。','MKS分析：碳中和对商业模式的影响——企业所有权范围决定碳中和责任边界。外包不是最终解，未来碳配额交易市场将重塑产业格局。')">B. 外包高排放生产环节给供应商，通过转移碳责任达标</div>
+<div class="d-option" onclick="chooseDecision(0,2,this,'⚠ 方向正确但节奏激进。储能技术目前成本高且物理极限明显（电池能量密度提升空间≤1倍），5年内完成能源切换几乎不可能。建议CCS（短期）+能源转型（长期）双轨并行。','MKS分析：储能技术无摩尔定律，单位容量年降仅3%。系统工程思维——环保需经济基础支撑，激进脱碳可能导致企业破产，反而丧失环保投入能力。')">C. 从零建设太阳能+储能体系，彻底替换化石能源</div>
+<div class="d-result" id="result0"></div></div>
+<div class="decision-round" id="round1"><div class="scenario">第2轮：你是一家VC合伙人，需在以下三个方向中选一个作为未来10年的重仓方向：</div><div class="d-option" onclick="chooseDecision(1,0,this,'✓ 有远见的选择！脑机接口技术已从科幻走向实验，但大规模临床应用时间未知。核心风险是基础研究周期长，投资回报可能需要20年以上。建议重点关注电极材料和AI信号处理方向。','MKS分析：科技预测三要素评估——重要性极高（医疗价值巨大），技术条件部分成熟（电极和AI已有基础），发展空间广阔但时间窗口不确定。属于高回报但长周期的「深科技」投资。')">A. 脑机接口——押注人机融合的未来</div>
+<div class="d-option" onclick="chooseDecision(1,1,this,'⚠ 时机偏早但有战略价值。6G预计2030年商用，当前投资基础设施建设可能面临5-8年空窗期。美国6G联盟2020年才成立，标准尚未形成。建议先布局太赫兹核心技术公司和测试设备企业。','MKS分析：技术代际跳跃策略——参考中国淡化3G直接进入4G的做法，抢跑6G是合理的战略。但需注意5G方案几乎不可能过渡到6G，投资需要全新方向。')">B. 6G通信基础设施——抢跑下一代网络</div>
+<div class="d-option" onclick="chooseDecision(1,2,this,'✓ 务实且确定性高的方向！无论哪条技术路径胜出，碳配额交易都是确定性需求。十万亿级先进能源市场正在开启（崔屹预测从1.4万亿增长至10万亿美元）。平台的网络效应一旦建立将形成强大护城河。','MKS分析：碳配额交易成为新商业形态——不同企业减排难度差异巨大，减排能力强的企业可将剩余碳配额出售。属于确定性高、路径清晰的「卖铲子」策略。')">C. 碳中和检测与交易平台——做碳经济的「卖铲人」</div>
+<div class="d-result" id="result1"></div></div>
+<div class="decision-round" id="round2"><div class="scenario">第3轮：你的AI创业公司面临战略选择：是追求更大的模型（GPT路线），还是探索新的智能范式？</div><div class="d-option" onclick="chooseDecision(2,0,this,'⚠ 这是当前主流路径但竞争白热化。GPT-3用1750亿参数达到了惊人的效果，但这条路需要巨大算力和数据资源，赢家通吃。50%科学家认为这条路可以通向多技能AI，但你的资源能否支撑与OpenAI/谷歌的军备竞赛？','MKS分析：以数量取胜的AI模式——本质是「数据驱动的结果模拟」，只知其然不知其所以然。果蝇实验证明10万神经元的生物系统可以替代部分人工神经网络，说明效率还有巨大提升空间。')">A. 全力做大模型——参数量就是一切</div>
+<div class="d-option" onclick="chooseDecision(2,1,this,'✓ 差异化竞争策略！DARPA正在投资「第三波AI」（人类推理能力），50%科学家认为需要建立对智能本质的深刻理解才能突破。这条路风险高但竞争少，成功的回报是指数级的。','MKS分析：AI三波发展规律——第二波（统计学习）已接近尾声，第三波（推理能力）是下一轮突破点。参考DARPA「高风险高回报」策略，差异化是创业公司的核心优势。')">B. 探索小样本学习和常识推理——做「理解型」AI</div>
+<div class="d-option" onclick="chooseDecision(2,2,this,'✓ 务实有效的策略！当前AI系统都是单一功能，与其赌范式突破，不如用现有技术深耕具体行业。乔姆斯基的苍蝇案例启示：单一功能做到极致也有巨大价值。关键是选对场景和积累行业壁垒。','MKS分析：创新政策中的「机会」启示——机会不只是「做出下一个GPT」，解决具体问题同样创造价值。类似Netflix通过内容自制建立差异化，找到自己的核心竞争力。')">C. 做垂直场景应用——用现有AI技术解决具体行业问题</div>
+<div class="d-result" id="result2"></div></div>
+</div>
+</section>
+
+</div><!-- container -->
+
+<script>
+// ===== GLOBALS =====
+var LS_KEY = 'mks_tech_trends';
+var CONCEPTS = [{"id": "c0", "name": "碳中和系统", "sub": "碳排放与吸收的平衡体系", "desc": "企业分三阶段实现碳中和：运营碳中和→业务全链条碳中和→供应链碳中和，碳配额交易成为新商业形态。CCS技术将CO2注入玄武岩矿化，2年内95%转化为矿物质。", "analogy": "像家庭记账本，收入（排放）和支出（吸收）必须平衡，否则赤字越来越大。", "example": "谷歌、亚马逊已实现第二阶段碳中和；冰岛Hellisheidi发电厂用玄武岩CCS技术捕获85-95%的CO2。", "counter": "单纯种树无法实现碳中和——全球需年种一万亿棵树但荒地不足，种树效率远低于排放速度。", "mks": true}, {"id": "c1", "name": "绿色氢计划", "sub": "碳氢氧闭环能源循环", "desc": "比尔·盖茨BEV基金推动的能源革命方案：太阳能发电→电解水制氢→氢气作燃料+工业原料→收集CO2→合成天然气，形成闭环。", "analogy": "像大自然的水循环——水蒸发成云，降雨回到地面，只是这里循环的是碳和氢。", "example": "多余太阳能制氢储存，取代化石能源；氢气可直接用于燃料电池汽车。", "counter": "朱棣文/崔屹方案认为储能电池更现实——当前全球储电能力仅能接受0.25亿千瓦，距离目标444个三峡电站差距巨大。", "mks": false}, {"id": "c2", "name": "储能技术", "sub": "锂电池物理极限与下一代突破", "desc": "电池无摩尔定律，单位容量年降仅3%，能量密度提升空间≤1倍。锂空气电池理论可提升5-15倍。磷酸铁锂用于大规模储能（更安全），三元锂用于移动设备（高密度）。", "analogy": "电池像一个水桶——锂是最轻的材料（桶最轻），但要装更多水（能量），必须突破材料本身的物理极限。", "example": "崔屹2008年发明硅负极锂电池，储电荷能力比石墨负极高一个数量级；纳米硅负极解决了传统电池因电荷过量导致的结构破裂。", "counter": "不能指望电池像芯片一样指数级进步——摩尔定律不适用于储能领域，物理化学极限是硬约束。", "mks": true}, {"id": "c3", "name": "纳米材料应用", "sub": "跨领域颠覆：口罩·服装·过滤·电极", "desc": "纳米纤维实现小缝隙+低纤维占比的结构平衡。纳米口罩兼顾过滤与透气；纳米服装仅常规1/10厚度，保暖防水；纳米电极提升电池性能；纳米过滤净化水污染。", "analogy": "用细线织密网——线越细，网眼可以越小但整体越轻，还能利用静电吸附微小颗粒。", "example": "4C Air公司（崔屹+朱棣文）纳米口罩疫情期间量产；纳米服装红外反射保暖，厚度不到普通防寒服一半。", "counter": "棉布口罩透气但无法过滤病毒（缝隙太大）；N95过滤强但透气性差，潮湿后静电吸附能力丧失。", "mks": false}, {"id": "c4", "name": "AI三波发展", "sub": "规则系统→统计学习→人类推理", "desc": "第一波基于规则（专家系统），第二波基于统计模型和机器学习（当前接近尾声），第三波实现人类推理能力（DARPA「AI Next」计划2年投20亿美元突破）。", "analogy": "如同人类认知发展：婴儿期靠条件反射（规则），学龄期靠模仿统计（经验），成年后靠逻辑推理（理性）。", "example": "AlphaGo（第二波统计学习）能下围棋但不会开灯；DARPA正在突破的第三波AI要能理解上下文和进行常识判断。", "counter": "乔姆斯基的苍蝇案例：苍蝇仅10万个神经元却能感知食物、逃避天敌——当前AI的单一功能远不及生物综合智能。", "mks": true}, {"id": "c5", "name": "GPT-3与语言模型", "sub": "1750亿参数的自回归生成式模型", "desc": "Generative Pre-trained Transformer 3，当前最大语言模型。本质是自回归语言模型：通过机器学习获取参数，预测下一个词概率。已接近图灵测试水平。", "analogy": "像一个读了全世界所有书但不懂任何内容的超级读者——它能模仿任何文体，但不知道自己在说什么。", "example": "生成文章摘要、机器翻译（已达英语四级水平且进步更快）、计算机写作；但问「脚有多少眼睛」会答「两只眼睛」。", "counter": "果蝇大脑（10万神经元）替代人工神经网络执行NLP任务，效果接近但能耗更低——说明大参数量不等于智能。", "mks": false}, {"id": "c6", "name": "6G通信", "sub": "太赫兹·VR/XR·1Tbps速率", "desc": "比5G快50倍以上，延时降低一个数量级，采用太赫兹频带（1THz=1000GHz）。支持3D全息图像传输、多维度感官信息（视觉+嗅觉+触觉）。美国6G联盟2020年成立，预计2030年商用。", "analogy": "5G是高速公路，6G是传送门——不仅速度快，还能传输完整的3D场景和感官体验，像《头号玩家》的虚拟现实。", "example": "曼哈顿岛高清3D全息模型（100TB+）：6G传十几分钟，4G需半小时以上；室内设计全息图：6G一两秒。", "counter": "星链卫星通信因距离远、信噪比低，在速率、延时、并发性上无法与5G/6G抗衡——卫星是覆盖补充而非替代。", "mks": false}, {"id": "c7", "name": "脑机接口", "sub": "单向/双向神经连接与修复", "desc": "实现大脑与外部设备间信息传递。单向输出（意念控制打字），单向输入（电子眼帮色盲患者听到颜色）。双向实现闭环控制（智能假肢同时接收运动指令和触觉反馈）。", "analogy": "像给大脑装了一个USB接口——单向只能读或写，双向可以读写同时进行，实现真正的交互。", "example": "斯坦福3D打印电极实现意念键盘打字；查德·波顿团队双向方案：运动皮层电极捕获指令+感知皮层电极反馈触觉。", "counter": "马斯克宣传的脑机接口新闻宣传价值>实际意义；大规模临床应用时间未知，电极植入精度和信号噪音是核心瓶颈。", "mks": true}, {"id": "c8", "name": "mRNA疫苗", "sub": "信使RNA技术平台：安全·抗变异·低成本", "desc": "mRNA是链接DNA和蛋白质的桥梁。疫苗通过mRNA让人体细胞自行制造病毒特征蛋白（如新冠刺突蛋白），免疫系统识别后产生抗体。不含病毒，不影响DNA，生产成本仅传统疫苗1/5-1/10。", "analogy": "DNA是建筑图纸，氨基酸是砖块，mRNA是把图纸从档案室送到工地的信使——疫苗就是给工地送一张病毒「通缉令」。", "example": "辉瑞/BioNTech疫苗针对病毒刺突蛋白；五种变异情况中多数仍有效，只有极罕见变异会使疫苗完全无效。", "counter": "传统灭活疫苗需培养活病毒，生产周期长且成本高；减毒疫苗有低概率导致感染，mRNA疫苗无此风险。", "mks": false}, {"id": "c9", "name": "科技预测模型", "sub": "动力-条件-空间三要素评估法", "desc": "评估技术前景的三维度：①重要性/发展动力（社会效应、经济利益）；②技术条件成熟度（配套技术是否到位）；③发展空间（竞争技术态势和市场需求）。约50%技术按预期发展。", "analogy": "像天气预报——不是告诉你一定下雨，而是告诉你各个云团从哪里来、往哪里去、有多大可能发展成暴雨。", "example": "数据挖掘2001年预测→20年后9分（最优）；脑机接口→3分（有进展但未达预期）；数据产权管理→<3分（因法律伦理停滞）。", "counter": "2001年专家完全没有预测到移动互联网、基因编辑的爆发——最重要的技术往往来自「未知的未知」。", "mks": false}];
+var MCQS = [{"q": "碳中和要求企业实现的最高阶段是什么？", "opts": ["供应链碳中和", "业务全链条碳中和", "基本运营碳中和", "产品碳中和"], "answer": 0, "exp": "第三阶段供应链碳中和是最高要求，需确保运营中使用的工具、材料、服务均来自碳中和生产过程。"}, {"q": "根据科技预测「动力-条件-空间」模型，2001年预测的技术中发展最好的是哪一个？", "opts": ["数据挖掘", "脑机接口", "自然语言处理", "微光子学"], "answer": 0, "exp": "数据挖掘20年后评分为9分（最优），已成为今天的核心热门领域。脑机接口仅3分。"}, {"q": "GPT-3语言模型拥有多少个参数？", "opts": ["1750亿", "175亿", "17500亿", "17.5亿"], "answer": 0, "exp": "GPT-3于2020年推出，拥有1750亿个参数，是当时世界最大的语言模型。"}, {"q": "脑机接口当前在学术界的真实状态是什么？", "opts": ["已从科幻走向实验验证", "已大规模临床应用", "已被商业公司主导", "已被证明不可行"], "answer": 0, "exp": "脑机接口已从科幻走向实验，但大规模临床应用时间未知，目前以学术研究为核心。"}, {"q": "珠峰攀登中事故的三大主因不包括哪一项？", "opts": ["登山装备不足", "身体不适（高原病/雪盲）", "雪崩", "恶劣地形导致的摔落"], "answer": 0, "exp": "装备不足不在三大主因之列。现代登山已有成熟的安全设施体系（如固定绳索），三大主因是身体不适、雪崩和恶劣地形。"}, {"q": "纳米口罩相比N95口罩的核心优势是什么？", "opts": ["过滤效果+透气性双重突破", "完全不需要静电", "可以水洗重复使用", "制造成本更低"], "answer": 1, "exp": "纳米口罩通过纳米纤维实现「小缝隙+低纤维占比」的结构平衡，既保证过滤精度又提升透气性。"}, {"q": "DARPA支持的AI研究目前正朝哪个方向发展？", "opts": ["更大的统计模型", "第三波：实现人类推理能力", "回到基于规则的系统", "完全放弃AI研究"], "answer": 1, "exp": "DARPA的「AI Next」计划2年投入20亿美元，目标是突破第三波AI——实现人类推理能力。"}, {"q": "美国6G联盟计划什么时候让6G进入商业市场？", "opts": ["2025年左右", "2030年左右", "2035年左右", "2040年左右"], "answer": 1, "exp": "6G联盟估计6G将在2030年左右进入商业市场，三星更乐观预测美国2028年可进入6G时代。"}, {"q": "mRNA疫苗相比传统疫苗的核心安全优势是什么？", "opts": ["不需要注射", "不含病毒且不影响人体DNA", "完全不会引起任何免疫反应", "有效期更长"], "answer": 1, "exp": "mRNA疫苗不含病毒（避免感染风险），无法进入细胞核（不影响自身DNA），完成使命后会被细胞分解代谢。"}, {"q": "6G通信将采用什么新的频带技术？", "opts": ["毫米波", "太赫兹（THz）", "厘米波", "可见光"], "answer": 1, "exp": "6G将采用太赫兹频带（1THz=1000GHz），需全新的天线技术、信号增强技术和频谱共享技术。"}, {"q": "绿色氢计划的核心能源载体是什么？", "opts": ["电能", "碳", "氢气", "天然气"], "answer": 2, "exp": "绿色氢计划以氢气为媒介，构建可再生能源→电解水制氢→氢气应用→CO2收集→合成燃料的闭环系统。"}, {"q": "贝赫-多尔法案确立的科研成果受益顺序是什么？", "opts": ["政府第一，研究机构第二，发明人第三", "研究机构第一，发明人第二，政府第三", "发明人第一，研究机构第二，政府第三", "三方均等分配"], "answer": 2, "exp": "法案及判例确立发明人第一、研究机构第二、政府第三，为科研成果商业化提供了强大动力。"}, {"q": "锂空气电池的理论能量密度可提升多少倍？", "opts": ["1-2倍", "3-4倍", "5-15倍", "20-30倍"], "answer": 2, "exp": "锂空气电池利用氧锂配对，理论能量密度可提升5-15倍，但实际应用或仅能提升1倍，目前处于实验室阶段。"}, {"q": "科技创新的「翻译」过程指的是什么？", "opts": ["将英文论文翻译成中文", "将技术文档翻译成用户手册", "将科学技术转化为商业价值", "将专利从一种语言翻译成另一种"], "answer": 2, "exp": "科创是将科学/技术翻译为商业价值的过程，核心角色是具备工程+商业双重能力的新型产品经理。"}, {"q": "「气候门」事件揭示了气候科学界的什么问题？", "opts": ["气候变暖完全不存在", "气候变化速度被高估了10倍", "少数主流科学家排除不同意见", "南极冰盖在增厚"], "answer": 2, "exp": "2009年1000多封邮件曝光主流科学家污蔑反对者、与学术刊物合谋排除怀疑论学者、淡化不支持主流观点的数据。"}, {"q": "「视察者悖论」的核心机制是什么？", "opts": ["观察者的主观偏见影响判断", "大样本事件被统计的概率更高导致系统性偏差", "数据收集方法本身的错误", "统计公式的数学推导有误"], "answer": 3, "exp": "视察者悖论指通过统计得到的结果与实际情况系统性不符。如大课选课人数多→被调查概率高→拉高统计结果。"}, {"q": "信使RNA在生物学中的功能是什么？", "opts": ["直接合成蛋白质", "复制DNA双螺旋", "提供细胞能量", "链接DNA和蛋白质合成的桥梁"], "answer": 3, "exp": "mRNA是链接遗传物质（DNA）和蛋白质合成的关键桥梁。DNA是图纸，mRNA是把图纸送到工地的信使。"}, {"q": "科学试错的杜威思维五步法中，第一步是什么？", "opts": ["定位问题核心", "设想多种方案", "理性推演验证", "确定试错时机"], "answer": 3, "exp": "第一步是确定试错时机——仅在遇到困难或探索未知时启动，避免为试错而试错。"}, {"q": "休谟的叉子将知识体系分为哪两类？", "opts": ["自然科学和社会科学", "理性和感性", "理论和实践", "观念知识和经验知识"], "answer": 3, "exp": "休谟区分观念知识（无需经验验证，如数学）和经验知识（依赖观察与实践，如自然科学）。"}, {"q": "《科学：无尽的边疆》报告的核心理念是什么？", "opts": ["政府应直接管理所有科研机构", "私营企业不应参与科研", "科学研究只服务于军事需求", "政府支持基础研究但不与大学和企业抢人才"], "answer": 3, "exp": "万尼瓦尔·布什主张政府应专注重要且短期无法盈利的研究，避免与大学和私营企业的人才竞争。"}];
+var SAQS = [{"q": "为什么「用更多数据训练AI」这条技术路线存在争议？", "key": "50%科学家认为可通过数量换质量实现多技能AI；50%认为需建立对智能本质的深刻理解。只知其然不知其所以然——GPT-3有1750亿参数但不知道脚有多少眼睛。果蝇大脑仅10万神经元却能完成复杂任务，说明生物智能的效率远超当前AI。"}, {"q": "碳中和为什么很难实现？列出至少3个核心挑战。", "key": "①经济成本：CCS技术需多消耗10-40%燃料，电价可能翻倍；②生活方式：需改变饮食结构（人造肉）、交通出行（电动车供电瓶颈）；③技术局限：太阳能风能依赖储能技术突破；④系统复杂性：环保需经济基础+系统工程结合，不可单一视角。"}, {"q": "脑机接口技术要解决的核心难题有哪些？", "key": "①电极植入精度：需精确定位运动皮层和感知皮层；②信号噪音过滤：神经信号极其微弱且充满噪声；③动作控制精度：如抓握鸡蛋需精确匹配感知力度和实际力度；④系统校准：AI需通过机器学习持续优化传感器精度。"}, {"q": "万尼瓦尔·布什对美国科研体系的核心贡献是什么？", "key": "①撰写《科学：无尽的边疆》报告，确立政府支持科研的四大原则：培养人才、支持大学、避免人才竞争、刺激私营投入；②创立NSF和ARPA（后演变为DARPA）；③确立政府-大学-企业分工：政府投资基础研究，不与企业抢人才。"}, {"q": "6G与5G的核心性能差异是什么？为什么要用太赫兹？", "key": "比5G快50倍以上，延时降低一个数量级，速率可达1Tbps。太赫兹能支持海量数据传输（如3D全息模型100TB+），实现多维度感官信息传输（视觉+嗅觉+触觉）。但5G方案几乎不可能过渡到6G，需全新架构。"}, {"q": "纳米材料为什么能同时提升过滤效果和透气性？", "key": "核心是「小缝隙+低纤维占比」的结构平衡。纤维越细（纳米级），表面静电场强度越高（静电场强度与距离成反比），静电吸附能力增强。纤维占比低意味着更多气体通道，透气性提升。"}, {"q": "为什么说「错误率低不一定是更好的」？", "key": "任何判断都存在误识别率，100%准确率不可能实现。关键是根据错误损失的不对称性选择最优策略：坏人误判损失（10000）远大于好人误判损失（100）时，应放宽识别标准。同时要考虑样本比例——多数群体的误判率需优先降低。"}, {"q": "科学、技术、科创三者有什么区别和联系？", "key": "科学=钱→知识（探索未知，非功利性）；技术=知识→钱（解决问题，目标明确）；科创=技术→商业（翻译过程，需复合型人才）。三者形成钱→科学→技术→科创→钱的可持续闭环，完成闭环需至少半个世纪。"}, {"q": "全球化2.0的五大核心变化是什么？", "key": "①短距离合作部分取代长距离合作（区域化就近生产）；②供应商地域多样性提升（主供应商+备用供应商模式）；③企业间合作转向企业内合作（重建完整生产链条）；④特定产业向母国回归（医疗、国家安全相关）；⑤技术变革促进全球化深化（远程办公消除地域差异）。"}, {"q": "杜威思维五步法如何帮助我们进行科学试错？", "key": "①确定试错时机（仅遇困难/探索未知时）；②定位问题核心（精准定义）；③设想至少两种方案（避免第一反应）；④理性推演验证（先逻辑验证再实操）；⑤实践对照结论（需可证伪，避免自圆其说和个案论证）。聚焦原则：一次只测一个变量；迭代方法：通过渐进实现完美。"}];
+
+function LS() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) { return {}; }
+}
+function LSset(v) { localStorage.setItem(LS_KEY, JSON.stringify(v)); }
+
+var currentFlip = 0;
+var flipped = false;
+var examTimerId = null;
+var examTimeLeft = 900;
+
+// ===== TAB SWITCH =====
+function switchTab(n) {
+  var btns = document.querySelectorAll('.tab-btn');
+  var contents = document.querySelectorAll('.tab-content');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', i === n);
+    contents[i].classList.toggle('active', i === n);
+  }
+  if (n === 4) renderStats();
+  if (n === 1) renderFlipCard();
+}
+
+// ===== PROGRESS =====
+function getLearned() { var d = LS(); return d.learned || []; }
+function setLearned(arr) { var d = LS(); d.learned = arr; LSset(d); updateProgress(); }
+function updateProgress() {
+  var learned = getLearned();
+  var pct = Math.round(learned.length / CONCEPTS.length * 100);
+  var el = document.getElementById('overallProgress');
+  if (el) { el.style.width = pct + '%'; }
+  var lbl = document.getElementById('progressLabel');
+  if (lbl) lbl.textContent = '已学习 ' + learned.length + '/' + CONCEPTS.length + ' 个概念';
+}
+
+// ===== FLIP CARDS =====
+function renderFlipCard() {
+  var c = CONCEPTS[currentFlip];
+  document.getElementById('flipFront').textContent = c.name;
+  document.getElementById('flipBack').innerHTML =
+    '<div><span class="dim-label">定义</span><p style="margin-bottom:8px">' + c.desc + '</p></div>' +
+    '<div><span class="dim-label">类比</span><p style="margin-bottom:8px">' + c.analogy + '</p></div>' +
+    '<div><span class="dim-label">示例</span><p style="margin-bottom:8px">' + c.example + '</p></div>' +
+    '<div><span class="dim-label">反例</span><p>' + c.counter + '</p></div>';
+  document.getElementById('flipProgress').textContent = (currentFlip + 1) + '/' + CONCEPTS.length;
+  var inner = document.getElementById('flipCard');
+  if (inner) inner.classList.remove('flipped');
+  flipped = false;
+  updateLearnedBtn();
+}
+function toggleFlip() {
+  var inner = document.getElementById('flipCard');
+  if (inner) { inner.classList.toggle('flipped'); flipped = inner.classList.contains('flipped'); }
+}
+function flipPrev() {
+  currentFlip = (currentFlip - 1 + CONCEPTS.length) % CONCEPTS.length;
+  renderFlipCard();
+}
+function flipNext() {
+  currentFlip = (currentFlip + 1) % CONCEPTS.length;
+  renderFlipCard();
+}
+function markLearned() {
+  var learned = getLearned();
+  var cid = CONCEPTS[currentFlip].id;
+  if (learned.indexOf(cid) === -1) learned.push(cid);
+  else learned = learned.filter(function(x) { return x !== cid; });
+  setLearned(learned);
+  updateLearnedBtn();
+}
+function updateLearnedBtn() {
+  var btn = document.getElementById('learnedBtn');
+  if (!btn) return;
+  var learned = getLearned();
+  var isL = learned.indexOf(CONCEPTS[currentFlip].id) !== -1;
+  btn.classList.toggle('learned', isL);
+  btn.textContent = isL ? '✓ 已学习' : '✓ 已学习';
+}
+
+// ===== QUIZ =====
+function renderMCQ() {
+  var container = document.getElementById('mcqContainer');
+  if (!container) return;
+  var html = '';
+  for (var i = 0; i < MCQS.length; i++) {
+    var m = MCQS[i];
+    html += '<div class="quiz-card" id="mcq' + i + '"><span class="q-tag q-mc">选择题 #' + (i+1) + '</span><div class="q-text">' + m.q + '</div>';
+    var labels = ['A', 'B', 'C', 'D'];
+    for (var j = 0; j < m.opts.length; j++) {
+      html += '<div class="q-option" onclick="answerMCQ(' + i + ',' + j + ',this)">' + labels[j] + '. ' + m.opts[j] + '</div>';
+    }
+    html += '<div class="q-feedback" id="fb' + i + '"></div></div>';
+  }
+  container.innerHTML = html;
+}
+function answerMCQ(qi, opti, el) {
+  var m = MCQS[qi];
+  var correct = m.answer === opti;
+  var parent = el.parentElement;
+  var opts = parent.querySelectorAll('.q-option');
+  for (var i = 0; i < opts.length; i++) {
+    opts[i].classList.remove('selected', 'correct', 'wrong');
+  }
+  el.classList.add('selected');
+  if (correct) {
+    el.classList.add('correct');
+    var fb = document.getElementById('fb' + qi);
+    fb.className = 'q-feedback show right';
+    fb.textContent = '✓ 正确！' + m.exp;
+  } else {
+    el.classList.add('wrong');
+    opts[m.answer].classList.add('correct');
+    var fb2 = document.getElementById('fb' + qi);
+    fb2.className = 'q-feedback show wrong-msg';
+    fb2.textContent = '✗ 错误。正确答案是 ' + ['A','B','C','D'][m.answer] + '。' + m.exp;
+    saveError(qi);
+  }
+  // disable further clicks
+  for (var k = 0; k < opts.length; k++) opts[k].style.pointerEvents = 'none';
+}
+function renderSAQ() {
+  var container = document.getElementById('saqContainer');
+  if (!container) return;
+  var html = '';
+  for (var i = 0; i < SAQS.length; i++) {
+    html += '<div class="quiz-card"><span class="q-tag q-sa">简答题 #' + (i+1) + '</span><div class="q-text">' + SAQS[i].q + '</div>';
+    html += '<textarea class="sa-input" placeholder="写下你的理解..."></textarea>';
+    html += '<button class="btn btn-sm push10" onclick="revealSA(' + i + ',this)">查看要点</button>';
+    html += '<div class="sa-reveal" id="sa' + i + '">' + SAQS[i].key + '</div></div>';
+  }
+  container.innerHTML = html;
+}
+function revealSA(i, btn) {
+  var el = document.getElementById('sa' + i);
+  if (el) el.classList.toggle('show');
+}
+
+// ===== ERROR BOOK =====
+function saveError(qi) {
+  var d = LS();
+  if (!d.errors) d.errors = [];
+  if (d.errors.indexOf(qi) === -1) d.errors.push(qi);
+  LSset(d);
+}
+function renderErrorBook() {
+  var d = LS();
+  var errors = d.errors || [];
+  var container = document.getElementById('errorBook');
+  var empty = document.getElementById('emptyError');
+  if (!container) return;
+  if (errors.length === 0) {
+    container.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  var html = '';
+  for (var i = 0; i < errors.length; i++) {
+    var m = MCQS[errors[i]];
+    html += '<div class="quiz-card"><span class="q-tag q-mc">错题 #' + (errors[i]+1) + '</span><div class="q-text">' + m.q + '</div>';
+    html += '<p style="color:#4caf50;font-weight:700">答案：' + ['A','B','C','D'][m.answer] + '</p>';
+    html += '<p style="font-size:.82rem;color:var(--text2)">' + m.exp + '</p></div>';
+  }
+  container.innerHTML = html;
+}
+function renderWeakConcepts() {
+  var d = LS();
+  var errors = d.errors || [];
+  var container = document.getElementById('weakConcepts');
+  if (!container) return;
+  if (errors.length === 0) { container.innerHTML = '<p style="color:var(--text2)">暂无薄弱概念</p>'; return; }
+  var html = '<p style="font-size:.85rem">基于错题分析，建议重点复习：</p><ul style="margin-left:20px;font-size:.85rem">';
+  // map errors to concepts
+  var conceptMap = [
+    [0,1,2], [3,4], [5,6,7,8], [9], [10,11], [12,13], [14], [15], [16], [17,18,19]
+  ];
+  for (var ci = 0; ci < CONCEPTS.length; ci++) {
+    var found = false;
+    for (var e = 0; e < errors.length; e++) {
+      if (conceptMap[ci] && conceptMap[ci].indexOf(errors[e]) !== -1) { found = true; break; }
+    }
+    if (found) html += '<li style="color:var(--accent)">' + CONCEPTS[ci].name + '</li>';
+  }
+  html += '</ul>';
+  container.innerHTML = html;
+}
+
+// ===== STATS =====
+function renderStats() {
+  var d = LS();
+  var learned = d.learned || [];
+  var errors = d.errors || [];
+  var attempts = d.examAttempts || 0;
+  var bestScore = d.bestScore || 0;
+  var grid = document.getElementById('statsGrid');
+  if (!grid) return;
+  grid.innerHTML =
+    '<div class="stat-card"><div class="num">' + learned.length + '/10</div><div class="lbl">概念已学习</div></div>' +
+    '<div class="stat-card"><div class="num">' + errors.length + '</div><div class="lbl">错题数</div></div>' +
+    '<div class="stat-card"><div class="num">' + attempts + '</div><div class="lbl">考试次数</div></div>' +
+    '<div class="stat-card"><div class="num">' + bestScore + '%</div><div class="lbl">最佳成绩</div></div>';
+  renderErrorBook();
+  renderWeakConcepts();
+}
+function resetProgress() {
+  if (confirm('确定要重置全部学习进度吗？此操作不可撤销。')) {
+    localStorage.removeItem(LS_KEY);
+    currentFlip = 0;
+    flipped = false;
+    updateProgress();
+    renderStats();
+    renderFlipCard();
+    renderMCQ();
+    renderSAQ();
+    alert('已重置。');
+  }
+}
+
+// ===== EXAM =====
+function startExam() {
+  // Pick 7 MC + 3 SA randomly
+  var mcIndices = [];
+  var allMC = [];
+  for (var i = 0; i < MCQS.length; i++) allMC.push(i);
+  while (mcIndices.length < 7) {
+    var ri = Math.floor(Math.random() * allMC.length);
+    mcIndices.push(allMC.splice(ri, 1)[0]);
+  }
+  var saIndices = [];
+  var allSA = [];
+  for (var j = 0; j < SAQS.length; j++) allSA.push(j);
+  while (saIndices.length < 3) {
+    var rj = Math.floor(Math.random() * allSA.length);
+    saIndices.push(allSA.splice(rj, 1)[0]);
+  }
+  examMCIndices = mcIndices;
+  examSAIndices = saIndices;
+  examTimeLeft = 900;
+  document.getElementById('examStartBtn').style.display = 'none';
+  document.getElementById('examResult').style.display = 'none';
+  var area = document.getElementById('examArea');
+  var html = '';
+  for (var k = 0; k < mcIndices.length; k++) {
+    var m = MCQS[mcIndices[k]];
+    html += '<div class="quiz-card"><span class="q-tag q-mc">选择 #' + (k+1) + '</span><div class="q-text">' + m.q + '</div>';
+    var labels2 = ['A','B','C','D'];
+    for (var l = 0; l < m.opts.length; l++) {
+      html += '<div class="q-option exam-opt" onclick="selectExamMC(' + k + ',' + l + ',this)" data-qi="' + k + '" data-oi="' + l + '">' + labels2[l] + '. ' + m.opts[l] + '</div>';
+    }
+    html += '</div>';
+  }
+  for (var s = 0; s < saIndices.length; s++) {
+    var sa = SAQS[saIndices[s]];
+    html += '<div class="quiz-card"><span class="q-tag q-sa">简答 #' + (s+1) + '</span><div class="q-text">' + sa.q + '</div>';
+    html += '<textarea class="sa-input exam-sa" data-si="' + s + '" placeholder="限时作答..."></textarea></div>';
+  }
+  html += '<button class="btn" onclick="submitExam()" style="margin-top:12px">提交答卷</button>';
+  area.innerHTML = html;
+  examTimerId = setInterval(tickExam, 1000);
+  updateExamTimer();
+}
+var examMCIndices = [];
+var examSAIndices = [];
+var examAnswers = {};
+function selectExamMC(qi, oi, el) {
+  examAnswers['mc_' + qi] = oi;
+  var parent = el.parentElement;
+  var opts = parent.querySelectorAll('.q-option');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected');
+  el.classList.add('selected');
+}
+function tickExam() {
+  examTimeLeft--;
+  updateExamTimer();
+  if (examTimeLeft <= 0) submitExam();
+}
+function updateExamTimer() {
+  var el = document.getElementById('examTimer');
+  if (!el) return;
+  var m = Math.floor(examTimeLeft / 60);
+  var s = examTimeLeft % 60;
+  el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (examTimeLeft < 60) el.classList.add('warning');
+  else el.classList.remove('warning');
+}
+function submitExam() {
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  var score = 0;
+  var total = examMCIndices.length + examSAIndices.length;
+  var html = '';
+  // Grade MC
+  for (var k = 0; k < examMCIndices.length; k++) {
+    var m = MCQS[examMCIndices[k]];
+    var userAns = examAnswers['mc_' + k];
+    var correct2 = userAns === m.answer;
+    if (correct2) score++;
+    html += '<div class="quiz-card"><span class="q-tag q-mc">选择 #' + (k+1) + '</span> ' + (correct2 ? '✓' : '✗') + ' ' + m.q + '<br>';
+    if (!correct2) html += '<span style="color:#4caf50">正确答案: ' + ['A','B','C','D'][m.answer] + '</span> — ';
+    html += '<span style="font-size:.78rem;color:var(--text2)">' + m.exp + '</span></div>';
+  }
+  // Grade SA (self-assessment)
+  for (var s = 0; s < examSAIndices.length; s++) {
+    var sa2 = SAQS[examSAIndices[s]];
+    html += '<div class="quiz-card"><span class="q-tag q-sa">简答 #' + (s+1) + '</span> ' + sa2.q + '<br>';
+    html += '<span style="font-size:.78rem;color:var(--text2)">参考要点：' + sa2.key + '</span></div>';
+  }
+  var pct = Math.round(score / examMCIndices.length * 100);
+  var resultEl = document.getElementById('examResult');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = '<h3 style="text-align:center">考试结果：' + pct + '%（选择题' + score + '/' + examMCIndices.length + '正确）</h3>' + html;
+  document.getElementById('examArea').innerHTML = '';
+  document.getElementById('examStartBtn').style.display = 'inline-block';
+  document.getElementById('examTimer').textContent = '15:00';
+  document.getElementById('examTimer').classList.remove('warning');
+  // Save stats
+  var d = LS();
+  d.examAttempts = (d.examAttempts || 0) + 1;
+  if (pct > (d.bestScore || 0)) d.bestScore = pct;
+  // Save errors
+  for (var e = 0; e < examMCIndices.length; e++) {
+    if (examAnswers['mc_' + e] !== MCQS[examMCIndices[e]].answer) {
+      if (!d.errors) d.errors = [];
+      if (d.errors.indexOf(examMCIndices[e]) === -1) d.errors.push(examMCIndices[e]);
+    }
+  }
+  LSset(d);
+}
+
+// ===== TREE =====
+function toggleTree(el) {
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if (children && children.classList.contains('tree-children')) {
+    children.classList.toggle('show');
+  }
+}
+
+// ===== DECISION =====
+function chooseDecision(ri, oi, el, feedback, mks) {
+  var round = document.getElementById('round' + ri);
+  var opts = round.querySelectorAll('.d-option');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('chosen');
+  el.classList.add('chosen');
+  var result = document.getElementById('result' + ri);
+  result.innerHTML = '<p style="font-weight:700;margin-bottom:8px">' + feedback.replace(/\\n/g, '<br>') + '</p><p style="font-size:.8rem;color:var(--text2)">' + mks.replace(/\\n/g, '<br>') + '</p>';
+  result.classList.add('show');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  updateProgress();
+  renderFlipCard();
+  renderMCQ();
+  renderSAQ();
+  updateLearnedBtn();
+});
+</script>
+</body>
+</html>

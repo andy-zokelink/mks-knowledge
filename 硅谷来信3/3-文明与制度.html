@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文明与制度 — 最小知识集 | 硅谷来信³</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --text: #3d2f2f;
+  --sub: #5a3e3e;
+  --border: #d4a574;
+  --leaf: #8b7355;
+  --gold: #b8860b;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; padding-top: 56px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Navigation */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--card); border-bottom: 2px solid var(--accent);
+  padding: 0 16px; display: flex; align-items: center; height: 52px;
+}
+.navbar .home-link { font-size: 1.1em; font-weight: 700; color: var(--accent); margin-right: 16px; white-space: nowrap; }
+.nav-tabs { display: flex; overflow-x: auto; gap: 0; flex: 1; }
+.tab-btn {
+  padding: 10px 14px; border: none; background: transparent;
+  cursor: pointer; font-size: 0.88em; color: var(--text);
+  white-space: nowrap; border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.tab-btn:hover, .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.hamburger { display: none; background: none; border: none; font-size: 1.5em; color: var(--accent); cursor: pointer; }
+
+/* Main container */
+.main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Section titles */
+.section-title {
+  font-size: clamp(1.3em, 3vw, 1.8em); color: var(--accent);
+  border-left: 4px solid var(--accent); padding-left: 12px;
+  margin: 24px 0 16px;
+}
+.subsection-title {
+  font-size: clamp(1.1em, 2.5vw, 1.35em); color: var(--sub);
+  margin: 20px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--border);
+}
+
+/* Dashboard */
+.dashboard-header { text-align: center; margin-bottom: 24px; }
+.dashboard-header h1 { color: var(--accent); font-size: clamp(1.5em, 4vw, 2em); }
+.dashboard-header .subtitle { color: var(--sub); font-size: 1.05em; margin: 8px 0; }
+
+.progress-bar-wrap { background: #e8d5c4; border-radius: 12px; height: 16px; margin: 16px 0; overflow: hidden; }
+.progress-bar-fill { background: var(--accent); height: 100%; border-radius: 12px; transition: width 0.5s; width: 0%; }
+.progress-text { font-size: 0.85em; color: var(--sub); text-align: center; }
+
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+.concept-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+}
+.concept-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.concept-card.star { border-color: var(--accent); border-width: 2px; }
+.concept-card .c-name { font-weight: 700; color: var(--accent); font-size: 1.05em; }
+.concept-card .c-desc { font-size: 0.85em; color: var(--sub); margin-top: 6px; }
+.concept-card .c-star { color: #e8a838; font-size: 1.2em; }
+
+.svg-container { margin: 20px 0; overflow-x: auto; background: var(--card); border-radius: 10px; padding: 12px; text-align: center; }
+.svg-container svg { max-width: 100%; height: auto; }
+
+.boundary-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+.boundary-table th { background: var(--accent); color: #fff; padding: 10px; text-align: left; }
+.boundary-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.boundary-table tr:nth-child(even) { background: var(--card); }
+
+.learning-path { counter-reset: step; list-style: none; }
+.learning-path li { counter-increment: step; padding: 12px 16px 12px 48px; position: relative; margin: 8px 0; background: var(--card); border-radius: 8px; border-left: 3px solid var(--accent); }
+.learning-path li::before { content: counter(step); position: absolute; left: 12px; top: 12px; width: 24px; height: 24px; background: var(--accent); color: #fff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 0.8em; font-weight: 700; }
+
+/* Knowledge Cards — 3D Flip */
+.flip-container { perspective: 1000px; margin: 16px auto; max-width: 500px; }
+.flip-inner {
+  position: relative; width: 100%; min-height: 420px;
+  transition: transform 0.6s; transform-style: preserve-3d;
+}
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute; width: 100%; min-height: 420px;
+  backface-visibility: hidden; border-radius: 14px;
+  padding: 28px 24px; display: flex; flex-direction: column;
+}
+.flip-front { background: var(--card); border: 2px solid var(--accent); align-items: center; justify-content: center; }
+.flip-front h3 { color: var(--accent); font-size: 1.5em; text-align: center; }
+.flip-front .front-sub { color: var(--sub); margin-top: 8px; }
+.flip-back {
+  background: var(--card); border: 2px solid var(--border);
+  transform: rotateY(180deg); overflow-y: auto;
+}
+.flip-back h4 { color: var(--accent); margin: 8px 0 4px; font-size: 1em; }
+.flip-back p { font-size: 0.9em; color: var(--text); margin-bottom: 12px; }
+
+.card-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 16px 0; }
+.card-nav button {
+  background: var(--accent); color: #fff; border: none;
+  padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1em;
+  min-width: 44px; min-height: 44px;
+}
+.card-nav button:hover { opacity: 0.9; }
+.card-nav button.secondary { background: var(--border); }
+.card-nav .card-counter { color: var(--sub); font-size: 0.9em; }
+
+/* Quiz */
+.quiz-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px; margin: 12px 0;
+}
+.quiz-card .q-question { font-weight: 700; font-size: 1.05em; color: var(--text); margin-bottom: 14px; }
+.quiz-card .q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-option {
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; transition: all 0.2s; background: var(--bg);
+  font-size: 0.92em;
+}
+.q-option:hover { border-color: var(--accent); background: #fef3e2; }
+.q-option.selected { border-color: var(--accent); background: #fde8d0; }
+.q-option.correct { border-color: #27ae60; background: #eafaf1; }
+.q-option.wrong { border-color: #e74c3c; background: #fdedec; }
+.q-feedback { margin-top: 10px; padding: 10px; border-radius: 8px; font-size: 0.9em; display: none; }
+.q-feedback.show { display: block; }
+.q-feedback.correct { background: #eafaf1; color: #27ae60; }
+.q-feedback.wrong { background: #fdedec; color: #e74c3c; }
+
+.quiz-controls { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; justify-content: center; }
+.quiz-controls button {
+  background: var(--accent); color: #fff; border: none;
+  padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.95em;
+}
+.quiz-controls button:hover { opacity: 0.9; }
+.quiz-timer { font-size: 1.1em; font-weight: 700; color: var(--accent); text-align: center; margin: 8px 0; }
+
+/* Mind Map */
+.tree { margin: 16px 0; }
+.tree-node { margin: 4px 0; }
+.tree-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  background: var(--card); border: 1px solid var(--border);
+  font-size: 0.95em; transition: all 0.2s;
+}
+.tree-label:hover { border-color: var(--accent); }
+.tree-label.root { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tree-label.tier1 { background: var(--border); color: #fff; }
+.tree-toggle { font-size: 0.75em; transition: transform 0.3s; display: inline-block; }
+.tree-toggle.open { transform: rotate(90deg); }
+.tree-children { display: none; margin-left: 24px; padding-left: 12px; border-left: 2px solid var(--border); }
+.tree-children.show, .tree-children.open { display: block; }
+
+/* Exam */
+.exam-header { text-align: center; margin: 16px 0; }
+.exam-timer { font-size: 1.3em; font-weight: 700; color: var(--accent); }
+.exam-result { background: var(--card); border-radius: 12px; padding: 24px; text-align: center; }
+.exam-score { font-size: 2em; font-weight: 700; color: var(--accent); }
+
+/* Review */
+.review-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 16px 0; }
+.stat-card { background: var(--card); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+.stat-card .s-val { font-size: 1.8em; font-weight: 700; color: var(--accent); }
+.stat-card .s-label { font-size: 0.85em; color: var(--sub); }
+
+/* Socratic Q&A */
+.socratic-item { margin: 12px 0; background: var(--card); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+.socratic-q {
+  padding: 14px 18px; font-weight: 600; font-size: 1em;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  color: var(--text); transition: background 0.2s;
+}
+.socratic-q:hover { background: #fef3e2; }
+.socratic-q .arrow { transition: transform 0.3s; color: var(--accent); }
+.socratic-q.open .arrow { transform: rotate(180deg); }
+.socratic-a { display: none; padding: 0 18px 16px; font-size: 0.92em; color: var(--sub); line-height: 1.8; }
+.socratic-a.show { display: block; }
+.socratic-depth { margin-left: 20px; padding: 10px 14px; background: var(--bg); border-radius: 8px; margin-top: 8px; }
+
+/* Case Studies */
+.case-card { background: var(--card); border-radius: 12px; padding: 20px; margin: 14px 0; border-left: 3px solid var(--accent); }
+.case-card h4 { color: var(--accent); margin-bottom: 10px; }
+.case-dims { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.case-dim { background: var(--bg); padding: 10px 14px; border-radius: 8px; }
+.case-dim .dim-label { font-weight: 700; color: var(--accent); font-size: 0.85em; }
+.case-dim p { font-size: 0.85em; color: var(--sub); margin-top: 4px; }
+
+/* Decision */
+.decision-round { background: var(--card); border-radius: 12px; padding: 20px; margin: 14px 0; border: 1px solid var(--border); }
+.decision-round h4 { color: var(--accent); }
+.decision-options { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.decision-opt {
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; font-size: 0.92em; background: var(--bg); transition: all 0.2s;
+}
+.decision-opt:hover { border-color: var(--accent); background: #fef3e2; }
+.decision-opt.chosen { border-color: var(--accent); background: #fde8d0; }
+.decision-feedback { display: none; margin-top: 12px; padding: 14px; background: var(--bg); border-radius: 8px; font-size: 0.92em; }
+.decision-feedback.show { display: block; }
+
+/* Wrong book */
+.wrong-item { background: var(--bg); padding: 12px; margin: 8px 0; border-radius: 8px; border-left: 3px solid #e74c3c; }
+.retry-btn { background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; margin-top: 6px; font-size: 0.85em; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .tab-btn { font-size: 0.82em; padding: 8px 10px; }
+  .case-dims { grid-template-columns: 1fr; }
+  .flip-container { max-width: 100%; }
+  .flip-inner, .flip-front, .flip-back { min-height: 280px; }
+}
+@media (max-width: 600px) {
+  .hamburger { display: block; }
+  .nav-tabs { display: none; position: absolute; top: 52px; left: 0; right: 0; flex-direction: column; background: var(--card); border-bottom: 2px solid var(--accent); }
+  .nav-tabs.open { display: flex; }
+  .concept-grid { grid-template-columns: 1fr; }
+  .flip-inner, .flip-front, .flip-back { min-height: 240px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="home-link">← 硅谷来信³</a>
+  <button class="hamburger" onclick="document.querySelector('.nav-tabs').classList.toggle('open')">☰</button>
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-tab="0">📊 总览</button>
+    <button class="tab-btn" data-tab="1">🃏 知识卡片</button>
+    <button class="tab-btn" data-tab="2">🌳 思维导图</button>
+    <button class="tab-btn" data-tab="3">📝 题库</button>
+    <button class="tab-btn" data-tab="4">📋 考试</button>
+    <button class="tab-btn" data-tab="5">📖 复习</button>
+    <button class="tab-btn" data-tab="6">❓ 追问</button>
+    <button class="tab-btn" data-tab="7">🔍 案例</button>
+    <button class="tab-btn" data-tab="8">🎯 决策</button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- Tab 0: Dashboard -->
+<section class="tab-panel active" data-panel="0">
+  <div class="dashboard-header">
+    <h1>文明与制度 · 最小知识集</h1>
+    <p class="subtitle">穿越罗马兴衰、启蒙运动、美国建国与犹太文明，洞察历史规律与制度演进</p>
+    <p style="color:var(--sub);font-size:0.9em;">基于硅谷来信³ 48篇笔记 · 提取10个核心概念</p>
+  </div>
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">学习进度: 0 / 10 (0%)</div>
+
+  <h3 class="section-title">核心概念 · 10张知识卡片</h3>
+  <div class="concept-grid" id="conceptGrid"></div>
+
+  <h3 class="section-title">概念关系图 <span style="font-size:0.7em;color:var(--sub);">（Graphviz dot 生成）</span></h3>
+  <div class="svg-container" id="svgContainer"></div>
+
+  <h3 class="section-title">边界知识表 · 15条</h3>
+  <table class="boundary-table">
+    <tr><th>知识点</th><th>只需知道存在</th><th>核心使用场景</th></tr>
+    <tr><td>八旗制度真相</td><td>镶黄旗为八旗之首，正黄旗非至尊</td><td>理解攀附心理与身份认同误区</td></tr>
+    <tr><td>死海生态危机</td><td>水面每年下降1米，面积缩小近半</td><td>环境治理中的国际合作困境</td></tr>
+    <tr><td>耶路撒冷"维持现状"敕令</td><td>1757年奥斯曼三世颁布</td><td>多宗教共存中的制度创新</td></tr>
+    <tr><td>巴勒斯坦结构性困境</td><td>无实质政府，三分之二日收入低于2美元</td><td>理解中东问题的经济根源</td></tr>
+    <tr><td>树木年轮气候研究</td><td>年轮宽窄反映降水与温度</td><td>历史研究中气候因素的量化方法</td></tr>
+    <tr><td>大乘与上座部佛教</td><td>入乡随俗vs保持传统两种传播策略</td><td>文化传播与本土化的权衡</td></tr>
+    <tr><td>特拉法加海战技术细节</td><td>加朗炮轻量化+空心豪猪刺点火</td><td>技术匹配对战术的支撑作用</td></tr>
+    <tr><td>智库机制创新</td><td>独立研究推演未发生事件</td><td>弥补决策者理性盲区</td></tr>
+    <tr><td>伯利恒之星</td><td>超新星爆发假说，公元前4年</td><td>科学与宗教文本的交叉验证</td></tr>
+    <tr><td>孔子与佛陀比较</td><td>轴心时代双星，入世vs出世</td><td>文明奠基期的思想爆发规律</td></tr>
+    <tr><td>汉密尔顿音乐剧</td><td>16项托尼奖提名，11项大奖</td><td>艺术叙事塑造历史认知</td></tr>
+    <tr><td>轧棉机与南北战争</td><td>1793年惠特尼发明，意外巩固奴隶制</td><td>技术发明的非预期社会后果</td></tr>
+    <tr><td>萨古鲁五层面理论</td><td>肉身/精神身/能量身/以太体/喜乐体</td><td>理解"如何对待过往"的哲学框架</td></tr>
+    <tr><td>文理科生国际比例</td><td>美国理工科约25%，中国比例颠倒</td><td>创新生态中非技术学科的价值</td></tr>
+    <tr><td>金斯伯格退休争议</td><td>规则修改反噬，保守派6:3优势</td><td>制度规则修改的长期政治影响</td></tr>
+  </table>
+
+  <h3 class="section-title">学习路径 · 5阶段</h3>
+  <ol class="learning-path">
+    <li><strong>奠基：四力模型</strong> — 掌握政权兴衰的核心分析框架（控制力+向心力 vs 破坏力+离心力），这是理解所有历史案例的通用工具</li>
+    <li><strong>深化：不平等迭代+战略要素</strong> — 理解社会进步的底层逻辑（出身→经济→才干），辅以拿破仑、汉尼拔的战例建立战略视野</li>
+    <li><strong>拓展：启蒙运动+文明素养</strong> — 苏格兰vs法国双路径对比，掌握现代文明六维框架（平等/尊重/自由/诚信/契约/弱势关怀）</li>
+    <li><strong>案例：四大文明实体</strong> — 罗马兴衰、美国身份认同演变、犹太文明韧性、苏格兰启蒙运动的历史条件</li>
+    <li><strong>应用：八维度分析法</strong> — 将历史分析框架迁移至现代企业与社会问题分析，完成从知识到能力的转化</li>
+  </ol>
+</section>
+
+<!-- Tab 1: Knowledge Cards -->
+<section class="tab-panel" data-panel="1">
+  <h3 class="section-title">知识卡片 · 翻转学习</h3>
+  <div class="flip-container">
+    <div class="flip-inner" id="flipCard" onclick="toggleFlip()">
+      <div class="flip-front">
+        <h3 id="fcName">四力模型</h3>
+        <div class="front-sub" id="fcSub">政权兴衰的核心分析框架</div>
+      </div>
+      <div class="flip-back" id="flipBack"></div>
+    </div>
+  </div>
+  <div class="card-nav">
+    <button onclick="prevCard()">◀ 上一张</button>
+    <span class="card-counter" id="cardCounter">1 / 10</span>
+    <button onclick="nextCard()">下一张 ▶</button>
+  </div>
+  <div style="text-align:center;margin-top:8px;">
+    <button id="markLearnedBtn" onclick="markLearned()" style="background:var(--accent);color:#fff;border:none;padding:8px 24px;border-radius:8px;cursor:pointer;font-size:0.9em;min-height:44px;">✓ 已学习</button>
+    <span style="font-size:0.82em;color:var(--sub);margin-left:8px;">点击卡片翻转查看四维详解</span>
+  </div>
+</section>
+
+<!-- Tab 2: Mind Map -->
+<section class="tab-panel" data-panel="2">
+  <h3 class="section-title">思维导图 · 可折叠树形结构</h3>
+  <div class="tree" id="mindmapTree"></div>
+</section>
+
+<!-- Tab 3: Quiz -->
+<section class="tab-panel" data-panel="3">
+  <h3 class="section-title">题库系统 · 20道选择题</h3>
+  <div class="quiz-controls">
+    <button onclick="shuffleQuiz()">🔀 随机排序</button>
+    <button onclick="showQuizSummary()">📊 查看成绩</button>
+    <button onclick="resetQuiz()">🔄 重置题库</button>
+  </div>
+  <div id="quizSummary" style="display:none;"></div>
+  <div id="quizContainer"></div>
+</section>
+
+<!-- Tab 4: Exam -->
+<section class="tab-panel" data-panel="4">
+  <h3 class="section-title">考试模式 · 限时15分钟</h3>
+  <div class="exam-header">
+    <div class="exam-timer" id="examTimer">剩余: 15:00</div>
+    <p style="color:var(--sub);margin:8px 0;">7道选择题 + 3道简答题</p>
+    <button id="examStartBtn" onclick="startExam()" style="background:var(--accent);color:#fff;border:none;padding:10px 28px;border-radius:8px;cursor:pointer;font-size:1em;">开始考试</button>
+    <button id="examSubmitBtn" onclick="submitExam()" style="display:none;background:var(--accent);color:#fff;border:none;padding:10px 28px;border-radius:8px;cursor:pointer;font-size:1em;">提交答卷</button>
+  </div>
+  <div id="examContainer"></div>
+  <div id="examResult" style="display:none;"></div>
+</section>
+
+<!-- Tab 5: Review -->
+<section class="tab-panel" data-panel="5">
+  <h3 class="section-title">复习模式 · 错题本与统计</h3>
+  <div class="review-stats" id="reviewStats"></div>
+  <h4 class="subsection-title">薄弱概念</h4>
+  <div id="weakConcepts"></div>
+  <h4 class="subsection-title">错题本</h4>
+  <div id="wrongBook"></div>
+</section>
+
+<!-- Tab 6: Socratic Q&A -->
+<section class="tab-panel" data-panel="6">
+  <h3 class="section-title">深度追问 · 苏格拉底问答</h3>
+  <div id="socraticList"></div>
+</section>
+
+<!-- Tab 7: Case Studies -->
+<section class="tab-panel" data-panel="7">
+  <h3 class="section-title">案例分析 · MKS四维度拆解</h3>
+  <div id="caseStudies"></div>
+</section>
+
+<!-- Tab 8: Decision Simulation -->
+<section class="tab-panel" data-panel="8">
+  <h3 class="section-title">实战决策 · 3轮模拟</h3>
+  <p style="color:var(--sub);font-size:0.9em;margin-bottom:16px;">每轮3个选项+反馈+MKS分析，点击选项查看结果</p>
+  <div id="decisionSim"></div>
+</section>
+
+</main>
+
+<script>
+// ===== GLOBAL STATE — defined first to avoid TDZ =====
+var LS_KEY = 'mks_civ_inst';
+var LS = loadLS();
+var currentCardIdx = 0;
+var currentQuizSet = [];
+var quizState = {};
+var examActive = false;
+var examTimerId = null;
+var examTimeLeft = 900;
+var examQuestions = [];
+var examAnswers = {};
+
+function loadLS() {
+  try {
+    var d = localStorage.getItem('mks_civ_inst');
+    return d ? JSON.parse(d) : { learned: {}, wrong: [], quizDone: 0, quizCorrect: 0, examHistory: [] };
+  } catch(e) { return { learned: {}, wrong: [], quizDone: 0, quizCorrect: 0, examHistory: [] }; }
+}
+function saveLS() { try { localStorage.setItem(LS_KEY, JSON.stringify(LS)); } catch(e) {} }
+
+// ===== DATA =====
+var concepts = [
+  { id: 'c1', name: '四力模型', desc: '控制力+向心力 vs 破坏力+离心力 —— 政权/组织存续的通用分析框架，可迁移至企业管理', star: true },
+  { id: 'c2', name: '文明素养六维框架', desc: '平等·尊重·自由·诚信·契约·弱势关怀 —— 现代文明个体的六大实践维度', star: true },
+  { id: 'c3', name: '不平等形态迭代', desc: '出身→经济→才干→智力 —— 社会通过不平等形态迭代实现进步，非一蹴而就的绝对平等', star: true },
+  { id: 'c4', name: '启蒙运动双路径', desc: '苏格兰经验主义（渐进改良）vs 法国理性主义（破立并举）—— 两种影响现代社会的思想范式', star: true },
+  { id: 'c5', name: '美国身份认同演变', desc: '熔炉→番茄汤→色拉 —— WASP文化从主导到解构，墨西哥移民带来的特殊挑战', star: false },
+  { id: 'c6', name: '战略四要素', desc: '当前位置·目标·步骤·愿景 —— 拿破仑与晋文公的战略实践对比', star: false },
+  { id: 'c7', name: '惩罚性赔偿制度', desc: '过错与惩罚匹配·社会预防 —— 通过巨额赔偿推动系统性缺陷改进', star: false },
+  { id: 'c8', name: '犹太文明韧性', desc: '马萨达精神·信仰笃定+身段柔和 —— 2000年流散而不灭的底层逻辑', star: false },
+  { id: 'c9', name: '历史分析八维度', desc: '民族/经济/地理/人口/政治/世界/文化/社会 —— 突破个人叙事，建立结构化历史观', star: false },
+  { id: 'c10', name: '英美特殊论', desc: '普通法·经验主义·联邦制 —— 英美经验难以复制的底层原因，与法国理性主义的路径分野', star: false }
+];
+
+var cardDetails = [
+  { name: '四力模型', sub: '政权兴衰的通用框架', def: '任何政权或组织的存续取决于两对力量的博弈：维持力量（控制力+向心力）必须大于破坏力量（外来破坏力+内部离心力）。控制力是自上而下的管理能力，向心力是自下而上的认同与归属。', analogy: '像一艘船在海上航行——控制力是舵和引擎（航行能力），向心力是船员对目的地的认同（愿意同舟共济），外来破坏力是风暴（外部威胁），内部离心力是船员内讧（分裂倾向）。船不沉的条件是：舵与引擎+船员团结 > 风暴+内讧。', example: '罗马帝国兴盛——授予被征服部落首领公民权进入元老院（增强向心力），训练强大军队（提升控制力），使得控制力+向心力远超周边部落的破坏力。', counter: '反例：阿卡德帝国——萨尔贡过度依赖军事控制（控制力看似强但离心力积累），民众负担重、继承者能力不足，内部离心力+外部破坏力迅超维持力量，帝国存续不到150年。' },
+  { name: '文明素养六维框架', sub: '现代个体的六大实践维度', def: '现代文明素养可从六个维度理解与实践：平等（机会平等而非结果平等）、尊重（尊严与利益的相互承认）、自由（边界内的有限自由）、诚信（做人之本，知识诚信与商业诚信）、契约原则（社会运行基石）、弱势群体关怀（文明社会的温度）。', analogy: '像一个人在社会中的六项基本功——平等是站姿（不卑不亢），尊重是目光（正视他人），自由是步伐（在边界内行走），诚信是骨骼（支撑所有行为），契约是关节（连接不同个体），弱势关怀是体温（让社会不冰冷）。缺少任何一项，这个人就不完整。', example: '契约原则的日常体现——企业不应强制"二选一"（如同威胁朋友"不和张三玩就不跟你玩"），不应屏蔽数据接口封杀对手（如同藏同学作业本使其受罚），这些行为本质是将"丛林法则"包装为"商业竞争"。', counter: '反例：立法约束商业规范会损害竞争力吗？这是一种缺乏文明价值考量的短视观点。真正的文明社会通过制度降低暴力浓度、稳固财产权、强化契约与法治——这正是柯立芝繁荣的底层逻辑。' },
+  { name: '不平等形态迭代', sub: '社会进步的底层逻辑', def: '人类社会通过不平等形态的迭代实现进步，而非一蹴而就的绝对平等。法国大革命用经济地位差异取代了出身决定论，现代社会用智力/才干差异取代经济因素影响。每一次迭代都让命运的可改变性提升——出身不可改变，经济可以通过后天努力改变，才干可以持续发展。', analogy: '像手机系统升级——每次升级不能解决所有bug，但新系统总比旧系统好。出身不平等如同功能机（只能打电话），经济不平等如同智能机（功能多了但仍有局限），智力/才干不平等如同AI手机（更智能但仍有新问题）。关键不是追求"完美的系统"，而是确保每次迭代都在进步。', example: '法国大革命后——尽管1%资本家和金融家掌握了主要财富（仍是少数），但旧贵族无法再凭血统垄断高级职位，爱马仕、路易威登等品牌就是在新制度下由平民创立。拿破仑法典确立的"民事主体平等、私有财产神圣不可侵犯、契约自由"三大原则，至今仍是大陆法系基础。', counter: '反例：将"粗鄙当豪爽"、"无知当朴素"、"没礼貌当率真"——这是一种倒退，不是在迭代不平等形态，而是干脆放弃了文明的标准。Expedia全球酒店经理调查表明，世界各国对文明行为的判断高度一致。' },
+  { name: '启蒙运动双路径', sub: '苏格兰经验主义 vs 法国理性主义', def: '两场启蒙运动塑造了现代世界的思想基础。法国启蒙运动以"破立并举"为特征，猛烈批判神权与王权，提出三权分立与社会契约论；苏格兰启蒙运动以"渐进改良"为特征，尊重传统与既有习俗，强调法律与制度框架内的变革。前者催生了革命，后者催生了工业革命与商业文明。', analogy: '像装修两套房子——法国方式是全部砸掉重来（设计图纸完美但施工可能塌楼），苏格兰方式是保留承重墙逐间改造（虽然慢但房子不倒）。结果：法国大革命后折腾了近百年才稳定，苏格兰的改良让英国以1%世界人口生产全球1/3工业品。', example: '苏格兰启蒙的全民参与——爱丁堡的择优学会、扑克俱乐部包含知识精英、企业主、律师、医生及普通民众，思想被广泛理解并延伸至上层立法者。而法国启蒙思想家大多是贵族或依附上层，与底层民众几乎无交流。', counter: '反例：雅各宾派自称卢梭学生，却大多从未读过其原著——思想被简化为革命口号。"通往地狱之路，通常是由善意铺成的"（哈耶克），这正是法国理性主义的潜在风险：完美的理论设计脱离现实土壤。' },
+  { name: '美国身份认同演变', sub: '熔炉→番茄汤→色拉', def: '亨廷顿在《谁是美国人》中描述了美国国民认同从WASP文化主导的"熔炉"（移民同化），到克林顿时期"解构"传统认同的"番茄汤"（多元共存但有主流基底），再到新时期"色拉"（各族群文化共存而不融合）的演变过程。墨西哥移民因地理相邻、人口众多、归化率低等原因，构成特殊挑战。', analogy: '像一锅汤的演变——熔炉是把所有食材煮成一锅浓汤（你中有我我中有你），番茄汤是以番茄为底料加入各种辅料（有主流基底），色拉是各种食材共存但各是各味（没有主菜）。问题在于：没有"汤汁"连接，还能叫一锅汤吗？', example: '亚裔融入美国的成功——尽管初始经济条件差，但价值观与美国传统信念更契合（重视教育、勤奋工作、节俭规划），平均收入已居各族裔首位。这证明融合的关键不是肤色和语言，而是核心价值观的共享。', counter: '反例：1998年美墨足球赛——洛杉矶主场观众为墨西哥队加油，殴打挥舞美国国旗的观众。《洛杉矶时报》称"美国队非主场"。这不仅是体育事件，而是身份认同危机的缩影。' },
+  { name: '战略四要素', sub: '位置·目标·步骤·愿景', def: '加拿大管理学家亨利·明茨伯格提出的战略定义包含四个核心要素：明确当前位置（客观环境与条件）、设定短期目标（具体可达成的结果）、规划实现步骤（路径与方法）、确立长期愿景（发展方向与后续行动）。拿破仑和晋文公的胜利都源自战略的清晰性远胜对手。', analogy: '像开车导航——当前位置是"你在哪"（GPS定位），目标是"去哪"（目的地输入），步骤是"走哪条路"（导航路线），愿景是"到了之后做什么"（不只是到达，还要有下一步计划）。很多人失败不是因为不会开车，而是根本不知道自己在哪、要去哪。', example: '拿破仑奥斯特利茨战役——位置认知：法国孤立、财政危机、海军新败；目标：必须速胜瓦解反法同盟；步骤：示弱假象+主动放弃普拉钦高地引诱联军+秘密调集达武军团；愿景：战后重组欧洲格局，确立法国唯一霸权。四要素环环相扣。', counter: '反例：俄奥联军——位置认知不清（高估自身实力，忽视普鲁士未参战的风险），目标摇摆（库图佐夫主张拖延vs俄奥君主急于求战），步骤混乱（被拿破仑引诱至南线战场），无视愿景维度（打赢了又如何？）。"打赢了战役却输掉了战争"是战略缺失的经典悲剧。' },
+  { name: '惩罚性赔偿制度', sub: '过错与惩罚匹配的社会预防机制', def: '惩罚性赔偿是超出实际损失的赔偿，根据过错方盈利能力制定，核心目的不是补偿受害者，而是警示社会、推动系统性缺陷的改进。其底层逻辑是：过错方经济实力越强，赔偿越高，确保形成实质性震慑。', analogy: '像交通罚单——普通人违停罚200元，对亿万富翁也罚200元等于没有惩罚。惩罚性赔偿的逻辑是：对亿万富翁罚200万，才能真正阻止他违停。关键不是"罚多少合理"，而是"罚多少才能让他下次不这么做"。', example: '麦当劳咖啡烫伤案——1992年79岁老太太被三度烫伤，发现麦当劳此前已发生700余起类似事件均以小额赔偿了事。陪审团判赔300万美元（相当于麦当劳所有门店两天咖啡销售收入），直接推动麦当劳修改咖啡销售指南、增加清晰警示标识。', counter: '反例：无惩罚性赔偿的社会——企业将侵权行为视为"经营成本"，只要有利润就无所谓。如同一个大公司剽窃小公司设计，若赔偿仅等于正常授权费，则永远没有动力停止侵权。惩罚性赔偿的本质是让"欺负人的成本高到不可承受"。' },
+  { name: '犹太文明韧性', sub: '马萨达精神与生存智慧', def: '犹太文明在2000年流散中保持民族认同，核心在于两个看似矛盾的品质的统一：信仰上的笃定（马萨达精神——绝境中为自由抗争、拒绝屈服）+策略上的灵活（身段柔和——包容阿拉伯国家印章、耶路撒冷圣殿山交还穆斯林管理、入境不盖章以避免影响游客后续旅行）。', analogy: '像竹子——根系极深（信仰笃定，任何人无法拔起），但竹身随风摇曳（身段柔和，不与外力硬碰硬）。那些根系浅但树干硬的树，大风来了就会折断；那些根系深但树干脆的树，地震来了就会开裂。犹太文明的智慧在于：根深+身柔。', example: '以色列的安全务实主义——"安全是所有因素的系数，安全为零则乘积为零"。全民兵役（男36个月、女24个月），现役17.6万，战时可动员70万。但同时允许巴勒斯坦劳工从事建筑和农业，通过稳定收入促进和平相处。', counter: '反例：马萨达要塞的悲壮结局——不足1000人的犹太抵抗者坚守两年后，在罗马军团（超1万人）破城前一晚集体自杀。虽然精神可敬，但"马萨达永不再陷落"的誓言恰恰来自对悲剧的历史记忆。智慧在于：既要记住马萨达，更要避免马萨达重演。' },
+  { name: '历史分析八维度', sub: '突破个人叙事的结构化历史观', def: '美国大学历史研究的标准框架，从八个结构化角度解析历史事件：民族和国家认同、经济贸易和科技、地理和环境、人口流动迁徙安顿、政治和权力、国家在世界中的位置、内部地域文化差异和关联、社会结构。突破传统"英雄叙事"，将被忽略的维度（如地理、气候、经济）纳入核心分析。', analogy: '像医生做全身检查——传统历史书只量了血压（政治和权力），八维度法是做了全套体检：验血（经济贸易科技）、拍CT（地理环境）、查基因（民族认同）、看运动能力（人口迁徙）、查社交网络（世界位置）、评估心理状态（文化差异）、量骨骼结构（社会结构）。只量血压可能会把贫血症误诊为高血压。', example: '400毫米等降水量线——这条线与长城走向高度重合，是农耕与游牧文明的分界线。不理解这条线，就无法理解为什么中国历史上南北对峙反复出现。这比"明君贤相vs昏君奸臣"的解释深刻得多，因为它揭示了结构性约束。', counter: '反例：将宋朝兴衰简单归因于"王安石变法失败"或"保守派阻挠"——这是典型的一维叙事。八维度分析会同时考察：经济（青苗法缺乏成熟信贷体系支撑——黄仁宇视角）、地理（北方游牧民族压力与400毫米等降水线的关联）、技术（火药的军事应用改变战争形态）等。' },
+  { name: '英美特殊论', sub: '普通法·经验主义·联邦制', def: '托克维尔提出的英美特殊论解释英美经验为何难以复制：其根源在经验主义思想传统（洛克、休谟、亚当·斯密）。不同于法国理性主义追求"理性构建完美社会"并抛弃传统，英美更倾向于"从经验中提炼规则"——普通法依赖判例而非成文法典，宪法200余年基本未变，体现保守主义的改良智慧。', analogy: '像做菜——法国方式是先写一本完美菜谱再下厨（理性主义立法），英美方式是先做菜再根据味道调整并记录最佳做法（经验主义判例）。前者的问题是菜谱写得再完美，炉灶火力、食材水分总有偏差；后者的优势是每次调整都基于真实的味觉反馈。', example: '美国股市的普通法优势——1996-2020年公司数从8000+减至4000+，规模却从10万亿增至40万亿。普通法体系依据"考试不作弊"式的生活经验判断商业欺诈，比大陆法条更灵活地适应商业创新速度，能快速惩处新型造假手段。', counter: '反例：法国大革命——基于完美理性蓝图推翻一切传统，但结果经历了近百年动荡才于1871年确立稳定的共和政体。美国独立则完全不同：国父们都是经验主义者，主张"英国怎么做我们就怎么做"，宪法只是弗吉尼亚提案与康涅狄格提案的妥协结果，没有任何预设的完美蓝图。' }
+];
+
+var mcqData = [
+  // Answer 0: 5 questions
+  { q: '四力模型中，政权存续的核心条件是什么？', opts: ['控制力+向心力 > 破坏力+离心力', '控制力 > 向心力', '向心力 > 控制力', '破坏力 > 离心力'], "answer": 0 },
+  { q: '法国大革命前，法国社会的第一等级是什么群体？', opts: ['教士阶级', '贵族阶级', '农民/工人/商人', '军人阶层'], "answer": 0 },
+  { q: '英国海军纳尔逊战术的核心创新是什么？', opts: ['近距离平射以提升命中率', '增加火炮射程以远距离打击', '放弃火炮改用撞击战术', '分兵多路同时进攻'], "answer": 0 },
+  { q: '苏格兰启蒙运动的思想基础是什么？', opts: ['经验主义（洛克、休谟、斯密）', '理性主义（笛卡尔、伏尔泰）', '神秘主义（萨古鲁）', '功利主义（边沁）'], "answer": 0 },
+  { q: '汉尼拔在坎尼会战中的"点睛之笔"是什么？', opts: ['骑兵绕后封堵退路形成全方位合围', '中军加强兵力正面突破', '利用地形埋伏奇袭', '夜间偷袭扰乱敌军'], "answer": 0 },
+  // Answer 1: 5 questions
+  { q: '柯立芝执政期间，美国失业率维持在什么水平？', opts: ['7%～8%', '3%～4%', '10%～12%', '1%～2%'], "answer": 1 },
+  { q: '亨廷顿认为，美国身份认同危机源于什么？', opts: ['移民数量过多', '主流文化主导权的主动放弃', '经济衰退导致社会矛盾', '军事实力下降'], "answer": 1 },
+  { q: '大乘佛教与上座部佛教在佛陀定位上的核心差异是什么？', opts: ['修行方法的差异', '佛陀是神（大乘）vs 佛陀是觉悟者/导师（上座部）', '经典使用的语言不同', '戒律数量的差异'], "answer": 1 },
+  { q: '巴勒斯坦地区贫困人口的比例是多少？', opts: ['三分之一', '三分之二日收入低于2美元', '二分之一', '四分之一'], "answer": 1 },
+  { q: '"中等收入陷阱"概念的根本逻辑缺陷是什么？', opts: ['数据采集不准确', '违反概率分布规律——大部分经济体自然处于中等收入水平', '只适用于拉美国家', '忽略了教育因素'], "answer": 1 },
+  // Answer 2: 5 questions
+  { q: '奥斯特利茨战役中，拿破仑主动放弃的战略要地是什么？', opts: ['桑顿山', '扎钱湖', '普拉钦高地', '维也纳城'], "answer": 2 },
+  { q: '惩罚性赔偿与补偿性赔偿的核心区别是什么？', opts: ['赔偿金额大小', '是否需要律师', '惩罚性赔偿旨在惩戒和警示社会，补偿性赔偿仅覆盖实际损失', '只有美国有惩罚性赔偿'], "answer": 2 },
+  { q: '明治维新成功的关键策略是什么？', opts: ['彻底废除传统文化', '全面引进西方政治制度', '改变生活习惯（衣食住行）而非强行变革文化传统', '大规模引进外国移民'], "answer": 2 },
+  { q: '耶稣受难的核心象征意义是什么（从世俗视角解读）？', opts: ['证明罗马帝国的残暴', '展示了宗教冲突的破坏力', '以死唤醒世人，完成宗教救赎，成为为信仰献身的象征', '标志着犹太教的终结'], "answer": 2 },
+  { q: '英苏1707年合并的核心驱动力是什么？', opts: ['王室联姻', '军事征服', '共同利益——苏格兰经济濒于破产，英格兰需要统一大后方', '宗教统一'], "answer": 2 },
+  // Answer 3: 5 questions
+  { q: '马萨达要塞守军最终的结局是什么？', opts: ['成功突围逃往埃及', '与罗马军团签订和平协议', '全部被俘沦为奴隶', '城破前一晚集体自杀，仅2名成人和5名儿童幸存'], "answer": 3 },
+  { q: '拿破仑法典确立的三大原则不包括哪一项？', opts: ['民事主体平等原则', '私有财产神圣不可侵犯原则', '契约自由原则', '三权分立原则'], "answer": 3 },
+  { q: '八旗制度中，真正的八旗之首是什么？', opts: ['正黄旗', '正白旗', '正红旗', '镶黄旗'], "answer": 3 },
+  { q: '耶稣死后，耶路撒冷旧城由多个教派共管的制度起源于什么？', opts: ['联合国181号决议', '英国委任统治时期的法令', '以色列建国后的宪法', '奥斯曼帝国1757年"维持现状"敕令'], "answer": 3 },
+  { q: '美国最高法院的司法审查权是如何确立的？', opts: ['宪法明文授予', '华盛顿总统的直接授权', '英国普通法的自然延续', '马伯里诉麦迪逊案中马歇尔大法官"偷来"的政治成果'], "answer": 3 }
+];
+
+// Verify answer distribution
+(function() {
+  var dist = {};
+  mcqData.forEach(function(q) { dist[q.answer] = (dist[q.answer] || 0) + 1; });
+  console.log('MCQ answer distribution:', JSON.stringify(dist));
+})();
+
+var socraticData = [
+  { concept: '四力模型（政权兴衰框架）', layers: [
+    { q: '为什么控制力+向心力>破坏力+离心力这个公式可以同时适用于罗马帝国和现代企业？', a: '因为任何人类组织——从千年帝国到初创公司——都面临相同的基本问题：如何让成员愿意留下来（向心力vs离心力）+ 如何有效管理（控制力vs破坏力）。罗马帝国给被征服部落发公民权增加向心力，现代企业给员工发期权也是同样的逻辑。框架的通用性在于它抓取了"群体存续"的最底层变量，无论群体的规模、时代和性质如何。' },
+    { q: '向心力和控制力会不会相互冲突？', a: '会的，而且这是最关键的动态平衡点。伯罗奔尼撒战争中，希腊城邦的民主制虽有向心力（公民认同），但制度缺陷削弱了控制力（决策效率低、军队协调差）。反过来，秦朝控制力极强（中央集权+严刑峻法），但向心力极弱（焚书坑儒+徭役过重），结果是"其兴也勃焉，其亡也忽焉"。最健康的状态是控制力与向心力相互支撑而非相互抵消。' },
+    { q: '这个框架的边界是什么？什么情况下它解释不了问题？', a: '框架的最大局限是对"黑天鹅事件"的解释力不足。气候突变（如小冰期导致游牧民族南迁）、重大技术突破（如火药终结骑士时代）、瘟疫（如黑死病重塑欧洲社会结构）这些外部冲击，不在四力模型的主干逻辑中，但可以改变四力之间的平衡。因此八维度分析法将"地理和环境"作为独立维度补充，不是替代而是扩展。' }
+  ]},
+  { concept: '文明素养六维框架', layers: [
+    { q: '为什么"诚信"被单独列为现代文明素养的一个维度？难道诚信不是"尊重"的一种表现吗？', a: '诚信之所以需要独立维度，是因为它涉及一个其他维度无法覆盖的核心问题：知识诚信。学术造假和成果剽窃本质上是"知识的偷窃"，与"小偷小摸"性质相同但危害更大——一个人偷了钱包，受害者是一个人；一个人伪造了研究数据，受害者是所有依靠该研究做决策的人。而且"别人投机所以我也可以投机"的谬误逻辑极其普遍，需要独立的伦理锚点来对抗。' },
+    { q: '弱势群体关怀被列为文明社会的"温度"，如果社会发展阶段还不够富裕，是否可以不优先考虑？', a: '这是个危险的假设错误。弱势关怀不是"有钱之后再做"的奢侈品，而是文明社会的结构性组成部分。孟子说"老吾老以及人之老，幼吾幼以及人之幼"——这不是在描述一个富足社会的理想状态，而是在描述一个社会为什么能够存在的基本前提。每个人都可能在某个人生阶段成为弱势群体（年幼、年老、疾病、失业），如果社会在那一刻抛弃你，那么社会契约本身就瓦解了。这不是慈善，是保险。' }
+  ]},
+  { concept: '启蒙运动双路径', layers: [
+    { q: '苏格兰启蒙运动"尊重传统"与法国启蒙运动"打破传统"，哪个更正确？', a: '这个问题本身就是理性主义陷阱——试图找到一个绝对正确的答案。正确的问法是：在什么条件下哪个路径更有效？苏格兰启蒙运动"占了天时"——英国已经解决了宗教问题（光荣革命），社会有改良的基础；法国启蒙运动面临的是"一次解决所有问题"的局面——神权和王权双重压迫，渐进改良的空间几乎不存在。这不是路径的对错，而是历史条件决定了可选路径的集合。' },
+    { q: '苏格兰模式对我们个人有什么借鉴意义？', a: '苏格兰模式的核心方法论是"从经验中提炼规则"而非"从理论中推导规则"。对个人来说：不要试图一次性"重塑自己"（这是法国理性主义式的自我革命，往往以失败告终），而是从改变具体习惯入手（这是苏格兰经验主义式的渐进改良）。明治维新成功的秘密就在这里——改"吃什么穿什么"而不是改"我是谁"。想成为更好的自己？先改掉一个具体的坏习惯，而不是先写一份完美的人生宣言。' }
+  ]},
+  { concept: '不平等形态迭代', layers: [
+    { q: '"不平等形态迭代是进步"这个观点似乎有些冷酷——难道我们不应该追求绝对平等吗？', a: '追求绝对平等本身不是问题，问题在于追求的方式是否尊重了社会发展的客观规律。法国大革命推翻了出身不平等，但取而代之的是经济不平等——这个过程不是"失败了"，而是"迭代了"。关键判断标准是：新形态是否让命运的可改变性提升了？在出身不平等下，琅琊王氏子弟"不问马"也能做大司马，寒门子弟永无晋升可能——这是命运被锁死。在经济不平等下，虽然贫富差距仍在，但至少可以通过努力改变命运。下一步是通过教育、制度、二次分配来迭代智力不平等——这个过程从未停止，也不应停止。' },
+    { q: '智力/才干不平等会不会制造一个比出身更可怕的新阶级？', a: '有这个风险，但关键在于制度设计。如果智力优势在自由发展中不受约束地转化为下一代的机会优势（如精英阶层垄断优质教育资源），那么智力不平等确实会形成新的固化。所以解决之道不是消灭智力差异（不可能），而是确保每一代人的起跑线不被上一代的成就永久抬高——公共教育、反垄断法、遗产税、公平的考试制度都是这个逻辑下的制度工具。这也是为什么"机会平等"比"结果平等"更重要。' }
+  ]}
+];
+
+// ===== INIT =====
+function init() {
+  renderConceptGrid();
+  renderSVG();
+  renderCard(0);
+  renderMindmap();
+  renderQuiz();
+  renderSocratic();
+  renderCases();
+  renderDecision();
+  updateProgress();
+  updateReview();
+}
+
+// ===== Concept Grid =====
+function renderConceptGrid() {
+  var grid = document.getElementById('conceptGrid');
+  var html = '';
+  concepts.forEach(function(c) {
+    html += '<div class="concept-card' + (c.star ? ' star' : '') + '" onclick="jumpToCard(\'' + c.id + '\')">';
+    html += '<div class="c-name">' + (c.star ? '<span class="c-star">★</span> ' : '') + c.name + '</div>';
+    html += '<div class="c-desc">' + c.desc + '</div>';
+    html += '</div>';
+  });
+  grid.innerHTML = html;
+}
+
+function jumpToCard(id) {
+  var idx = concepts.findIndex(function(c) { return c.id === id; });
+  if (idx >= 0) { currentCardIdx = idx; renderCard(idx); switchTab(1); }
+}
+
+// ===== Tab Switch =====
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+  document.querySelectorAll('.tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+}
+
+// ===== SVG =====
+function renderSVG() {
+  document.getElementById('svgContainer').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0.00 0.00 2338.00 294.00"><g transform="scale(1 1) rotate(0) translate(4 290)"><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-290 2334,-290 2334,4 -4,4"/><g class="cluster"><polygon fill="#fdf6ec" stroke="#d4a574" stroke-dasharray="5,2" points="2057,-208 2057,-278 2322,-278 2322,-208 2057,-208"/><text text-anchor="middle" x="2189.5" y="-266.8" font-family="Noto Sans SC" font-size="9.00">图例说明</text></g><g class="node"><path fill="#c0392b" stroke="black" stroke-width="2" d="M1204.5,-252C1204.5,-252 1027.5,-252 1027.5,-252 1021.5,-252 1015.5,-246 1015.5,-240 1015.5,-240 1015.5,-228 1015.5,-228 1015.5,-222 1021.5,-216 1027.5,-216 1027.5,-216 1204.5,-216 1204.5,-216 1210.5,-216 1216.5,-222 1216.5,-228 1216.5,-228 1216.5,-240 1216.5,-240 1216.5,-246 1210.5,-252 1204.5,-252"/><text text-anchor="middle" x="1116" y="-237.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">文明与制度演进</text><text text-anchor="middle" x="1116" y="-225.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">自由×秩序 · 个体×集体 · 变革×传统</text></g><g class="node"><path fill="#d4a574" stroke="black" d="M495.5,-180C495.5,-180 334.5,-180 334.5,-180 328.5,-180 322.5,-174 322.5,-168 322.5,-168 322.5,-156 322.5,-156 322.5,-150 328.5,-144 334.5,-144 334.5,-144 495.5,-144 495.5,-144 501.5,-144 507.5,-150 507.5,-156 507.5,-156 507.5,-168 507.5,-168 507.5,-174 501.5,-180 495.5,-180"/><text text-anchor="middle" x="415" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">制度演进规律</text><text text-anchor="middle" x="415" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">四力模型 · 不平等迭代 · 战略要素</text></g><g class="node"><path fill="#d4a574" stroke="black" d="M1191,-180C1191,-180 1041,-180 1041,-180 1035,-180 1029,-174 1029,-168 1029,-168 1029,-156 1029,-156 1029,-150 1035,-144 1041,-144 1041,-144 1191,-144 1191,-144 1197,-144 1203,-150 1203,-156 1203,-156 1203,-168 1203,-168 1203,-174 1197,-180 1191,-180"/><text text-anchor="middle" x="1116" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">文明素养构建</text><text text-anchor="middle" x="1116" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">六维框架 · 启蒙运动 · 四大价值</text></g><g class="node"><path fill="#d4a574" stroke="black" d="M1856,-180C1856,-180 1706,-180 1706,-180 1700,-180 1694,-174 1694,-168 1694,-168 1694,-156 1694,-156 1694,-150 1700,-144 1706,-144 1706,-144 1856,-144 1856,-144 1862,-144 1868,-150 1868,-156 1868,-156 1868,-168 1868,-168 1868,-174 1862,-180 1856,-180"/><text text-anchor="middle" x="1781" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">文明案例分析</text><text text-anchor="middle" x="1781" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">罗马兴衰 · 美国建国 · 犹太韧性</text></g><g class="edge"><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1015.19,-222.93C882.72,-209.71 651.28,-186.59 517.82,-173.27"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="517.89,-169.76 507.59,-172.25 517.2,-176.72 517.89,-169.76"/></g><g class="edge"><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1116,-215.7C1116,-207.98 1116,-198.71 1116,-190.11"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1119.5,-190.1 1116,-180.1 1112.5,-190.1 1119.5,-190.1"/></g><g class="edge"><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1216.7,-217.35C1239.77,-214.02 1264.21,-210.7 1287,-208 1424.46,-191.7 1584.04,-178.13 1683.78,-170.29"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1684.15,-173.77 1693.85,-169.5 1683.6,-166.79 1684.15,-173.77"/></g></g></svg>';
+}
+
+// ===== Knowledge Cards =====
+function renderCard(idx) {
+  var d = cardDetails[idx];
+  document.getElementById('fcName').textContent = d.name;
+  document.getElementById('fcSub').textContent = d.sub;
+  document.getElementById('flipBack').innerHTML = '<h4>📖 定义</h4><p>' + d.def + '</p><h4>🔮 类比</h4><p>' + d.analogy + '</p><h4>✅ 示例</h4><p>' + d.example + '</p><h4>❌ 反例</h4><p>' + d.counter + '</p>';
+  document.getElementById('flipCard').classList.remove('flipped');
+  document.getElementById('cardCounter').textContent = (idx + 1) + ' / ' + cardDetails.length;
+  updateMarkBtn();
+}
+
+function prevCard() { currentCardIdx = (currentCardIdx - 1 + cardDetails.length) % cardDetails.length; renderCard(currentCardIdx); }
+function nextCard() { currentCardIdx = (currentCardIdx + 1) % cardDetails.length; renderCard(currentCardIdx); }
+function toggleFlip() { document.getElementById('flipCard').classList.toggle('flipped'); }
+function markLearned() {
+  var id = concepts[currentCardIdx].id;
+  LS.learned[id] = !LS.learned[id];
+  saveLS(); updateMarkBtn(); updateProgress();
+}
+function updateMarkBtn() {
+  var btn = document.getElementById('markLearnedBtn');
+  var id = concepts[currentCardIdx].id;
+  btn.textContent = LS.learned[id] ? '✓ 已学习' : '标记为已学习';
+  btn.style.opacity = LS.learned[id] ? '1' : '0.5';
+}
+function updateProgress() {
+  var learned = Object.keys(LS.learned).filter(function(k) { return LS.learned[k]; }).length;
+  var pct = Math.round(learned / concepts.length * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = '学习进度: ' + learned + ' / ' + concepts.length + ' (' + pct + '%)';
+}
+
+// ===== Mind Map =====
+function renderMindmap() {
+  var tree = document.getElementById('mindmapTree');
+  tree.innerHTML = buildTreeNode(
+    '文明与制度：自由×秩序 · 个体×集体 · 变革×传统', 'root', true, [
+      buildTreeNode('制度演进规律', 't1', true, [
+        buildTreeNode('四力模型——政权/组织存续公式：控制力+向心力>破坏力+离心力 ★', 'leaf', false),
+        buildTreeNode('不平等形态迭代——出身→经济→才干→智力，命运可改变性逐步提升 ★', 'leaf', false),
+        buildTreeNode('战略四要素——当前位置/目标/步骤/愿景，拿破仑vs晋文公案例', 'leaf', false),
+        buildTreeNode('八维度分析法——民族/经济/地理/人口/政治/世界/文化/社会', 'leaf', false),
+        buildTreeNode('惩罚性赔偿——过错与惩罚匹配，社会预防机制', 'leaf', false)
+      ]),
+      buildTreeNode('文明素养构建', 't1', true, [
+        buildTreeNode('六维框架——平等·尊重·自由·诚信·契约·弱势关怀 ★', 'leaf', false),
+        buildTreeNode('四大社会价值——低暴力/财产权稳固/契约法治/同情心与个体尊重', 'leaf', false),
+        buildTreeNode('法国启蒙运动——破立并举，三权分立+社会契约论', 'leaf', false),
+        buildTreeNode('苏格兰启蒙运动——经验主义渐进改良，催生工业革命与商业文明 ★', 'leaf', false),
+        buildTreeNode('明治维新启示——改生活习惯（易操作）而非强行变革文化传统（阻力大）', 'leaf', false)
+      ]),
+      buildTreeNode('文明案例实证', 't1', true, [
+        buildTreeNode('罗马兴衰——公民权制度的双刃剑效应·气候触发因素', 'leaf', false),
+        buildTreeNode('美国身份认同——熔炉→番茄汤→色拉·WASP文化解构', 'leaf', false),
+        buildTreeNode('犹太文明韧性——马萨达精神+信仰笃定与身段柔和的统一', 'leaf', false),
+        buildTreeNode('英美特殊论——普通法·经验主义与法国理性主义的路径分野', 'leaf', false),
+        buildTreeNode('英苏合并——共同利益驱动联合，非情感或联姻', 'leaf', false)
+      ]),
+      buildTreeNode('个体实践', 't1', true, [
+        buildTreeNode('如何成为文明人——从"不攀附虚假身份"到"保护隐私即保护自由"', 'leaf', false),
+        buildTreeNode('历史思维的迁移——四力模型可分析企业兴衰，八维度可做组织诊断', 'leaf', false),
+        buildTreeNode('对待过往——萨古鲁：过去关系随物质层面消失而终结，珍惜活着的人', 'leaf', false),
+        buildTreeNode('个体力量——张纯如：一个人的力量可以推动文明对历史的认知', 'leaf', false)
+      ])
+    ]
+  );
+}
+
+function buildTreeNode(label, type, expanded, children) {
+  var hasChildren = children && children.length > 0;
+  var cls = type === 'root' ? 'root' : (type === 't1' ? 'tier1' : '');
+  var html = '<div class="tree-node"><span class="tree-label ' + cls + '" onclick="toggleTreeNode(this)">';
+  if (hasChildren) html += '<span class="tree-toggle' + (expanded ? ' open' : '') + '">▶</span>';
+  html += label + '</span>';
+  if (hasChildren) {
+    html += '<div class="tree-children' + (expanded ? ' show' : '') + '">';
+    children.forEach(function(c) { html += c; });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function toggleTreeNode(el) {
+  var toggle = el.querySelector('.tree-toggle');
+  if (toggle) toggle.classList.toggle('open');
+  var children = el.parentElement.querySelector('.tree-children');
+  if (children) children.classList.toggle('show');
+}
+
+// ===== Quiz =====
+function renderQuiz() {
+  var container = document.getElementById('quizContainer');
+  currentQuizSet = mcqData.slice();
+  var html = '';
+  currentQuizSet.forEach(function(q, i) {
+    html += '<div class="quiz-card" id="qcard-' + i + '"><div class="q-question">' + (i + 1) + '. ' + q.q + '</div>';
+    html += '<div class="q-options">';
+    var labels = ['A', 'B', 'C', 'D'];
+    q.opts.forEach(function(opt, j) {
+      html += '<div class="q-option" data-q="' + i + '" data-o="' + j + '" onclick="selectOption(this)">' + labels[j] + '. ' + opt + '</div>';
+    });
+    html += '</div><div class="q-feedback" id="qfb-' + i + '"></div></div>';
+  });
+  container.innerHTML = html;
+  quizState = {};
+}
+
+function selectOption(el) {
+  var qi = parseInt(el.getAttribute('data-q'));
+  var oi = parseInt(el.getAttribute('data-o'));
+  if (quizState[qi] !== undefined) return;
+  quizState[qi] = { chosen: oi, correct: currentQuizSet[qi].answer };
+  var correct = oi === currentQuizSet[qi].answer;
+  LS.quizDone++;
+  if (correct) LS.quizCorrect++;
+  if (!correct) {
+    LS.wrong.push({ q: currentQuizSet[qi].q, opts: currentQuizSet[qi].opts, "answer": currentQuizSet[qi].answer, chosen: oi, time: Date.now() });
+  }
+  saveLS();
+
+  var opts = el.parentElement.querySelectorAll('.q-option');
+  opts.forEach(function(o, j) {
+    if (j === currentQuizSet[qi].answer) o.classList.add('correct');
+    else if (j === oi && !correct) o.classList.add('wrong');
+    o.style.pointerEvents = 'none';
+  });
+  el.classList.add('selected');
+
+  var fb = document.getElementById('qfb-' + qi);
+  fb.textContent = correct ? '✅ 正确！' : '❌ 错误！正确答案是 ' + ['A','B','C','D'][currentQuizSet[qi].answer] + '. ' + currentQuizSet[qi].opts[currentQuizSet[qi].answer];
+  fb.className = 'q-feedback show ' + (correct ? 'correct' : 'wrong');
+}
+
+function shuffleQuiz() {
+  currentQuizSet = mcqData.slice().sort(function() { return Math.random() - 0.5; });
+  var container = document.getElementById('quizContainer');
+  var html = '';
+  currentQuizSet.forEach(function(q, i) {
+    html += '<div class="quiz-card" id="qcard-' + i + '"><div class="q-question">' + (i + 1) + '. ' + q.q + '</div><div class="q-options">';
+    var labels = ['A', 'B', 'C', 'D'];
+    q.opts.forEach(function(opt, j) {
+      html += '<div class="q-option" data-q="' + i + '" data-o="' + j + '" onclick="selectOption(this)">' + labels[j] + '. ' + opt + '</div>';
+    });
+    html += '</div><div class="q-feedback" id="qfb-' + i + '"></div></div>';
+  });
+  container.innerHTML = html;
+  quizState = {};
+}
+
+function resetQuiz() { LS.quizDone = 0; LS.quizCorrect = 0; LS.wrong = []; saveLS(); currentQuizSet = mcqData.slice(); renderQuiz(); document.getElementById('quizSummary').style.display = 'none'; updateReview(); }
+
+function showQuizSummary() {
+  var done = Object.keys(quizState).length;
+  var correct = 0;
+  Object.values(quizState).forEach(function(s) { if (s.chosen === s.correct) correct++; });
+  var sum = document.getElementById('quizSummary');
+  sum.style.display = 'block';
+  sum.innerHTML = '<div class="quiz-card" style="text-align:center;"><h4>本轮成绩</h4><p>已完成: ' + done + ' / 20</p><p>正确: ' + correct + ' / ' + done + ' (' + (done ? Math.round(correct / done * 100) : 0) + '%)</p></div>';
+}
+
+// ===== Exam =====
+function startExam() {
+  examActive = true;
+  examTimeLeft = 900;
+  var shuffled = mcqData.slice().sort(function() { return Math.random() - 0.5; });
+  examQuestions = shuffled.slice(0, 7);
+  examAnswers = {};
+
+  document.getElementById('examStartBtn').style.display = 'none';
+  document.getElementById('examSubmitBtn').style.display = 'inline-block';
+  updateExamTimer();
+
+  var html = '<h4 class="subsection-title">选择题（7题）</h4>';
+  examQuestions.forEach(function(q, i) {
+    html += '<div class="quiz-card"><div class="q-question">' + (i + 1) + '. ' + q.q + '</div><div class="q-options">';
+    var labels = ['A', 'B', 'C', 'D'];
+    q.opts.forEach(function(opt, j) {
+      html += '<div class="q-option" data-exam="' + i + '" data-o="' + j + '" onclick="selectExamOption(this)">' + labels[j] + '. ' + opt + '</div>';
+    });
+    html += '</div></div>';
+  });
+  html += '<h4 class="subsection-title">简答题（3题）</h4>';
+  html += '<div class="quiz-card"><p>1. 请简述四力模型的核心内容，并解释为什么它既可以分析罗马帝国兴衰，也可以分析现代企业存亡。</p><textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;" id="sa1"></textarea></div>';
+  html += '<div class="quiz-card"><p>2. 苏格兰启蒙运动与法国启蒙运动的核心差异是什么？这种差异对现代社会的制度建设有何启示？</p><textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;" id="sa2"></textarea></div>';
+  html += '<div class="quiz-card"><p>3. 从"不平等形态迭代"的角度，如何看待当前社会中的不平等现象？是倒退还是进步？</p><textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;" id="sa3"></textarea></div>';
+  document.getElementById('examContainer').innerHTML = html;
+  document.getElementById('examResult').style.display = 'none';
+
+  examTimerId = setInterval(function() {
+    examTimeLeft--;
+    updateExamTimer();
+    if (examTimeLeft <= 0) submitExam();
+  }, 1000);
+}
+
+function updateExamTimer() {
+  var m = Math.floor(examTimeLeft / 60);
+  var s = examTimeLeft % 60;
+  document.getElementById('examTimer').textContent = '剩余: ' + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function selectExamOption(el) {
+  var qi = parseInt(el.getAttribute('data-exam'));
+  var oi = parseInt(el.getAttribute('data-o'));
+  examAnswers[qi] = oi;
+  var opts = el.parentElement.querySelectorAll('.q-option');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function submitExam() {
+  clearInterval(examTimerId);
+  examActive = false;
+  var score = 0;
+  examQuestions.forEach(function(q, i) {
+    if (examAnswers[i] === q.answer) score++;
+  });
+  LS.examHistory.push({ date: Date.now(), score: score, total: 7 });
+  saveLS();
+
+  var html = '<h4>考试结果</h4><div class="exam-score">' + score + ' / 7</div>';
+  html += '<p>选择题得分: ' + score + ' / 7 (' + Math.round(score / 7 * 100) + '%)</p>';
+  html += '<p style="margin-top:10px;">简答题请自行对照以下要点：</p>';
+  html += '<p style="font-size:0.85em;color:var(--sub);">1. 核心内容：控制力(自上而下的管理能力)+向心力(自下而上的认同)>外来破坏力+内部离心力。通用性在于任何人类组织都面临同样的基本问题：如何让成员愿意留下+如何有效管理。罗马通过公民权增强向心力，企业通过期权实现类似功能。</p>';
+  html += '<p style="font-size:0.85em;color:var(--sub);">2. 核心差异：苏格兰(经验主义+渐进改良+尊重传统)vs法国(理性主义+破立并举+构建完美社会)。启示：制度变革需考虑历史条件——苏格兰"占了天时"(已解决宗教问题)，法国需"一次解决所有问题"。改良路径取决于客观条件而非主观愿望。</p>';
+  html += '<p style="font-size:0.85em;color:var(--sub);">3. 迭代视角：关键判断标准是"命运的可改变性是否提升了"。出身不平等下命运被锁死，经济不平等下可通过努力改变，智力/才干不平等下需要制度保障机会公平。每一次迭代都在进步，但绝对平等是渐进过程而非一蹴而就。</p>';
+  if (score < 4) html += '<p style="color:#e74c3c;margin-top:12px;">⚠️ 薄弱概念提示：四力模型、不平等迭代、启蒙运动双路径——建议回到知识卡片和追问模块深入学习。</p>';
+
+  document.getElementById('examResult').innerHTML = html;
+  document.getElementById('examResult').style.display = 'block';
+  document.getElementById('examSubmitBtn').style.display = 'none';
+  document.getElementById('examStartBtn').style.display = 'inline-block';
+  document.getElementById('examStartBtn').textContent = '重新考试';
+  updateReview();
+}
+
+// ===== Review =====
+function updateReview() {
+  var stats = document.getElementById('reviewStats');
+  stats.innerHTML = '<div class="stat-card"><div class="s-val">' + Object.keys(LS.learned).filter(function(k) { return LS.learned[k]; }).length + '</div><div class="s-label">已学概念</div></div>';
+  stats.innerHTML += '<div class="stat-card"><div class="s-val">' + LS.quizDone + '</div><div class="s-label">总答题数</div></div>';
+  stats.innerHTML += '<div class="stat-card"><div class="s-val">' + (LS.quizDone ? Math.round(LS.quizCorrect / LS.quizDone * 100) : 0) + '%</div><div class="s-label">正确率</div></div>';
+  stats.innerHTML += '<div class="stat-card"><div class="s-val">' + LS.wrong.length + '</div><div class="s-label">错题数</div></div>';
+
+  var wb = document.getElementById('wrongBook');
+  if (LS.wrong.length === 0) {
+    wb.innerHTML = '<p style="color:var(--sub);padding:16px;">暂无错题，继续加油！</p>';
+  } else {
+    var wh = '<div style="max-height:400px;overflow-y:auto;">';
+    LS.wrong.slice().reverse().forEach(function(w, i) {
+      wh += '<div class="wrong-item"><p><strong>题目:</strong> ' + w.q + '</p>';
+      wh += '<p style="color:#e74c3c;">你的答案: ' + ['A','B','C','D'][w.chosen] + '. ' + w.opts[w.chosen] + '</p>';
+      wh += '<p style="color:#27ae60;">正确答案: ' + ['A','B','C','D'][w.answer] + '. ' + w.opts[w.answer] + '</p>';
+      wh += '<button class="retry-btn" onclick="retryWrong(' + i + ')">重做此题</button></div>';
+    });
+    wh += '</div>';
+    wb.innerHTML = wh;
+  }
+
+  var wc = document.getElementById('weakConcepts');
+  var conceptMap = {
+    '四力模型': 0, '文明素养': 1, '不平等': 2, '启蒙': 3,
+    '身份认同': 4, '战略': 5, '惩罚性赔偿': 6, '犹太': 7,
+    '八维度': 8, '英美特殊': 9
+  };
+  var wrongConcepts = {};
+  LS.wrong.forEach(function(w) {
+    var qText = w.q;
+    Object.keys(conceptMap).forEach(function(cn) {
+      if (qText.indexOf(cn) >= 0) {
+        wrongConcepts[cn] = (wrongConcepts[cn] || 0) + 1;
+      }
+    });
+  });
+  if (Object.keys(wrongConcepts).length === 0) {
+    wc.innerHTML = '<p style="color:var(--sub);padding:16px;">暂无薄弱概念数据</p>';
+  } else {
+    var sorted = Object.entries(wrongConcepts).sort(function(a, b) { return b[1] - a[1]; });
+    wc.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;">' + sorted.map(function(e) {
+      return '<span style="background:#fdedec;color:#e74c3c;padding:6px 12px;border-radius:16px;font-size:0.9em;">' + e[0] + ' (' + e[1] + '题)</span>';
+    }).join('') + '</div>';
+  }
+}
+
+function retryWrong(idx) {
+  switchTab(3);
+  var w = LS.wrong[LS.wrong.length - 1 - idx];
+  var qi = mcqData.findIndex(function(q) { return q.q === w.q; });
+  if (qi >= 0) {
+    currentQuizSet = mcqData.slice();
+    renderQuiz();
+    setTimeout(function() {
+      var target = document.getElementById('qcard-' + qi);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+}
+
+// ===== Socratic Q&A =====
+function renderSocratic() {
+  var container = document.getElementById('socraticList');
+  var html = '';
+  socraticData.forEach(function(item) {
+    html += '<h4 class="subsection-title">' + item.concept + '</h4>';
+    item.layers.forEach(function(layer) {
+      html += '<div class="socratic-item"><div class="socratic-q" onclick="toggleSocratic(this)">';
+      html += '<span>🔹 ' + layer.q + '</span><span class="arrow">▼</span></div>';
+      html += '<div class="socratic-a"><p>' + layer.a + '</p></div></div>';
+    });
+  });
+  container.innerHTML = html;
+}
+
+function toggleSocratic(el) {
+  el.classList.toggle('open');
+  var a = el.nextElementSibling;
+  if (a) a.classList.toggle('show');
+}
+
+// ===== Case Studies =====
+function renderCases() {
+  var container = document.getElementById('caseStudies');
+  var html = '';
+
+  html += '<div class="case-card"><h4>案例1: 罗马帝国兴衰——四力模型的全景演绎</h4>';
+  html += '<p>从台伯河畔的城邦到地中海霸主，罗马的崛起与衰亡完美呈现了四力模型的动态演化：兴盛期通过公民权向心力+军事控制力远超周边部落的破坏力；衰亡期因公民权滥发削弱核心群体认同（离心力上升）、四帝共治分散中央控制力、日耳曼部落南迁加剧外来破坏力。更关键的是气候因素——公元3-5世纪的小冰期触发"多米诺骨牌"效应。</p>';
+  html += '<div class="case-dims"><div class="case-dim"><span class="dim-label">核心概念</span><br>四力模型：控制力+向心力 vs 破坏力+离心力</div>';
+  html += '<div class="case-dim"><span class="dim-label">类比</span><br>如同一家企业的生命周期——创业期团结(高向心力)、扩张期管理升级(高控制力)、大公司病(离心力上升)、外部竞争(破坏力)</div>';
+  html += '<div class="case-dim"><span class="dim-label">示例</span><br>罗马保民官制度保护民众利益(增强向心力)；同时设立独裁官集中权力应对危机(增强控制力)</div>';
+  html += '<div class="case-dim"><span class="dim-label">反例</span><br>卡拉卡拉皇帝滥发公民权——初衷是增强向心力，结果反而削弱核心群体认同，导致财政危机和离心力上升</div></div></div>';
+
+  html += '<div class="case-card"><h4>案例2: 苏格兰启蒙运动——小民族的巨大贡献</h4>';
+  html += '<p>人口仅500万的苏格兰，在18世纪贡献了休谟、斯密、瓦特、麦克斯韦、贝尔等世界级人物。成因：英苏合并提供和平环境+高纬度山地倒逼工商业+四所大学vs英格兰两所的实用教育优势+加尔文宗清教思想奠定自由平等价值观+活跃的学术俱乐部网络。这五个条件缺一不可。苏格兰启蒙运动的核心遗产——公民社会、商业社会、技术社会的思想基础——至今塑造着硅谷的创新文化。</p>';
+  html += '<div class="case-dims"><div class="case-dim"><span class="dim-label">核心概念</span><br>启蒙运动的社会条件——历史/地理/教育/宗教/文化的五维成因</div>';
+  html += '<div class="case-dim"><span class="dim-label">类比</span><br>如二线城市个人的差异化定位——依托教育、差异化优势与开放交流，而非与一线城市正面竞争</div>';
+  html += '<div class="case-dim"><span class="dim-label">示例</span><br>亚当·斯密融合哈奇森(性善论)与休谟(性恶论)，提出"看不见的手"——商业机制的自发调节作用</div>';
+  html += '<div class="case-dim"><span class="dim-label">反例</span><br>法国启蒙思想家多为贵族，与底层民众几乎无交流——思想被简化为革命口号，实践中多有误解</div></div></div>';
+
+  html += '<div class="case-card"><h4>案例3: 汉密尔顿与杰斐逊——制度让对手成为建设者</h4>';
+  html += '<p>美国建国初期，汉密尔顿(联邦党/精英统治)与杰斐逊(民主共和党/平民政治)在债务偿还、联邦权力、经济路线等问题上激烈对立。但1800年大选陷入35轮平票僵局时，汉密尔顿说服联邦党人支持政敌杰斐逊，理由是"选有错误原则的人比无原则的人更好"。这标志着现代民主政治的确立：政见分歧不可怕，只要从政者一心为国。杰斐逊开创总统与民众步行就职的先例，美国实现首次和平政党轮替。</p>';
+  html += '<div class="case-dims"><div class="case-dim"><span class="dim-label">核心概念</span><br>制度优先于领袖——维护制度原则而非依赖完美领袖</div>';
+  html += '<div class="case-dim"><span class="dim-label">类比</span><br>如两辆不同方向的车在同一条高速上行驶——方向不同但都遵守交规(制度)，不会相撞</div>';
+  html += '<div class="case-dim"><span class="dim-label">示例</span><br>美国宪法200余年基本未变(仅增加10条人权法案)，除南北战争外无重大动荡——经验主义治理的稳定性</div>';
+  html += '<div class="case-dim"><span class="dim-label">反例</span><br>法国大革命后在绝对君主制、共和国与帝国之间反复摇摆近百年——理性主义"毕其功于一役"的代价</div></div></div>';
+
+  container.innerHTML = html;
+}
+
+// ===== Decision Sim =====
+function renderDecision() {
+  var container = document.getElementById('decisionSim');
+  var rounds = [
+    {
+      scenario: '你是某快速扩张的创业公司CEO，公司员工从30人扩张到300人，出现部门墙林立、老员工觉得"公司变了"、新员工缺乏归属感的问题。你该怎么做？',
+      options: [
+        { text: '加强KPI考核和流程管控，用制度管人（强化控制力）', feedback: '⚠️ 危险！单纯强化控制力而不增强向心力，这是秦朝式管理——短期有效但离心力会持续积累。你的老员工会觉得"公司失去了原来的温度"，新员工会变成"为KPI打工"。正确的方向是控制力与向心力同步提升，而非二选一。', mks: '四力模型——控制力与向心力的动态平衡' },
+        { text: '一方面引入OKR和职业发展双通道（控制力），另一方面设立员工期权池和内部创业机制（向心力），让老员工成为合伙人、新员工看到未来', feedback: '✅ 这个方案完美体现了四力模型的平衡智慧。控制力层面：OKR提供清晰的战略传导机制，双通道让不同能力模型的员工都有上升空间。向心力层面：期权让员工从"打工者"变成"利益共同体"，内部创业机制让扩张不必然带来离心力（小团队仍然有归属感）。', mks: '四力模型 + 罗马公民权制度（均衡控制力与向心力）' },
+        { text: '恢复创业初期的扁平化管理，取消所有层级，让大家回到"一家人"的感觉', feedback: '⚠️ 这是对创业初期"黄金时代"的怀旧幻觉。300人的组织和30人完全不是同一个管理复杂度，扁平化不是不要层级而是让信息流通更快。参考罗马——从城邦到帝国，它增加了元老院、行省总督、保民官等新制度而非取消一切层级。正确的思路是让制度匹配规模，而非假装规模不存在。', mks: '企业扩张的边界——控制力/向心力与规模呈平方反比关系' }
+      ]
+    },
+    {
+      scenario: '你负责一个多部门协作的重大项目，合作方A提出一个"完美"的项目计划书，逻辑严密、数据充分、预期收益巨大。但你的直觉告诉你有什么地方不对。你该怎么做？',
+      options: [
+        { text: '既然逻辑和数据都支持，就按计划推进——理性决策不应被直觉干扰', feedback: '⚠️ 这正是法国理性主义的陷阱——过度相信"完美的理性设计"。哈耶克说"通往地狱之路，通常是由善意铺成的"。王安石变法的问题不是目标不对（富国强兵完全正确），而是缺乏成熟的信贷体系支撑青苗法（黄仁宇视角）。正确的做法不是抛弃逻辑，而是补充视角。', mks: '法国理性主义的局限 + 智库机制的价值（多视角论证）' },
+        { text: '拒绝该计划，相信直觉，不做无法说服自己的事', feedback: '⚠️ 这走到另一个极端了——完全依赖直觉而放弃理性分析，等于放弃了现代决策最大的优势。苏格兰经验主义不是"反理性"而是"理性要建立在实际经验之上"。你需要的是第三种方案：用经验来验证计划的可信度。', mks: '苏格兰经验主义——理论需建立在观察证据之上' },
+        { text: '邀请3-5个不同领域的独立专家做"影子评估"，特别要求每人从"这个计划会怎么失败"的角度写一份独立报告', feedback: '✅ 这个方案完美体现了现代智库的核心理念——不是寻找"正确"的预言，而是建立多视角论证机制。奥巴马政府企业海外税决策的逆转，正是因为有施密特、钱伯斯等产业专家提供了"这会让美企失去全球竞争力"的独立分析。让每个人从"会怎么失败"的角度思考，本质上是在运用苏格兰经验主义的方法——基于实际经验推演可能性，而非凭空构建完美蓝图。', mks: '智库机制 + 苏格兰经验主义 + 充分性推理原则' }
+      ]
+    },
+    {
+      scenario: '你的孩子在重点中学成绩中等偏上，但每天学习到凌晨，周末被补习班占满。孩子最近频繁说"活着好累"。你该怎么办？',
+      options: [
+        { text: '坚持住！现在苦一阵子，将来幸福一辈子。中考是分水岭，不能在这个关键时刻松懈', feedback: '⚠️ 这是典型的"为未来做准备"的教育观，杜威早在100年前就批判过。成长是连续的，不是"忍过这几年就好了"。更严重的是，这种思维忽略了孩子的精神健康——萨古鲁的印度生命理论告诉我们，人的五个层面(肉身/精神身/能量身/以太体/喜乐体)必须保持平衡。精神身的过度消耗会破坏整个生命系统的健康。"活着好累"不是撒娇，是系统过载的警报。', mks: '杜威"教育即成长" + 萨古鲁五层面平衡 + 文明素养(弱势关怀)' },
+        { text: '立即停掉所有补习班，让孩子完全自由发展', feedback: '⚠️ 从"过度压迫"直接跳到"完全放手"是另一个极端。斯宾塞的知识价值分层告诉我们，需要区分"保暖型知识"(核心学业)和"炫耀型知识"(过量补习)。关键不是所有或全无，而是优先级排序——确保核心学科扎实的前提下，给孩子留出自主探索的空间。明治维新的启示——改习惯(学习方式)而非全盘否定既有学习成果。', mks: '斯宾塞知识价值分层 + 明治维新(改习惯而非全盘否定)' },
+        { text: '和孩子做一次深入的对谈，了解他的真实感受。然后一起制定一个新方案：减少1/3的补习时间，保留他感兴趣或有进步的科目，空出的时间让他自由选择一项全新的活动（体育/艺术/阅读/编程等），每个月底复盘调整', feedback: '✅ 完美结合了多个MKS框架！首先，倾听孩子(尊重个体的文明素养)；其次，保留核心+开放选择(斯宾塞保暖型vs炫耀型知识的分层)；第三，让孩子参与决策(培养自主性，呼应杜威"教育是持续生长的过程"）；第四，每月复盘(苏格兰经验主义的"从经验中调整规则")。最重要的是——你把孩子当作一个完整的"人"在对待，而非一台需要最大化工分数的机器。', mks: '六维框架(尊重) + 斯宾塞知识分层 + 杜威教育即成长 + 苏格兰经验主义' }
+      ]
+    }
+  ];
+
+  var html = '';
+  rounds.forEach(function(r, ri) {
+    html += '<div class="decision-round"><h4>场景' + (ri + 1) + ': ' + r.scenario + '</h4>';
+    html += '<div class="decision-options">';
+    var labels = ['A', 'B', 'C'];
+    r.options.forEach(function(opt, oi) {
+      html += '<div class="decision-opt" onclick="chooseDecision(' + ri + ',' + oi + ',this)">' + labels[oi] + '. ' + opt.text + '</div>';
+    });
+    html += '</div>';
+    html += '<div class="decision-feedback" id="dfb-' + ri + '"></div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function chooseDecision(ri, oi, el) {
+  var feedbacks = [
+    [
+      { text: '⚠️ 危险！单纯强化控制力而不增强向心力，这是秦朝式管理——短期有效但离心力会持续积累。你的老员工会觉得"公司失去了原来的温度"，新员工会变成"为KPI打工"。正确的方向是控制力与向心力同步提升，而非二选一。', mks: '四力模型——控制力与向心力的动态平衡' },
+      { text: '✅ 这个方案完美体现了四力模型的平衡智慧。控制力层面：OKR提供清晰的战略传导机制，双通道让不同能力模型的员工都有上升空间。向心力层面：期权让员工从"打工者"变成"利益共同体"，内部创业机制让扩张不必然带来离心力（小团队仍然有归属感）。', mks: '四力模型 + 罗马公民权制度（均衡控制力与向心力）' },
+      { text: '⚠️ 这是对创业初期"黄金时代"的怀旧幻觉。300人的组织和30人完全不是同一个管理复杂度，扁平化不是不要层级而是让信息流通更快。参考罗马——从城邦到帝国，它增加了元老院、行省总督、保民官等新制度而非取消一切层级。正确的思路是让制度匹配规模，而非假装规模不存在。', mks: '企业扩张的边界——控制力/向心力与规模呈平方反比关系' }
+    ],
+    [
+      { text: '⚠️ 这正是法国理性主义的陷阱——过度相信"完美的理性设计"。哈耶克说"通往地狱之路，通常是由善意铺成的"。王安石变法的问题不是目标不对（富国强兵完全正确），而是缺乏成熟的信贷体系支撑青苗法（黄仁宇视角）。正确的做法不是抛弃逻辑，而是补充视角。', mks: '法国理性主义的局限 + 智库机制的价值（多视角论证）' },
+      { text: '⚠️ 这走到另一个极端了——完全依赖直觉而放弃理性分析，等于放弃了现代决策最大的优势。苏格兰经验主义不是"反理性"而是"理性要建立在实际经验之上"。你需要的是第三种方案：用经验来验证计划的可信度。', mks: '苏格兰经验主义——理论需建立在观察证据之上' },
+      { text: '✅ 这个方案完美体现了现代智库的核心理念——不是寻找"正确"的预言，而是建立多视角论证机制。奥巴马政府企业海外税决策的逆转，正是因为有施密特、钱伯斯等产业专家提供了"这会让美企失去全球竞争力"的独立分析。让每个人从"会怎么失败"的角度思考，本质上是在运用苏格兰经验主义的方法——基于实际经验推演可能性，而非凭空构建完美蓝图。', mks: '智库机制 + 苏格兰经验主义 + 充分性推理原则' }
+    ],
+    [
+      { text: '⚠️ 这是典型的"为未来做准备"的教育观，杜威早在100年前就批判过。成长是连续的，不是"忍过这几年就好了"。更严重的是，这种思维忽略了孩子的精神健康——萨古鲁的印度生命理论告诉我们，人的五个层面(肉身/精神身/能量身/以太体/喜乐体)必须保持平衡。精神身的过度消耗会破坏整个生命系统的健康。"活着好累"不是撒娇，是系统过载的警报。', mks: '杜威"教育即成长" + 萨古鲁五层面平衡 + 文明素养(弱势关怀)' },
+      { text: '⚠️ 从"过度压迫"直接跳到"完全放手"是另一个极端。斯宾塞的知识价值分层告诉我们，需要区分"保暖型知识"(核心学业)和"炫耀型知识"(过量补习)。关键不是所有或全无，而是优先级排序——确保核心学科扎实的前提下，给孩子留出自主探索的空间。明治维新的启示——改习惯(学习方式)而非全盘否定既有学习成果。', mks: '斯宾塞知识价值分层 + 明治维新(改习惯而非全盘否定)' },
+      { text: '✅ 完美结合了多个MKS框架！首先，倾听孩子(尊重个体的文明素养)；其次，保留核心+开放选择(斯宾塞保暖型vs炫耀型知识的分层)；第三，让孩子参与决策(培养自主性，呼应杜威"教育是持续生长的过程"）；第四，每月复盘(苏格兰经验主义的"从经验中调整规则")。最重要的是——你把孩子当作一个完整的"人"在对待，而非一台需要最大化工分数的机器。', mks: '六维框架(尊重) + 斯宾塞知识分层 + 杜威教育即成长 + 苏格兰经验主义' }
+    ]
+  ];
+
+  var fb = feedbacks[ri][oi];
+  var dfb = document.getElementById('dfb-' + ri);
+  dfb.innerHTML = '<p>' + fb.text + '</p><p style="margin-top:8px;font-weight:700;color:var(--accent);">MKS分析: ' + fb.mks + '</p>';
+  dfb.className = 'decision-feedback show';
+
+  var opts = el.parentElement.querySelectorAll('.decision-opt');
+  opts.forEach(function(o) { o.style.pointerEvents = 'none'; });
+  el.classList.add('chosen');
+}
+
+// ===== Tab click events =====
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var idx = parseInt(this.getAttribute('data-tab'));
+    switchTab(idx);
+  });
+});
+
+// ===== Boot =====
+init();
+</script>
+</body>
+</html>
