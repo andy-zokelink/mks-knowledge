@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思维方法论 — 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent2: #d4a574;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+
+/* Container */
+.container { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+
+/* Tab bar */
+.tab-bar {
+  position: sticky; top: 52px; z-index: 99;
+  background: var(--card); border-bottom: 2px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 2px; padding: 0 8px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.tab-bar button {
+  flex-shrink: 0; padding: 8px 12px; border: none; background: none;
+  cursor: pointer; font-size: clamp(11px, 1.8vw, 13px); color: var(--text-light);
+  font-family: inherit; border-bottom: 3px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+}
+.tab-bar button:hover { color: var(--accent); }
+.tab-bar button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* Tab content */
+.tab-content { display: none; padding-top: 20px; animation: fadeIn 0.35s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Cards */
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.card h2 { color: var(--accent); font-size: 18px; margin-bottom: 12px; }
+.card h3 { color: #5a3e3e; font-size: 15px; margin: 10px 0 6px; }
+
+/* Grid */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+
+/* Concept card */
+.concept-card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px; border-left: 4px solid var(--accent2);
+  cursor: pointer; transition: transform 0.2s;
+}
+.concept-card:hover { transform: translateY(-2px); }
+.concept-card.star { border-left-color: var(--accent); }
+.concept-card .num {
+  display: inline-block; width: 26px; height: 26px; line-height: 26px;
+  text-align: center; background: var(--accent2); color: #fff;
+  border-radius: 50%; font-size: 13px; margin-right: 6px;
+}
+.concept-card.star .num { background: var(--accent); }
+.concept-card .star-badge {
+  display: inline-block; background: var(--accent); color: #fff;
+  font-size: 11px; padding: 1px 6px; border-radius: 8px; margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* Progress bar */
+.progress-wrap { margin: 10px 0; }
+.progress-wrap .label { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+.progress-bar {
+  height: 10px; background: var(--border); border-radius: 5px; overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent));
+  border-radius: 5px; transition: width 0.5s ease;
+}
+
+/* SVG container */
+.svg-wrap { overflow-x: auto; margin: 10px 0; }
+.svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
+
+/* Flip card */
+.flip-container { perspective: 1000px; width: 100%; max-width: 480px; margin: 0 auto; }
+.flipper {
+  position: relative; width: 100%; min-height: 280px;
+  transition: transform 0.6s; transform-style: preserve-3d;
+}
+.flipper.flipped { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute; width: 100%; backface-visibility: hidden;
+  border-radius: var(--radius); padding: 24px;
+  background: var(--card); box-shadow: var(--shadow);
+  border: 1px solid var(--border); min-height: 280px;
+}
+.flip-back { transform: rotateY(180deg); }
+.flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
+.flip-btn {
+  background: var(--accent); color: #fff;
+}
+.flip-btn:hover { background: #a93226; }
+.flip-nav button {
+  padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
+  color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
+  font-family: inherit; transition: all 0.2s;
+}
+.flip-nav button:hover { background: var(--accent); color: #fff; }
+.flip-nav .learned-btn { background: #27ae60; color: #fff; border-color: #27ae60; }
+.flip-nav .learned-btn.learned { background: #fff; color: #27ae60; }
+
+/* Question styling */
+.quiz-question { margin-bottom: 20px; }
+.quiz-question .q-text { font-weight: 600; margin-bottom: 10px; }
+.quiz-question .option {
+  padding: 8px 14px; margin: 4px 0; border-radius: 6px;
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+  background: var(--card);
+}
+.quiz-question .option:hover { border-color: var(--accent2); background: #fef9f4; }
+.quiz-question .option.selected { border-color: var(--accent); background: #fef5f0; }
+.quiz-question .option.correct { border-color: #27ae60; background: #eafaf1; }
+.quiz-question .option.wrong { border-color: #e74c3c; background: #fdedec; }
+
+/* Timer */
+.timer {
+  font-size: 24px; font-weight: 700; color: var(--accent);
+  text-align: center; padding: 8px;
+}
+.timer.warning { animation: pulse 0.5s infinite alternate; }
+@keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
+
+/* Tree */
+.tree { font-size: 14px; }
+.tree ul { list-style: none; padding-left: 20px; }
+.tree li { position: relative; padding: 4px 0; }
+.tree .node { cursor: pointer; font-weight: 600; color: var(--accent); }
+.tree .node::before { content: "▸ "; font-size: 10px; }
+.tree .node.open::before { content: "▾ "; }
+.tree .children { display: none; }
+.tree .children.open { display: block; }
+
+/* Socratic */
+.socratic-q { margin-bottom: 12px; }
+.socratic-q .question {
+  padding: 10px 14px; background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: pointer; font-weight: 600;
+  transition: background 0.2s;
+}
+.socratic-q .question:hover { background: #fef9f4; }
+.socratic-q .answer { display: none; padding: 10px 14px; color: var(--text-light); }
+.socratic-q .answer.open { display: block; }
+
+/* Decision */
+.decision-option {
+  padding: 12px 16px; margin: 6px 0; border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+}
+.decision-option:hover { border-color: var(--accent2); }
+.decision-feedback { display: none; padding: 14px; margin-top: 8px; background: #fef9f4; border-radius: var(--radius); }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--accent); font-weight: 600; }
+
+/* Buttons */
+.btn {
+  display: inline-block; padding: 10px 20px; border-radius: 22px;
+  border: none; cursor: pointer; font-family: inherit; font-size: 14px;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+
+/* Stats */
+.stat-box {
+  display: inline-block; padding: 14px 20px; background: var(--card);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  text-align: center; margin: 6px; min-width: 100px;
+}
+.stat-box .num { font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-box .lbl { font-size: 12px; color: var(--text-light); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container { padding: 0 8px 40px; }
+  .card { padding: 14px; }
+  .tab-bar button { padding: 6px 8px; font-size: 11px; }
+  .flip-front, .flip-back { padding: 16px; min-height: 320px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>思维方法论 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="active" data-tab="0">知识集总览</button>
+  <button data-tab="1">知识卡片</button>
+  <button data-tab="2">题库系统</button>
+  <button data-tab="3">考试模式</button>
+  <button data-tab="4">复习模式</button>
+  <button data-tab="5">思维导图</button>
+  <button data-tab="6">深度追问</button>
+  <button data-tab="7">案例分析</button>
+  <button data-tab="8">实战决策</button>
+</div>
+
+<div class="container" id="tabContents">
+
+<!-- ==================== TAB 0: 知识集总览 ==================== -->
+<div class="tab-content active" data-tab="0">
+
+<div class="card">
+  <h2>核心目标</h2>
+  <p style="font-size:16px;">掌握<strong>证伪思维、逻辑判断、成本思维、减法思维、常识判断</strong>等十种核心思维方法，构建「看问题方法 × 做事方法 → 认知操作系统 → 命运」的思维框架。</p>
+</div>
+
+<div class="card">
+  <h2>10个核心概念</h2>
+  <div class="grid3" id="conceptGrid"></div>
+</div>
+
+<div class="card">
+  <h2>★ 最小知识集（骨架中的骨架）</h2>
+  <div class="grid2" id="mksGrid"></div>
+</div>
+
+<div class="card">
+  <h2>学习进度</h2>
+  <div class="progress-wrap">
+    <div class="label">概念卡片学习：<span id="cardProgress">0/10</span></div>
+    <div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
+  </div>
+  <div class="progress-wrap">
+    <div class="label">题库完成：<span id="quizProgress">0/30</span></div>
+    <div class="progress-bar"><div class="fill" id="quizBar" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>概念关系图</h2>
+  <div class="svg-wrap" id="svgContainer"></div>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;">
+    <span style="color:#2980b9;">━━ 看问题方法</span> &nbsp;
+    <span style="color:#e67e22;">━━ 做事方法</span> &nbsp;
+    <span style="color:#8e44ad;">━━ 认知操作系统</span> &nbsp;
+    <span style="color:#c0392b;">━━ 命运</span>
+  </p>
+</div>
+
+<div class="card">
+  <h2>边界知识表（15条）</h2>
+  <div style="overflow-x:auto;">
+  <table id="boundaryTable"></table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>学习路径（5阶段）</h2>
+  <div id="learningPath"></div>
+</div>
+</div>
+
+<!-- ==================== TAB 1: 知识卡片 ==================== -->
+<div class="tab-content" data-tab="1">
+<div class="card">
+  <h2 style="text-align:center;">翻转知识卡片</h2>
+  <p style="text-align:center;color:var(--text-light);">点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度</p>
+</div>
+<div class="flip-container" id="flipContainer">
+  <div class="flipper" id="flipper" onclick="flipCard()">
+    <div class="flip-front" id="flipFront"></div>
+    <div class="flip-back" id="flipBack"></div>
+  </div>
+</div>
+<div class="flip-nav">
+  <button onclick="prevCard()">◀ 上一个</button>
+  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
+  <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">✓ 标记已学习</button>
+  <button onclick="nextCard()">下一个 ▶</button>
+</div>
+<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span> &nbsp; </p>
+</div>
+
+<!-- ==================== TAB 2: 题库系统 ==================== -->
+<div class="tab-content" data-tab="2">
+<div class="card">
+  <h2>选择题（20道）</h2>
+  <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。</p>
+  <div id="mcqContainer"></div>
+  <button class="btn btn-primary" onclick="resetMCQ()">重做选择题</button>
+</div>
+<div class="card">
+  <h2>简答题（10道）</h2>
+  <p style="color:var(--text-light);font-size:13px;">输入你的回答后点击"查看参考答案"对比。</p>
+  <div id="saqContainer"></div>
+  <button class="btn btn-primary" onclick="resetSAQ()">重做简答题</button>
+</div>
+</div>
+
+<!-- ==================== TAB 3: 考试模式 ==================== -->
+<div class="tab-content" data-tab="3">
+<div class="card" id="examSetup">
+  <h2>模拟考试</h2>
+  <p>从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+  <button class="btn btn-primary" onclick="startExam()">开始考试</button>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;">提交后显示分数、错题解析、薄弱概念</p>
+</div>
+<div class="card" id="examArea" style="display:none;">
+  <div class="timer" id="examTimer">15:00</div>
+  <div id="examContent"></div>
+  <button class="btn btn-primary" onclick="submitExam()" style="margin-top:12px;">提交答卷</button>
+</div>
+<div class="card" id="examResult" style="display:none;"></div>
+</div>
+
+<!-- ==================== TAB 4: 复习模式 ==================== -->
+<div class="tab-content" data-tab="4">
+<div class="card">
+  <h2>学习统计</h2>
+  <div id="statsArea"></div>
+</div>
+<div class="card">
+  <h2>错题本</h2>
+  <div id="errorBook"></div>
+</div>
+<div class="card">
+  <h2>概念薄弱点分析</h2>
+  <div id="weakPoints"></div>
+</div>
+</div>
+
+<!-- ==================== TAB 5: 思维导图 ==================== -->
+<div class="tab-content" data-tab="5">
+<div class="card">
+  <h2>思维方法论 · 思维导图</h2>
+  <p style="color:var(--text-light);font-size:13px;">可折叠/展开的层级树形结构。点击节点展开子级。</p>
+  <div class="tree" id="mindTree"></div>
+</div>
+</div>
+
+<!-- ==================== TAB 6: 深度追问 ==================== -->
+<div class="tab-content" data-tab="6">
+<div class="card">
+  <h2>苏格拉底式追问</h2>
+  <p style="color:var(--text-light);font-size:13px;">对每个核心概念逐层追问，点击问题展开答案。</p>
+  <div id="socraticArea"></div>
+</div>
+</div>
+
+<!-- ==================== TAB 7: 案例分析 ==================== -->
+<div class="tab-content" data-tab="7">
+<div class="card">
+  <h2>案例：纽约犯罪率下降原因分析</h2>
+  <p style="color:var(--text-light);font-size:13px;">用MKS四维框架（证伪思维/逻辑判断/成本思维/常识判断）拆解真实案例。</p>
+  <div id="caseStudy"></div>
+</div>
+</div>
+
+<!-- ==================== TAB 8: 实战决策 ==================== -->
+<div class="tab-content" data-tab="8">
+<div class="card">
+  <h2>思维方法论决策模拟（3轮）</h2>
+  <p style="color:var(--text-light);font-size:13px;">每轮面临一个真实决策场景，选择后显示MKS分析反馈。</p>
+  <div id="decisionGame"></div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ======== DATA ========
+
+const concepts = [
+  { id: 0, name: "证伪思维", star: true, short: "科学理论必须可被证明错误，区分科学与伪科学的根本标准",
+    def: "科学理论必须可被证明错误。不可证伪的命题（如算命、占星）不是科学，而是伪科学。这是区分科学与非科学的根本标准，由卡尔·波普尔提出。",
+    analogy: "就像法庭上的「无罪推定」——控方必须提供可被反驳的证据，而不是让被告自证清白。科学也需要随时准备接受「反证」。",
+    example: "爱因斯坦的广义相对论预言光线会在引力场中弯曲——这是一个可证伪的预测。1919年日食观测证实了它。如果观测结果不符，理论就会被推翻。",
+    counter: "「明天可能下雨也可能不下」——这个陈述永远正确，但毫无信息量，因为它不可证伪。算命先生说「你近期会有贵人相助」同样无法被证明错误。" },
+  { id: 1, name: "逻辑判断", star: true, short: "运用逻辑推理筛选信息，识别论证中的矛盾和谬误",
+    def: "运用逻辑推理筛选信息，识别论证中的矛盾、谬误和不合理假设。在信息过载时代，这是最稀缺的过滤能力——判断对错的难度远低于解决问题本身。",
+    analogy: "像一个思维「筛子」——把信息放进去，筛掉那些逻辑不自洽的，留下经得起推敲的。好的论证像精密的瑞士手表，每个齿轮都咬合紧密。",
+    example: "面对「罗斯柴尔德家族财富以6%年增长率持续200年已达几十万亿美元」的说法，吴军用逻辑反驳：如果陶朱公1两银子以6%增长2500年，财富将达10^63两，远超宇宙原子总数，由此揭露指数增长在现实中的荒谬性。",
+    counter: "「英国靠老处女称霸世界」——猫多→老鼠少→蜜蜂多→苜蓿多→牛多→牛肉多→水手强→海军强→称霸。每步仅有微弱相关性，经多轮传递后关联近乎为零，是典型过度解读。" },
+  { id: 2, name: "成本思维", star: false, short: "通过分析背后的投入-产出逻辑判断动机合理性",
+    def: "通过分析行为背后的投入-产出逻辑，判断动机的合理性。理解「没有免费的午餐」，透过表面看本质。",
+    analogy: "如同一副「商业透视镜」——戴上它，你看到的不再是销售人员热情的笑脸，而是他投入的时间成本和获客成本，以及这些成本最终由谁买单。",
+    example: "老年人购买保健品：销售人员投入大量时间陪伴老人（时间成本），失败推销的成本需分摊到成交客户身上（获客成本），而保健品公司「出事即跑路」（犯错成本极低）。三方面揭示「关心」背后的逐利本质。",
+    counter: "明星媒体人创业失败——原以为名气=能力，但忽略了原单位平台提供的背书价值。一旦脱离平台，维持名气的成本剧增而收益锐减。" },
+  { id: 3, name: "跨界思维", star: false, short: "跨领域融合产生创新，前提是原领域具备扎实基础",
+    def: "跨领域融合产生创新，打破单一思维定式。真正的跨界是结果而非目的，需要扎实的原领域基础。",
+    analogy: "如同生物界的「杂交优势」——两种不同基因的植物杂交，往往产生更优秀的后代。但前提是每一方的基因都足够优秀和稳定。",
+    example: "贾里尼克（通信领域专家）将人工智能视为通信/数据问题而非模仿人类智能，突破传统计算机科学家的思维定式。特斯拉将IT领域的锂电池技术引入汽车行业，解决传统车企铅酸电池续航难题。",
+    counter: "跨界不是「浅尝辄止」。爱因斯坦的小提琴仅为爱好（水平不高），不是真正的跨界。真正的跨界如冯·诺依曼——在数学、计算机、物理、博弈论等多个领域都有深刻建树。" },
+  { id: 4, name: "减法思维", star: true, short: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标",
+    def: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标。庄子「吾生也有涯，而知也无涯」——以有限追无限，必败。",
+    analogy: "就像整理一个塞满杂物的房间——不是往里添置新柜子，而是果断扔掉不需要的东西。腾出的空间才是真正的收获。",
+    example: "吴军2014年底从Google辞职：常规思维是高薪工作应优先保障，但他以「时间价值最大化」为标准，发现占用最多时间的高薪工作恰恰是需要舍弃的对象。硅谷一家视频识别公司从长长的任务清单减到仅保留1件核心事，最终被亚马逊高价收购。",
+    counter: "同时做很多事的「低水平忙碌」——两倍时间仅获两倍收益。而集中时间做好一件事，两倍时间可获10倍收益。捡芝麻的人永远没有时间捡西瓜。" },
+  { id: 5, name: "常识判断", star: true, short: "常识优于复杂模型，简单规律胜过新奇解释",
+    def: "常识优于复杂模型，简单规律胜过新奇解释。经过长期证伪筛选的常识，往往比「专家」的复杂理论更可靠。",
+    analogy: "就像天气预报——老祖宗看云识天气的经验（「朝霞不出门，晚霞行千里」）有时比复杂的数值预报模型还准。常识是千百年经验浓缩的智慧。",
+    example: "巴菲特不看《华尔街日报》、不信股评、不画K线。他通过逛百货店观察商品受欢迎程度、看店铺顾客数量来判断投资标的。2008年通过比较苹果店与微软店的顾客流量，准确预测苹果市值将超越微软。",
+    counter: "过度解读的「新奇解释」——如将温州个别老板跑路推导为中国经济寒冬，忽视数十万家企业中个别案例不具统计意义。常识告诉我们：个别企业破产是行业整合常态。" },
+  { id: 6, name: "专业素养", star: false, short: "稳定性 + 流程化 + 体系知识 + 持续学习",
+    def: "稳定性 + 流程化 + 体系知识 + 持续学习。职业选手与业余选手的本质区别不在于偶尔的超常发挥，而在于持续稳定的高水平输出。",
+    analogy: "就像一个顶级钢琴家演奏简单的《小奏鸣曲》——看似平凡的曲目，却能弹出丰富的层次感和情感张力。真正的专业是在简单事物上展现极致水准。",
+    example: "吴军与职业高尔夫教练杰夫同场竞技：杰夫9洞成绩-3杆（持续稳定），而吴军+9杆（好球与坏球交替）。职业选手的稳定发挥来自于严格遵循流程、情绪控制和系统的做事方法。",
+    counter: "业余爱好者可能偶尔打出「神仙球」，但无法复制。就像「民间科学家」可能碰巧说对一件事，但缺乏系统方法和可重复性，无法稳定输出。" },
+  { id: 7, name: "渐进改良", star: false, short: "「最好是更好的敌人」——迭代优于一步到位",
+    def: "「最好是更好的敌人」——过度追求完美可能导致一事无成，接受阶段性改进反而更有效。迭代优于一步到位。",
+    analogy: "就像手机系统更新——不是等一个「完美版本」再发布，而是每周/每月推送小更新，不断修复bug、增加功能。多次「更好」的累积最终超越一次「最好」。",
+    example: "美国禁枪法案：民主党追求全面禁枪（「最好」），共和党只同意背景调查（「更好」），双方互不让步导致法案均未通过，禁枪改革完全失败。如果接受部分改进（如对不良记录者禁枪），至少能实现有限成果。",
+    counter: "特斯拉电动车：存在做工粗糙、系统死机等问题，但通过持续迭代5年间品质提升速度远超传统车企。若追求初始完美，可能「十几年造不出车」。" },
+  { id: 8, name: "期望值最大化", star: false, short: "通过定义收益函数驱动系统自动优化",
+    def: "通过定义合理的收益函数驱动系统自动优化。在组织管理中，设定正确的激励机制比「教育员工」更有效。",
+    analogy: "就像设计一个自动导航系统——你不需要手动控制每一个操作，只需设定好目的地（收益函数），导航系统会自动计算出最优路径并不断调整方向。",
+    example: "高考政策：若体育成绩占高考50%，家长就会自动让孩子参加体育锻炼，学校会加大体育投入。Google将专利奖励提高后专利数量跃居全球前十。IBM将专利申请与绩效挂钩，成为美国专利冠军。",
+    counter: "只讲价值观不设计激励——很多公司天天开会「教育员工」要创新、要合作，但考核体系却只奖励短期业绩。员工行为会向收益函数方向优化，而非口头说教的方向。" },
+  { id: 9, name: "一万小时定律", star: false, short: "技能精进需要有效积累，避免四大误区",
+    def: "技能精进需要有效积累而非简单重复。避免四大误区：简单重复、习惯性失败、林黛玉式困境（自我封闭）、狗熊掰棒子（无积累）。",
+    analogy: "就像运动员训练——不是每天跑同样的距离就叫训练，而是要有针对性地突破自己的极限。有效的一万小时像是雕刻家反复雕琢，无效的一万小时像是水流反复冲刷同一块石头。",
+    example: "吴军提出「三板斧」破解四大困境：第一板斧「愿景-目标-道路」避免简单重复；第二板斧「从不同意见中找合理之处」打破习惯性失败和林黛玉式困境；第三板斧「凡事做记录」解决狗熊掰棒子问题。",
+    counter: "伪工作者：每天加班到很晚，但做的都是简单重复的「伪工作」，遇到困难不学习不请教，十年经验相当于一年经验重复了十次。" }
+];
+
+// MKS deep dive (4 star items)
+const mksDeep = [
+  { concept: concepts[0], why: "证伪思维是区分科学与伪科学的根本标准。不懂这一点，就无法识别信息海洋中哪些是可靠的、哪些是伪科学包装的「真相」。这是批判性思考的起点——没有它，所有其他思维工具都建立在不可靠的基础上。",
+    apply: "面对任何声称「科学」的理论或产品时，问「它在什么条件下会被证明是错的？」如果找不到答案，那它就不是科学。" },
+  { concept: concepts[1], why: "逻辑判断是信息时代最稀缺的能力。面对每天海量信息，如果没有逻辑筛选能力，就会被各种精心包装的谬误牵着走。逻辑提供了一个「最低成本」的过滤器——不需要你是每个领域的专家，只需要你能识别论证中的矛盾。",
+    apply: "遇到令人信服的论述时，先不急着相信，而是检查：前提成立吗？推理链条有跳跃吗？有没有替代解释？" },
+  { concept: concepts[4], why: "减法思维解决的是「有限生命如何分配」的根本问题。庄子说「吾生也有涯，而知也无涯」——如果不懂取舍，注定失败的。减法不是消极放弃，而是主动选择：把有限的时间花在真正重要的事情上。",
+    apply: "梳理当前所有占用时间的事项，对每一项问：「不做这件事是否影响核心目标？」砍掉那些答案是否定的事项。" },
+  { concept: concepts[5], why: "常识判断是最被低估的思维工具。复杂模型看起来很高级，但前提假设一旦不成立就完全错误。而常识经千百年证伪筛选，适用面广、稳定性高。巴菲特的成功证明：简单有效的判断比华而不实的理论更可靠。",
+    apply: "面对复杂分析时，先用常识检验：这个结论符合基本逻辑吗？如果太「新奇」以至于违背常识，需要特别强的证据才能接受。" }
+];
+
+const boundaryKnowledge = [
+  { name: "卡尔·波普尔与证伪主义", scene: "理解科学哲学基础，区分科学与伪科学。可用于评估任何声称「科学」的理论。" },
+  { name: "奥卡姆剃刀原则", scene: "如无必要，勿增实体。在判断多种解释时，最简单的往往最可靠——与常识判断呼应。" },
+  { name: "汉隆剃刀", scene: "能用愚蠢解释的，不要用恶意解释。用于人际关系判断，避免过度归因于他人恶意。" },
+  { name: "帕累托法则（二八定律）", scene: "80%的成果来自20%的努力。用于优先级排序，是减法思维的数据支撑。" },
+  { name: "邓巴数（150定律）", scene: "人类有效社交上限约150人。用于理解组织管理、社交关系维护中的减法必要性。" },
+  { name: "复利思维", scene: "长期稳定增长的力量。用于投资、学习、健康——与渐进改良、一万小时精神相通。" },
+  { name: "沉默螺旋理论", scene: "强势观点会压制不同声音，导致「假共识」。用于信息甄别——看到的「主流」未必是真实多数。" },
+  { name: "幸存者偏差", scene: "只看到成功者，忽视失败者。用于评估成功学、投资建议——那些失败的案例才是关键。" },
+  { name: "破窗效应", scene: "小混乱会引发大混乱。用于理解朱利安尼治理纽约的逻辑，以及日常环境管理。" },
+  { name: "路径依赖理论", scene: "初始选择会「锁定」后续发展路径。用于理解为什么早期决策（如公司收益函数、个人习惯）如此重要。" },
+  { name: "庞氏骗局的特征识别", scene: "依赖新资金覆盖旧承诺，不可持续。用于识别金融骗局——与逻辑判断结合使用。" },
+  { name: "信息论——香农熵", scene: "信息量的度量。用于理解为什么公开的「技术指标」无效（信息已被市场消化）。" },
+  { name: "马斯洛需求层次", scene: "从生理到自我实现的需求分层。用于理解行为动机——销售人员为何能突破理性防线（情感需求）。" },
+  { name: "囚徒困境与博弈论", scene: "个体理性导致集体非理性。用于理解合作难题、制度设计（设置收益函数破解困境）。" },
+  { name: "牛顿冷却定律（社会传播）", scene: "热点话题热度随时间自然衰减。用于判断舆论走向，避免追涨杀跌式决策。" }
+];
+
+const learningStages = [
+  { stage: "第一阶段：奠定基石", content: "学习「证伪思维」和「逻辑判断」两个概念。前者教你区分科学与伪科学，建立批判性思考的基础；后者教你用推理筛除信息噪音。两者共同构成「看问题的方法」的底层操作系统。" },
+  { stage: "第二阶段：掌握分析工具", content: "深入学习「成本思维」和「常识判断」。成本思维让你透过现象看本质，识别行为背后的真实动机；常识判断让你在复杂信息面前保持清醒，不被花哨理论迷惑。这两者都是「看问题方法」的高级应用。" },
+  { stage: "第三阶段：从看到做", content: "学习「减法思维」和「专业素养」。减法思维教你聚焦——在有限的生命中做出取舍，做少而精的事；专业素养教你如何稳定、系统地输出高水平成果。两者结合，进入「做事方法」的正轨。" },
+  { stage: "第四阶段：突破进阶", content: "学习「渐进改良」和「跨界思维」。渐进改良教你不要被「完美主义」困住——迭代优于一步到位；跨界思维教你打破领域边界，在交叉地带创造新价值。这一阶段从「做好」迈向「突破」。掌握「期望值最大化」和「一万小时定律」——用系统规则驱动优化，用有效积累实现精进。" },
+  { stage: "第五阶段：实战与应用", content: "通过「深度追问」检验理解深度，用「案例分析」做MKS四维拆解，在「实战决策」中模拟真实场景——完成从知识到能力的转化。" }
+];
+
+// ======== MCQ (20 questions) ========
+const mcQuestions = [
+  {
+    q: "关于「证伪思维」，以下哪项理解是正确的？",
+    opts: ["科学理论必须可被证明错误", "科学理论必须被证明正确才能成立", "不可证伪的陈述也可能是科学理论", "证伪与证实是同一回事"],
+    "answer": 0,
+    concept: "证伪思维"
+  },
+  {
+    q: "减法思维的核心哲学依据来自哪里？",
+    opts: ["庄子的「吾生也有涯，而知也无涯」", "孔子的「学而不思则罔」", "老子的「道可道非常道」", "孟子的「鱼与熊掌不可兼得」"],
+    "answer": 0,
+    concept: "减法思维"
+  },
+  {
+    q: "为什么「最好的医生不一定是救人最多的医生」？",
+    opts: ["名医与普通好医生的差距在于治疗效果的稳定性和可预期性", "名医运气更好", "普通医生更努力", "名医只治疗简单的病"],
+    "answer": 0,
+    concept: "专业素养"
+  },
+  {
+    q: "「以正合，以奇胜」中「奇」字的正确读法和含义是什么？",
+    opts: ["读jī，意为「多余的」、补充手段", "读qí，意为出乎意料的策略", "读qí，意为奇怪的战术", "读jī，意为奇袭和偷袭"],
+    "answer": 0,
+    concept: "专业素养"
+  },
+  {
+    q: "富兰克林的成功五要素中，最核心的一条是什么？",
+    opts: ["掌握稀缺技能", "不断跳槽寻找更好机会", "不争功，敢于肯定他人贡献", "多读书"],
+    "answer": 0,
+    concept: "专业素养"
+  },
+  {
+    q: "「英国靠老处女称霸世界」这个推导最典型的逻辑谬误是什么？",
+    opts: ["循环论证", "过度解读与牵强因果", "以偏概全", "偷换概念"],
+    "answer": 1,
+    concept: "逻辑判断"
+  },
+  {
+    q: "巴菲特最推崇的投资智慧是什么？",
+    opts: ["精通K线技术分析", "依靠常识判断", "掌握复杂的数学模型", "听从经济学家建议"],
+    "answer": 1,
+    concept: "常识判断"
+  },
+  {
+    q: "渐进改良的核心思想「最好是更好的敌人」在禁枪法案中如何体现？",
+    opts: ["禁枪法案本就不该提出", "双方互不让步导致任何法案都未通过，禁枪改革完全失败", "共和党的方案更好", "民主党的方案最好"],
+    "answer": 1,
+    concept: "渐进改良"
+  },
+  {
+    q: "期望值最大化原理在组织管理中最重要的启示是什么？",
+    opts: ["管理者应多开会对员工进行教育", "设计科学的收益函数（激励机制），系统会自动优化", "给员工更高的薪水", "让员工自主决定工作内容"],
+    "answer": 1,
+    concept: "期望值最大化"
+  },
+  {
+    q: "托勒密的地心说虽然被推翻，但它仍然被认为是科学典范，为什么？",
+    opts: ["因为它被使用了很长时间", "因为它具有可证伪性，且在当时具备数学正确性和预测精度", "因为它是教会的官方理论", "因为它很简单"],
+    "answer": 1,
+    concept: "证伪思维"
+  },
+  {
+    q: "为什么保健品销售人员的「关心」需要用成本思维来审视？",
+    opts: ["因为他们不专业", "因为他们卖的产品太贵", "因为他们投入大量时间陪伴老人，这些成本最终由消费者承担", "因为他们不了解老人的真实需求"],
+    "answer": 2,
+    concept: "成本思维"
+  },
+  {
+    q: "职业选手与业余选手最本质的区别是什么？",
+    opts: ["职业选手更有天赋", "职业选手训练时间更长", "稳定性——持续稳定地高水平发挥", "职业选手更年轻"],
+    "answer": 2,
+    concept: "专业素养"
+  },
+  {
+    q: "一万小时定律的「三板斧」中，哪一板斧专门解决「狗熊掰棒子」问题？",
+    opts: ["愿景-目标-道路规划", "从不同意见中找合理性", "凡事做记录", "专注一个领域不跨界"],
+    "answer": 2,
+    concept: "一万小时定律"
+  },
+  {
+    q: "以下哪个陈述符合「可证伪性」标准？",
+    opts: ["上帝是全能的", "明天要么下雨要么不下雨", "广义相对论预言光线在引力场中弯曲", "心诚则灵"],
+    "answer": 2,
+    concept: "证伪思维"
+  },
+  {
+    q: "「不选择反而获得幸福」这一研究结论背后的核心机制是什么？",
+    opts: ["选择越多人越懒", "不选择是因为没有能力", "选择少时人们更注重经营现有的关系和工作", "选择多会导致破产"],
+    "answer": 2,
+    concept: "减法思维"
+  },
+  {
+    q: "真正有效的跨界需要什么先决条件？",
+    opts: ["有多个领域的兴趣", "认识很多不同领域的人", "有跨学科的学位", "在原领域具备扎实的专业素养和成功基础"],
+    "answer": 3,
+    concept: "跨界思维"
+  },
+  {
+    q: "吴军用「陶朱公1两银子增长2500年」的类比是为了反驳什么？",
+    opts: ["通货膨胀理论", "中国历史上的财富积累", "银子的购买力变化", "罗斯柴尔德家族财富持续指数增长的说法"],
+    "answer": 3,
+    concept: "逻辑判断"
+  },
+  {
+    q: "第欧根尼的极简生活哲学对现代人的核心启示是什么？",
+    opts: ["所有人都应该住木桶", "拒绝所有社交活动", "不要工作只追求享乐", "减少对物质的过度关注以提升精神自由"],
+    "answer": 3,
+    concept: "减法思维"
+  },
+  {
+    q: "莱特兄弟成功发明飞机的关键方法论是什么？",
+    opts: ["运气特别好", "资金非常充足", "政府的支持", "充分准备、理论指导、科学方法（风洞试验）"],
+    "answer": 3,
+    concept: "渐进改良"
+  },
+  {
+    q: "为什么「给员工少一点选择」反而能提升管理效率？",
+    opts: ["员工不喜欢选择", "这样做可以节省公司成本", "员工会感恩公司", "选择越少，员工越专注于手头工作，满意度反而更高"],
+    "answer": 3,
+    concept: "减法思维"
+  }
+];
+
+// Short answer questions (10)
+const saQuestions = [
+  { q: "请简述证伪思维的核心要义，并举例说明一个不可证伪的命题。", ref: "证伪思维（Falsifiability）由卡尔·波普尔提出，核心要义是：科学理论必须可被证明错误。一个理论只有具备被事实证明为错误的可能性，才是科学的。不可证伪的命题包括：算命先生的模糊预言（「你近期会有贵人相助」）、永真命题（「明天要么下雨要么不下雨」）、诉诸神秘（「心诚则灵」等）。证伪思维是区分科学与伪科学的根本标准。" },
+  { q: "请用成本思维分析：为什么保健品销售人员对老人特别「关心」？", ref: "成本思维三分析：1）时间成本——销售人员投入大量时间陪伴老人（聊天、上门、送礼），这些时间成本最终需从老人消费中覆盖；2）获客成本——多数被推销者不会购买，失败推销的成本需分摊到成交客户身上，推高产品实际价格；3）犯错成本——医院受医德、晋升、医闹约束犯错成本高，而保健品公司「出事即跑路」责任风险极低。三方面揭示「关心」本质是商业驱动的逐利行为，而非真正关爱。" },
+  { q: "什么是「林黛玉式困境」？在一万小时训练中应如何避免？", ref: "林黛玉式困境比喻一个人的知识内涵越丰富，外延就越窄，最后无法与其他领域交流。在一万小时训练中，需用「第二板斧」破解：从不同意见中找合理之处。具体做法：1）换位思考理解对方立场；2）假设「我错了」重新审视；3）即使对方观点错误也要分析其行为合理性。开放心态吸收外部反馈，避免自我封闭。" },
+  { q: "请解释「最好是更好的敌人」的含义，并举一个现实案例。", ref: "「最好是更好的敌人」（The Best Is the Enemy of the Better）是保守主义核心格言，意思是过度追求「最好」的完美方案，可能导致连「更好」的改进都无法实现，最终一事无成。现实案例——美国禁枪法案：民主党追求全面禁枪（「最好」方案），共和党只同意购前背景调查（「更好」方案），双方拒绝折中，结果两个法案均未通过。如果接受部分改进，至少能对不良记录者禁枪。" },
+  { q: "吴军如何运用逻辑判断反驳「罗斯柴尔德家族财富持续增长」的说法？", ref: "逻辑反驳步骤：1）提取核心假设——财富以每年6%速度持续递增一两百年；2）类比推导——以陶朱公为例，若1两银子以6%年增长率持续2500年，后代财富将达10^63两银子；3）量化对比——10^63两是全球总财富的10^49倍，是宇宙原子数量的10^6倍，明显违背现实；4）结论——无任何实体可实现长期指数增长，企业增长需依赖新旧更替。" },
+  { q: "请从跨界思维的角度分析：为什么IT背景的特斯拉能解决传统车企解决不了的问题？", ref: "传统车企长期专注于汽车工程领域，受限于铅酸电池技术的思维定式。特斯拉创始人将消费电子领域的锂电池技术跨界引入汽车行业。跨界创新的核心逻辑：1）打破思维定式——IT人看待汽车不是「机械产品」而是「带轮子的电脑」；2）引入外来技术——锂电池能量密度远超铅酸电池，解决续航难题；3）高势能向低势能跨越——IT行业的快速迭代思维应用到传统汽车业，实现比传统车企更快的改进速度。跨界的前提：在原领域已具备成功基础。" },
+  { q: "富兰克林通过什么系统方法培养13种美德？这种方法对我们有何启示？", ref: "富兰克林的方法论：1）细化美德——将13种美德每种仅含简单清晰的外延（如「节制：食不可饱，酒不过量」），便于自我检查；2）周期化训练——每周专注1种美德，13周为一周期，一年完成4个周期；3）自我监控——每日检查行为，未达标则标记黑点，睡前评分。启示：好品格的养成需要系统方法而非空谈；一次只专注一件事而非同时培养多种；持续记录和反馈是行为改变的关键。" },
+  { q: "请用减法思维分析吴军从Google辞职的决策逻辑。", ref: "吴军的决策逻辑突破了常规思维陷阱：1）常规思维——高薪工作应优先保障，其他事务用「业余时间」处理；2）逆向思考——若时间比金钱更重要，占用最多时间的高薪工作恰恰是需要「舍弃」的对象；3）核心标准——从「这件事是否该做」转为「不做这件事是否影响核心目标」。减法思维的本质不是消极放弃，而是主动聚焦。通过舍弃占用量大但边际价值低的事务，释放时间去做10倍收益的事。" },
+  { q: "什么是「期望值最大化原理」？它如何应用于企业管理？", ref: "期望值最大化原理是最优化理论中的核心方法：1）定义收益函数（或利润/成本函数）；2）每一时刻计算最大化收益的方向；3）沿该方向迭代优化，收敛至全局最优解。在企业管理中的应用：组织设定的激励机制就是「收益函数」，员工行为会自动向最大化该函数的方向调整。关键启示——与其开会「教育」员工，不如设计合理的考核制度。案例：IBM将专利申请与绩效挂钩成为专利冠军；Google提高专利奖励后专利数量跃居全球前十。" },
+  { q: "请用「看问题的方法」和「做事的方法」两个维度分析莱特兄弟成功发明飞机的原因。", ref: "莱特兄弟的成功体现了「看问题方法×做事方法」的完美结合。看问题方法：1）科学态度——系统学习凯利的空气动力学理论，而非凭经验摸索；2）逻辑判断——通过风洞试验修正李林塔尔的升力计算误差（多算60%）；3）证伪思维——用可重复试验验证每一个假设。做事方法：1）充分准备（减法思维）——宁可做700-1000次滑翔试验，不仓促试飞；2）专业素养——科学方法进行200多种翼形测试；3）渐进改良——从风筝→滑翔机→动力飞机，逐步迭代。两者结合，形成强大的「认知操作系统」，最终改变了人类交通史。" }
+];
+
+function renderSVG() {
+  // Concept map pre-rendered by Graphviz dot
+  // Generated at build time from concepts array data
+  const svg = `<svg width="1382pt" height="447pt"
+ viewBox="0.00 0.00 1382.00 446.95" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 442.95)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-442.95 1378,-442.95 1378,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#c0392b" stroke="black" stroke-width="2" cx="612.5" cy="-401.48" rx="152.06" ry="37.45"/>
+<text text-anchor="middle" x="612.5" y="-412.78" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">思维方法论</text>
+<text text-anchor="middle" x="612.5" y="-397.78" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">━━━━━━━━━━━</text>
+<text text-anchor="middle" x="612.5" y="-382.78" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">看问题 × 做事 = 认知操作系统</text>
+</g>
+<!-- see -->
+<g id="node2" class="node">
+<title>see</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M433.5,-328C433.5,-328 355.5,-328 355.5,-328 349.5,-328 343.5,-322 343.5,-316 343.5,-316 343.5,-304 343.5,-304 343.5,-298 349.5,-292 355.5,-292 355.5,-292 433.5,-292 433.5,-292 439.5,-292 445.5,-298 445.5,-304 445.5,-304 445.5,-316 445.5,-316 445.5,-322 439.5,-328 433.5,-328"/>
+<text text-anchor="middle" x="394.5" y="-306.3" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">看问题的方法</text>
+</g>
+<!-- root&#45;&gt;see -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;see</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M535.95,-369.06C506.01,-356.77 472.48,-343 445.58,-331.96"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="446.57,-328.59 435.99,-328.03 443.91,-335.06 446.57,-328.59"/>
+</g>
+<!-- do -->
+<g id="node3" class="node">
+<title>do</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M996.5,-328C996.5,-328 932.5,-328 932.5,-328 926.5,-328 920.5,-322 920.5,-316 920.5,-316 920.5,-304 920.5,-304 920.5,-298 926.5,-292 932.5,-292 932.5,-292 996.5,-292 996.5,-292 1002.5,-292 1008.5,-298 1008.5,-304 1008.5,-304 1008.5,-316 1008.5,-316 1008.5,-322 1002.5,-328 996.5,-328"/>
+<text text-anchor="middle" x="964.5" y="-306.3" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">做事的方法</text>
+</g>
+<!-- root&#45;&gt;do -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;do</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M716.68,-373.99C780.35,-357.81 859.16,-337.78 910.57,-324.71"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="911.65,-328.05 920.48,-322.19 909.92,-321.26 911.65,-328.05"/>
+</g>
+<!-- falsify -->
+<g id="node4" class="node">
+<title>falsify</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M119,-256C119,-256 12,-256 12,-256 6,-256 0,-250 0,-244 0,-244 0,-230 0,-230 0,-224 6,-218 12,-218 12,-218 119,-218 119,-218 125,-218 131,-224 131,-230 131,-230 131,-244 131,-244 131,-250 125,-256 119,-256"/>
+<text text-anchor="middle" x="65.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">证伪思维 ★</text>
+<text text-anchor="middle" x="65.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">区分科学与伪科学</text>
+</g>
+<!-- see&#45;&gt;falsify -->
+<g id="edge3" class="edge">
+<title>see&#45;&gt;falsify</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M343.32,-298.79C294.06,-288.85 217.23,-273.08 141.09,-256.1"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="141.85,-252.68 131.32,-253.92 140.32,-259.51 141.85,-252.68"/>
+</g>
+<!-- logic -->
+<g id="node5" class="node">
+<title>logic</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M239.5,-256C239.5,-256 161.5,-256 161.5,-256 155.5,-256 149.5,-250 149.5,-244 149.5,-244 149.5,-230 149.5,-230 149.5,-224 155.5,-218 161.5,-218 161.5,-218 239.5,-218 239.5,-218 245.5,-218 251.5,-224 251.5,-230 251.5,-230 251.5,-244 251.5,-244 251.5,-250 245.5,-256 239.5,-256"/>
+<text text-anchor="middle" x="200.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">逻辑判断 ★</text>
+<text text-anchor="middle" x="200.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">信息筛除谬误</text>
+</g>
+<!-- see&#45;&gt;logic -->
+<g id="edge4" class="edge">
+<title>see&#45;&gt;logic</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M348.03,-291.99C321.44,-282.26 287.83,-269.96 259.4,-259.56"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="260.57,-256.26 249.98,-256.11 258.17,-262.83 260.57,-256.26"/>
+</g>
+<!-- cost -->
+<g id="node6" class="node">
+<title>cost</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M373.5,-256C373.5,-256 281.5,-256 281.5,-256 275.5,-256 269.5,-250 269.5,-244 269.5,-244 269.5,-230 269.5,-230 269.5,-224 275.5,-218 281.5,-218 281.5,-218 373.5,-218 373.5,-218 379.5,-218 385.5,-224 385.5,-230 385.5,-230 385.5,-244 385.5,-244 385.5,-250 379.5,-256 373.5,-256"/>
+<text text-anchor="middle" x="327.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">成本思维</text>
+<text text-anchor="middle" x="327.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">投入产出透视镜</text>
+</g>
+<!-- see&#45;&gt;cost -->
+<g id="edge5" class="edge">
+<title>see&#45;&gt;cost</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M378.28,-291.81C370.21,-283.26 360.3,-272.76 351.39,-263.31"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="353.91,-260.89 344.5,-256.02 348.82,-265.69 353.91,-260.89"/>
+</g>
+<!-- common_sense -->
+<g id="node7" class="node">
+<title>common_sense</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M507.5,-256C507.5,-256 415.5,-256 415.5,-256 409.5,-256 403.5,-250 403.5,-244 403.5,-244 403.5,-230 403.5,-230 403.5,-224 409.5,-218 415.5,-218 415.5,-218 507.5,-218 507.5,-218 513.5,-218 519.5,-224 519.5,-230 519.5,-230 519.5,-244 519.5,-244 519.5,-250 513.5,-256 507.5,-256"/>
+<text text-anchor="middle" x="461.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">常识判断 ★</text>
+<text text-anchor="middle" x="461.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">简单规律胜复杂</text>
+</g>
+<!-- see&#45;&gt;common_sense -->
+<g id="edge6" class="edge">
+<title>see&#45;&gt;common_sense</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M410.72,-291.81C418.79,-283.26 428.7,-272.76 437.61,-263.31"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="440.18,-265.69 444.5,-256.02 435.09,-260.89 440.18,-265.69"/>
+</g>
+<!-- expected_val -->
+<g id="node8" class="node">
+<title>expected_val</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M657,-256C657,-256 550,-256 550,-256 544,-256 538,-250 538,-244 538,-244 538,-230 538,-230 538,-224 544,-218 550,-218 550,-218 657,-218 657,-218 663,-218 669,-224 669,-230 669,-230 669,-244 669,-244 669,-250 663,-256 657,-256"/>
+<text text-anchor="middle" x="603.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">期望值最大化</text>
+<text text-anchor="middle" x="603.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">收益函数驱动优化</text>
+</g>
+<!-- see&#45;&gt;expected_val -->
+<g id="edge7" class="edge">
+<title>see&#45;&gt;expected_val</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M444.56,-291.99C473.33,-282.22 509.73,-269.85 540.44,-259.42"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="541.85,-262.64 550.19,-256.11 539.6,-256.01 541.85,-262.64"/>
+</g>
+<!-- subtract -->
+<g id="node9" class="node">
+<title>subtract</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M810,-256C810,-256 699,-256 699,-256 693,-256 687,-250 687,-244 687,-244 687,-230 687,-230 687,-224 693,-218 699,-218 699,-218 810,-218 810,-218 816,-218 822,-224 822,-230 822,-230 822,-244 822,-244 822,-250 816,-256 810,-256"/>
+<text text-anchor="middle" x="754.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">减法思维 ★</text>
+<text text-anchor="middle" x="754.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">主动舍弃·聚焦核心</text>
+</g>
+<!-- do&#45;&gt;subtract -->
+<g id="edge8" class="edge">
+<title>do&#45;&gt;subtract</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M920.48,-294.12C890.59,-284.01 850.62,-270.5 817.4,-259.27"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="818.37,-255.9 807.77,-256.01 816.12,-262.53 818.37,-255.9"/>
+</g>
+<!-- crossover -->
+<g id="node10" class="node">
+<title>crossover</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M944.5,-256C944.5,-256 852.5,-256 852.5,-256 846.5,-256 840.5,-250 840.5,-244 840.5,-244 840.5,-230 840.5,-230 840.5,-224 846.5,-218 852.5,-218 852.5,-218 944.5,-218 944.5,-218 950.5,-218 956.5,-224 956.5,-230 956.5,-230 956.5,-244 956.5,-244 956.5,-250 950.5,-256 944.5,-256"/>
+<text text-anchor="middle" x="898.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">跨界思维</text>
+<text text-anchor="middle" x="898.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">跨领域融合创新</text>
+</g>
+<!-- do&#45;&gt;crossover -->
+<g id="edge9" class="edge">
+<title>do&#45;&gt;crossover</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M948.52,-291.81C940.65,-283.35 931.01,-272.97 922.29,-263.6"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="924.62,-260.96 915.25,-256.02 919.5,-265.73 924.62,-260.96"/>
+</g>
+<!-- professionalism -->
+<g id="node11" class="node">
+<title>professionalism</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M1074,-256C1074,-256 987,-256 987,-256 981,-256 975,-250 975,-244 975,-244 975,-230 975,-230 975,-224 981,-218 987,-218 987,-218 1074,-218 1074,-218 1080,-218 1086,-224 1086,-230 1086,-230 1086,-244 1086,-244 1086,-250 1080,-256 1074,-256"/>
+<text text-anchor="middle" x="1030.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">专业素养</text>
+<text text-anchor="middle" x="1030.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">稳定·流程·体系</text>
+</g>
+<!-- do&#45;&gt;professionalism -->
+<g id="edge10" class="edge">
+<title>do&#45;&gt;professionalism</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M980.48,-291.81C988.35,-283.35 997.99,-272.97 1006.71,-263.6"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="1009.5,-265.73 1013.75,-256.02 1004.38,-260.96 1009.5,-265.73"/>
+</g>
+<!-- incremental -->
+<g id="node12" class="node">
+<title>incremental</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M1223,-256C1223,-256 1116,-256 1116,-256 1110,-256 1104,-250 1104,-244 1104,-244 1104,-230 1104,-230 1104,-224 1110,-218 1116,-218 1116,-218 1223,-218 1223,-218 1229,-218 1235,-224 1235,-230 1235,-230 1235,-244 1235,-244 1235,-250 1229,-256 1223,-256"/>
+<text text-anchor="middle" x="1169.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">渐进改良</text>
+<text text-anchor="middle" x="1169.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">最好是更好的敌人</text>
+</g>
+<!-- do&#45;&gt;incremental -->
+<g id="edge11" class="edge">
+<title>do&#45;&gt;incremental</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M1008.73,-293.68C1037.64,-283.67 1075.8,-270.45 1107.69,-259.41"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="1109.07,-262.63 1117.37,-256.05 1106.78,-256.02 1109.07,-262.63"/>
+</g>
+<!-- ten_k_hours -->
+<g id="node13" class="node">
+<title>ten_k_hours</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M1362,-256C1362,-256 1265,-256 1265,-256 1259,-256 1253,-250 1253,-244 1253,-244 1253,-230 1253,-230 1253,-224 1259,-218 1265,-218 1265,-218 1362,-218 1362,-218 1368,-218 1374,-224 1374,-230 1374,-230 1374,-244 1374,-244 1374,-250 1368,-256 1362,-256"/>
+<text text-anchor="middle" x="1313.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">一万小时定律</text>
+<text text-anchor="middle" x="1313.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">有效积累·三板斧</text>
+</g>
+<!-- do&#45;&gt;ten_k_hours -->
+<g id="edge12" class="edge">
+<title>do&#45;&gt;ten_k_hours</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M1008.82,-301.57C1062.19,-292.41 1154.72,-275.86 1243.06,-256.26"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="1243.98,-259.64 1252.97,-254.04 1242.45,-252.81 1243.98,-259.64"/>
+</g>
+<!-- falsify&#45;&gt;logic -->
+<g id="edge18" class="edge">
+<title>falsify&#45;&gt;logic</title>
+<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M131.15,-237C133.8,-237 136.45,-237 139.09,-237"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="139.3,-240.5 149.3,-237 139.3,-233.5 139.3,-240.5"/>
+</g>
+<!-- cognition -->
+<g id="node14" class="node">
+<title>cognition</title>
+<path fill="#fffaf2" stroke="#8b7355" stroke-width="1.5" d="M518,-182C518,-182 437,-182 437,-182 431,-182 425,-176 425,-170 425,-170 425,-156 425,-156 425,-150 431,-144 437,-144 437,-144 518,-144 518,-144 524,-144 530,-150 530,-156 530,-156 530,-170 530,-170 530,-176 524,-182 518,-182"/>
+<text text-anchor="middle" x="477.5" y="-166.8" font-family="Noto Serif SC" font-size="14.00">认知操作系统</text>
+<text text-anchor="middle" x="477.5" y="-151.8" font-family="Noto Serif SC" font-size="14.00">(思维 × 行为)</text>
+</g>
+<!-- falsify&#45;&gt;cognition -->
+<g id="edge13" class="edge">
+<title>falsify&#45;&gt;cognition</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M131.29,-219.91C134.4,-219.24 137.48,-218.6 140.5,-218 235.56,-199.01 346.75,-182.23 414.64,-172.6"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="415.33,-176.04 424.74,-171.18 414.35,-169.11 415.33,-176.04"/>
+</g>
+<!-- logic&#45;&gt;cognition -->
+<g id="edge14" class="edge">
+<title>logic&#45;&gt;cognition</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M251.52,-220.52C254.55,-219.65 257.56,-218.81 260.5,-218 312.25,-203.81 371.39,-189.2 414.84,-178.76"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="415.79,-182.13 424.7,-176.4 414.16,-175.32 415.79,-182.13"/>
+</g>
+<!-- common_sense&#45;&gt;cost -->
+<g id="edge19" class="edge">
+<title>common_sense&#45;&gt;cost</title>
+<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M403.39,-237C400.8,-237 398.2,-237 395.61,-237"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="395.6,-233.5 385.6,-237 395.6,-240.5 395.6,-233.5"/>
+</g>
+<!-- subtract&#45;&gt;incremental -->
+<g id="edge20" class="edge">
+<title>subtract&#45;&gt;incremental</title>
+<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M789.84,-256.05C804.98,-263.19 823.15,-270.43 840.5,-274 947.59,-296.06 979.56,-296.76 1086.5,-274 1099.9,-271.15 1113.77,-265.97 1126.23,-260.38"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1127.9,-263.46 1135.47,-256.05 1124.93,-257.12 1127.9,-263.46"/>
+</g>
+<!-- subtract&#45;&gt;cognition -->
+<g id="edge15" class="edge">
+<title>subtract&#45;&gt;cognition</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M686.74,-218.39C642.01,-206.76 583.83,-191.64 540.18,-180.29"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="540.81,-176.84 530.25,-177.71 539.05,-183.62 540.81,-176.84"/>
+</g>
+<!-- crossover&#45;&gt;professionalism -->
+<g id="edge22" class="edge">
+<title>crossover&#45;&gt;professionalism</title>
+<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M956.51,-237C959.16,-237 961.82,-237 964.47,-237"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="964.72,-240.5 974.72,-237 964.72,-233.5 964.72,-240.5"/>
+</g>
+<!-- professionalism&#45;&gt;ten_k_hours -->
+<g id="edge21" class="edge">
+<title>professionalism&#45;&gt;ten_k_hours</title>
+<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M1060.61,-256.03C1073.59,-263.16 1089.26,-270.4 1104.5,-274 1161.16,-287.38 1178.7,-286.79 1235.5,-274 1248.08,-271.17 1261.01,-266.06 1272.63,-260.53"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1274.26,-263.63 1281.65,-256.04 1271.13,-257.37 1274.26,-263.63"/>
+</g>
+<!-- professionalism&#45;&gt;cognition -->
+<g id="edge16" class="edge">
+<title>professionalism&#45;&gt;cognition</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M974.97,-219.99C971.78,-219.27 968.6,-218.6 965.5,-218 814.43,-188.92 633.81,-174 540.4,-167.73"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="540.48,-164.23 530.27,-167.06 540.02,-171.21 540.48,-164.23"/>
+</g>
+<!-- destiny -->
+<g id="node15" class="node">
+<title>destiny</title>
+<path fill="#fffaf2" stroke="#c0392b" stroke-width="2" d="M492.5,-108C492.5,-108 462.5,-108 462.5,-108 456.5,-108 450.5,-102 450.5,-96 450.5,-96 450.5,-84 450.5,-84 450.5,-78 456.5,-72 462.5,-72 462.5,-72 492.5,-72 492.5,-72 498.5,-72 504.5,-78 504.5,-84 504.5,-84 504.5,-96 504.5,-96 504.5,-102 498.5,-108 492.5,-108"/>
+<text text-anchor="middle" x="477.5" y="-86.3" font-family="Noto Serif SC" font-size="14.00">命 运</text>
+</g>
+<!-- cognition&#45;&gt;destiny -->
+<g id="edge17" class="edge">
+<title>cognition&#45;&gt;destiny</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M477.5,-143.72C477.5,-135.97 477.5,-126.79 477.5,-118.27"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="481,-118 477.5,-108 474,-118 481,-118"/>
+</g>
+<!-- quote -->
+<g id="node16" class="node">
+<title>quote</title>
+<path fill="#fdf6ec" stroke="transparent" stroke-width="1.5" d="M577.5,-36C577.5,-36 377.5,-36 377.5,-36 371.5,-36 365.5,-30 365.5,-24 365.5,-24 365.5,-12 365.5,-12 365.5,-6 371.5,0 377.5,0 377.5,0 577.5,0 577.5,0 583.5,0 589.5,-6 589.5,-12 589.5,-12 589.5,-24 589.5,-24 589.5,-30 583.5,-36 577.5,-36"/>
+<text text-anchor="middle" x="477.5" y="-14.3" font-family="Noto Serif SC" font-size="14.00" fill="#c0392b">&quot;大富靠命，小富靠运&quot; —— 吴军</text>
+</g>
+<!-- destiny&#45;&gt;quote -->
+</g>
+</svg>`;
+  document.getElementById('svgContainer').innerHTML = svg;
+}
+
+// ======== INIT TABS ========
+let currentTab = 0;
+document.querySelectorAll('#tabBar button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const tabIdx = parseInt(this.dataset.tab);
+    switchTab(tabIdx);
+  });
+});
+
+function switchTab(idx) {
+  currentTab = idx;
+  document.querySelectorAll('#tabBar button').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('#tabContents .tab-content').forEach((tc, i) => tc.classList.toggle('active', i === idx));
+  if (idx === 4) refreshReview();
+  if (idx === 3) resetExam();
+}
+
+// ======== TAB 0: DASHBOARD ========
+function renderDashboard() {
+  // Concept grid
+  let html = '';
+  concepts.forEach((c, i) => {
+    const starClass = c.star ? ' star' : '';
+    const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
+    html += `<div class="concept-card${starClass}" onclick="switchTab(1);flipToCard(${i})">
+      <span class="num">${i+1}</span><strong>${c.name}</strong>${starBadge}
+      <p style="font-size:12px;color:var(--text-light);margin-top:6px;">${c.short}</p>
+    </div>`;
+  });
+  document.getElementById('conceptGrid').innerHTML = html;
+
+  // MKS grid
+  mksDeep.forEach((m, i) => {
+    document.getElementById('mksGrid').innerHTML += `<div class="card" style="border-left:4px solid var(--accent);">
+      <h3>★ ${m.concept.name}</h3>
+      <p style="font-size:13px;color:var(--text-light);">${m.why}</p>
+      <p style="font-size:13px;"><strong>如何应用：</strong>${m.apply}</p>
+    </div>`;
+  });
+
+  // Boundary table
+  let bhtml = '<tr><th>知识点</th><th>使用场景</th></tr>';
+  boundaryKnowledge.forEach(b => {
+    bhtml += `<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td></tr>`;
+  });
+  document.getElementById('boundaryTable').innerHTML = bhtml;
+
+  // Learning path
+  let lhtml = '';
+  learningStages.forEach((s, i) => {
+    lhtml += `<div style="margin-bottom:14px;padding:12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);">
+      <strong style="color:var(--accent);font-size:15px;">${s.stage}</strong>
+      <p style="font-size:13px;color:var(--text-light);margin-top:4px;">${s.content}</p>
+    </div>`;
+  });
+  document.getElementById('learningPath').innerHTML = lhtml;
+
+  // SVG
+  renderSVG();
+  // Progress
+  updateProgress();
+}
+
+// ======== PROGRESS ========
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('mks_thinking_progress') || '{}'); } catch(e) { return {}; }
+}
+function saveProgress(p) { localStorage.setItem('mks_thinking_progress', JSON.stringify(p)); }
+
+function updateProgress() {
+  const p = getProgress();
+  const learnedCards = p.learnedCards || [];
+  const answeredMCQ = p.answeredMCQ || {};
+  const answeredSAQ = p.answeredSAQ || {};
+
+  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
+  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
+  const mcDone = Object.keys(answeredMCQ).length;
+  const saDone = Object.keys(answeredSAQ).length;
+  const totalDone = mcDone + saDone;
+  document.getElementById('quizProgress').textContent = `${totalDone}/30`;
+  document.getElementById('quizBar').style.width = `${(totalDone / 30) * 100}%`;
+
+  if (typeof currentCardIdx !== 'undefined') {
+    updateLearnedBtn();
+  }
+}
+
+// ======== TAB 1: FLIP CARDS ========
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function flipCard() {
+  document.getElementById('flipper').classList.toggle('flipped');
+  cardFlipped = !cardFlipped;
+}
+function renderCard() {
+  const icons = ['🔬','⚙️','📡','🧬','🔗','💡','📊','🛡️','🤝','🎯'];
+  const icon = icons[currentCardIdx % icons.length];
+  const c = concepts[currentCardIdx];
+  document.getElementById('flipFront').innerHTML = `
+    <div class="concept-icon">${icon}</div>
+    <div class="concept-name">${c.name}</div>
+    ${c.star ? '<div class="star-badge-front">★ 核心概念</div>' : ''}
+    <div class="hint">点击翻转</div>
+  `;
+  document.getElementById('flipBack').innerHTML = `
+    <h3 style="color:var(--accent);margin-bottom:8px;">${c.name}</h3>
+    <div style="font-size:13px;">
+      <p><strong>定义：</strong>${c.def}</p>
+      <p style="margin-top:8px;"><strong>类比（生活场景）：</strong>${c.analogy}</p>
+      <p style="margin-top:8px;"><strong>示例：</strong>${c.example}</p>
+      <p style="margin-top:8px;"><strong>反例：</strong>${c.counter}</p>
+    </div>
+  `;
+  document.getElementById('cardIndex').textContent = `${currentCardIdx+1}/10`;
+  updateLearnedBtn();
+}
+
+function flipToCard(idx) {
+  currentCardIdx = idx;
+  cardFlipped = false;
+  document.getElementById('flipper').classList.remove('flipped');
+  renderCard();
+  switchTab(1);
+}
+
+function prevCard() {
+  currentCardIdx = (currentCardIdx - 1 + concepts.length) % concepts.length;
+  cardFlipped = false;
+  document.getElementById('flipper').classList.remove('flipped');
+  renderCard();
+}
+
+function nextCard() {
+  currentCardIdx = (currentCardIdx + 1) % concepts.length;
+  cardFlipped = false;
+  document.getElementById('flipper').classList.remove('flipped');
+  renderCard();
+}
+
+function updateLearnedBtn() {
+  const p = getProgress();
+  const learnedCards = p.learnedCards || [];
+  const btn = document.getElementById('learnedBtn');
+  if (learnedCards.includes(currentCardIdx)) {
+    btn.textContent = '✓ 已学习';
+    btn.classList.add('learned');
+  } else {
+    btn.textContent = '✓ 标记已学习';
+    btn.classList.remove('learned');
+  }
+}
+
+function toggleLearned() {
+  const p = getProgress();
+  if (!p.learnedCards) p.learnedCards = [];
+  const idx = p.learnedCards.indexOf(currentCardIdx);
+  if (idx >= 0) {
+    p.learnedCards.splice(idx, 1);
+  } else {
+    p.learnedCards.push(currentCardIdx);
+  }
+  saveProgress(p);
+  updateLearnedBtn();
+  updateProgress();
+}
+
+// Flip on click
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('flipper').addEventListener('click', function() {
+    cardFlipped = !cardFlipped;
+    this.classList.toggle('flipped', cardFlipped);
+  });
+});
+
+// ======== TAB 2: MCQ + SAQ ========
+function renderMCQ() {
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredMCQ || {};
+  mcQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question" id="mcq${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt, j) => {
+      const isAnswered = answered[i] !== undefined;
+      let cls = 'option';
+      if (isAnswered) {
+        if (j === q.answer) cls += ' correct';
+        else if (j === answered[i]) cls += ' wrong';
+      }
+      html += `<div class="${cls}" onclick="answerMCQ(${i}, ${j})" id="mcq${i}o${j}">
+        ${'ABCD'[j]}. ${opt}
+        ${isAnswered && j === q.answer ? ' ✓' : ''}
+        ${isAnswered && j === answered[i] && j !== q.answer ? ' ✗' : ''}
+      </div>`;
+    });
+    html += `<p style="font-size:11px;color:var(--text-light);margin-top:2px;">关联概念：${q.concept}</p>`;
+    html += `</div>`;
+  });
+  document.getElementById('mcqContainer').innerHTML = html;
+}
+
+function answerMCQ(qIdx, optIdx) {
+  const p = getProgress();
+  if (!p.answeredMCQ) p.answeredMCQ = {};
+  if (p.answeredMCQ[qIdx] !== undefined) return;
+  p.answeredMCQ[qIdx] = optIdx;
+
+  if (optIdx !== mcQuestions[qIdx].answer) {
+    if (!p.errorMCQ) p.errorMCQ = [];
+    if (!p.errorMCQ.includes(qIdx)) p.errorMCQ.push(qIdx);
+  }
+
+  saveProgress(p);
+  renderMCQ();
+  updateProgress();
+}
+
+function resetMCQ() {
+  const p = getProgress();
+  p.answeredMCQ = {};
+  p.errorMCQ = [];
+  saveProgress(p);
+  renderMCQ();
+  updateProgress();
+}
+
+function renderSAQ() {
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredSAQ || {};
+  saQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question" id="saq${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    if (!answered[i]) {
+      html += `<textarea id="saqInput${i}" style="width:100%;min-height:60px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>
+      <button class="btn btn-outline" style="margin-top:6px;" onclick="checkSAQ(${i})">查看参考答案</button>`;
+    } else {
+      html += `<p style="font-size:12px;color:var(--text-light);margin:6px 0;"><strong>你的回答：</strong>${answered[i]}</p>
+      <p style="font-size:12px;color:#27ae60;"><strong>参考答案：</strong>${q.ref}</p>`;
+    }
+    html += `</div>`;
+  });
+  document.getElementById('saqContainer').innerHTML = html;
+}
+
+function checkSAQ(i) {
+  const input = document.getElementById('saqInput' + i);
+  if (!input || !input.value.trim()) return;
+  const p = getProgress();
+  if (!p.answeredSAQ) p.answeredSAQ = {};
+  p.answeredSAQ[i] = input.value.trim();
+  saveProgress(p);
+  renderSAQ();
+  updateProgress();
+}
+
+function resetSAQ() {
+  const p = getProgress();
+  p.answeredSAQ = {};
+  saveProgress(p);
+  renderSAQ();
+  updateProgress();
+}
+
+// ======== TAB 3: EXAM MODE ========
+let examTimerId = null;
+let examSeconds = 900;
+let examQuestions = [];
+
+function resetExam() {
+  document.getElementById('examSetup').style.display = 'block';
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('examResult').style.display = 'none';
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  examSeconds = 900;
+}
+
+function startExam() {
+  document.getElementById('examSetup').style.display = 'none';
+  document.getElementById('examArea').style.display = 'block';
+  document.getElementById('examResult').style.display = 'none';
+  document.getElementById('examResult').innerHTML = '';
+
+  const mcIndices = shuffleArray([...Array(20).keys()]).slice(0, 7);
+  const saIndices = shuffleArray([...Array(10).keys()]).slice(0, 3);
+  examQuestions = { mc: mcIndices, sa: saIndices };
+
+  let html = '<h3>选择题（7道）</h3>';
+  mcIndices.forEach((idx, i) => {
+    const q = mcQuestions[idx];
+    html += `<div class="quiz-question">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt, j) => {
+      html += `<div class="option" onclick="selectExamMC(${i}, ${j})" id="examMc${i}o${j}">${'ABCD'[j]}. ${opt}</div>`;
+    });
+    html += `</div>`;
+  });
+  html += '<h3>简答题（3道）</h3>';
+  saIndices.forEach((idx, i) => {
+    html += `<div class="quiz-question">
+      <div class="q-text">${i+1}. ${saQuestions[idx].q}</div>
+      <textarea id="examSaInput${i}" style="width:100%;min-height:50px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>
+    </div>`;
+  });
+  document.getElementById('examContent').innerHTML = html;
+
+  examSeconds = 900;
+  updateExamTimer();
+  examTimerId = setInterval(() => {
+    examSeconds--;
+    updateExamTimer();
+    if (examSeconds <= 0) { submitExam(); }
+  }, 1000);
+}
+
+function updateExamTimer() {
+  const m = Math.floor(examSeconds / 60);
+  const s = examSeconds % 60;
+  const el = document.getElementById('examTimer');
+  el.textContent = `${m}:${String(s).padStart(2, '0')}`;
+  el.classList.toggle('warning', examSeconds < 60);
+}
+
+let examMCAnswers = {};
+function selectExamMC(qIdx, optIdx) {
+  examMCAnswers[qIdx] = optIdx;
+  for (let j = 0; j < 4; j++) {
+    document.getElementById(`examMc${qIdx}o${j}`).classList.toggle('selected', j === optIdx);
+  }
+}
+
+function submitExam() {
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('examResult').style.display = 'block';
+
+  let score = 0;
+  let mcResult = '';
+  examQuestions.mc.forEach((qIdx, i) => {
+    const q = mcQuestions[qIdx];
+    const userAns = examMCAnswers[i];
+    const correct = userAns === q.answer;
+    if (correct) score++;
+    mcResult += `<div style="margin-bottom:8px;">
+      <strong>${i+1}. ${q.q}</strong><br>
+      <span style="color:${correct ? '#27ae60' : '#e74c3c'}">你的答案：${userAns !== undefined ? 'ABCD'[userAns] : '未作答'} | 正确答案：${'ABCD'[q.answer]}</span><br>
+      ${!correct ? `<span style="font-size:12px;color:var(--text-light);">解析：${q.opts[q.answer]}</span>` : ''}
+    </div>`;
+  });
+
+  let saResult = '';
+  examQuestions.sa.forEach((idx, i) => {
+    const q = saQuestions[idx];
+    const userAns = document.getElementById(`examSaInput${i}`)?.value || '未作答';
+    saResult += `<div style="margin-bottom:8px;">
+      <strong>${i+1}. ${q.q}</strong><br>
+      <span style="font-size:12px;color:var(--text-light);">你的回答：${userAns.substring(0, 100)}...</span><br>
+      <span style="font-size:12px;color:#27ae60;">参考答案：${q.ref.substring(0, 150)}...</span>
+    </div>`;
+  });
+
+  const totalMC = examQuestions.mc.length;
+  const elapsed = 900 - examSeconds;
+  const elapsedM = Math.floor(elapsed / 60);
+  const elapsedS = elapsed % 60;
+
+  const conceptErrors = {};
+  examQuestions.mc.forEach((qIdx, i) => {
+    if (examMCAnswers[i] !== mcQuestions[qIdx].answer) {
+      const cName = mcQuestions[qIdx].concept;
+      conceptErrors[cName] = (conceptErrors[cName] || 0) + 1;
+    }
+  });
+
+  let weakHtml = '';
+  for (const [cname, cnt] of Object.entries(conceptErrors)) {
+    weakHtml += `<span style="display:inline-block;margin:4px;padding:4px 10px;background:#fdedec;border-radius:12px;font-size:12px;">${cname} (错${cnt}次)</span>`;
+  }
+
+  document.getElementById('examResult').innerHTML = `
+    <h2>考试成绩</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;">
+      <div class="stat-box"><div class="num">${score}/${totalMC}</div><div class="lbl">选择题得分</div></div>
+      <div class="stat-box"><div class="num">${Math.round(score/totalMC*100)}%</div><div class="lbl">正确率</div></div>
+      <div class="stat-box"><div class="num">${elapsedM}分${elapsedS}秒</div><div class="lbl">用时</div></div>
+    </div>
+    <h3>选择题解析</h3>${mcResult}
+    <h3>简答题参考</h3>${saResult}
+    <h3>薄弱概念</h3>${weakHtml || '<p>全部答对，暂无薄弱概念</p>'}
+    <button class="btn btn-primary" onclick="resetExam();switchTab(3);" style="margin-top:14px;">重新考试</button>
+  `;
+}
+
+// ======== TAB 4: REVIEW MODE ========
+function refreshReview() {
+  const p = getProgress();
+  const answeredMCQ = p.answeredMCQ || {};
+  const answeredSAQ = p.answeredSAQ || {};
+  const errorMCQ = p.errorMCQ || [];
+  const learnedCards = p.learnedCards || [];
+
+  const totalAnswered = Object.keys(answeredMCQ).length + Object.keys(answeredSAQ).length;
+  const mcCorrect = Object.keys(answeredMCQ).length - errorMCQ.length;
+  const mcRate = Object.keys(answeredMCQ).length > 0 ? Math.round(mcCorrect / Object.keys(answeredMCQ).length * 100) : 0;
+
+  document.getElementById('statsArea').innerHTML = `
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <div class="stat-box"><div class="num">${totalAnswered}</div><div class="lbl">总答题数</div></div>
+      <div class="stat-box"><div class="num">${mcRate}%</div><div class="lbl">选择正确率</div></div>
+      <div class="stat-box"><div class="num">${learnedCards.length}</div><div class="lbl">已学概念</div></div>
+      <div class="stat-box"><div class="num">${errorMCQ.length}</div><div class="lbl">错题数</div></div>
+    </div>
+  `;
+
+  if (errorMCQ.length === 0) {
+    document.getElementById('errorBook').innerHTML = '<p style="color:#27ae60;">暂无错题，继续保持！</p>';
+  } else {
+    let ehtml = '<p style="margin-bottom:8px;font-size:13px;color:var(--text-light);">点击错题可重新作答（清除该题记录）</p>';
+    errorMCQ.forEach(qIdx => {
+      const q = mcQuestions[qIdx];
+      const userAns = answeredMCQ[qIdx];
+      ehtml += `<div style="padding:8px;margin:6px 0;background:#fef9f4;border-radius:6px;border-left:3px solid #e74c3c;cursor:pointer;" onclick="retryMCQ(${qIdx})">
+        <strong>${qIdx+1}. ${q.q}</strong><br>
+        <span style="color:#e74c3c;">你的答案：${'ABCD'[userAns]}</span> |
+        <span style="color:#27ae60;">正确：${'ABCD'[q.answer]}</span> — ${q.opts[q.answer]}
+        <br><span style="font-size:11px;color:var(--text-light);">概念：${q.concept}</span>
+      </div>`;
+    });
+    document.getElementById('errorBook').innerHTML = ehtml;
+  }
+
+  const conceptErrors = {};
+  errorMCQ.forEach(qIdx => {
+    const cn = mcQuestions[qIdx].concept;
+    conceptErrors[cn] = (conceptErrors[cn] || 0) + 1;
+  });
+  const sorted = Object.entries(conceptErrors).sort((a, b) => b[1] - a[1]);
+  if (sorted.length === 0) {
+    document.getElementById('weakPoints').innerHTML = '<p>暂无薄弱概念数据。</p>';
+  } else {
+    let whtml = '';
+    sorted.forEach(([cn, cnt]) => {
+      whtml += `<div style="margin-bottom:10px;">
+        <strong>${cn}</strong> — 错误${cnt}次
+        <div class="progress-bar"><div class="fill" style="width:${Math.max(10, 100-cnt*20)}%;background:#e74c3c;"></div></div>
+      </div>`;
+    });
+    document.getElementById('weakPoints').innerHTML = whtml;
+  }
+}
+
+function retryMCQ(qIdx) {
+  const p = getProgress();
+  delete p.answeredMCQ[qIdx];
+  p.errorMCQ = (p.errorMCQ || []).filter(e => e !== qIdx);
+  saveProgress(p);
+  refreshReview();
+  updateProgress();
+}
+
+// ======== TAB 5: MIND MAP ========
+function renderMindTree() {
+  const treeData = [
+    { name: "思维方法论", children: [
+      { name: "看问题的方法", children: [
+        { name: "证伪思维 ★", children: [
+          { name: "可证伪性是科学标准" },
+          { name: "区分科学与伪科学" },
+          { name: "波普尔科学哲学" }
+        ]},
+        { name: "逻辑判断 ★", children: [
+          { name: "识别论证中的矛盾" },
+          { name: "相关性vs因果性" },
+          { name: "指数增长谬误识别" }
+        ]},
+        { name: "成本思维", children: [
+          { name: "投入-产出分析" },
+          { name: "动机合理性判断" },
+          { name: "时间成本/获客成本/犯错成本" }
+        ]},
+        { name: "常识判断 ★", children: [
+          { name: "简单规律胜复杂模型" },
+          { name: "巴菲特式投资智慧" },
+          { name: "长期经验证伪的可靠性" }
+        ]},
+        { name: "期望值最大化", children: [
+          { name: "收益函数驱动行为" },
+          { name: "激励机制设计" },
+          { name: "系统自动优化原理" }
+        ]}
+      ]},
+      { name: "做事的方法", children: [
+        { name: "减法思维 ★", children: [
+          { name: "庄子「吾生也有涯」" },
+          { name: "少做事情做好事情" },
+          { name: "捡西瓜而非捡芝麻" }
+        ]},
+        { name: "跨界思维", children: [
+          { name: "跨界是结果而非目的" },
+          { name: "高势能向低势能" },
+          { name: "打破思维定式" }
+        ]},
+        { name: "专业素养", children: [
+          { name: "稳定性与流程化" },
+          { name: "成体系知识" },
+          { name: "持续学习与更新" }
+        ]},
+        { name: "渐进改良", children: [
+          { name: "「最好是更好的敌人」" },
+          { name: "迭代优于一步到位" },
+          { name: "信息时代vs工业时代" }
+        ]},
+        { name: "一万小时定律", children: [
+          { name: "有效积累非简单重复" },
+          { name: "三板斧破四困境" },
+          { name: "愿景-目标-道路" }
+        ]}
+      ]}
+    ]}
+  ];
+
+  function renderTree(nodes, depth) {
+    let html = '<ul>';
+    nodes.forEach(n => {
+      const hasChildren = n.children && n.children.length > 0;
+      html += '<li>';
+      if (hasChildren) {
+        html += `<span class="node" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">${n.name}</span>`;
+        html += `<div class="children">${renderTree(n.children, depth+1)}</div>`;
+      } else {
+        html += `<span style="color:var(--text-light);">${n.name}</span>`;
+      }
+      html += '</li>';
+    });
+    html += '</ul>';
+    return html;
+  }
+
+  document.getElementById('mindTree').innerHTML = renderTree(treeData, 0);
+}
+
+// ======== TAB 6: SOCRATIC ========
+function renderSocratic() {
+  const questions = [
+    {
+      concept: "证伪思维",
+      qs: [
+        { q: "什么是「不可证伪」？为什么说算命先生的预言不可证伪？", a: "不可证伪意味着一个陈述无法被任何可观测的事实证明为错误。算命先生说「你近期会有贵人相助」——如果没遇到，他可以说「贵人已经出现但你没认出来」或者「还没到近期」。这个说法总能找到借口自圆其说，所以不可证伪。相比之下，医生说「你的血压是140/90mmHg」是可证伪的——换一台血压计测就能验证。" },
+        { q: "可证伪性是不是要求每个科学理论都必须是「错的」？", a: "不是。可证伪性不是要求理论必须是错的，而是要求它具备「被证明为错的可能性」。就像说「这个箱子装着一只猫」——你可以打开箱子验证，可能看到猫（证实），也可能没看到（证伪）。但如果说「这个箱子里有一个看不见摸不着的精灵」，就无法验证。科学理论的强大恰恰在于它敢于接受最严格的检验。" },
+        { q: "如果科学理论最终都可能被推翻，我们为什么要学习当前的科学知识？", a: "科学的进步不是简单地否定过去，而是在保留已有正确内容的基础上扩展。牛顿力学在高速微观世界被相对论和量子力学修正，但在地球上的日常应用中，牛顿力学依然是精确的。科学知识的价值不在于「永远正确」，而在于它是目前经过最严格检验的认识。就像你使用的地图——虽然可能不完美，但比没有地图强一万倍，而且会不断更新。" }
+      ]
+    },
+    {
+      concept: "逻辑判断",
+      qs: [
+        { q: "为什么说「逻辑判断」是信息时代最稀缺的能力？", a: "因为我们每天接收的信息量是古人一年的量。面对大量相互矛盾的观点（「专家」说法常对立）、精心包装的伪科学、煽动情绪的标题党，如果没有逻辑筛选能力，就像在信息洪流中没有救生圈。逻辑判断提供了一个「最低成本」的过滤器——不需要你是每个领域的专家，只需要你能识别论证中的矛盾、谬误和不合理假设。" },
+        { q: "如何区分「相关性」和「因果性」？为什么这个区分如此重要？", a: "相关性指两件事同时发生或关联变化，因果性则是一件事导致另一件事。冰淇淋销量和溺水率高度相关——是因为夏天热，两者都增加，而不是冰淇淋导致溺水。混淆两者的后果严重：如有人发现「喝红酒的人更长寿」，其实是喝红酒的人往往收入更高、医疗条件更好。「老处女导致英国称霸」就是典型的将弱相关性当作因果关系的荒唐案例。" },
+        { q: "当面对两个逻辑上都成立但结论相反的理论，应该如何判断？", a: "需要理解「逻辑自洽≠绝对正确」。凯恩斯主义和哈耶克理论在各自预设前提下都是逻辑严密的。判断方式：1）考察前提假设在当下的适用性；2）看实证证据；3）理解理论的边界条件（没有放之四海皆准的理论）。关键思维：不是非此即彼，而是在具体情境中判断哪个理论的假设更贴近现实。" }
+      ]
+    },
+    {
+      concept: "减法思维",
+      qs: [
+        { q: "「做减法」表面上是放弃，为什么实际上是一种积极的策略？", a: "因为减法不是消极地「什么都不做」，而是主动地「选择做什么」。减法思维的核心是「少做事情，做好事情」。把精力从10件事分散到每件上，每件只能做到60分；集中到3件事上，每件可以做到90分。后者带来的总价值远高于前者。硅谷创业公司从长长的任务清单一路减到只剩下1件核心事，最终被高价收购。放弃次要目标，才能确保核心目标的达成。" },
+        { q: "在现实中，如何区分「应该减掉的」和「应该坚持的」？", a: "吴军提供了关键转换：从「这件事是否该做」转为「不做这件事是否影响核心目标」。具体框架：1）明确你的核心目标——一年后、五年后你希望成为什么样的人；2）列出所有当前占用的时间和精力项；3）对每一项问：如果砍掉它，我的核心目标会受多大影响？4）砍掉那些「不影响核心目标」或「影响很小」的事项。选择「西瓜」而非「芝麻」。" },
+        { q: "庄子说「吾生也有涯，而知也无涯」，这个「知」具体指什么？", a: "庄子的「知」不仅指知识，更包括所有可能做的事情、想追求的目标、想拥有的东西。现代社会尤甚——好书读不完、好课上不完、社交应酬不完美、工作机会抓不完。如果试图什么都做、什么都学、什么都拥有，结果一定是每件事都做不好、学不精、得不到。庄子的洞见在于：不是鼓励我们不学习，而是提醒我们——因为生命有限，所以必须做出取舍，把有限的时间花在真正重要的事情上。" }
+      ]
+    },
+    {
+      concept: "常识判断",
+      qs: [
+        { q: "什么是「常识」？它和「专业知识」是什么关系？", a: "常识是经过长期实践检验、被广泛认可的基本道理。它和专业知识的根本区别在于：常识是「门槛级」的可靠认知，不需要深入学习特定领域的理论就能理解和运用。如「低买高卖赚钱」是投资常识，「朝霞不出门，晚霞行千里」是气象常识。常识和专业不是对立关系，而是互补——常识提供基础框架，专业知识在常识基础上深化。问题是很多人连常识都不用，一味追求复杂的「新奇理论」。巴菲特的成功证明：常识往往比复杂模型更可靠。" },
+        { q: "如何辨别「真常识」和「伪常识」？", a: "辨别框架：1）可证伪性检验——这个说法能被证明错误吗？「十个光头九个富」怎么证伪？2）来源追溯——它是来自长期经验总结还是某个人的断言？3）逻辑检验——「不吃主食能减肥」在逻辑上说得通吗（短期脱水减重≠长期减脂）？4）反例搜索——有没有明显反例？批判性思维不是拒绝常识，而是对常识保持适当的审视。真正的常识经得起反复检验，伪常识一戳就破。" }
+      ]
+    }
+  ];
+
+  let html = '';
+  questions.forEach((group, gi) => {
+    html += `<h3 style="margin-top:16px;">${group.concept}</h3>`;
+    group.qs.forEach((item, qi) => {
+      html += `<div class="socratic-q">
+        <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: ${item.q}</div>
+        <div class="answer">A: ${item.a}</div>
+      </div>`;
+    });
+  });
+  document.getElementById('socraticArea').innerHTML = html;
+}
+
+// ======== TAB 7: CASE STUDY ========
+function renderCaseStudy() {
+  document.getElementById('caseStudy').innerHTML = `
+    <h3 style="color:var(--accent);">纽约犯罪率下降原因分析（1990年代）</h3>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">1990年代纽约市犯罪率显著下降，从1994年开始大幅改善。运用MKS四维框架（证伪思维、逻辑判断、成本思维、常识判断）来筛选真正的原因。</p>
+
+    <div class="card" style="border-left:4px solid var(--accent);">
+      <h3>证伪思维</h3>
+      <p>面对多个看似合理的解释，「堕胎合法化论」称70年代堕胎合法化→非婚生子女减少→犯罪率下降。但：1）美国其他城市堕胎同样合法化但犯罪率未同步下降；2）非婚生子女比例未减少，拉丁裔反而上升；3）堕胎率高峰（1980-1995）与犯罪率下降时间错位。该解释虽自洽但可证伪——通过横向比较和时序分析即可推翻。「摄像头监控论」也被证伪：纽约大规模安装摄像头在2001年「9·11」之后，晚于犯罪率下降起始点（1994年）。</p>
+    </div>
+
+    <div class="card" style="border-left:4px solid #d4a574;">
+      <h3>逻辑判断</h3>
+      <p>运用逻辑推理分析因果关系。「朱利安尼铁腕治理论」经得住逻辑检验：1）时间吻合——1994年朱利安尼上任与犯罪率大幅下降同时发生；2）空间一致性——纽约犯罪率全国排名从top3降至第16名；3）机制合理——打击轻微犯罪（强行洗车、涂鸦、妓女工会）形成威慑效应。逻辑判断告诉我们：时间+空间+机制三吻合的解释最可信。</p>
+    </div>
+
+    <div class="card" style="border-left:4px solid #8b7355;">
+      <h3>成本思维</h3>
+      <p>从成本收益角度看：犯罪分子之所以选择犯罪，是基于「收益>成本」的理性计算。朱利安尼的「破窗效应」策略——严厉打击轻微违法行为（如逃票、涂鸦）——增加了犯罪行为的「被抓成本」和「惩罚成本」。当违法成本显著上升，即使收益不变，理性计算也会导致犯罪率下降。这个解释符合成本思维的底层逻辑：行为受成本收益驱动。</p>
+    </div>
+
+    <div class="card" style="border-left:4px solid #2c3e50;">
+      <h3>★ 常识判断</h3>
+      <p>常识告诉我们：1）越严厉的执法→越低的犯罪率——这是最直接的因果关系，不需要复杂理论；2）犯罪率高发地区往往是执法松弛的地区；3）看不见的「抓手」（如堕胎）与看得见的「治理」相比，后者显然更可信。巴菲特式的「常识判断」在这里非常有效：如果你看到一个城市换了市长后犯罪率大幅下降，最直接的常识就是——这位市长的治理有效。复杂解释往往不如简单直接的解释可靠。</p>
+    </div>
+
+    <div class="card" style="background:#fef9f4;border-left:4px solid #27ae60;">
+      <h3>结论</h3>
+      <p>通过MKS四维分析，「朱利安尼铁腕治理」是纽约犯罪率下降的最合理解释。证伪思维排除了时间错位的理论；逻辑判断确定了因果关系；成本思维解释了机制；常识判断选择了最直接的归因。四维交叉验证，结论坚实。</p>
+    </div>
+  `;
+}
+
+// ======== TAB 8: DECISION GAME ========
+function renderDecisionGame() {
+  const scenarios = [
+    {
+      title: "【第1轮】你是一家AI创业公司的CEO，团队20人，融资500万美元。面对三个可能的战略方向：A）开发通用AI平台（大市场但竞争激烈）；B）专注医疗影像AI诊断（细分市场但需求明确）；C）同时推进多个AI应用快速变现（现金流好但资源分散）。",
+      options: [
+        { label: "A. 开发通用AI平台——先做大再做精，瞄准最大的市场", feedback: "通用AI平台需要大量资金、人才和数据资源，以20人团队和500万美元融资，大概率会被大公司碾压。这不是「捡西瓜」而是「被大象踩」。你的商业模式缺乏聚焦，不符合减法思维。", correct: false },
+        { label: "B. 专注医疗影像AI诊断——聚焦单点突破，建立壁垒", feedback: "MKS分析：优秀！在有限资源下选择最有可能建立壁垒的细分领域。医疗影像AI有明确的需求、付费意愿强、大公司暂时不重点关注。团队可集中所有资源打磨单一产品，符合减法思维和渐进改良的迭代策略。减法思维（少做事情做好事情）+ 专业素养（建立领域深度）+ 渐进改良（迭代优化）。", correct: true },
+        { label: "C. 同时推进多个AI应用——快速赚钱，维持现金流", feedback: "MKS分析：多个方向同时推进等于每个方向都投入不足，结果是每个产品都是「半吊子」。这犯了典型的「芝麻思维」——看起来每个方向都有收入，但没有一个能形成核心竞争力。初创公司最忌讳资源分散。减法思维的反面——捡芝麻丢西瓜。一万小时定律说明：没有足够聚焦，无法形成有效积累。", correct: false }
+      ]
+    },
+    {
+      title: "【第2轮】你是一名有5年经验的软件工程师，面临三个选择：A）留在现公司等待晋升（稳定但缓慢）；B）跳槽去一家AI创业公司（高风险高回报）；C）跨界转型做技术管理（脱离一线coding）。",
+      options: [
+        { label: "A. 留在现公司等待晋升——追求确定性和稳定性", feedback: "稳定但需警惕「温水煮青蛙」。如果现公司技术栈陈旧、晋升通道狭窄，5年后你的技能可能严重过时。一万小时定律告诉你：有效积累比稳定更重要。如果留下，要确保工作内容有挑战性、能持续学习。", correct: false },
+        { label: "B. 跳槽去AI创业公司——挑战与成长并存", feedback: "MKS分析：这可能是最优选择——如果创业公司的方向靠谱且团队优秀。AI领域正是风口，早期加入意味着更多责任和更快的成长。但需要运用「成本思维」评估：降薪多少？股票期权的实际价值？创业公司的存活率？跨界到AI需要系统学习吗？成本思维（投入产出分析）+ 跨界思维（技术领域的自然延伸）+ 一万小时（在新领域重新积累）。", correct: true },
+        { label: "C. 转型做技术管理——从个人贡献者到团队领导者", feedback: "技术管理是职业发展的自然路径，但需注意：吴军警告「不能因原领域做不好而跨界」。如果你的代码能力尚未达到顶尖水平就急于转型管理，可能两头落空。建议先成为团队中公认的技术骨干，再考虑管理转型。跨界思维（跨界是结果而非目的）+ 专业素养（先在一个领域做到极致再扩展）。", correct: false }
+      ]
+    },
+    {
+      title: "【第3轮】你有一笔闲置资金，看到三个投资机会：A）买入热门的比特币（过去一年涨了10倍）；B）定投指数基金（年化8-10%）；C）投资自己——报一个系统的AI课程+参加行业会议。",
+      options: [
+        { label: "A. 买入比特币——追逐热点，期望短期暴富", feedback: "期望值最大化原理告诉你：追逐已经被过度关注的热点，回报的期望值已经被市场消化。而且比特币的极高波动性意味着巨大的下行风险。成本思维揭示：你在赌运气而非在做理性投资。历史上追涨杀跌的散户90%以上亏损。", correct: false },
+        { label: "B. 定投指数基金——遵循常识，长期稳健增值", feedback: "MKS分析：优秀的决策！巴菲特多次推荐普通投资者定投指数基金。逻辑判断：大量数据证明积极管理的基金长期跑不赢指数。常识判断：股市长期向上（美国45年年均回报7%）。期望值最大化：放弃择时——时间在你这边的确定性远高于猜测市场。", correct: true },
+        { label: "C. 投资自己——提升能力，增加未来收入", feedback: "MKS分析：这是长期回报率最高的选择！成本思维：投资AI课程和行业学习，可能使你的年薪从30万涨到60万+，而且这是持续性的收入提升，而非一次性资本利得。一万小时：这笔投资帮你加速有效积累。但需要减法思维——要真学而非买课不学。", correct: false }
+      ]
+    }
+  ];
+
+  let html = '';
+  scenarios.forEach((s, si) => {
+    html += `<div class="card" style="border-left:4px solid var(--accent);">
+      <h3>${s.title}</h3>`;
+    s.options.forEach((opt, oi) => {
+      html += `<div class="decision-option" id="dec${si}o${oi}" onclick="selectDecision(${si}, ${oi})">${opt.label}</div>`;
+    });
+    html += `<div class="decision-feedback" id="decFeedback${si}">
+      <p style="font-size:13px;"></p>
+    </div></div>`;
+  });
+  document.getElementById('decisionGame').innerHTML = html;
+
+  window._decisionData = scenarios;
+}
+
+function selectDecision(si, oi) {
+  const data = window._decisionData[si];
+  const feedbackDiv = document.getElementById('decFeedback' + si);
+  const fbContent = data.options[oi].feedback;
+
+  for (let j = 0; j < data.options.length; j++) {
+    const optEl = document.getElementById('dec' + si + 'o' + j);
+    optEl.style.borderColor = 'var(--border)';
+    optEl.style.background = '';
+  }
+  document.getElementById('dec' + si + 'o' + oi).style.borderColor = 'var(--accent)';
+  document.getElementById('dec' + si + 'o' + oi).style.background = '#fef5f0';
+
+  if (fbContent) {
+    feedbackDiv.style.display = 'block';
+    feedbackDiv.querySelector('p').textContent = fbContent;
+  } else {
+    feedbackDiv.style.display = 'block';
+    feedbackDiv.querySelector('p').textContent = '这不是最优选择。请换一个选项思考——提示：回顾核心概念中的思维方法。';
+  }
+}
+
+// ======== UTILS ========
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ======== INIT ========
+function init() {
+  renderDashboard();
+  renderCard();
+  renderMCQ();
+  renderSAQ();
+  renderMindTree();
+  renderSocratic();
+  renderCaseStudy();
+  renderDecisionGame();
+  updateProgress();
+}
+
+init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吴军谷歌方法论 · 计算机思维 — 最小知识集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
+--text:#3d2f2f;--sub:#6b5b5b;--light:#faf3e6;--border:#e0d5c5;
+--green:#2d7d46;--blue:#3a6ea5;--star:#d4890e;
+}
+body{font-family:"Noto Serif SC","Source Han Serif SC","STSong",Georgia,"Times New Roman",serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,28px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);text-align:center;margin:0.5em 0 0.2em;letter-spacing:0.04em}
+.subtitle{text-align:center;color:var(--sub);font-size:clamp(0.85rem,2vw,1rem);margin-bottom:clamp(16px,3vw,28px)}
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px 4px;background:var(--bg);border-bottom:2px solid var(--border);margin-bottom:clamp(12px,2vw,24px)}
+.tab-btn{padding:6px 12px;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;cursor:pointer;font-size:clamp(0.72rem,1.5vw,0.88rem);white-space:nowrap;transition:all .2s;font-family:inherit}
+.tab-btn:hover,.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(14px,2.5vw,24px);margin-bottom:clamp(12px,2vw,20px);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card h2{color:var(--accent);font-size:clamp(1.1rem,2.2vw,1.4rem);margin-bottom:0.6em;border-bottom:2px solid var(--accent2);padding-bottom:0.3em}
+.card h3{color:var(--text);font-size:clamp(1rem,2vw,1.15rem);margin:0.5em 0 0.4em}
+.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.concept-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:transform .15s,box-shadow .15s;cursor:default}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.concept-card .icon{font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:6px}
+.concept-card .name{font-weight:700;color:var(--accent);font-size:clamp(0.9rem,1.8vw,1.05rem)}
+.concept-card .brief{font-size:clamp(0.72rem,1.3vw,0.82rem);color:var(--sub);margin-top:4px}
+.mks-star{position:relative;border-color:var(--star)}
+.mks-star::before{content:"★";position:absolute;top:-8px;right:-4px;color:var(--star);font-size:1.6rem;line-height:1}
+.progress-bar{width:100%;height:18px;background:var(--light);border-radius:9px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:9px;transition:width .5s}
+.progress-text{font-size:0.82rem;color:var(--sub);text-align:right;margin-top:2px}
+.svg-wrap{overflow-x:auto;margin:0 -8px;padding:0 8px}
+.svg-wrap svg{min-width:560px;display:block;margin:0 auto}
+.legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:0.8rem;color:var(--sub);margin-top:8px}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .line{display:inline-block;width:20px;height:3px;border-radius:2px}
+.boundary-table{overflow-x:auto}
+.boundary-table table{width:100%;border-collapse:collapse;font-size:clamp(0.75rem,1.4vw,0.9rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+.boundary-table td{padding:7px 12px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:var(--light)}
+.path-steps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.path-step{flex:1 1 140px;max-width:200px;background:var(--card);border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.path-step .num{display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:0.85rem;margin-bottom:6px}
+.path-step h4{color:var(--accent);font-size:0.92rem;margin:4px 0}
+.path-step p{font-size:0.78rem;color:var(--sub)}
+.flip-container{perspective:800px;width:100%;max-width:400px;height:280px;margin:16px auto;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip-container.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border:2px solid var(--border)}
+.flip-front{background:var(--card);border-color:var(--accent2)}
+.flip-front h3{color:var(--accent);font-size:1.3rem}
+.flip-front .hint{color:var(--sub);font-size:0.8rem;margin-top:8px}
+.flip-back{background:var(--light);transform:rotateY(180deg);justify-content:flex-start;text-align:left;font-size:0.88rem;overflow-y:auto}
+.flip-back h4{color:var(--accent);font-size:1rem;margin:6px 0 4px}
+.flip-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0}
+.flip-nav button{padding:6px 16px;border:1px solid var(--border);background:var(--card);border-radius:6px;cursor:pointer;font-size:1.1rem;color:var(--text)}
+.flip-nav button:hover{background:var(--accent);color:#fff}
+.flip-nav .counter{font-size:0.85rem;color:var(--sub)}
+.learned-btn{padding:6px 20px;background:var(--green);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.9rem;margin-top:8px}
+.quiz-option{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:1px solid var(--border);background:var(--card);border-radius:8px;cursor:pointer;font-size:clamp(0.82rem,1.5vw,0.95rem);transition:all .2s}
+.quiz-option:hover{background:var(--light);border-color:var(--accent2)}
+.quiz-option.correct{background:#d4edda;border-color:var(--green);color:var(--green)}
+.quiz-option.wrong{background:#f8d7da;border-color:var(--accent);color:var(--accent)}
+.quiz-option:disabled{cursor:default}
+.quiz-feedback{padding:10px;border-radius:8px;margin:8px 0;font-size:0.88rem}
+.short-answer-box{width:100%;min-height:80px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;background:var(--card)}
+.btn{padding:8px 20px;border:none;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:inherit;transition:opacity .2s}
+.btn:hover{opacity:.85}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn-green{background:var(--green);color:#fff}
+.timer{font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--accent);text-align:center;font-weight:700;margin:8px 0}
+.tree-node{margin-left:20px;border-left:1px dashed var(--border);padding-left:10px}
+.tree-toggle{cursor:pointer;user-select:none;color:var(--accent);font-weight:700;font-size:0.95rem}
+.tree-toggle::before{content:"▸ ";display:inline-block;transition:transform .2s;font-size:0.75rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.show{display:block}
+.socratic-q{margin:12px 0;padding:10px;border-left:3px solid var(--accent2);background:var(--light);border-radius:0 8px 8px 0}
+.socratic-q .question{cursor:pointer;font-weight:700;color:var(--accent);font-size:0.95rem}
+.socratic-q .answer{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.88rem;color:var(--text)}
+.socratic-q .answer.show{display:block}
+.case-section{margin:10px 0}
+.case-section h4{color:var(--accent);font-size:0.95rem;margin:8px 0 4px}
+.decision-option{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid var(--border);background:var(--card);border-radius:8px;cursor:pointer;font-size:0.9rem;transition:all .2s}
+.decision-option:hover{border-color:var(--accent2)}
+.decision-feedback{padding:10px;border-radius:8px;margin:8px 0;font-size:0.88rem;display:none}
+.decision-feedback.show{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+.stat-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat-item .value{font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--accent);font-weight:700}
+.stat-item .label{font-size:0.8rem;color:var(--sub)}
+.home-link{display:inline-block;margin:0 auto;padding:6px 18px;border:1px dashed var(--accent2);border-radius:20px;color:var(--accent);font-size:0.82rem;text-decoration:none;text-align:center}
+.home-link:hover{background:var(--light)}
+.text-center{text-align:center}
+.mt-12{margin-top:12px}
+.mb-12{margin-bottom:12px}
+@media(max-width:600px){
+.flip-container{height:320px}
+.tab-btn{font-size:0.7rem;padding:5px 8px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>吴军·谷歌方法论 — 计算机思维</h1>
+<p class="subtitle">最小知识集 · 78篇笔记提炼 | 计算核心驱动现实决策</p>
+<div class="text-center mb-12"><a class="home-link" href="#" onclick="alert('知识主板首页即将构建')">← 返回知识主板</a></div>
+<div class="tab-bar" id="tabBar"></div>
+
+<!-- ======== TAB 1: 知识集总览 ======== -->
+<div class="tab-content active" id="tab-0">
+<div class="card">
+<h2>核心目标</h2>
+<p style="font-size:clamp(1rem,2vw,1.2rem)">将<strong>计算机的底层思维方式</strong>（递归、分治、等价转换、量级思维、信息论）迁移到现实世界的问题解决中——用算法的眼睛看世界，用数据的方法做决策。</p>
+</div>
+
+<h2 style="color:var(--accent);margin-top:16px">10个核心概念</h2>
+<div class="dashboard-grid" id="conceptGrid"></div>
+
+<h2 style="color:var(--accent);margin-top:16px">★ MKS 核心骨架（4个必须深刻理解的元概念）</h2>
+<div class="dashboard-grid" id="mksStars"></div>
+
+<div class="card">
+<h2>学习进度</h2>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<p class="progress-text" id="progressText">已学习 0/10 概念 · 正确率 --% · 持续 0 天</p>
+</div>
+
+<div class="card">
+<h2>概念关系图</h2>
+<div class="svg-wrap" id="svgMap"></div>
+<div class="legend">
+<span><i class="line" style="background:#a0522d"></i> 核心驱动</span>
+<span><i class="line" style="background:#c0392b"></i> 层级/组合</span>
+<span><i class="line" style="background:#d4a574;border-style:dashed"></i> 映射/等价</span>
+<span><i class="line" style="background:#d4890e"></i> MKS概念 · 应用实践</span>
+</div>
+</div>
+
+<div class="card">
+<h2>边界知识表（15条：知道存在，不需精通）</h2>
+<div class="boundary-table">
+<table>
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody id="boundaryBody"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h2>学习路径（5阶段推荐顺序）</h2>
+<div class="path-steps" id="pathSteps"></div>
+</div>
+</div>
+
+<!-- ======== TAB 2: 知识卡片 ======== -->
+<div class="tab-content" id="tab-1">
+<div class="card text-center">
+<h2>翻转卡片 · 点击翻转查看四维度解析</h2>
+<div class="flip-container" id="flipCard" onclick="flip()">
+<div class="flip-inner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div>
+</div>
+<div class="flip-nav">
+<button onclick="prevCard(event)">◀</button>
+<span class="counter" id="flipCounter">1/10</span>
+<button onclick="nextCard(event)">▶</button>
+</div>
+<button class="learned-btn" onclick="markLearned()">✓ 标记「已学习」</button>
+</div>
+</div>
+
+<!-- ======== TAB 3: 题库系统 ======== -->
+<div class="tab-content" id="tab-2">
+<div class="card">
+<h2>选择题（20道）</h2>
+<div id="mcQuestions"></div>
+</div>
+<div class="card">
+<h2>简答题（10道）</h2>
+<div id="saQuestions"></div>
+</div>
+</div>
+
+<!-- ======== TAB 4: 考试模式 ======== -->
+<div class="tab-content" id="tab-3">
+<div class="card text-center">
+<h2>限时考试 · 15分钟 · 10题（7选+3简）</h2>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" id="startExamBtn" onclick="startExam()">开始考试</button>
+<div id="examContent" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- ======== TAB 5: 复习模式 ======== -->
+<div class="tab-content" id="tab-4">
+<div class="card"><h2>错题本</h2><div id="wrongBook"></div></div>
+<div class="card"><h2>概念薄弱点分析</h2><div id="weakAnalysis"></div></div>
+<div class="card"><h2>学习统计</h2><div class="stats-grid" id="statsGrid"></div></div>
+</div>
+
+<!-- ======== TAB 6: 思维导图 ======== -->
+<div class="tab-content" id="tab-5">
+<div class="card"><h2>计算机思维 · 层级知识树</h2><div id="mindMap"></div></div>
+</div>
+
+<!-- ======== TAB 7: 苏格拉底问答 ======== -->
+<div class="tab-content" id="tab-6">
+<div class="card"><h2>深度追问 · 每个核心概念 2-3 层追问</h2><div id="socraticQA"></div></div>
+</div>
+
+<!-- ======== TAB 8: 案例分析 ======== -->
+<div class="tab-content" id="tab-7">
+<div class="card"><h2>案例：AlphaGo 如何赢下李世石 — MKS 四维度拆解</h2><div id="caseStudy"></div></div>
+</div>
+
+<!-- ======== TAB 9: 实战决策 ======== -->
+<div class="tab-content" id="tab-8">
+<div class="card"><h2>决策模拟 · 3 轮科技战略选择</h2><div id="decisionSim"></div></div>
+</div>
+
+</div>
+
+<script>
+// ======== DATA ========
+const concepts = [
+{id:0,name:"递归思维",icon:"🔄",brief:"自顶向下分解，简单重复解决复杂问题——计算机与人类思维最大的不同",mks:true,long:"递归是计算机科学的精髓：将大问题转化为相同结构的小问题，通过终止条件避免死循环。人类倾向自底向上的递推，计算机擅长自顶向下的递归。",analogy:"公司管理：CEO不直接管理每个员工，而是通过总监→经理→组长层层授权，每一层做相似的管理动作。",example:"阶乘 N! = N×(N-1)!，八皇后问题通过假设前7行已摆好来递归求解，倒推工作法从截止日倒逼关键节点。",counter:"「从前有座山」故事形似递归实为死循环——缺少终止条件。恋爱中反复原谅无底线承诺也是递归陷阱——没有结束条件的重复不是递归。"},
+{id:1,name:"分治策略",icon:"🧩",brief:"大问题拆小问题，各自击破再合并——效率提升的根本方法论",mks:true,long:"分治(Divide and Conquer)将复杂任务拆分为独立子任务并行处理，最后合并结果。MapReduce是分治在分布式计算中的工程实现，以廉价服务器集群取代超级计算机。",analogy:"写一本书：先定大纲（分治），各章独立撰写（并行），最后统稿（合并）。比从头到尾顺序写高效得多。",example:"归并排序：将数组递归二分至2元素一组，排序后逐层合并——100万数据从1万亿次计算降至2000万次。Google索引全球网页也按分治分配到各服务器。",counter:"试图一次性解决整个问题而不拆分——比如直接写完整程序而不先设计模块架构，结果2万行代码难以维护。"},
+{id:2,name:"量级思维",icon:"📐",brief:"区分芝麻与西瓜——小数字世界经验无法迁移到大数世界",mks:true,long:"量级是比数量级更大的概念差距。小量级事物在大问题面前可忽略不计。成就=成功率×事情的量级×做事的速度——量级突破比微调成功率重要百倍。",analogy:"10双鞋随意放，100双需分类，10000双必须建索引。管理方式随量级而质变——雅虎用目录分类管理网页，当网页从百万到百亿时崩溃，Google的索引思维胜出。",example:"排序1亿数据：冒泡排序需1亿亿次运算（一辈子），快速排序仅需几百亿次（几分钟）。药厂分析数千病例 vs 基于海量基因数据的个性化制药——量级差决定疗效上限。",counter:"省几分钱物料成本而牺牲产品溢价空间——山寨思维用芝麻换芝麻。王健林「先挣1个亿」不是炫富，是理解了量级：100万和1亿是不同量级的游戏。"},
+{id:3,name:"等价性问题",icon:"🔗",brief:"把未知复杂问题映射为已知可解问题——一通百通的智慧",mks:false,long:"科学的艺术在于找到未知复杂问题的已知等价问题。语音识别=通信解码问题，机器翻译=编码-传输-解码，基因测序=语言文字识别——本质上都是同一数学模型。",analogy:"拼写纠错和通信纠错看似无关，底层都是「从含噪声信号中还原原始信息」——维特比算法同时解决两者，如同同一把钥匙开多把锁。",example:"语音识别 = 通信问题（贾里尼克用信息论模型将错误率从30%降至10%），机器翻译 = 信道解码（奥科用统计方法实现突破），股票预测 = 信号处理（文艺复兴公司用通信模型预测市场）。",counter:"为每个具体问题从头发明独立方案——低效且无法复用。正确的做法是先问「这个问题和哪个已知问题本质上一样？」"},
+{id:4,name:"信息论",icon:"📡",brief:"信息消除不确定性——新信息源比模型优化重要得多",mks:true,long:"香农信息论证明：缺乏新信息时，不确定性无法仅通过算法优化消除。Google搜索90%的改进来自新信息的发现，仅10%来自模型参数调整。信息优先于算法。",analogy:"医生诊断：老医生比年轻医生准确率高，不是因为更聪明，而是「见过更多病例」（拥有更多信息）。大数据医疗的本质就是用海量病例信息消除诊断不确定性。",example:"语音识别引入「主题信息」「语法信息」后识别率质变。PageRank引入网页被引次数信息颠覆搜索。微软Bing重算法优化，Google重信息获取——后者胜出。",counter:"在缺乏新数据的情况下反复调模型参数——如同在枯井里打水。辛格博士每天分析信息不足导致的搜索失败案例，而非只优化算法代码。"},
+{id:5,name:"阿姆达尔法则",icon:"⚖️",brief:"系统优化的优先级原则——解决当前瓶颈而非面面俱到",mks:false,long:"系统整体提升 S=1/((1-p)+p/s)，p为瓶颈占比，s为瓶颈提升倍数。优先优化占系统资源最大的瓶颈，解决后动态调整下一瓶颈。这是IT行业快速进步的战术核心。",analogy:"赶飞机：如果堵车占整个行程时间的70%，优化值机流程（占5%）没有意义。先解决堵车问题（走高速vs普通路），再优化其他环节。",example:"CPU占60%计算时间→优化CPU提升25%；之后内存成为瓶颈(20%)→优化内存提升20%。全球碳排放：中美占43%，欧洲5国仅6%——减排应优先聚焦中美。",counter:"面面俱到地优化所有环节——如同阿姆达尔公司试图在IBM主导的大型机赛道全面竞争。先解决瓶颈再看下一个，是科学而非平均主义。"},
+{id:6,name:"数据结构与算法",icon:"🌳",brief:"二叉树、堆栈、哈希——计算机组织信息的核心工具",mks:false,long:"数组找得快插得慢，链表插得快找得慢，哈希表牺牲空间换时间，二叉树通过左右分叉实现高效比较和排序。选择数据结构就是选择权衡。",analogy:"图书馆管理：书架按编号顺序排列=数组（找书快，插入新书架难），每本书用链条串联=链表（插入方便，找书需从头遍历），索书号索引=哈希表（最快定位，但占用卡片柜空间）。",example:"Trie树支持输入联想（搜索引擎自动补全），堆排序找Top N无需全排序（找最近加油站），二叉树排序高效且可遍历（网站目录、公司组织架构）。",counter:"用数组存储经常增删的数据导致大量移动操作，或用链表做频繁随机访问导致逐一遍历——不匹配的数据结构会消灭算法优势。"},
+{id:7,name:"工程思维",icon:"🔧",brief:"边界内做事——科学求量级突破，工程在约束下求最优解",mks:false,long:"科学关注「有没有」和量级突破（百倍千倍提升），工程关注「好不好」和实际问题解决。计算机不是万能的——图灵机划定了可计算问题的理论边界，工程思维在边界内寻找相对最优解。",analogy:"盖房子：科学告诉你材料强度上限（不能造无限高的楼），工程在限高内设计最优户型、成本和施工方案。超越物理边界的「永动机」式方案是徒劳的。",example:"iPhone不追求单项技术绝对领先，而是成熟技术+整体优化平衡；苹果采用成熟触屏技术而非等待未验证方案。GPS定位从原理可行到产品可用需消除5个数量级的误差。",counter:"科学家创业不顾工程成本（教授创业成功率低于学生），或工程师忽视科学边界试图突破理论极限（如试图造永动机）。"},
+{id:8,name:"索引与查找",icon:"🔍",brief:"编号→索引→二分查找→哈希定位——从大海捞针到精准定位",mks:false,long:"计算机处理海量数据的第一步是编号（Addressing），然后建立索引（记录位置而非内容），二分查找将范围每次缩小一半（13亿人中找人仅需31步），哈希更进一步实现O(1)常数级定位。",analogy:"字典：从A到Z顺序找=遍历（慢），翻到大致位置二分查找=快（每次排除一半），记住每个单词的页码=索引（最快）。Google为每个词建索引，1毫秒找到上百万文档。",example:"北京市2000万人中找「李强」：用姓名索引直接定位到第200万号区间，无需遍历全库。Windows Vista失败的核心原因：本地搜索索引占用50%硬盘和大量CPU——为低频需求支付过高成本。",counter:"为小数据集建复杂索引或为一次性查询排序全量数据——成本远超收益。方法的成本需根据场景和规模决定。"},
+{id:9,name:"随机化与加密",icon:"🎲",brief:"伪随机数解决哈希冲突、实现加密安全——确定性之外的力量",mks:false,long:"随机化将大空间映射到小空间（哈希），用伪随机数减少冲突。公开密钥加密的基础：私钥生成（保密）+公钥验证（公开），基于数学的非对称性——可以验证真伪但无法伪造。",analogy:"酒店房间分配：房间号=直接映射（最理想），但房间有限。随机分配+解决冲突机制=实际可用方案。比特币私钥=你的房间钥匙（丢失则永远无法进入），公钥=前台验证你是否是该房间主人。",example:"1000万姓名→随机函数分配地址→冲突时找最近空位（开放寻址法）。比特币：随机生成256位私钥（2^256种可能，宇宙级安全）→生成公钥用于交易验证。",counter:"用确定性公式分配地址导致严重哈希碰撞——所有数据挤在同几个位置。FUD策略利用人对不确定性的恐惧来影响决策——随机性和不确定性的负面应用。"}
+];
+
+// 10 concepts + 4 MKS stars (concepts 0,1,2,4 are MKS)
+const mksConcepts = concepts.filter(c=>c.mks);
+const allConcepts = concepts;
+
+// Boundary knowledge (15 items)
+const boundary = [
+{name:"图灵机理论极限",scene:"理解AI的能力边界——并非所有问题都可计算"},
+{name:"黎曼猜想",scene:"密码学的数学基础——信息安全的理论支柱"},
+{name:"葛立恒数",scene:"认识数学世界的浩瀚——有限与无限的哲学思考"},
+{name:"拉姆齐理论",scene:"组合数学的深层问题——秩序必然出现的临界点"},
+{name:"布尔代数",scene:"数字电路的理论基础——所有计算最终归约为真假判断"},
+{name:"KMP字符串匹配",scene:"高效文本搜索——一次遍历完成匹配"},
+{name:"卡诺热机极限",scene:"工程优化的边界意识——所有系统都有理论上限"},
+{name:"区块链共识机制",scene:"去中心化信任的技术实现——PoW/PoS/DPoS"},
+{name:"香农信息熵",scene:"信息度量的数学公式——H=-Σp(x)log p(x)"},
+{name:"维特比算法",scene:"通信解码、语音识别、基因测序的通用动态规划"},
+{name:"PCA主成分分析",scene:"高维数据降维——提取最关键信息维度"},
+{name:"蒙特卡洛方法",scene:"随机采样解决确定性难题——AlphaGo的搜索基础"},
+{name:"切比雪夫大数定律",scene:"机器学习的理论保证——数据足够多时模型必然收敛"},
+{name:"NP完全问题",scene:"理解计算复杂度的极限——有些问题注定无法高效求解"},
+{name:"冯·诺依曼架构",scene:"所有现代计算机的底层设计蓝图——存储程序+五大部件"},
+];
+
+// Learning path (5 steps)
+const learnPath = [
+{num:1,title:"量级思维",desc:"先理解大数世界与小数字世界的本质差异——这是所有计算机思维的起点"},
+{num:2,title:"递归与分治",desc:"掌握自顶向下的分解方法论——计算机解决问题的核心模式"},
+{num:3,title:"数据结构与算法",desc:"学习具体工具：二叉树、哈希、堆栈、排序——知识的血肉"},
+{num:4,title:"信息论与等价性",desc:"建立「信息优先于算法」和「找等价问题」的高阶认知框架"},
+{num:5,title:"工程思维与边界",desc:"在理论边界内追求最优解——将科学转化为可用的产品和服务"},
+];
+
+// ======== CHOICE QUESTIONS (20, indices 0-3 evenly distributed 4-6 each) ========
+// Target: each option index appears 4-6 times as correct answer
+// Distribution plan: 0:5, 1:5, 2:5, 3:5
+const mcQuestions = [
+{q:"阿姆达尔法则的核心思想是什么？",opts:["优先优化系统中占用资源最大的瓶颈","尽可能优化系统的每一个部分","只优化成本最低的部分","首先优化最新的技术模块"],ans:0,exp:"阿姆达尔法则公式 S=1/((1-p)+p/s)，p为瓶颈占比。优先解决最大瓶颈才能获得最大整体提升。"},
+{q:"递归思维与人类递推思维的最大区别是什么？",opts:["递归更快","递归不需要终止条件","递归是自顶向下，递推是自底向上","递推只能用于数学"],ans:2,exp:"计算机擅长自顶向下递归（将N!分解为N×(N-1)!），人类天然倾向自底向上递推（1×2×3×...×N）。"},
+{q:"Google搜索90%的改进来自什么？",opts:["模型参数调优","更快的服务器","新信息的发现","更复杂的深度学习模型"],ans:2,exp:"信息优先于算法：新信息源的引入（如主题信息、语义信息）带来质变，参数优化仅能提供边际改进。"},
+{q:"归并排序比冒泡排序高效的根本原因是什么？",opts:["使用了更好的编程语言","通过分治策略避免了大量无效比较","利用了更快的CPU","并行计算"],ans:1,exp:"归并排序通过分治将复杂度从O(N²)降至O(N log N)，本质是避免冗余比较——对100万数据效率差50,000倍。"},
+{q:"「等价性问题」思维的核心价值是什么？",opts:["让问题更简单","消除所有数学计算","把未知复杂问题映射为已知可解问题","使程序运行更快"],ans:2,exp:"语音识别→通信解码、机器翻译→信道传输、基因测序→文字识别——一通百通的智慧在于找到问题的同一数学模型。"},
+{q:"下列哪项是Windows Vista失败的根本原因？",opts:["界面不够美观","不支持中文","价格太贵","为低频搜索需求支付高额索引成本"],ans:3,exp:"本地搜索索引占用50%硬盘和大量CPU，但用户自己管理的文件通过路径查找即可——伪需求无法支撑高成本功能。"},
+{q:"图灵机的核心贡献是什么？",opts:["发明了第一台电子计算机","划定了可计算问题的理论边界","发明了编程语言","创造了互联网"],ans:1,exp:"图灵机是一个数学模型，定义了「通过有限步机械运动可解决的问题」的边界，至今所有计算机未突破此框架。"},
+{q:"高德纳（Knuth）对算法理论的最大贡献是什么？",opts:["发明了快速排序","发明了哈希表","创建了Google","提出算法复杂度的量级分析方法（大O符号体系）"],ans:3,exp:"高德纳提出关注极限数据量的复杂度比较法，区分常数项和变量项，用大O符号科学评判算法优劣——是算法分析的奠基人。"},
+{q:"奥科博士机器翻译突破的关键是什么？",opts:["精通中文和阿拉伯文","使用比学术界多10000倍的数据训练统计模型","发明了新的语法理论","雇佣了更多语言学家"],ans:1,exp:"奥科本人不懂中文和阿拉伯文，但用海量数据+统计模型将翻译水平提升到领先第二名约10年。"},
+{q:"成就公式「成就=成功率×量级×速度」中，哪一项最难突破？",opts:["成功率","速度","量级","三者同样困难"],ans:2,exp:"多数人通过努力可提升成功率和速度，但量级提升需要认知升级——从「讲师」到「校长」、从「写10万支票」到「写最大支票」。"},
+{q:"快速排序在什么情况下会退化到O(N²)？",opts:["数据已排序且枢值选择极端","数据量太小","数据量太大","使用递归实现"],ans:0,exp:"当数据已有序且每次都选第一个（或最后一个）元素为枢值时，快速排序退化为冒泡排序——工程上通过随机选枢值来避免。"},
+{q:"杰夫·迪恩的MapReduce体现的核心算法思想是什么？",opts:["递归","贪心算法","回溯算法","分治算法（Divide and Conquer）"],ans:3,exp:"Map阶段自顶向下分解，Reduce阶段自底向上合并——正是分治策略的工程实现，用廉价服务器集群替代超级计算机。"},
+{q:"AlphaGo从有监督学习转向强化学习的关键突破是什么？",opts:["更大的棋盘","更快的GPU","加入更多围棋规则","引入代理程序通过胜率反馈信号自我对弈"],ans:3,exp:"强化学习通过胜率变化作为反馈信号，让AlphaGo能探索人类从未尝试的走法——脱离了人类棋谱的限制。"},
+{q:"二分查找在13亿人中找1人需要多少次比较？",opts:["约1000次","约31次","约100次","约10次"],ans:1,exp:"2^31≈21亿>13亿，因此最多31次即可从13亿人中找到目标——每次排除一半。"},
+{q:"「先破坏后重建」是哪种计算机思维的核心策略？",opts:["两次反转算法倒置句子","冒泡排序","二分查找","哈希映射"],ans:0,exp:"将句子整体字符反转（破坏单词完整性），再逐个单词内部反转（重建）——零额外空间完成倒置，体现信息重组思维。"},
+{q:"GPS定位如果不校正相对论误差会怎样？",opts:["定位偏差达30公里","完全无法定位","偏差仅几厘米","只能定位到半球"],ans:0,exp:"0.1毫秒的时间误差因光速放大导致30公里偏差。狭义+广义相对论效应若忽略，GPS将毫无实用价值——误差放大5个数量级。"},
+{q:"二叉树的「相对大小比绝对数值更重要」体现在什么应用上？",opts:["天气预报","图像渲染","AlphaGo下棋优先关注相对输赢而非绝对优势","密码破解"],ans:2,exp:"AlphaGo选择稳妥赢2目的走法而非冒险赢20目的走法——计算机科学的核心原则：比较、排序、选择都基于相对关系而非绝对值。"},
+{q:"比特币的私钥丢失后会怎样？",opts:["可以用公钥找回","银行可以挂失","系统会自动重置","资产永久无法找回"],ans:3,exp:"比特币私钥是随机生成的256位数字，作为所有权的唯一凭证——没有私钥等于没有钥匙的保险箱，数学上无法破解。"},
+{q:"「少做事情」是提高效率的本质，下列哪个体现了这一原则？",opts:["将全部数据排序后再取中值","锦标赛排序只让被淘汰过的选手参与后续竞争","为每个任务分配独立的线程","增加冗余计算以保证正确性"],ans:1,exp:"锦标赛排序精准锁定候选范围（第2名仅从直接输给冠军的人中产生），避免无资格者参与后续比赛——不做无用功。"},
+{q:"乔布斯和诺基亚前CEO对产品规划的最大差异是什么？",opts:["选用的芯片不同","乔布斯用计算机思维预见5年后10倍资源增长，诺基亚用线性思维规划","苹果更注重外观设计","诺基亚更注重成本控制"],ans:1,exp:"计算机思维：基于摩尔定律的指数增长框架来规划产品。诺基亚是工业时代线性思维，无法想象10倍性能提升后的产品形态——这是思维方式的代差。"}
+];
+
+// Short answer questions (10)
+const saQuestions = [
+{q:"用你自己的话解释「递归思维」如何应用于项目管理？",ref:"递归核心是自顶向下分解+终止条件。项目管理中：从最终交付日期倒推关键里程碑（倒推工作法），每个里程碑分解为子任务，每层管理者只关心直接下属——避免微观管理。"},
+{q:"为什么「信息优先于算法」？举一个现实例子。",ref:"香农信息论证明：无新信息则不确定性不可消除。例：医生诊断准确率高不是更聪明，而是见过更多病例（更多信息）。Google搜索每次重大改进都源于新信息源（PageRank、语义信息），而非单纯优化旧模型参数。"},
+{q:"阿姆达尔法则和「把事做到极致」是否矛盾？为什么？",ref:"不矛盾。阿姆达尔法则是「当前优先做什么」的原则（动态瓶颈管理），极致是「长期结果」——IT行业通过反复应用阿姆达尔法则，依次解决各瓶颈后最终实现整体极致优化。"},
+{q:"什么是「等价性问题」思维？为什么它是科学和工程的艺术？",ref:"将未知复杂问题映射为已知可解问题的能力——语音识别=通信解码，机器翻译=信道传输，基因测序=文字识别。掌握此思维可实现「一通百通」，避免为每个新问题从头发明方案。"},
+{q:"「在边界内做事」的工程思维如何避免徒劳工作？",ref:"图灵机划定了可计算问题的理论边界，卡诺热机划定了热效率上限。工程思维先确认边界再寻找边界内的最优解——避免试图造永动机或突破光速的徒劳。"},
+{q:"Windows Vista失败的深层商业逻辑是什么？",ref:"本地搜索索引占用50%硬盘和大量CPU，但用户自行管理的文件通过路径即可查找——低频需求无法支撑高成本功能。违背了边际成本趋零的互联网商业模式原则：Google全网搜索由亿级用户均摊成本，而本地搜索成本由单用户独自承担。"},
+{q:"递归和死循环的区别是什么？结合亲密关系举例。",ref:"递归有关键的「终止条件」（base case），死循环没有。在关系中，一方反复承诺改变而另一方无原则原谅，没有设定「再犯即结束」的止损边界——这是有头无尾的死循环而非递归。"},
+{q:"「量级思维」如何影响职业选择？",ref:"成就=成功率×量级×速度。多数人提升20%成功率或速度，但量级提升可达百倍：从「金牌讲师」升级为「校长」（影响100个老师vs影响10000个学生），从「写10万支票」到「写100万支票」（投资规模量级）。"},
+{q:"说明「粗调+精调」在机器学习中的应用。",ref:"模型训练初期用大学习率（粗调）快速收敛到最优区域附近，后期用小学习率（精调）微调至最优点。这与玻璃球测试先用10层步长定位范围再用1层步长精确找到临界层同理。"},
+{q:"TCP/IP协议如何体现计算机模块化思维？",ref:"TCP/IP将通信功能分层：每层只关心与对等层的逻辑通信，不关心上层内容和下层实现。这与递归的「只关心下一层」原则一致——应用层不需知道数据如何在物理介质上传输，物理层不需理解传输内容。"}
+];
+
+// ======== INITIALIZATION ========
+let currentCard = 0;
+let isFlipped = false;
+let examInterval = null;
+let examTimeLeft = 900;
+let currentExam = null;
+
+// Load from localStorage
+function loadData(){
+try{
+let d=JSON.parse(localStorage.getItem('mks_cs_v1')||'{}');
+return{
+learned:d.learned||[],
+wrongIds:d.wrongIds||[],
+mcHistory:d.mcHistory||[],
+saHistory:d.saHistory||[],
+totalAnswered:d.totalAnswered||0,
+totalCorrect:d.totalCorrect||0,
+loginDays:d.loginDays||0,
+lastLogin:d.lastLogin||''
+};
+}catch(e){return{learned:[],wrongIds:[],mcHistory:[],saHistory:[],totalAnswered:0,totalCorrect:0,loginDays:0,lastLogin:''};}
+}
+function saveData(d){
+localStorage.setItem('mks_cs_v1',JSON.stringify(d));
+}
+
+let appData = loadData();
+
+// Track login days
+let today = new Date().toISOString().slice(0,10);
+if(appData.lastLogin !== today){
+appData.loginDays++;
+appData.lastLogin = today;
+saveData(appData);
+}
+
+// ======== TAB NAVIGATION ========
+const tabNames = ['知识集总览','知识卡片','题库系统','考试模式','复习模式','思维导图','苏格拉底问答','案例分析','实战决策'];
+const tabBar = document.getElementById('tabBar');
+tabNames.forEach((name,i)=>{
+let btn = document.createElement('button');
+btn.className = 'tab-btn' + (i===0?' active':'');
+btn.textContent = name;
+btn.onclick = ()=>switchTab(i);
+tabBar.appendChild(btn);
+});
+
+function switchTab(i){
+document.querySelectorAll('.tab-content').forEach((t,j)=>t.classList.toggle('active',j===i));
+document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+if(i===4) renderReview();
+if(i===5) renderMindMap();
+if(i===6) renderSocratic();
+if(i===7) renderCaseStudy();
+if(i===8) renderDecision();
+updateProgress();
+}
+
+// ======== TAB 0: DASHBOARD ========
+function renderDashboard(){
+// Concept grid
+let cg = document.getElementById('conceptGrid');
+cg.innerHTML = allConcepts.map(c=>`
+<div class="concept-card${c.mks?' mks-star':''}">
+<div class="icon">${c.icon}</div>
+<div class="name">${c.name}</div>
+<div class="brief">${c.brief}</div>
+</div>`).join('');
+
+// MKS stars
+let ms = document.getElementById('mksStars');
+ms.innerHTML = mksConcepts.map(c=>`
+<div class="concept-card mks-star">
+<div class="icon">${c.icon}</div>
+<div class="name">${c.name}</div>
+<div class="brief">${c.brief.split('——')[0]}</div>
+<p style="font-size:0.73rem;color:var(--sub);margin-top:6px">${c.brief.split('——')[1]||''}</p>
+</div>`).join('');
+
+// SVG concept map
+let svg = document.getElementById('svgMap');
+svg.innerHTML = `<svg width="503pt" height="464pt"
+ viewBox="0.00 0.00 503.40 464.42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 460.42)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-460.42 499.4,-460.42 499.4,4 -4,4"/>
+<!-- abstract -->
+<g id="node1" class="node">
+<title>abstract</title>
+<ellipse fill="#a0522d" stroke="black" stroke-width="2" cx="162.4" cy="-429.55" rx="62.45" ry="26.74"/>
+<text text-anchor="middle" x="162.4" y="-433.35" font-family="Noto Serif SC" font-size="14.00" fill="white">抽象化建模</text>
+<text text-anchor="middle" x="162.4" y="-418.35" font-family="Noto Serif SC" font-size="14.00" fill="white">核心驱动力</text>
+</g>
+<!-- scale -->
+<g id="node2" class="node">
+<title>scale</title>
+<ellipse fill="#c0392b" stroke="black" cx="162.4" cy="-341.22" rx="74.91" ry="25.41"/>
+<text text-anchor="middle" x="162.4" y="-344.82" font-family="Noto Serif SC" font-size="13.00" fill="white">效率量级</text>
+<text text-anchor="middle" x="162.4" y="-330.82" font-family="Noto Serif SC" font-size="13.00" fill="white">从O(2ⁿ)到O(n)</text>
+</g>
+<!-- abstract&#45;&gt;scale -->
+<g id="edge1" class="edge">
+<title>abstract&#45;&gt;scale</title>
+<path fill="none" stroke="#a0522d" stroke-width="1.8" d="M162.4,-402.65C162.4,-394.6 162.4,-385.59 162.4,-377.03"/>
+<polygon fill="#a0522d" stroke="#a0522d" stroke-width="1.8" points="165.9,-376.92 162.4,-366.92 158.9,-376.92 165.9,-376.92"/>
+</g>
+<!-- recursion -->
+<g id="node3" class="node">
+<title>recursion</title>
+<ellipse fill="#d4890e" stroke="#8b6914" stroke-width="2.5" cx="59.4" cy="-257.14" rx="59.29" ry="22.76"/>
+<text text-anchor="middle" x="59.4" y="-260.34" font-family="Noto Serif SC" font-size="11.00" fill="white">递归思维</text>
+<text text-anchor="middle" x="59.4" y="-248.34" font-family="Noto Serif SC" font-size="11.00" fill="white">自顶向下分解</text>
+</g>
+<!-- scale&#45;&gt;recursion -->
+<g id="edge2" class="edge">
+<title>scale&#45;&gt;recursion</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M133.98,-317.57C121.06,-307.28 105.7,-295.03 92.28,-284.34"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="94.22,-281.41 84.22,-277.92 89.86,-286.89 94.22,-281.41"/>
+</g>
+<!-- divide -->
+<g id="node4" class="node">
+<title>divide</title>
+<ellipse fill="#d4890e" stroke="#8b6914" stroke-width="2.5" cx="289.4" cy="-257.14" rx="72.66" ry="22.76"/>
+<text text-anchor="middle" x="289.4" y="-260.34" font-family="Noto Serif SC" font-size="11.00" fill="white">分治策略</text>
+<text text-anchor="middle" x="289.4" y="-248.34" font-family="Noto Serif SC" font-size="11.00" fill="white">MapReduce范式</text>
+</g>
+<!-- scale&#45;&gt;divide -->
+<g id="edge3" class="edge">
+<title>scale&#45;&gt;divide</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M196.1,-318.44C212.74,-307.68 232.92,-294.64 250.25,-283.44"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="252.52,-286.14 259.02,-277.77 248.72,-280.26 252.52,-286.14"/>
+</g>
+<!-- info -->
+<g id="node5" class="node">
+<title>info</title>
+<ellipse fill="#d4890e" stroke="#8b6914" stroke-width="2.5" cx="152.4" cy="-175.88" rx="59.29" ry="22.76"/>
+<text text-anchor="middle" x="152.4" y="-179.08" font-family="Noto Serif SC" font-size="11.00" fill="white">信息论</text>
+<text text-anchor="middle" x="152.4" y="-167.08" font-family="Noto Serif SC" font-size="11.00" fill="white">消除不确定性</text>
+</g>
+<!-- scale&#45;&gt;info -->
+<g id="edge4" class="edge">
+<title>scale&#45;&gt;info</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M160.9,-315.77C159.16,-287.35 156.28,-240.35 154.36,-209"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="157.83,-208.39 153.73,-198.63 150.85,-208.82 157.83,-208.39"/>
+</g>
+<!-- equivalence -->
+<g id="node6" class="node">
+<title>equivalence</title>
+<ellipse fill="#e8b4b0" stroke="black" stroke-dasharray="5,2" cx="66.4" cy="-94.63" rx="43.68" ry="22.76"/>
+<text text-anchor="middle" x="66.4" y="-97.83" font-family="Noto Serif SC" font-size="11.00">等价迁移</text>
+<text text-anchor="middle" x="66.4" y="-85.83" font-family="Noto Serif SC" font-size="11.00">问题映射</text>
+</g>
+<!-- recursion&#45;&gt;equivalence -->
+<g id="edge5" class="edge">
+<title>recursion&#45;&gt;equivalence</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M60.34,-234.49C61.54,-206.97 63.62,-159.22 65.01,-127.53"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="68.51,-127.59 65.45,-117.44 61.51,-127.28 68.51,-127.59"/>
+</g>
+<!-- datastruct -->
+<g id="node8" class="node">
+<title>datastruct</title>
+<ellipse fill="#f5c6a0" stroke="black" cx="289.4" cy="-175.88" rx="48.58" ry="22.76"/>
+<text text-anchor="middle" x="289.4" y="-179.08" font-family="Noto Serif SC" font-size="11.00">数据结构</text>
+<text text-anchor="middle" x="289.4" y="-167.08" font-family="Noto Serif SC" font-size="11.00">树/堆/哈希</text>
+</g>
+<!-- recursion&#45;&gt;datastruct -->
+<g id="edge6" class="edge">
+<title>recursion&#45;&gt;datastruct</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M102.12,-241.42C141.69,-227.78 200.45,-207.53 241.57,-193.36"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="242.79,-196.64 251.11,-190.08 240.51,-190.03 242.79,-196.64"/>
+</g>
+<!-- amdahl -->
+<g id="node7" class="node">
+<title>amdahl</title>
+<ellipse fill="#e8b4b0" stroke="black" stroke-dasharray="5,2" cx="411.4" cy="-175.88" rx="43.68" ry="22.76"/>
+<text text-anchor="middle" x="411.4" y="-179.08" font-family="Noto Serif SC" font-size="11.00">阿姆达尔</text>
+<text text-anchor="middle" x="411.4" y="-167.08" font-family="Noto Serif SC" font-size="11.00">瓶颈优先</text>
+</g>
+<!-- divide&#45;&gt;amdahl -->
+<g id="edge7" class="edge">
+<title>divide&#45;&gt;amdahl</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M319.87,-236.34C337.09,-225.15 358.69,-211.12 376.59,-199.5"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="378.56,-202.39 385.04,-194.01 374.74,-196.52 378.56,-202.39"/>
+</g>
+<!-- divide&#45;&gt;datastruct -->
+<g id="edge8" class="edge">
+<title>divide&#45;&gt;datastruct</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M289.4,-234.48C289.4,-226.53 289.4,-217.36 289.4,-208.7"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="292.9,-208.51 289.4,-198.51 285.9,-208.51 292.9,-208.51"/>
+</g>
+<!-- info&#45;&gt;equivalence -->
+<g id="edge9" class="edge">
+<title>info&#45;&gt;equivalence</title>
+<path fill="none" stroke="#a0522d" stroke-width="1.3" stroke-dasharray="5,2" d="M130.25,-154.47C119.31,-144.39 105.99,-132.12 94.35,-121.39"/>
+<polygon fill="#a0522d" stroke="#a0522d" stroke-width="1.3" points="96.72,-118.81 86.99,-114.61 91.97,-123.96 96.72,-118.81"/>
+</g>
+<!-- engineering -->
+<g id="node10" class="node">
+<title>engineering</title>
+<ellipse fill="#f5c6a0" stroke="black" cx="192.4" cy="-94.63" rx="43.68" ry="22.76"/>
+<text text-anchor="middle" x="192.4" y="-97.83" font-family="Noto Serif SC" font-size="11.00">工程边界</text>
+<text text-anchor="middle" x="192.4" y="-85.83" font-family="Noto Serif SC" font-size="11.00">约束最优</text>
+</g>
+<!-- info&#45;&gt;engineering -->
+<g id="edge10" class="edge">
+<title>info&#45;&gt;engineering</title>
+<path fill="none" stroke="#a0522d" stroke-width="1.3" stroke-dasharray="5,2" d="M163.33,-153.23C167.58,-144.79 172.54,-134.98 177.14,-125.86"/>
+<polygon fill="#a0522d" stroke="#a0522d" stroke-width="1.3" points="180.38,-127.21 181.76,-116.71 174.13,-124.06 180.38,-127.21"/>
+</g>
+<!-- speech -->
+<g id="node11" class="node">
+<title>speech</title>
+<path fill="#fdf0d5" stroke="black" d="M53.4,-36C53.4,-36 15.4,-36 15.4,-36 9.4,-36 3.4,-30 3.4,-24 3.4,-24 3.4,-12 3.4,-12 3.4,-6 9.4,0 15.4,0 15.4,0 53.4,0 53.4,0 59.4,0 65.4,-6 65.4,-12 65.4,-12 65.4,-24 65.4,-24 65.4,-30 59.4,-36 53.4,-36"/>
+<text text-anchor="middle" x="34.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">语音识别</text>
+<text text-anchor="middle" x="34.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">机器翻译</text>
+</g>
+<!-- equivalence&#45;&gt;speech -->
+<g id="edge14" class="edge">
+<title>equivalence&#45;&gt;speech</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M57.31,-72.44C53.77,-64.18 49.66,-54.6 45.92,-45.86"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="49.04,-44.27 41.88,-36.46 42.61,-47.03 49.04,-44.27"/>
+</g>
+<!-- product -->
+<g id="node15" class="node">
+<title>product</title>
+<path fill="#fdf0d5" stroke="black" d="M235.4,-36C235.4,-36 197.4,-36 197.4,-36 191.4,-36 185.4,-30 185.4,-24 185.4,-24 185.4,-12 185.4,-12 185.4,-6 191.4,0 197.4,0 197.4,0 235.4,0 235.4,0 241.4,0 247.4,-6 247.4,-12 247.4,-12 247.4,-24 247.4,-24 247.4,-30 241.4,-36 235.4,-36"/>
+<text text-anchor="middle" x="216.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">产品设计</text>
+<text text-anchor="middle" x="216.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">投资决策</text>
+</g>
+<!-- equivalence&#45;&gt;product -->
+<g id="edge15" class="edge">
+<title>equivalence&#45;&gt;product</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M97.11,-78.35C119.91,-67 151.22,-51.43 176.04,-39.08"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="177.81,-42.11 185.21,-34.52 174.69,-35.84 177.81,-42.11"/>
+</g>
+<!-- index_search -->
+<g id="node9" class="node">
+<title>index_search</title>
+<ellipse fill="#f5c6a0" stroke="black" cx="374.4" cy="-94.63" rx="45.92" ry="22.76"/>
+<text text-anchor="middle" x="374.4" y="-97.83" font-family="Noto Serif SC" font-size="11.00">索引查找</text>
+<text text-anchor="middle" x="374.4" y="-85.83" font-family="Noto Serif SC" font-size="11.00">二分/哈希</text>
+</g>
+<!-- amdahl&#45;&gt;index_search -->
+<g id="edge11" class="edge">
+<title>amdahl&#45;&gt;index_search</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M401.48,-153.64C397.54,-145.2 392.93,-135.33 388.65,-126.15"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="391.74,-124.51 384.34,-116.92 385.4,-127.47 391.74,-124.51"/>
+</g>
+<!-- optimize -->
+<g id="node12" class="node">
+<title>optimize</title>
+<path fill="#fdf0d5" stroke="black" d="M483.4,-36C483.4,-36 445.4,-36 445.4,-36 439.4,-36 433.4,-30 433.4,-24 433.4,-24 433.4,-12 433.4,-12 433.4,-6 439.4,0 445.4,0 445.4,0 483.4,0 483.4,0 489.4,0 495.4,-6 495.4,-12 495.4,-12 495.4,-24 495.4,-24 495.4,-30 489.4,-36 483.4,-36"/>
+<text text-anchor="middle" x="464.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">系统优化</text>
+<text text-anchor="middle" x="464.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">资源调配</text>
+</g>
+<!-- amdahl&#45;&gt;optimize -->
+<g id="edge16" class="edge">
+<title>amdahl&#45;&gt;optimize</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M419.96,-153.42C426.5,-137.04 434.4,-117.25 434.4,-117.25 434.4,-117.25 447.34,-74.85 456.23,-45.76"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="459.6,-46.7 459.17,-36.11 452.9,-44.66 459.6,-46.7"/>
+</g>
+<!-- datastruct&#45;&gt;index_search -->
+<g id="edge13" class="edge">
+<title>datastruct&#45;&gt;index_search</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M310.41,-155.29C321.22,-145.21 334.54,-132.79 346.23,-121.89"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="348.7,-124.37 353.63,-114.99 343.93,-119.25 348.7,-124.37"/>
+</g>
+<!-- datastruct&#45;&gt;engineering -->
+<g id="edge12" class="edge">
+<title>datastruct&#45;&gt;engineering</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.3" d="M265.92,-155.7C252.98,-145.13 236.77,-131.89 222.87,-120.53"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.3" points="224.95,-117.71 214.99,-114.09 220.52,-123.13 224.95,-117.71"/>
+</g>
+<!-- search_eng -->
+<g id="node13" class="node">
+<title>search_eng</title>
+<path fill="#fdf0d5" stroke="black" d="M366.4,-36C366.4,-36 328.4,-36 328.4,-36 322.4,-36 316.4,-30 316.4,-24 316.4,-24 316.4,-12 316.4,-12 316.4,-6 322.4,0 328.4,0 328.4,0 366.4,0 366.4,0 372.4,0 378.4,-6 378.4,-12 378.4,-12 378.4,-24 378.4,-24 378.4,-30 372.4,-36 366.4,-36"/>
+<text text-anchor="middle" x="347.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">搜索引擎</text>
+<text text-anchor="middle" x="347.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">推荐系统</text>
+</g>
+<!-- datastruct&#45;&gt;search_eng -->
+<g id="edge17" class="edge">
+<title>datastruct&#45;&gt;search_eng</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M294.7,-153.06C302.04,-122.86 314.4,-72 314.4,-72 314.4,-72 322.96,-58.24 331.37,-44.75"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="334.46,-46.4 336.77,-36.06 328.52,-42.7 334.46,-46.4"/>
+</g>
+<!-- index_search&#45;&gt;search_eng -->
+<g id="edge18" class="edge">
+<title>index_search&#45;&gt;search_eng</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M366.59,-72.04C363.63,-63.87 360.23,-54.47 357.12,-45.88"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="360.34,-44.49 353.65,-36.28 353.76,-46.87 360.34,-44.49"/>
+</g>
+<!-- crypto -->
+<g id="node14" class="node">
+<title>crypto</title>
+<path fill="#fdf0d5" stroke="black" d="M144.4,-36C144.4,-36 106.4,-36 106.4,-36 100.4,-36 94.4,-30 94.4,-24 94.4,-24 94.4,-12 94.4,-12 94.4,-6 100.4,0 106.4,0 106.4,0 144.4,0 144.4,0 150.4,0 156.4,-6 156.4,-12 156.4,-12 156.4,-24 156.4,-24 156.4,-30 150.4,-36 144.4,-36"/>
+<text text-anchor="middle" x="125.4" y="-21.2" font-family="Noto Serif SC" font-size="11.00">加密安全</text>
+<text text-anchor="middle" x="125.4" y="-9.2" font-family="Noto Serif SC" font-size="11.00">区块链</text>
+</g>
+<!-- engineering&#45;&gt;crypto -->
+<g id="edge20" class="edge">
+<title>engineering&#45;&gt;crypto</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M174.44,-73.63C166.12,-64.36 156.16,-53.27 147.39,-43.5"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="149.96,-41.12 140.67,-36.02 144.75,-45.8 149.96,-41.12"/>
+</g>
+<!-- engineering&#45;&gt;product -->
+<g id="edge19" class="edge">
+<title>engineering&#45;&gt;product</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" d="M199.34,-72.04C201.97,-63.87 204.99,-54.47 207.75,-45.88"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="211.11,-46.87 210.84,-36.28 204.45,-44.73 211.11,-46.87"/>
+</g>
+<!-- crypto&#45;&gt;product -->
+<g id="edge21" class="edge">
+<title>crypto&#45;&gt;product</title>
+<path fill="none" stroke="#8b6914" stroke-width="1.2" stroke-dasharray="5,2" d="M156.48,-18C159.03,-18 167.64,-18 174.92,-18"/>
+<polygon fill="#8b6914" stroke="#8b6914" stroke-width="1.2" points="174.98,-21.5 184.98,-18 174.98,-14.5 174.98,-21.5"/>
+</g>
+</g>
+</svg>`;
+
+// Boundary table
+document.getElementById('boundaryBody').innerHTML = boundary.map(b=>
+`<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td></tr>`).join('');
+
+// Learning path
+document.getElementById('pathSteps').innerHTML = learnPath.map(s=>
+`<div class="path-step"><span class="num">${s.num}</span><h4>${s.title}</h4><p>${s.desc}</p></div>`).join('');
+
+updateProgress();
+}
+
+function updateProgress(){
+let lpct = appData.learned.length;
+let pct = Math.round(lpct/10*100);
+document.getElementById('progressFill').style.width = pct+'%';
+let cr = appData.totalAnswered>0 ? Math.round(appData.totalCorrect/appData.totalAnswered*100) : '--';
+document.getElementById('progressText').textContent = `已学习 ${lpct}/10 概念 · 正确率 ${cr}% · 持续 ${appData.loginDays} 天`;
+}
+
+// ======== TAB 1: FLIP CARDS ========
+function renderFlipCard(){
+let c = allConcepts[currentCard];
+document.getElementById('flipFront').innerHTML = `<h3>${c.icon} ${c.name}</h3><p class="hint">点击翻转查看四维解析</p>`;
+document.getElementById('flipBack').innerHTML = `
+<h4>📖 定义</h4><p>${c.long}</p>
+<h4>💼 类比（商业/财务场景）</h4><p>${c.analogy}</p>
+<h4>✅ 示例</h4><p>${c.example}</p>
+<h4>❌ 反例</h4><p>${c.counter}</p>`;
+document.getElementById('flipCounter').textContent = (currentCard+1)+'/'+allConcepts.length;
+isFlipped = false;
+document.getElementById('flipCard').classList.remove('flipped');
+}
+
+function flip(){
+let fc = document.getElementById('flipCard');
+isFlipped = !isFlipped;
+fc.classList.toggle('flipped', isFlipped);
+}
+
+function prevCard(e){ e.stopPropagation(); currentCard = (currentCard-1+allConcepts.length)%allConcepts.length; renderFlipCard(); }
+function nextCard(e){ e.stopPropagation(); currentCard = (currentCard+1)%allConcepts.length; renderFlipCard(); }
+
+function markLearned(){
+let cid = allConcepts[currentCard].id;
+if(!appData.learned.includes(cid)){
+appData.learned.push(cid);
+saveData(appData);
+updateProgress();
+}
+}
+
+// ======== TAB 2: QUIZ ========
+let mcAnswered = {};
+let saAnswered = {};
+
+function renderQuiz(){
+let mcHtml = '';
+mcQuestions.forEach((q,i)=>{
+mcHtml += `<div class="card" style="margin-bottom:10px" id="mc-${i}">
+<p><strong>${i+1}.</strong> ${q.q}</p>`;
+q.opts.forEach((o,j)=>{
+mcHtml += `<button class="quiz-option" id="mc-${i}-${j}" onclick="answerMC(${i},${j})">${'ABCD'[j]}. ${o}</button>`;
+});
+mcHtml += `<div class="quiz-feedback" id="mc-fb-${i}" style="display:none"></div></div>`;
+});
+document.getElementById('mcQuestions').innerHTML = mcHtml;
+
+let saHtml = '';
+saQuestions.forEach((q,i)=>{
+saHtml += `<div class="card" style="margin-bottom:10px">
+<p><strong>${i+1}.</strong> ${q.q}</p>
+<textarea class="short-answer-box" id="sa-${i}" placeholder="输入你的回答..."></textarea>
+<button class="btn btn-green mt-12" onclick="checkSA(${i})">对比参考答案</button>
+<div class="quiz-feedback" id="sa-fb-${i}" style="display:none">${q.ref}</div>
+</div>`;
+});
+document.getElementById('saQuestions').innerHTML = saHtml;
+
+// Restore state
+Object.keys(mcAnswered).forEach(k=>{
+let btn = document.getElementById('mc-'+k);
+let fb = document.getElementById('mc-fb-'+k);
+if(btn && fb && mcAnswered[k]!==undefined){
+let ans = mcAnswered[k];
+let correct = mcQuestions[parseInt(k)].ans;
+let btns = document.querySelectorAll('#mc-'+k+' .quiz-option');
+btns.forEach(b=>b.disabled=true);
+if(btns[ans]) btns[ans].classList.add(ans===correct?'correct':'wrong');
+if(btns[correct]) btns[correct].classList.add('correct');
+fb.style.display='block';
+fb.innerHTML = ans===correct ? '<span style="color:var(--green)">✓ 正确！</span>' : '<span style="color:var(--accent)">✗ 错误。</span> '+mcQuestions[parseInt(k)].exp;
+}
+});
+}
+
+function answerMC(qi,ans){
+if(mcAnswered[qi]!==undefined) return;
+mcAnswered[qi] = ans;
+let q = mcQuestions[qi];
+let correct = q.ans;
+let btns = document.querySelectorAll('#mc-'+qi+' .quiz-option');
+btns.forEach(b=>b.disabled=true);
+btns[ans].classList.add(ans===correct?'correct':'wrong');
+if(ans!==correct) btns[correct].classList.add('correct');
+let fb = document.getElementById('mc-fb-'+qi);
+fb.style.display='block';
+fb.innerHTML = ans===correct ? '<span style="color:var(--green)">✓ 正确！</span>' : '<span style="color:var(--accent)">✗ 错误。</span> '+q.exp;
+
+appData.totalAnswered++;
+if(ans===correct) appData.totalCorrect++;
+else appData.wrongIds.push('mc-'+qi);
+appData.mcHistory.push({qi,ans,correct:ans===correct,ts:Date.now()});
+saveData(appData);
+updateProgress();
+}
+
+function checkSA(i){
+let fb = document.getElementById('sa-fb-'+i);
+fb.style.display = fb.style.display==='none'?'block':'none';
+if(fb.style.display==='block'){
+appData.saHistory.push({i,ts:Date.now()});
+saveData(appData);
+}
+}
+
+// ======== TAB 3: EXAM MODE ========
+function startExam(){
+document.getElementById('startExamBtn').style.display='none';
+document.getElementById('examResult').style.display='none';
+let ec = document.getElementById('examContent');
+ec.style.display='block';
+// Pick 7 MC + 3 SA randomly
+let mcPool = [...Array(20).keys()].sort(()=>Math.random()-0.5).slice(0,7);
+let saPool = [...Array(10).keys()].sort(()=>Math.random()-0.5).slice(0,3);
+currentExam = {mc:mcPool, sa:saPool, mcAns:{}, startTime:Date.now(), submitted:false};
+examTimeLeft = 900;
+updateExamTimer();
+if(examInterval) clearInterval(examInterval);
+examInterval = setInterval(()=>{
+examTimeLeft--;
+updateExamTimer();
+if(examTimeLeft<=0) submitExam();
+},1000);
+
+let html = '';
+mcPool.forEach((qi,i)=>{
+let q = mcQuestions[qi];
+html += `<div class="card" style="margin-bottom:8px"><p><strong>${i+1}.</strong> ${q.q}</p>`;
+q.opts.forEach((o,j)=>{
+html += `<button class="quiz-option" id="ex-mc-${qi}-${j}" onclick="examAnswerMC('${qi}',${j})">${'ABCD'[j]}. ${o}</button>`;
+});
+html += `</div>`;
+});
+saPool.forEach((qi,i)=>{
+html += `<div class="card" style="margin-bottom:8px"><p><strong>${i+7+1}.</strong> ${saQuestions[qi].q}</p><textarea class="short-answer-box" id="ex-sa-${qi}"></textarea></div>`;
+});
+html += `<button class="btn btn-primary mt-12" onclick="submitExam()">提交答卷</button>`;
+ec.innerHTML = html;
+}
+
+function updateExamTimer(){
+let m = Math.floor(examTimeLeft/60);
+let s = examTimeLeft%60;
+document.getElementById('examTimer').textContent = m+':'+(s<10?'0':'')+s;
+if(examTimeLeft<60) document.getElementById('examTimer').style.color='#c0392b';
+}
+
+function examAnswerMC(qi,ans){
+if(currentExam.submitted) return;
+currentExam.mcAns[qi] = ans;
+let btns = document.querySelectorAll('#ex-mc-'+qi+'-\\d+');
+document.querySelectorAll('[id^="ex-mc-'+qi+'-"]').forEach(b=>{
+b.style.background='var(--card)';
+b.style.color='var(--text)';
+});
+let btn = document.getElementById('ex-mc-'+qi+'-'+ans);
+if(btn){ btn.style.background='var(--accent)'; btn.style.color='#fff'; }
+}
+
+function submitExam(){
+if(currentExam.submitted) return;
+currentExam.submitted = true;
+if(examInterval){ clearInterval(examInterval); examInterval=null; }
+let score = 0;
+let details = '';
+currentExam.mc.forEach(qi=>{
+let userAns = currentExam.mcAns[qi];
+let q = mcQuestions[qi];
+let correct = q.ans;
+if(userAns===correct) score += 10;
+else{
+details += `<p style="color:var(--accent)">第${currentExam.mc.indexOf(qi)+1}题: 你的答案 ${userAns!==undefined?'ABCD'[userAns]:'未答'}，正确答案 ${'ABCD'[correct]}。${q.exp}</p>`;
+appData.wrongIds.push('mc-'+qi);
+}
+});
+// SA: self-evaluated, give 5 each
+score += currentExam.sa.length * 5;
+details += `<p style="margin-top:8px">简答题部分：每题5分（自评），共${currentExam.sa.length*5}分。</p>`;
+currentExam.sa.forEach(qi=>{
+details += `<p>简答参考：${saQuestions[qi].ref.substring(0,120)}...</p>`;
+});
+
+appData.totalAnswered += currentExam.mc.length;
+let mcCorrect = currentExam.mc.filter(qi=>currentExam.mcAns[qi]===mcQuestions[qi].ans).length;
+appData.totalCorrect += mcCorrect;
+saveData(appData);
+
+let er = document.getElementById('examResult');
+er.style.display='block';
+er.innerHTML = `<div class="card"><h2>考试成绩</h2>
+<p style="font-size:clamp(1.5rem,3vw,2rem);color:var(--accent);text-align:center;font-weight:700">${score}/100</p>
+<p style="text-align:center">选择题正确 ${mcCorrect}/7 | 简答 ${currentExam.sa.length} 题</p>
+<div style="margin-top:12px">${details}</div>
+</div>`;
+updateProgress();
+}
+
+// ======== TAB 4: REVIEW ========
+function renderReview(){
+// Wrong book
+let wb = document.getElementById('wrongBook');
+let wrongMC = appData.wrongIds.filter(id=>id.startsWith('mc-')).map(id=>parseInt(id.replace('mc-','')));
+let unique = [...new Set(wrongMC)];
+if(unique.length===0) wb.innerHTML = '<p style="color:var(--sub)">暂无错题，继续保持！</p>';
+else{
+wb.innerHTML = unique.map(qi=>{
+let q = mcQuestions[qi];
+return `<div class="card" style="margin-bottom:8px">
+<p><strong>${qi+1}.</strong> ${q.q}</p>
+<p style="color:var(--green)">正确答案：${'ABCD'[q.ans]}. ${q.opts[q.ans]}</p>
+<p style="color:var(--sub);font-size:0.82rem">${q.exp}</p>
+</div>`;
+}).join('');
+}
+
+// Weak analysis
+let wa = document.getElementById('weakAnalysis');
+let conceptErrors = {};
+allConcepts.forEach(c=>conceptErrors[c.name]=0);
+unique.forEach(qi=>{
+// Map question to concepts based on content
+let q = mcQuestions[qi];
+let qtext = q.q+q.exp;
+allConcepts.forEach(c=>{
+if(qtext.includes(c.name) || qtext.includes(c.name.substring(0,2))) conceptErrors[c.name]++;
+});
+});
+let sorted = Object.entries(conceptErrors).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+if(sorted.length===0) wa.innerHTML = '<p style="color:var(--sub)">无薄弱概念数据，完成更多题目后自动分析。</p>';
+else{
+wa.innerHTML = '<div class="boundary-table"><table><thead><tr><th>概念</th><th>关联错题数</th><th>建议</th></tr></thead><tbody>'+
+sorted.map(([name,cnt])=>`<tr><td><strong>${name}</strong></td><td>${cnt}</td><td>重新阅读知识卡片并完成相关选择题</td></tr>`).join('')
++'</tbody></table></div>';
+}
+
+// Stats
+document.getElementById('statsGrid').innerHTML = `
+<div class="stat-item"><div class="value">${appData.totalAnswered}</div><div class="label">总答题数</div></div>
+<div class="stat-item"><div class="value">${appData.totalAnswered>0?Math.round(appData.totalCorrect/appData.totalAnswered*100):'--'}%</div><div class="label">正确率</div></div>
+<div class="stat-item"><div class="value">${appData.loginDays}</div><div class="label">学习天数</div></div>
+<div class="stat-item"><div class="value">${appData.learned.length}/10</div><div class="label">概念掌握</div></div>
+<div class="stat-item"><div class="value">${unique.length}</div><div class="label">待复习错题</div></div>
+`;
+}
+
+// ======== TAB 5: MIND MAP ========
+function renderMindMap(){
+let mm = document.getElementById('mindMap');
+mm.innerHTML = `
+<div class="tree-node">
+<span class="tree-toggle open" onclick="toggleTree(this)">🌐 计算机思维（核心方法论体系）</span>
+<div class="tree-children show">
+<div class="tree-node">
+<span class="tree-toggle open" onclick="toggleTree(this)">🔄 思维方式层</span>
+<div class="tree-children show">
+<div class="tree-node"><span>递归思维 — 自顶向下、终止条件、堆栈实现</span></div>
+<div class="tree-node"><span>分治策略 — 拆解→解决→合并、MapReduce范式</span></div>
+<div class="tree-node"><span>等价性问题 — 未知→已知映射、一通百通</span></div>
+<div class="tree-node"><span>量级思维 — 芝麻vs西瓜、大数世界方法论</span></div>
+<div class="tree-node"><span>信息论思维 — 信息消除不确定性、信息>算法</span></div>
+</div>
+</div>
+<div class="tree-node">
+<span class="tree-toggle open" onclick="toggleTree(this)">⚙️ 工具方法层</span>
+<div class="tree-children show">
+<div class="tree-node"><span>数据结构 — 数组/链表/树/堆栈/哈希表</span></div>
+<div class="tree-node"><span>算法 — 排序(快速/归并/锦标赛)/查找(二分/哈希)/动态规划</span></div>
+<div class="tree-node"><span>复杂度分析 — 大O符号、量级比较、NP问题</span></div>
+<div class="tree-node"><span>索引技术 — 编号→索引→查找、全文索引</span></div>
+<div class="tree-node"><span>随机化 — 哈希冲突解决、加密、区块链</span></div>
+</div>
+</div>
+<div class="tree-node">
+<span class="tree-toggle open" onclick="toggleTree(this)">🔧 工程实践层</span>
+<div class="tree-children show">
+<div class="tree-node"><span>阿姆达尔法则 — 瓶颈识别、动态优化、全局平衡</span></div>
+<div class="tree-node"><span>工程vs科学 — 量级突破vs细节优化、边界内做事</span></div>
+<div class="tree-node"><span>粗调+精调 — 大步定位+小步精准、MVP策略</span></div>
+<div class="tree-node"><span>时空权衡 — 空间换时间(哈希/缓存)、成本性价比</span></div>
+<div class="tree-node"><span>规模效应 — 小数据方法≠大数据方法、分布式系统</span></div>
+</div>
+</div>
+<div class="tree-node">
+<span class="tree-toggle open" onclick="toggleTree(this)">🎯 现实应用层</span>
+<div class="tree-children show">
+<div class="tree-node"><span>个人决策 — 成就公式、倒推工作法、职业量级</span></div>
+<div class="tree-node"><span>组织管理 — 递归授权、分治分工、顶层设计</span></div>
+<div class="tree-node"><span>商业战略 — 避免阿姆达尔陷阱、边缘创新、生态联盟</span></div>
+<div class="tree-node"><span>产品设计 — 边界内整体优化、不做基础研究、苹果vs微软</span></div>
+<div class="tree-node"><span>投资思维 — 数据壁垒>技术壁垒、量级决定回报、复利效应</span></div>
+</div>
+</div>
+</div>
+</div>`;
+}
+
+function toggleTree(el){
+el.classList.toggle('open');
+let children = el.nextElementSibling;
+if(children) children.classList.toggle('show');
+}
+
+// ======== TAB 6: SOCRATIC QA ========
+function renderSocratic(){
+let sq = document.getElementById('socraticQA');
+let qas = [
+{concept:"递归思维",qs:[
+{q:"递归和简单的重复有什么区别？",a:"递归有「终止条件」（base case）——当问题缩小到最基本单元时停止。没有终止条件的重复是死循环。就像「山上有座庙」的故事没有结局，而阶乘N!有明确的终止点0!=1。"},
+{q:"为什么说递归是计算机思维和人类思维最大的不同？",a:"人类天生习惯自底向上递推（1×2×3...），计算机擅长自顶向下递归（N!=N×(N-1)!）。这种差异源于计算机的堆栈机制可以自动管理层层展开和回溯，而人脑的短期记忆难以追踪多层嵌套。"},
+{q:"如果用递归管理一个团队，具体怎么做？",a:"每一层管理者只管理直接下属（只关心下一层），将相同的管理动作复制到各层。CEO不需要知道基层员工在做什么——这和递归「假设N-1层已解决，只需处理第N层」的逻辑完全一致。"}
+]},
+{concept:"量级思维",qs:[
+{q:"为什么小数字世界的经验在大数世界会失效？",a:"10双鞋可以随意摆放，10000双鞋必须建索引系统。当规模跨越量级临界点后，问题的性质改变了——排序100个数字用任何算法都可以，排序1亿个数字时差算法比好算法慢百万倍。"},
+{q:"量级提升和日常勤奋有什么区别？",a:"勤奋是线性改进（多做1%、再努力一点），量级提升是阶跃——从「讲师」到「校长」，从「写10万支票」到「写100万支票」。前者是30%的提升，后者是1000%的扩展。俞敏洪不是靠更努力讲课成功的，而是靠转型为校长。"},
+{q:"如何识别自己陷入了「小数字思维」？",a:"三个信号：①做大决策时纠结于芝麻级别的性价比差异；②用管理10人团队的方法管理100人团队；③把偶然一次的成功当成可复制的规律——这些都是线性外推的陷阱。"}
+]},
+{concept:"信息论",qs:[
+{q:"为什么说「信息比算法更重要」？",a:"香农从数学上证明：没有新信息，不确定性无法消除。Google搜索90%的改进来自发现新的信息源（如网页被引次数、语义搭配规律），而不是优化已有模型的参数——信息是原材料，算法是加工方法，没有好材料再好的加工也做不出好产品。"},
+{q:"如果我是一家传统企业，如何用信息思维找到竞争优势？",a:"你积累的行业专属数据（客户交易记录、供应链参数、设备运行数据）就是别人没有的「新信息源」——这是金饭碗。数字化转型的核心不是买最贵的软件，而是把已有的行业数据结构化、可计算化。"},
+{q:"大数据和「信息消除不确定性」的关系是什么？",a:"大数据提供了海量的新信息，从而能消除传统方法无法消除的不确定性。如个性化制药：过去分析几千病例找不到的规律，分析百万人的基因数据就能发现——这是量变到质变。"}
+]},
+{concept:"等价性问题",qs:[
+{q:"怎么训练「找等价问题」的能力？",a:"三步法：①抽象本质——这个问题的数学结构是什么？（是图的最短路径？是概率估计？是分类问题？）②寻找已知解——哪个成熟领域已经解决了这个结构？③迁移验证——已知方案在约束条件下是否可迁移？奥科把机器翻译抽象为通信解码问题，然后直接套用信息论的全部工具。"},
+{q:"为什么说等价性思维是「一通百通」的关键？",a:"因为世界上的问题类型远少于具体问题数量。迷宫寻路、网页爬虫、社交网络找朋友、地铁换乘——本质都是图的路径搜索。掌握了图的遍历算法，这四个领域你都会了。不是学了四样东西，是学了一样东西看到了四个维度。"}
+]},
+{concept:"工程思维",qs:[
+{q:"「边界内做事」听起来保守，和创新的关系是什么？",a:"边界是科学的结论，不是人的限制。真正的创新发生在知道边界之后——就像知道光速不可超越后，物理学在相对论框架内实现了巨大创新。不知道边界而去「突破」，往往是在造永动机。苹果的成功不是突破了触屏技术的上限，而是在已知成熟技术边界内做到了整体最优的整合。"},
+{q:"科学和工程最大的分歧在哪？",a:"科学追求100倍量级突破（如发明新算法），工程追求在约束下做到可用（如将内存从20MB优化到3MB）。前者关注「有没有」，后者关注「好不好」。很多教授创业失败就是因为用科学思维做工程——追求算法优雅而忽视产品稳定性。"}
+]},
+{concept:"阿姆达尔法则",qs:[
+{q:"阿姆达尔法则的最大误区是什么？",a:"以为「一次性解决所有瓶颈」。实际上瓶颈是动态转移的——优化完CPU后内存变成新瓶颈，优化完内存后I/O变成新瓶颈。法则的精髓是持续识别当前最大瓶颈并优先投入资源。"},
+{q:"用阿姆达尔法则分析一个人的职业发展瓶颈。",a:"先量化度量——当前限制你晋升的主要因素是什么？p=60%是技术深度不足还是p=30%是沟通表达不足？如果技术是60%瓶颈，学再多管理课程（仅占10%瓶颈）对晋升帮助有限。解决当前最大瓶颈后再重新评估。"}
+]}
+];
+sq.innerHTML = qas.map(item=>`
+<div class="card" style="margin-bottom:12px">
+<h3>${item.concept}</h3>
+${item.qs.map((qa,i)=>`
+<div class="socratic-q">
+<div class="question" onclick="this.nextElementSibling.classList.toggle('show')">Q${i+1}: ${qa.q}</div>
+<div class="answer">${qa.a}</div>
+</div>`).join('')}
+</div>`).join('');
+}
+
+// ======== TAB 7: CASE STUDY ========
+function renderCaseStudy(){
+document.getElementById('caseStudy').innerHTML = `
+<div class="case-section">
+<h4>📋 背景</h4>
+<p>2016年3月，AlphaGo以4:1战胜世界围棋冠军李世石。这不仅是围棋的里程碑，更是计算机思维从「模拟人类」到「超越人类」的范式转变。</p>
+</div>
+<div class="case-section">
+<h4>🧩【核心概念】AlphaGo涉及的计算思维</h4>
+<p>① <strong>等价性问题</strong>：围棋被抽象为「给定棋盘状态，选择胜率最高的落子」——一个数学优化问题，而非直觉艺术。</p>
+<p>② <strong>分治策略</strong>：蒙特卡洛树搜索将棋局分解为无数模拟对局，每局独立计算出胜率，最后合并决策。</p>
+<p>③ <strong>强化学习</strong>（递归+反馈）：通过自我对弈产生海量数据，胜率变化作为反馈信号——这是「边做边学」的计算实现。</p>
+<p>④ <strong>粗调+精调</strong>：策略网络（粗调，快速筛选候选落子）→ 价值网络（精调，精确评估局面胜率）→ 蒙特卡洛搜索（进一步精调验证）。</p>
+</div>
+<div class="case-section">
+<h4>📖【概念关系】如何协同作用</h4>
+<p>等价性思维将围棋转化为数学问题 → 分治策略将棋盘拆解为局部搜索 → 递归+强化学习让程序在自我对弈中不断提升 → 粗调+精调分层筛选出最优落子。这四层环环相扣，缺少任何一环都无法达到超越人类的水平。</p>
+</div>
+<div class="case-section">
+<h4>★【MKS最简核心】一个公式总结</h4>
+<p style="font-size:1.1rem;text-align:center;padding:12px;background:var(--light);border-radius:8px"><strong>AlphaGo = 等价抽象(围棋→数学优化) + 分治(蒙特卡洛树) + 递归反馈(强化学习) + 粗调精调(双网络)</strong></p>
+</div>
+<div class="case-section">
+<h4>🌐【边界知识】知道但不需深究</h4>
+<p>蒙特卡洛树搜索的具体实现、卷积神经网络架构细节、TPU硬件加速方案、DeepMind团队的分布式训练系统。</p>
+</div>`;
+}
+
+// ======== TAB 8: DECISION SIM ========
+let decisionRound = 0;
+let decisionState = {};
+
+function renderDecision(){
+decisionRound = 0;
+decisionState = {};
+let ds = document.getElementById('decisionSim');
+ds.innerHTML = `
+<div id="decision-scenario">
+<div class="card">
+<h3>第1轮：技术架构选择</h3>
+<p>你是一家创业公司的CTO，需要选择一个核心技术栈来构建产品。你的产品预计初期1000用户，但目标是6个月内增长到100万用户。</p>
+<p><strong>你会选择？</strong></p>
+<button class="decision-option" onclick="makeDecision(0,0)">A. 用最快上手的框架快速上线，业务验证后再考虑扩展</button>
+<button class="decision-option" onclick="makeDecision(0,1)">B. 从一开始就设计可扩展的分布式架构，预留100万用户容量</button>
+<button class="decision-option" onclick="makeDecision(0,2)">C. 选用行业内验证过的最成熟方案，先把产品做好再谈规模</button>
+<div class="decision-feedback" id="decision-fb-0"></div>
+</div></div>`;
+}
+
+function makeDecision(round,choice){
+let fb = document.getElementById('decision-fb-'+round);
+if(fb.classList.contains('show')) return;
+fb.classList.add('show');
+let feedbacks = {
+'0-0':'<p style="color:var(--accent)">⚠️ <strong>小数字思维陷阱</strong>：1000到100万是3个数量级的跃迁。快速上线的框架在小规模表现好，但可能在大数据量下崩溃——这正是本文反复警告的「小数字方法的局限性」。最优策略是B或C的折中——使用已验证的成熟方案但保留扩展接口。</p><p style="color:var(--green)">【MKS分析】量级思维：不同规模需要不同的技术方案，不能线性外推。</p>',
+'0-1':'<p style="color:var(--green)">✓ <strong>量级思维正确，但需注意工程约束</strong>：你理解了规模变化需要不同架构，这正是计算机思维的核心。但需要注意：过度设计会让早期产品开发速度变慢——折中方案是使用支持水平扩展的成熟框架，而非从零构建分布式系统。</p><p style="color:var(--green)">【MKS分析】工程思维：在理论边界（可扩展性）与实际约束（开发速度）间找最优解。</p>',
+'0-2':'<p style="color:var(--green)">✓ <strong>务实的选择，接近最优</strong>：选用行业验证方案是最稳妥的路径——你不会重复别人的错误。确保所选方案本身支持扩展（如支持分库分表、缓存层等），这样就兼顾了「快速上线」和「规模扩展」。</p><p style="color:var(--green)">【MKS分析】信息论思维：利用行业已验证的信息（最佳实践）消除技术选型的不确定性。</p>'
+};
+fb.innerHTML = feedbacks[round+'-'+choice] || '';
+decisionState[round] = choice;
+fb.innerHTML += '<button class="btn btn-primary mt-12" onclick="nextDecision()">下一轮</button>';
+}
+
+function nextDecision(){
+let ds = document.getElementById('decisionSim');
+let nextRound = Object.keys(decisionState).length;
+if(nextRound >= 3){
+ds.innerHTML += `<div class="card" style="margin-top:16px;text-align:center">
+<h3>🎯 三轮决策完成</h3>
+<p>你经历了从技术选型到战略定位的完整决策链。</p>
+<p style="color:var(--accent);font-weight:700">核心收获：每一轮决策的背后都是「量级思维」「信息论」「等价性」「工程边界」的组合运用——这不是单一技巧，而是一套完整的思维操作系统。</p>
+<button class="btn btn-primary" onclick="renderDecision()">重新开始</button>
+</div>`;
+return;
+}
+let scenarios = [
+{title:'第2轮：人才战略决策',desc:'你的公司从10人扩张到100人，需要招聘一位技术副总裁。你面试了两位候选人：<br>A. 一位在BAT有10年管理经验的技术VP，但要求的薪资会吃掉你1/3的预算。<br>B. 一位在大厂做了3年技术主管的年轻工程师，薪资只需A的1/4，潜力大但管理经验不足。',opts:['A. 选择经验丰富的VP，虽然贵但能搭好架构避免弯路','B. 选择年轻主管，给他机会成长，用低成本博高回报','C. 先不招VP，自己继续兼任，等公司再大一些再说']},
+{title:'第3轮：商业模式决策',desc:'你的产品有两种变现路径：<br>A. 面向C端做大规模，依靠广告和增值服务（需要先烧钱获取亿级用户）。<br>B. 面向B端做企业服务，每单收入高但增速慢（年增长50%）。<br>你的资源只够选一条路。',opts:['A. C端路线——量大才能产生质变，量级决定天花板','B. B端路线——稳健增长，先活下来再谈理想','C. 两条腿走路——C端做品牌引流，B端做利润生存']}
+];
+if(nextRound < scenarios.length){
+let s = scenarios[nextRound];
+let html = `<div class="card"><h3>${s.title}</h3><p>${s.desc}</p><p><strong>你会选择？</strong></p>`;
+s.opts.forEach((o,i)=>{ html += `<button class="decision-option" onclick="makeDecision(${nextRound},${i})">${o}</button>`; });
+html += `<div class="decision-feedback" id="decision-fb-${nextRound}"></div></div>`;
+ds.innerHTML += html;
+}
+}
+
+// ======== INIT ========
+renderDashboard();
+renderFlipCard();
+renderQuiz();
+renderMindMap();
+renderSocratic();
+renderCaseStudy();
+renderDecision();
+
+// Verify answer distribution
+let ansDist = [0,0,0,0];
+mcQuestions.forEach(q=>ansDist[q.ans]++);
+console.log('Answer distribution (0-3):', ansDist, 'Total:', ansDist.reduce((a,b)=>a+b));
+
+updateProgress();
+</script>
+</body>
+</html>

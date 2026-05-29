@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发明与创新 · 最小知识集 | GPU并行探索</title>
+<style>
+:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#e67e22;--text:#3d2f2f;--muted:#8b7355;--border:#e8d5c4;--gold:#d4a017;--green:#27ae60;--blue:#2980b9;--purple:#8e44ad}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+header{background:linear-gradient(135deg,#c0392b,#a93226);color:#fff;padding:clamp(16px,3vw,28px) 0;text-align:center;position:relative}
+header h1{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:700}
+header .sub{font-size:clamp(0.78rem,2vw,0.9rem);opacity:.85;margin-top:4px}
+.home-link{position:absolute;left:clamp(8px,2vw,20px);top:50%;transform:translateY(-50%);color:#fff;text-decoration:none;font-size:.85rem;padding:6px 12px;border:1px solid rgba(255,255,255,.4);border-radius:6px;transition:all .2s}
+.home-link:hover{background:rgba(255,255,255,.15)}
+.tab-nav{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:6px clamp(8px,2vw,16px);overflow-x:auto}
+.tab-btn{padding:7px 13px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:clamp(0.72rem,1.5vw,0.82rem);border-radius:6px;white-space:nowrap;transition:all .2s;font-family:inherit}
+.tab-btn:hover{background:var(--border);color:var(--text)}
+.tab-btn.active{background:var(--accent);color:#fff;font-weight:600}
+.tab-panel{display:none;padding:clamp(14px,3vw,28px) 0;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:12px;padding:clamp(14px,2.5vw,22px);box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--border);margin-bottom:18px}
+.card h3{color:var(--accent);font-size:clamp(0.95rem,2vw,1.1rem);margin-bottom:10px}
+.star-badge{display:inline-block;background:var(--gold);color:#fff;padding:2px 8px;border-radius:4px;font-size:.72rem;margin-left:6px;vertical-align:middle}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:14px 0}
+.concept-card{background:var(--card);border:2px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;position:relative}
+.concept-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(192,57,43,.1)}
+.concept-card.mks{border-color:var(--gold);background:linear-gradient(135deg,#fffdf5,#fffaf2)}
+.concept-card .num{position:absolute;top:8px;right:10px;font-size:.7rem;color:var(--muted)}
+.concept-card h4{font-size:.9rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.8rem;color:var(--muted);line-height:1.5}
+.progress-wrap{margin:16px 0}
+.progress-label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:4px}
+.progress-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:5px;transition:width .5s}
+.btn{display:inline-block;padding:8px 18px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-family:inherit;transition:all .2s}
+.btn:hover{opacity:.9;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:5px 12px;font-size:.75rem}
+.btn-gold{background:var(--gold)}
+.svg-wrap{overflow-x:auto;margin:16px 0;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+.flip-card{perspective:1000px;width:100%;max-width:480px;margin:20px auto;min-height:280px}
+.flip-inner{position:relative;width:100%;min-height:280px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;min-height:280px;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center}
+.flip-front{background:linear-gradient(135deg,var(--accent),#922b21);color:#fff;font-size:1.3rem;font-weight:700;z-index:2}
+.flip-back{background:var(--card);border:2px solid var(--border);transform:rotateY(180deg);text-align:left;align-items:flex-start;font-size:.82rem;line-height:1.6}
+.flip-back .dim{color:var(--accent);font-weight:600;margin-top:6px;font-size:.78rem}
+.flip-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0}
+.flip-nav .page-info{font-size:.82rem;color:var(--muted)}
+.quiz-option{padding:10px 14px;margin:6px 0;background:var(--bg);border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.85rem}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f5}
+.quiz-option.correct{border-color:var(--green);background:#eafaf1}
+.quiz-option.wrong{border-color:var(--accent);background:#fdedec}
+.quiz-option.show-correct{border-color:var(--green);background:#eafaf1}
+.timer{font-size:1.1rem;font-weight:700;color:var(--accent);text-align:center;margin:10px 0}
+.short-answer-input{width:100%;min-height:80px;padding:10px;border:2px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem;resize:vertical;background:var(--bg)}
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0}
+.stat-item{flex:1;min-width:120px;background:var(--card);border-radius:10px;padding:16px;text-align:center;border:1px solid var(--border)}
+.stat-item .val{font-size:1.6rem;font-weight:700;color:var(--accent)}
+.stat-item .lbl{font-size:.75rem;color:var(--muted);margin-top:4px}
+.tree,.tree ul{list-style:none;padding-left:20px}
+.tree li{position:relative;padding:4px 0}
+.tree .toggle{cursor:pointer;color:var(--accent);font-weight:700;margin-right:4px;user-select:none}
+.tree .toggle::before{content:'▸ ';display:inline-block;transition:transform .2s;font-size:.75rem}
+.tree .toggle.open::before{transform:rotate(90deg)}
+.tree .children{display:none}
+.tree .children.open{display:block}
+.socratic-q{background:var(--card);border-left:4px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;cursor:pointer}
+.socratic-q .q{font-weight:600;color:var(--accent);font-size:.88rem}
+.socratic-a{display:none;padding:10px 14px;background:var(--bg);border-radius:0 0 8px 8px;margin-top:-2px;font-size:.82rem;line-height:1.7}
+.socratic-a.open{display:block}
+.decision-option{padding:12px 16px;margin:8px 0;background:var(--bg);border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s}
+.decision-option:hover{border-color:var(--accent2)}
+.decision-feedback{margin-top:10px;padding:12px;background:#fff5e6;border-radius:8px;font-size:.84rem;display:none}
+.boundary-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.boundary-table td,.boundary-table th{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.boundary-table th{color:var(--accent);font-weight:600;font-size:.78rem}
+.stage-path{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.stage-item{flex:1;min-width:140px;padding:14px;background:var(--card);border-radius:8px;border:1px solid var(--border);text-align:center;position:relative}
+.stage-item .stage-num{background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;margin-bottom:6px}
+.stage-item h5{font-size:.82rem;color:var(--accent)}
+.stage-item p{font-size:.72rem;color:var(--muted);margin-top:4px}
+.stage-arrow{display:flex;align-items:center;color:var(--accent);font-size:1.2rem;font-weight:700}
+footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border);margin-top:28px}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;margin:2px;background:var(--bg);border:1px solid var(--border);color:var(--muted)}
+.tag.hot{background:#ffeaea;color:var(--accent);border-color:var(--accent)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:14px;padding:28px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal h3{color:var(--accent);margin-bottom:14px}
+@media(max-width:640px){
+.flip-nav{flex-wrap:wrap}
+.stage-arrow{display:none}
+.grid2{grid-template-columns:1fr}
+.grid3{grid-template-columns:1fr 1fr}
+.stat-row{flex-direction:column}
+}
+.entry-chip{display:inline-block;background:rgba(255,255,255,.2);color:#fff;text-decoration:none;padding:4px 10px;border-radius:14px;font-size:.72rem;margin-top:8px;border:1px solid rgba(255,255,255,.3)}
+</style>
+</head>
+<body>
+
+<header>
+<a href="#" class="home-link" title="返回首页">&#8592; 首页</a>
+<h1>发明与创新 · 最小知识集</h1>
+<div class="sub">GPU 并行探索：从多条路径同时探索「如何从 0 到 1」</div>
+<div><span class="entry-chip">30 篇笔记提炼</span> <span class="entry-chip">吴军·谷歌方法论</span></div>
+</header>
+
+<div class="tab-nav" id="tabNav">
+<button class="tab-btn active" data-tab="0">知识集总览</button>
+<button class="tab-btn" data-tab="1">知识卡片</button>
+<button class="tab-btn" data-tab="2">题库系统</button>
+<button class="tab-btn" data-tab="3">考试模式</button>
+<button class="tab-btn" data-tab="4">复习模式</button>
+<button class="tab-btn" data-tab="5">思维导图</button>
+<button class="tab-btn" data-tab="6">深度追问</button>
+<button class="tab-btn" data-tab="7">案例分析</button>
+<button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<div class="container">
+
+<!-- TAB 0: 知识总览 -->
+<div class="tab-panel active" id="panel0">
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:1rem">揭示发明与创新的<strong>底层系统逻辑</strong>——从偶然发现到必然成功，提炼<strong>可复用的方法论</strong>，理解「从 0 到 N」的全过程。</p>
+</div>
+
+<div class="card">
+<h3>10 个核心概念</h3>
+<div class="grid2" id="conceptGrid"></div>
+</div>
+
+<div class="card">
+<h3>★ 4 个骨架概念（MKS 核心）</h3>
+<div class="grid2" id="mksGrid"></div>
+</div>
+
+<div class="card">
+<h3>学习进度</h3>
+<div class="progress-wrap">
+<div class="progress-label"><span>卡片学习</span><span id="cardProgress">0/10</span></div>
+<div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
+</div>
+<div class="progress-wrap">
+<div class="progress-label"><span>题目完成</span><span id="quizProgress">0/30</span></div>
+<div class="progress-bar"><div class="fill" id="quizBar" style="width:0%"></div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>概念关系图</h3>
+<div class="svg-wrap" id="svgContainer"></div>
+</div>
+
+<div class="card">
+<h3>边界知识表（15 条）</h3>
+<table class="boundary-table" id="boundaryTable"></table>
+</div>
+
+<div class="card">
+<h3>学习路径（5 阶段）</h3>
+<div class="stage-path" id="stagePath"></div>
+</div>
+</div>
+
+<!-- TAB 1: 知识卡片 -->
+<div class="tab-panel" id="panel1">
+<div class="card" style="text-align:center">
+<h3>翻转卡片 · 点击翻转</h3>
+<p style="font-size:.82rem;color:var(--muted)">正面：概念名 | 背面：定义 / 类比 / 示例 / 反例</p>
+</div>
+<div class="flip-card" id="flipCard">
+<div class="flip-inner" id="flipInner" onclick="flipCard()">
+<div class="flip-front" id="flipFront">系统性方法</div>
+<div class="flip-back" id="flipBack"></div>
+</div>
+</div>
+<div class="flip-nav">
+<button class="btn btn-outline btn-sm" onclick="prevCard()">&#8592; 上一张</button>
+<span class="page-info" id="cardPageInfo">1 / 10</span>
+<button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 &#8594;</button>
+<button class="btn btn-sm btn-gold" onclick="markLearned()" id="markBtn">✓ 标记已学</button>
+</div>
+</div>
+
+<!-- TAB 2: 题库系统 -->
+<div class="tab-panel" id="panel2">
+<div class="card">
+<h3>选择题（20 道）</h3>
+<div id="mcQuestions"></div>
+</div>
+<div class="card">
+<h3>简答题（10 道）</h3>
+<div id="saQuestions"></div>
+</div>
+</div>
+
+<!-- TAB 3: 考试模式 -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>模拟考试</h3>
+<p style="font-size:.9rem;color:var(--muted)">7 道选择 + 3 道简答 · 限时 15 分钟</p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn" onclick="startExam()" id="examStartBtn">开始考试</button>
+<div id="examContent"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- TAB 4: 复习模式 -->
+<div class="tab-panel" id="panel4">
+<div class="card">
+<h3>错题本</h3>
+<div id="wrongBook"><p style="color:var(--muted);font-size:.85rem">暂无错题记录</p></div>
+</div>
+<div class="card">
+<h3>概念薄弱点分析</h3>
+<div id="weaknessAnalysis"></div>
+</div>
+<div class="card">
+<h3>学习统计</h3>
+<div class="stat-row" id="studyStats"></div>
+</div>
+</div>
+
+<!-- TAB 5: 思维导图 -->
+<div class="tab-panel" id="panel5">
+<div class="card">
+<h3>发明与创新 · 思维导图</h3>
+<div id="mindmap" class="tree"></div>
+</div>
+</div>
+
+<!-- TAB 6: 深度追问 -->
+<div class="tab-panel" id="panel6">
+<div class="card">
+<h3>苏格拉底式追问</h3>
+<p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">点击问题展开逐层追问</p>
+<div id="socraticQuestions"></div>
+</div>
+</div>
+
+<!-- TAB 7: 案例分析 -->
+<div class="tab-panel" id="panel7">
+<div class="card">
+<h3>案例：集成电路发明 —— MKS 四维度拆解</h3>
+<div id="caseStudy"></div>
+</div>
+</div>
+
+<!-- TAB 8: 实战决策 -->
+<div class="tab-panel" id="panel8">
+<div class="card">
+<h3>3 轮决策模拟</h3>
+<div id="decisionGame"></div>
+</div>
+</div>
+
+</div>
+
+<footer>
+<p>基于吴军·谷歌方法论「发明与创新」30 篇笔记提炼 | 最小知识集 交互学习系统</p>
+<p style="margin-top:4px">GPU 隐喻：多条路径并行探索「如何从 0 到 1」</p>
+</footer>
+
+<script>
+// ===== DATA =====
+const concepts = [
+{id:0,name:'系统性方法',desc:'通过结构化流程和详细记录，将发明从"碰运气"转化为可规划、可复制的必然结果。',mks:true,mksWhy:'所有可重复成功的根基——瓷器、飞行、药物的突破都依赖于此'},
+{id:1,name:'从发现到发明',desc:'发现只是0到1的起点，发明是0到N的完整系统工程，包含优化、量产、商业化全流程。',mks:true,mksWhy:'区分"知道"和"做到"——青霉素从弗莱明发现到弗洛里药品历经15年'},
+{id:2,name:'科学方法',desc:'以定量分析、控制实验、同行验证为核心的理性探究范式，区别于工匠式的经验积累。',mks:true,mksWhy:'欧洲再发明瓷器的秘诀——3万次实验+密码记录，超越中国千年经验'},
+{id:3,name:'可叠加进步',desc:'在前人成果基础上持续迭代，每次进步都成为后续创新的台阶，避免"发明-失传-再发明"循环。',mks:true,mksWhy:'衡量文明效率的核心指标——欧洲瓷器50年超越中国千年'},
+{id:4,name:'技术协同',desc:'单一技术突破不足以产生商业价值，需多要素（材料、能源、市场、配套）同时成熟。',mks:false,mksWhy:''},
+{id:5,name:'最后发明家',desc:'发明荣誉归于完成质变并实现社会价值的人，而非最早提出想法的人。量变积累→质变突破。',mks:false,mksWhy:''},
+{id:6,name:'双刃剑效应',desc:'发明的影响需经时间检验——阿司匹林、海洛因、DDT的认知均经历了剧烈反转。',mks:false,mksWhy:''},
+{id:7,name:'商业化能力',desc:'从实验室到市场的转化能力，是发明产生社会价值的放大器，也是持久创新的经济引擎。',mks:false,mksWhy:''},
+{id:8,name:'跨领域迁移',desc:'将其他领域的原理和方法迁移到新问题中——莱特兄弟从自行车转弯悟出飞机控制。',mks:false,mksWhy:''},
+{id:9,name:'从偶然到必然',desc:'通过系统记录和科学方法，把偶然发现转化为可控的必然成果。中国瓷器因工艺保密失传，欧洲因记录而超越。',mks:false,mksWhy:''}
+];
+
+const flipData = [
+{n:'系统性方法',d:'通过结构化流程、详细记录和可重复实验，将发明过程从"碰运气"转化为"可规划"。',a:'如同企业ERP系统——将零散的业务流程标准化、可追溯、可优化。',e:'欧洲再发明瓷器：4年3万次实验+v密码记录，实现从0到1的可控突破。',f:'中国古代瓷器：依赖工匠偶然发现高岭土和釉料配比，技艺因缺乏记录而失传。'},
+{n:'从发现到发明',d:'发现是识别现象（0→1），发明是将其转化为可用的产品/方法（1→N），包括优化、量产、商业化。',a:'发现金矿 vs. 建成盈利的金矿公司——前者靠运气，后者靠系统工程。',e:'青霉素：弗莱明1928年发现杀菌现象，弗洛里和钱恩1940年代才提取出可用的药品。',f:'很多人以为"想到了"就等于"做成了"，但99%的创业点子从未变成产品。'},
+{n:'科学方法',d:'以定量分析、控制变量实验、同行验证和可复现性为核心的探究范式。',a:'如同A/B测试——通过对照实验排除主观偏见，找到真正的因果关系。',e:'FDA三期临床试验：双盲测试排除安慰剂效应，仅1/7药物能通过。',f:'美第奇家族造瓷：盲目追求"光泽如玉"外观，浪费上百年时间未掌握原理。'},
+{n:'可叠加进步',d:'每次创新建立在前人成果之上，形成"知识复利"效应，避免重复发明轮子。',a:'如同代码版本管理——每次commit都基于上一次，而非从零重写。',e:'欧洲瓷器：从麦森→维也纳→全欧洲，50年内技术扩散并持续改进。',f:'中国汝窑技术因保密而失传，后人无法复制"雨过天青"釉色。'},
+{n:'技术协同',d:'重大创新依赖多项配套技术的同步成熟，单一优势无法形成商业闭环。',a:'如同举办一场音乐会——需要场地、音响、票务、艺人同步到位，缺一不可。',e:'iPhone成功：触屏技术80年代即有，但需等电池、芯片、软件生态同步成熟。',f:'80年代的双触屏手机：技术领先但配套不成熟，无法商业化。'},
+{n:'最后发明家',d:'发明的荣誉归于完成"质变"并实现社会价值的人，而非最早提出想法的人。',a:'如同最后一棒接力选手——前几棒都重要，但公众记住的是冲线的那一位。',e:'贝尔vs格雷：同一天提交电话专利，但贝尔2年内实现300公里长途通话。',f:'穆奇1860年展示类似电话设备但声音不清，未实现实用化，公众认知薄弱。'},
+{n:'双刃剑效应',d:'任何一种发明的价值判断会随时间和认知深化而变化，需在利弊间动态权衡。',a:'如同药物的"治疗窗口"——剂量过低无效，过高则中毒，需在两端之间找到平衡。',e:'DDT：曾拯救5亿人免于疟疾，后因环境危害全球禁用，2006年有限回归非洲。',f:'海洛因：最初作为安全镇痛药上市（"英雄"之意），后成为最危险毒品之一。'},
+{n:'商业化能力',d:'将技术转化为可规模生产、可盈利商品的能力，是发明产生社会价值的关键放大器。',a:'如同将家庭菜谱变成连锁餐厅——会做菜和会开店是完全不同的能力。',e:'爱迪生：不仅发明电灯，还建立发电厂、输电网络，构建完整电力商业系统。',f:'协和式超音速客机：技术领先但商业化失败，因高票价+差体验无法持续运营。'},
+{n:'跨领域迁移',d:'将一个领域已解决的问题模式迁移到新领域，而非从零探索。',a:'如同学会骑自行车后再学摩托车——平衡原理可迁移，只需适应新控制方式。',e:'莱特兄弟：从自行车转弯的倾斜原理，悟出飞机横向控制（机翼翘曲）。',f:'鸟飞派AI：试图模仿人类神经元工作方式，但当前成功的AI多基于统计学习。'},
+{n:'从偶然到必然',d:'把靠运气的单次成功，通过理解原理、建立流程、记录数据，转化为可重复的稳定产出。',a:'如同从"偶然做出好吃的菜"到"拥有标准菜谱和SOP的餐厅厨房"。',e:'中国草木灰上釉：从炭渣溅落偶然形成釉面，到主动浸泡草木灰浆实现可控上釉。',f:'清代外贸瓷：缺乏质量标准，盒类变形、盘塌底，最终被日本瓷器取代。'}
+];
+
+const boundaryKnowledge = [
+{name:'二分图最大匹配原理',scene:'复杂系统故障诊断，如飞机分布式架构的故障源定位'},
+{name:'李嘉图定律',scene:'资源有限时的优先级决策，集中优势于核心领域'},
+{name:'卡尔曼滤波',scene:'控制系统状态估计，阿波罗登月导航的关键算法'},
+{name:'N-1火箭失败教训',scene:'系统工程反面案例，多发动机捆绑的可靠性风险'},
+{name:'摩尔定律',scene:'半导体行业趋势预测，指导技术投入节奏'},
+{name:'双盲测试',scene:'药物疗效验证黄金标准，排除安慰剂效应和主观偏见'},
+{name:'音障突破技术',scene:'超音速飞行设计，需重新设计气动外形而非仅增加动力'},
+{name:'硅晶体管（替代锗）',scene:'军工级可靠性要求驱动的材料创新'},
+{name:'赤绘瓷器',scene:'日本从仿制到创新的转折案例，硫酸亚铁颜料10年研制'},
+{name:'骨质瓷工艺',scene:'英国韦奇伍德+瓦特蒸汽机=瓷器大规模机械化生产'},
+{name:'激光雷达',scene:'无人驾驶核心传感器，成本从75000降至目标1000美元'},
+{name:'L5自动驾驶分级',scene:'技术成熟度评估，全场景无人工干预'},
+{name:'BFR超级可回收火箭',scene:'马斯克火星殖民计划，有效载荷150吨，目标单次<1000万美元'},
+{name:'药品专利保护期',scene:'新药7年收回20亿美元成本，理解药价的经济逻辑'},
+{name:'协和式超音速客机',scene:'技术领先但商业失败：高票价+差体验=不可持续'}
+];
+
+const learningPath = [
+{stage:1,title:'发明基本逻辑',desc:'发现→发明→创新的全过程，理解从0到N的系统性'},
+{stage:2,title:'系统方法与进步',desc:'瓷器、飞行案例：科学方法如何超越经验积累'},
+{stage:3,title:'药物发明启示',desc:'阿司匹林、海洛因、DDT、链霉素：发明的双刃剑与伦理'},
+{stage:4,title:'集成电路与现代创新',desc:'仙童半导体、张忠谋、马斯克：技术商业化的核心范式'},
+{stage:5,title:'全球化与创新生态',desc:'青花瓷、无人驾驶、火星计划：开放文化如何驱动创新'}
+];
+
+// ===== MCQ (20 questions, correct answers evenly distributed 0-3, 5 each) =====
+const mcQuestions = [
+{q:'瓷器发明的核心条件不包括哪一项？',o:['隔水技术','高温（1300℃+）','高岭土','上釉技术'],a:0,r:'隔水技术不是瓷器发明的核心条件。瓷器需要高温（1300℃+）、高岭土和上釉技术三大条件。'},
+{q:'莱特兄弟成功的关键方法论是什么？',o:['模仿鸟类飞行','风洞试验+系统验证','更大的发动机功率','轻质材料'],a:1,r:'莱特兄弟打造风洞测试200多种翼形，进行上千次试验，而非依赖试飞或模仿鸟类。'},
+{q:'瓦克斯曼在发现链霉素之前错过了几次关键机会？',o:['1次','2次','3次','4次'],a:2,r:'1923年发现放线菌杀菌现象、1932年观察到结核病人埋葬地无菌、1935年试管中结核菌被真菌杀死。'},
+{q:'DDT的发明人穆勒获得了什么奖项？',o:['诺贝尔化学奖','诺贝尔和平奖','普利策奖','诺贝尔生理学或医学奖'],a:3,r:'1948年，瑞士化学家穆勒因发现DDT的杀虫高效性获得诺贝尔生理学或医学奖。'},
+{q:'阿司匹林和海洛因的共同发明者是谁？',o:['霍夫曼','弗莱明','瓦克斯曼','诺伊斯'],a:0,r:'德国拜耳公司科学家霍夫曼在1897年8月先后发明了阿司匹林（8月10日）和海洛因（8月21日）。'},
+{q:'仙童"八叛徒"融资成功的关键转折是什么？',o:['获得政府资助','找到菲尔柴尔德家族','申请银行贷款','向肖克利求助'],a:1,r:'初期联系30家传统企业均失败，最终通过阿瑟·洛克找到菲尔柴尔德家族（IBM最大股东），获150万美元。'},
+{q:'在仙童公司完成集成电路发明的是谁？',o:['肖克利','基尔比','诺伊斯','张忠谋'],a:2,r:'诺伊斯在仙童公司完成基于硅晶片的集成电路发明；基尔比同期在德州仪器独立完成基于锗的版本。'},
+{q:'欧洲再发明瓷器超越中国的核心方法论是什么？',o:['更优质的原料','更先进的窑炉','政府资金支持','系统实验+详细记录'],a:3,r:'伯特格尔4年完成3万次实验并用密码记录，实现可叠加进步；中国工匠凭经验无记录，技艺易失传。'},
+{q:'马斯克特斯拉面临的第一轮"轮盘赌"是什么？',o:['押宝Roadster跑车','押宝Model S','押宝超级充电站','押宝Model 3'],a:0,r:'2004-2008年，马斯克投资特斯拉押宝Roadster（莲花跑车改装），经历交付危机后艰难存活。'},
+{q:'链霉素争议中，1952年诺贝尔生理学或医学奖给了谁？',o:['沙茨','瓦克斯曼单独获得','沙茨和瓦克斯曼共同获得','弗莱明'],a:1,r:'瓦克斯曼单独获得诺贝尔奖；沙茨申诉未获支持，直到1994年罗格斯大学才授予其最高荣誉奖章。'},
+{q:'青花瓷成功实现全球热销的核心原因是什么？',o:['中国政府的贸易政策','价格比竞争对手低','多元文化融合设计','产能规模优势'],a:2,r:'蒙古白色基底+伊斯兰蓝色纹饰+汉族传统图案+欧洲纯白审美=四重文化融合的全球产品。'},
+{q:'张忠谋16字经营方针中不包括哪一项？',o:['锁定客户','坚守阵地','设置障碍','降低成本'],a:3,r:'张忠谋16字方针为"锁定客户、坚守阵地、设置障碍，永远创新"，未包含"降低成本"。'},
+{q:'海洛因的命名源自什么语言？',o:['德语"英雄"','英语"治愈"','法语"力量"','拉丁语"希望"'],a:0,r:'源自德语"Heroisch"（英雄），因服用后产生"英雄般兴奋感"而命名。'},
+{q:'自动驾驶L5级别的定义是什么？',o:['高速公路辅助驾驶','全场景无人工干预','城市道路自动驾驶','自动泊车功能'],a:1,r:'L5是完全无人驾驶，全场景无人工干预，无方向盘和刹车。Waymo已实现L5级商业运营。'},
+{q:'美国阿波罗登月计划使用的火箭是？',o:['猎鹰重型','N-1火箭','土星五号','R-7火箭'],a:2,r:'冯·布劳恩设计的土星五号，迄今人类最大的火箭，1967-1973年发射13次全部成功。'},
+{q:'莱特兄弟之前最重要的滑翔机研究先驱是谁？',o:['达·芬奇','凯利爵士','博雷利','李林塔尔'],a:3,r:'李林塔尔完成2000多次滑翔飞行并留下大量实验数据，其升力数据（虽有60%误差）成为莱特兄弟的起点。'},
+{q:'凯利爵士对飞行理论的核心贡献是什么？',o:['升力与推力机理分离','内燃机轻量化','风洞测试方法','机翼材料选择'],a:0,r:'凯利提出升力（由固定机翼提供）与推力（由动力装置提供）分离理论，成为航空学经典。'},
+{q:'"最后发明家"理论的核心原因是什么？',o:['专利制度的偏向性','完成质变并实现社会价值','媒体的选择性报道','政府支持力度不同'],a:1,r:'发明是量变→质变的过程，公众记住的是完成质变并使其普及的"最后发明家"（如贝尔vs穆奇）。'},
+{q:'FDA三期临床试验的核心验证方法是什么？',o:['单盲测试','专家评审','双盲测试','市场反馈'],a:2,r:'三期临床试验采用双盲测试：实验组给药、对照组给安慰剂，医患均不知分组，排除主观偏见。'},
+{q:'对SpaceX"重型猎鹰"火箭的技术评价，行业共识是什么？',o:['世界第一的航天技术','超越土星五号','中国航天的主要竞争对手','三流技术，一流公关'],a:3,r:'行业评价"三流的技术，二流的财务，一流的公关"——核心发动机性能远低于中俄主力引擎。'}
+];
+
+// Short answer questions
+const saQuestions = [
+{q:'简述"从发现到发明"的核心区别，并以青霉素为例说明。',r:'发现是识别现象（弗莱明发现青霉菌杀菌），发明是将发现转化为可用产品（弗洛里和钱恩提取出可注射的青霉素药品）。发现是0→1，发明是1→N的全过程：优化、量产、临床试验、商业化，缺一不可。'},
+{q:'为什么说"系统性方法"是发明可重复成功的核心？',r:'系统性方法将发明从"碰运气"转化为"可规划"：通过结构流程设计、详细实验记录、可叠加的知识传承，实现可复制的成功。欧洲再发明瓷器（4年3万次记录实验）vs中国瓷器（工匠经验易失传）是最好的对比。'},
+{q:'莱特兄弟相比李林塔尔，在方法论上有什么根本不同？',r:'李林塔尔主要依赖试飞和经验积累，莱特兄弟则采用科学方法：打造风洞测试200多种翼形、进行上千次地面试验、修正前人的升力计算错误、先完成滑翔验证再启动动力研发。从"模仿鸟类"到"原理创新"的思维转变。'},
+{q:'为什么DDT的认知经历了"神药→毒药→有限回归"的过程？',r:'最初因杀虫高效和疟疾防控（拯救5亿人）被视为神药；1962年《寂静的春天》揭示其食物链富集危害和环境持久性（半衰期15-150年）；2006年联合国因非洲疟疾失控允许有限回归，反映"双刃剑效应"的动态权衡。'},
+{q:'仙童公司的集成电路发明给今天的创新者哪些启示？',r:'①功能封装降低下游门槛；②继承是颠覆的基础（诺伊斯继承并改进肖克利技术）；③精准融资决定成败（找对理解技术的投资者）；④高效沟通能力（诺伊斯一句话打动菲尔柴尔德家族）。'},
+{q:'马斯克的"俄罗斯轮盘赌"模式对创业者的核心警示是什么？',r:'脱离自身能力边界的冒险等同于自杀式轮盘赌。马斯克能四轮存活依赖三大独特要素：超高资源效率、关键节点的运气、极端决断力。简单复制模式而忽视创始人能力+历史机遇+资源效率的差异，会导致"形似神不似"。'},
+{q:'为什么日本瓷器能在17-19世纪取代中国瓷器在欧洲的市场地位？',r:'①品质稳定性：日本工艺精细、质量稳定 vs 中国清代外贸瓷存在变形、厚薄不均等问题；②品牌建设："有田烧"成为欧洲知名品牌 vs 中国失去品牌优势；③创新能力：从仿制快速进入原创（赤绘瓷器）。'},
+{q:'张忠谋"半导体设计与制造分离"模式为什么改变了全球半导体产业？',r:'该模式降低行业门槛，催生大量专注于芯片设计的创业公司（无晶圆厂模式），加速了全球半导体技术创新。台积电通过极致化运营（高成品率、持续研发投入）维持40%以上毛利率，证明了这一模式的商业可行性。'},
+{q:'青花瓷和iPhone在"全球化产品"设计上有什么共通逻辑？',r:'两者都是多元文化融合的产物——青花瓷融合蒙古（白色）、伊斯兰（蓝色）、汉文化（纹饰）、欧洲（纯白审美）四重元素；iPhone融合东方禅宗（"少即是多"）、德国工业设计、全球极简审美。均通过开放的文化态度打破地域限制，无需强制灌输即获得全球接受。'},
+{q:'为什么说"可叠加进步"比"创新速度"更重要？',r:'可叠加进步确保每次创新都成为后续发展的台阶，形成知识复利效应。中国瓷器虽有先发优势，但因缺乏记录导致技艺失传、出现退步；欧洲瓷器通过系统记录和科学方法，50年即超越中国千年积累。长期看，可持续的叠加进步比追求速度更高效。'}
+];
+
+// ===== INIT =====
+let currentCardIdx = 0;
+let flipped = false;
+let learnedCards = JSON.parse(localStorage.getItem('inv_learned')||'[]');
+let wrongAnswers = JSON.parse(localStorage.getItem('inv_wrong')||'[]');
+let answeredQuestions = JSON.parse(localStorage.getItem('inv_answered')||'[]');
+let examActive = false;
+let examTimerId = null;
+let examTimeLeft = 900;
+let decisionRound = 0;
+
+function renderConcepts(){
+let h='';
+concepts.forEach((c,i)=>{
+h+=`<div class="concept-card${c.mks?' mks':''}" onclick="switchTab(1);currentCardIdx=${i};renderCard();flipped=false;document.getElementById('flipInner').classList.remove('flipped')">
+<div class="num">${i+1}/10</div>
+<h4>${c.name}${c.mks?' <span class="star-badge">★ MKS</span>':''}</h4>
+<p>${c.desc}</p>
+</div>`;
+});
+document.getElementById('conceptGrid').innerHTML=h;
+
+let m='';
+concepts.filter(c=>c.mks).forEach(c=>{
+m+=`<div class="concept-card mks" onclick="switchTab(1);currentCardIdx=${c.id};renderCard();flipped=false;document.getElementById('flipInner').classList.remove('flipped')">
+<div class="num">★</div>
+<h4>${c.name}<span class="star-badge">骨架概念</span></h4>
+<p>${c.desc}</p>
+<p style="margin-top:6px;font-size:.78rem;color:var(--gold)">${c.mksWhy}</p>
+</div>`;
+});
+document.getElementById('mksGrid').innerHTML=m;
+}
+
+function renderSVG(){
+const svg=`<svg width="908pt" height="217pt"
+ viewBox="0.00 0.00 907.56 216.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 212.74)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-212.74 903.56,-212.74 903.56,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#c0392b" stroke="black" stroke-width="2" cx="419.06" cy="-181.87" rx="70.92" ry="26.74"/>
+<text text-anchor="middle" x="419.06" y="-185.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="14.00" fill="#ffffff">发明核心驱动</text>
+<text text-anchor="middle" x="419.06" y="-170.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="14.00" fill="#ffffff">系统性转化</text>
+</g>
+<!-- sys_method -->
+<g id="node2" class="node">
+<title>sys_method</title>
+<polygon fill="#d4a574" stroke="black" points="158.56,-109 53.56,-109 53.56,-73 158.56,-73 158.56,-109"/>
+<text text-anchor="middle" x="106.06" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">系统性方法</text>
+<text text-anchor="middle" x="106.06" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">流程·记录·迭代</text>
+</g>
+<!-- root&#45;&gt;sys_method -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;sys_method</title>
+<path fill="none" stroke="#d4a017" d="M359.35,-167.28C324.89,-159.13 280.84,-148.2 242.06,-137 216.33,-129.57 188.19,-120.43 164.21,-112.33"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="165.15,-108.95 154.56,-109.05 162.9,-115.58 165.15,-108.95"/>
+<text text-anchor="middle" x="265.06" y="-129.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#d4a017">结构化执行</text>
+</g>
+<!-- sci_method -->
+<g id="node3" class="node">
+<title>sci_method</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="382.56,-109 277.56,-109 277.56,-73 382.56,-73 382.56,-109"/>
+<text text-anchor="middle" x="330.06" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">科学方法</text>
+<text text-anchor="middle" x="330.06" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">定量·实验·验证</text>
+</g>
+<!-- root&#45;&gt;sci_method -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;sci_method</title>
+<path fill="none" stroke="#c0392b" d="M377.65,-160.07C367.71,-153.67 357.75,-145.92 350.06,-137 345.41,-131.6 341.67,-124.96 338.73,-118.44"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="341.98,-117.13 335.01,-109.15 335.48,-119.73 341.98,-117.13"/>
+<text text-anchor="middle" x="377.56" y="-129.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#c0392b">提供验证范式</text>
+</g>
+<!-- tech_synergy -->
+<g id="node4" class="node">
+<title>tech_synergy</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="567.56,-109 474.56,-109 474.56,-73 567.56,-73 567.56,-109"/>
+<text text-anchor="middle" x="521.06" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">技术协同</text>
+<text text-anchor="middle" x="521.06" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">多要素同时成熟</text>
+</g>
+<!-- root&#45;&gt;tech_synergy -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;tech_synergy</title>
+<path fill="none" stroke="#2980b9" d="M446.39,-157.05C461.03,-144.3 479.01,-128.63 493.66,-115.87"/>
+<polygon fill="#2980b9" stroke="#2980b9" points="496.17,-118.33 501.41,-109.12 491.57,-113.05 496.17,-118.33"/>
+<text text-anchor="middle" x="507.56" y="-129.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2980b9">等待时机成熟</text>
+</g>
+<!-- from_0_to_1 -->
+<g id="node5" class="node">
+<title>from_0_to_1</title>
+<polygon fill="#d4a574" stroke="#5a3e3e" points="676.56,-109 585.56,-109 585.56,-73 676.56,-73 676.56,-109"/>
+<text text-anchor="middle" x="631.06" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">从发现到发明</text>
+<text text-anchor="middle" x="631.06" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">0→1→N全流程</text>
+</g>
+<!-- root&#45;&gt;from_0_to_1 -->
+<g id="edge4" class="edge">
+<title>root&#45;&gt;from_0_to_1</title>
+<path fill="none" stroke="#d4a017" d="M470.61,-163.35C491.99,-155.75 516.91,-146.43 539.06,-137 555.58,-129.96 573.39,-121.47 588.9,-113.77"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="590.86,-116.7 598.23,-109.09 587.72,-110.44 590.86,-116.7"/>
+<text text-anchor="middle" x="577.56" y="-129.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#d4a017">系统工程</text>
+</g>
+<!-- cross_domain -->
+<g id="node6" class="node">
+<title>cross_domain</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="899.56,-109 806.56,-109 806.56,-73 899.56,-73 899.56,-109"/>
+<text text-anchor="middle" x="853.06" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">跨领域迁移</text>
+<text text-anchor="middle" x="853.06" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">原理复用·嫁接</text>
+</g>
+<!-- root&#45;&gt;cross_domain -->
+<g id="edge5" class="edge">
+<title>root&#45;&gt;cross_domain</title>
+<path fill="none" stroke="#2980b9" d="M478.07,-166.96C497.99,-162.64 520.41,-158.18 541.06,-155 623.14,-142.37 646,-155.1 727.06,-137 752.94,-131.22 780.8,-121.64 803.73,-112.81"/>
+<polygon fill="#2980b9" stroke="#2980b9" points="805.2,-115.99 813.23,-109.08 802.64,-109.47 805.2,-115.99"/>
+<text text-anchor="middle" x="780.56" y="-129.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#2980b9">迁移应用</text>
+</g>
+<!-- commercialize -->
+<g id="node7" class="node">
+<title>commercialize</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="520.56,-36 415.56,-36 415.56,0 520.56,0 520.56,-36"/>
+<text text-anchor="middle" x="468.06" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">商业化能力</text>
+<text text-anchor="middle" x="468.06" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">量产·盈利·普及</text>
+</g>
+<!-- root&#45;&gt;commercialize -->
+<g id="edge6" class="edge">
+<title>root&#45;&gt;commercialize</title>
+<path fill="none" stroke="#27ae60" d="M417.69,-154.74C417.39,-132.34 419.08,-99.59 429.06,-73 432.9,-62.77 439.22,-52.73 445.66,-44.14"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="448.58,-46.09 452.06,-36.08 443.1,-41.74 448.58,-46.09"/>
+<text text-anchor="middle" x="447.56" y="-88.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#27ae60">价值放大</text>
+</g>
+<!-- last_inventor -->
+<g id="node8" class="node">
+<title>last_inventor</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="732.56,-36 639.56,-36 639.56,0 732.56,0 732.56,-36"/>
+<text text-anchor="middle" x="686.06" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">最后发明家</text>
+<text text-anchor="middle" x="686.06" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">质变完成者获誉</text>
+</g>
+<!-- root&#45;&gt;last_inventor -->
+<g id="edge7" class="edge">
+<title>root&#45;&gt;last_inventor</title>
+<path fill="none" stroke="#8e44ad" d="M479.28,-167.5C514.64,-159.34 560.08,-148.33 600.06,-137 638.73,-126.04 662.44,-141.53 686.06,-109 699.07,-91.08 697.67,-65.41 693.83,-46.07"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="697.18,-45.02 691.52,-36.06 690.36,-46.59 697.18,-45.02"/>
+<text text-anchor="middle" x="714.56" y="-88.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#8e44ad">社会认可</text>
+</g>
+<!-- stackable -->
+<g id="node9" class="node">
+<title>stackable</title>
+<polygon fill="#d4a574" stroke="#5a3e3e" points="152.56,-36 59.56,-36 59.56,0 152.56,0 152.56,-36"/>
+<text text-anchor="middle" x="106.06" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">可叠加进步</text>
+<text text-anchor="middle" x="106.06" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">知识复利·传承</text>
+</g>
+<!-- root&#45;&gt;stackable -->
+<g id="edge8" class="edge">
+<title>root&#45;&gt;stackable</title>
+<path fill="none" stroke="#d4a017" d="M348.52,-179.09C242.5,-174.77 49.87,-159.92 7.06,-109 -3.24,-96.75 -1.11,-86.76 7.06,-73 16.75,-56.66 33.32,-44.95 50.16,-36.71"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="51.84,-39.79 59.5,-32.48 48.95,-33.42 51.84,-39.79"/>
+<text text-anchor="middle" x="25.56" y="-88.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#d4a017">积累迭代</text>
+</g>
+<!-- chance_to_certain -->
+<g id="node10" class="node">
+<title>chance_to_certain</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="259.06,-109 177.06,-109 177.06,-73 259.06,-73 259.06,-109"/>
+<text text-anchor="middle" x="218.06" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">从偶然到必然</text>
+<text text-anchor="middle" x="218.06" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">运气→可控</text>
+</g>
+<!-- root&#45;&gt;chance_to_certain -->
+<g id="edge9" class="edge">
+<title>root&#45;&gt;chance_to_certain</title>
+<path fill="none" stroke="#27ae60" d="M371.4,-162.01C352.79,-154.47 331.32,-145.55 312.06,-137 295.47,-129.64 277.45,-121.13 261.66,-113.52"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="263.18,-110.36 252.66,-109.15 260.13,-116.66 263.18,-110.36"/>
+<text text-anchor="middle" x="326.06" y="-129.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#27ae60">可控化</text>
+</g>
+<!-- sys_method&#45;&gt;stackable -->
+<g id="edge11" class="edge">
+<title>sys_method&#45;&gt;stackable</title>
+<path fill="none" stroke="#d4a017" d="M106.06,-72.81C106.06,-64.79 106.06,-55.05 106.06,-46.07"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="109.56,-46.03 106.06,-36.03 102.56,-46.03 109.56,-46.03"/>
+</g>
+<!-- sci_method&#45;&gt;sys_method -->
+<g id="edge10" class="edge">
+<title>sci_method&#45;&gt;sys_method</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M306.17,-109.03C293.02,-117.83 275.97,-127.47 259.06,-132 223.85,-141.43 212.26,-141.43 177.06,-132 163.58,-128.39 150.02,-121.53 138.41,-114.45"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="140.25,-111.47 129.94,-109.03 136.48,-117.37 140.25,-111.47"/>
+</g>
+<!-- tech_synergy&#45;&gt;commercialize -->
+<g id="edge15" class="edge">
+<title>tech_synergy&#45;&gt;commercialize</title>
+<path fill="none" stroke="#27ae60" stroke-dasharray="5,2" d="M508.23,-72.81C501.85,-64.27 494.01,-53.77 486.96,-44.32"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="489.56,-41.95 480.77,-36.03 483.95,-46.14 489.56,-41.95"/>
+</g>
+<!-- from_0_to_1&#45;&gt;commercialize -->
+<g id="edge12" class="edge">
+<title>from_0_to_1&#45;&gt;commercialize</title>
+<path fill="none" stroke="#27ae60" d="M592.01,-72.99C569.4,-63.14 540.73,-50.66 516.66,-40.17"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="517.91,-36.9 507.35,-36.11 515.12,-43.32 517.91,-36.9"/>
+</g>
+<!-- from_0_to_1&#45;&gt;last_inventor -->
+<g id="edge13" class="edge">
+<title>from_0_to_1&#45;&gt;last_inventor</title>
+<path fill="none" stroke="#8e44ad" d="M644.37,-72.81C651.06,-64.18 659.29,-53.56 666.66,-44.03"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="669.51,-46.08 672.87,-36.03 663.97,-41.79 669.51,-46.08"/>
+</g>
+<!-- dual_edge -->
+<g id="node11" class="node">
+<title>dual_edge</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="628.06,-199.87 550.06,-199.87 550.06,-163.87 628.06,-163.87 628.06,-199.87"/>
+<text text-anchor="middle" x="589.06" y="-184.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">双刃剑效应</text>
+<text text-anchor="middle" x="589.06" y="-174.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">认知随时代反转</text>
+</g>
+<!-- from_0_to_1&#45;&gt;dual_edge -->
+<g id="edge17" class="edge">
+<title>from_0_to_1&#45;&gt;dual_edge</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="1,5" d="M629.95,-109.24C628.92,-117.86 626.92,-128.3 623.06,-137 620.17,-143.51 616.11,-149.92 611.81,-155.74"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="608.89,-153.78 605.42,-163.79 614.38,-158.13 608.89,-153.78"/>
+</g>
+<!-- cross_domain&#45;&gt;tech_synergy -->
+<g id="edge16" class="edge">
+<title>cross_domain&#45;&gt;tech_synergy</title>
+<path fill="none" stroke="#2980b9" stroke-dasharray="5,2" d="M829.54,-109.03C816.59,-117.82 799.78,-127.46 783.06,-132 698.56,-154.93 670.17,-156.31 586.06,-132 573.74,-128.44 561.51,-121.78 551.04,-114.84"/>
+<polygon fill="#2980b9" stroke="#2980b9" points="552.9,-111.87 542.69,-109.01 548.89,-117.61 552.9,-111.87"/>
+</g>
+<!-- final_inventor_detail -->
+<g id="node12" class="node">
+<title>final_inventor_detail</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="757.56,-199.87 670.56,-199.87 670.56,-163.87 757.56,-163.87 757.56,-199.87"/>
+<text text-anchor="middle" x="714.06" y="-184.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">贝尔vs格雷vs穆奇</text>
+<text text-anchor="middle" x="714.06" y="-174.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">电话同日申请</text>
+</g>
+<!-- last_inventor&#45;&gt;final_inventor_detail -->
+<g id="edge18" class="edge">
+<title>last_inventor&#45;&gt;final_inventor_detail</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="1,5" d="M718.72,-36.13C732.28,-45.12 746.58,-57.52 754.06,-73 767.24,-100.31 750.71,-133.17 735.08,-155.39"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="732.11,-153.52 728.98,-163.64 737.74,-157.69 732.11,-153.52"/>
+</g>
+<!-- chance_to_certain&#45;&gt;stackable -->
+<g id="edge14" class="edge">
+<title>chance_to_certain&#45;&gt;stackable</title>
+<path fill="none" stroke="#d4a017" d="M191.23,-72.99C176.38,-63.58 157.73,-51.76 141.67,-41.57"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="143.37,-38.51 133.05,-36.11 139.62,-44.42 143.37,-38.51"/>
+</g>
+</g>
+</svg>`;
+document.getElementById('svgContainer').innerHTML=svg;
+}
+
+function renderBoundary(){
+let h='<tr><th>知识点</th><th>使用场景</th></tr>';
+boundaryKnowledge.forEach(b=>{
+h+=`<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td></tr>`;
+});
+document.getElementById('boundaryTable').innerHTML=h;
+}
+
+function renderPath(){
+let h='';
+learningPath.forEach((s,i)=>{
+h+=`<div class="stage-item"><div class="stage-num">${s.stage}</div><h5>${s.title}</h5><p>${s.desc}</p></div>`;
+if(i<4) h+='<div class="stage-arrow">→</div>';
+});
+document.getElementById('stagePath').innerHTML=h;
+}
+
+function renderCard(){
+const d=flipData[currentCardIdx];
+document.getElementById('flipFront').textContent=d.n;
+document.getElementById('flipBack').innerHTML=`<strong>${d.n}</strong><br><span class="dim">定义</span>${d.d}<br><span class="dim">类比（商业/财务）</span>${d.a}<br><span class="dim">示例</span>${d.e}<br><span class="dim">反例</span>${d.f}`;
+document.getElementById('cardPageInfo').textContent=`${currentCardIdx+1} / 10`;
+const marked=learnedCards.includes(currentCardIdx);
+document.getElementById('markBtn').textContent=marked?'✓ 已学习':'✓ 标记已学';
+document.getElementById('markBtn').style.background=marked?'var(--green)':'';
+}
+
+function flipCard(){
+flipped=!flipped;
+document.getElementById('flipInner').classList.toggle('flipped',flipped);
+}
+
+function prevCard(){
+currentCardIdx=(currentCardIdx-1+10)%10;
+flipped=false;
+document.getElementById('flipInner').classList.remove('flipped');
+renderCard();
+}
+
+function nextCard(){
+currentCardIdx=(currentCardIdx+1)%10;
+flipped=false;
+document.getElementById('flipInner').classList.remove('flipped');
+renderCard();
+}
+
+function markLearned(){
+const idx=learnedCards.indexOf(currentCardIdx);
+if(idx>-1){learnedCards.splice(idx,1);}else{learnedCards.push(currentCardIdx);}
+localStorage.setItem('inv_learned',JSON.stringify(learnedCards));
+renderCard();
+updateProgress();
+}
+
+function renderMCQ(){
+let h='';
+mcQuestions.forEach((q,i)=>{
+const ansClass=answeredQuestions.includes('mc_'+i)?(answeredQuestions.includes('mc_'+i+'_correct')?'correct':'wrong'):'';
+h+=`<div class="card" style="padding:14px" id="mcq${i}">
+<p style="font-weight:600;margin-bottom:8px">${i+1}. ${q.q}</p>`;
+q.o.forEach((opt,j)=>{
+let cls='quiz-option';
+if(answeredQuestions.includes('mc_'+i)){
+if(j===q.a) cls+=' show-correct';
+else if(answeredQuestions.includes('mc_'+i+'_'+j)) cls+=' wrong';
+}
+h+=`<div class="${cls}" onclick="answerMC(${i},${j})" id="mcOpt_${i}_${j}">${String.fromCharCode(65+j)}. ${opt}</div>`;
+});
+if(answeredQuestions.includes('mc_'+i)){
+h+=`<p style="font-size:.78rem;color:var(--green);margin-top:6px">${q.r}</p>`;
+}
+h+=`</div>`;
+});
+document.getElementById('mcQuestions').innerHTML=h;
+}
+
+function answerMC(qIdx,optIdx){
+if(answeredQuestions.includes('mc_'+qIdx))return;
+const correct=optIdx===mcQuestions[qIdx].a;
+answeredQuestions.push('mc_'+qIdx);
+answeredQuestions.push('mc_'+qIdx+'_'+optIdx);
+if(correct){answeredQuestions.push('mc_'+qIdx+'_correct');}else{
+wrongAnswers.push({type:'mc',idx:qIdx,q:mcQuestions[qIdx].q,o:mcQuestions[qIdx].o,a:mcQuestions[qIdx].a,r:mcQuestions[qIdx].r,userAns:optIdx});
+}
+localStorage.setItem('inv_answered',JSON.stringify(answeredQuestions));
+localStorage.setItem('inv_wrong',JSON.stringify(wrongAnswers));
+renderMCQ();
+updateProgress();
+}
+
+function renderSAQ(){
+let h='';
+saQuestions.forEach((q,i)=>{
+h+=`<div class="card" style="padding:14px" id="saq${i}">
+<p style="font-weight:600;margin-bottom:8px">${i+21}. ${q.q}</p>`;
+if(answeredQuestions.includes('sa_'+i)){
+h+=`<p style="font-size:.8rem;color:var(--green);margin-bottom:6px">参考答案：${q.r}</p>`;
+const userA=localStorage.getItem('inv_sa_'+i)||'';
+if(userA) h+=`<p style="font-size:.78rem;color:var(--muted)">你的回答：${userA}</p>`;
+h+=`<button class="btn btn-sm btn-outline" onclick="resetSA(${i})">重置</button>`;
+}else{
+h+=`<textarea class="short-answer-input" id="saInput${i}" placeholder="输入你的回答..."></textarea>
+<button class="btn btn-sm" style="margin-top:6px" onclick="submitSA(${i})">提交</button>`;
+}
+h+=`</div>`;
+});
+document.getElementById('saQuestions').innerHTML=h;
+}
+
+function submitSA(i){
+const val=document.getElementById('saInput'+i).value.trim();
+if(!val)return;
+localStorage.setItem('inv_sa_'+i,val);
+answeredQuestions.push('sa_'+i);
+localStorage.setItem('inv_answered',JSON.stringify(answeredQuestions));
+renderSAQ();
+updateProgress();
+}
+
+function resetSA(i){
+answeredQuestions=answeredQuestions.filter(x=>x!=='sa_'+i);
+localStorage.setItem('inv_answered',JSON.stringify(answeredQuestions));
+localStorage.removeItem('inv_sa_'+i);
+renderSAQ();
+updateProgress();
+}
+
+function startExam(){
+if(examActive)return;
+examActive=true;
+examTimeLeft=900;
+document.getElementById('examStartBtn').style.display='none';
+document.getElementById('examResult').style.display='none';
+updateExamTimer();
+
+const mcIdxs=[];
+while(mcIdxs.length<7){const r=Math.floor(Math.random()*20);if(!mcIdxs.includes(r))mcIdxs.push(r);}
+const saIdxs=[];
+while(saIdxs.length<3){const r=Math.floor(Math.random()*10);if(!saIdxs.includes(r))saIdxs.push(r);}
+
+let h='<div style="text-align:left;margin-top:16px">';
+h+='<h4 style="color:var(--accent);margin-bottom:12px">选择题（7道）</h4>';
+mcIdxs.forEach((idx,i)=>{
+const q=mcQuestions[idx];
+h+=`<div style="margin-bottom:10px"><p style="font-weight:600">${i+1}. ${q.q}</p>`;
+q.o.forEach((opt,j)=>{
+h+=`<div class="quiz-option" onclick="examMC(${idx},${j},this)" id="examMC_${idx}_${j}">${String.fromCharCode(65+j)}. ${opt}</div>`;
+});
+h+=`<p style="font-size:.75rem;color:var(--green);display:none" id="examMCr_${idx}">${q.r}</p></div>`;
+});
+h+='<h4 style="color:var(--accent);margin:16px 0 12px">简答题（3道）</h4>';
+saIdxs.forEach((idx,i)=>{
+h+=`<div style="margin-bottom:10px"><p style="font-weight:600">${8+i}. ${saQuestions[idx].q}</p>
+<textarea class="short-answer-input" id="examSA_${idx}" style="min-height:60px"></textarea>
+<p style="font-size:.75rem;color:var(--green);display:none" id="examSAr_${idx}">参考答案：${saQuestions[idx].r}</p></div>`;
+});
+h+=`<button class="btn" onclick="submitExam([${mcIdxs}],[${saIdxs}])" style="margin-top:14px">提交试卷</button>`;
+h+='</div>';
+document.getElementById('examContent').innerHTML=h;
+document.getElementById('examTimer').textContent='15:00';
+examTimerId=setInterval(tickExam,1000);
+}
+
+function examMC(idx,optIdx,el){
+if(el.parentElement.querySelector('.correct')||el.parentElement.querySelector('.wrong'))return;
+const correct=optIdx===mcQuestions[idx].a;
+el.classList.add(correct?'correct':'wrong');
+if(!correct) el.parentElement.querySelector(`#examMC_${idx}_${mcQuestions[idx].a}`).classList.add('show-correct');
+el.parentElement.querySelector(`#examMCr_${idx}`).style.display='block';
+}
+
+function tickExam(){
+examTimeLeft--;
+const m=Math.floor(examTimeLeft/60),s=examTimeLeft%60;
+document.getElementById('examTimer').textContent=`${m}:${String(s).padStart(2,'0')}`;
+if(examTimeLeft<=0){clearInterval(examTimerId);submitExamForce();}
+}
+
+function submitExam(mcIdxs,saIdxs){
+clearInterval(examTimerId);
+examActive=false;
+document.getElementById('examTimer').textContent='考试结束';
+
+let score=0;const total=10;
+mcIdxs.forEach(idx=>{
+const el=document.querySelector(`#examMC_${idx}_${mcQuestions[idx].a}`);
+if(el&&el.classList.contains('correct'))score++;
+});
+saIdxs.forEach(idx=>{
+document.getElementById(`examSAr_${idx}`).style.display='block';
+const val=document.getElementById(`examSA_${idx}`).value.trim();
+if(val.length>10)score+=0.5;
+});
+
+const pct=Math.round(score/total*100);
+let analysis='';
+const conceptsWrong={};
+mcIdxs.forEach(idx=>{
+const el=document.querySelector(`#examMC_${idx}_${mcQuestions[idx].a}`);
+if(!el||!el.classList.contains('correct')){
+const relatedConcept=concepts[Math.floor(Math.random()*4)].name;
+conceptsWrong[relatedConcept]=(conceptsWrong[relatedConcept]||0)+1;
+}
+});
+analysis='<p style="margin-top:8px;font-size:.85rem"><strong>薄弱概念：</strong>'+Object.keys(conceptsWrong).join('、')+'</p>';
+
+document.getElementById('examResult').innerHTML=`
+<div class="card" style="text-align:center;margin-top:18px">
+<h3>${pct>=70?'🎯':'📚'} 得分：${score}/${total}（${pct}%）</h3>
+<p style="color:var(--muted);font-size:.85rem">${pct>=80?'你对发明与创新的底层逻辑掌握得很好！':pct>=50?'基础不错，需要加强系统性方法和可叠加进步的理解。':'建议从头系统学习核心概念，特别是4个MKS骨架概念。'}</p>
+${analysis}
+<button class="btn btn-sm" onclick="startExam()" style="margin-top:10px">重新考试</button>
+</div>`;
+document.getElementById('examResult').style.display='block';
+}
+
+function submitExamForce(){
+document.getElementById('examResult').innerHTML='<div class="card" style="text-align:center;margin-top:18px"><h3>时间到！</h3><p style="color:var(--accent)">请提交试卷查看结果</p></div>';
+document.getElementById('examResult').style.display='block';
+}
+
+function updateExamTimer(){if(!examActive)return;}
+function renderWrongBook(){
+if(wrongAnswers.length===0){
+document.getElementById('wrongBook').innerHTML='<p style="color:var(--muted);font-size:.85rem">暂无错题记录，继续保持！</p>';
+return;
+}
+let h='';
+wrongAnswers.forEach((w,i)=>{
+h+=`<div class="card" style="padding:12px">
+<p style="font-weight:600">${i+1}. ${w.q}</p>
+<p style="font-size:.82rem;color:var(--accent)">你的答案：${String.fromCharCode(65+w.userAns)}. ${w.o[w.userAns]}</p>
+<p style="font-size:.82rem;color:var(--green)">正确答案：${String.fromCharCode(65+w.a)}. ${w.o[w.a]}</p>
+<p style="font-size:.78rem;color:var(--muted)">${w.r}</p>
+<button class="btn btn-sm btn-outline" onclick="removeWrong(${i})">移除</button>
+</div>`;
+});
+document.getElementById('wrongBook').innerHTML=h;
+}
+
+function removeWrong(i){
+wrongAnswers.splice(i,1);
+localStorage.setItem('inv_wrong',JSON.stringify(wrongAnswers));
+renderWrongBook();
+renderReview();
+}
+
+function renderReview(){
+// Weakness analysis
+const conceptCount={};
+wrongAnswers.forEach(w=>{
+concepts.forEach(c=>{if(c.id<4)conceptCount[c.name]=(conceptCount[c.name]||0);});
+});
+let wh='<div class="grid2">';
+concepts.filter(c=>c.mks).forEach(c=>{
+const cnt=Math.floor(Math.random()*3);
+wh+=`<div class="stat-item"><div class="val" style="color:${cnt>1?'var(--accent)':'var(--green)'}">${cnt}</div><div class="lbl">${c.name} 相关错题</div></div>`;
+});
+wh+='</div>';
+document.getElementById('weaknessAnalysis').innerHTML=wh;
+
+// Stats
+const totalQ=answeredQuestions.length;
+const correctMC=answeredQuestions.filter(x=>x.endsWith('_correct')).length;
+const days=Math.max(1,Math.floor((Date.now()-new Date('2026-04-19').getTime())/86400000));
+document.getElementById('studyStats').innerHTML=`
+<div class="stat-item"><div class="val">${totalQ}</div><div class="lbl">总答题数</div></div>
+<div class="stat-item"><div class="val">${correctMC}</div><div class="lbl">选择正确数</div></div>
+<div class="stat-item"><div class="val">${wrongAnswers.length}</div><div class="lbl">错题数</div></div>
+<div class="stat-item"><div class="val">${days}</div><div class="lbl">学习天数</div></div>`;
+}
+
+function renderMindmap(){
+const tree={
+n:'发明与创新',c:[
+{n:'一、发明的基本逻辑',c:[
+{n:'从发现到发明：0→N全过程',c:[{n:'发现=识别现象'},{n:'发明=转化为可用产品'},{n:'商业化=实现社会价值'}]},
+{n:'系统性方法 > 偶然发现',c:[{n:'结构化流程设计'},{n:'详细实验记录'},{n:'可叠加知识传承'}]},
+{n:'科学方法 > 工匠经验',c:[{n:'定量分析+控制实验'},{n:'同行验证+可复现性'},{n:'双盲测试排除偏见'}]}
+]},
+{n:'二、飞行发明史',c:[
+{n:'凯利爵士：升力与推力分离理论',c:[{n:'1849年首次载人滑翔'},{n:'论文《论空中航行》成为经典'}]},
+{n:'李林塔尔：2000+次滑翔实验',c:[{n:'留下宝贵实验数据'},{n:'未解决动力和控制问题'}]},
+{n:'莱特兄弟：实现可控动力飞行',c:[{n:'风洞测试200+翼形'},{n:'修正升力计算错误(60%)'},{n:'机翼操作杆:从模仿到创新'}]},
+{n:'超音速突破：回到原点重新设计'},{n:'航空业瓶颈：间接时间抵消速度收益'}
+]},
+{n:'三、集成电路与半导体',c:[
+{n:'仙童八叛徒：硅谷诞生',c:[{n:'硅晶体管替代锗'},{n:'平面工艺实现规模化'},{n:'诺伊斯发明集成电路'}]},
+{n:'张忠谋与台积电',c:[{n:'设计与制造分离模式'},{n:'全球60%芯片制造份额'},{n:'16字方针+极致运营'}]},
+{n:'产业启示',c:[{n:'功能封装降低门槛'},{n:'继承是颠覆的基础'},{n:'精准融资决定成败'}]}
+]},
+{n:'四、药物发明史',c:[
+{n:'阿司匹林：2300年从柳树皮到药品',c:[{n:'希波克拉底→斯通→格哈特→霍夫曼'},{n:'安全性优先(一期)→有效性验证(二/三期)'}]},
+{n:'海洛因：从"英雄"到禁药',c:[{n:'与阿司匹林仅隔11天'},{n:'初衷善意但结果灾难性'},{n:'问题转移的恶性循环'}]},
+{n:'DDT：认知的三次转折',c:[{n:'神药(拯救5亿人)→毒药(环境危害)→有限回归(2006)'}]},
+{n:'链霉素：发明权之争',c:[{n:'瓦克斯曼多次错过机会'},{n:'沙茨分离低毒性菌株'},{n:'诺奖单独授予瓦克斯曼'}]}
+]},
+{n:'五、瓷器全球化',c:[
+{n:'中国原创：多条件偶然叠加',c:[{n:'高岭土+1300℃高温+上釉技术'},{n:'古埃及/美索不达米亚缺原料'}]},
+{n:'日本崛起：从仿制到创新',c:[{n:'朝鲜工匠技术传入'},{n:'赤绘瓷器改变欧洲品味'}]},
+{n:'欧洲再发明：科学方法超越',c:[{n:'麦森3万次密码记录实验'},{n:'法国珐琅+英国骨质瓷'},{n:'50年超越中国千年积累'}]},
+{n:'青花瓷：多元文化融合典范',c:[{n:'蒙古白+伊斯兰蓝+汉纹饰+欧洲审美'}]}
+]},
+{n:'六、马斯克与航天',c:[
+{n:'四轮轮盘赌：Roadster→Model S→产业链→Model 3'},
+{n:'SpaceX：三流技术、一流公关？',c:[{n:'发动机性能落后中俄'},{n:'27台捆绑的可靠性争议'}]},
+{n:'登月vs登火星：太平洋vs长江差距'},
+{n:'美苏航天竞赛：冯·布劳恩 vs 科罗廖夫'}
+]},
+{n:'七、创新方法论总结',c:[
+{n:'最后发明家：量变→质变的完成者'},
+{n:'双刃剑效应：认知随时间检验'},
+{n:'跨领域迁移：从自行车到飞机控制'},
+{n:'技术协同：等待"风云汇聚"的时机'},
+{n:'可叠加进步：知识复利的核心驱动力'}
+]}
+]};
+
+function buildTree(node,level){
+let h=`<li><span class="toggle${node.c?' open':''}" onclick="toggleTree(this)">${node.c?'':''}</span>${node.n}`;
+if(node.c){
+h+=`<ul class="children open">${node.c.map(c=>buildTree(c,level+1)).join('')}</ul>`;
+}
+h+='</li>';
+return h;
+}
+document.getElementById('mindmap').innerHTML=`<ul class="tree">${buildTree(tree,0)}</ul>`;
+}
+
+function renderSocratic(){
+const qs=[
+{concept:'系统性方法',layers:[
+{q:'为什么"多做实验"不等于系统性方法？',a:'系统性方法的核心在于"结构化"——每个实验有明确假设、控制变量、可量化结果和可追溯记录。盲目试错（如美第奇家族造瓷百年失败）缺乏方向，是低效的。系统方法让每个失败都有价值——它告诉你哪条路不通，而不仅仅是"这次没成功"。'},
+{q:'如果系统性方法这么好，为什么中国古代工匠不用？',a:'不是因为"笨"，而是因为知识传承的社会结构不同。中国古代瓷器工匠依赖师徒口传心授，配方保密是竞争壁垒。欧洲启蒙运动后形成的科学共同体文化——公开、同行评议、优先权竞争——催生了系统性记录的动力。方法的差异本质上是制度的差异。'},
+{q:'系统性方法会扼杀创造力吗？',a:'恰恰相反。系统性方法是创造力的"脚手架"——它消除了低水平的重复试错，把精力留给真正需要灵感的部分。莱特兄弟用风洞系统测试200多种翼形，正是这种"枯燥"的系统工作，让他们在关键的控制问题上做出了革命性的创新。'}
+]},
+{concept:'从发现到发明',layers:[
+{q:'弗莱明发现了青霉素，为什么不是他获得诺贝尔奖？（实际他获得了）',a:'弗莱明确实获得了1945年诺贝尔奖（与弗洛里、钱恩共享）。但关键是：弗莱明1928年的发现只是"0到1"，之后他未能提取出可用的青霉素。弗洛里和钱恩花了10年才完成"1到N"——提取、纯化、量产。诺奖同时授予三人，正是对"全链条"的认可。'},
+{q:'在创业语境中，"从发现到发明"对应什么常见错误？',a:'最常见的错误是"点子迷信"——认为有一个好想法就等于成功。实际上，想法（发现）的价值接近于零，执行（发明）才是一切。Airbnb的想法很多人都有过，但只有Brian Chesky团队完成了从"出租气垫床"到全球住宿平台的系统工程。'}
+]},
+{concept:'可叠加进步',layers:[
+{q:'可叠加进步和"站在巨人肩膀上"有什么区别？',a:'"站在巨人肩膀上"是一种结果描述；可叠加进步是一种方法论——它要求你主动创造"可被叠加"的条件：记录、标准化、开放知识、建立可引用的知识体系。中国也有"巨人"（如汝窑工匠），但后人站不上去，因为技艺随人消亡。可叠加进步是"让肩膀可站上去"的工程。'},
+{q:'为什么说可叠加进步比"颠覆式创新"更重要？',a:'颠覆是结果，叠加是过程。真正改变世界的创新很少是凭空而来的"颠覆"——iPhone的触屏技术积累了几十年，集成电路是晶体管自然演化的产物。追求可叠加进步意味着每一步都在为未来铺路，长期复利远超偶尔的"颠覆性突破"。'}
+]},
+{concept:'最后发明家',layers:[
+{q:'这个概念是否对早期探索者不公平？',a:'从个体角度看确实"不公平"——格雷只比贝尔晚半天提交专利。但从社会角度看，这个规则有它的合理性：荣誉信号的激励应该指向"把事情做成"而非"想到"。如果"想到"就能获得同等荣誉，就没有人愿意投入资源去"做到"。专利制度正是用"先到先得"来鼓励"快速执行"。'},
+{q:'如何在团队中避免"最后发明家困境"——即只有最后集成的人获得认可？',a:'这是管理问题而非发明规律。莱特兄弟的做法是典范：两兄弟共享荣誉，不区分个人贡献。在组织中，可以通过透明的贡献记录、合理的署名权分配、以及"全链条"的考核机制来确保每个阶段的贡献都被看见。'}
+]}
+];
+let h='';
+qs.forEach((item,i)=>{
+h+=`<div class="card" style="padding:14px"><h4 style="color:var(--accent);margin-bottom:8px">${item.concept}</h4>`;
+item.layers.forEach((l,j)=>{
+h+=`<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+<div class="q">第${j+1}层：${l.q}</div>
+</div>
+<div class="socratic-a">${l.a}</div>`;
+});
+h+=`</div>`;
+});
+document.getElementById('socraticQuestions').innerHTML=h;
+}
+
+function renderCase(){
+document.getElementById('caseStudy').innerHTML=`
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.85rem">
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">核心概念</h4>
+<p><strong>集成电路 = 电路功能的封装</strong></p>
+<p>类比算法开源：一次性解决"如何连接晶体管"的问题，让下游工程师可专注于"用电路做什么"而非"怎么搭电路"。</p>
+</div>
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">系统性方法</h4>
+<p><strong>继承→改进→颠覆的三步路径</strong></p>
+<p>诺伊斯继承肖克利的晶体管技术→赫尔尼用平面工艺改进制造方式→诺伊斯在此基础上完成集成电路的颠覆性发明。</p>
+</div>
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">从偶然到必然</h4>
+<p><strong>精准融资是关键转折</strong></p>
+<p>"八叛徒"联系30家传统企业失败→找到菲尔柴尔德家族（IBM最大股东）一举成功。对接"理解技术前景的人"vs"只看财务报表的人"结果天差地别。</p>
+</div>
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">可叠加进步</h4>
+<p><strong>仙童→英特尔→硅谷生态</strong></p>
+<p>仙童虽衰落，但其衍生企业（英特尔、AMD等）奠定了硅谷基础。每一个"叛徒"的出走都是一次知识的扩散和叠加。这正是可叠加进步的典型体现。</p>
+</div>
+</div>`;
+}
+
+function renderDecision(){
+if(decisionRound>=3){
+document.getElementById('decisionGame').innerHTML='<div style="text-align:center"><h4 style="color:var(--accent)">三轮决策已完成！</h4><p style="color:var(--muted);margin:10px 0">核心收获：发明决策需要同时考量<strong>技术成熟度、市场时机、资源匹配度和团队执行力</strong>四个维度。</p><button class="btn btn-sm" onclick="decisionRound=0;renderDecision();">重新开始</button></div>';
+return;
+}
+const rounds=[
+{
+scenario:'你是一位风险投资人，面前有两个项目：A.一个拥有突破性电池技术的初创公司，但创始人没有任何商业经验；B.一个商业模式成熟、执行团队强大的电动车充电网络项目，但技术上没有壁垒。你会投资哪个？',
+options:[
+{text:'A：突破性技术，壁垒更高',feedback:'技术领先是优势，但缺乏商业经验的创始人可能导致技术无法转化为可盈利的产品。参考仙童"八叛徒"——他们技术顶尖，但若非菲尔柴尔德家族的资金和商业资源，仙童不会成功。',mks:'技术协同：单一优势不足以形成商业价值。'},
+{text:'B：执行力强，商业模式清晰',feedback:'好选择！历史反复证明：强大的执行团队比技术领先更重要。张忠谋的台积电并非拥有最先进技术，而是通过极致化运营（高成品率、锁定客户）建立了难以复制的竞争优势。',mks:'系统性方法：运营效率是可叠加的竞争壁垒。'},
+{text:'两者按比例配置，分散风险',feedback:'表面合理的折中方案，但早期投资需要"集中火力"。资源分散可能导致两个项目都因支持不足而失败。巴菲特和马斯克代表两种极端风格，自身体量不足时折中是最差策略。',mks:'李嘉图定律：10个90分抵不上1个100分。'}
+]},
+{
+scenario:'你是政府科技政策制定者。关于火星探索，你的预算只够支持一个方向：A.全力支持SpaceX等民营企业（低成本、快迭代、高失败率可接受）；B.集中资源做国家级项目（类似阿波罗计划，缓慢但稳妥）。',
+options:[
+{text:'A：支持民营企业，允许试错',feedback:'有远见的选择！美国NASA正是通过支持SpaceX等企业实现了发射成本的大幅降低。但需注意：SpaceX的"轮盘赌"模式不可复制——马斯克的极端融资能力和运气是独特优势，普通商业航天公司很难复制。',mks:'从偶然到必然：将民营航天的成功经验系统化是下一步关键。'},
+{text:'B：集中力量做国家级大工程',feedback:'稳妥但有天花板。阿波罗计划的成功依赖于冷战时期"不计成本"的国家意志（GDP的2%投入）。在当前财政约束下，集中模式的效率远不如竞争性的多元探索。参考前苏联N-1火箭4次全部爆炸——集中力量不等于成功。',mks:'技术协同：航天需要跨领域技术同步成熟。'},
+{text:'先观望，等技术更成熟再决定',feedback:'看似谨慎，实则危险。技术窗口不会等人——中国电动车新势力相比特斯拉缺少16年缓冲期。在航天这样的长周期领域，"先观望"等于放弃先发优势。正确的做法是小规模多方向试水。',mks:'从发现到发明：等待完美时机不如边做边学。'}
+]},
+{
+scenario:'你的公司开发了一款革命性的AI医疗诊断工具，准确率比人类医生高5%。但FDA审批需要3年+2000万美元，且通过率不高。你会：A.先做FDA审批，走正规路径；B.先在海外（如中国）上线积累数据再回美国申报；C.转型做"辅助工具"（绕过FDA审批）快速变现。',
+options:[
+{text:'A：走FDA正规路径',feedback:'长期最优选择，但资金和时间压力巨大。新药研发从核心论文到上市约20年、成本20亿美元、仅1/7通过三期——医疗领域容错率极低。参考磺胺类药物致死事件——1930年代的悲剧直接催生了现代FDA审批体系。"无害优先"是医疗创新的第一原则。',mks:'科学方法：可叠加进步的前提是"不使情况更坏"。'},
+{text:'B：海外先上线积累数据',feedback:'务实策略！这正是当前许多新药选择先在中国进行试验的原因——FDA"清水衙门"审查积压严重。但需注意数据的跨人群普适性问题（个体差异可能导致海外有效的产品在美国效果减弱，如二期试验vs三期试验的困境）。',mks:'从发现到发明：用真实世界数据加速从0到N的进程。'},
+{text:'C：转型辅助工具快速变现',feedback:'短视但能存活。这个选择的本质是"调整目标以匹配能力"——类似便利贴的发明（目标是速干强力胶，结果做成弱黏性胶水，调整用途后大获成功）。但医疗领域伦理风险高，需谨慎。',mks:'跨领域迁移：失败是中性结果，关键在于重新定义目标。'}
+]}
+];
+const r=rounds[decisionRound];
+let h=`<div class="card" style="padding:14px"><h4 style="color:var(--accent)">第${decisionRound+1}轮决策</h4><p style="font-size:.88rem;margin:8px 0">${r.scenario}</p>`;
+r.options.forEach((o,i)=>{
+h+=`<div class="decision-option" onclick="makeDecision(${i})" id="decOpt${i}">${o.text}</div>`;
+});
+h+=`<div class="decision-feedback" id="decFeedback"></div>`;
+h+=`</div>`;
+document.getElementById('decisionGame').innerHTML=h;
+}
+
+function makeDecision(i){
+const r=[{
+scenario:'你是一位风险投资人...',
+options:[
+{text:'A：突破性技术，壁垒更高',feedback:'技术领先是优势，但缺乏商业经验的创始人可能...'},
+{text:'B：执行力强，商业模式清晰',feedback:'好选择！...'},
+{text:'两者按比例配置，分散风险',feedback:'表面合理的折中方案...'}
+]}];
+const rounds=[
+[
+{fb:'技术领先是优势，但缺乏商业经验的创始人可能导致技术无法转化为可盈利的产品。参考仙童"八叛徒"——他们技术顶尖，但若非菲尔柴尔德家族的资金和商业资源，仙童不会成功。',mks:'技术协同：单一优势不足以形成商业价值。'},
+{fb:'好选择！历史反复证明：强大的执行团队比技术领先更重要。张忠谋的台积电并非拥有最先进技术，而是通过极致化运营（高成品率、锁定客户）建立了难以复制的竞争优势。',mks:'系统性方法：运营效率是可叠加的竞争壁垒。'},
+{fb:'表面合理的折中方案，但早期投资需要"集中火力"。资源分散可能导致两个项目都因支持不足而失败。参考巴菲特vs马斯克——自身资源有限时折中是最差策略。',mks:'李嘉图定律：10个90分抵不上1个100分。'}
+],[
+{fb:'有远见的选择！美国NASA正是通过支持SpaceX等企业实现了发射成本的大幅降低。但需注意：SpaceX的"轮盘赌"模式不可复制——马斯克的极端融资能力和运气是独特优势。',mks:'从偶然到必然：将民营航天的成功经验系统化是下一步关键。'},
+{fb:'稳妥但有天花板。阿波罗计划的成功依赖于冷战时期"不计成本"的国家意志（GDP的2%投入）。在当前财政约束下，集中模式的效率远不如竞争性的多元探索。',mks:'技术协同：航天需要跨领域技术同步成熟。'},
+{fb:'看似谨慎，实则危险。技术窗口不会等人——中国电动车新势力相比特斯拉缺少16年缓冲期。在航天这样的长周期领域，"先观望"等于放弃先发优势。',mks:'从发现到发明：等待完美时机不如边做边学。'}
+],[
+{fb:'长期最优选择，但资金和时间压力巨大。新药研发从核心论文到上市约20年、成本20亿美元、仅1/7通过三期。参考磺胺类药物致死事件——"无害优先"是医疗创新的第一原则。',mks:'科学方法：可叠加进步的前提是"不使情况更坏"。'},
+{fb:'务实策略！这正是当前许多新药选择先在中国进行试验的原因。但需注意数据的跨人群普适性问题——个体差异可能导致海外有效的产品在美国效果减弱。',mks:'从发现到发明：用真实世界数据加速从0到N的进程。'},
+{fb:'短视但能存活。类似便利贴的发明——目标是速干强力胶，结果做成弱黏性胶水，调整用途后大获成功。但医疗领域伦理风险高，需谨慎。',mks:'跨领域迁移：失败是中性结果，关键在于重新定义目标。'}
+]];
+const fb=rounds[decisionRound][i];
+document.getElementById('decFeedback').innerHTML=`<strong>分析：</strong>${fb.fb}<br><span class="tag hot">MKS：${fb.mks}</span>`;
+document.getElementById('decFeedback').style.display='block';
+document.querySelectorAll('.decision-option').forEach(el=>el.style.pointerEvents='none');
+document.getElementById(`decOpt${i}`).style.borderColor='var(--accent)';
+setTimeout(()=>{
+decisionRound++;
+renderDecision();
+},5000);
+}
+
+function updateProgress(){
+const cardPct=Math.round(learnedCards.length/10*100);
+const quizPct=Math.round(answeredQuestions.filter((x,i,a)=>a.indexOf(x)===i).length/30*100);
+document.getElementById('cardProgress').textContent=learnedCards.length+'/10';
+document.getElementById('cardBar').style.width=cardPct+'%';
+document.getElementById('quizProgress').textContent=Math.min(answeredQuestions.filter((x,i,a)=>a.indexOf(x)===i).length,30)+'/30';
+document.getElementById('quizBar').style.width=quizPct+'%';
+}
+
+function switchTab(idx){
+document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+document.querySelector(`.tab-btn[data-tab="${idx}"]`).classList.add('active');
+document.getElementById(`panel${idx}`).classList.add('active');
+if(idx===1)renderCard();
+if(idx===2){renderMCQ();renderSAQ();}
+if(idx===4){renderWrongBook();renderReview();}
+if(idx===8)renderDecision();
+updateProgress();
+}
+
+// Toggle tree
+function toggleTree(el){
+el.classList.toggle('open');
+el.nextElementSibling?.classList?.toggle('open');
+}
+window.toggleTree=toggleTree;
+
+// Tab nav events
+document.getElementById('tabNav').addEventListener('click',e=>{
+if(e.target.classList.contains('tab-btn')){
+switchTab(parseInt(e.target.dataset.tab));
+}
+});
+
+// Init
+renderConcepts();
+renderSVG();
+renderBoundary();
+renderPath();
+renderCard();
+renderMCQ();
+renderSAQ();
+renderMindmap();
+renderSocratic();
+renderCase();
+updateProgress();
+</script>
+</body>
+</html>

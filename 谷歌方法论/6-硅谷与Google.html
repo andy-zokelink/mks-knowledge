@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>硅谷与Google — 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec; --card: #fffaf2; --accent: #c0392b; --accent2: #e74c3c;
+  --text: #3d2f2f; --muted: #8b7b7b; --border: #e8d5c4; --gold: #d4a017;
+  --shadow: 0 2px 12px rgba(60,30,10,0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+
+/* Header */
+.header { text-align: center; padding: 28px 0 12px; }
+.header h1 { font-size: clamp(1.3rem, 3vw, 1.8rem); color: var(--accent); letter-spacing: 0.04em; }
+.header .sub { font-size: clamp(0.8rem, 1.8vw, 0.95rem); color: var(--muted); margin-top: 6px; }
+.header .home-link { display: inline-block; margin-top: 10px; font-size: 0.85rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 4px 16px; border-radius: 20px; transition: all 0.2s; }
+.header .home-link:hover { background: var(--accent); color: #fff; }
+
+/* Tab bar */
+.tab-bar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 4px; background: var(--bg); padding: 8px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.tab-btn { padding: 7px 13px; font-size: clamp(0.7rem, 1.5vw, 0.82rem); border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 20px; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+.tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Tab panels */
+.tab-panel { display: none; animation: fadeIn 0.35s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Cards */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 10px; }
+.card p, .card li { font-size: clamp(0.82rem, 1.6vw, 0.92rem); line-height: 1.75; color: var(--text); }
+
+/* Concept grid */
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.concept-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; cursor: pointer; transition: all 0.25s; box-shadow: var(--shadow); }
+.concept-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 6px 20px rgba(192,57,43,0.15); }
+.concept-card .icon { font-size: 1.8rem; margin-bottom: 6px; }
+.concept-card .name { font-size: 0.9rem; font-weight: bold; color: var(--accent); }
+.concept-card.mks { border: 2px solid var(--gold); background: #fffef7; }
+.concept-card.mks .badge { display: inline-block; background: var(--gold); color: #fff; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
+
+/* Progress */
+.progress-wrap { margin: 16px 0; }
+.progress-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; }
+.progress-bar { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 5px; transition: width 0.5s; }
+
+/* SVG container */
+.svg-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; padding: 8px 0; }
+.svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
+
+/* Flip cards */
+.flip-container { perspective: 1000px; width: 280px; height: 340px; margin: 0 auto 20px; }
+.flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+.flip-container.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: var(--card); }
+.flip-back { transform: rotateY(180deg); background: #fffef7; text-align: left; overflow-y: auto; }
+.flip-back .dim { font-size: 0.8rem; color: var(--accent); font-weight: bold; margin-top: 8px; }
+.flip-back .dim:first-child { margin-top: 0; }
+.flip-back p { font-size: 0.82rem; line-height: 1.6; margin: 2px 0 8px; }
+.flip-nav { display: flex; justify-content: center; gap: 12px; margin: 12px 0; }
+.flip-nav button { padding: 8px 20px; border: 1px solid var(--accent); background: var(--card); color: var(--accent); border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s; }
+.flip-nav button:hover { background: var(--accent); color: #fff; }
+.flip-index { text-align: center; font-size: 0.85rem; color: var(--muted); margin: 4px 0; }
+
+/* Quiz */
+.quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.quiz-card .q-title { font-weight: bold; font-size: 0.95rem; margin-bottom: 12px; color: var(--text); }
+.quiz-card .q-num { color: var(--accent); margin-right: 6px; }
+.option { display: block; padding: 10px 14px; margin: 6px 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.88rem; }
+.option:hover { border-color: var(--accent); background: #fff8f6; }
+.option.selected { background: #fef0ed; border-color: var(--accent); }
+.option.correct { background: #e8f5e9; border-color: #4caf50; }
+.option.wrong { background: #ffebee; border-color: var(--accent2); }
+.quiz-feedback { margin-top: 10px; padding: 10px; border-radius: 8px; font-size: 0.85rem; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.ok { background: #e8f5e9; color: #2e7d32; }
+.quiz-feedback.err { background: #ffebee; color: #c62828; }
+
+.btn { padding: 10px 24px; border: none; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.88rem; transition: all 0.2s; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+.btn-sm { padding: 5px 14px; font-size: 0.78rem; }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { opacity: 0.85; }
+
+/* Mind map tree */
+.tree { padding: 10px 0; }
+.tree-node { margin-left: 0; }
+.tree-label { cursor: pointer; padding: 6px 10px; border-radius: 6px; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px; transition: background 0.15s; }
+.tree-label:hover { background: #fef0ed; }
+.tree-label .arr { font-size: 0.7rem; transition: transform 0.25s; display: inline-block; width: 14px; }
+.tree-label .arr.open { transform: rotate(90deg); }
+.tree-children { margin-left: 24px; overflow: hidden; transition: max-height 0.35s ease; }
+.tree-children.collapsed { max-height: 0 !important; }
+.tree-root > .tree-label { font-weight: bold; color: var(--accent); font-size: 1rem; }
+
+/* Socratic */
+.socratic-item { margin-bottom: 14px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--card); }
+.socratic-q { padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem; transition: background 0.15s; }
+.socratic-q:hover { background: #fef8f5; }
+.socratic-q .indicator { font-size: 1.1rem; color: var(--accent); transition: transform 0.25s; }
+.socratic-q .indicator.open { transform: rotate(45deg); }
+.socratic-a { padding: 0 16px; max-height: 0; overflow: hidden; transition: all 0.35s ease; }
+.socratic-a.open { padding: 0 16px 16px; max-height: 500px; }
+.socratic-a p { font-size: 0.85rem; line-height: 1.7; }
+
+/* Case study */
+.case-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.case-tab { padding: 8px 16px; border: 1px solid var(--border); background: var(--card); border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-family: inherit; transition: all 0.2s; }
+.case-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.case-content { display: none; animation: fadeIn 0.3s ease; }
+.case-content.active { display: block; }
+.case-choice { display: block; width: 100%; padding: 12px 16px; margin: 8px 0; border: 2px solid var(--border); border-radius: 10px; background: var(--card); cursor: pointer; text-align: left; font-family: inherit; font-size: 0.88rem; transition: all 0.2s; }
+.case-choice:hover { border-color: var(--accent); }
+.case-result { display: none; padding: 14px; border-radius: 8px; margin-top: 12px; font-size: 0.85rem; line-height: 1.7; }
+.case-result.show { display: block; }
+
+/* Stats */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.stat-item { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+.stat-item .val { font-size: 1.6rem; font-weight: bold; color: var(--accent); }
+.stat-item .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+/* Table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 12px 0; }
+.tbl th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; font-weight: normal; font-size: 0.82rem; }
+.tbl td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.tbl tr:nth-child(even) td { background: #fefaf7; }
+
+/* Timer */
+.timer { font-size: 1.2rem; font-weight: bold; color: var(--accent); text-align: center; margin: 12px 0; }
+.timer.warn { color: #e67e22; animation: pulse 0.8s infinite; }
+.timer.danger { color: var(--accent2); animation: pulse 0.4s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* Toast */
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #3d2f2f; color: #fff; padding: 10px 24px; border-radius: 24px; font-size: 0.85rem; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .tab-bar { gap: 3px; padding: 6px 0 8px; }
+  .tab-btn { padding: 5px 9px; font-size: 0.68rem; }
+  .concept-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+  .flip-container { width: 240px; height: 300px; }
+  .header h1 { font-size: 1.15rem; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="container">
+  <div class="header">
+    <h1>硅谷与Google · 工程文化实践</h1>
+    <p class="sub">共19篇笔记 ｜ 10个核心概念 ｜ 30道试题 ｜ 最小知识集学习系统</p>
+    <a href="#" class="home-link" onclick="alert('返回首页入口预留 — 可链接至知识主板Hub页面');return false;">← 返回知识主板</a>
+  </div>
+
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="0">📊 知识总览</button>
+    <button class="tab-btn" data-tab="1">🃏 知识卡片</button>
+    <button class="tab-btn" data-tab="2">✍️ 选择题库</button>
+    <button class="tab-btn" data-tab="3">📝 简答题库</button>
+    <button class="tab-btn" data-tab="4">🎯 考试模式</button>
+    <button class="tab-btn" data-tab="5">📕 错题本</button>
+    <button class="tab-btn" data-tab="6">🧠 思维导图</button>
+    <button class="tab-btn" data-tab="7">🔍 苏格拉底</button>
+    <button class="tab-btn" data-tab="8">💼 案例实战</button>
+  </div>
+
+  <!-- TAB 0: 知识总览 -->
+  <div class="tab-panel active" data-panel="0">
+    <div class="card" style="text-align:center;">
+      <h3>核心目标</h3>
+      <p style="font-size:1.05rem;">理解硅谷顶级科技公司的<strong>工程师文化驱动体系</strong>——人才战略、产品哲学、技术架构、平台竞争、商业策略——掌握信息时代企业核心竞争力与个人成长的方法论框架。</p>
+    </div>
+
+    <h3 style="margin-bottom:8px;">10个核心概念</h3>
+    <div class="concept-grid" id="conceptGrid"></div>
+
+    <h3 style="margin-bottom:8px;">★ MKS 骨架概念（必须深刻理解）</h3>
+    <div class="concept-grid" id="mksGrid"></div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>学习进度</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="card">
+      <h3>概念关系图</h3>
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:8px;">根节点从笔记内容提取：Google工程文化的核心驱动是"工程师文化 × 信息整合"的双轮引擎。工程师文化提供人才与技术的纵深，信息整合决定商业与平台的广度。</p>
+      <div class="svg-wrap" id="svgContainer"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:0.78rem;color:var(--muted);margin-top:8px;">
+        <span>━━ 实线：驱动关系</span><span>--- 虚线：反馈关系</span>
+        <span style="color:#a0522d;">● 棕色：核心驱动</span><span style="color:#c0392b;">● 深红：人才/技术</span><span style="color:#d4a017;">● 金色：MKS骨架 商业/平台</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>边界知识表（15条）</h3>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead><tr><th>知识点</th><th>只需知道</th><th>使用场景</th></tr></thead>
+          <tbody>
+            <tr><td>FaceMash事件</td><td>扎克伯格早期侵犯肖像权的争议网站</td><td>理解Facebook创始人的产品基因</td></tr>
+            <tr><td>温克夫斯兄弟诉讼</td><td>创意纠纷以3100万美元和解</td><td>硅谷创意保护与执行价值的经典案例</td></tr>
+            <tr><td>Friendster兴衰</td><td>首个确立四大社交原则的平台</td><td>第一眼/第二眼/第三眼美女产品理论</td></tr>
+            <tr><td>Inktomi搜索引擎</td><td>雅虎早期依赖的搜索技术提供商</td><td>理解Google替代雅虎的技术背景</td></tr>
+            <tr><td>AltaVista创新</td><td>首个对每个词建索引的搜索引擎</td><td>查全率突破但查准率低的典型</td></tr>
+            <tr><td>Google Buzz</td><td>Google首个社交产品，因隐私问题下架</td><td>Google社交战略失败的案例</td></tr>
+            <tr><td>Google+</td><td>冈多特拉推动，遏制了Facebook扩张</td><td>企业基因决定边界的反面案例</td></tr>
+            <tr><td>雕版印刷术</td><td>技术前提+社会需求+文化因素共同作用</td><td>技术与需求的辩证关系示例</td></tr>
+            <tr><td>中美文化差异</td><td>家庭观念/计划性/隐私/主动性四维差异</td><td>理解硅谷工作文化的底层社会背景</td></tr>
+            <tr><td>剑桥分析丑闻</td><td>8700万用户数据被用于影响选举</td><td>隐私保护与创始人信任危机案例</td></tr>
+            <tr><td>网络中性化</td><td>所有用户和内容商获同等服务与收费</td><td>互联网基础设施的治理原则</td></tr>
+            <tr><td>Google I/O大会</td><td>年度技术原型发布会</td><td>Google技术储备的公开展示窗口</td></tr>
+            <tr><td>双重股权结构</td><td>B股10票/A股1票，确保创始人控制权</td><td>科技公司治理的经典架构</td></tr>
+            <tr><td>朗道分级</td><td>物理学家5级分级标准，西尔弗斯坦为1级</td><td>工程师能力评估的参照标准</td></tr>
+            <tr><td>沙弗利事件</td><td>早期合伙人被股权稀释清除</td><td>创业团队止损决策的案例</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>学习路径（5阶段）</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;">1</span><div><strong>技术基因</strong><span style="color:var(--muted);font-size:0.82rem;"> — PageRank算法 → 云计算起源 → Google大脑。先理解Google为什么能做出好产品。</span></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;">2</span><div><strong>人才与文化</strong><span style="color:var(--muted);font-size:0.82rem;"> — 博士军团 → 瑞士制造 → TGIF → 牙刷原则。理解人才密度如何驱动创新。</span></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;">3</span><div><strong>平台竞争</strong><span style="color:var(--muted);font-size:0.82rem;"> — Facebook vs Google → 三大发布平台 → 信息整合方式。理解当代商业竞争的本质。</span></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;">4</span><div><strong>商业策略</strong><span style="color:var(--muted);font-size:0.82rem;"> — 超越免费 → ARPU值 → 薪尽火传。理解如何从技术优势转化为商业壁垒。</span></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;">5</span><div><strong>个人实践</strong><span style="color:var(--muted);font-size:0.82rem;"> — 用牙刷原则审视自己产品 → 用ARPU值评估社交质量 → 用超越免费四大策略构建不可替代性。</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 1: 知识卡片 -->
+  <div class="tab-panel" data-panel="1">
+    <div class="flip-container" id="flipCard">
+      <div class="flip-inner">
+        <div class="flip-front"><div style="font-size:2rem;" id="fcIcon"></div><div style="font-size:1.2rem;font-weight:bold;color:var(--accent);margin-top:12px;" id="fcName"></div><p style="font-size:0.82rem;color:var(--muted);margin-top:8px;">点击翻转查看详情</p></div>
+        <div class="flip-back" id="fcBack"></div>
+      </div>
+    </div>
+    <div class="flip-nav">
+      <button onclick="prevCard()">◀ 上一张</button>
+      <button onclick="document.getElementById('flipCard').classList.toggle('flipped')">🔄 翻转</button>
+      <button onclick="nextCard()">下一张 ▶</button>
+    </div>
+    <div class="flip-index" id="fcIndex"></div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="btn btn-gold btn-sm" onclick="markLearned()">★ 标记已学习</button>
+    </div>
+  </div>
+
+  <!-- TAB 2: 选择题库 -->
+  <div class="tab-panel" data-panel="2">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <span style="font-weight:bold;">共20道选择题</span>
+      <button class="btn btn-outline btn-sm" onclick="shuffleMCQ()">🔀 随机抽题</button>
+    </div>
+    <div id="mcqList"></div>
+    <div style="text-align:center;margin-top:12px;">
+      <button class="btn btn-primary" onclick="checkAllMCQ()">提交全部选择题</button>
+      <span style="margin-left:12px;font-size:0.85rem;color:var(--muted);" id="mcqScore"></span>
+    </div>
+  </div>
+
+  <!-- TAB 3: 简答题库 -->
+  <div class="tab-panel" data-panel="3">
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">共10道简答题，点击题目展开参考答案。用于自我检测理解深度。</p>
+    <div id="saList"></div>
+  </div>
+
+  <!-- TAB 4: 考试模式 -->
+  <div class="tab-panel" data-panel="4">
+    <div class="card" style="text-align:center;">
+      <h3>模拟考试</h3>
+      <p style="font-size:0.9rem;">从题库随机抽取10题（7选择 + 3简答），限时15分钟</p>
+      <div class="timer" id="examTimer">15:00</div>
+      <div id="examArea"></div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" id="examStart" onclick="startExam()">开始考试</button>
+        <button class="btn btn-gold" id="examSubmit" onclick="submitExam()" style="display:none;">提交考试</button>
+        <button class="btn btn-outline btn-sm" id="examRetry" onclick="startExam()" style="display:none;">重新考试</button>
+      </div>
+      <div id="examResult" style="margin-top:10px;font-size:0.9rem;"></div>
+    </div>
+  </div>
+
+  <!-- TAB 5: 错题本 -->
+  <div class="tab-panel" data-panel="5">
+    <h3 style="margin-bottom:12px;">学习统计</h3>
+    <div class="stat-grid" id="statsGrid"></div>
+    <h3 style="margin-bottom:12px;">错题回顾</h3>
+    <div id="wrongList"><p style="color:var(--muted);">暂无错题，继续加油！</p></div>
+    <div style="margin-top:12px;">
+      <button class="btn btn-outline btn-sm" onclick="clearWrongBook()">清空错题本</button>
+      <button class="btn btn-gold btn-sm" style="margin-left:8px;" onclick="redoWrong()">重做错题</button>
+    </div>
+  </div>
+
+  <!-- TAB 6: 思维导图 -->
+  <div class="tab-panel" data-panel="6">
+    <div class="card">
+      <div class="tree tree-root" id="mindMap"></div>
+    </div>
+  </div>
+
+  <!-- TAB 7: 苏格拉底问答 -->
+  <div class="tab-panel" data-panel="7">
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">对每个MKS核心概念进行2-3层追问，点击展开回答。苏格拉底式的深度追问帮你真正"想通"而非"记住"。</p>
+    <div id="socraticList"></div>
+  </div>
+
+  <!-- TAB 8: 案例实战 -->
+  <div class="tab-panel" data-panel="8">
+    <div class="case-tabs">
+      <button class="case-tab active" data-case="0">🔍 Google搜索广告</button>
+      <button class="case-tab" data-case="1">⚔️ Facebook vs Google</button>
+      <button class="case-tab" data-case="2">🚀 IPO拍卖定价</button>
+    </div>
+    <div id="casePanels"></div>
+  </div>
+</div>
+
+<script>
+// ============ DATA ============
+
+const concepts = [
+  { id: 0, icon: '🎓', name: '博士军团', mks: false, def: '研究与开发不分家，优先招聘博士，要求工程师兼具编程与研究能力', analog: '如同瑞士钟表匠——每个零件都经顶级工匠之手，而非流水线组装', example: 'Google 2000人规模时博士数量是香港科大计算机系的几十倍', anti: '微软700名专职研究员与开发脱节，创新效率被仅有2000人的Google超越' },
+  { id: 1, icon: '🪥', name: '牙刷原则', mks: true, def: '产品需让用户每天必须使用几分钟，通过高频使用培养稳定习惯与依赖', analog: '如同佳洁士牙膏——每天早晚各用一次，最终成为无需思考的默认选择', example: 'Google搜索用户每日2-3次，最终设为浏览器默认首页', anti: 'Google在中国市场因年断网10天（3%不可用率）而失败，可靠性不足违背牙刷原则' },
+  { id: 2, icon: '🍻', name: 'TGIF文化', mks: false, def: '每周五全员聚会，新员工介绍、部门成果汇报、公开财务数据，营造"共同创业"氛围', analog: '如同大学实验室的Happy Hour——师兄弟在轻松环境中交流进展与困惑', example: '早期TGIF上科德斯坦尼站在沙袋上公布月营业额，上千人规模时仍能保密', anti: '单纯的公司年会或团建，缺乏每周持续的信息透明度与平等的仪式感' },
+  { id: 3, icon: '🕸️', name: 'PageRank算法', mks: true, def: '将互联网视为图（Graph），网页为节点、链接为弧，通过链接关系评估页面价值', analog: '如同学术引用——被越重要的论文引用，这篇论文本身就越重要', example: '支持搜索莎士比亚名句"to be or not to be"，AltaVista虽能查全但不分主次', anti: '传统文献检索技术——只看关键词频率而不考虑页面间的关系结构' },
+  { id: 4, icon: '☁️', name: '云计算起源', mks: false, def: '从大文件系统(GFS)起步，通过大量廉价服务器整合实现超级计算能力，2006年基本建成云平台', analog: '如同电网——用户只需"插电"使用计算资源，无需自建"发电厂"（数据中心）', example: 'Google邮件、博客、Orkut等业务全部迁移至云计算平台后，工程师只需提交CPU需求', anti: '传统企业自建机房——每个业务单独采购服务器，资源利用率低且运维成本高' },
+  { id: 5, icon: '⚔️', name: '平台之争', mks: true, def: 'Google(算法驱动) vs Facebook(社交关系驱动)，本质是信息整合方式之争，企业基因决定边界', analog: '如同图书馆——Google像卡片目录系统（算法分类），Facebook像读者推荐网络（社交筛选）', example: 'Google社交战略失败证明：算法基因的公司难做社交，社交基因的公司难做搜索', anti: '盲目多元化——试图覆盖所有领域而不顾自身基因的公司往往两头落空' },
+  { id: 6, icon: '🚀', name: '超越免费', mks: true, def: '在免费品泛滥的时代，通过时效性、个性化、可靠性、数据黏性四大策略构建不可替代性', analog: '如同医生问诊——医学知识百科免费，但专家的即时诊断和个性化方案仍然按小时收费', example: 'Red Hat将免费Linux包装为1万美元的安装手册；得到App将免费图书做成4.99元解读产品', anti: '靠补贴和免费拉用户但不建立壁垒的烧钱模式——用户随时可切换，后劲不足' },
+  { id: 7, icon: '⌚', name: '瑞士制造', mks: false, def: '同样的事，品质差异导致价值天壤之别。瑞士钻头成本贵1倍但效率高10倍、寿命长10倍', analog: '如同百达翡丽 vs 普通手表——都是计时工具，但前者价格是后者的300-400倍', example: 'Google要求代码不允许多空格、单行不超过80字符、变量名必须规范，即使不影响运行', anti: '能跑就行的心态——忽视工程细节导致长期维护成本呈指数增长' },
+  { id: 8, icon: '🔥', name: '薪尽火传', mks: false, def: '企业有生有死是常态，真正传承的是基因和文化而非实体，通过独立新部门实现延续', analog: '如同可重生的海蜇——母体死亡后新细胞发育为完整个体，基因得以延续', example: 'Alphabet架构：成熟业务保留Google品牌交给皮柴，佩奇布林专注X实验室等新业务', anti: '追求企业"永生"——不断为衰落业务输血而非寻找新机会，最终拖垮整体' },
+  { id: 9, icon: '📊', name: 'ARPU值思维', mks: false, def: '每用户平均收入(ARPU)是比用户数量更核心的商业指标，关注价值不等同于关注量', analog: '如同粉丝质量——100个付费用户创造的收入远超10000个免费围观者', example: '苹果ARPU>300美元，Google 30+美元，中国BAT 20+美元；徕卡通过培养用户提升ARPU在相机衰退中逆势增长', anti: '追求虚假繁荣——只看下载量/注册量/浏览量，忽视实际变现能力和用户生命周期价值' }
+];
+
+const mcqBank = [
+  { q: 'Google成功的核心人才密码是什么？', opts: ['大量招聘博士且研发与开发不分家', '提供硅谷最高薪资来吸引人才', '严格的末位淘汰制度保持团队战斗力', '只招聘有过创业经验的技术人才'], ans: 0 },
+  { q: '佩奇的"牙刷原则"核心含义是什么？', opts: ['产品设计要简洁如牙刷的外观', '产品要让用户每天必须使用几分钟', '每个员工配发一把Google定制牙刷', '产品定价要像牙刷一样人人买得起'], ans: 1 },
+  { q: 'PageRank算法将互联网视为什么来解决问题？', opts: ['关系型数据库', '多层树形结构', '图（Graph），网页为节点、链接为弧', '递归神经网络模型'], ans: 2 },
+  { q: 'TGIF活动中，谁曾站在大沙袋上汇报财务数据？', opts: ['拉里·佩奇（联合创始人）', '谢尔盖·布林（联合创始人）', '埃里克·施密特（前CEO）', '奥米德·科德斯坦尼（营销副总裁）'], ans: 3 },
+  { q: 'Facebook与Google竞争的本质是什么？', opts: ['信息整合方式之争——算法驱动 vs 社交关系驱动', '用户流量的零和博弈——谁赢谁垄断', '人才储备的军备竞赛——挖角大战', '数据中心的全球布局之争——基础设施竞赛'], ans: 0 },
+  { q: 'Google云计算平台的核心设计目标是什么？', opts: ['使用最昂贵的超级计算机作为基础设施', '通过大量廉价服务器整合实现超级计算', '将计算任务完全外包给IBM和惠普', '基于大型机的分时共享系统'], ans: 1 },
+  { q: '吴军提出的"超越免费"策略中，不包括以下哪项？', opts: ['通过时效性创造不可复制的价值', '通过个性化匹配用户的深度需求', '通过打价格战将竞争对手挤出市场', '通过数据黏性锁定用户的切换成本'], ans: 2 },
+  { q: 'Google上市时融资27.18281828亿美元，这组数字代表什么？', opts: ['π（圆周率）的前十位', '√2（根号2）的前十位', '黄金分割比例的前十位', '自然对数底数e的前十位，体现技术基因'], ans: 3 },
+  { q: '"瑞士制造"哲学在Google人才战略中比喻什么？', opts: ['同样的事，品质差异导致价值天壤之别', '公司总部应该设在瑞士这样中立的国家', '员工应该像瑞士军刀一样多才多艺', '只有瑞士籍员工才能担任核心技术岗位'], ans: 0 },
+  { q: 'Facebook早期成功的关键创新是什么？', opts: ['率先在社交网络中使用视频广告', '开放账户体系，支持第三方登录', '收购所有潜在竞争对手实现垄断', '专注企业级社交市场避开个人用户'], ans: 1 },
+  { q: '硅谷多次被预言衰落却持续繁荣的根本原因是什么？', opts: ['加州政府持续提供高额科技补贴', '地中海气候吸引了全球人才定居', '产业迭代能力和高效资源优化机制', '土地价格低廉便于扩大办公区域'], ans: 2 },
+  { q: 'Google上市时采用了什么创新的定价机制？', opts: ['固定价格发行（由投行设定单一价格）', '荷兰式拍卖（价格由高到低直至售罄）', '承销商协商定价（与投行谈判确定价格）', '竞标拍卖定价（让市场决定IPO价格）'], ans: 3 },
+  { q: 'ARPU值的全称和含义是什么？', opts: ['每用户平均收入（Average Revenue Per User）', '广告投放回报率（Ad Return Per Unit）', '年度产品开发速率（Annual Release Per Unit）', '科研人员人均产出（Academic Research Per User）'], ans: 0 },
+  { q: '佩奇用"薪尽火传"表达什么管理思想？', opts: ['公司应当通过不断并购来实现永生', '企业传承的是基因和文化，而非实体本身', '离职员工的贡献会在新公司继续发光', '裁员和招聘是企业新陈代谢的正常循环'], ans: 1 },
+  { q: '吴军认为人类社交网络存在的生物学基础是什么？', opts: ['农耕文明的经济交换需求', '部落制政治组织的社会控制需求', '通信本能已植入基因，语言能力是进化优势', '工业革命后城市化的偶然文化产物'], ans: 2 },
+  { q: 'Google早期招聘工程师的核心原则是什么？', opts: ['来者不拒，先招进来再筛选淘汰', '只看常青藤名校的博士学历', '优先考虑内部员工推荐的熟人关系', '宁缺毋滥，每位需经创始人或4名Google Fellow面试'], ans: 3 },
+  { q: '扎克伯格个人争议中最关键的影响是什么？', opts: ['长期信任包袱——抄袭争议和诚信问题形成持续性负面预期', '技术能力不足——哈佛辍学生缺乏计算机科学功底', '年龄太轻——不够成熟导致投资人信心不足', '语言障碍——英语非母语影响国际商务谈判'], ans: 0 },
+  { q: '根据吴军的量化数据，内容消费中每小时价值最高的是什么？', opts: ['电视直播节目（约20美分/小时）', '电影（约4美元/小时）', '微信朋友圈帖子（约几毛钱/小时）', '网络八卦新闻（不到10美分/小时）'], ans: 1 },
+  { q: '被称为"云计算之父"的是哪两位Google工程师？', opts: ['拉里·佩奇和谢尔盖·布林', '埃里克·施密特和奥米德·科德斯坦尼', '杰夫·迪恩（Jeff Dean）和桑杰·戈马瓦特（Sanjay Ghemawat）', '克雷格·西尔弗斯坦和霍夫曼'], ans: 2 },
+  { q: '根据吴军的观点，个人发展中最应该避免的是什么？', opts: ['利用业余时间进行终身学习', '主动与上级沟通职业发展规划', '在深度专业领域持续积累稀缺技能', '沉迷廉价社交和低质量关注的虚假繁荣'], ans: 3 }
+];
+
+const saBank = [
+  { q: '简述Google"博士军团"战略的核心逻辑及其潜在隐患。', a: '核心逻辑：① 博士具备最高的创造力和自觉性，能"带领团队到无人去过的地方"而非仅"到达别人到过的地方"；② 研发不分家——研究员参与一线开发，确保理论快速落地。类比瑞士制造——品质差异导致价值天壤之别。潜在隐患：① 人才浪费——部分能人无法发挥最大作用；② 资源分散——为满足创造性产生大量意义不大的小项目；③ 历史借鉴——媒体担忧重蹈苹果当年创新与聚焦失衡的覆辙。' },
+  { q: '什么是佩奇的"牙刷原则"？它在Google产品设计中有哪些具体体现？', a: '定义：优质产品应像牙刷一样，让用户每天必须使用几分钟，通过高频使用培养习惯形成稳定依赖。体现：① Google搜索——用户每日2-3次，最终设为默认首页；② 可靠性要求——服务必须高度稳定，"时灵时不灵"是致命伤（Google中国失败主因是年断网10天=3%不可用率）。配合"爆款"效应定期强化印象，将高频使用与惊喜体验结合。' },
+  { q: 'TGIF文化对Google早期发展的核心价值是什么？信息透明化有什么风险与回报？', a: '核心价值：① 通过每周分享营业额增长数据增强员工信心——上市前工资低、股票无法兑现但团队稳定；② 营造"共同创业"氛围，成为员工精神支柱；③ 每周工程成果展示和单元测试竞赛强化代码质量意识。风险：商业机密泄露。回报：上千人规模时营业额等机密未外泄，施密特从担忧转为认可。规模扩大后个性化环节逐渐简化，体现文化在规模化中的挑战。' },
+  { q: 'PageRank算法的创新之处是什么？为什么它能解决AltaVista的查准率问题？', a: '创新：突破传统文献检索框架，将互联网视为图（Graph），网页为节点、链接为弧，通过链接关系评估页面价值——被重要页面链接的页面更重要。解决查准率：AltaVista虽能查全（对每个词建立索引），但结果排序无区分度，用户需翻多页。PageRank通过链接分析实现"重要性排序"，将最相关的页面排在前面，类似于学术论文的引用权重——被越重要的论文引用，这篇论文本身就越有价值。' },
+  { q: 'Facebook与Google的竞争本质是什么？为什么说"企业基因决定边界"？', a: '竞争本质：信息整合方式之争——Google是算法驱动（擅长搜索、AI），Facebook是社交关系驱动（通过点赞、跟随等用户行为筛选信息）。类似百度（信息处理）与腾讯（通信）的竞争。企业基因：Google的工程师文化基因使其社交产品（Buzz/Google+）均失败；Facebook的社交基因使其在搜索和AI上与Google差距巨大。启示——优秀公司需明确基因并守住基本盘，五大巨头均因此立足。' },
+  { q: 'Google的云计算平台是如何从内部需求演化为产业基础设施的？', a: '演进路径：① 斯坦福时期——佩奇和布林设计大文件系统（Big File），即GFS前身；② 工程实现——杰夫·迪恩和桑杰·戈马瓦特专注开发可支撑10倍业务量的扩展平台，设计核心为廉价服务器整合+容错性与并发处理；③ 业务迁移——2006年邮件/博客/Orkut等全部迁至云平台，工程师只需提交CPU需求；④ 基础设施——霍尔斯主导全球光缆网络、数据中心布局、服务器设计；⑤ 产业影响——推动"随时随地访问处理存储信息"的愿景，颠覆IT产业结构。' },
+  { q: '吴军的"超越免费"四大策略分别是什么？各举一个典型案例。', a: '① 时效性——体育赛事直播（多数人愿付费看直播而非免费重播）、精装本图书大部分利润来自时效性最强的版本；② 个性化——靶向治疗（根据患者基因定制方案）、特斯拉按配置生产避免"库存积压-降价抛售"；③ 可靠性——Red Hat将免费Linux包装为1万美元安装手册、日本二手车vs免费N手车（3000-5000美元买可靠性）；④ 数据黏性——智能手机系统切换成本（从安卓到苹果需迁移大量数据与社会关系）、得到App的讲师-听众双向依赖。' },
+  { q: '佩奇的"薪尽火传"管理哲学如何体现在Google的组织架构改造中？', a: '体现：① 独立创新部门——成立Google风投、X实验室等作为"新细胞"独立发展；② 管理层渐进交接——先培养皮柴，将产品部门高管改为向其汇报，再提拔至类似COO职位；③ Alphabet架构——成熟业务保留Google品牌交给皮柴，佩奇和布林专注新业务。战略考量：创始人亲自负责新业务避免基因决定论（新业务重蹈IBM个人电脑部门覆辙）；提前应对反垄断——2008年已聘请前司法部官员任法务副总裁。核心思想：企业真正传承的是基因和文化，而非实体，如同"柴火虽尽，火种留存"。' },
+  { q: 'ARPU值为什么比用户数量更重要？以徕卡相机的逆袭为例说明。', a: '原因：用户关注量的价值极不平等——不同人群/不同状态下的关注质量差异巨大。每小时关注价值：高质量杂志1美元 vs 电视20美分 vs 八卦小报<10美分。徕卡案例：在智能手机冲击相机市场背景下，尼康/佳能销量下降50%，徕卡销量反而上升。破局关键——放弃价格竞争，转向社区建设和用户水平培养，提升核心用户的ARPU值而非追求用户数量。启示：苹果ARPU>300美元 vs Google 30+美元，高ARPU值的公司具有更强的抗风险能力和定价权。' },
+  { q: '综合19篇笔记，总结Google工程文化最核心的三个特征及其相互关系。', a: '核心特征：① 人才密度（博士军团+瑞士制造+宁缺毋滥）——工程文化的基础层：只有顶尖人才才能驱动创新；② 技术驱动（PageRank+云计算+Google助手）——工程文化的产出层：以技术而非商业为第一优先级，先研发后产品化；③ 信息透明（TGIF+牙刷原则+共同创业）——工程文化的连接层：通过开放信息流和仪式化活动绑定人才与使命。相互关系：人才密度决定技术深度，技术深度验证人才价值，信息透明确保两者持续正向循环——三者构成"蜂巢结构"，任一薄弱都会导致系统失衡。' }
+];
+
+// ============ STATE ============
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem('mks_sv_' + k); return v ? JSON.parse(v) : d; } catch(e) { return d; } },
+  set(k, v) { localStorage.setItem('mks_sv_' + k, JSON.stringify(v)); }
+};
+
+let state = {
+  learnedConcepts: LS.get('learned', []),
+  wrongMCQ: LS.get('wrongMCQ', []),
+  wrongSA: LS.get('wrongSA', []),
+  mcqHistory: LS.get('mcqHist', {}),
+  saHistory: LS.get('saHist', {}),
+  studyDays: LS.get('days', 0),
+  totalAnswered: LS.get('totalAns', 0),
+  totalCorrect: LS.get('totalCor', 0),
+  cardIdx: 0,
+  mcqOrder: [],
+  examActive: false,
+  examTimerId: null,
+  examData: null
+};
+
+function saveState() {
+  LS.set('learned', state.learnedConcepts);
+  LS.set('wrongMCQ', state.wrongMCQ);
+  LS.set('wrongSA', state.wrongSA);
+  LS.set('mcqHist', state.mcqHistory);
+  LS.set('saHist', state.saHistory);
+  LS.set('days', state.studyDays);
+  LS.set('totalAns', state.totalAnswered);
+  LS.set('totalCor', state.totalCorrect);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._tid); t._tid = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ============ TABS ============
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const p = document.querySelector('[data-panel="' + btn.dataset.tab + '"]');
+    if (p) p.classList.add('active');
+    if (btn.dataset.tab === '5') renderWrongBook();
+    if (btn.dataset.tab === '2') renderMCQ();
+    if (btn.dataset.tab === '3') renderSA();
+    if (btn.dataset.tab === '0') renderDashboard();
+  });
+});
+
+// ============ DASHBOARD (Tab 0) ============
+function renderDashboard() {
+  // Concept grid
+  let cg = '';
+  concepts.forEach(c => {
+    cg += '<div class="concept-card' + (c.mks ? ' mks' : '') + '" onclick="jumpToCard(' + c.id + ')"><div class="icon">' + c.icon + '</div><div class="name">' + c.name + '</div>' + (c.mks ? '<div class="badge">★ MKS</div>' : '') + '</div>';
+  });
+  document.getElementById('conceptGrid').innerHTML = cg;
+
+  // MKS grid
+  let mg = '';
+  concepts.filter(c => c.mks).forEach(c => {
+    mg += '<div class="concept-card mks"><div class="icon">' + c.icon + '</div><div class="name">' + c.name + '</div><div class="badge">★ MKS</div></div>';
+  });
+  document.getElementById('mksGrid').innerHTML = mg;
+
+  // Progress
+  const pct = concepts.length ? Math.round(state.learnedConcepts.length / concepts.length * 100) : 0;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // SVG
+  renderSVG();
+}
+
+function renderSVG() {
+  const svg = `<svg width="775pt" height="492pt"
+ viewBox="0.00 0.00 775.00 491.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 487.74)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-487.74 771,-487.74 771,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#a0522d" stroke="black" stroke-width="2" cx="348.5" cy="-456.87" rx="63.78" ry="26.74"/>
+<text text-anchor="middle" x="348.5" y="-460.67" font-family="Noto Serif SC" font-size="14.00" fill="white">工程师文化</text>
+<text text-anchor="middle" x="348.5" y="-445.67" font-family="Noto Serif SC" font-size="14.00" fill="white">× 信息整合</text>
+</g>
+<!-- talent -->
+<g id="node2" class="node">
+<title>talent</title>
+<path fill="#c0392b" stroke="black" stroke-width="1.5" d="M453.5,-380C453.5,-380 371.5,-380 371.5,-380 365.5,-380 359.5,-374 359.5,-368 359.5,-368 359.5,-356 359.5,-356 359.5,-350 365.5,-344 371.5,-344 371.5,-344 453.5,-344 453.5,-344 459.5,-344 465.5,-350 465.5,-356 465.5,-356 465.5,-368 465.5,-368 465.5,-374 459.5,-380 453.5,-380"/>
+<text text-anchor="middle" x="412.5" y="-365.6" font-family="Noto Serif SC" font-size="13.00" fill="white">人才与技术纵深</text>
+<text text-anchor="middle" x="412.5" y="-351.6" font-family="Noto Serif SC" font-size="13.00" fill="white">工程师文化根基</text>
+</g>
+<!-- root&#45;&gt;talent -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;talent</title>
+<path fill="none" stroke="#a0522d" d="M365.65,-430.98C374.76,-417.76 385.94,-401.54 395.09,-388.26"/>
+<polygon fill="#a0522d" stroke="#a0522d" points="397.98,-390.24 400.77,-380.02 392.21,-386.27 397.98,-390.24"/>
+</g>
+<!-- business -->
+<g id="node3" class="node">
+<title>business</title>
+<path fill="#d4a017" stroke="black" stroke-width="1.5" d="M266.5,-294C266.5,-294 184.5,-294 184.5,-294 178.5,-294 172.5,-288 172.5,-282 172.5,-282 172.5,-270 172.5,-270 172.5,-264 178.5,-258 184.5,-258 184.5,-258 266.5,-258 266.5,-258 272.5,-258 278.5,-264 278.5,-270 278.5,-270 278.5,-282 278.5,-282 278.5,-288 272.5,-294 266.5,-294"/>
+<text text-anchor="middle" x="225.5" y="-279.6" font-family="Noto Serif SC" font-size="13.00" fill="#3d2f2f">商业与平台广度</text>
+<text text-anchor="middle" x="225.5" y="-265.6" font-family="Noto Serif SC" font-size="13.00" fill="#3d2f2f">信息整合价值</text>
+</g>
+<!-- root&#45;&gt;business -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;business</title>
+<path fill="none" stroke="#a0522d" d="M331.14,-430.62C307.8,-396.68 266.52,-336.66 243.07,-302.55"/>
+<polygon fill="#a0522d" stroke="#a0522d" points="245.79,-300.33 237.24,-294.07 240.02,-304.29 245.79,-300.33"/>
+</g>
+<!-- talent&#45;&gt;business -->
+<g id="edge3" class="edge">
+<title>talent&#45;&gt;business</title>
+<path fill="none" stroke="#8b7b7b" stroke-dasharray="5,2" d="M364.76,-339.56C336.5,-326.86 300.83,-310.84 272.66,-298.19"/>
+<polygon fill="#8b7b7b" stroke="#8b7b7b" points="363.65,-342.89 374.21,-343.8 366.52,-336.51 363.65,-342.89"/>
+<polygon fill="#8b7b7b" stroke="#8b7b7b" points="273.98,-294.94 263.42,-294.03 271.11,-301.32 273.98,-294.94"/>
+</g>
+<!-- dr_boshi -->
+<g id="node4" class="node">
+<title>dr_boshi</title>
+<path fill="#e8b4b0" stroke="black" stroke-width="1.5" d="M380,-294C380,-294 327,-294 327,-294 321,-294 315,-288 315,-282 315,-282 315,-270 315,-270 315,-264 321,-258 327,-258 327,-258 380,-258 380,-258 386,-258 392,-264 392,-270 392,-270 392,-282 392,-282 392,-288 386,-294 380,-294"/>
+<text text-anchor="middle" x="353.5" y="-279.4" font-family="Noto Serif SC" font-size="12.00">博士军团</text>
+<text text-anchor="middle" x="353.5" y="-266.4" font-family="Noto Serif SC" font-size="12.00">研发不分家</text>
+</g>
+<!-- talent&#45;&gt;dr_boshi -->
+<g id="edge4" class="edge">
+<title>talent&#45;&gt;dr_boshi</title>
+<path fill="none" stroke="#c0392b" d="M400.28,-343.6C391.91,-331.69 380.69,-315.71 371.34,-302.4"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="374.12,-300.27 365.51,-294.1 368.39,-304.29 374.12,-300.27"/>
+</g>
+<!-- swiss -->
+<g id="node5" class="node">
+<title>swiss</title>
+<path fill="#e8b4b0" stroke="black" stroke-width="1.5" d="M505,-294C505,-294 440,-294 440,-294 434,-294 428,-288 428,-282 428,-282 428,-270 428,-270 428,-264 434,-258 440,-258 440,-258 505,-258 505,-258 511,-258 517,-264 517,-270 517,-270 517,-282 517,-282 517,-288 511,-294 505,-294"/>
+<text text-anchor="middle" x="472.5" y="-279.4" font-family="Noto Serif SC" font-size="12.00">瑞士制造</text>
+<text text-anchor="middle" x="472.5" y="-266.4" font-family="Noto Serif SC" font-size="12.00">品质决定价值</text>
+</g>
+<!-- talent&#45;&gt;swiss -->
+<g id="edge5" class="edge">
+<title>talent&#45;&gt;swiss</title>
+<path fill="none" stroke="#c0392b" d="M424.93,-343.6C433.44,-331.69 444.85,-315.71 454.36,-302.4"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="457.32,-304.27 460.29,-294.1 451.63,-300.2 457.32,-304.27"/>
+</g>
+<!-- tgif -->
+<g id="node6" class="node">
+<title>tgif</title>
+<path fill="#e8b4b0" stroke="black" stroke-width="1.5" d="M630,-294C630,-294 565,-294 565,-294 559,-294 553,-288 553,-282 553,-282 553,-270 553,-270 553,-264 559,-258 565,-258 565,-258 630,-258 630,-258 636,-258 642,-264 642,-270 642,-270 642,-282 642,-282 642,-288 636,-294 630,-294"/>
+<text text-anchor="middle" x="597.5" y="-279.4" font-family="Noto Serif SC" font-size="12.00">TGIF文化</text>
+<text text-anchor="middle" x="597.5" y="-266.4" font-family="Noto Serif SC" font-size="12.00">信息透明仪式</text>
+</g>
+<!-- talent&#45;&gt;tgif -->
+<g id="edge6" class="edge">
+<title>talent&#45;&gt;tgif</title>
+<path fill="none" stroke="#c0392b" d="M450.38,-343.8C479.41,-330.62 519.62,-312.36 550.66,-298.27"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="552.32,-301.36 559.98,-294.03 549.43,-294.98 552.32,-301.36"/>
+</g>
+<!-- toothbrush -->
+<g id="node7" class="node">
+<title>toothbrush</title>
+<path fill="#f5c6a0" stroke="#d4890e" stroke-width="2.5" d="M755,-294C755,-294 690,-294 690,-294 684,-294 678,-288 678,-282 678,-282 678,-270 678,-270 678,-264 684,-258 690,-258 690,-258 755,-258 755,-258 761,-258 767,-264 767,-270 767,-270 767,-282 767,-282 767,-288 761,-294 755,-294"/>
+<text text-anchor="middle" x="722.5" y="-279.4" font-family="Noto Serif SC" font-size="12.00">★ 牙刷原则</text>
+<text text-anchor="middle" x="722.5" y="-266.4" font-family="Noto Serif SC" font-size="12.00">高频使用习惯</text>
+</g>
+<!-- talent&#45;&gt;toothbrush -->
+<g id="edge7" class="edge">
+<title>talent&#45;&gt;toothbrush</title>
+<path fill="none" stroke="#c0392b" d="M465.79,-346.56C522.3,-331.25 611.09,-307.19 668.03,-291.76"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="669.2,-295.07 677.93,-289.08 667.37,-288.31 669.2,-295.07"/>
+</g>
+<!-- platform -->
+<g id="node8" class="node">
+<title>platform</title>
+<path fill="#f5c6a0" stroke="#d4890e" stroke-width="2.5" d="M67,-208C67,-208 12,-208 12,-208 6,-208 0,-202 0,-196 0,-196 0,-184 0,-184 0,-178 6,-172 12,-172 12,-172 67,-172 67,-172 73,-172 79,-178 79,-184 79,-184 79,-196 79,-196 79,-202 73,-208 67,-208"/>
+<text text-anchor="middle" x="39.5" y="-193.4" font-family="Noto Serif SC" font-size="12.00">★ 平台之争</text>
+<text text-anchor="middle" x="39.5" y="-180.4" font-family="Noto Serif SC" font-size="12.00">算法vs社交</text>
+</g>
+<!-- business&#45;&gt;platform -->
+<g id="edge8" class="edge">
+<title>business&#45;&gt;platform</title>
+<path fill="none" stroke="#d4a017" d="M187.41,-257.8C158.23,-244.62 117.8,-226.36 86.59,-212.27"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="87.77,-208.96 77.22,-208.03 84.89,-215.34 87.77,-208.96"/>
+</g>
+<!-- cloud -->
+<g id="node9" class="node">
+<title>cloud</title>
+<path fill="#fdf0d5" stroke="black" stroke-width="1.5" d="M191.5,-208C191.5,-208 127.5,-208 127.5,-208 121.5,-208 115.5,-202 115.5,-196 115.5,-196 115.5,-184 115.5,-184 115.5,-178 121.5,-172 127.5,-172 127.5,-172 191.5,-172 191.5,-172 197.5,-172 203.5,-178 203.5,-184 203.5,-184 203.5,-196 203.5,-196 203.5,-202 197.5,-208 191.5,-208"/>
+<text text-anchor="middle" x="159.5" y="-193.4" font-family="Noto Serif SC" font-size="12.00">云计算起源</text>
+<text text-anchor="middle" x="159.5" y="-180.4" font-family="Noto Serif SC" font-size="12.00">GFS到云平台</text>
+</g>
+<!-- business&#45;&gt;cloud -->
+<g id="edge9" class="edge">
+<title>business&#45;&gt;cloud</title>
+<path fill="none" stroke="#d4a017" d="M211.82,-257.6C202.38,-245.58 189.68,-229.41 179.15,-216.02"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="181.86,-213.8 172.93,-208.1 176.36,-218.12 181.86,-213.8"/>
+</g>
+<!-- beyond_free -->
+<g id="node10" class="node">
+<title>beyond_free</title>
+<path fill="#f5c6a0" stroke="#d4890e" stroke-width="2.5" d="M317,-208C317,-208 252,-208 252,-208 246,-208 240,-202 240,-196 240,-196 240,-184 240,-184 240,-178 246,-172 252,-172 252,-172 317,-172 317,-172 323,-172 329,-178 329,-184 329,-184 329,-196 329,-196 329,-202 323,-208 317,-208"/>
+<text text-anchor="middle" x="284.5" y="-193.4" font-family="Noto Serif SC" font-size="12.00">★ 超越免费</text>
+<text text-anchor="middle" x="284.5" y="-180.4" font-family="Noto Serif SC" font-size="12.00">四大策略壁垒</text>
+</g>
+<!-- business&#45;&gt;beyond_free -->
+<g id="edge10" class="edge">
+<title>business&#45;&gt;beyond_free</title>
+<path fill="none" stroke="#d4a017" d="M237.72,-257.6C246.09,-245.69 257.31,-229.71 266.66,-216.4"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="269.61,-218.29 272.49,-208.1 263.88,-214.27 269.61,-218.29"/>
+</g>
+<!-- arpu -->
+<g id="node11" class="node">
+<title>arpu</title>
+<path fill="#fdf0d5" stroke="black" stroke-width="1.5" d="M442,-208C442,-208 377,-208 377,-208 371,-208 365,-202 365,-196 365,-196 365,-184 365,-184 365,-178 371,-172 377,-172 377,-172 442,-172 442,-172 448,-172 454,-178 454,-184 454,-184 454,-196 454,-196 454,-202 448,-208 442,-208"/>
+<text text-anchor="middle" x="409.5" y="-193.4" font-family="Noto Serif SC" font-size="12.00">ARPU值</text>
+<text text-anchor="middle" x="409.5" y="-180.4" font-family="Noto Serif SC" font-size="12.00">用户价值思维</text>
+</g>
+<!-- business&#45;&gt;arpu -->
+<g id="edge11" class="edge">
+<title>business&#45;&gt;arpu</title>
+<path fill="none" stroke="#d4a017" d="M263.18,-257.8C292.05,-244.62 332.04,-226.36 362.92,-212.27"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="364.54,-215.37 372.19,-208.03 361.64,-209 364.54,-215.37"/>
+</g>
+<!-- pagerank -->
+<g id="node12" class="node">
+<title>pagerank</title>
+<path fill="#f5c6a0" stroke="#d4890e" stroke-width="2.5" d="M576.5,-208C576.5,-208 502.5,-208 502.5,-208 496.5,-208 490.5,-202 490.5,-196 490.5,-196 490.5,-184 490.5,-184 490.5,-178 496.5,-172 502.5,-172 502.5,-172 576.5,-172 576.5,-172 582.5,-172 588.5,-178 588.5,-184 588.5,-184 588.5,-196 588.5,-196 588.5,-202 582.5,-208 576.5,-208"/>
+<text text-anchor="middle" x="539.5" y="-193.6" font-family="Noto Serif SC" font-size="13.00">★ PageRank</text>
+<text text-anchor="middle" x="539.5" y="-179.6" font-family="Noto Serif SC" font-size="13.00">图论技术基因</text>
+</g>
+<!-- dr_boshi&#45;&gt;pagerank -->
+<g id="edge12" class="edge">
+<title>dr_boshi&#45;&gt;pagerank</title>
+<path fill="none" stroke="#c0392b" d="M391.59,-257.8C420.77,-244.62 461.2,-226.36 492.41,-212.27"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="494.11,-215.34 501.78,-208.03 491.23,-208.96 494.11,-215.34"/>
+</g>
+<!-- swiss&#45;&gt;pagerank -->
+<g id="edge13" class="edge">
+<title>swiss&#45;&gt;pagerank</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M486.38,-257.6C495.97,-245.58 508.86,-229.41 519.55,-216.02"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="522.37,-218.1 525.86,-208.1 516.89,-213.73 522.37,-218.1"/>
+</g>
+<!-- tgif&#45;&gt;pagerank -->
+<g id="edge14" class="edge">
+<title>tgif&#45;&gt;pagerank</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M585.48,-257.6C577.26,-245.69 566.23,-229.71 557.03,-216.4"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="559.87,-214.34 551.3,-208.1 554.11,-218.31 559.87,-214.34"/>
+</g>
+<!-- toothbrush&#45;&gt;pagerank -->
+<g id="edge15" class="edge">
+<title>toothbrush&#45;&gt;pagerank</title>
+<path fill="none" stroke="#c0392b" d="M685.03,-257.8C656.31,-244.62 616.54,-226.36 585.83,-212.27"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="587.16,-209.03 576.61,-208.03 584.24,-215.39 587.16,-209.03"/>
+</g>
+<!-- legacy -->
+<g id="node13" class="node">
+<title>legacy</title>
+<path fill="#e8b4b0" stroke="black" stroke-width="1.5" d="M319,-122C319,-122 250,-122 250,-122 244,-122 238,-116 238,-110 238,-110 238,-98 238,-98 238,-92 244,-86 250,-86 250,-86 319,-86 319,-86 325,-86 331,-92 331,-98 331,-98 331,-110 331,-110 331,-116 325,-122 319,-122"/>
+<text text-anchor="middle" x="284.5" y="-107.6" font-family="Noto Serif SC" font-size="13.00">薪尽火传</text>
+<text text-anchor="middle" x="284.5" y="-93.6" font-family="Noto Serif SC" font-size="13.00">基因延续哲学</text>
+</g>
+<!-- platform&#45;&gt;legacy -->
+<g id="edge16" class="edge">
+<title>platform&#45;&gt;legacy</title>
+<path fill="none" stroke="#d4a017" d="M79.14,-175.41C119.51,-161.57 182.49,-139.97 228.07,-124.35"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="229.48,-127.56 237.8,-121.01 227.21,-120.94 229.48,-127.56"/>
+</g>
+<!-- cloud&#45;&gt;legacy -->
+<g id="edge17" class="edge">
+<title>cloud&#45;&gt;legacy</title>
+<path fill="none" stroke="#d4a017" stroke-dasharray="5,2" d="M185.1,-171.8C203.97,-159.12 229.84,-141.73 250.46,-127.88"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="252.59,-130.66 258.94,-122.18 248.68,-124.85 252.59,-130.66"/>
+</g>
+<!-- beyond_free&#45;&gt;legacy -->
+<g id="edge18" class="edge">
+<title>beyond_free&#45;&gt;legacy</title>
+<path fill="none" stroke="#d4a017" d="M284.5,-171.6C284.5,-160.26 284.5,-145.23 284.5,-132.32"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="288,-132.1 284.5,-122.1 281,-132.1 288,-132.1"/>
+</g>
+<!-- arpu&#45;&gt;legacy -->
+<g id="edge19" class="edge">
+<title>arpu&#45;&gt;legacy</title>
+<path fill="none" stroke="#d4a017" stroke-dasharray="5,2" d="M383.9,-171.8C365.03,-159.12 339.16,-141.73 318.54,-127.88"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="320.32,-124.85 310.06,-122.18 316.41,-130.66 320.32,-124.85"/>
+</g>
+<!-- output -->
+<g id="node14" class="node">
+<title>output</title>
+<path fill="#3d2f2f" stroke="black" stroke-width="1.5" d="M451,-36C451,-36 220,-36 220,-36 214,-36 208,-30 208,-24 208,-24 208,-12 208,-12 208,-6 214,0 220,0 220,0 451,0 451,0 457,0 463,-6 463,-12 463,-12 463,-24 463,-24 463,-30 457,-36 451,-36"/>
+<text text-anchor="middle" x="335.5" y="-21.4" font-family="Noto Serif SC" font-size="12.00" fill="white">输出：持续创新 × 信息霸权</text>
+<text text-anchor="middle" x="335.5" y="-8.4" font-family="Noto Serif SC" font-size="12.00" fill="white">用户习惯养成 | 平台生态锁定 | 基因文化传承</text>
+</g>
+<!-- pagerank&#45;&gt;output -->
+<g id="edge20" class="edge">
+<title>pagerank&#45;&gt;output</title>
+<path fill="none" stroke="#a0522d" stroke-width="2" d="M518.82,-171.76C482.07,-141.14 405.35,-77.21 363.76,-42.55"/>
+<polygon fill="#a0522d" stroke="#a0522d" stroke-width="2" points="365.86,-39.74 355.93,-36.03 361.38,-45.12 365.86,-39.74"/>
+</g>
+<!-- legacy&#45;&gt;output -->
+<g id="edge21" class="edge">
+<title>legacy&#45;&gt;output</title>
+<path fill="none" stroke="#a0522d" stroke-width="2" d="M295.07,-85.6C302.23,-73.8 311.81,-58.02 319.85,-44.78"/>
+<polygon fill="#a0522d" stroke="#a0522d" stroke-width="2" points="322.92,-46.46 325.12,-36.1 316.94,-42.83 322.92,-46.46"/>
+</g>
+</g>
+</svg>`;
+  document.getElementById('svgContainer').innerHTML = svg;
+}
+
+function jumpToCard(id) {
+  state.cardIdx = id;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="1"]').classList.add('active');
+  document.querySelector('[data-panel="1"]').classList.add('active');
+  renderCard();
+  window.scrollTo({ top: 200, behavior: 'smooth' });
+}
+
+// ============ FLIP CARDS (Tab 1) ============
+function renderCard() {
+  const c = concepts[state.cardIdx];
+  document.getElementById('fcIcon').textContent = c.icon;
+  document.getElementById('fcName').textContent = c.name;
+  document.getElementById('fcBack').innerHTML = '<div class="dim">定义</div><p>' + c.def + '</p><div class="dim">类比（商业/财务场景）</div><p>' + c.analog + '</p><div class="dim">示例</div><p>' + c.example + '</p><div class="dim">反例（什么不是）</div><p>' + c.anti + '</p>';
+  document.getElementById('fcIndex').textContent = (state.cardIdx + 1) + ' / ' + concepts.length;
+  document.getElementById('flipCard').classList.remove('flipped');
+}
+
+function prevCard() { state.cardIdx = (state.cardIdx - 1 + concepts.length) % concepts.length; renderCard(); }
+function nextCard() { state.cardIdx = (state.cardIdx + 1) % concepts.length; renderCard(); }
+
+function markLearned() {
+  const cid = concepts[state.cardIdx].id;
+  if (!state.learnedConcepts.includes(cid)) {
+    state.learnedConcepts.push(cid);
+    toast('★ 已标记：「' + concepts[state.cardIdx].name + '」学习完成');
+    saveState();
+    if (document.querySelector('[data-panel="0"]').classList.contains('active')) renderDashboard();
+  } else {
+    toast('已学习过「' + concepts[state.cardIdx].name + '」');
+  }
+}
+
+// ============ MCQ (Tab 2) ============
+function shuffleArr(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+function shuffleMCQ() {
+  state.mcqOrder = shuffleArr([...Array(mcqBank.length).keys()]);
+  state.mcqAnswered = {};
+  renderMCQ();
+  toast('题目已随机排序');
+}
+
+function renderMCQ() {
+  if (!state.mcqOrder.length) shuffleMCQ();
+  let h = '';
+  state.mcqOrder.forEach((qi, idx) => {
+    const q = mcqBank[qi];
+    h += '<div class="quiz-card"><div class="q-title"><span class="q-num">#' + (idx + 1) + '</span>' + q.q + '</div>';
+    q.opts.forEach((o, oi) => {
+      let cls = 'option';
+      if (state.mcqAnswered && state.mcqAnswered[qi] !== undefined) {
+        if (oi === q.ans) cls += ' correct';
+        else if (oi === state.mcqAnswered[qi]) cls += ' wrong';
+      }
+      h += '<div class="' + cls + '" data-q="' + qi + '" data-o="' + oi + '" onclick="selectMCQ(this)" style="pointer-events:' + (state.mcqAnswered && state.mcqAnswered[qi] !== undefined ? 'none' : 'auto') + ';">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+    });
+    if (state.mcqAnswered && state.mcqAnswered[qi] !== undefined) {
+      const ok = state.mcqAnswered[qi] === q.ans;
+      h += '<div class="quiz-feedback show ' + (ok ? 'ok' : 'err') + '">' + (ok ? '✓ 正确！' : '✗ 错误。正确答案是 ' + String.fromCharCode(65 + q.ans) + '. ' + q.opts[q.ans]) + '</div>';
+    }
+    h += '</div>';
+  });
+  document.getElementById('mcqList').innerHTML = h;
+  document.getElementById('mcqScore').textContent = '';
+}
+
+function selectMCQ(el) {
+  const qi = parseInt(el.dataset.q);
+  const oi = parseInt(el.dataset.o);
+  if (!state.mcqAnswered) state.mcqAnswered = {};
+  // Deselect siblings
+  const siblings = el.parentElement.querySelectorAll('.option');
+  siblings.forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  state.mcqAnswered[qi] = oi;
+}
+
+function checkAllMCQ() {
+  if (!state.mcqAnswered) { toast('请先选择答案'); return; }
+  let total = 0, correct = 0;
+  state.mcqOrder.forEach(qi => {
+    if (state.mcqAnswered[qi] !== undefined) {
+      total++;
+      const ok = state.mcqAnswered[qi] === mcqBank[qi].ans;
+      if (ok) correct++;
+      // Track wrong
+      if (!ok && !state.wrongMCQ.includes(qi)) state.wrongMCQ.push(qi);
+      if (ok && state.wrongMCQ.includes(qi)) state.wrongMCQ = state.wrongMCQ.filter(x => x !== qi);
+      state.mcqHistory[qi] = ok;
+    }
+  });
+  state.totalAnswered += total;
+  state.totalCorrect += correct;
+  if (total > 0 && !LS.get('studiedToday', false)) {
+    state.studyDays++;
+    LS.set('studiedToday', true);
+  }
+  saveState();
+  document.getElementById('mcqScore').textContent = '得分：' + correct + '/' + total + '（正确率 ' + (total ? Math.round(correct / total * 100) : 0) + '%）';
+  renderMCQ();
+  toast('提交完成！' + correct + '/' + total);
+}
+
+// ============ SA (Tab 3) ============
+function renderSA() {
+  let h = '';
+  saBank.forEach((q, i) => {
+    h += '<div class="socratic-item"><div class="socratic-q" onclick="toggleSA(this)"><span>#' + (i + 1) + ' ' + q.q + '</span><span class="indicator">+</span></div><div class="socratic-a"><p>' + q.a.replace(/\n/g, '<br>') + '</p><div style="margin-top:8px;display:flex;gap:8px;"><button class="btn btn-sm btn-outline" onclick="markSACorrect(' + i + ')">✓ 我答对了</button><button class="btn btn-sm btn-outline" onclick="markSAWrong(' + i + ')" style="border-color:#e74c3c;color:#e74c3c;">✗ 我答错了</button></div></div></div>';
+  });
+  document.getElementById('saList').innerHTML = h;
+}
+
+function toggleSA(el) {
+  const answer = el.nextElementSibling;
+  const indicator = el.querySelector('.indicator');
+  const isOpen = answer.classList.contains('open');
+  answer.classList.toggle('open');
+  if (isOpen) { indicator.classList.remove('open'); indicator.textContent = '+'; }
+  else { indicator.classList.add('open'); indicator.textContent = '−'; }
+}
+
+function markSACorrect(i) {
+  if (state.wrongSA.includes(i)) state.wrongSA = state.wrongSA.filter(x => x !== i);
+  state.saHistory[i] = true;
+  state.totalAnswered++; state.totalCorrect++;
+  saveState();
+  toast('✓ 已记录为正确');
+}
+
+function markSAWrong(i) {
+  if (!state.wrongSA.includes(i)) state.wrongSA.push(i);
+  state.saHistory[i] = false;
+  state.totalAnswered++;
+  saveState();
+  toast('✗ 已加入错题本');
+}
+
+// ============ EXAM (Tab 4) ============
+function startExam() {
+  if (state.examActive) { clearInterval(state.examTimerId); }
+  state.examActive = true;
+  // Pick 7 MCQ + 3 SA
+  const mcqPool = shuffleArr([...Array(mcqBank.length).keys()]).slice(0, 7);
+  const saPool = shuffleArr([...Array(saBank.length).keys()]).slice(0, 3);
+  state.examData = { mcq: mcqPool, sa: saPool, mcqAns: {}, saNotes: '', startTime: Date.now(), submitted: false };
+
+  let h = '<div style="text-align:left;">';
+  mcqPool.forEach((qi, idx) => {
+    const q = mcqBank[qi];
+    h += '<div class="quiz-card"><div class="q-title"><span class="q-num">选#' + (idx + 1) + '</span>' + q.q + '</div>';
+    q.opts.forEach((o, oi) => {
+      h += '<div class="option" data-eq="' + qi + '" data-eo="' + oi + '" onclick="selectExamMCQ(this)">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+    });
+    h += '</div>';
+  });
+  saPool.forEach((qi, idx) => {
+    h += '<div class="quiz-card"><div class="q-title"><span class="q-num">简#' + (idx + 1) + '</span>' + saBank[qi].q + '</div><textarea style="width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:0.85rem;background:var(--bg);" placeholder="输入你的回答..." data-esaq="' + qi + '"></textarea></div>';
+  });
+  h += '</div>';
+  document.getElementById('examArea').innerHTML = h;
+  document.getElementById('examStart').style.display = 'none';
+  document.getElementById('examSubmit').style.display = 'inline-block';
+  document.getElementById('examRetry').style.display = 'none';
+  document.getElementById('examResult').textContent = '';
+
+  // Timer
+  let sec = 15 * 60;
+  document.getElementById('examTimer').textContent = '15:00';
+  document.getElementById('examTimer').classList.remove('warn', 'danger');
+  state.examTimerId = setInterval(() => {
+    sec--;
+    const m = Math.floor(sec / 60), s = sec % 60;
+    document.getElementById('examTimer').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (sec <= 60) document.getElementById('examTimer').classList.add('danger');
+    else if (sec <= 180) document.getElementById('examTimer').classList.add('warn');
+    if (sec <= 0) { clearInterval(state.examTimerId); submitExam(); toast('时间到！考试已自动提交'); }
+  }, 1000);
+}
+
+function selectExamMCQ(el) {
+  const qi = parseInt(el.dataset.eq);
+  const oi = parseInt(el.dataset.eo);
+  const siblings = el.parentElement.querySelectorAll('.option');
+  siblings.forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  state.examData.mcqAns[qi] = oi;
+}
+
+function submitExam() {
+  if (!state.examActive || state.examData.submitted) return;
+  state.examData.submitted = true;
+  clearInterval(state.examTimerId);
+  state.examActive = false;
+
+  // Collect SA answers
+  document.querySelectorAll('[data-esaq]').forEach(ta => {
+    state.examData.saNotes += '【' + saBank[parseInt(ta.dataset.esaq)].q + '】\n' + (ta.value || '(未作答)') + '\n\n';
+  });
+
+  // Score
+  let mcqCorrect = 0;
+  state.examData.mcq.forEach(qi => {
+    if (state.examData.mcqAns[qi] === mcqBank[qi].ans) mcqCorrect++;
+    else {
+      if (!state.wrongMCQ.includes(qi)) state.wrongMCQ.push(qi);
+    }
+  });
+
+  state.totalAnswered += 7;
+  state.totalCorrect += mcqCorrect;
+  saveState();
+
+  // Show feedback
+  let resultHtml = '<div style="margin-top:12px;"><strong>选择题得分：' + mcqCorrect + '/7</strong>';
+  if (mcqCorrect >= 6) resultHtml += '<p style="color:#2e7d32;">优秀！你对核心概念掌握扎实。</p>';
+  else if (mcqCorrect >= 4) resultHtml += '<p style="color:#e67e22;">良好，建议复习MKS骨架概念。</p>';
+  else resultHtml += '<p style="color:#c62828;">需要加强，请从★MKS概念开始重新学习。</p>';
+
+  if (mcqCorrect < 7) {
+    resultHtml += '<p style="font-size:0.82rem;color:var(--muted);">错题已加入错题本。薄弱概念：';
+    const weak = new Set();
+    state.examData.mcq.forEach(qi => { if (state.examData.mcqAns[qi] !== mcqBank[qi].ans) weak.add(qi); });
+    resultHtml += [...weak].map(qi => mcqBank[qi].q.substring(0, 20) + '...').join('、') + '</p>';
+  }
+  resultHtml += '</div>';
+
+  document.getElementById('examResult').innerHTML = resultHtml;
+  document.getElementById('examSubmit').style.display = 'none';
+  document.getElementById('examRetry').style.display = 'inline-block';
+  document.getElementById('examTimer').classList.remove('warn', 'danger');
+
+  // Highlight correct/wrong
+  document.querySelectorAll('[data-eq]').forEach(el => {
+    const qi = parseInt(el.dataset.eq);
+    const oi = parseInt(el.dataset.eo);
+    if (oi === mcqBank[qi].ans) el.classList.add('correct');
+    else if (oi === state.examData.mcqAns[qi]) el.classList.add('wrong');
+    el.style.pointerEvents = 'none';
+  });
+}
+
+// ============ WRONG BOOK (Tab 5) ============
+function renderWrongBook() {
+  document.getElementById('statsGrid').innerHTML =
+    '<div class="stat-item"><div class="val">' + state.totalAnswered + '</div><div class="lbl">总答题数</div></div>' +
+    '<div class="stat-item"><div class="val">' + (state.totalAnswered ? Math.round(state.totalCorrect / state.totalAnswered * 100) : 0) + '%</div><div class="lbl">总正确率</div></div>' +
+    '<div class="stat-item"><div class="val">' + state.studyDays + '</div><div class="lbl">学习天数</div></div>' +
+    '<div class="stat-item"><div class="val">' + state.wrongMCQ.length + '</div><div class="lbl">错题数</div></div>';
+
+  if (state.wrongMCQ.length === 0 && state.wrongSA.length === 0) {
+    document.getElementById('wrongList').innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px;">暂无错题，继续保持！</p>';
+    return;
+  }
+
+  let h = '<h4 style="margin-bottom:8px;">选择题错题（' + state.wrongMCQ.length + '道）</h4>';
+  state.wrongMCQ.forEach(qi => {
+    const q = mcqBank[qi];
+    h += '<div class="quiz-card"><div class="q-title">' + q.q + '</div>';
+    q.opts.forEach((o, oi) => {
+      h += '<div class="option' + (oi === q.ans ? ' correct' : '') + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+    });
+    h += '<div class="quiz-feedback show ok">正确答案：' + String.fromCharCode(65 + q.ans) + '. ' + q.opts[q.ans] + '</div></div>';
+  });
+
+  if (state.wrongSA.length > 0) {
+    h += '<h4 style="margin-bottom:8px;">简答题错题（' + state.wrongSA.length + '道）</h4>';
+    state.wrongSA.forEach(qi => {
+      h += '<div class="socratic-item"><div class="socratic-q" onclick="toggleSA(this)"><span>' + saBank[qi].q + '</span><span class="indicator">+</span></div><div class="socratic-a"><p>' + saBank[qi].a.replace(/\n/g, '<br>') + '</p></div></div>';
+    });
+  }
+
+  document.getElementById('wrongList').innerHTML = h;
+}
+
+function clearWrongBook() {
+  if (confirm('确定清空所有错题记录？')) {
+    state.wrongMCQ = []; state.wrongSA = []; saveState();
+    renderWrongBook();
+    toast('错题本已清空');
+  }
+}
+
+function redoWrong() {
+  if (state.wrongMCQ.length === 0) { toast('没有错题可重做'); return; }
+  state.mcqOrder = state.wrongMCQ.slice();
+  state.mcqAnswered = {};
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="2"]').classList.add('active');
+  document.querySelector('[data-panel="2"]').classList.add('active');
+  renderMCQ();
+  toast('已加载' + state.mcqOrder.length + '道错题，请重新作答');
+}
+
+// ============ MIND MAP (Tab 6) ============
+function buildMindMap() {
+  const tree = {
+    label: '硅谷与Google工程文化', children: [
+      { label: '一、技术基因', children: [
+        { label: 'PageRank算法 — 图论思维', children: [
+          { label: '互联网视为图（节点+弧）' },
+          { label: '链接关系评估页面价值' },
+          { label: '类比：学术论文引用权重' }
+        ]},
+        { label: '云计算起源', children: [
+          { label: 'GFS大文件系统 → 云平台' },
+          { label: '杰夫·迪恩 & 桑杰·戈马瓦特' },
+          { label: '廉价服务器整合 = 超级计算' }
+        ]},
+        { label: 'Google助手 — 自然语言处理' }
+      ]},
+      { label: '二、人才与文化', children: [
+        { label: '博士军团 — 研发不分家' },
+        { label: '瑞士制造 — 品质决定价值' },
+        { label: 'TGIF — 全员透明仪式', children: [
+          { label: '新员工介绍 → 成果汇报 → 财务公开' },
+          { label: '科德斯坦尼站在沙袋上汇报' },
+          { label: '上千人保密，共同创业氛围' }
+        ]},
+        { label: '宁缺毋滥 — 创始人亲自面试' }
+      ]},
+      { label: '三、产品哲学', children: [
+        { label: '★ 牙刷原则 — 高频使用+可靠性' },
+        { label: '爆款效应 — 定期惊喜激活认知' },
+        { label: '薪尽火传 — 基因延续而非永生' }
+      ]},
+      { label: '四、商业策略', children: [
+        { label: '★ 超越免费四大策略', children: [
+          { label: '时效性 — 直播/精装本' },
+          { label: '个性化 — 靶向治疗/特斯拉' },
+          { label: '可靠性 — Red Hat/日本二手车' },
+          { label: '数据黏性 — 系统切换成本' }
+        ]},
+        { label: 'ARPU值 — 用户价值 > 用户数量' },
+        { label: 'IPO拍卖定价 — 市场决定价格' },
+        { label: '双重股权 — 创始人控制权' }
+      ]},
+      { label: '五、平台竞争', children: [
+        { label: '★ 信息整合方式之争', children: [
+          { label: 'Google：算法驱动（搜索/AI）' },
+          { label: 'Facebook：社交驱动（点赞/跟随）' }
+        ]},
+        { label: '三大发布平台', children: [
+          { label: '移动互联网 — Google+iOS' },
+          { label: '社交网络 — Facebook' },
+          { label: '企业级 — 亚马逊AWS' }
+        ]},
+        { label: '企业基因决定边界' }
+      ]},
+      { label: '六、人物与事件', children: [
+        { label: '佩奇 — 牙刷原则/薪尽火传' },
+        { label: '布林 — 亲和力/零架子' },
+        { label: '扎克伯格 — 五宗恩怨/信任危机' },
+        { label: 'Facebook创业史 — FaceMash→IPO' },
+        { label: '硅谷韧性 — 60年三次危机' }
+      ]}
+    ]
+  };
+  document.getElementById('mindMap').innerHTML = renderTree(tree, true);
+}
+
+function renderTree(node, isRoot) {
+  let h = '<div class="tree-node' + (isRoot ? '' : '') + '">';
+  if (node.children && node.children.length) {
+    const nid = 'tn_' + Math.random().toString(36).substr(2, 6);
+    h += '<div class="tree-label" onclick="toggleTree(\'' + nid + '\')"><span class="arr open" id="arr_' + nid + '">▶</span>' + node.label + '</div>';
+    h += '<div class="tree-children" id="' + nid + '" style="max-height:2000px;">';
+    node.children.forEach(c => { h += renderTree(c, false); });
+    h += '</div>';
+  } else {
+    h += '<div class="tree-label" style="cursor:default;"><span class="arr" style="visibility:hidden;">▶</span>' + node.label + '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function toggleTree(nid) {
+  const el = document.getElementById(nid);
+  const arr = document.getElementById('arr_' + nid);
+  if (el.classList.contains('collapsed')) {
+    el.classList.remove('collapsed');
+    el.style.maxHeight = el.scrollHeight + 'px';
+    arr.classList.add('open');
+  } else {
+    el.style.maxHeight = el.scrollHeight + 'px';
+    requestAnimationFrame(() => { el.classList.add('collapsed'); el.style.maxHeight = '0px'; });
+    arr.classList.remove('open');
+  }
+}
+
+// ============ SOCRATIC (Tab 7) ============
+function renderSocratic() {
+  const items = [
+    { q: 'Q1: 为什么"牙刷原则"是Google产品设计的骨架，而非锦上添花？', layers: [
+      '第一层：高频使用创造什么？—— 习惯。用户每天用2-3次Google搜索，最终将它设为浏览器默认首页。这种"无需思考的默认选择"是产品最深的护城河——不是技术壁垒，而是行为惯性。',
+      '第二层：习惯的反面是什么？—— 断网=信任崩塌。Google在中国市场失败的根因不是产品不好，而是年断网10天（3%不可用率）违背了"牙刷原则"的可靠性前提。高频使用的产品一旦不稳定，用户失去的不只是功能，还有"依赖感"。一旦用户建立了替代方案，再挽回的成本是指数级的。',
+      '第三层：牙刷+爆款=什么？—— 持续品牌激活。可口可乐每年上百亿广告不是为了获取新用户，而是防止老用户"淡忘"。佩奇的智慧在于：高频建立习惯，爆款刷新记忆。两者缺一不可——只有高频会审美疲劳，只有爆款无法形成依赖。'
+    ]},
+    { q: 'Q2: 信息整合方式之争为什么比市场份额之争更根本？', layers: [
+      '第一层：市场份额是结果，信息整合方式是原因。百度和腾讯在中国市场看似竞争，实则百度做不好通信，腾讯做不好搜索——因为它们的"信息整合基因"不同。这就是为什么Google的Buzz和Google+注定失败——Google的基因是算法（给答案），不是社交（给关系）。',
+      '第二层：每种整合方式都创造一种"信息霸权"。Google控制了"搜索→信息触达"的路径，Facebook控制了"社交→信息推荐"的路径，亚马逊AWS控制了"企业→信息服务"的路径。成为行业基础设施意味着其他企业"绕不过去"——这才是平台价值的本质。',
+      '第三层：下一个信息整合方式在哪里？五家巨头分别守住了算法、社交、企业、设备、操作系统五个维度。AI大模型时代的信息整合方式是什么？——对话式整合。理解了这一点，就理解了Google助手、ChatGPT之争的底层逻辑。'
+    ]},
+    { q: 'Q3: "超越免费"的本质是给免费的对手制造壁垒，还是给自己的用户创造价值？', layers: [
+      '第一层：两者统一。给对方制造壁垒的唯一方式就是给自己的用户创造不可替代的价值。Red Hat的1万美元Linux手册——对免费Linux设壁垒，对用户是提供了"可用的可靠性"。',
+      '第二层：四种策略的逻辑递进。时效性（抢时间窗口）→ 个性化（比别人更懂用户）→ 可靠性（不止能用而且好用）→ 数据黏性（用户离开的代价太高）。这四层是递进的护城河——时效性最容易被复制，数据黏性最难被突破。',
+      '第三层：个人如何超越免费？如果你是一个"标准化人才"（能做的事别人也能做），你就是免费品。成为"有趣的人"的本质是构建个性化×可靠性：有独特的视角（不可复制）+ 持续稳定地输出（可靠）。这是吴军对个人发展最深层的建议。'
+    ]},
+    { q: 'Q4: PageRank算法背后的思维方式对今天的AI时代还有什么启示？', layers: [
+      '第一层：核心不是数学，是视角转换。传统文献检索从"词频"出发（TF-IDF），PageRank从"关系"出发。将一个搜索问题转化为图论问题——这是质的突破而非量的优化。',
+      '第二层：技术基因一旦种下，会持续生长。Google从PageRank到知识图谱到BERT到Gemini，底层始终是"用图/矩阵/向量表示世界"。技术路径依赖不是限制，而是加速——每一代创新都在上一代的肩膀上。',
+      '第三层：今天的启示——不要只优化现有方案的"效率"，要问"这个问题本质上是什么"。就像佩奇和布林问的："搜索质量差的本质不是索引不够全，而是没有区分重要和不重要。"这种"重新定义问题"的能力，比任何具体技术都更稀缺。'
+    ]}
+  ];
+
+  let h = '';
+  items.forEach((item, i) => {
+    h += '<div class="socratic-item"><div class="socratic-q" onclick="toggleSocratic(this)"><span>' + item.q + '</span><span class="indicator">+</span></div><div class="socratic-a">';
+    item.layers.forEach((l, li) => {
+      h += '<p style="margin-bottom:8px;"><strong>▸ ' + l + '</strong></p>';
+    });
+    h += '</div></div>';
+  });
+  document.getElementById('socraticList').innerHTML = h;
+}
+
+function toggleSocratic(el) {
+  const answer = el.nextElementSibling;
+  const indicator = el.querySelector('.indicator');
+  const isOpen = answer.classList.contains('open');
+  answer.classList.toggle('open');
+  if (isOpen) { indicator.classList.remove('open'); indicator.textContent = '+'; }
+  else { indicator.classList.add('open'); indicator.textContent = '−'; }
+}
+
+// ============ CASE STUDY (Tab 8) ============
+const caseData = [
+  {
+    title: '案例一：Google搜索广告的战略决策',
+    intro: '1999年，Google面临关键抉择：是效仿雅虎做门户网站（通过展示广告盈利），还是聚焦搜索（通过关键词广告盈利）？佩奇力排众议选择了后者。请做出你的决策判断。',
+    choices: [
+      { text: 'A. 做门户网站——展示广告市场规模更大，雅虎已证明模式可行', fb: '❌ 短视。展示广告的ARPU值远低于搜索广告。更重要的是，做门户意味着"浏览器→门户→搜索"的路径——Google将失去对用户入口的控制。雅虎和MSN后来"拼搜索"陷入被动，正是因为游戏规则已由Google制定。', score: 1 },
+      { text: 'B. 聚焦搜索+关键词广告——将使用者意图直接变现', fb: '✓ 这正是Google的选择。核心逻辑（MKS分析）：① 搜索=用户主动表达需求（高意图流量），转化率远超展示广告；② 关键词广告将"搜索行为"变成"购买信号"——广告不再是打扰而是帮助；③《华尔街日报》评价佩奇"将搜索广告变成金矿"。Google浏览量不及雅虎却能产生两倍利润。', score: 3 },
+      { text: 'C. 同时做门户和搜索——两条腿走路更稳妥', fb: '⚠ 中庸但危险。资源分散导致两线作战。Google当时仅2000人，同时挑战雅虎（门户）和Inktomi（搜索技术）等于同时打两场战争。后来证明聚焦搜索+关键词广告的"单点突破"才是正确路径。吴军的启示："企业基因决定边界"，什么都想做往往什么都做不好。', score: 2 }
+    ]
+  },
+  {
+    title: '案例二：云计算平台的"造vs买"决策',
+    intro: '2003年，Google面临机房资源紧张——互联网泡沫后闲置的暗光缆和数据中心已不够用。选项：A) 租用现有IDC机房；B) 自建全球光缆+数据中心。如果你是Google基础设施负责人，如何决策？',
+    choices: [
+      { text: 'A. 租用IDC——快速解决燃眉之急，降低前期投入', fb: '⚠ 短期合理但长期被动。租用无法满足Google每天新增大量服务器的需求，且带宽成本受制于人。更严重的是：无法实现"廉价服务器整合"的云计算架构——Google的核心优势在于"用大量廉价服务器替代超级计算机"，这要求自有基础设施的深度定制。', score: 1 },
+      { text: 'B. 自建光缆+数据中心——虽前期投入巨大，但掌握基础设施主动权', fb: '✓ Google的实际选择。霍尔斯主导三大工程：① 租/收购全球已铺设光缆+铺设新光缆；② 抢在竞争对手前占据全球最佳数据中心地点；③ 开发节能高效定制机柜。结果：Google服务器规模成为全球第三（仅次于IBM和惠普）。MKS分析：这是"超越免费"中"可靠性"策略的基础设施版——自有基础设施确保服务稳定性（满足牙刷原则的可靠性要求）和成本优势（支撑免费商业模式）。', score: 3 },
+      { text: 'C. 混合方案——核心业务自建，非核心租用', fb: '合理但低估了"基础设施=核心竞争力"的战略地位。Google的搜索质量、云计算性能直接依赖基础设施的深度定制。混合方案在管理复杂度上会引入新的成本。实际证明Google的全自建策略是正确的——这为后来的Gmail、YouTube、Google Cloud等业务提供了不可复制的底层支持。', score: 2 }
+    ]
+  },
+  {
+    title: '案例三：IPO拍卖定价 vs 传统投行定价',
+    intro: '2004年Google准备上市。传统IPO由投行与公司协商定价（投行赚取差价），但Google选择了拍卖定价（市场需求直接决定价格）。如果你是需要融资的创始人，选哪个？',
+    choices: [
+      { text: 'A. 传统投行定价——专业机构背书，确定性高', fb: '⚠ 稳定但"吃亏"。百度2005年IPO采用传统定价——定价27美元，但首日收盘价约122美元。这意味着发行价仅为市场认可价格的1/4——公司少融了大量资金，差价被承销商和大客户赚走。但传统定价的优势在于：投行会利用自身渠道"兜底"销售，降低发行失败风险。', score: 2 },
+      { text: 'B. 拍卖定价——让市场决定真实价格，中小投资者公平参与', fb: '✓ Google的创新选择。核心逻辑（MKS分析）：① 降低信息不对称——承销商无法利用定价权赚取差价（美林因此退出第二轮融资）；② 保障中小投资者利益——拍卖机制让散户与机构公平竞争；③ 体现"瑞士制造"品质自信——Google对自己的价值有充分认知，不愿被低估。但需注意：分三轮融资（2004/2005/2006）共融资80亿仅稀释不到10%股份——配合双重股权结构（B股10票），最大化创始团队控制权。', score: 3 },
+      { text: 'C. 直接上市(DPO)——不发行新股，让现有股东直接出售持股', fb: '新颖但风险高。DPO适合已有充足现金流的公司（如Spotify/Slack后来采用的模式），但2004年Google需融资建设超级数据中心。且DPO缺乏承销商的价格稳定机制，首日波动可能更大。Google的拍卖定价实际上是传统IPO和DPO之间的创新折中。', score: 2 }
+    ]
+  }
+];
+
+function renderCases() {
+  let h = '';
+  caseData.forEach((cs, i) => {
+    h += '<div class="case-content' + (i === 0 ? ' active' : '') + '" data-casep="' + i + '"><div class="card"><h3>' + cs.title + '</h3><p style="font-size:0.88rem;line-height:1.7;margin-bottom:12px;">' + cs.intro + '</p>';
+    cs.choices.forEach((ch, ci) => {
+      h += '<button class="case-choice" onclick="chooseCase(' + i + ',' + ci + ', this)">' + ch.text + '</button>';
+    });
+    h += '<div class="case-result" id="caseResult_' + i + '"></div></div></div>';
+  });
+  document.getElementById('casePanels').innerHTML = h;
+}
+
+function chooseCase(caseIdx, choiceIdx, btn) {
+  // Disable all buttons in this case
+  const siblings = btn.parentElement.querySelectorAll('.case-choice');
+  siblings.forEach(s => { s.style.pointerEvents = 'none'; s.style.opacity = '0.6'; });
+  btn.style.borderColor = caseData[caseIdx].choices[choiceIdx].score === 3 ? '#4caf50' : '#e67e22';
+  const result = document.getElementById('caseResult_' + caseIdx);
+  result.innerHTML = '<strong>' + caseData[caseIdx].choices[choiceIdx].fb + '</strong>';
+  result.classList.add('show');
+  result.style.background = caseData[caseIdx].choices[choiceIdx].score === 3 ? '#e8f5e9' : '#fff3e0';
+}
+
+document.querySelectorAll('.case-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.case-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.case-content').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector('[data-casep="' + btn.dataset.case + '"]').classList.add('active');
+  });
+});
+
+// ============ INIT ============
+function init() {
+  // Track study day
+  const today = new Date().toISOString().slice(0, 10);
+  const lastStudy = LS.get('lastStudy', '');
+  if (lastStudy !== today) {
+    LS.set('studiedToday', false);
+    LS.set('lastStudy', today);
+  }
+
+  renderDashboard();
+  renderCard();
+  shuffleMCQ();
+  renderMCQ();
+  renderSA();
+  buildMindMap();
+  renderSocratic();
+  renderCases();
+  renderWrongBook();
+
+  // Ensure tab 0 visible
+  document.querySelector('[data-panel="0"]').classList.add('active');
+}
+
+init();
+</script>
+</body>
+</html>

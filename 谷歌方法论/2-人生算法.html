@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生算法 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent2: #e67e22;
+  --text: #3d2f2f;
+  --sub: #7a6a5c;
+  --border: #e8d5c4;
+  --gold: #d4a017;
+  --green: #27ae60;
+  --blue: #2980b9;
+  --purple: #8e44ad;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: "Noto Serif SC","Source Han Serif SC",Georgia,serif; background:var(--bg); color:var(--text); min-height:100vh; }
+a { color:var(--accent); text-decoration:none; }
+.home-link { position:fixed; top:16px; left:20px; z-index:1001; background:var(--card); padding:8px 16px; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,.08); font-size:13px; color:var(--accent); border:1px solid var(--border); transition:all .2s; }
+.home-link:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+.container { max-width:960px; margin:0 auto; padding:0 20px; }
+
+header { text-align:center; padding:48px 0 20px; }
+header h1 { font-size:clamp(1.6rem,4vw,2.2rem); color:var(--accent); letter-spacing:2px; }
+header .sub { color:var(--sub); margin-top:8px; font-size:15px; }
+header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; font-size:13px; color:var(--sub); flex-wrap:wrap; }
+
+.tab-bar { position:sticky; top:0; z-index:100; background:var(--bg); border-bottom:1px solid var(--border); display:flex; flex-wrap:wrap; gap:4px; padding:8px 0; justify-content:center; }
+.tab-btn { padding:8px 14px; border:1px solid var(--border); border-radius:20px; background:var(--card); color:var(--text); cursor:pointer; font-size:13px; white-space:nowrap; transition:all .2s; font-family:inherit; }
+.tab-btn:hover { border-color:var(--accent); color:var(--accent); }
+.tab-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+.tab-content { display:none; padding:20px 0 60px; }
+.tab-content.active { display:block; animation:fadeIn .4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+
+.section-title { font-size:clamp(1.1rem,2.5vw,1.4rem); color:var(--accent); margin:32px 0 16px; padding-bottom:8px; border-bottom:2px solid var(--border); }
+
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+
+.concept-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; cursor:pointer; transition:all .2s; }
+.concept-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.08); border-color:var(--accent); }
+.concept-card.star { border-color:var(--gold); background:linear-gradient(135deg,#fffdf5,#fffaf2); }
+.concept-card h4 { font-size:15px; margin-bottom:6px; color:var(--text); }
+.concept-card h4 .star-icon { color:var(--gold); margin-right:4px; }
+.concept-card p { font-size:13px; color:var(--sub); line-height:1.5; }
+
+.progress-bar { height:8px; background:var(--border); border-radius:4px; margin:8px 0; overflow:hidden; }
+.progress-fill { height:100%; background:var(--accent); border-radius:4px; transition:width .5s; }
+
+.svg-wrap { overflow-x:auto; margin:16px 0; }
+.svg-wrap svg { min-width:700px; display:block; }
+
+/* Flip card */
+.flip-container { perspective:1000px; width:100%; max-width:400px; margin:24px auto; }
+.flipper { position:relative; width:100%; height:280px; transition:transform .6s; transform-style:preserve-3d; cursor:pointer; }
+.flipper.flipped { transform:rotateY(180deg); }
+.flip-front,.flip-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:12px; padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; border:1px solid var(--border); }
+.flip-front { background:var(--card); z-index:2; }
+.flip-back { background:var(--card); transform:rotateY(180deg); overflow-y:auto; align-items:flex-start; }
+.flip-front h3 { font-size:20px; color:var(--accent); text-align:center; }
+.flip-back h4 { color:var(--accent); margin-bottom:4px; font-size:14px; }
+.flip-back p { font-size:13px; color:var(--text); line-height:1.6; margin-bottom:8px; }
+.flip-nav { display:flex; justify-content:center; align-items:center; gap:16px; margin:12px 0; }
+.flip-nav button { padding:8px 20px; border:1px solid var(--border); border-radius:20px; background:var(--card); cursor:pointer; font-size:14px; transition:all .2s; font-family:inherit; color:var(--text); }
+.flip-nav button:hover { border-color:var(--accent); color:var(--accent); }
+.learned-btn { padding:6px 16px; border-radius:16px; border:1px solid var(--green); background:#fff; color:var(--green); cursor:pointer; font-size:13px; transition:all .2s; font-family:inherit; }
+.learned-btn.marked { background:var(--green); color:#fff; }
+
+/* Quiz */
+.quiz-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:12px; }
+.quiz-card h4 { font-size:15px; margin-bottom:12px; color:var(--text); }
+.quiz-opt { display:block; padding:10px 14px; margin:4px 0; border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:14px; transition:all .15s; background:#fff; color:var(--text); }
+.quiz-opt:hover { border-color:var(--accent); }
+.quiz-opt.selected { border-color:var(--accent); background:#fef5f5; }
+.quiz-opt.correct { border-color:var(--green); background:#eafaf1; color:var(--green); }
+.quiz-opt.wrong { border-color:var(--accent); background:#fef0f0; color:var(--accent); }
+.quiz-feedback { font-size:13px; margin-top:8px; padding:8px 12px; border-radius:6px; display:none; }
+.quiz-feedback.show { display:block; }
+.quiz-feedback.ok { background:#eafaf1; color:var(--green); }
+.quiz-feedback.err { background:#fef0f0; color:var(--accent); }
+.timer { font-size:24px; font-weight:bold; color:var(--accent); text-align:center; margin:12px 0; }
+
+/* Mind map tree */
+.tree { padding-left:0; }
+.tree ul { padding-left:20px; }
+.tree li { list-style:none; padding:4px 0; }
+.tree .node { cursor:pointer; font-size:15px; color:var(--accent); }
+.tree .node::before { content:'▸ '; display:inline-block; transition:transform .2s; font-size:12px; }
+.tree .node.open::before { transform:rotate(90deg); }
+.tree .children { display:none; }
+.tree .children.open { display:block; }
+.tree .children li { font-size:14px; color:var(--text); }
+.tree .children li::before { content:'· '; color:var(--accent); }
+
+/* Socratic */
+.socratic-q { background:var(--card); border-left:3px solid var(--accent); padding:12px 16px; margin:12px 0; border-radius:0 8px 8px 0; cursor:pointer; }
+.socratic-q h4 { font-size:15px; margin:0; color:var(--text); }
+.socratic-a { display:none; padding:12px 16px; font-size:14px; color:var(--sub); line-height:1.7; border-bottom:1px solid var(--border); }
+.socratic-a.open { display:block; }
+
+/* Case analysis */
+.case-table { width:100%; border-collapse:separate; border-spacing:0; }
+.case-table th { background:var(--accent); color:#fff; padding:10px 12px; font-size:13px; text-align:left; }
+.case-table th:first-child { border-radius:8px 0 0 0; }
+.case-table th:last-child { border-radius:0 8px 0 0; }
+.case-table td { padding:10px 12px; font-size:13px; border-bottom:1px solid var(--border); background:var(--card); }
+.case-table tr:last-child td:first-child { border-radius:0 0 0 8px; }
+.case-table tr:last-child td:last-child { border-radius:0 0 8px 0; }
+
+/* Decision sim */
+.sim-scenario { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; margin:16px 0; }
+.sim-scenario h3 { color:var(--accent); margin-bottom:12px; }
+.sim-scenario p { line-height:1.7; margin-bottom:16px; }
+.sim-options { display:flex; flex-direction:column; gap:8px; }
+.sim-opt { padding:12px 16px; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#fff; transition:all .2s; font-size:14px; }
+.sim-opt:hover { border-color:var(--accent); }
+.sim-opt.chosen { border-color:var(--accent); background:#fef5f5; }
+.sim-feedback { margin-top:12px; padding:16px; border-radius:8px; display:none; line-height:1.7; font-size:14px; }
+.sim-feedback.show { display:block; }
+.sim-feedback.good { background:#eafaf1; }
+.sim-feedback.meh { background:#fff8e1; }
+.sim-feedback.bad { background:#fef0f0; }
+
+.btn { padding:10px 24px; border-radius:20px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; font-size:14px; transition:all .2s; font-family:inherit; }
+.btn:hover { opacity:.9; }
+.btn-outline { background:transparent; color:var(--accent); }
+.btn-sm { padding:6px 14px; font-size:13px; }
+
+.tag { display:inline-block; padding:4px 10px; border-radius:12px; font-size:12px; margin:2px; }
+.tag-red { background:#fef0f0; color:var(--accent); }
+.tag-blue { background:#eaf2f8; color:var(--blue); }
+.tag-green { background:#eafaf1; color:var(--green); }
+.tag-orange { background:#fef9f0; color:var(--accent2); }
+
+.flex-between { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+
+.boundary-table { width:100%; border-collapse:separate; border-spacing:0; font-size:13px; }
+.boundary-table th,.boundary-table td { padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); }
+.boundary-table th { background:var(--card); color:var(--sub); font-weight:600; }
+.boundary-table td { background:#fff; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+.stat-card .num { font-size:28px; font-weight:bold; color:var(--accent); }
+.stat-card .label { font-size:13px; color:var(--sub); margin-top:4px; }
+
+@media(max-width:600px) {
+  .tab-btn { font-size:12px; padding:6px 10px; }
+  .card-grid { grid-template-columns:1fr 1fr; }
+  .flip-nav button { padding:6px 14px; font-size:13px; }
+}
+</style>
+</head>
+<body>
+
+<a href="#" class="home-link" title="返回首页" onclick="alert('预留返回首页入口 — 可替换为实际首页链接')">← 返回首页</a>
+
+<div class="container">
+<header>
+  <h1>人生算法 · 最小知识集</h1>
+  <p class="sub">决策框架与处世哲学 — 基于吴军「谷歌方法论」41篇笔记</p>
+  <div class="meta">
+    <span>共 41 篇笔记提炼</span>
+    <span>12 个核心概念</span>
+    <span>5 个 ★ MKS 核心</span>
+  </div>
+</header>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- Tab 0: 总览 -->
+<div class="tab-content active" id="tab0">
+  <div class="card">
+    <h3 style="color:var(--accent);font-size:18px;">核心目标</h3>
+    <p style="font-size:15px;line-height:1.8;margin-top:8px;">掌握一套以「长期主义」为底色的<strong>决策框架与处世哲学</strong>：在信息不对称的世界中，用笨办法（超额准备、系统化思考）做出高概率正确的决策，并通过分享利益、独立决断、尊重天命，实现可持续的个人成长与价值创造。</p>
+  </div>
+
+  <h2 class="section-title">12 个核心概念</h2>
+  <div class="card-grid">
+    <div class="concept-card star" onclick="switchTab(1)"><h4><span class="star-icon">★</span>上帝喜欢笨人</h4><p>长期主义：超额准备、结硬寨打呆仗，用系统化笨办法超越小聪明</p></div>
+    <div class="concept-card star" onclick="switchTab(1)"><h4><span class="star-icon">★</span>以正合以奇胜</h4><p>乐观主义方法论：常规积累为正，非常规突破为奇；正道成功是大概率事件</p></div>
+    <div class="concept-card star" onclick="switchTab(1)"><h4><span class="star-icon">★</span>超越免费</h4><p>在免费时代重构稀缺性：时效性、个性化、可用性、可靠性、数据黏性</p></div>
+    <div class="concept-card star" onclick="switchTab(1)"><h4><span class="star-icon">★</span>众利勿为</h4><p>警惕群体共识盲点：日中则移、月盈则亏，众人趋之若鹜的领域已无利润空间</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>谋事在人成事在天</h4><p>见识比才干重要：尽人事听天命，认识到世界复杂性的维度远超个人控制范围</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>分享利益</h4><p>利益共享是组织形成合力的制度设计，直接影响团队凝聚力与个人职业发展</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>独立决断</h4><p>在征求关键意见后自行决策——「没有最好，只有更好」，接受决策瑕疵注重进步效率</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>悲观主义根源</h4><p>过度自信与现实反差的认知偏差、坏消息放大效应、信息论中的「与众不同偏好」</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>五级工程师</h4><p>朗道等级的职业映射：从独立解决问题到开创全新产业，每级能力差距为数量级</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>人生五件事</h4><p>恋爱结婚生子、做喜欢的事、回馈、信仰、留下遗产——好好做人的心得</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>勿因人之短护己之短</h4><p>个人责任独立化：不以他人错误为自身免责理由，不以自身优势对比他人劣势</p></div>
+    <div class="concept-card" onclick="switchTab(1)"><h4>朋友关系之道</h4><p>合作前明确利益分配、不跨维度合作、平等尊重——利益前置避免事后纠纷</p></div>
+  </div>
+
+  <h2 class="section-title">概念关系图</h2>
+  <div class="svg-wrap" id="svgContainer"></div>
+
+  <h2 class="section-title">学习进度</h2>
+  <div class="card">
+    <div class="flex-between"><span>总进度</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <p style="font-size:13px;color:var(--sub);margin-top:8px;">已标记学习: <span id="learnedCount">0</span> / 12 个核心概念</p>
+  </div>
+
+  <h2 class="section-title">学习路径</h2>
+  <div class="card" style="line-height:1.8;">
+    <p><strong>阶段 1：认知地基</strong> — 理解「上帝喜欢笨人」的底层逻辑（第010/011封）</p>
+    <p><strong>阶段 2：方法论武装</strong> — 掌握「以正合以奇胜」的乐观主义框架（第068/066/065封）</p>
+    <p><strong>阶段 3：价值创造</strong> — 学会「超越免费」的稀缺性构建（第013封）</p>
+    <p><strong>阶段 4：处世原则</strong> — 内化「众利勿为」「分享利益」「独立决断」「谋事在天」四大原则</p>
+    <p><strong>阶段 5：人生实践</strong> — 应用「五级工程师」职业框架、「人生五件事」清单、「朋友之道」关系指南</p>
+  </div>
+
+  <h2 class="section-title">边界知识（知道即可）</h2>
+  <table class="boundary-table">
+    <tr><th>知识点</th><th>使用场景</th></tr>
+    <tr><td>德尔斐神谕的仪式设计</td><td>理解仪式感对心理预期的影响</td></tr>
+    <tr><td>西班牙全球贸易环球航线</td><td>历史地理背景知识</td></tr>
+    <tr><td>中药方 vs 西方实验记录</td><td>对比知识传承方式差异</td></tr>
+    <tr><td>美国铁路发展史（23万公里）</td><td>理解基础设施与运输演变</td></tr>
+    <tr><td>朗道堡垒理论物理练习体系</td><td>五级工程师背后的理论渊源</td></tr>
+    <tr><td>《拿破仑法典》婚姻财产权</td><td>婚前协议的历史根源</td></tr>
+    <tr><td>家族信托与王朝信托机制</td><td>理解豪门财产保护逻辑</td></tr>
+    <tr><td>大小赌局博弈数学模型</td><td>庄家概率控制原理</td></tr>
+    <tr><td>复平面与欧拉公式的应用</td><td>现代加密技术的数学基础</td></tr>
+    <tr><td>柯立芝繁荣与当代中国的相似性</td><td>理解《了不起的盖茨比》的时代背景</td></tr>
+  </table>
+</div>
+
+<!-- Tab 1: 知识卡片 -->
+<div class="tab-content" id="tab1">
+  <div class="flip-container">
+    <div class="flipper" id="flipper">
+      <div class="flip-front"><h3 id="flipTitle">上帝喜欢笨人</h3><p style="margin-top:8px;color:var(--sub);font-size:13px;">点击翻转查看详情</p></div>
+      <div class="flip-back">
+        <h4>定义</h4><p id="flipDef"></p>
+        <h4>类比（商业财务场景）</h4><p id="flipAnalogy"></p>
+        <h4>示例</h4><p id="flipExample"></p>
+        <h4>反例</h4><p id="flipAnti"></p>
+      </div>
+    </div>
+  </div>
+  <div class="flip-nav">
+    <button onclick="prevCard()">◀ 上一张</button>
+    <span id="cardIdx">1 / 12</span>
+    <button onclick="nextCard()">下一张 ▶</button>
+  </div>
+  <div style="text-align:center;">
+    <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">标记「已学习」</button>
+  </div>
+</div>
+
+<!-- Tab 2: 题库 -->
+<div class="tab-content" id="tab2">
+  <div class="flex-between"><h2 class="section-title" style="border:none;margin:0;">选择题 (20 题)</h2><button class="btn btn-sm btn-outline" onclick="randomizeQuiz()">随机抽题</button></div>
+  <div id="quizMC"></div>
+  <h2 class="section-title">简答题 (10 题)</h2>
+  <div id="quizSA"></div>
+</div>
+
+<!-- Tab 3: 考试 -->
+<div class="tab-content" id="tab3">
+  <div class="card" style="text-align:center;">
+    <h3>考试模式</h3>
+    <p style="margin:12px 0;color:var(--sub);">从题库随机抽取 7 道选择 + 3 道简答 · 限时 15 分钟</p>
+    <div class="timer" id="examTimer">15:00</div>
+    <button class="btn" id="startExamBtn" onclick="startExam()">开始考试</button>
+    <div id="examArea"></div>
+    <div id="examResult" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- Tab 4: 复习 -->
+<div class="tab-content" id="tab4">
+  <h2 class="section-title">学习统计</h2>
+  <div class="stats-grid" id="statsGrid"></div>
+  <h2 class="section-title">错题本</h2>
+  <div id="wrongBook"></div>
+  <h2 class="section-title">概念薄弱点分析</h2>
+  <div id="weakConcepts"></div>
+</div>
+
+<!-- Tab 5: 思维导图 -->
+<div class="tab-content" id="tab5"><div id="mindmap"></div></div>
+
+<!-- Tab 6: 苏格拉底 -->
+<div class="tab-content" id="tab6"><div id="socratic"></div></div>
+
+<!-- Tab 7: 案例分析 -->
+<div class="tab-content" id="tab7"><div id="caseStudy"></div></div>
+
+<!-- Tab 8: 决策模拟 -->
+<div class="tab-content" id="tab8"><div id="simGame"></div></div>
+
+</div><!-- .container -->
+
+<script>
+// ── DATA ──
+const concepts = [
+  {id:'c0',name:'上帝喜欢笨人',star:true,
+   def:'以超额准备和系统化方法替代依赖天赋与临场发挥的长期主义原则。核心是承认自身能力边界，通过「结硬寨，打呆仗」将做事水平从90分提升到95-100分，实现效果的质变。',
+   analogy:'如同企业财务审计：聪明的CFO可能靠直觉做决策，而「笨人」CFO建立完整的对账流程、三重校验机制、风险预警系统。短期看笨办法耗时更多，长期却避免了重大财务漏洞。',
+   example:'威灵顿公爵每次战前事无巨细准备所有可能意外，滑铁卢战役以「守住阵地等盟军」为目标，最终击败天才拿破仑。库旦普教授为15分钟报告准备3-5倍内容，预设所有听众提问。',
+   anti:'中关村ABC公司销售经理自认聪明，想私吞5000元回扣差价，结果被「土老帽」骗走1.5万元现金。聪明反被聪明误——过度自信导致判断失误。'},
+  {id:'c1',name:'以正合以奇胜',star:true,
+   def:'乐观主义的做事方法论：以遵循规律的常规能力（正）为成功首要保障，以额外机动资源（奇）为辅助。长期剧变必然，但短期渐变是常态——实力派获胜是大概率事件。',
+   analogy:'如同投资组合管理：正合是核心资产配置（指数基金定投），确保长期稳健收益；奇胜是卫星仓位（少量高风险投资），在基础稳固时博取超额回报。孤注一掷的投机者（只靠奇）最终大概率归零。',
+   example:'华为超越朗讯/思科：靠产品性能稳步提升+价格优势的常规竞争（正合），而非弯道超车式的投机。奥斯特里茨战役中苏尔特正面抵御主力（正）的功劳大于贝尔纳多特预备队（奇）。',
+   anti:'退学创业的模仿者：盖茨和扎克伯格退学成功是因已具备赚钱能力（实力派），而非退学后才探索。只看表面形式忽视实力积累，是误解「奇胜」的典型。'},
+  {id:'c2',name:'超越免费',star:true,
+   def:'在免费成为行业默认模式的背景下，通过制造稀缺性超越免费竞争。五个维度：时效性（时间稀缺）、个性化（空间独特）、可用性（易理解）、可靠性（信任累积）、数据黏性（护城河）。',
+   analogy:'如同高端餐厅vs免费食堂：免费食堂解决温饱但无差异化，高端餐厅通过独家食材（时效性）、定制菜单（个性化）、稳定出品（可靠性）、熟客关系（数据黏性）创造超越免费的价值。',
+   example:'iPhone X因独特性引发排队购买，而iPhone 8因缺乏创新无人问津——产品层面的稀缺性制造。Skuchain公司利用区块链可跟踪技术实现合同执行数字化，牺牲去中心化换效率。',
+   anti:'微软2004-2010年每搜索一次奖励5美分试图竞争搜索市场，每年烧10几亿美元却未提升份额。倒贴钱无法替代真正的产品价值——人对白得的东西不珍惜。'},
+  {id:'c3',name:'众利勿为',star:true,
+   def:'当一件事被众人认为有利可图时应避免参与。本质是警惕群体共识的认知盲点，避免因过度竞争导致价值耗散。源自「日中则移，水满则溢，月盈则亏」的物极必反规律。',
+   analogy:'如同股市热门板块：当菜市场大妈都在讨论某只股票时，往往已是行情尾声。巴菲特「别人恐惧时贪婪，别人贪婪时恐惧」是同一逻辑——真正的机会在争议中出现，而非一致看好时。',
+   example:'美国创业者倾向于差异化竞争：十字路口第一家开加油站，第二家开便利店，第三家开快餐店，第四家开咖啡店——避免同质化内卷。团购网站千团大战模仿Groupon，无一盈利。',
+   anti:'区块链热潮中大量山寨虚拟货币跟风出现，因过度追捧而缺乏颠覆现有巨头的实际能力。中国大学盲目追求科研经费和论文数量等相同指标，丧失差异化发展特色。'},
+  {id:'c4',name:'谋事在人成事在天',star:false,
+   def:'凡人以识为主，以才为辅；凡事尽人事听天命。核心是认识到世界复杂性远超出个人认知——任何难事都涉及多维度因素，个人努力仅能控制部分维度。见识比才干更重要。',
+   analogy:'如同农民种地：精心选种、施肥、灌溉（人事），但最终收成还取决于天气、病虫害、市场价格（天命）。智慧的农民不会因丰年自傲或荒年绝望，而是持续优化种植方法。',
+   example:'曾国藩承认不精通天文历算，让儿子曾纪泽学数学；不懂几何，推却《几何原本》作序请求。因知进退，成为古代功臣中罕见能全身而退者。肯尼迪提出登月愿景却未见证成功——尽人事的价值超越结果。',
+   anti:'中国散户将牛市偶然收益归结为自身能力，导致后续重大亏损。高考失利者50岁仍念叨「差2分考重点大学」——过度归因于个人努力而忽视运气因素。'},
+  {id:'c5',name:'分享利益',star:false,
+   def:'利益共享是职业人士的基本素质，也是组织形成合力的制度设计。在论文、专利、项目中主动添加合作者，公开感谢帮助者——直接影响团队凝聚力与个人职业发展。',
+   analogy:'如同开源社区：贡献代码的开发者看似免费付出，实则通过社区声望积累、代码被广泛使用、同行认可获得更高质量的职业机会。独自闭门造车的开发者反而成长受限。',
+   example:'贾里尼克教授规定同事工作帮助论文必须加入作者名单、非正式讨论必须在鸣谢中感谢。刘邦「不吝恩赐」得天下，项羽「舍不得封赏」失天下。Google专利申请中主动添加跨团队合作者名字。',
+   anti:'硅谷中国人晋升速度不及印度人的原因之一是利益分享与相互提携不足。中国同事发布新产品时遗漏跨团队贡献者，需高层出面道歉。Facebook前100名员工因小事离职，损失至少1亿美元期权。'},
+  {id:'c6',name:'独立决断',star:false,
+   def:'在征求关键意见、弥补遗漏后自行决策，无需追求所有人满意。核心逻辑是「没有最好，只有更好」——接受决策瑕疵，注重进步效率，避免过度会议和邮件抄送导致的组织低效。',
+   analogy:'如同外科手术主刀医生：术前会诊听取各科室意见（征求关键意见），但手术台上的最终决策必须由主刀独立做出。追求「所有人都同意」会导致贻误最佳治疗时机。',
+   example:'GE韦尔奇规定邮件收件人超过20人需特别确认，显著降低邮件量，助力GE市值从130亿增至4000亿美元。Facebook前副总裁魏小亮主动告知扎克伯格职业诉求，倒逼晋升机会。',
+   anti:'中国企业过度依赖会议与邮件抄送——无关邮件过多降低整体效率。GE改革前因「民主集中」式全员共识导致决策缓慢，错失市场机会。'},
+  {id:'c7',name:'悲观主义根源',star:false,
+   def:'悲观主义三大来源：过分自信与现实反差的认知偏差（高估自身能力导致失望）、坏消息的媒体放大效应（好事不出门坏事行千里）、信息论中的与众不同偏好（悲观观点信息量更大更易传播）。',
+   analogy:'如同天气预报：气象局预测「明天天气正常」毫无新闻价值，但预测「百年一遇暴雨」立刻成为头条——即使准确性存疑。长期如此导致公众对气候风险的感知严重失真。',
+   example:'中国拥有全球20条最长河流（>2000公里），三五年出现一次「百年一遇洪水」属概率正常事件。因通信落后，1970年代驻马店洪灾（死亡2.6万-30万）未被广泛知晓，而今天每次洪水都被放大报道。',
+   anti:'鲁比尼2007年卖空股票后错失美股历史最大增长，后多次预测中国经济崩溃均失败——悲观判断即使错误，只要逻辑自洽仍获学术界容忍。莱斯特·布朗基于静态假设预测资源危机，忽视技术进步。'},
+  {id:'c8',name:'五级工程师',star:false,
+   def:'基于朗道物理学家等级的职业能力模型：第五级独立解决问题→第四级带领团队完成有影响力的工作→第三级独立设计产品获得市场成功→第二级创造前所未有的产品→第一级开创全新产业。每级能力差距为数量级（10倍）。',
+   analogy:'如同足球联赛体系：五级=职业球员（独立完成比赛）、四级=队长（带领团队赢球）、三级=教练兼球员（设计战术并执行）、二级=改变足球打法的人（如克鲁伊夫的全攻全守）、一级=创立现代足球规则的人。',
+   example:'京东工程师独立开发「情侣购书行为分析工具」=五级。Jeff Dean创立云计算技术=二级。爱迪生开创电力产业、福特开创汽车制造=一级。吴军自我定位为2.5级工程师。',
+   anti:'中国IT行业普遍存在「毕业即工程师」现象，实际仅为简单重复工作的「码农」，远未达到五级「独立解决问题」标准。头衔与能力脱节——工科毕业生需主动提升独立性。'},
+  {id:'c9',name:'人生五件事',star:false,
+   def:'人一生必须做的五件事：恋爱结婚生子（不可替代的个人生活体验）、尝试做喜欢的事（发现天赋、成为有趣味的人）、回馈（从现在开始身体力行）、有一个信仰（提供方向与勇气）、留下遗产（对世界产生影响）。',
+   analogy:'如同建造一座房子：婚恋是地基（情感支撑系统）、喜欢的事是装饰与花园（让房子有温度而非只是庇护所）、回馈是开放客厅招待他人、信仰是承重墙（支撑结构）、遗产是房子留给后人的印记。',
+   example:'老洛克菲勒从16岁第一份工作起捐出收入的6%，一生捐赠相当于今天1000亿美元，建立协和医院、芝加哥大学等。贾里尼克教授要求博士必须「对人类知识体系有所贡献」。小女儿经声乐老师发掘天赋，两次登上卡内基音乐厅。',
+   anti:'第一代炒股富豪因缺乏像样兴趣爱好（除看足球外多为嫖娼），最终结局多为破产、被抓或被杀。30岁未认真恋爱、沉溺二次元文化——「以后有时间」=「永远没有时间」。'},
+  {id:'c10',name:'勿因人之短护己之短',star:false,
+   def:'个人责任独立化原则：不以他人错误作为自身免责理由（勿因人之短护己之短），不以自身优势对比他人劣势来标榜能力（勿以人之短炫己之长）。核心是聚焦自身问题，追求专业深度而非错位比较。',
+   analogy:'如同交通执法：被交警拦下后辩称「别人也超速了」不会被采纳——讨论的是你的违规行为，他人的问题另案处理。同样，宣称「我是最会编程的产品经理」无法证明你作为产品经理的核心能力。',
+   example:'Google高情商员工强纳森被批评嗓门大时辩解「你那天讲话调门也很高」，总监戴维回应：「你提醒得很好，但今天你的调门确实高了，此事与他人无关。」分离责任，聚焦当前问题。',
+   anti:'某人宣称「赢了两位世界冠军」——在国际象棋上赢网球冠军，在网球上赢国际象棋冠军。本质是以自身优势对比他人劣势，无法证明真实能力，也不会获得真正认可。'},
+  {id:'c11',name:'朋友关系之道',star:false,
+   def:'朋友关系的核心是能提供的价值而非财富。合作型朋友需事前明确利益分配（避免谈利益伤感情的误区）、避免跨维度合作（如替朋友理财）、平等对待依靠型朋友。轻诺自己做不到的事等同于坑朋友。',
+   analogy:'如同商业合资企业：成功的合资企业在签约前就会明确股权、退出机制、决策权限。朋友合作同理——模糊的预期是关系破裂的最大隐患。好的关系像好的合同：条款清晰、双方满意、可预期。',
+   example:'方苞以布衣身份成为康雍乾三朝智囊，因能为皇帝提供智力价值而非依赖财富。Google同事明确可帮忙的边界，建立清晰预期。团队运动中队友在球场上的默契不跨界到生意场。',
+   anti:'中国上市民企共同创始人因利益分配反目不撕者凤毛麟角——有人因1亿元断绝数十年友谊。替朋友理财或大额借贷易导致「钱友两失」。条件优越的闺蜜过度付出，因地位差异使关系疏远。'}
+];
+
+const mcQuestions = [
+  {q:'「上帝喜欢笨人」的核心理念是什么？', opts:['用超额准备和系统化方法替代依赖天赋','靠天赋和临场发挥取得成功','笨人比聪明人更容易成功','智商越低越受命运眷顾'], ans:0, concept:'c0'},
+  {q:'威灵顿战胜拿破仑的关键战术哲学是？', opts:['出奇制胜，以少胜多','气势如虹的正面进攻','依赖天气和运气','结硬寨打呆仗，以横制纵层层设防'], ans:3, concept:'c0'},
+  {q:'「以正合以奇胜」中「正」的含义是？', opts:['投机取巧的捷径','遵循规律的常规能力与基础方法','神秘的非常规手段','依靠运气和机会'], ans:1, concept:'c1'},
+  {q:'为什么乐观主义方法论强调「实力派获胜是大概率事件」？', opts:['因为长期来看积累的能力决定结果，爆冷是小概率','因为运气在社会竞争中不重要','因为每个人都应该成为运动员','因为只有实力派才会参与竞争'], ans:0, concept:'c1'},
+  {q:'「超越免费」的核心策略是什么？', opts:['比免费更便宜的价格','加大广告投入','放弃互联网转型传统行业','重构稀缺性，提供难以复制的价值'], ans:3, concept:'c2'},
+  {q:'超越免费的五个维度不包括哪一项？', opts:['时效性','个性化','规模效应','数据黏性'], ans:2, concept:'c2'},
+  {q:'「众利勿为」的本质含义是？', opts:['永远不要参与任何有利可图的事','警惕群体共识的盲点，避免因过度竞争导致价值耗散','只做亏本生意','不与他人合作'], ans:1, concept:'c3'},
+  {q:'「日中则移，水满则溢，月盈则亏」支持哪条原则？', opts:['以正合以奇胜','谋事在人成事在天','众利勿为','独立决断'], ans:2, concept:'c3'},
+  {q:'「谋事在人成事在天」强调的核心观点是？', opts:['见识比才干更重要，认识到世界复杂性超越个人控制','什么都不用做等着天意安排','人定胜天','才干比见识更重要'], ans:0, concept:'c4'},
+  {q:'曾国藩能全身而退的关键原因是？', opts:['拥有强大的军队','皇帝特别信任他','懂得进退，承认能力短板，推却超出能力范围的事','运气特别好'], ans:2, concept:'c4'},
+  {q:'根据「分享利益」原则，同事帮助了你的论文应该怎么做？', opts:['私下感谢即可','必须加入作者名单，并在鸣谢中感谢','不需要任何表示','请吃一顿饭就行'], ans:1, concept:'c5'},
+  {q:'《史记》中陈平评价刘邦得天下的关键是什么？', opts:['不吝恩赐，善于分享利益','军事才能出众','出身高贵','运气极佳'], ans:0, concept:'c5'},
+  {q:'「独立决断」的前提是什么？', opts:['完全不征求任何人意见','必须所有人同意','由上级代为决策','在征求关键意见、弥补遗漏后自行决策'], ans:3, concept:'c6'},
+  {q:'悲观主义产生的根本原因不包括哪一项？', opts:['过分自信与现实反差的认知偏差','坏消息的媒体放大效应','人类天生具有悲观基因','信息论中悲观观点信息量更大更易传播'], ans:2, concept:'c7'},
+  {q:'五级工程师中「第五级」的核心能力是？', opts:['开创全新产业','独立解决问题，熟练应用专业技能','创造前所未有的产品','带领团队完成有影响力的工作'], ans:1, concept:'c8'},
+  {q:'从五级到四级工程师的核心突破是什么？', opts:['技术能力提升10倍','获得更高学历','跳槽到更大的公司','从个人执行到团队领导，掌握愿景-目标-道路框架'], ans:3, concept:'c8'},
+  {q:'「人生五件事」中关于回馈的核心观点是？', opts:['回馈不在于多少，而在于从现在开始身体力行','等有钱了再回馈','只需要感谢恩人','回馈是为了获得好名声'], ans:0, concept:'c9'},
+  {q:'「勿因人之短护己之短」的职场含义是？', opts:['同事犯错我也应该犯错','发现别人短处要及时报告领导','不以他人错误作为自身免责理由，聚焦自身问题','要经常指出别人的短处'], ans:2, concept:'c10'},
+  {q:'朋友关系维护中最重要的原则是什么？', opts:['经常请客吃饭','合作前明确利益分配，避免跨维度合作','无条件满足朋友所有要求','保持神秘感不透露真实想法'], ans:1, concept:'c11'},
+  {q:'为什么不应替朋友理财或大额借贷？', opts:['因为朋友通常不值得信任','因为银行利率更高','因为法律规定不允许','因为跨维度合作容易导致钱友两失'], ans:3, concept:'c11'}
+];
+
+const saQuestions = [
+  {q:'「上帝喜欢笨人」中的「笨」指什么？为什么这种「笨」反而是优势？',concept:'c0'},
+  {q:'用自己的一句话解释「以正合以奇胜」+「渐变与突变」的关系。',concept:'c1'},
+  {q:'在免费盛行的时代，个人如何构建自己的稀缺性？列举3个具体维度。',concept:'c2'},
+  {q:'「众利勿为」与巴菲特「别人恐惧时贪婪」有何相似之处？',concept:'c3'},
+  {q:'为什么说「见识比才干更重要」？结合曾国藩的案例说明。',concept:'c4'},
+  {q:'「分享利益」原则在职场中为什么反而能促进个人发展？',concept:'c5'},
+  {q:'悲观主义三大根源中，你认为哪一个影响最大？为什么？',concept:'c7'},
+  {q:'用五级工程师的框架评估你当前所在（或目标）的级别，说明下一步突破的关键。',concept:'c8'},
+  {q:'「人生五件事」中哪一件对你触动最深？为什么？',concept:'c9'},
+  {q:'「勿因人之短炫己之长」在面试中如何体现？',concept:'c10'}
+];
+
+// ── STATE ──
+let activeTab = 0;
+let cardIdx = 0;
+let learned = JSON.parse(localStorage.getItem('mks_learned')||'{}');
+let wrongBook = JSON.parse(localStorage.getItem('mks_wrong')||'[]');
+let examActive = false;
+let examTimer = null;
+let examSec = 900;
+let userAnswers = {};
+let quizRandomOrder = [];
+
+function save() {
+  localStorage.setItem('mks_learned',JSON.stringify(learned));
+  localStorage.setItem('mks_wrong',JSON.stringify(wrongBook));
+}
+
+// ── TABS ──
+document.getElementById('tabBar').addEventListener('click',function(e){
+  if(e.target.classList.contains('tab-btn')){
+    activeTab = parseInt(e.target.dataset.tab);
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    document.getElementById('tab'+activeTab).classList.add('active');
+    if(activeTab===0) renderSVG();
+    if(activeTab===4) renderReview();
+    if(activeTab===5) renderMindmap();
+    if(activeTab===6) renderSocratic();
+    if(activeTab===7) renderCaseStudy();
+    if(activeTab===8) renderSimGame();
+  }
+});
+
+function switchTab(i) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="'+i+'"]').classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab'+i).classList.add('active');
+  activeTab = i;
+  if(i===4) renderReview();
+  if(i===5) renderMindmap();
+  if(i===6) renderSocratic();
+  if(i===7) renderCaseStudy();
+  if(i===8) renderSimGame();
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const count = Object.keys(learned).length;
+  const pct = Math.round(count/12*100);
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('learnedCount').textContent = count;
+  updateLearnedBtn();
+}
+function updateLearnedBtn() {
+  const btn = document.getElementById('learnedBtn');
+  if(learned[concepts[cardIdx].id]) {
+    btn.textContent = '✓ 已学习';
+    btn.classList.add('marked');
+  } else {
+    btn.textContent = '标记「已学习」';
+    btn.classList.remove('marked');
+  }
+}
+function toggleLearned() {
+  const id = concepts[cardIdx].id;
+  if(learned[id]) { delete learned[id]; }
+  else { learned[id] = true; }
+  save(); updateProgress();
+}
+
+// ── FLIP CARDS ──
+function showCard() {
+  const c = concepts[cardIdx];
+  document.getElementById('flipTitle').textContent = c.name;
+  document.getElementById('flipDef').textContent = c.def;
+  document.getElementById('flipAnalogy').textContent = c.analogy;
+  document.getElementById('flipExample').textContent = c.example;
+  document.getElementById('flipAnti').textContent = c.anti;
+  document.getElementById('cardIdx').textContent = (cardIdx+1)+' / 12';
+  document.getElementById('flipper').classList.remove('flipped');
+  updateLearnedBtn();
+}
+function prevCard() { cardIdx = (cardIdx-1+12)%12; showCard(); }
+function nextCard() { cardIdx = (cardIdx+1)%12; showCard(); }
+document.getElementById('flipper').addEventListener('click',function(){
+  this.classList.toggle('flipped');
+});
+
+// ── SVG DIAGRAM ──
+function renderSVG() {
+  const svg = `<svg width="1518pt" height="206pt"
+ viewBox="0.00 0.00 1517.50 205.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 201.74)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-201.74 1513.5,-201.74 1513.5,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#c0392b" stroke="black" stroke-width="2" cx="628.5" cy="-170.87" rx="50.82" ry="26.74"/>
+<text text-anchor="middle" x="628.5" y="-174.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="14.00" fill="#ffffff">人生决策</text>
+<text text-anchor="middle" x="628.5" y="-159.67" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="14.00" fill="#ffffff">核心驱动</text>
+</g>
+<!-- dim1 -->
+<g id="node2" class="node">
+<title>dim1</title>
+<polygon fill="#d4a574" stroke="black" points="198.5,-108 138.5,-108 138.5,-72 198.5,-72 198.5,-108"/>
+<text text-anchor="middle" x="168.5" y="-93.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">认知之维</text>
+<text text-anchor="middle" x="168.5" y="-81.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">思考方式</text>
+</g>
+<!-- root&#45;&gt;dim1 -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;dim1</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M580.57,-161.65C489.56,-146.05 293.27,-112.39 208.66,-97.89"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="209.12,-94.41 198.67,-96.17 207.93,-101.31 209.12,-94.41"/>
+</g>
+<!-- dim2 -->
+<g id="node3" class="node">
+<title>dim2</title>
+<polygon fill="#d4a574" stroke="black" points="409.5,-108 349.5,-108 349.5,-72 409.5,-72 409.5,-108"/>
+<text text-anchor="middle" x="379.5" y="-93.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">行动之维</text>
+<text text-anchor="middle" x="379.5" y="-81.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">方法论</text>
+</g>
+<!-- root&#45;&gt;dim2 -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;dim2</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M585.7,-156.31C539.03,-141.53 464.94,-118.06 419.44,-103.65"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="420.22,-100.23 409.63,-100.54 418.1,-106.9 420.22,-100.23"/>
+</g>
+<!-- dim3 -->
+<g id="node4" class="node">
+<title>dim3</title>
+<polygon fill="#d4a574" stroke="black" points="583,-108 512,-108 512,-72 583,-72 583,-108"/>
+<text text-anchor="middle" x="547.5" y="-93.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">价值之维</text>
+<text text-anchor="middle" x="547.5" y="-81.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">创造与稀缺</text>
+</g>
+<!-- root&#45;&gt;dim3 -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;dim3</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M604.64,-146.63C594.42,-136.69 582.5,-125.08 572.19,-115.05"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="574.63,-112.53 565.03,-108.07 569.75,-117.55 574.63,-112.53"/>
+</g>
+<!-- dim4 -->
+<g id="node5" class="node">
+<title>dim4</title>
+<polygon fill="#d4a574" stroke="black" points="778.5,-108 718.5,-108 718.5,-72 778.5,-72 778.5,-108"/>
+<text text-anchor="middle" x="748.5" y="-93.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">原则之维</text>
+<text text-anchor="middle" x="748.5" y="-81.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">处世法则</text>
+</g>
+<!-- root&#45;&gt;dim4 -->
+<g id="edge4" class="edge">
+<title>root&#45;&gt;dim4</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M659.72,-149.35C676.27,-138.47 696.66,-125.07 713.73,-113.85"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="715.87,-116.63 722.31,-108.21 712.03,-110.78 715.87,-116.63"/>
+</g>
+<!-- dim5 -->
+<g id="node6" class="node">
+<title>dim5</title>
+<polygon fill="#d4a574" stroke="black" points="1132,-108 1061,-108 1061,-72 1132,-72 1132,-108"/>
+<text text-anchor="middle" x="1096.5" y="-93.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">关系之维</text>
+<text text-anchor="middle" x="1096.5" y="-81.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">人际与情感</text>
+</g>
+<!-- root&#45;&gt;dim5 -->
+<g id="edge5" class="edge">
+<title>root&#45;&gt;dim5</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M676.82,-161.73C767.58,-146.43 962.34,-113.61 1050.94,-98.68"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="1051.67,-102.1 1060.95,-96.99 1050.51,-95.2 1051.67,-102.1"/>
+</g>
+<!-- dim6 -->
+<g id="node7" class="node">
+<title>dim6</title>
+<polygon fill="#d4a574" stroke="black" points="1386,-108 1315,-108 1315,-72 1386,-72 1386,-108"/>
+<text text-anchor="middle" x="1350.5" y="-93.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">成长之维</text>
+<text text-anchor="middle" x="1350.5" y="-81.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">职业与人生</text>
+</g>
+<!-- root&#45;&gt;dim6 -->
+<g id="edge6" class="edge">
+<title>root&#45;&gt;dim6</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M678.13,-164.45C811.38,-149.89 1175.6,-110.11 1304.52,-96.02"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="1305.27,-99.46 1314.83,-94.9 1304.51,-92.5 1305.27,-99.46"/>
+</g>
+<!-- c1a -->
+<g id="node8" class="node">
+<title>c1a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="71,-36 0,-36 0,0 71,0 71,-36"/>
+<text text-anchor="middle" x="35.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">悲观vs乐观</text>
+</g>
+<!-- dim1&#45;&gt;c1a -->
+<g id="edge7" class="edge">
+<title>dim1&#45;&gt;c1a</title>
+<path fill="none" stroke="#e67e22" d="M138.32,-73.12C120.11,-63.53 96.66,-51.19 76.75,-40.71"/>
+<polygon fill="#e67e22" stroke="#e67e22" points="78.36,-37.6 67.88,-36.04 75.1,-43.8 78.36,-37.6"/>
+</g>
+<!-- c1b -->
+<g id="node9" class="node">
+<title>c1b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="160,-36 89,-36 89,0 160,0 160,-36"/>
+<text text-anchor="middle" x="124.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">渐变vs突变</text>
+</g>
+<!-- dim1&#45;&gt;c1b -->
+<g id="edge8" class="edge">
+<title>dim1&#45;&gt;c1b</title>
+<path fill="none" stroke="#e67e22" d="M157.62,-71.7C152.51,-63.56 146.3,-53.69 140.66,-44.7"/>
+<polygon fill="#e67e22" stroke="#e67e22" points="143.54,-42.71 135.25,-36.1 137.61,-46.43 143.54,-42.71"/>
+</g>
+<!-- c7 -->
+<g id="node25" class="node">
+<title>c7</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="247,-36 178,-36 178,0 247,0 247,-36"/>
+<text text-anchor="middle" x="212.5" y="-15.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">悲观主义根源</text>
+</g>
+<!-- dim1&#45;&gt;c7 -->
+<g id="edge22" class="edge">
+<title>dim1&#45;&gt;c7</title>
+<path fill="none" stroke="#e67e22" d="M179.38,-71.7C184.49,-63.56 190.7,-53.69 196.34,-44.7"/>
+<polygon fill="#e67e22" stroke="#e67e22" points="199.39,-46.43 201.75,-36.1 193.46,-42.71 199.39,-46.43"/>
+</g>
+<!-- c2a -->
+<g id="node10" class="node">
+<title>c2a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="325.5,-36 265.5,-36 265.5,0 325.5,0 325.5,-36"/>
+<text text-anchor="middle" x="295.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">笨人哲学</text>
+</g>
+<!-- dim2&#45;&gt;c2a -->
+<g id="edge9" class="edge">
+<title>dim2&#45;&gt;c2a</title>
+<path fill="none" stroke="#27ae60" d="M358.74,-71.7C348.26,-62.97 335.39,-52.24 324,-42.75"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="325.95,-39.82 316.03,-36.1 321.47,-45.19 325.95,-39.82"/>
+</g>
+<!-- c2b -->
+<g id="node11" class="node">
+<title>c2b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="415,-36 344,-36 344,0 415,0 415,-36"/>
+<text text-anchor="middle" x="379.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">以正合奇胜</text>
+</g>
+<!-- dim2&#45;&gt;c2b -->
+<g id="edge10" class="edge">
+<title>dim2&#45;&gt;c2b</title>
+<path fill="none" stroke="#27ae60" d="M379.5,-71.7C379.5,-63.98 379.5,-54.71 379.5,-46.11"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="383,-46.1 379.5,-36.1 376,-46.1 383,-46.1"/>
+</g>
+<!-- c3a -->
+<g id="node12" class="node">
+<title>c3a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="493.5,-36 433.5,-36 433.5,0 493.5,0 493.5,-36"/>
+<text text-anchor="middle" x="463.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">超越免费</text>
+</g>
+<!-- dim3&#45;&gt;c3a -->
+<g id="edge11" class="edge">
+<title>dim3&#45;&gt;c3a</title>
+<path fill="none" stroke="#2980b9" d="M526.74,-71.7C516.26,-62.97 503.39,-52.24 492,-42.75"/>
+<polygon fill="#2980b9" stroke="#2980b9" points="493.95,-39.82 484.03,-36.1 489.47,-45.19 493.95,-39.82"/>
+</g>
+<!-- c3b -->
+<g id="node13" class="node">
+<title>c3b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="583,-36 512,-36 512,0 583,0 583,-36"/>
+<text text-anchor="middle" x="547.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">稀缺性构建</text>
+</g>
+<!-- dim3&#45;&gt;c3b -->
+<g id="edge12" class="edge">
+<title>dim3&#45;&gt;c3b</title>
+<path fill="none" stroke="#2980b9" d="M547.5,-71.7C547.5,-63.98 547.5,-54.71 547.5,-46.11"/>
+<polygon fill="#2980b9" stroke="#2980b9" points="551,-46.1 547.5,-36.1 544,-46.1 551,-46.1"/>
+</g>
+<!-- c4a -->
+<g id="node14" class="node">
+<title>c4a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="661.5,-36 601.5,-36 601.5,0 661.5,0 661.5,-36"/>
+<text text-anchor="middle" x="631.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">众利勿为</text>
+</g>
+<!-- dim4&#45;&gt;c4a -->
+<g id="edge13" class="edge">
+<title>dim4&#45;&gt;c4a</title>
+<path fill="none" stroke="#8e44ad" d="M719.88,-71.88C704.58,-62.72 685.56,-51.34 669.08,-41.48"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="670.61,-38.32 660.23,-36.19 667.02,-44.33 670.61,-38.32"/>
+</g>
+<!-- c4b -->
+<g id="node15" class="node">
+<title>c4b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="739.5,-36 679.5,-36 679.5,0 739.5,0 739.5,-36"/>
+<text text-anchor="middle" x="709.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">分享利益</text>
+</g>
+<!-- dim4&#45;&gt;c4b -->
+<g id="edge14" class="edge">
+<title>dim4&#45;&gt;c4b</title>
+<path fill="none" stroke="#8e44ad" d="M738.86,-71.7C734.37,-63.64 728.94,-53.89 723.98,-44.98"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="726.95,-43.14 719.03,-36.1 720.84,-46.54 726.95,-43.14"/>
+</g>
+<!-- c4c -->
+<g id="node16" class="node">
+<title>c4c</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="817.5,-36 757.5,-36 757.5,0 817.5,0 817.5,-36"/>
+<text text-anchor="middle" x="787.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">独立决断</text>
+</g>
+<!-- dim4&#45;&gt;c4c -->
+<g id="edge15" class="edge">
+<title>dim4&#45;&gt;c4c</title>
+<path fill="none" stroke="#8e44ad" d="M758.14,-71.7C762.63,-63.64 768.06,-53.89 773.02,-44.98"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="776.16,-46.54 777.97,-36.1 770.05,-43.14 776.16,-46.54"/>
+</g>
+<!-- c4d -->
+<g id="node17" class="node">
+<title>c4d</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="895.5,-36 835.5,-36 835.5,0 895.5,0 895.5,-36"/>
+<text text-anchor="middle" x="865.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">谋事在天</text>
+</g>
+<!-- dim4&#45;&gt;c4d -->
+<g id="edge16" class="edge">
+<title>dim4&#45;&gt;c4d</title>
+<path fill="none" stroke="#8e44ad" d="M777.12,-71.88C792.42,-62.72 811.44,-51.34 827.92,-41.48"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="829.98,-44.33 836.77,-36.19 826.39,-38.32 829.98,-44.33"/>
+</g>
+<!-- c4_extra1 -->
+<g id="node23" class="node">
+<title>c4_extra1</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="1009.5,-36 913.5,-36 913.5,0 1009.5,0 1009.5,-36"/>
+<text text-anchor="middle" x="961.5" y="-15.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">勿因人之短护己之短</text>
+</g>
+<!-- dim4&#45;&gt;c4_extra1 -->
+<g id="edge23" class="edge">
+<title>dim4&#45;&gt;c4_extra1</title>
+<path fill="none" stroke="#8e44ad" stroke-dasharray="1,5" d="M778.57,-79.12C810.88,-68.5 863.03,-51.36 903.4,-38.09"/>
+<polygon fill="#8e44ad" stroke="#8e44ad" points="904.72,-41.35 913.12,-34.9 902.53,-34.7 904.72,-41.35"/>
+</g>
+<!-- c5a -->
+<g id="node18" class="node">
+<title>c5a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="1087.5,-36 1027.5,-36 1027.5,0 1087.5,0 1087.5,-36"/>
+<text text-anchor="middle" x="1057.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">朋友合作</text>
+</g>
+<!-- dim5&#45;&gt;c5a -->
+<g id="edge17" class="edge">
+<title>dim5&#45;&gt;c5a</title>
+<path fill="none" stroke="#d4a017" d="M1086.86,-71.7C1082.37,-63.64 1076.94,-53.89 1071.98,-44.98"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="1074.95,-43.14 1067.03,-36.1 1068.84,-46.54 1074.95,-43.14"/>
+</g>
+<!-- c5b -->
+<g id="node19" class="node">
+<title>c5b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="1165.5,-36 1105.5,-36 1105.5,0 1165.5,0 1165.5,-36"/>
+<text text-anchor="middle" x="1135.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">婚姻智慧</text>
+</g>
+<!-- dim5&#45;&gt;c5b -->
+<g id="edge18" class="edge">
+<title>dim5&#45;&gt;c5b</title>
+<path fill="none" stroke="#d4a017" d="M1106.14,-71.7C1110.63,-63.64 1116.06,-53.89 1121.02,-44.98"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="1124.16,-46.54 1125.97,-36.1 1118.05,-43.14 1124.16,-46.54"/>
+</g>
+<!-- c4_extra2 -->
+<g id="node24" class="node">
+<title>c4_extra2</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="1253,-36 1184,-36 1184,0 1253,0 1253,-36"/>
+<text text-anchor="middle" x="1218.5" y="-15.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3d2f2f">朋友关系之道</text>
+</g>
+<!-- dim5&#45;&gt;c4_extra2 -->
+<g id="edge24" class="edge">
+<title>dim5&#45;&gt;c4_extra2</title>
+<path fill="none" stroke="#d4a017" stroke-dasharray="1,5" d="M1126.34,-71.88C1142.44,-62.64 1162.5,-51.13 1179.79,-41.21"/>
+<polygon fill="#d4a017" stroke="#d4a017" points="1181.61,-44.2 1188.54,-36.19 1178.13,-38.13 1181.61,-44.2"/>
+</g>
+<!-- c6a -->
+<g id="node20" class="node">
+<title>c6a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="1342,-36 1271,-36 1271,0 1342,0 1342,-36"/>
+<text text-anchor="middle" x="1306.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">五级工程师</text>
+</g>
+<!-- dim6&#45;&gt;c6a -->
+<g id="edge19" class="edge">
+<title>dim6&#45;&gt;c6a</title>
+<path fill="none" stroke="#17a589" d="M1339.62,-71.7C1334.51,-63.56 1328.3,-53.69 1322.66,-44.7"/>
+<polygon fill="#17a589" stroke="#17a589" points="1325.54,-42.71 1317.25,-36.1 1319.61,-46.43 1325.54,-42.71"/>
+</g>
+<!-- c6b -->
+<g id="node21" class="node">
+<title>c6b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="1431,-36 1360,-36 1360,0 1431,0 1431,-36"/>
+<text text-anchor="middle" x="1395.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">人生五件事</text>
+</g>
+<!-- dim6&#45;&gt;c6b -->
+<g id="edge20" class="edge">
+<title>dim6&#45;&gt;c6b</title>
+<path fill="none" stroke="#17a589" d="M1361.62,-71.7C1366.86,-63.56 1373.2,-53.69 1378.98,-44.7"/>
+<polygon fill="#17a589" stroke="#17a589" points="1382.04,-46.41 1384.5,-36.1 1376.15,-42.62 1382.04,-46.41"/>
+</g>
+<!-- c6c -->
+<g id="node22" class="node">
+<title>c6c</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="1509.5,-36 1449.5,-36 1449.5,0 1509.5,0 1509.5,-36"/>
+<text text-anchor="middle" x="1479.5" y="-15.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">叛逆成长</text>
+</g>
+<!-- dim6&#45;&gt;c6c -->
+<g id="edge21" class="edge">
+<title>dim6&#45;&gt;c6c</title>
+<path fill="none" stroke="#17a589" d="M1382.06,-71.88C1399.62,-62.35 1421.64,-50.4 1440.3,-40.27"/>
+<polygon fill="#17a589" stroke="#17a589" points="1442.04,-43.31 1449.16,-35.47 1438.7,-37.16 1442.04,-43.31"/>
+</g>
+<!-- c1a&#45;&gt;c2a -->
+<g id="edge25" class="edge">
+<title>c1a&#45;&gt;c2a</title>
+<path fill="none" stroke="#cccccc" stroke-dasharray="1,5" d="M55.89,-36.07C65.17,-43.12 76.7,-50.37 88.5,-54 155.62,-74.64 179.77,-75.88 246.5,-54 254.26,-51.46 261.8,-47.16 268.55,-42.41"/>
+<polygon fill="#cccccc" stroke="#cccccc" points="270.81,-45.09 276.63,-36.24 266.56,-39.53 270.81,-45.09"/>
+</g>
+<!-- c2b&#45;&gt;c3b -->
+<g id="edge26" class="edge">
+<title>c2b&#45;&gt;c3b</title>
+<path fill="none" stroke="#cccccc" stroke-dasharray="1,5" d="M400.33,-36.08C409.79,-43.13 421.53,-50.38 433.5,-54 459.02,-61.73 467.98,-61.73 493.5,-54 502.1,-51.4 510.59,-46.92 518.19,-41.99"/>
+<polygon fill="#cccccc" stroke="#cccccc" points="520.47,-44.67 526.67,-36.08 516.47,-38.92 520.47,-44.67"/>
+</g>
+<!-- c3a&#45;&gt;c4a -->
+<g id="edge27" class="edge">
+<title>c3a&#45;&gt;c4a</title>
+<path fill="none" stroke="#cccccc" stroke-dasharray="1,5" d="M481.92,-36.24C490.24,-43.22 500.63,-50.38 511.5,-54 541.44,-63.98 552.51,-63.83 582.5,-54 590.26,-51.46 597.8,-47.16 604.55,-42.41"/>
+<polygon fill="#cccccc" stroke="#cccccc" points="606.81,-45.09 612.63,-36.24 602.56,-39.53 606.81,-45.09"/>
+</g>
+<!-- c5a&#45;&gt;c6a -->
+<g id="edge28" class="edge">
+<title>c5a&#45;&gt;c6a</title>
+<path fill="none" stroke="#cccccc" stroke-dasharray="1,5" d="M1075.92,-36.24C1084.24,-43.22 1094.63,-50.38 1105.5,-54 1167.48,-74.66 1189.97,-72.93 1252.5,-54 1261.1,-51.4 1269.59,-46.92 1277.19,-41.99"/>
+<polygon fill="#cccccc" stroke="#cccccc" points="1279.47,-44.67 1285.67,-36.08 1275.47,-38.92 1279.47,-44.67"/>
+</g>
+</g>
+</svg>`;
+  document.getElementById('svgContainer').innerHTML = svg;
+}
+
+// ── QUIZ ──
+function randomizeQuiz() {
+  quizRandomOrder = mcQuestions.map((_,i)=>i).sort(()=>Math.random()-.5);
+  renderQuiz();
+}
+function renderQuiz(filtered) {
+  const ids = filtered || (quizRandomOrder.length ? quizRandomOrder : mcQuestions.map((_,i)=>i));
+  let html = '';
+  ids.forEach((idx,i)=>{
+    const q = mcQuestions[idx];
+    html += '<div class="quiz-card" id="qcard'+idx+'"><h4>'+(i+1)+'. '+q.q+'</h4>';
+    q.opts.forEach((o,j)=>{
+      html += '<div class="quiz-opt" data-q="'+idx+'" data-o="'+j+'" onclick="selectMC(this)">'+'ABCD'[j]+'. '+o+'</div>';
+    });
+    html += '<div class="quiz-feedback" id="qfb'+idx+'"></div></div>';
+  });
+  document.getElementById('quizMC').innerHTML = html;
+  renderSA();
+}
+function selectMC(el) {
+  const qid = parseInt(el.dataset.q);
+  const oid = parseInt(el.dataset.o);
+  const card = document.getElementById('qcard'+qid);
+  if(card.querySelector('.quiz-opt.correct')||card.querySelector('.quiz-opt.wrong')) return;
+  card.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const q = mcQuestions[qid];
+  const fb = document.getElementById('qfb'+qid);
+  if(oid === q.ans) {
+    el.classList.add('correct');
+    fb.className = 'quiz-feedback ok show';
+    fb.textContent = '✓ 正确！' + concepts[parseInt(q.concept.slice(1))].name;
+  } else {
+    el.classList.add('wrong');
+    card.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+    fb.className = 'quiz-feedback err show';
+    fb.textContent = '✗ 错误。正确答案是 ' + 'ABCD'[q.ans] + '。来源：' + concepts[parseInt(q.concept.slice(1))].name;
+    wrongBook.push({qid:qid,time:Date.now()});
+    save();
+  }
+}
+function renderSA() {
+  let html = '';
+  saQuestions.forEach((q,i)=>{
+    html += '<div class="quiz-card"><h4>'+(i+1)+'. '+q.q+'</h4>';
+    html += '<textarea style="width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:12px;font-family:inherit;font-size:14px;resize:vertical;background:#fff;" placeholder="输入你的回答..."></textarea>';
+    html += '<p style="font-size:12px;color:var(--sub);margin-top:4px;">关联概念：'+concepts[parseInt(q.concept.slice(1))].name+'</p></div>';
+  });
+  document.getElementById('quizSA').innerHTML = html;
+}
+
+// ── EXAM ──
+function startExam() {
+  if(examActive) return;
+  examActive = true; examSec = 900;
+  document.getElementById('startExamBtn').style.display='none';
+  document.getElementById('examResult').style.display='none';
+  userAnswers = {};
+  const selMC = mcQuestions.map((_,i)=>i).sort(()=>Math.random()-.5).slice(0,7);
+  const selSA = saQuestions.map((_,i)=>i).sort(()=>Math.random()-.5).slice(0,3);
+  let html = '';
+  selMC.forEach((idx,i)=>{
+    const q = mcQuestions[idx];
+    html += '<div class="quiz-card" style="text-align:left"><h4>选择'+(i+1)+'. '+q.q+'</h4>';
+    q.opts.forEach((o,j)=>{
+      html += '<div class="quiz-opt" data-examq="mc_'+idx+'" data-examo="'+j+'" onclick="selectExam(this)">'+'ABCD'[j]+'. '+o+'</div>';
+    });
+    html += '</div>';
+  });
+  selSA.forEach((idx,i)=>{
+    html += '<div class="quiz-card" style="text-align:left"><h4>简答'+(i+1)+'. '+saQuestions[idx].q+'</h4>';
+    html += '<textarea data-examq="sa_'+idx+'" style="width:100%;min-height:60px;border:1px solid var(--border);border-radius:8px;padding:12px;font-family:inherit;font-size:14px;resize:vertical;background:#fff;"></textarea>';
+    html += '</div>';
+  });
+  html += '<button class="btn" style="margin-top:16px;" onclick="submitExam()">提交试卷</button>';
+  document.getElementById('examArea').innerHTML = html;
+  updateExamTimer();
+  examTimer = setInterval(function(){
+    examSec--;
+    updateExamTimer();
+    if(examSec<=0) { submitExam(); }
+  },1000);
+}
+function updateExamTimer() {
+  const m = Math.floor(examSec/60);
+  const s = examSec%60;
+  document.getElementById('examTimer').textContent = m+':'+(s<10?'0':'')+s;
+  if(examSec<60) document.getElementById('examTimer').style.color='#e74c3c';
+}
+function selectExam(el) {
+  const card = el.parentElement;
+  card.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  userAnswers[el.dataset.examq] = parseInt(el.dataset.examo);
+}
+function submitExam() {
+  clearInterval(examTimer); examActive = false;
+  let score = 0; let totalMC = 0;
+  document.querySelectorAll('#examArea .quiz-card').forEach(card=>{
+    const sel = card.querySelector('.quiz-opt.selected');
+    if(sel) {
+      const qkey = sel.dataset.examq;
+      if(qkey.startsWith('mc_')) {
+        totalMC++;
+        const qid = parseInt(qkey.slice(3));
+        const ans = mcQuestions[qid].ans;
+        if(parseInt(sel.dataset.examo)===ans) score++;
+        else { wrongBook.push({qid:qid,time:Date.now()}); save(); }
+      }
+    }
+  });
+  // Also collect textarea answers
+  document.querySelectorAll('#examArea textarea').forEach(ta=>{
+    userAnswers[ta.dataset.examq] = ta.value;
+  });
+  save();
+  const pct = totalMC>0 ? Math.round(score/totalMC*100) : 0;
+  document.getElementById('examArea').innerHTML = '';
+  document.getElementById('examResult').style.display = 'block';
+  document.getElementById('examResult').innerHTML = '<div class="card" style="text-align:center">'+
+    '<h3>考试完成</h3><p style="font-size:32px;color:var(--accent);font-weight:bold;margin:16px 0;">'+score+' / '+totalMC+'</p>'+
+    '<p>正确率 '+pct+'%</p>'+
+    '<p style="color:var(--sub);font-size:13px;">简答题请自行对照概念卡片评估</p>'+
+    '<button class="btn btn-outline" style="margin-top:12px;" onclick="startExam()">重新考试</button></div>';
+  document.getElementById('startExamBtn').style.display = 'inline-block';
+}
+
+// ── REVIEW ──
+function renderReview() {
+  // Stats
+  const total = mcQuestions.length;
+  const wrong = wrongBook.length;
+  const correct = total - new Set(wrongBook.map(w=>w.qid)).size;
+  const days = Math.max(1,Math.ceil((Date.now()-Math.min(...wrongBook.map(w=>w.time),Date.now()))/86400000));
+  document.getElementById('statsGrid').innerHTML =
+    '<div class="stat-card"><div class="num">'+total+'</div><div class="label">总题数</div></div>'+
+    '<div class="stat-card"><div class="num">'+(total-wrong)+'</div><div class="label">已掌握</div></div>'+
+    '<div class="stat-card"><div class="num">'+wrong+'</div><div class="label">错题次数</div></div>'+
+    '<div class="stat-card"><div class="num">'+Object.keys(learned).length+'/12</div><div class="label">概念已学</div></div>';
+
+  // Wrong book
+  let whtml = '<p style="color:var(--sub);">共 '+wrongBook.length+' 条错题记录</p>';
+  const recentWrong = wrongBook.slice(-10).reverse();
+  recentWrong.forEach(w=>{
+    const q = mcQuestions[w.qid];
+    whtml += '<div class="quiz-card"><p style="font-size:14px;">'+q.q+'</p>';
+    whtml += '<p style="color:var(--green);font-size:13px;">正确答案：'+'ABCD'[q.ans]+'. '+q.opts[q.ans]+'</p>';
+    whtml += '<p style="color:var(--sub);font-size:12px;">'+new Date(w.time).toLocaleString()+' | '+concepts[parseInt(q.concept.slice(1))].name+'</p></div>';
+  });
+  document.getElementById('wrongBook').innerHTML = whtml || '<p style="color:var(--sub);">暂无错题记录</p>';
+
+  // Weak concepts
+  const conceptErrors = {};
+  wrongBook.forEach(w=>{
+    const c = mcQuestions[w.qid].concept;
+    conceptErrors[c] = (conceptErrors[c]||0)+1;
+  });
+  let chtml = '';
+  const sorted = Object.entries(conceptErrors).sort((a,b)=>b[1]-a[1]);
+  sorted.forEach(([cid,count])=>{
+    const c = concepts[parseInt(cid.slice(1))];
+    chtml += '<div class="card flex-between"><span>'+c.name+'</span><span class="tag tag-red">'+count+' 次错误</span></div>';
+  });
+  document.getElementById('weakConcepts').innerHTML = chtml || '<p style="color:var(--sub);">暂无薄弱概念</p>';
+}
+
+// ── MINDMAP ──
+function renderMindmap() {
+  document.getElementById('mindmap').innerHTML = `
+<div class="card"><h2 class="section-title" style="border:none;margin-top:0;">人生算法 · 思维导图</h2>
+<div class="tree"><ul>
+<li><span class="node" onclick="toggleNode(this)">人生决策（根）</span>
+  <ul class="children">
+    <li><span class="node" onclick="toggleNode(this)">认知框架</span>
+      <ul class="children">
+        <li>悲观主义根源：过分自信反差 / 坏消息放大 / 信息论新奇偏好</li>
+        <li>乐观主义：以正合以奇胜 / Yes,and增量思维</li>
+        <li>渐变与突变：长期剧变必然，短期渐变为主</li>
+        <li>幸存者偏误：成功者经验提供高概率答案，失败者教训有局限性</li>
+      </ul>
+    </li>
+    <li><span class="node" onclick="toggleNode(this)">行动方法论</span>
+      <ul class="children">
+        <li>上帝喜欢笨人：超额准备 / 结硬寨打呆仗 / 承认能力边界</li>
+        <li>以正合以奇胜：正=常规能力(首要) / 奇=机动资源(辅助)</li>
+        <li>实力与机会：实力派获胜是大概率 / 弯道超车是陷阱</li>
+        <li>变与不变：长期剧变必然 / 短期渐变为主 / 积累效应</li>
+      </ul>
+    </li>
+    <li><span class="node" onclick="toggleNode(this)">价值创造</span>
+      <ul class="children">
+        <li>超越免费：重构稀缺性 / 五维度（时效性/个性化/可用性/可靠性/数据黏性）</li>
+        <li>稀缺性本质：大多数人做不到的能力 / 非轻易被替代的技能</li>
+        <li>差异化误区：为不同而不同=无效 / 真正差异化=做得更好</li>
+      </ul>
+    </li>
+    <li><span class="node" onclick="toggleNode(this)">处世原则</span>
+      <ul class="children">
+        <li>众利勿为众争勿往：物极必反 / 差异化竞争 / 警惕群体共识</li>
+        <li>分享利益：利益共享=组织合力 / 主动添加合作者</li>
+        <li>独立决断：征求关键意见后自行决策 / 接受决策瑕疵</li>
+        <li>谋事在人成事在天：见识比才干重要 / 尽人事听天命</li>
+        <li>勿因人之短护己之短：个人责任独立化 / 不跨维度比较</li>
+        <li>勿以小恶忘大善：全局观 / 不因小失大</li>
+      </ul>
+    </li>
+    <li><span class="node" onclick="toggleNode(this)">人际关系</span>
+      <ul class="children">
+        <li>合作型朋友：事前明确利益分配 / 避免跨维度合作</li>
+        <li>依靠型朋友：平等对待 / 避免地位差异导致失衡</li>
+        <li>婚姻：婚前协议理性应对风险 / 丑话说在前面</li>
+        <li>诚敬信法则：公开透明诉求 / 尊重上级 / 100%执行任务</li>
+        <li>共有信息vs大众信息：主动转化降低沟通成本</li>
+      </ul>
+    </li>
+    <li><span class="node" onclick="toggleNode(this)">职业成长</span>
+      <ul class="children">
+        <li>五级工程师：独立解决问题→带团队→做产品→创造产品→开创产业</li>
+        <li>能力增长判定：成长型企业看排名/稳定型企业看提升幅度</li>
+        <li>决策者思维：为自己完成任务 / 思路开阔 / 寻找导师</li>
+        <li>做减法：聚焦目标拒绝线性收益事务 / 长远叠加效应</li>
+      </ul>
+    </li>
+    <li><span class="node" onclick="toggleNode(this)">人生意义</span>
+      <ul class="children">
+        <li>人生五件事：婚恋/喜欢的事/回馈/信仰/遗产</li>
+        <li>叛逆与成长：少年维特/麦田守望者/备胎逆袭——时间是唯一解药</li>
+        <li>幸福本质：自然属性(安全传承)+社会属性(认可尊重)的动态平衡</li>
+        <li>消除妄念：摒弃战争浪漫化/商战颠覆幻想/知识是和平年代核心竞争力</li>
+      </ul>
+    </li>
+  </ul>
+</li></ul></div></div>`;
+}
+
+function toggleNode(el) {
+  el.classList.toggle('open');
+  const children = el.nextElementSibling;
+  if(children && children.classList.contains('children')) {
+    children.classList.toggle('open');
+  }
+}
+
+// ── SOCRATIC ──
+function renderSocratic() {
+  const qas = [
+    {q:'上帝喜欢"笨人"——这个"笨"到底是什么？',a:'<p>这里的"笨"不是智力低下，而是<strong>承认自身能力边界、放弃小聪明、选择系统化方法的智慧</strong>。威灵顿知道自己没有拿破仑的天赋和感召力，所以选择事无巨细的准备——把做事水平从90分提到95分。现实中多数聪明人恰恰因为高估自己而犯错（中关村ABC公司被骗案）。</p><p>追问自己：我最近一次"耍小聪明"是什么时候？结果如何？</p>'},
+    {q:'为什么"以正合"必须是首要的？只靠"出奇制胜"行不行？',a:'<p>历史上多数成功源于<strong>正合优势</strong>而非奇谋。奥斯特里茨战役中苏尔特正面抵御主力的功劳大于贝尔纳多特预备队。F1超车多在直道（靠性能与技术），而非弯道。</p><p>"只靠奇"的问题在于：①没有正面基础，奇兵无法发挥作用（苏尔特垮了，预备队也没用）；②投机心态忽视积累，最终实力不足。高三数学备考中确保会做的题不丢分（正），远重于攻克难题（奇）。</p>'},
+    {q:'在免费成为标配的时代，"超越免费"是不是一句空话？',a:'<p>不是空话，因为<strong>稀缺性永远不会消失</strong>。免费的吸引力恰恰源于物品的稀缺性——当稀缺性消失（如Google免费饮料随时可得），免费就失去了吸引力。</p><p>超越免费的关键是制造新的稀缺性：iPhone X独特性导致排队购买、医生专业诊断无法被免费信息替代、老中医的个性化诊疗、朋友间的信任资本——这些都是免费无法复制的。</p>'},
+    {q:'"众利勿为"会不会让我错过风口？',a:'<p>这取决于你追求的是<strong>短期风口还是长期价值</strong>。回顾历史：千团大战模仿Groupon无一盈利、大量山寨虚拟货币失败、共享单车市场中庸才和蠢才迅速淘汰——众人趋之若鹜的领域，往往已无利润空间。</p><p>真正的机会在"部分人看好，部分人看不懂"的领域出现。最佳投资时机往往在争议中出现，而非一致看好时。十字路口差异化开店（加油站→便利店→快餐店→咖啡店）才是可持续模式。</p>'},
+    {q:'"谋事在人成事在天"——这是不是消极不作为的借口？',a:'<p>恰恰相反，这是<strong>最务实的积极态度</strong>。它承认世界复杂性远超出个人认知——任何难事都涉及多维度因素，个人努力仅能控制部分。这不是放弃努力，而是避免两种陷阱：①成功后过度自傲（忽视运气因素）；②失败后过度自责（忽视不可控因素）。</p><p>肯尼迪批准阿波罗计划但未见证成功——尽人事的价值超越结果。真正的智慧是：尽最大努力做好自己能控制的部分，然后坦然接受任何结果。</p>'}
+  ];
+  let html = '';
+  qas.forEach(qa=>{
+    html += '<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle(\'open\');this.querySelector(\'span\').textContent=this.nextElementSibling.classList.contains(\'open\')?\'▼ \':\'▶ \'"><h4><span>▶ </span>'+qa.q+'</h4></div>';
+    html += '<div class="socratic-a">'+qa.a+'</div>';
+  });
+  document.getElementById('socratic').innerHTML = html;
+}
+
+// ── CASE STUDY ──
+function renderCaseStudy() {
+  document.getElementById('caseStudy').innerHTML = `
+<div class="card"><h3>案例分析：威灵顿 vs 拿破仑 — 滑铁卢战役的「笨人哲学」拆解</h3>
+  <p style="color:var(--sub);margin-bottom:16px;">用MKS四维度拆解这场改变欧洲历史的战役，验证「上帝喜欢笨人」的核心逻辑</p>
+  <table class="case-table">
+    <tr><th>维度</th><th>威尔顿（笨人）</th><th>拿破仑（天才）</th><th>启示</th></tr>
+    <tr><td><strong>认知框架</strong></td><td>承认无拿破仑式天赋，依靠系统化准备</td><td>高度自信于军事天赋和战场临机应变能力</td><td>准确自我认知是决策质量的前提</td></tr>
+    <tr><td><strong>行动方法</strong></td><td>事无巨细的准备——以横制纵层层设防，目标仅为「守住阵地等盟军」</td><td>依赖战术天才和军队士气，启用平庸的格鲁西追击普军</td><td>超额准备弥补天赋差距；不做超越能力边界的事</td></tr>
+    <tr><td><strong>价值判断</strong></td><td>保守防御的价值 > 气势如虹的胜利的价值（后者风险更高）</td><td>追求决定性胜利的荣誉和战略价值</td><td>在能力边界内定义成功标准，不追求「人间奇迹」</td></tr>
+    <tr><td><strong>处世原则</strong></td><td>从荷兰战败中吸取教训——战前组织混乱是致命伤，从此坚持系统化流程</td><td>对过往胜绩的路径依赖，未因应新形势调整</td><td>从失败中提炼原则并坚持执行，比依赖过往成功更可靠</td></tr>
+  </table>
+  <p style="margin-top:16px;font-size:14px;line-height:1.7;"><strong>MKS结论：</strong>天才拿破仑一生指挥60+战役胜绩超过亚历山大、汉尼拔和凯撒总和，却在最关键一战输给「笨人」威灵顿。这不是偶然——<strong>长期来看，系统化的笨办法比依赖天赋的聪明办法有更高的概率正确性</strong>。滑铁卢战役决定性的因素（法军人才缺失、天气限制炮兵、威灵顿的超额准备）全部指向一个结论：在复杂系统中，减少可避免的错误（笨办法的优势）比增加亮点操作（天才的优势）更能决定最终结果。</p></div>`;
+}
+
+// ── DECISION SIM ──
+function renderSimGame() {
+  document.getElementById('simGame').innerHTML = `
+<div class="sim-scenario" id="sim1">
+  <h3>第 1 轮：职业选择</h3>
+  <p>你是一名有3年经验的软件工程师，手头有两个offer：<br>A. 一家热门区块链创业公司，薪资+期权package高出30%，团队20人<br>B. 一家稳定的大型科技公司（类似Google），薪资一般但平台资源丰富</p>
+  <div class="sim-options">
+    <div class="sim-opt" onclick="simChoose(this,'sim1','A')">A. 选区块链创业公司——风口上的机会不容错过</div>
+    <div class="sim-opt" onclick="simChoose(this,'sim1','B')">B. 选大型科技公司——平台和见识比短期薪资更重要</div>
+    <div class="sim-opt" onclick="simChoose(this,'sim1','C')">C. 都不选，继续寻找其他机会</div>
+  </div>
+  <div class="sim-feedback" id="sim1fb"></div>
+</div>
+<div class="sim-scenario" id="sim2" style="display:none;">
+  <h3>第 2 轮：合作困境</h3>
+  <p>你和大学好友合伙创业3年，公司估值已达5000万。好友提议引入他的表弟（能力一般）担任CTO，你不同意。好友说「不让我表弟加入就是不信任我」。</p>
+  <div class="sim-options">
+    <div class="sim-opt" onclick="simChoose(this,'sim2','A')">A. 妥协同意——朋友关系比公司管理更重要</div>
+    <div class="sim-opt" onclick="simChoose(this,'sim2','B')">B. 坚持拒绝——事前明确利益分配和用人标准是合作的前提</div>
+    <div class="sim-opt" onclick="simChoose(this,'sim2','C')">C. 提出折中方案——让表弟先实习3个月再决定</div>
+  </div>
+  <div class="sim-feedback" id="sim2fb"></div>
+</div>
+<div class="sim-scenario" id="sim3" style="display:none;">
+  <h3>第 3 轮：投资决策</h3>
+  <p>你有一笔100万元的闲置资金。身边所有人都在谈论某只AI概念股，3个月涨了200%。你的理性分析认为估值已经过高，但身边买入的朋友都在赚钱。</p>
+  <div class="sim-options">
+    <div class="sim-opt" onclick="simChoose(this,'sim3','A')">A. 跟风买入——大家都在赚钱我不能错过</div>
+    <div class="sim-opt" onclick="simChoose(this,'sim3','B')">B. 投资大盘指数基金——与市场长期趋势站在一起</div>
+    <div class="sim-opt" onclick="simChoose(this,'sim3','C')">C. 什么都不投，持币观望</div>
+  </div>
+  <div class="sim-feedback" id="sim3fb"></div>
+</div>`;
+}
+
+function simChoose(el, simId, choice) {
+  el.parentElement.querySelectorAll('.sim-opt').forEach(o=>o.classList.remove('chosen'));
+  el.classList.add('chosen');
+  const fb = document.getElementById(simId+'fb');
+  fb.classList.add('show');
+  if(simId==='sim1') {
+    if(choice==='B') {
+      fb.className = 'sim-feedback good show';
+      fb.innerHTML = '<strong>✓ 推荐选择。</strong>依据「五级工程师」和「牛尾vs鸡首」原则：大平台提供更高的见识、格局和气度成长空间。区块链创业公司属于「众利」领域，大多数山寨公司已无利润空间。牛尾（大平台普通员工）可通过持续进步成为牛首；鸡首需所在组织成长为"牛"才有升级可能。';
+    } else if(choice==='A') {
+      fb.className = 'sim-feedback meh show';
+      fb.innerHTML = '<strong>⚠ 有风险。</strong>参照「众利勿为」原则——区块链技术因过度追捧，大多数公司难以颠覆现有巨头。千团大战的前车之鉴：盲目跟风最终相互碾压。除非你确信该公司具有真正的技术壁垒和差异化优势。';
+    } else {
+      fb.className = 'sim-feedback meh show';
+      fb.innerHTML = '<strong>⚠ 可以理解但不推荐。</strong>完全放弃现有offer继续寻找，可能陷入「永远在找更好的」拖延陷阱。建议选择一个方向后踏实积累——「实力派获胜是大概率事件」。';
+    }
+  } else if(simId==='sim2') {
+    if(choice==='B') {
+      fb.className = 'sim-feedback good show';
+      fb.innerHTML = '<strong>✓ 正确。</strong>依据「朋友关系之道」核心原则：合作前必须明确利益分配和用人标准。让能力不足的人担任CTO是跨维度合作——既损害公司利益，最终也会伤害朋友关系。轻诺自己做不到的事等同于坑朋友。真正的朋友能理解专业判断与个人关系的区分。';
+    } else if(choice==='A') {
+      fb.className = 'sim-feedback bad show';
+      fb.innerHTML = '<strong>✗ 高风险。</strong>参照中国上市民企共同创始人因利益分配反目的教训——因感情妥协而模糊专业标准，是关系破裂的最大隐患。今天因"不信任"而妥协，明天可能因公司失败而真正破裂。';
+    } else {
+      fb.className = 'sim-feedback meh show';
+      fb.innerHTML = '<strong>⚠ 折中但未解决根本问题。</strong>实习3个月只是推迟了决策——核心是能力标准，而非时间问题。应在合作之初就明确告诉好友：CTO人选必须满足客观的能力标准，这与个人感情无关。';
+    }
+  } else if(simId==='sim3') {
+    if(choice==='B') {
+      fb.className = 'sim-feedback good show';
+      fb.innerHTML = '<strong>✓ 最优选择。</strong>依据「不做空、不杠杆、指数投资」原则：与市场长期趋势站在一起。美国股市45年平均年复合增长6.7%，若错过25个涨幅最高日，总回报差距达19倍vs3.7倍。AI概念股已上涨200%属于「众利」——日中则移，月盈则亏。';
+    } else if(choice==='A') {
+      fb.className = 'sim-feedback bad show';
+      fb.innerHTML = '<strong>✗ 危险。</strong>依据「众利勿为」和做空的底层逻辑——虽然你不是做空，但追高买入已属「群体共识」的末端。当菜市场大妈都在讨论AI概念股时，往往已是行情尾声。散户将偶然成功归结为必然，易导致后续重大失败。';
+    } else {
+      fb.className = 'sim-feedback meh show';
+      fb.innerHTML = '<strong>⚠ 保守但合理。</strong>持币观望比盲目追高好，但完全不做投资意味着错过市场的长期复利。建议至少配置一部分到指数基金——「以正合」（指数定投）是常规积累，「以奇胜」（个股选择）是额外加分。';
+    }
+  }
+  // Show next sim
+  if(simId==='sim1') document.getElementById('sim2').style.display='block';
+  if(simId==='sim2') document.getElementById('sim3').style.display='block';
+}
+
+// ── INIT ──
+renderSVG();
+showCard();
+renderQuiz();
+renderMindmap();
+renderSocratic();
+renderCaseStudy();
+renderSimGame();
+updateProgress();
+</script>
+</body>
+</html>

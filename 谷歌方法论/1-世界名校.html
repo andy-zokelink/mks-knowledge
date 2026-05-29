@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界名校与大学教育体系 — 最小知识集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
+--text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--gold:#b8860b;
+--shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
+}
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+
+header{text-align:center;padding:clamp(24px,5vh,48px) 0 clamp(16px,3vh,32px)}
+header h1{font-size:clamp(1.5rem,3.5vw,2rem);color:var(--accent);margin-bottom:8px}
+header .sub{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2)}
+header .home-link{display:inline-block;margin-top:12px;padding:6px 20px;border:2px solid var(--accent);border-radius:20px;color:var(--accent);text-decoration:none;font-size:.88rem;transition:all .25s}
+header .home-link:hover{background:var(--accent);color:#fff}
+
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
+.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
+.tab-btn:hover{ border-color:var(--accent2);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff}
+
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+h2{font-size:clamp(1.2rem,2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent2)}
+h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
+
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s}
+.concept-card:hover{transform:translateY(-2px)}
+.concept-card.mks{border-left-color:var(--gold);position:relative}
+.concept-card.mks::after{content:'★';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
+.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-core{background:#fde8e8;color:var(--accent)}
+.badge-mks{background:#fef3cd;color:var(--gold)}
+.badge-boundary{background:#e8f0fe;color:#3a6ea5}
+
+.progress-wrap{margin:16px 0}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
+.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* SVG */
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+/* Flip Card */
+.flip-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto}
+.flip-inner{position:relative;width:100%;height:300px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;box-shadow:var(--shadow)}
+.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700}
+.flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:.85rem;line-height:1.6;align-items:flex-start;text-align:left;overflow-y:auto}
+.flip-back .dim-label{font-weight:700;color:var(--accent);font-size:.8rem}
+.flip-nav{display:flex;justify-content:center;gap:16px;margin-top:12px}
+.flip-nav button{padding:8px 20px;border-radius:20px;border:2px solid var(--accent);background:var(--card);color:var(--accent);cursor:pointer;font-size:.85rem;transition:all .2s}
+.flip-nav button:hover{background:var(--accent);color:#fff}
+.flip-nav button.learned{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+
+/* Quiz */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-card .q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
+.q-mc{background:#fde8e8;color:var(--accent)}
+.q-sa{background:#e8f0fe;color:#3a6ea5}
+.quiz-card .q-text{font-weight:700;margin-bottom:12px}
+.quiz-card .q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border);font-size:.85rem}
+.quiz-card .q-option:hover{border-color:var(--accent2);background:#fef9f4}
+.quiz-card .q-option.selected{border-color:var(--accent);background:#fde8e8}
+.quiz-card .q-option.correct{ border-color:#4caf50;background:#e8f5e9}
+.quiz-card .q-option.wrong{border-color:var(--accent);background:#ffebee}
+.quiz-card .q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
+.quiz-card .q-feedback.show{display:block}
+.quiz-card .q-feedback.right{background:#e8f5e9;color:#2e7d32}
+.quiz-card .q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
+.quiz-card .sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
+.quiz-card .sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
+.quiz-card .sa-reveal.show{display:block}
+
+/* Tree */
+.tree-wrap{font-size:.88rem;line-height:1.8}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;color:var(--accent);font-weight:700;user-select:none}
+.tree-toggle::before{content:'▸ ';display:inline-block;transition:transform .2s}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-leaf{color:var(--text2)}
+
+/* Socratic */
+.socratic-item{margin-bottom:12px}
+.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700;transition:all .2s}
+.socratic-q:hover{border-color:var(--accent2)}
+.socratic-q::before{content:'❓ '}
+.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
+
+/* Decision */
+.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
+.decision-round .d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
+.decision-round .d-option:hover{border-color:var(--accent2);background:#fef9f4}
+.decision-round .d-option.chosen{border-color:var(--accent);background:#fde8e8}
+.decision-round .d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
+.decision-round .d-result.show{display:block}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.tbl th,.tbl td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+.tbl th{background:var(--accent);color:#fff;font-weight:600}
+.tbl tr:nth-child(even){background:#fef9f4}
+
+@media(max-width:640px){
+.tab-bar{gap:2px;padding:6px 2px}
+.tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
+.flip-inner{height:320px}
+.flip-front{font-size:1.1rem}
+}
+
+.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
+.timer.warning{animation:pulse .5s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.5}}
+
+.btn{padding:10px 24px;border-radius:20px;border:2px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+.btn:hover{background:#a93226;border-color:#a93226}
+.btn-outline{background:transparent;color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
+
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>世界名校与大学教育体系</h1>
+<div class="sub">最小知识集 · 吴军谷歌方法论「世界名校」专题 · 61篇笔记提炼</div>
+<div class="sub" style="font-size:.78rem;margin-top:4px">核心驱动：非功利知识探索 ↔ 社会需求与职业培养</div>
+<a href="#" class="home-link" onclick="switchTab(0);return false">← 返回首页</a>
+</header>
+
+<nav class="tab-bar" id="tabBar">
+<button class="tab-btn active" onclick="switchTab(0)">知识集总览</button>
+<button class="tab-btn" onclick="switchTab(1)">知识卡片</button>
+<button class="tab-btn" onclick="switchTab(2)">题库系统</button>
+<button class="tab-btn" onclick="switchTab(3)">考试模式</button>
+<button class="tab-btn" onclick="switchTab(4)">复习模式</button>
+<button class="tab-btn" onclick="switchTab(5)">思维导图</button>
+<button class="tab-btn" onclick="switchTab(6)">深度追问</button>
+<button class="tab-btn" onclick="switchTab(7)">案例分析</button>
+<button class="tab-btn" onclick="switchTab(8)">实战决策</button>
+</nav>
+
+<!-- ========== TAB 0: 知识总览 ========== -->
+<section class="tab-content active" id="tab0">
+<div class="card">
+<h2>核心目标</h2>
+<p style="font-size:1.05rem">理解世界一流大学的<strong>起源逻辑、制度内核与教育哲学</strong>，掌握纽曼通识教育、洪堡专才教育、美国研究型大学转型三条主线，在中西对比中形成对"什么是好的教育"的独立判断。</p>
+</div>
+
+<h2>10个核心概念</h2>
+<div class="grid2" id="conceptGrid"></div>
+
+<h2>概念关系图</h2>
+<div class="svg-wrap" id="svgContainer"></div>
+<div class="legend">
+<span><span class="dot" style="background:#c0392b"></span> 历史驱动</span>
+<span><span class="dot" style="background:#b8860b"></span> 制度关系</span>
+<span><span class="dot" style="background:#3a6ea5"></span> 思想传承</span>
+<span><span class="dot" style="background:#6b8e23"></span> 影响路径</span>
+</div>
+
+<h2>★ 4个MKS核心骨架</h2>
+<div class="grid2" id="mksGrid"></div>
+
+<h2>边界知识表</h2>
+<div style="overflow-x:auto">
+<table class="tbl" id="boundaryTable"><thead><tr><th>知识点</th><th>使用场景</th><th>只需知道</th></tr></thead><tbody></tbody></table>
+</div>
+
+<h2>学习路径（5阶段）</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin:16px 0" id="learningPath"></div>
+
+<h2>学习进度</h2>
+<div class="progress-wrap">
+<div class="progress-bar"><div class="progress-fill" id="overallProgress" style="width:0%"></div></div>
+<div class="progress-label" id="progressLabel">已学习 0/19 个概念</div>
+</div>
+</section>
+
+<!-- ========== TAB 1: 知识卡片 ========== -->
+<section class="tab-content" id="tab1">
+<div class="card" style="text-align:center">
+<div class="flip-container" id="flipCard">
+<div class="flip-inner" id="flipInner">
+<div class="flip-front" id="flipFront">大学起源与学术自由</div>
+<div class="flip-back" id="flipBack"></div>
+</div>
+</div>
+<div class="flip-nav">
+<button onclick="flipPrev()">◀ 上一个</button>
+<button onclick="document.getElementById('flipInner').classList.toggle('flipped')">翻转卡片</button>
+<button onclick="markLearned()" id="learnedBtn">✓ 已学习</button>
+<button onclick="flipNext()">下一个 ▶</button>
+</div>
+<p style="font-size:.78rem;color:var(--text2)">点击卡片翻转 | <span id="flipProgress">1/19</span></p>
+</div>
+</section>
+
+<!-- ========== TAB 2: 题库系统 ========== -->
+<section class="tab-content" id="tab2">
+<div class="card">
+<h2>选择题（20道）<span class="badge badge-core" style="margin-left:8px">即时判分</span></h2>
+<div id="mcqContainer"></div>
+<h2 style="margin-top:24px">简答题（10道）<span class="badge badge-boundary" style="margin-left:8px">点击查看要点</span></h2>
+<div id="saqContainer"></div>
+</div>
+</section>
+
+<!-- ========== TAB 3: 考试模式 ========== -->
+<section class="tab-content" id="tab3">
+<div class="card">
+<div style="text-align:center;padding:20px">
+<h2>模拟考试</h2>
+<p style="color:var(--text2)">从题库随机抽取 7道选择 + 3道简答 | 限时15分钟</p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn" onclick="startExam()" id="examStartBtn">开始考试</button>
+<div id="examArea"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 4: 复习中心 ========== -->
+<section class="tab-content" id="tab4">
+<h2>学习统计</h2>
+<div class="stat-grid" id="statsGrid"></div>
+
+<h2 style="margin-top:20px">错题本</h2>
+<div id="errorBook"></div>
+<p style="font-size:.82rem;color:var(--text2)" id="emptyError">暂无错题，继续保持！</p>
+
+<h2 style="margin-top:20px">概念薄弱点</h2>
+<div id="weakConcepts"></div>
+<div style="margin-top:16px">
+<button class="btn btn-outline btn-sm" onclick="resetProgress()">重置全部进度</button>
+</div>
+</section>
+
+<!-- ========== TAB 5: 思维导图 ========== -->
+<section class="tab-content" id="tab5">
+<div class="card tree-wrap" id="treeContainer"></div>
+</section>
+
+<!-- ========== TAB 6: 苏格拉底追问 ========== -->
+<section class="tab-content" id="tab6">
+<div id="socraticContainer"></div>
+</section>
+
+<!-- ========== TAB 7: 案例分析 ========== -->
+<section class="tab-content" id="tab7">
+<div id="caseContainer"></div>
+</section>
+
+<!-- ========== TAB 8: 实战决策 ========== -->
+<section class="tab-content" id="tab8">
+<div id="decisionContainer"></div>
+</section>
+
+</div><!-- container -->
+
+<script>
+// ============ DATA ============
+const concepts = [
+{id:0, name:'大学起源与学术自由', desc:'1088年博洛尼亚大学为欧洲最早大学，1158年《学术特权法令》确立四大特权：神职人员级别自由、自由迁徙、免于报复、独立裁决。大学诞生于中世纪教会庇护之下，本质是非功利的知识探索。', mks:true},
+{id:1, name:'纽曼通识教育', desc:'牛津大主教纽曼在《大学的理念》中提出：大学应传播"大行之道"(Universal Knowledge)，培养视野开阔、具有判断力与美德的完整个体，学生共同体比课堂更重要。', mks:true},
+{id:2, name:'洪堡专才教育', desc:'普鲁士洪堡设计"研究与教学合一、知识总和、专业精深"三大原则。学生集中于单一专业达到精深水平，通过苏联影响中国1952年"理工分校"。优势是实用高效，劣势是知识面窄。', mks:true},
+{id:3, name:'吉尔曼与艾略特改革', desc:'19世纪末美国高等教育转型的核心人物。吉尔曼创办约翰·霍普金斯，建立美国第一所研究生院；艾略特改造哈佛，引入科学研究、案例教学，使哈佛从教会学院蜕变为世界一流研究型大学。', mks:true},
+{id:4, name:'学院制与导师制', desc:'牛津剑桥的核心制度：学院是独立的小型社会单元，拥有独立财务与管理；导师制要求教授对学生全面负责，涵盖学术指导与人格培养。普林斯顿、耶鲁深受影响，发展出住宿学院制。', mks:false},
+{id:5, name:'常青藤精英培养', desc:'8所常青藤（哈佛/耶鲁/普林斯顿/哥伦比亚/宾大/康奈尔/达特茅斯/布朗）共享精英选拔传统。HYPMS超级五强代表美国最高水平。录取侧重"未来潜力"而非当前成绩，70%为特招生。', mks:false},
+{id:6, name:'法国精英大学校', desc:'Grande Ecole体系独立于公立大学，规模极小、录取率低于5%。巴黎高师、综合理工、巴黎高商等培养国家领袖。预科班每周50小时强化训练，20岁的学校选择往往决定终身。', mks:false},
+{id:7, name:'德国教育衰落启示', desc:'曾是19世纪世界高等教育样板（洪堡体系发源地），二战后因经费不足、过度公平化（缺乏精英培养）、学术体制僵化（论资排辈）而衰落。证明有钱的发达国家未必有一流大学。', mks:false},
+{id:8, name:'通识教育学科价值', desc:'语文培养阅读理解与表达能力（一切学科的基础工具）；数学训练逻辑推理（从公理到定理的思维过程）；历史掌握时空全局思维；科学提供可叠加的进步方法论。四者共同构成通识教育骨架。', mks:false},
+{id:9, name:'中美教育路径对比', desc:'中国侧重考试成绩、知识灌输、专业细分；美国侧重综合素质、批判性思维、通识教育。美国本科核心竞争力在于课外活动、社交网络与独立思考培养。选择路径取决于个人未来生活规划。', mks:false},
+{id:10, name:'大学捐赠与治理', desc:'美国私立大学本质上是由董事会(Board of Trustees)管理的信托机构。达特茅斯案(1819)确立私立大学为独立法人。校友捐赠占预算20%-40%，普林斯顿校友捐赠率超60%。终身教职制度保障学术自由。', mks:false},
+{id:11, name:'MIT与加州理工', desc:'MIT以培养工业界领袖为目标，强调工程思维，1/3毕业生成为高管。加州理工定位"只培养少数天才科学家"，诺奖密度全球第一(每千名毕业生1位)。MIT看70%成绩，Caltech只看天赋。', mks:false},
+{id:12, name:'哈佛标杆原理', desc:'哈佛被公认为高等教育标杆——SAT满分者3/4被拒，仅7%新生是"学霸"，70%为特招生。课程强制少(仅写作课必修)，多数学生轻易得A。核心价值在于进入精英圈子和培养终身学习能力。', mks:false},
+{id:13, name:'普林斯顿本科教育', desc:'坚持"小而精"，无医学院/法学院/商学院。通识教育要求文科生修数学+工程课，理工科修7门人文课。住宿学院按特长互补原则分配室友。大四必须完成独立毕业论文。', mks:false},
+{id:14, name:'耶鲁自由精神', desc:'唯一靠文科支撑的世界一流大学。鼓励自由思考(越战招收逃兵役学生)，实行"严进宽出"，一半时间用于课外活动。强调社会责任感——纪念大厦刻有历次战争牺牲的毕业生姓名。', mks:false},
+{id:15, name:'哥伦比亚核心课程', desc:'地处纽约曼哈顿核心区(仅200亩)，城市即校园。最早推行核心课程(Core Curriculum)，覆盖当代文明、文学人文、艺术人文、音乐人文、科学前沿等9门通识必修课。保持自由派传统，曾邀请伊朗总统内贾德演讲。', mks:false},
+{id:16, name:'宾大与达特茅斯', desc:'宾大由富兰克林创办，常青藤中最务实——沃顿商学院60%本科生进入华尔街。达特茅斯保留"学院"名称，以本科教学为核心，新生需野外生存训练，盛产政治与金融精英。', mks:false},
+{id:17, name:'体育与人格教育', desc:'美国私立大学录取中课外活动(尤其是运动)是关键因素。运动队培养六大能力：投入与承诺、时间管理、服从与团队精神、追求个人最佳、长期目标规划、沟通能力。高尔夫培养绝对诚信。', mks:false},
+{id:18, name:'大学五大补充训练', desc:'当代大学不足以培养精英，需自我补充：①看透钱(财富是媒介非目的)②领导力(服从→合作→当助手)③边界认知(防御/围棋/缓存思维)④健全人格(恋爱/社交/同理心)⑤信仰树立(驱动长期行动)。', mks:false}
+];
+
+const boundaryKnowledge = [
+{name:'博洛尼亚大学',scene:'理解"大学"词源与学术自由起源'},
+{name:'《学术特权法令》',scene:'讨论大学自治的合法性基础'},
+{name:'达特茅斯学院案(1819)',scene:'理解美国私立大学法律地位'},
+{name:'常青藤联盟起源',scene:'区分"体育联盟"本质与名校标签'},
+{name:'HYPMS超级五强',scene:'快速定位美国最顶尖五所大学'},
+{name:'巴黎高等师范学院',scene:'理解法国精英教育天花板'},
+{name:'亚历山大图书馆',scene:'了解古代学术机构的三大要素'},
+{name:'伊顿公学',scene:'对比理解英国精英教育起点'},
+{name:'KIPP计划',scene:'探讨教育公平的干预模式'},
+{name:'艾略特40年任期',scene:'理解长期领导力对大学的价值'},
+{name:'加州理工喷气推进实验室',scene:'理解大学与国家航天事业的关系'},
+{name:'普鲁士洪堡教育改革',scene:'追溯中国理工分校的历史源头'},
+{name:'威尔逊(普林斯顿校长→总统)',scene:'理解学者从政的美国路径'},
+{name:'布隆伯格18亿捐赠',scene:'讨论校友捐赠文化的极限案例'},
+{name:'德国哥廷根大学',scene:'理解从辉煌到衰落的历史教训'},
+];
+
+const learningPath = [
+{phase:1,title:'大学起源',desc:'中世纪欧洲→博洛尼亚→学术特权→牛津剑桥诞生'},
+{phase:2,title:'两条教育路线',desc:'纽曼通识教育(牛津剑桥)vs洪堡专才教育(德国)'},
+{phase:3,title:'美国转型',desc:'吉尔曼(约翰·霍普金斯)→艾略特(哈佛)→研究型大学'},
+{phase:4,title:'名校图谱',desc:'常青藤→MIT/Caltech→法国Grande Ecole→德国兴衰'},
+{phase:5,title:'反思与对比',desc:'通识vs专才→中美对比→各学科学习价值→精英补充训练'},
+];
+
+const flipCards = [
+{front:'大学起源与学术自由',back:'<span class="dim-label">定义</span>近代大学诞生于1088年博洛尼亚，核心是"受契约保护的师生团体"。<br><span class="dim-label">类比</span>如同开源社区——独立于商业公司，靠共享知识驱动，有自治规则。<br><span class="dim-label">示例</span>1158年《学术特权法令》给予学者神职人员级自由，高于贵族。<br><span class="dim-label">反例</span>中国古代太学——官办色彩浓厚，服务于政权，缺乏学术独立。'},
+{front:'纽曼通识教育理念',back:'<span class="dim-label">定义</span>大学应传播"大行之道"，培养视野开阔、有判断力的完整个体。<br><span class="dim-label">类比</span>如同操作系统而非App——提供底层能力框架，具体技能在工作中学。<br><span class="dim-label">示例</span>哥伦比亚核心课程9门通识必修，覆盖文明、文学、艺术、音乐、科学。<br><span class="dim-label">反例</span>单纯职业培训——教会操作但无法应对变化，如同只会用锤子看什么都是钉子。'},
+{front:'洪堡专才教育体系',back:'<span class="dim-label">定义</span>三大原则：研究教学合一、知识总和(跨学科)、专业精深(单一领域达专家级)。<br><span class="dim-label">类比</span>如同外科专科医生——在狭窄领域做到极致，但不太了解其他科室。<br><span class="dim-label">示例</span>德国工科5年学制，后2年专注精深知识；中国1952年理工分校源于此。<br><span class="dim-label">反例</span>清华300名学生无人读过雪莱——过度专业化导致人文素养缺失。'},
+{front:'吉尔曼：研究型大学之父',back:'<span class="dim-label">定义</span>创办约翰·霍普金斯大学，建立美国首所研究生院，融合德国研究+英国通识。<br><span class="dim-label">类比</span>如同把"实验室"引入"书院"——既有象牙塔的思考，又有工厂的产出。<br><span class="dim-label">示例</span>建校20年，全美60所主要大学每所至少3名其毕业生任教授。<br><span class="dim-label">反例</span>19世纪中期哈佛——虽有200年历史但质量堪忧，招生持续下跌。'},
+{front:'艾略特的哈佛改造',back:'<span class="dim-label">定义</span>40年任期将哈佛从教会学院改造为世界一流研究型大学。核心宗旨："培养实干家和成就者，而非旁观者或批评家"。<br><span class="dim-label">类比</span>如同把家族作坊改制为现代企业——引入专业管理、绩效标准、开放竞争。<br><span class="dim-label">示例</span>医学院改革：16周速成→需本科学位+多年培训；案例教学法推广。<br><span class="dim-label">反例</span>新英格兰8所大学校长集体声讨、耶鲁校长为首反对——改革必有阻力。'},
+{front:'学院制与导师制',back:'<span class="dim-label">定义</span>学院是独立小型社会单元(财务/管理/招生自主)；导师对学生的学术+人格全面负责。<br><span class="dim-label">类比</span>如同"家族+私塾"的融合体——生活在一起，学习在一起，导师是学术上的父母。<br><span class="dim-label">示例</span>剑桥三一学院培养32位诺奖得主(超瑞典全国)；圣约翰学院资产6亿英镑。<br><span class="dim-label">反例</span>中国大学"书院"——仅学形式(宿舍楼改名)忽略本质(师生共同体)。'},
+{front:'哈佛的精英逻辑',back:'<span class="dim-label">定义</span>仅7%新生是学霸，70%是特招生。选拔标准：在单一领域达到极致水平。<br><span class="dim-label">类比</span>如同NBA选秀——不只看基础数据，更看"天花板"和"不可替代性"。<br><span class="dim-label">示例</span>SAT满分者3/4被拒；课外活动的"过程收获"比结果更重要。<br><span class="dim-label">反例</span>亚裔学生——学术优秀但在课外活动表现不足，毕业后成为精英比例低。'},
+{front:'普林斯顿：年轻人的家',back:'<span class="dim-label">定义</span>住宿学院按"特长互补"分配室友，强调同学间相互学习比课程更重要。<br><span class="dim-label">类比</span>如同精心设计的"知识公社"——数学家+音乐家+运动员住一起，自然交叉影响。<br><span class="dim-label">示例</span>威尔逊校长用超存款2倍的投入完成学校改造，避免沦为二流。<br><span class="dim-label">反例</span>中国大学追求大而全(合并扩张)，缺少"家"的氛围和紧密的师生关系。'},
+{front:'耶鲁：文科支撑的世界一流',back:'<span class="dim-label">定义</span>全球前20大学中唯一靠文科支撑的一流大学，核心理念：自由思考+社会担当。<br><span class="dim-label">类比</span>如同"思想实验室"——不追求产出数量，追求思想质量和领袖培养。<br><span class="dim-label">示例</span>越战期间招收逃兵役学生；纪念大厦刻有包括南方军在内的所有牺牲毕业生。<br><span class="dim-label">反例</span>过度功利的教育——只关注排名和就业，忽视灵魂塑造。'},
+{front:'MIT：工业界领袖的摇篮',back:'<span class="dim-label">定义</span>世界第一理工学院，1/3毕业生成为大公司高管或创始人。70%看成绩+30%看课外内容。<br><span class="dim-label">类比</span>如同精英军事学院——严格的学术训练加上"打破常规"的恶作剧文化。<br><span class="dim-label">示例</span>A率仅20-30%(哈佛70%)；GPA 4.2≈其他大学3.7；最好的教授讲大一基础课。<br><span class="dim-label">反例</span>Caltech——只关注前5%天才学生，4年毕业率仅80%。'},
+{front:'加州理工：天才的摇篮',back:'<span class="dim-label">定义</span>"要么没有(0)，要么第一(1)"的学科策略。每千名毕业生1位诺奖得主。<br><span class="dim-label">类比</span>如同F1车队——只有少量顶级车手，每辆车都追求极致性能，不搞平均主义。<br><span class="dim-label">示例</span>喷气推进实验室主导旅行者一号、阿波罗计划等里程碑项目。<br><span class="dim-label">反例</span>追求规模扩张的大学——"十个第十名不如一个第一名"。'},
+{front:'法国精英大学校',back:'<span class="dim-label">定义</span>独立于公立大学的精英教育体系，录取率3-5%，20岁学校选择决定终身轨迹。<br><span class="dim-label">类比</span>如同"特种部队"vs"常规军"——精英学校毕业即进入国家权力核心。<br><span class="dim-label">示例</span>巴黎高师培养10个菲尔兹奖；法兰西第五共和国8位总统中6位来自巴黎政治学院。<br><span class="dim-label">反例</span>法国公立大学——"过分公平"，抽签录取使数学天才与学渣同班。'},
+{front:'德国大学为何衰落',back:'<span class="dim-label">定义</span>从诺贝尔奖最大赢家(二战前40%)到最高排名第40名，三重困境：经费不足+过度公平+体制僵化。<br><span class="dim-label">类比</span>如同昔日的行业霸主被新贵超越——不是自己不进步，而是别人进步更快。<br><span class="dim-label">示例</span>哥廷根曾每年产出诺奖得主，如今排100名外；教授"一个萝卜一个坑"。<br><span class="dim-label">反例</span>美国——通过捐赠文化、精英选拔、灵活体制保持竞争力。'},
+{front:'哥伦比亚大学：城市即校园',back:'<span class="dim-label">定义</span>曼哈顿核心区200亩，将纽约市作为扩展校园。1968年学生运动塑造自由传统。<br><span class="dim-label">类比</span>如同把学校开在华尔街大厅里——学生每天呼吸的都是真实世界的空气。<br><span class="dim-label">示例</span>邀请伊朗总统内贾德演讲(坚持给"敌人"言论自由)；核心课程覆盖9个领域。<br><span class="dim-label">反例</span>乡村校园——安静适合读书，但缺乏城市提供的实践机会和多元视角。'},
+{front:'大学五大补充训练',back:'<span class="dim-label">定义</span>当代大学不足造就精英，需自我补充五种训练。<br><span class="dim-label">类比</span>如同买了毛坯房后自己装修——大学提供框架，自己填充内容和灵魂。<br><span class="dim-label">①看透钱</span>财富是媒介非目的，精英看影响力。<br><span class="dim-label">②领导力</span>服从→合作→当助手，三阶段进阶。<br><span class="dim-label">③边界认知</span>防御/围棋/缓存三种思维。<br><span class="dim-label">④健全人格</span>恋爱+社交+同理心。<br><span class="dim-label">⑤信仰树立</span>驱动长期行动的精神内核。'},
+{front:'中学体育的真正价值',back:'<span class="dim-label">定义</span>体育运动是培养健全人格的手段，而非目的。美国大学录取中课外活动是关键因素。<br><span class="dim-label">类比</span>如同"领导力训练营"——通过体育场景模拟真实社会的竞争与协作。<br><span class="dim-label">示例</span>六大能力：承诺兑现、时间管理、绝对服从、追求个人最佳、长期规划、沟通能力。<br><span class="dim-label">反例</span>"运动员=四肢发达头脑简单"——中国传统偏见忽视体育的综合素质塑造价值。'},
+{front:'大学的本质：学术自由',back:'<span class="dim-label">定义</span>"知识使人自由"——大学诞生于对未知世界的好奇心，与经济利益无关。<br><span class="dim-label">类比</span>如同自然保护区——在功利社会的包围中，保留一片纯粹探索的空间。<br><span class="dim-label">示例</span>中世纪学者的动机与现代投身基础研究的教授一致：薪金不高但出于热爱。<br><span class="dim-label">反例</span>"上大学=好工作"的功利逻辑——导致98%的人无法成为2%的精英。'},
+{front:'中美本科教育差异',back:'<span class="dim-label">定义</span>中国每学期10-13门课vs美国4-5门；中国考试占比高vs美国多元考核(作业/测验/项目)。<br><span class="dim-label">类比</span>如同"自助餐"vs"精致套餐"——前者量大管饱，后者每道菜精心烹制。<br><span class="dim-label">示例</span>MIT计算机课程需完成完整操作系统项目；中国侧重考试分数。<br><span class="dim-label">反例</span>盲目留学——美国硕士多为盈利项目，部分质量不如清华北大。'},
+];
+
+// MCQ answers: 0=A, 1=B, 2=C, 3=D. Distribute evenly: 5 each for 20 questions.
+// For 20 Qs: A:0, B:1, C:2, D:3 each appears 5 times.
+const mcQuestions = [
+{q:'世界第一所现代大学(获学术特权特许状的大学)是？',opts:['博洛尼亚大学','巴黎大学','牛津大学','剑桥大学'],ans:0,exp:'1088年博洛尼亚大学成立，1158年获神圣罗马帝国皇帝腓特烈一世签署的《学术特权法令》，是世界第一所现代意义上的大学。'},
+{q:'1158年《学术特权法令》不包含哪项权利？',opts:['自由旅行迁徙权','免缴一切税收的权利','大学人员神职人员级别自由','免于学术观点报复的权利'],ans:1,exp:'学术特权包含四项：神职人员级自由与豁免权、自由旅行迁徙权、免于学术观点报复权、由学校/教会裁决权。不包含免税权。'},
+{q:'纽曼在《大学的理念》中的核心主张是？',opts:['大学应培养专业技能','大学应以科研为核心','大学应传播"大行之道"培养完整个体','大学应服务政府需求'],ans:2,exp:'纽曼强调大学应传播"大行之道"(Universal Knowledge)，培养视野开阔、具有判断力与美德的完整个体，反对工业革命时期功利化的专才教育。'},
+{q:'洪堡教育体系的三大原则不包括？',opts:['研究与教学合一','知识的总和(跨学科)','专业精深教育','精英优先选拔'],ans:3,exp:'洪堡三大原则：研究与教学合一、知识总和(跨学科教育)、专业精深教育。"精英优先选拔"不是洪堡原则。'},
+{q:'约翰·霍普金斯大学的首任校长是谁？',opts:['吉尔曼','艾略特','威尔逊','富兰克林'],ans:0,exp:'吉尔曼(Daniel Coit Gilman)是约翰·霍普金斯大学首任校长，建立美国第一所研究生院，奠定现代研究型大学基础。'},
+{q:'艾略特改造哈佛的核心宗旨是？',opts:['培养教士和贵族','培养实干家和成就者，增进公共福祉','追求纯粹学术研究','保持教会学校传统'],ans:1,exp:'艾略特核心宗旨："培养实干家和成就者，增进公共福祉，而非旁观者或批评家。"他同时融合英国素质教育与德国专业教育。'},
+{q:'普林斯顿大学的住宿学院按什么原则分配室友？',opts:['随机分配','按专业相同','按特长互补','按家庭背景'],ans:2,exp:'普林斯顿按"特长互补性原则"分配室友(如数学+音乐+表演特长组合)，旨在促进同学间相互学习。'},
+{q:'耶鲁大学在全球前20大学中的独特之处是什么？',opts:['规模最大','科研经费最多','国际学生比例最高','唯一靠文科支撑的世界一流大学'],ans:3,exp:'耶鲁是全球排名前20大学中唯一主要靠文科支撑的世界一流大学，理工科相对薄弱，核心竞争力在于新思想创造与领袖培养。'},
+{q:'MIT的评分制度中，每门课约有多少比例学生能得A？',opts:['20-30%','50-60%','70-80%','5-10%'],ans:0,exp:'MIT每门课仅20%-30%学生能得A，对比哈佛约70%、斯坦福约50%，是常青藤级别大学中评分最严格的。'},
+{q:'加州理工学院的办学定位是？',opts:['培养大规模工程人才','只培养少数天才科学家','培养工业界管理者','提供全民理工教育'],ans:1,exp:'加州理工核心定位："只培养少数天才科学家"，教授"只关注前5%的学生"，不崇拜勤能补拙。'},
+{q:'法国精英大学校(Grande Ecole)的预科班每周课时约为？',opts:['20小时','30小时','50小时','70小时'],ans:2,exp:'法国精英学校预科班(Pre Bac)每周约50小时高强度训练，远超公立大学的30小时，类似中国高考冲刺阶段。'},
+{q:'德国大学衰落的主要原因不包括？',opts:['经费不足','过度公平化缺乏精英培养','学术体制僵化论资排辈','二战战败导致大学被摧毁'],ans:3,exp:'西德大学(如哥廷根、慕尼黑)在经济发达条件下仍未恢复顶尖地位，主要原因是经费不足、过度公平、体制僵化。二战战败本身不能完全解释衰落。'},
+{q:'达特茅斯学院案(1819年)的核心意义是？',opts:['确立私立大学为独立法人团体','确立公立大学制度','取消大学学费','建立联邦教育部'],ans:0,exp:'1819年达特茅斯案由最高法院裁定，确立私立大学为独立法人团体，奠定美国"社会公有财富私营运作"的组织模式。'},
+{q:'宾夕法尼亚大学由谁创办？',opts:['托马斯·杰斐逊','本杰明·富兰克林','约翰·哈佛','埃兹拉·康奈尔'],ans:1,exp:'宾大由本杰明·富兰克林1743年创办，定位为平民家庭提供高等教育，是常青藤中最务实的大学。'},
+{q:'哥伦比亚大学的核心课程(本科必修)不包括？',opts:['当代文明','文学人文','计算机编程','大学写作'],ans:2,exp:'哥大核心课程涵盖当代文明、文学人文、大学写作、艺术人文、音乐人文、科学前沿等，不包括计算机编程(工学院学生另外选修)。'},
+{q:'美国大学董事会制度中，校董(Trustee)的法律定位是？',opts:['荣誉头衔，无实际责任','政府任命的监管者','由教授选举产生的代表','受托人，承担法律义务'],ans:3,exp:'Trustee本质是信托受托人，承担法律义务(如学校涉诉时承担失察责任)，区别于公司董事(Director)的咨询角色。'},
+{q:'通识教育中，数学学习的核心价值不包括？',opts:['记忆大量公式和解题技巧','阅读理解暗喻信息的能力','逻辑推理从公理到定理','培养跨文化普适的量化思维'],ans:0,exp:'数学核心价值在于阅读理解(理解暗喻)、逻辑推理(从公理推导定理)、量化思维。题海战术和死记公式恰是当前教学的主要弊端。'},
+{q:'历史学习的核心价值不包括？',opts:['掌握时空全局的思维方法','以史为鉴直接复制经验','培养客观公允的认知能力','训练研究与表达能力'],ans:1,exp:'作者明确反驳"以史为鉴"论点——历史不会简单重复，案例借鉴意义有限。核心价值在于时空全局思维、客观认知、研究表达能力。'},
+{q:'吴军提出的大学"五大补充训练"不包括哪项？',opts:['看透钱(财富是媒介)','领导力(服从→合作→助手)','编程能力(掌握至少三门语言)','边界认知(防御/围棋/缓存思维)'],ans:2,exp:'五大补充训练：①看透钱②领导力③边界认知④健全人格⑤信仰树立。编程能力不在其列。'},
+{q:'中美本科教育差异，以下哪项描述正确？',opts:['中国每学期4-5门课，美国10-13门','中国注重多元考核，美国注重期末考试','MIT最好的教授只教研究生课程','美国A率普遍高于中国大学'],ans:3,exp:'中国每学期10-13门课vs美国4-5门；中国重考试vs美国重多元考核；MIT要求最好的教授讲大一基础课。美国A率普遍高于中国(哈佛70%得A)。'},
+];
+
+// Short answer questions
+const saQuestions = [
+{q:'简述中世纪大学诞生于欧洲而非古希腊罗马或古代中国的三个核心条件。',hint:'物质基础(中世纪后期稳定发展)、精神导向(精神生活>物质生活)、宗教虔诚与科学探索(对真理的虔诚态度)。'},
+{q:'对比纽曼通识教育与洪堡专才教育的核心理念差异。',hint:'纽曼主张培养"完整个体"，传播大行之道，反对功利化；洪堡主张研究教学合一、专业精深，服务于工业化需求。前者重广度，后者重深度。'},
+{q:'吉尔曼为约翰·霍普金斯大学确立了哪些核心办学原则？',hint:'不分文理科夯实通识基础、给予师生教学方法自由、教授需具备研究能力、坚持长期办学视角、培养服务社会的行业领导者。'},
+{q:'为什么德国大学从19世纪的世界顶峰走向衰落？',hint:'三重困境：经费不足(慕尼黑大学6亿vs霍普金斯23亿科研经费)、过度公平化缺乏精英培养、学术体制僵化(教授"一个萝卜一个坑")。'},
+{q:'美国常青藤大学为什么对亚裔学生录取相对谨慎？',hint:'亚裔在课外活动表现不足、毕业后在各行业精英占比低于录取比例、校友捐赠意愿低、参与校友活动不积极。'},
+{q:'牛津剑桥的学院制与导师制的核心价值是什么？',hint:'学院是独立小型社会单元，提供"家"的归属感；导师对学生的学术+人格全面负责，培养"立足于社会的人"。'},
+{q:'科学学习的四大核心目的是什么？',hint:'①掌握科学方法(寻找更好结论的过程)②了解知识边界培养科学素养③获得可叠加的进步④成为讲道理的人。'},
+{q:'如何看待"上大学是为了找好工作"这一观念的局限性？',hint:'大学最初是非功利的知识探索。仅将大学视为职业培训会忽视格局提升、人脉建立、角色转变(消费者→贡献者)等核心价值。98%的人因此无法成为2%的精英。'},
+{q:'加州理工的"少而精"策略给我们的个人发展启示是什么？',hint:'精准定位只做擅长的事、一个100分胜过10个90分、找到适合自己规模的环境、需要灵魂人物驱动。'},
+{q:'为什么艾略特说大学要培养"实干家和成就者，而非旁观者或批评家"？',hint:'19世纪美国需要能服务工业发展的人才。教育应结合实用主义，培养学生解决真实问题的能力，而非仅会引经据典批评。案例教学、讨论班、实验取代被动听讲。'},
+];
+
+// ============ RENDER FUNCTIONS ============
+
+function renderConceptGrid(){
+const grid = document.getElementById('conceptGrid');
+grid.innerHTML = concepts.map(c=>`
+<div class="concept-card${c.mks?' mks':''}">
+<h4>${c.name}</h4>
+<p>${c.desc}</p>
+</div>`).join('');
+}
+
+function renderMKSGrid(){
+const grid = document.getElementById('mksGrid');
+grid.innerHTML = concepts.filter(c=>c.mks).map(c=>`
+<div class="concept-card mks">
+<h4>${c.name}</h4>
+<p>${c.desc}</p>
+<span class="badge badge-mks">骨架概念</span>
+</div>`).join('');
+}
+
+function renderBoundaryTable(){
+const tbody = document.querySelector('#boundaryTable tbody');
+tbody.innerHTML = boundaryKnowledge.map(b=>`
+<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td><td>知道存在即可，不需要精通</td></tr>
+`).join('');
+}
+
+function renderLearningPath(){
+const wrap = document.getElementById('learningPath');
+wrap.innerHTML = learningPath.map((l,i)=>`
+<div class="card" style="flex:1;min-width:140px;text-align:center;border-top:3px solid var(--accent)">
+<div style="font-weight:700;color:var(--accent);margin-bottom:4px">阶段${l.phase}: ${l.title}</div>
+<div style="font-size:.78rem;color:var(--text2)">${l.desc}</div>
+</div>`).join('');
+}
+
+function renderSVG(){
+const svg = document.getElementById('svgContainer');
+svg.innerHTML = `<svg width="687pt" height="369pt"
+ viewBox="0.00 0.00 686.50 368.91" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 364.91)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-364.91 682.5,-364.91 682.5,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#c0392b" stroke="black" stroke-width="2" cx="321.5" cy="-335.46" rx="140.93" ry="25.41"/>
+<text text-anchor="middle" x="321.5" y="-339.06" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="13.00" fill="#ffffff">非功利探求真理 ↔ 满足社会需求</text>
+<text text-anchor="middle" x="321.5" y="-325.06" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="13.00" fill="#ffffff">大学教育的核心驱动力</text>
+</g>
+<!-- medieval -->
+<g id="node2" class="node">
+<title>medieval</title>
+<polygon fill="#d4a574" stroke="black" points="220.5,-264 104.5,-264 104.5,-228 220.5,-228 220.5,-264"/>
+<text text-anchor="middle" x="162.5" y="-249.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">中世纪欧洲</text>
+<text text-anchor="middle" x="162.5" y="-237.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">教会庇护·学术特权</text>
+</g>
+<!-- root&#45;&gt;medieval -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;medieval</title>
+<path fill="none" stroke="#c0392b" d="M275.14,-311.38C263.13,-305.23 250.27,-298.48 238.5,-292 225.53,-284.85 211.53,-276.7 199.13,-269.31"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="200.79,-266.22 190.41,-264.09 197.19,-272.23 200.79,-266.22"/>
+<text text-anchor="middle" x="267.5" y="-284.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#c0392b">博洛尼亚1088</text>
+</g>
+<!-- oxbridge -->
+<g id="node3" class="node">
+<title>oxbridge</title>
+<polygon fill="#d4a574" stroke="black" points="332,-264 239,-264 239,-228 332,-228 332,-264"/>
+<text text-anchor="middle" x="285.5" y="-249.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">牛津剑桥诞生</text>
+<text text-anchor="middle" x="285.5" y="-237.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">学院制·导师制</text>
+</g>
+<!-- root&#45;&gt;oxbridge -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;oxbridge</title>
+<path fill="none" stroke="#b8860b" d="M311.28,-309.63C306.65,-298.38 301.17,-285.06 296.45,-273.61"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="299.59,-272.04 292.55,-264.12 293.12,-274.7 299.59,-272.04"/>
+</g>
+<!-- newman -->
+<g id="node4" class="node">
+<title>newman</title>
+<polygon fill="#d4a574" stroke="black" points="466.5,-264 350.5,-264 350.5,-228 466.5,-228 466.5,-264"/>
+<text text-anchor="middle" x="408.5" y="-249.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">纽曼通识教育</text>
+<text text-anchor="middle" x="408.5" y="-237.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">完整个体·大行之道</text>
+</g>
+<!-- root&#45;&gt;newman -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;newman</title>
+<path fill="none" stroke="#b8860b" d="M345.73,-310.09C357.81,-297.96 372.37,-283.32 384.42,-271.21"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="386.98,-273.59 391.56,-264.03 382.02,-268.65 386.98,-273.59"/>
+</g>
+<!-- humboldt -->
+<g id="node5" class="node">
+<title>humboldt</title>
+<polygon fill="#d4a574" stroke="black" points="566.5,-264 484.5,-264 484.5,-228 566.5,-228 566.5,-264"/>
+<text text-anchor="middle" x="525.5" y="-249.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">洪堡专才教育</text>
+<text text-anchor="middle" x="525.5" y="-237.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#ffffff">研究教学合一</text>
+</g>
+<!-- root&#45;&gt;humboldt -->
+<g id="edge4" class="edge">
+<title>root&#45;&gt;humboldt</title>
+<path fill="none" stroke="#3a6ea5" d="M374.3,-311.82C405.86,-298.29 445.69,-281.22 476.54,-267.99"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" points="478,-271.17 485.81,-264.02 475.24,-264.74 478,-271.17"/>
+<text text-anchor="middle" x="493" y="-284.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#3a6ea5">苏联→中国1952理工分校</text>
+</g>
+<!-- gilman -->
+<g id="node6" class="node">
+<title>gilman</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="220.5,-182 104.5,-182 104.5,-146 220.5,-146 220.5,-182"/>
+<text text-anchor="middle" x="162.5" y="-167.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">吉尔曼改革(1876)</text>
+<text text-anchor="middle" x="162.5" y="-155.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">约翰·霍普金斯大学</text>
+</g>
+<!-- medieval&#45;&gt;gilman -->
+<g id="edge5" class="edge">
+<title>medieval&#45;&gt;gilman</title>
+<path fill="none" stroke="#c0392b" d="M162.5,-227.64C162.5,-217.3 162.5,-203.94 162.5,-192.22"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="166,-192.05 162.5,-182.05 159,-192.05 166,-192.05"/>
+<text text-anchor="middle" x="190" y="-202.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#c0392b">首所研究生院</text>
+</g>
+<!-- eliot -->
+<g id="node7" class="node">
+<title>eliot</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="408.5,-182 278.5,-182 278.5,-146 408.5,-146 408.5,-182"/>
+<text text-anchor="middle" x="343.5" y="-167.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">艾略特改革(1869&#45;1909)</text>
+<text text-anchor="middle" x="343.5" y="-155.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">哈佛现代化</text>
+</g>
+<!-- oxbridge&#45;&gt;eliot -->
+<g id="edge6" class="edge">
+<title>oxbridge&#45;&gt;eliot</title>
+<path fill="none" stroke="#c0392b" d="M298.09,-227.64C305.97,-216.77 316.26,-202.57 325.06,-190.44"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="328.1,-192.2 331.14,-182.05 322.44,-188.09 328.1,-192.2"/>
+</g>
+<!-- newman&#45;&gt;eliot -->
+<g id="edge7" class="edge">
+<title>newman&#45;&gt;eliot</title>
+<path fill="none" stroke="#b8860b" d="M394.4,-227.64C385.48,-216.66 373.8,-202.29 363.88,-190.09"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="366.38,-187.6 357.35,-182.05 360.94,-192.02 366.38,-187.6"/>
+<text text-anchor="middle" x="419.5" y="-202.8" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="9.00" fill="#b8860b">融合德英+实用主义</text>
+</g>
+<!-- research_uni -->
+<g id="node8" class="node">
+<title>research_uni</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="575,-182 476,-182 476,-146 575,-146 575,-182"/>
+<text text-anchor="middle" x="525.5" y="-167.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">研究型大学确立</text>
+<text text-anchor="middle" x="525.5" y="-155.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">本科+博士分轨制</text>
+</g>
+<!-- humboldt&#45;&gt;research_uni -->
+<g id="edge8" class="edge">
+<title>humboldt&#45;&gt;research_uni</title>
+<path fill="none" stroke="#c0392b" d="M525.5,-227.64C525.5,-217.3 525.5,-203.94 525.5,-192.22"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="529,-192.05 525.5,-182.05 522,-192.05 529,-192.05"/>
+</g>
+<!-- harvard -->
+<g id="node9" class="node">
+<title>harvard</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="127,-109 0,-109 0,-73 127,-73 127,-109"/>
+<text text-anchor="middle" x="63.5" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">哈佛 · 标杆</text>
+<text text-anchor="middle" x="63.5" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">70%特招生·精英网络</text>
+</g>
+<!-- gilman&#45;&gt;harvard -->
+<g id="edge9" class="edge">
+<title>gilman&#45;&gt;harvard</title>
+<path fill="none" stroke="#b8860b" d="M138.79,-145.99C125.9,-136.75 109.78,-125.19 95.77,-115.14"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="97.53,-112.1 87.36,-109.11 93.45,-117.79 97.53,-112.1"/>
+</g>
+<!-- yale_prince -->
+<g id="node10" class="node">
+<title>yale_prince</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="261.5,-109 145.5,-109 145.5,-73 261.5,-73 261.5,-109"/>
+<text text-anchor="middle" x="203.5" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">耶鲁·普林斯顿</text>
+<text text-anchor="middle" x="203.5" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">住宿学院·自由精神</text>
+</g>
+<!-- gilman&#45;&gt;yale_prince -->
+<g id="edge10" class="edge">
+<title>gilman&#45;&gt;yale_prince</title>
+<path fill="none" stroke="#b8860b" d="M172.42,-145.81C177.26,-137.44 183.17,-127.2 188.54,-117.9"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="191.7,-119.44 193.67,-109.03 185.63,-115.94 191.7,-119.44"/>
+</g>
+<!-- eliot&#45;&gt;yale_prince -->
+<g id="edge11" class="edge">
+<title>eliot&#45;&gt;yale_prince</title>
+<path fill="none" stroke="#b8860b" d="M309.97,-145.99C290.89,-136.32 266.79,-124.1 246.35,-113.73"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="247.75,-110.52 237.25,-109.11 244.58,-116.76 247.75,-110.52"/>
+</g>
+<!-- columbia_penn_dart -->
+<g id="node11" class="node">
+<title>columbia_penn_dart</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="407,-109 280,-109 280,-73 407,-73 407,-109"/>
+<text text-anchor="middle" x="343.5" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">哥大·宾大·达特茅斯</text>
+<text text-anchor="middle" x="343.5" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">城市校园·务实教育</text>
+</g>
+<!-- eliot&#45;&gt;columbia_penn_dart -->
+<g id="edge12" class="edge">
+<title>eliot&#45;&gt;columbia_penn_dart</title>
+<path fill="none" stroke="#b8860b" d="M343.5,-145.81C343.5,-137.79 343.5,-128.05 343.5,-119.07"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="347,-119.03 343.5,-109.03 340,-119.03 347,-119.03"/>
+</g>
+<!-- mit_caltech -->
+<g id="node12" class="node">
+<title>mit_caltech</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="541.5,-109 425.5,-109 425.5,-73 541.5,-73 541.5,-109"/>
+<text text-anchor="middle" x="483.5" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">MIT · Caltech</text>
+<text text-anchor="middle" x="483.5" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">理工双壁·极致精神</text>
+</g>
+<!-- eliot&#45;&gt;mit_caltech -->
+<g id="edge13" class="edge">
+<title>eliot&#45;&gt;mit_caltech</title>
+<path fill="none" stroke="#b8860b" d="M377.03,-145.99C396.11,-136.32 420.21,-124.1 440.65,-113.73"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="442.42,-116.76 449.75,-109.11 439.25,-110.52 442.42,-116.76"/>
+</g>
+<!-- research_uni&#45;&gt;mit_caltech -->
+<g id="edge14" class="edge">
+<title>research_uni&#45;&gt;mit_caltech</title>
+<path fill="none" stroke="#b8860b" d="M515.33,-145.81C510.38,-137.44 504.32,-127.2 498.82,-117.9"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="501.68,-115.85 493.57,-109.03 495.65,-119.42 501.68,-115.85"/>
+</g>
+<!-- france_ecole -->
+<g id="node13" class="node">
+<title>france_ecole</title>
+<polygon fill="#fffaf2" stroke="#3a6ea5" points="678.5,-109 562.5,-109 562.5,-73 678.5,-73 678.5,-109"/>
+<text text-anchor="middle" x="620.5" y="-94.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">法国Grande Ecole</text>
+<text text-anchor="middle" x="620.5" y="-82.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">精英大学校·双轨制</text>
+</g>
+<!-- research_uni&#45;&gt;france_ecole -->
+<g id="edge15" class="edge">
+<title>research_uni&#45;&gt;france_ecole</title>
+<path fill="none" stroke="#3a6ea5" d="M548.5,-145.81C560.87,-136.57 576.29,-125.04 589.68,-115.03"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" points="591.8,-117.82 597.71,-109.03 587.61,-112.21 591.8,-117.82"/>
+</g>
+<!-- germany_warn -->
+<g id="node14" class="node">
+<title>germany_warn</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="116,-36 11,-36 11,0 116,0 116,-36"/>
+<text text-anchor="middle" x="63.5" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">德国兴衰警示</text>
+<text text-anchor="middle" x="63.5" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">经费·公平·体制</text>
+</g>
+<!-- harvard&#45;&gt;germany_warn -->
+<g id="edge16" class="edge">
+<title>harvard&#45;&gt;germany_warn</title>
+<path fill="none" stroke="#6b8e23" d="M63.5,-72.81C63.5,-64.79 63.5,-55.05 63.5,-46.07"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" points="67,-46.03 63.5,-36.03 60,-46.03 67,-46.03"/>
+</g>
+<!-- tension -->
+<g id="node15" class="node">
+<title>tension</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="261.5,-36 145.5,-36 145.5,0 261.5,0 261.5,-36"/>
+<text text-anchor="middle" x="203.5" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">通识vs专才张力</text>
+<text text-anchor="middle" x="203.5" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">纽曼↔洪堡永恒对话</text>
+</g>
+<!-- yale_prince&#45;&gt;tension -->
+<g id="edge17" class="edge">
+<title>yale_prince&#45;&gt;tension</title>
+<path fill="none" stroke="#6b8e23" d="M203.5,-72.81C203.5,-64.79 203.5,-55.05 203.5,-46.07"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" points="207,-46.03 203.5,-36.03 200,-46.03 207,-46.03"/>
+</g>
+<!-- china_us -->
+<g id="node16" class="node">
+<title>china_us</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="550.5,-36 412.5,-36 412.5,0 550.5,0 550.5,-36"/>
+<text text-anchor="middle" x="481.5" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">中美教育路径</text>
+<text text-anchor="middle" x="481.5" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">技能vs素质·规划vs自由</text>
+</g>
+<!-- mit_caltech&#45;&gt;china_us -->
+<g id="edge18" class="edge">
+<title>mit_caltech&#45;&gt;china_us</title>
+<path fill="none" stroke="#6b8e23" d="M483.02,-72.81C482.79,-64.79 482.52,-55.05 482.26,-46.07"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" points="485.76,-45.93 481.98,-36.03 478.76,-46.12 485.76,-45.93"/>
+</g>
+<!-- five_supp -->
+<g id="node17" class="node">
+<title>five_supp</title>
+<polygon fill="#fffaf2" stroke="#8b7355" points="674,-36 569,-36 569,0 674,0 674,-36"/>
+<text text-anchor="middle" x="621.5" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">五大补充训练</text>
+<text text-anchor="middle" x="621.5" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#3d2f2f">大学之外成就精英</text>
+</g>
+<!-- france_ecole&#45;&gt;five_supp -->
+<g id="edge19" class="edge">
+<title>france_ecole&#45;&gt;five_supp</title>
+<path fill="none" stroke="#6b8e23" d="M620.74,-72.81C620.86,-64.79 620.99,-55.05 621.12,-46.07"/>
+<polygon fill="#6b8e23" stroke="#6b8e23" points="624.62,-46.08 621.26,-36.03 617.62,-45.98 624.62,-46.08"/>
+</g>
+</g>
+</svg>`;
+}
+
+// ============ TAB 1: FLIP CARDS ============
+let flipIdx = 0;
+function updateFlipCard(){
+document.getElementById('flipFront').textContent = flipCards[flipIdx].front;
+document.getElementById('flipBack').innerHTML = flipCards[flipIdx].back;
+document.getElementById('flipInner').classList.remove('flipped');
+document.getElementById('flipProgress').textContent = `${flipIdx+1}/${flipCards.length}`;
+const learned = JSON.parse(localStorage.getItem('mks_learned')||'[]');
+const btn = document.getElementById('learnedBtn');
+if(learned.includes(flipIdx)){
+btn.textContent = '✓ 已学习 ✓'; btn.classList.add('learned');
+} else {
+btn.textContent = '✓ 已学习'; btn.classList.remove('learned');
+}
+}
+function flipPrev(){flipIdx=(flipIdx-1+flipCards.length)%flipCards.length;updateFlipCard();}
+function flipNext(){flipIdx=(flipIdx+1)%flipCards.length;updateFlipCard();}
+function markLearned(){
+let learned = JSON.parse(localStorage.getItem('mks_learned')||'[]');
+if(learned.includes(flipIdx)){learned=learned.filter(i=>i!==flipIdx);}else{learned.push(flipIdx);}
+localStorage.setItem('mks_learned',JSON.stringify(learned));
+updateFlipCard();updateProgress();
+}
+
+// ============ TAB 2: QUIZ ============
+let mcqAnswers = {}; let saqRevealed = {};
+function renderMCQ(){
+const container = document.getElementById('mcqContainer');
+container.innerHTML = mcQuestions.map((q,i)=>`
+<div class="quiz-card">
+<span class="q-tag q-mc">选择题 #${i+1}</span>
+<div class="q-text">${q.q}</div>
+${q.opts.map((o,j)=>`<div class="q-option" onclick="selectMCQ(${i},${j})" id="mcq${i}_${j}">${'ABCD'[j]}. ${o}</div>`).join('')}
+<div class="q-feedback" id="mcqFb${i}"></div>
+</div>`).join('');
+}
+function renderSAQ(){
+const container = document.getElementById('saqContainer');
+container.innerHTML = saQuestions.map((q,i)=>`
+<div class="quiz-card">
+<span class="q-tag q-sa">简答题 #${i+1}</span>
+<div class="q-text">${q.q}</div>
+<textarea class="sa-input" placeholder="输入你的答案..." id="saInput${i}"></textarea>
+<button class="btn btn-sm" style="margin-top:8px" onclick="revealSAQ(${i})">查看要点提示</button>
+<div class="sa-reveal" id="saRev${i}">💡 <strong>要点：</strong>${q.hint}</div>
+</div>`).join('');
+}
+function selectMCQ(qi, optIdx){
+if(mcqAnswers[qi]!==undefined) return;
+mcqAnswers[qi] = optIdx;
+const correct = mcQuestions[qi].ans;
+const fb = document.getElementById('mcqFb'+qi);
+for(let j=0;j<4;j++){
+const el = document.getElementById('mcq'+qi+'_'+j);
+if(j===correct) el.classList.add('correct');
+if(j===optIdx && j!==correct) el.classList.add('wrong');
+if(j===optIdx) el.classList.add('selected');
+}
+if(optIdx===correct){
+fb.className='q-feedback right show';
+fb.textContent='✅ 正确！'+mcQuestions[qi].exp;
+saveQuizResult(qi,true);
+}else{
+fb.className='q-feedback wrong-msg show';
+fb.textContent='❌ 错误。正确答案是 '+('ABCD'[correct])+'。'+mcQuestions[qi].exp;
+saveQuizResult(qi,false);
+}
+updateProgress();
+}
+function revealSAQ(i){
+document.getElementById('saRev'+i).classList.add('show');
+saqRevealed[i] = true;
+saveQuizResult('sa_'+i, true);
+updateProgress();
+}
+
+function saveQuizResult(id,correct){
+let results = JSON.parse(localStorage.getItem('mks_quizResults')||'{}');
+results[id] = {correct,time:Date.now()};
+localStorage.setItem('mks_quizResults',JSON.stringify(results));
+let errors = JSON.parse(localStorage.getItem('mks_errorBook')||'[]');
+if(!correct && !errors.find(e=>e.id===id)){
+errors.push({id,time:Date.now()});
+localStorage.setItem('mks_errorBook',JSON.stringify(errors));
+}
+}
+
+// ============ TAB 3: EXAM ============
+let examActive = false, examTimer = null, examSeconds = 0, examQuestions = [];
+function startExam(){
+document.getElementById('examStartBtn').style.display='none';
+examActive = true; examSeconds = 15*60;
+examQuestions = [];
+let mcPool = [...Array(mcQuestions.length).keys()];
+let saPool = [...Array(saQuestions.length).keys()];
+shuffle(mcPool); shuffle(saPool);
+for(let i=0;i<7;i++) examQuestions.push({type:'mc',idx:mcPool[i]});
+for(let i=0;i<3;i++) examQuestions.push({type:'sa',idx:saPool[i]});
+shuffle(examQuestions);
+renderExam();
+examTimer = setInterval(()=>{
+examSeconds--;
+const m = Math.floor(examSeconds/60), s = examSeconds%60;
+const timerEl = document.getElementById('examTimer');
+timerEl.textContent = `${m}:${String(s).padStart(2,'0')}`;
+if(examSeconds<60) timerEl.classList.add('warning');
+if(examSeconds<=0){submitExam();}
+},1000);
+}
+function renderExam(){
+const area = document.getElementById('examArea');
+area.innerHTML = examQuestions.map((eq,i)=>{
+if(eq.type==='mc'){
+const q = mcQuestions[eq.idx];
+return `<div class="quiz-card"><span class="q-tag q-mc">选择题 #${i+1}</span><div class="q-text">${q.q}</div>
+${q.opts.map((o,j)=>`<div class="q-option" onclick="examMCQ(${i},${j})" id="exam${i}_${j}">${'ABCD'[j]}. ${o}</div>`).join('')}
+<div class="q-feedback" id="examFb${i}"></div></div>`;
+}else{
+const q = saQuestions[eq.idx];
+return `<div class="quiz-card"><span class="q-tag q-sa">简答题 #${i+1}</span><div class="q-text">${q.q}</div>
+<textarea class="sa-input" id="examSA${i}">(考试模式下快速写出要点)</textarea></div>`;
+}
+}).join('');
+document.getElementById('examResult').style.display='none';
+}
+let examAnswers = {};
+function examMCQ(i, optIdx){
+if(examAnswers[i]!==undefined) return;
+examAnswers[i] = optIdx;
+const q = mcQuestions[examQuestions[i].idx];
+const fb = document.getElementById('examFb'+i);
+for(let j=0;j<4;j++){
+const el = document.getElementById('exam'+i+'_'+j);
+if(j===q.ans) el.classList.add('correct');
+if(j===optIdx && j!==q.ans) el.classList.add('wrong');
+if(j===optIdx) el.classList.add('selected');
+}
+fb.className = 'q-feedback show '+(optIdx===q.ans?'right':'wrong-msg');
+fb.textContent = optIdx===q.ans?'✅ 正确':'❌ 错误。答案：'+'ABCD'[q.ans];
+}
+function submitExam(){
+clearInterval(examTimer); examActive = false;
+const timerEl = document.getElementById('examTimer');
+timerEl.textContent = '考试结束'; timerEl.classList.remove('warning');
+const result = document.getElementById('examResult');
+let score = 0, total = 7;
+examQuestions.forEach((eq,i)=>{
+if(eq.type==='mc' && examAnswers[i]===mcQuestions[eq.idx].ans) score++;
+});
+const m = Math.floor((900-examSeconds)/60), s = (900-examSeconds)%60;
+result.style.display='block';
+result.innerHTML = `<div class="card" style="text-align:center">
+<h3>考试结果</h3>
+<div style="font-size:2.5rem;color:var(--accent);font-weight:700">${score}/${total}</div>
+<p style="color:var(--text2)">选择题正确率：${Math.round(score/total*100)}%</p>
+<p style="color:var(--text2)">用时：${m}分${s}秒</p>
+<p style="font-size:.82rem;color:var(--text2);margin-top:8px">
+${score>=6?'🎉 你对大学教育体系的理解非常扎实！':
+score>=4?'👍 基础不错，建议回顾错题加深理解。':
+'📚 建议返回"知识卡片"和"思维导图"系统学习后再试。'}
+</p>
+<button class="btn" onclick="resetExam()" style="margin-top:12px">重新考试</button>
+</div>`;
+let examResults = JSON.parse(localStorage.getItem('mks_examResults')||'[]');
+examResults.push({score,total,time:Date.now(),seconds:900-examSeconds});
+localStorage.setItem('mks_examResults',JSON.stringify(examResults));
+// Save errors
+examQuestions.forEach((eq,i)=>{
+if(eq.type==='mc' && examAnswers[i]!==undefined && examAnswers[i]!==mcQuestions[eq.idx].ans){
+let errors = JSON.parse(localStorage.getItem('mks_errorBook')||'[]');
+errors.push({id:'exam_mc_'+eq.idx, time:Date.now()});
+localStorage.setItem('mks_errorBook',JSON.stringify(errors));
+}
+});
+updateProgress();
+}
+function resetExam(){
+clearInterval(examTimer); examActive = false;
+examAnswers = {}; examQuestions = [];
+document.getElementById('examStartBtn').style.display='inline-block';
+document.getElementById('examResult').style.display='none';
+document.getElementById('examArea').innerHTML='';
+document.getElementById('examTimer').textContent='15:00';
+document.getElementById('examTimer').classList.remove('warning');
+}
+
+// ============ TAB 4: REVIEW ============
+function renderStats(){
+const learned = JSON.parse(localStorage.getItem('mks_learned')||'[]');
+const results = JSON.parse(localStorage.getItem('mks_quizResults')||'{}');
+const errors = JSON.parse(localStorage.getItem('mks_errorBook')||'[]');
+const examResults = JSON.parse(localStorage.getItem('mks_examResults')||'[]');
+const allQ = Object.values(results);
+const correct = allQ.filter(r=>r.correct).length;
+const totalDays = new Set(allQ.map(r=>new Date(r.time).toDateString())).size || 0;
+
+document.getElementById('statsGrid').innerHTML = `
+<div class="stat-card"><div class="num">${learned.length}</div><div class="lbl">已学概念/19</div></div>
+<div class="stat-card"><div class="num">${allQ.length}</div><div class="lbl">总答题数</div></div>
+<div class="stat-card"><div class="num">${allQ.length?Math.round(correct/allQ.length*100):0}%</div><div class="lbl">正确率</div></div>
+<div class="stat-card"><div class="num">${errors.length}</div><div class="lbl">错题数</div></div>
+<div class="stat-card"><div class="num">${examResults.length}</div><div class="lbl">考试次数</div></div>
+<div class="stat-card"><div class="num">${totalDays}</div><div class="lbl">学习天数</div></div>
+`;
+
+const errorBook = document.getElementById('errorBook');
+if(errors.length===0){
+document.getElementById('emptyError').style.display='block';
+errorBook.innerHTML='';
+}else{
+document.getElementById('emptyError').style.display='none';
+errorBook.innerHTML = '<div class="grid2">'+errors.slice(-20).reverse().map(e=>{
+let label=''; let q=null;
+if(typeof e.id==='string' && e.id.startsWith('sa_')){
+label='简答题 #'+(parseInt(e.id.split('_')[1])+1);
+q=saQuestions[parseInt(e.id.split('_')[1])];
+}else if(typeof e.id==='string' && e.id.startsWith('exam_mc_')){
+const idx = parseInt(e.id.split('_')[2]);
+label='考试选择题 #'+idx;
+q=mcQuestions[idx];
+}else{
+label='选择题 #'+(e.id+1);
+q=mcQuestions[e.id];
+}
+const date = new Date(e.time).toLocaleDateString('zh-CN');
+return `<div class="card" style="font-size:.82rem"><strong>${label}</strong><br>${q?q.q:''}<br><span style="color:var(--accent);font-weight:700">答案：${q&&q.ans!==undefined?'ABCD'[q.ans]:q&&q.hint||''}</span><br><span style="color:var(--text2)">${date}</span></div>`;
+}).join('')+'</div>';
+}
+
+const weakEl = document.getElementById('weakConcepts');
+const errorIndices = errors.map(e=>typeof e.id==='number'?e.id:-1).filter(i=>i>=0&&i<mcQuestions.length);
+if(errorIndices.length===0){
+weakEl.innerHTML='<p style="color:var(--text2)">暂无薄弱概念数据，多做几道题试试。</p>';
+}else{
+const freq = {};
+errorIndices.forEach(i=>{
+const q=mcQuestions[i]; if(!q)return;
+const topic = q.q.split('？')[0].split('的是')[0].slice(0,12);
+freq[topic] = (freq[topic]||0)+1;
+});
+const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,5);
+weakEl.innerHTML = sorted.map(([t,n])=>`
+<div class="card" style="border-left:4px solid var(--accent);padding:10px 14px;margin:6px 0">
+<strong>${t}</strong> — 错误${n}次
+</div>`).join('');
+}
+}
+
+// ============ TAB 5: TREE ============
+function renderTree(){
+const tree = document.getElementById('treeContainer');
+tree.innerHTML = `
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">一、大学起源（中世纪欧洲）</div>
+<div class="tree-node">
+<div class="tree-leaf">• 1088年博洛尼亚大学 → 世界第一所现代大学</div>
+<div class="tree-leaf">• 1158年《学术特权法令》→ 四大特权确立学术自由</div>
+<div class="tree-leaf">• 1167年牛津诞生 → 英法关系恶化，巴黎学者迁英</div>
+<div class="tree-leaf">• 1209年剑桥诞生 → 牛津师生与市民冲突后迁出</div>
+<div class="tree-leaf">• 核心条件：物质基础 + 精神优先 + 宗教虔诚</div>
+</div>
+
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">二、两条核心教育路线</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">纽曼通识教育（牛津剑桥路线）</div>
+<div class="tree-node">
+<div class="tree-leaf">• 《大学的理念》：传播"大行之道"</div>
+<div class="tree-leaf">• 培养完整个体：判断力、美德、视野</div>
+<div class="tree-leaf">• 学生共同体 > 课堂教学</div>
+<div class="tree-leaf">• 学院制：独立小型社会单元</div>
+<div class="tree-leaf">• 导师制：学术+人格全面负责</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">洪堡专才教育（德国路线）</div>
+<div class="tree-node">
+<div class="tree-leaf">• 三大原则：研究教学合一 / 知识总和 / 专业精深</div>
+<div class="tree-leaf">• 5年学制，后2年专注精深知识</div>
+<div class="tree-leaf">• 通过苏联影响中国1952年理工分校</div>
+<div class="tree-leaf">• 优势：实用高效 / 劣势：知识面窄</div>
+</div>
+</div>
+
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">三、美国高等教育转型（19世纪末）</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">吉尔曼：约翰·霍普金斯大学</div>
+<div class="tree-node">
+<div class="tree-leaf">• 美国第一所研究生院</div>
+<div class="tree-leaf">• 本科素质教育 + 博士研究教育分轨</div>
+<div class="tree-leaf">• 五大原则：通识基础/方法自由/研究能力/长期视角/服务社会</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">艾略特：哈佛现代化（40年任期）</div>
+<div class="tree-node">
+<div class="tree-leaf">• 引入科学研究（哈佛历史上首次）</div>
+<div class="tree-leaf">• "以教为主"→"以学为主"</div>
+<div class="tree-leaf">• 案例教学、选修课、讨论班、实验</div>
+<div class="tree-leaf">• 医学院改革：16周速成→本科+多年培训</div>
+</div>
+<div class="tree-leaf">• 吉尔曼-怀特(康奈尔)-乔丹(斯坦福)：三代教育改革谱系</div>
+</div>
+
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">四、名校特色图谱</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">常青藤联盟（8所）</div>
+<div class="tree-node">
+<div class="tree-leaf">• 大藤(HYP): 哈佛(标杆)/耶鲁(文科领袖)/普林斯顿(本科第一)</div>
+<div class="tree-leaf">• 哥大: 城市校园/核心课程/自由精神</div>
+<div class="tree-leaf">• 宾大: 最务实/沃顿商学院/富兰克林遗产</div>
+<div class="tree-leaf">• 达特茅斯: 保留"学院"名/本科为核心/野外生存</div>
+<div class="tree-leaf">• 康奈尔/布朗</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">理工双壁</div>
+<div class="tree-node">
+<div class="tree-leaf">• MIT: 70%看成绩/1/3毕业生成为高管/A率仅20-30%</div>
+<div class="tree-leaf">• Caltech: 只培养天才/诺奖密度全球第一/JPL实验室</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">法国精英大学校</div>
+<div class="tree-node">
+<div class="tree-leaf">• 巴黎高师: 10个菲尔兹奖/录取率3%</div>
+<div class="tree-leaf">• 综合理工: 法国500强半数CEO</div>
+<div class="tree-leaf">• 巴黎政治学院: 8位总统中6位毕业于此</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">德国：从辉煌到警示</div>
+<div class="tree-node">
+<div class="tree-leaf">• 19世纪世界高等教育样板</div>
+<div class="tree-leaf">• 衰落三因：经费不足/过度公平/体制僵化</div>
+</div>
+</div>
+
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">五、反思与个人实践</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">通识教育四学科价值</div>
+<div class="tree-node">
+<div class="tree-leaf">• 语文：阅读理解+表达能力(一切学科的基础工具)</div>
+<div class="tree-leaf">• 数学：逻辑推理(公理→定理)+量化思维</div>
+<div class="tree-leaf">• 历史：时空全局思维+客观公允认知</div>
+<div class="tree-leaf">• 科学：可叠加进步+科学方法+科学素养</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">大学五大补充训练</div>
+<div class="tree-node">
+<div class="tree-leaf">• ①看透钱：财富是媒介，精英看影响力</div>
+<div class="tree-leaf">• ②领导力：服从→合作→当助手</div>
+<div class="tree-leaf">• ③边界认知：防御/围棋/缓存思维</div>
+<div class="tree-leaf">• ④健全人格：恋爱+社交+同理心</div>
+<div class="tree-leaf">• ⑤信仰树立：驱动长期行动的精神内核</div>
+</div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">中美教育关键差异</div>
+<div class="tree-node">
+<div class="tree-leaf">• 中国：课程多/考试导向/专业早定/标准答案</div>
+<div class="tree-leaf">• 美国：课程少而深/多元考核/通识教育/独立思考</div>
+<div class="tree-leaf">• 体育：中国"运动员=头脑简单"vs美国"运动塑造人格"</div>
+<div class="tree-leaf">• 选择：取决于未来生活规划，非一概而论</div>
+</div>
+</div>
+`;
+}
+
+// ============ TAB 6: SOCRATIC ============
+function renderSocratic(){
+const items = [
+{q:'大学的本质是什么？',a1:'大学的本质不是职业培训所，而是"受契约保护的师生团体"进行自由知识探索的场所。1088年博洛尼亚大学成立时，与就业无关——学生学习纯粹出于对未知世界的好奇心。',a2:'如果大学沦为职业培训所会怎样？学生会失去"为什么学"的内在动力，如同多佛尔角的哨兵——时间长了忘记目的，只剩下形式。这正是"98%的人无法成为2%精英"的根源。'},
+{q:'通识教育和专才教育，哪个更好？',a1:'没有绝对答案。纽曼的通识教育培养"完整个体"，让你知道世界有多大；洪堡的专才教育给你"一技之长"，让你能立足社会。问题不是选哪个，而是你的国家发展阶段和个人目标需要哪个。',a2:'为什么中国1952年选择专才模式？因为当时急需工业化人才，通识教育是"奢侈品"。但现在中国经济变了，单一技能已不够——所以通识教育重新被重视。关键是"先解决温饱，再追求高远"。'},
+{q:'为什么美国大学重视体育？',a1:'体育在美国不是目的而是手段——通过运动队培养六种能力：承诺兑现、时间管理、服从团队、追求个人最佳、长期规划、沟通能力。这些恰好是职场的核心素养。',a2:'为什么高尔夫教练强调"诚实"最重要？因为高尔夫是唯一自记分的运动，作弊会毁掉整个运动生涯。这说明：体育培养的不是肌肉，而是品格。大学录取看重的也不是体育成绩本身，而是运动过程中的收获。'},
+{q:'德国大学为什么有钱却衰落了？',a1:'有钱≠有一流大学。德国GDP超过英国加拿大，但最高排名仅40名。真正的问题是三重困境：经费(国家有钱但大学没钱)、过度公平(录取近乎抽签)、体制僵化(教授"一个萝卜一个坑")。',a2:'这对中国有什么警示？清华年预算233亿人民币远超美国名校，但尚未培养出诺奖得主。结论：一流大学无法仅靠"砸钱"建成——需要学术自由、精英选拔、灵活体制三者结合。'},
+{q:'上大学真的能改变命运吗？',a1:'能，但有条件。上大学显著提升成为精英的概率，即使未成精英也能增加幸福生活的可能。但前提是：你清楚为什么上大学。如果只是"别人都上我也上"，那和形式化的哨兵没有区别。',a2:'如果不上大学怎么办？欧洲提供了另一种模式——职业教育。技术工人收入与社会地位与白领相当。关键是找到适合自己的路径，而非盲目从众。'},
+{q:'为什么哈佛录取不只看成绩？',a1:'哈佛的逻辑是"倒推式选拔"：按未来社会精英领域的比例分配名额。他们发现仅7%的精英是"学霸"，所以仅7%的新生是学霸。剩下的70%看的是"在单一领域达到极致"的潜力。',a2:'这对亚裔学生意味着什么？成绩好只是"基础门槛"而非"竞争优势"。亚裔需要在课外活动、校友回馈、社会影响力方面证明自己的"长期价值"——而这恰好是传统教育忽视的。'},
+];
+document.getElementById('socraticContainer').innerHTML = items.map((item,i)=>`
+<div class="socratic-item">
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">${item.q}</div>
+<div class="socratic-a" style="display:none">
+<p><strong>第一层：</strong>${item.a1}</p>
+<p style="margin-top:8px"><strong>追问：</strong>${item.a2}</p>
+</div>
+</div>`).join('');
+}
+
+// ============ TAB 7: CASE STUDY ============
+function renderCase(){
+document.getElementById('caseContainer').innerHTML = `
+<div class="card">
+<h2>案例分析：吉尔曼创办约翰·霍普金斯大学</h2>
+<p style="color:var(--text2);margin-bottom:16px">用MKS四维度拆解美国第一所研究型大学的诞生</p>
+
+<div class="card" style="border-left:4px solid var(--accent)">
+<h3>问题识别</h3>
+<p style="font-size:.85rem">19世纪中后期美国高等教育陷入困境：哈佛200年历史但质量堪忧，课程脱离实际（死记硬背拉丁文），医学院16周即可毕业。富裕家庭送子女去欧洲留学。美国工业正在崛起（1890年GDP超英国），但高等教育无法提供人才支撑。</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>核心概念运用</h3>
+<p style="font-size:.85rem">
+<strong>① 大学本质：</strong>吉尔曼回归大学本源——为探索知识而建，非为谋生。<br>
+<strong>② 学术自由：</strong>约翰·霍普金斯遗嘱要求"不受教会和国家干预"，保障学术独立。<br>
+<strong>③ 融合创新：</strong>不是简单复制德国或英国模式，而是"德国研究+英国通识+美国实用主义"的三合一。<br>
+<strong>④ 制度突破：</strong>建立美国第一所研究生院，实现本科(素质教育)与博士(研究教育)分轨。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #3a6ea5">
+<h3>解决方案与成果</h3>
+<p style="font-size:.85rem">
+<strong>资金：</strong>约翰·霍普金斯700万美元遗赠（相当于当时哈佛17.5年总收入）作为启动基金。<br>
+<strong>人才：</strong>因欧洲人才难引进，集中培养有潜力的青年学者，十年后他们成为美国各大学骨干。<br>
+<strong>成果：</strong>建校仅20年（至1896年），全美60所主要大学中每所至少有3名霍普金斯毕业生担任教授。威斯康星大学19名、哥伦比亚大学13名。<br>
+<strong>谱系：</strong>吉尔曼→怀特(康奈尔创校校长)→乔丹(斯坦福创校校长)，形成教育改革传承。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #6b8e23">
+<h3>MKS启示</h3>
+<p style="font-size:.85rem">
+1. <strong>资金是必要条件但不是充分条件：</strong>同样的钱可以建宫殿，但吉尔曼选择建实验室。<br>
+2. <strong>灵魂人物不可替代：</strong>没有吉尔曼，霍普金斯遗产可能变成另一所平庸的教会学校。<br>
+3. <strong>制度创新 > 技术模仿：</strong>美国没有照搬欧洲，而是创造性地设计了本科+博士分轨制。<br>
+4. <strong>长期主义：</strong>"大学不是一天建成的"——吉尔曼用20年才看到成果。
+</p>
+</div>
+</div>`;
+}
+
+// ============ TAB 8: DECISION ============
+function renderDecision(){
+document.getElementById('decisionContainer').innerHTML = `
+<h2>实战决策模拟</h2>
+<p style="color:var(--text2);margin-bottom:16px">站在教育选择的关键节点，你会怎么做？每题选择一个方案后查看分析。</p>
+<div id="decisionRounds"></div>
+`;
+const rounds = [
+{
+scenario:'【第1轮】你是一个高中生的家长。孩子成绩优异(年级前5%)，同时钢琴达到省级水平。你在思考应该鼓励孩子走"纯高考路线"还是"全面发展+出国申请"路线。',
+options:[
+{text:'集中精力刷分冲清北，钢琴先放一放',feedback:'❌ 纯分数路线在国内体系内有效，但对照世界名校的选拔逻辑，哈佛仅7%新生是"学霸"，70%是特招生。如果目标是成为有国际竞争力的精英，仅靠分数远远不够。',mks:'通识教育vs专才教育：纽曼认为"培养完整个体"比"传授技能"更重要。美国名校看的是"在单一领域达到极致"+"综合素质"，而非考试总分。'},
+{text:'维持钢琴训练到省级比赛，同时全面发展课外活动，准备出国',feedback:'✅ 参照哈佛/普林斯顿录取逻辑——他们找的不是"最高分"，而是"最有潜力的人"。省级钢琴水平证明你在一个领域达到了极致，这恰好是美国名校最看重的"特长生"素质。',mks:'常青藤精英选拔：录取=30%成绩+70%综合素质。"在单一领域达到极致水平"证明你有超常毅力与竞争力，这是预测未来成功的最佳指标。'},
+{text:'两边都抓，高考和出国同时准备',feedback:'⚠️ 看似"双保险"实则容易两败俱伤。中国高考和美国申请需要完全不同的能力结构——前者重刷题，后者重活动与表达。精力分散可能导致两个方向都不够极致。',mks:'加州理工"布尔值原则"：要么不设(0)，要么做到第一(1)。"什么都想要"往往什么都得不到。选择路径需要聚焦。'},
+]
+},
+{
+scenario:'【第2轮】你本科毕业收到三个offer：A. 某985高校计算机硕士(国内认可度高) B. 美国排名30-50大学的计算机硕士(有奖学金) C. 直接加入一家AI创业公司(核心团队成员)。你怎么选？',
+options:[
+{text:'选A：985硕士，稳妥有保障',feedback:'⚠️ 国内985硕士性价比高，但需要问：你的目标是"稳定"还是"卓越"？参照吴军的分析——中国大学硕士教育在部分领域已不弱于美国中等水平大学。如果未来计划在中国发展，这是合理选择。',mks:'行业>公司>职业：先判断AI行业的发展趋势。如果中国AI行业持续景气，本土名校硕士的回报可能高于海外普通大学。'},
+{text:'选B：出国读硕，打开国际视野',feedback:'❌ 注意：美国硕士项目多为大学盈利项目。哥伦比亚统计系一年招200-300名硕士，80-90%来自中国大陆。这类学位的"含金量"可能不如985硕士+2年工作经验。',mks:'美国教育的"水分"：硕士按博士标准收费却不提供科研条件。出国读书的前提是弄清楚"为什么"而非"别人都出去了"。'},
+{text:'选C：加入创业公司，在实践中成长',feedback:'✅ 如果创业公司的技术方向有前景且团队靠谱，这是最"吉尔曼式"的选择——创新发生在实践前沿而非课堂。但风险是：如果创业失败，你没有学位作为"安全网"。',mks:'吉尔曼教育思想："大学不是唯一的学习场所"——优质社交圈、专业实践、项目经历同样是教育。但需评估你是否有"在没有学位的情况下证明自己"的能力。'},
+]
+},
+{
+scenario:'【第3轮】你是一所中国大学的校长。学校预算充足(年预算200亿)，但国际排名徘徊在60-80名。你可以推行一项重大改革，你会选哪个？',
+options:[
+{text:'大规模引进海外诺贝尔奖级学者，快速提升科研产出',feedback:'⚠️ 砸钱引进人才是必要但不充分的策略。德国大学的教训：有钱(德国GDP高于英国加拿大)≠有一流大学。如果没有学术自由和灵活体制，引进的人才也会"水土不服"最终离开。',mks:'德国教育衰落启示：人才流失不是因为钱少，而是因为体制僵化(教授"一个萝卜一个坑")和缺乏学术自由。钱能买来人才，买不来创新环境。'},
+{text:'建立类似普林斯顿的住宿学院制，重塑本科生培养体系',feedback:'✅ 这是最"深水区"但也最有可能产生长期影响的改革。普林斯顿的住宿学院让"同学间互相学习比课程更重要"。但需警惕形式主义——中国很多大学"书院"仅学形式(宿舍楼改名)而忽略本质(师生共同体)。',mks:'学院制的本质："家"的环境+特长互补的室友+师生共同生活。不是建筑的改变，而是人际关系的重构。这对中国大学"师生疏离"的问题尤其对症。'},
+{text:'模仿法国Grande Ecole，在大学内设立独立精英选拔通道',feedback:'⚠️ 双轨制在中国现行体制下很难推行——法国精英学校独立于公立大学系统之外有200年历史。但部分元素可以借鉴：在现有框架内设立"荣誉学院"，小规模选拔最有潜力的学生进行通识+专才融合培养。',mks:'法国精英教育的启示：优质教育资源必然紧缺。不可能让所有人都接受精英教育——关键是建立"多条赛道"，让不同类型的人才都能找到适合自己的培养路径。'},
+]
+}
+];
+setTimeout(()=>{
+const wrap = document.getElementById('decisionRounds');
+wrap.innerHTML = rounds.map((r,i)=>`
+<div class="decision-round">
+<div class="scenario">${r.scenario}</div>
+${r.options.map((o,j)=>`<div class="d-option" onclick="chooseDecision(${i},${j})" id="dopt${i}_${j}">${'ABC'[j]}. ${o.text}</div>`).join('')}
+<div class="d-result" id="dres${i}"></div>
+</div>`).join('');
+},100);
+}
+function chooseDecision(round, choice){
+const rounds = [
+{options:[
+{text:'',feedback:'❌ 纯分数路线在国内体系内有效，但对照世界名校的选拔逻辑，哈佛仅7%新生是"学霸"，70%是特招生。如果目标是成为有国际竞争力的精英，仅靠分数远远不够。',mks:'通识教育vs专才教育：纽曼认为"培养完整个体"比"传授技能"更重要。'},
+{text:'',feedback:'✅ 参照哈佛/普林斯顿录取逻辑——他们找的不是"最高分"，而是"最有潜力的人"。省级钢琴水平证明你在一个领域达到了极致，这恰好是美国名校最看重的"特长生"素质。',mks:'常青藤精英选拔：录取=30%成绩+70%综合素质。'},
+{text:'',feedback:'⚠️ 看似"双保险"实则容易两败俱伤。中国高考和美国申请需要完全不同的能力结构。精力分散可能导致两个方向都不够极致。',mks:'加州理工"布尔值原则"：要么不设(0)，要么做到第一(1)。'},
+]},
+{options:[
+{text:'',feedback:'⚠️ 国内985硕士性价比高，但需要问：你的目标是"稳定"还是"卓越"？',mks:'行业>公司>职业：先判断AI行业的发展趋势。'},
+{text:'',feedback:'❌ 注意：美国硕士项目多为大学盈利项目。哥伦比亚统计系一年招200-300名硕士，80-90%来自中国大陆。',mks:'美国教育的"水分"：硕士按博士标准收费却不提供科研条件。'},
+{text:'',feedback:'✅ 如果创业公司的技术方向有前景且团队靠谱，这是最"吉尔曼式"的选择。但风险是：如果创业失败，你没有学位作为"安全网"。',mks:'吉尔曼教育思想："大学不是唯一的学习场所"。'},
+]},
+{options:[
+{text:'',feedback:'⚠️ 砸钱引进人才是必要但不充分的策略。德国大学的教训：有钱≠有一流大学。',mks:'德国教育衰落启示：人才流失不是因为钱少，而是因为体制僵化。'},
+{text:'',feedback:'✅ 这是最"深水区"但也最有可能产生长期影响的改革。但需警惕形式主义。',mks:'学院制的本质："家"的环境+特长互补的室友+师生共同生活。'},
+{text:'',feedback:'⚠️ 双轨制在中国现行体制下很难推行。但可以借鉴部分元素：设立"荣誉学院"，小规模选拔最有潜力的学生。',mks:'法国精英教育的启示：优质教育资源必然紧缺。'},
+]}
+];
+const r = rounds[round];
+const res = document.getElementById('dres'+round);
+for(let j=0;j<3;j++){
+const el = document.getElementById('dopt'+round+'_'+j);
+el.classList.remove('chosen');
+}
+document.getElementById('dopt'+round+'_'+choice).classList.add('chosen');
+res.className = 'd-result show';
+res.innerHTML = `<p><strong>${r.options[choice].feedback}</strong></p><p style="margin-top:6px;color:var(--accent);font-size:.8rem">【MKS分析】${r.options[choice].mks}</p>`;
+}
+
+// ============ GLOBAL FUNCTIONS ============
+function switchTab(idx){
+document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+document.getElementById('tab'+idx).classList.add('active');
+document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+if(idx===4) renderStats();
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+const learned = JSON.parse(localStorage.getItem('mks_learned')||'[]');
+const results = JSON.parse(localStorage.getItem('mks_quizResults')||'{}');
+const total = concepts.length + Object.keys(results).length*0.5;
+const done = learned.length + Object.values(results).filter(r=>r.correct).length;
+const pct = Math.min(100,Math.round(done/Math.max(1,total)*100));
+document.getElementById('overallProgress').style.width = pct+'%';
+document.getElementById('progressLabel').textContent = `已学习 ${learned.length}/19 个概念 | 正确率 ${Object.values(results).length?Math.round(Object.values(results).filter(r=>r.correct).length/Object.values(results).length*100):0}%`;
+}
+
+function resetProgress(){
+if(confirm('确定要重置所有学习进度、错题和考试记录吗？此操作不可恢复。')){
+localStorage.removeItem('mks_learned');
+localStorage.removeItem('mks_quizResults');
+localStorage.removeItem('mks_errorBook');
+localStorage.removeItem('mks_examResults');
+mcqAnswers = {}; saqRevealed = {};
+renderMCQ(); renderSAQ(); updateProgress(); renderStats();
+alert('已重置全部进度。');
+}
+}
+
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+
+// ============ INIT ============
+function init(){
+renderConceptGrid();
+renderMKSGrid();
+renderBoundaryTable();
+renderLearningPath();
+renderSVG();
+updateFlipCard();
+renderMCQ();
+renderSAQ();
+renderTree();
+renderSocratic();
+renderCase();
+renderDecision();
+updateProgress();
+}
+init();
+</script>
+</body>
+</html>

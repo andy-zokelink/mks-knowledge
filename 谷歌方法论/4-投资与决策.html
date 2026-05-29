@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资与决策 · 最小知识集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#e74c3c;
+  --text:#3d2f2f;--text2:#6b5757;--border:#e8d5c4;--gold:#d4a853;
+  --green:#27ae60;--blue:#2980b9;--purple:#8e44ad;--tag-bg:#fef0e0;
+}
+body{
+  font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.75;
+  min-height:100vh;
+}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+
+/* Header */
+.header{
+  text-align:center;padding:clamp(20px,4vw,40px) 0 clamp(12px,3vw,24px);
+  border-bottom:2px solid var(--border);margin-bottom:clamp(12px,2vw,20px);
+}
+.header h1{font-size:clamp(1.3rem,3.5vw,1.8rem);color:var(--accent);font-weight:700}
+.header .sub{font-size:clamp(.85rem,2vw,1rem);color:var(--text2);margin-top:4px}
+.header .home-link{display:inline-block;margin-top:8px;font-size:.85rem;color:var(--blue);text-decoration:none;border:1px solid var(--blue);padding:4px 14px;border-radius:16px;transition:all .2s}
+.header .home-link:hover{background:var(--blue);color:#fff}
+
+/* Tab bar */
+.tab-bar{
+  position:sticky;top:0;z-index:100;background:var(--bg);
+  display:flex;flex-wrap:wrap;gap:4px;padding:8px 0 12px;
+  border-bottom:1px solid var(--border);margin-bottom:16px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.tab-btn{
+  flex-shrink:0;padding:6px 13px;border:1px solid var(--border);
+  border-radius:18px;background:var(--card);color:var(--text2);
+  font-size:clamp(.78rem,1.8vw,.9rem);cursor:pointer;transition:all .2s;
+  white-space:nowrap;user-select:none;
+}
+.tab-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Tab content */
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:clamp(14px,3vw,20px);margin-bottom:clamp(10px,2vw,16px);
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.card h2{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--accent);margin-bottom:8px}
+.card h3{font-size:clamp(.9rem,2vw,1rem);color:var(--text);margin:10px 0 6px}
+.card p,.card li{font-size:clamp(.82rem,1.8vw,.92rem);color:var(--text);margin-bottom:4px}
+
+/* MKS badge */
+.mks-badge{
+  display:inline-block;background:var(--accent);color:#fff;
+  font-size:.72rem;padding:1px 8px;border-radius:10px;margin-left:6px;
+  font-weight:600;vertical-align:middle;
+}
+/* Progress bar */
+.progress-wrap{margin:8px 0 14px}
+.progress-label{display:flex;justify-content:space-between;font-size:.82rem;color:var(--text2);margin-bottom:3px}
+.progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .5s ease}
+
+/* Grid */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:12px 0}
+.concept-card{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:14px;text-align:center;cursor:pointer;transition:all .25s;
+  position:relative;overflow:hidden;
+}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.concept-card.core{border-color:var(--accent);border-width:2px}
+.concept-card .icon{font-size:1.8rem;margin-bottom:4px}
+.concept-card .name{font-weight:700;font-size:.92rem;color:var(--text)}
+.concept-card .brief{font-size:.78rem;color:var(--text2);margin-top:2px}
+.concept-card .mks-star{position:absolute;top:6px;right:8px;color:var(--accent);font-size:.85rem}
+
+/* SVG container */
+.svg-wrap{overflow-x:auto;margin:12px 0;padding:8px 0;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+/* Flip card */
+.flip-container{perspective:1000px;width:100%;max-width:600px;margin:0 auto 20px}
+.flip-inner{position:relative;width:100%;min-height:280px;transition:transform .5s;transform-style:preserve-3d}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{
+  position:absolute;width:100%;min-height:280px;backface-visibility:hidden;
+  border-radius:12px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:28px 24px;text-align:center;
+}
+.flip-front{background:var(--card);border:2px solid var(--border);z-index:2}
+.flip-front .concept-name{font-size:1.3rem;font-weight:700;color:var(--accent)}
+.flip-front .hint{font-size:.82rem;color:var(--text2);margin-top:8px}
+.flip-back{
+  background:var(--card);border:2px solid var(--accent);transform:rotateY(180deg);
+  text-align:left;justify-content:flex-start;overflow-y:auto;
+}
+.flip-back h4{color:var(--accent);margin:6px 0 2px;font-size:.9rem}
+.flip-back p{font-size:.82rem;color:var(--text2);margin-bottom:4px}
+
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav button{
+  padding:8px 18px;border:1px solid var(--border);border-radius:20px;
+  background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem;transition:all .2s;
+}
+.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.flip-counter{font-size:.85rem;color:var(--text2)}
+
+/* Quiz */
+.quiz-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.quiz-card.correct{border-color:var(--green);background:#f0faf4}
+.quiz-card.wrong{border-color:var(--accent);background:#fef5f5}
+.quiz-q{font-weight:700;font-size:.92rem;margin-bottom:10px}
+.quiz-opt{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .15s}
+.quiz-opt:hover{background:#fef5f0}
+.quiz-opt.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
+.quiz-opt.correct-ans{background:var(--green);color:#fff;border-color:var(--green)}
+.quiz-fb{font-size:.83rem;margin-top:8px;padding:8px 12px;border-radius:6px}
+.quiz-fb.right{background:#e8f8ef;color:var(--green)}
+.quiz-fb.wrong-fb{background:#fef0f0;color:var(--accent)}
+
+/* Exam */
+.timer{font-size:1.4rem;font-weight:700;color:var(--accent);text-align:center;padding:12px}
+.timer.warning{animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.exam-result{text-align:center;padding:20px}
+.exam-result .score{font-size:2.4rem;font-weight:700;color:var(--accent)}
+.exam-result .grade{font-size:1.1rem;margin:6px 0;color:var(--text2)}
+
+/* Mindmap */
+.mindmap-tree{font-size:.85rem;padding-left:8px}
+.mindmap-node{margin:3px 0}
+.mindmap-toggle{cursor:pointer;user-select:none;color:var(--accent);font-weight:700}
+.mindmap-toggle::before{content:'▸ ';display:inline-block;transition:transform .2s;font-size:.75rem}
+.mindmap-toggle.open::before{transform:rotate(90deg)}
+.mindmap-children{display:none;padding-left:20px;border-left:2px solid var(--border);margin-left:8px}
+.mindmap-children.open{display:block}
+.mindmap-leaf{color:var(--text2);padding:2px 0}
+
+/* Socratic */
+.socratic-item{margin-bottom:10px}
+.socratic-q{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;cursor:pointer;font-size:.88rem;font-weight:600;
+  display:flex;justify-content:space-between;align-items:center;transition:all .2s;
+}
+.socratic-q:hover{border-color:var(--accent)}
+.socratic-q.open{border-color:var(--accent);border-radius:8px 8px 0 0}
+.socratic-a{
+  display:none;background:var(--tag-bg);border:1px solid var(--border);
+  border-top:none;border-radius:0 0 8px 8px;padding:12px 14px;font-size:.83rem;
+}
+.socratic-a.open{display:block}
+
+/* Decision sim */
+.sim-scenario{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.sim-scenario h3{color:var(--accent);margin-bottom:8px}
+.sim-choices{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.sim-choice{
+  padding:10px 14px;border:1px solid var(--border);border-radius:8px;
+  cursor:pointer;font-size:.85rem;transition:all .15s
+}
+.sim-choice:hover{background:var(--tag-bg);border-color:var(--accent)}
+.sim-choice.chosen{border-color:var(--accent);background:var(--tag-bg)}
+.sim-feedback{font-size:.85rem;padding:12px;border-radius:8px;margin-top:8px;display:none}
+.sim-feedback.show{display:block}
+.sim-feedback.good{background:#e8f8ef;border:1px solid var(--green)}
+.sim-feedback.mid{background:#fef9e7;border:1px solid var(--gold)}
+.sim-feedback.bad{background:#fef0f0;border:1px solid var(--accent)}
+
+/* Stat table */
+.stat-table{width:100%;border-collapse:collapse;font-size:.83rem;margin:8px 0}
+.stat-table th,.stat-table td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+.stat-table th{background:var(--tag-bg);font-weight:600;color:var(--accent)}
+.stat-table tr:nth-child(even){background:var(--card)}
+
+/* Boundary table */
+.boundary-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.boundary-table td{padding:6px 10px;border:1px solid var(--border)}
+.boundary-table td:first-child{font-weight:600;color:var(--accent);white-space:nowrap}
+
+/* Button */
+.btn{
+  display:inline-block;padding:8px 20px;border-radius:20px;border:none;
+  background:var(--accent);color:#fff;font-size:.88rem;cursor:pointer;
+  transition:all .2s;text-align:center;
+}
+.btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:5px 14px;font-size:.78rem}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Tags */
+.tag{display:inline-block;background:var(--tag-bg);color:var(--accent);font-size:.75rem;padding:2px 8px;border-radius:10px;margin:2px}
+
+/* Footer */
+.footer{text-align:center;padding:30px 0 20px;font-size:.78rem;color:var(--text2);border-top:1px solid var(--border);margin-top:30px}
+
+/* Mobile */
+@media(max-width:600px){
+  .concept-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .flip-inner,.flip-front,.flip-back{min-height:320px}
+  .tab-btn{padding:5px 10px;font-size:.75rem}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="header">
+  <h1>投资与决策 · 最小知识集</h1>
+  <p class="sub">风险投资、投资哲学、货币金融与决策思维 —— 39篇笔记精华提炼</p>
+  <a href="#" class="home-link" title="返回首页" onclick="alert('预留返回首页入口 — 部署时替换为实际首页链接');return false">🏠 返回首页</a>
+</header>
+
+<nav class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</nav>
+
+<!-- ========== TAB 0: 知识总览 ========== -->
+<section class="tab-content active" data-tab="0">
+  <div class="card">
+    <h2>核心目标</h2>
+    <p style="font-size:1.05rem;font-weight:600;color:var(--accent)">
+      理解资本的运行逻辑与决策的底层思维 —— 在不确定性中把握确定性，用制度和系统替代运气和直觉。
+    </p>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>学习进度</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>10 大核心概念</h2>
+    <div class="concept-grid" id="conceptGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>概念关系图 <span style="font-size:.78rem;color:var(--text2)">（可左右滑动）</span></h2>
+    <div class="svg-wrap" id="svgContainer"></div>
+    <p style="font-size:.78rem;color:var(--text2);text-align:center;margin-top:8px">
+      图例：<span style="color:#c0392b">━</span> 因果驱动 &nbsp;
+      <span style="color:#d4a853">━</span> 层级包含 &nbsp;
+      <span style="color:#2980b9">━</span> 并列支撑 &nbsp;
+      <span style="color:#27ae60">┅</span> 工具赋能
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>★ 最小知识集核心（4 个必须深刻理解）</h2>
+    <div class="concept-grid" id="mksCoreGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>边界知识表</h2>
+    <table class="boundary-table"><tbody id="boundaryTable"></tbody></table>
+  </div>
+
+  <div class="card">
+    <h2>学习路径（5 阶段）</h2>
+    <ol style="padding-left:20px;font-size:.88rem;line-height:2">
+      <li><strong>先学止损与J曲线</strong> — 掌握决策底层思维，理解"滞后效应"是所有长期投入的共性</li>
+      <li><strong>再学风险投资运作机制</strong> — 理解资本如何驱动创新，从起源（仙童）到基金结构到投后管理</li>
+      <li><strong>然后深入投资哲学</strong> — 约翰·杜尔（投人）、彼得·林奇（PEG）、比尔·米勒（最大价值）三位大师的方法论</li>
+      <li><strong>接着学货币与金融基础设施</strong> — 从金本位到央行平衡表到区块链，理解货币本质</li>
+      <li><strong>最后补充公司管理与国际视野</strong> — 矩阵式管理、德鲁克定律、奥格威定律、贸易协定</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== TAB 1: 知识卡片 ========== -->
+<section class="tab-content" data-tab="1">
+  <div class="flip-container" id="flipCard">
+    <div class="flip-inner" id="flipInner">
+      <div class="flip-front"><div class="concept-name" id="flipName"></div><div class="hint">点击卡片翻转查看详情</div></div>
+      <div class="flip-back" id="flipBack"></div>
+    </div>
+  </div>
+  <div class="flip-nav">
+    <button id="flipPrev">◀ 上一个</button>
+    <span class="flip-counter" id="flipCounter">1 / 10</span>
+    <button id="flipToggle">翻转卡片</button>
+    <button id="flipLearned">✓ 标记已学</button>
+    <button id="flipNext">下一个 ▶</button>
+  </div>
+</section>
+
+<!-- ========== TAB 2: 题库系统 ========== -->
+<section class="tab-content" data-tab="2">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+    <h2 style="margin:0">选择题练习（20题）</h2>
+    <button class="btn btn-sm btn-outline" id="quizReset">重置全部</button>
+  </div>
+  <div id="quizList"></div>
+</section>
+
+<!-- ========== TAB 3: 考试模式 ========== -->
+<section class="tab-content" data-tab="3">
+  <div class="card" style="text-align:center">
+    <h2>模拟考试</h2>
+    <p style="font-size:.9rem;color:var(--text2)">从题库随机抽取 7 道选择题 + 3 道简答题，限时 15 分钟</p>
+    <div class="timer" id="examTimer">15:00</div>
+    <button class="btn" id="examStart">开始考试</button>
+    <div id="examContent"></div>
+    <div id="examResult" class="exam-result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ========== TAB 4: 复习模式 ========== -->
+<section class="tab-content" data-tab="4">
+  <div class="card">
+    <h2>错题本</h2>
+    <div id="wrongBook"><p style="color:var(--text2)">暂无错题记录。去题库练习吧！</p></div>
+  </div>
+  <div class="card">
+    <h2>学习统计</h2>
+    <div id="statsPanel"></div>
+  </div>
+</section>
+
+<!-- ========== TAB 5: 思维导图 ========== -->
+<section class="tab-content" data-tab="5">
+  <div class="card">
+    <h2>知识体系思维导图</h2>
+    <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">点击 ▸ 展开/折叠节点</p>
+    <div class="mindmap-tree" id="mindmap"></div>
+  </div>
+</section>
+
+<!-- ========== TAB 6: 深度追问 ========== -->
+<section class="tab-content" data-tab="6">
+  <div class="card"><h2>苏格拉底式追问</h2><p style="font-size:.82rem;color:var(--text2)">点击问题展开思考</p></div>
+  <div id="socraticList"></div>
+</section>
+
+<!-- ========== TAB 7: 案例分析 ========== -->
+<section class="tab-content" data-tab="7">
+  <div class="card">
+    <h2>案例：触宝输入法337调查 —— MKS四维度拆解</h2>
+    <table class="stat-table">
+      <tr><th>维度</th><th>分析</th></tr>
+      <tr><td><strong>核心概念</strong></td><td>知识产权国际化：专利储备 + 国际规则尊重 = 竞争壁垒</td></tr>
+      <tr><td><strong>关键决策</strong></td><td>创始人王佳梁选择应诉（而非放弃）—— 止损的反面：在攸关生死的节点坚持正确方向</td></tr>
+      <tr><td><strong>制度力量</strong></td><td>聘请顶级律所Finnegan（一流人才抵10个二流人才），用对方建立的规则反制对方</td></tr>
+      <tr><td><strong>长期主义</strong></td><td>创业初期即投入超千万人民币布局国际专利（J曲线：前期投入→后期壁垒）</td></tr>
+    </table>
+    <p style="font-size:.83rem;color:var(--text2);margin-top:10px">
+      <strong>MKS启示：</strong>触宝案例串联了专利制度（规则的重要性）、J曲线（前期投入短期无回报但长期形成壁垒）、
+      奥格威定律（一流人才的价值）、以及国际化思维（按别人的规则也能赢）。这是一个完美的多概念交叉验证案例。
+    </p>
+  </div>
+</section>
+
+<!-- ========== TAB 8: 实战决策 ========== -->
+<section class="tab-content" data-tab="8">
+  <div class="card"><h2>投资决策模拟（3轮）</h2><p style="font-size:.82rem;color:var(--text2)">每个场景做出选择，查看MKS分析反馈</p></div>
+  <div id="simScenarios"></div>
+</section>
+
+<footer class="footer">
+  基于吴军·谷歌方法论「投资与决策」39篇笔记 · 最小知识集 · 生成于 2026-05-27
+</footer>
+
+</div><!-- .container -->
+
+<script>
+// ==================== DATA ====================
+
+const concepts = [
+  {id:'vc',name:'风险投资',icon:'💰',brief:'以股权换成长的耐心资本，推动技术创新与产业升级',core:true,
+   def:'一种封闭式中长期私募基金，投资于未上市高成长创业公司，通过上市或并购退出获得高额回报。典型期限"7+3"年，硅谷约1%项目上市、20%被并购、80%失败。',
+   analogy:'如同"科技赌石"——花小钱买下未经雕琢的璞玉（初创公司），通过长时间打磨（投后管理）使其价值显现，切开后才能知道是翡翠还是普通石头。',
+   example:'凯鹏华盈47年融资20多轮（约200亿美元），退出回报8000亿美元，平均每轮40倍回报。投资企业包括Google、亚马逊、苹果、Genentech。',
+   counter:'中国多数风投基金亏损（仅5%盈利），部分"伪VC"附加利息偿还或项目转移条款，偏离风险投资"无抵押、无需偿还"的本质。'},
+  {id:'jcurve',name:'J曲线与滞后效应',icon:'📈',brief:'改革初期必先下行，坚持正确方向越过拐点后进入持续上升',core:true,
+   def:'由美国政治学家伊恩·布雷默提出：横轴为改革程度，纵轴为期望结果。改革初期因打破原有平衡出现短期衰退（下行段），但坚持越过拐点后进入持续上升通道（上行段），整体呈J形。',
+   analogy:'如同健身减肥——开始运动后肌肉增加、脂肪减少，体重不降反升（下行段），很多人因此放弃。坚持3个月后体型明显改善（上行段）。',
+   example:'中国改革开放初期物价上涨、社会抱怨（下行段），坚持后实现持续经济腾飞（上行段）。日本足球专注学习巴西模式20年，不频繁换教练，完成J曲线跃迁。',
+   counter:'俄罗斯将"20年规划"拆成"20个1年"，遇困难即摇摆，政策缺乏一致性，长期发展"兜圈子"无法完成J曲线。'},
+  {id:'stoploss',name:'止损——斩断厄运链',icon:'✂️',brief:'接受局部损失避免更大灾难，拒绝"堤内损失堤外补"的侥幸心理',core:true,
+   def:'面对坏运气或决策失误时，接受已发生的损失，避免为补救小错而引发更大连锁灾难。核心是认知到"厄运会被错误应对方式放大"。',
+   analogy:'如同拔牙——蛀牙初期处理很简单，拖延不治会导致感染扩散，最终需要根管治疗甚至拔掉多颗牙。止损就是"第一次牙痛就去看牙医"。',
+   example:'淮海战役国民党为救44军→赔上5个兵团→失去长江以北。巴菲特强调"永远不要用杠杆投资"就是为了预防被迫平仓的厄运链。',
+   counter:'伯奇尔香肠事件——为晾香肠开窗→引海鸥→扔鞋驱鸟→吹风机短路→禁入酒店17年。每一步都可用"止损"中止。'},
+  {id:'drucker',name:'德鲁克定律',icon:'🎯',brief:'用"贡献"替代"成就"，关注对客户、员工、股东的长期价值',core:true,
+   def:'彼得·德鲁克的核心管理定律：从词汇中删除"成就"（Achievement），代之以"贡献"（Contribution）。企业贡献的三大对象：客户（创造和留住顾客）、员工（提供发展机会）、股东（带来长期回报）。',
+   analogy:'如同种树——成就是"今天摘了多少果子"（短期），贡献是"这片林十年后能养活多少人"（长期）。只顾摘果子会把树枝折断。',
+   example:'Google"公民奖"奖励帮助他人项目解决技术问题的员工；贝恩研究显示用户留存率每提高5%利润提升25-95%——老客户的价值远超新客户。',
+   counter:'雅虎/MSN仅关注用户绝对数量（成就指标），忽视用户粘性和满意度（贡献指标），最终被市场淘汰。中国大学教授量化考核（论文数、经费额）导致短期主义。'},
+  {id:'ogilvy',name:'奥格威定律',icon:'🏢',brief:'雇用比自已更强的人才能建巨人公司，避免"武大郎开店"',core:false,
+   def:'大卫·奥格威提出："如果我们每个人都雇用比我们小的人，我们将成为矮人公司。但如果我们每个人都雇用比我们更高大的人，我们将成为巨人公司。"核心是管理者格局决定组织高度。',
+   analogy:'如同组建球队——如果队长只招比自己差的球员（怕被抢风头），球队成绩一定垫底。冠军球队的队长一定是"我宁愿传球给你让你得分"的人。',
+   example:'奥美公司流传"俄罗斯套娃"传统，最小娃娃内含奥格威手写纸条；Google早期要求"推荐人必须推荐比自己更强的人"，半数员工来自熟人推荐。',
+   counter:'"武大郎开店"——管理者压制比自己高的人，最终组织沦为平庸。Google后期因世界顶级人才数量有限，逐渐成为"整体水平较高但平均水平相对平庸"的公司。'},
+  {id:'matrix',name:'矩阵式管理',icon:'🔀',brief:'动态项目团队+稳定人事部门，员工双重汇报，适应信息时代快速变化',core:false,
+   def:'源自二战后美国研究型大学的管理架构：教授同时隶属院系（人事管理）和实验室（科研活动）。企业版：员工有人事经理（行政培养）和技术经理（项目指导）双重汇报关系。',
+   analogy:'如同医院——医生属于科室（如内科，管职称晋升），但参与跨科室会诊（如内科+外科+放射科共同处理一个病例）。病人获得最合适的治疗，医生保持专业深度。',
+   example:'Google将人事部门定位为"资源池"（负责培养人才、评估项目），产品部门为"动态团队"（负责项目执行），有效避免部门山头化。麻省理工学院CSAIL实验室规模超1000人跨多系运作。',
+   counter:'中国矩阵式管理难以实施——因工业时代"指挥服从关系"思维定式，员工对双重领导天然抵触（"两个老板听谁的"），未完成向"协商-合作"的文化转型。'},
+  {id:'money',name:'货币本质',icon:'💵',brief:'货币是记账与交换工具，信用重于抵押，形式随时代演进',core:false,
+   def:'货币的核心功能是记账和交换媒介，存储功能随经济发展逐渐弱化。金本位→信用货币→电子货币→数字货币的演进路径，本质是"信任基础"从实物抵押→政府信用→算法信任的转移。',
+   analogy:'如同微信群积分——群主发的积分本身没有价值，但因为大家都认可它可以在群内兑换福利，它就具备了"货币"功能。信用的本质是"共同想象"。',
+   example:'雅浦岛费币（巨石货币）：实物不移动，仅交割所有权，与美联储金库黄金结算原理一致。宋代交子是真正意义的纸币：存款凭证+流通性。',
+   counter:'比特币因去中心化验证导致交易成本高达20美元（对比信用卡3美分）、时间2小时-2天，不适合日常交易。且日波动率可达10%，无法满足国际贸易结算需求。'},
+  {id:'blockchain',name:'区块链',icon:'⛓️',brief:'新型生产关系，重构信任机制与利益分配，AI+IoT+区块链=超级智能',core:false,
+   def:'区块链是去中心化的分布式账本技术，被定位为"新型生产关系"而非生产力工具。AI=大脑（决策）、IoT=感官（数据采集）、区块链=神经系统（信任传导）。',
+   analogy:'如同微信群聊记录——每个人手机上都存有完整聊天记录（分布式），无法单方面篡改（说到做到）。智能合约就是"群公告自动执行"——发了红包自动分给符合条件的人。',
+   example:'Skuchain利用区块链智能合约解决三角债问题：合同签订后资金自动流向供应商，避免挪用。Dfinity将交易效率从比特币的1小时提升至1秒。',
+   counter:'99%的虚拟货币为诈骗工具。区块链的"去中心化"导致成本高、效率低——比特币交易成本比信用卡高600倍以上。当前技术初级阶段，需在去中心化和效率之间妥协。'},
+  {id:'corecomp',name:'核心竞争力',icon:'⚡',brief:'核心技术≠核心竞争力，真正的竞争力是整合资源的能力',core:false,
+   def:'企业的核心竞争力不一定是拥有核心技术，而是"整合资源、把事情做好的能力"。德国汽车（保时捷、宝马）变速箱依赖日本Aisin，徕卡/哈苏相机感光器件依赖索尼，但仍然是行业顶尖企业。',
+   analogy:'如同厨师的竞争力不是"自己种菜"——米其林大厨的厉害之处是选材眼光和烹饪技艺，而不是拥有菜地和养猪场。万事不求人是农耕思维。',
+   example:'小米不拥有手机核心技术（处理器用高通、系统用安卓），但通过"硬件+新零售+互联网服务"铁人三项模式，7年突破千亿营收。核心竞争力是商业模式和用户运营。',
+   counter:'董明珠认为小米是"三无公司"（无核心技术、无生产线、无元器件制造），但小米的IoT生态布局远超格力，证明"整合力>自有技术"。格力盲目进入半导体领域恰恰犯了忽视自身特长的错误。'},
+  {id:'doerr',name:'约翰·杜尔投资哲学',icon:'🔭',brief:'投资未来影响力，选人看四大能力，找潜行公司，构建生态网络',core:false,
+   def:'风投之王约翰·杜尔的四维投资框架：①投资对世界有正面影响力的项目（"两年后世界会有什么不同？"）②创始人的四大能力（生意设计运营/盈利与风险管理/机会洞察/资源整合判断）③寻找"潜行"阶段的项目 ④投后构建被投企业互助网络。',
+   analogy:'如同电影制片人——不只看剧本（商业计划），更看重导演和演员（创始人团队），在最合适的时候投入资金（不是最早也不是最晚），并通过自己的资源网络帮电影宣发（投后管理）。',
+   example:'杜尔问创业者的三个经典问题："两年后世界会有什么不同？""为什么Google不做？""你的壁垒在哪？"成功投资了Google、亚马逊、网景、赛门铁克等。',
+   counter:'杜尔的失败案例：赛格威（Segway）售价6000美元，速度安全性矛盾，续航仅20-30公里。新能源基金受戈尔游说投资太阳能，因效率、储电等问题满盘皆输。'}
+];
+
+const mksCore = concepts.filter(c=>c.core);
+
+// Boundary knowledge (15 items)
+const boundary = [
+  {item:'美墨加贸易协定 (USMCA)',scene:'理解国际贸易谈判逻辑与利益分配'},
+  {item:'NAFTA漏洞（绕道组装）',scene:'制度设计中"动态改良"必要性的经典案例'},
+  {item:'Evernote商业困境',scene:'分析产品不可替代性与竞争格局的案例'},
+  {item:'婚姻与同居法律差异（美国）',scene:'理解法律、经济义务与文化差异'},
+  {item:'儿童零花钱与劳动观',scene:'教育中的经济学思维应用'},
+  {item:'美联储资产负债结构',scene:'理解央行货币政策工具的具体机制'},
+  {item:'M0/M1/M2货币分层',scene:'分析宏观经济与通胀的基础知识'},
+  {item:'股票最长增长期算法',scene:'算法思维迁移到投资决策的范例'},
+  {item:'K线技术指标的无效性',scene:'理解信息论视角下的投资常识'},
+  {item:'文艺复兴科技公司',scene:'量化投资和高频交易的行业标杆'},
+  {item:'红杉资本投资标准',scene:'顶级风投的项目筛选方法论'},
+  {item:'Y Combinator孵化模式',scene:'新一代轻资产创业孵化器的运作'},
+  {item:'国际化人才四大能力',scene:'跨文化理解、资源整合、需求洞察、规范掌握'},
+  {item:'越穷越忙四类低效模式',scene:'个人效率管理的反面教训'},
+  {item:'全球股市震荡（2018.2）',scene:'理解市场联动、机器交易与杠杆风险'},
+];
+
+// ==================== SVG (Graphviz dot) ====================
+function renderSVG(){
+  const svg=`<svg width="887pt" height="428pt"
+ viewBox="0.00 0.00 886.50 428.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 424)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-424 882.5,-424 882.5,4 -4,4"/>
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="0" d="M548,-420C548,-420 338,-420 338,-420 332,-420 326,-414 326,-408 326,-408 326,-388 326,-388 326,-382 332,-376 338,-376 338,-376 548,-376 548,-376 554,-376 560,-382 560,-388 560,-388 560,-408 560,-408 560,-414 554,-420 548,-420"/>
+<text text-anchor="middle" x="443" y="-401.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">资本与决策的核心驱动</text>
+<text text-anchor="middle" x="443" y="-386.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">风险认知 × 价值判断 × 时间偏好</text>
+</g>
+<g id="node2" class="node">
+<title>l1_vc</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M225.5,-318C225.5,-318 76.5,-318 76.5,-318 70.5,-318 64.5,-312 64.5,-306 64.5,-306 64.5,-294 64.5,-294 64.5,-288 70.5,-282 76.5,-282 76.5,-282 225.5,-282 225.5,-282 231.5,-282 237.5,-288 237.5,-294 237.5,-294 237.5,-306 237.5,-306 237.5,-312 231.5,-318 225.5,-318"/>
+<text text-anchor="middle" x="151" y="-303.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">风险投资运作</text>
+<text text-anchor="middle" x="151" y="-290.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">起源→基金结构→投后→退出</text>
+</g>
+<g id="edge1" class="edge">
+<title>root&#45;&gt;l1_vc</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M378.92,-375.93C329.34,-359.63 261.13,-337.21 212.28,-321.15"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="213.37,-317.82 202.77,-318.02 211.18,-324.47 213.37,-317.82"/>
+</g>
+<g id="node3" class="node">
+<title>l1_phil</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M400.5,-318C400.5,-318 299.5,-318 299.5,-318 293.5,-318 287.5,-312 287.5,-306 287.5,-306 287.5,-294 287.5,-294 287.5,-288 293.5,-282 299.5,-282 299.5,-282 400.5,-282 400.5,-282 406.5,-282 412.5,-288 412.5,-294 412.5,-294 412.5,-306 412.5,-306 412.5,-312 406.5,-318 400.5,-318"/>
+<text text-anchor="middle" x="350" y="-303.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">投资大师哲学</text>
+<text text-anchor="middle" x="350" y="-290.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">杜尔 · 林奇 · 米勒</text>
+</g>
+<g id="edge2" class="edge">
+<title>root&#45;&gt;l1_phil</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M422.36,-375.69C407.92,-360.79 388.6,-340.85 373.56,-325.32"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="376.03,-322.84 366.56,-318.09 371,-327.71 376.03,-322.84"/>
+</g>
+<g id="node4" class="node">
+<title>l1_money</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M604.5,-318C604.5,-318 467.5,-318 467.5,-318 461.5,-318 455.5,-312 455.5,-306 455.5,-306 455.5,-294 455.5,-294 455.5,-288 461.5,-282 467.5,-282 467.5,-282 604.5,-282 604.5,-282 610.5,-282 616.5,-288 616.5,-294 616.5,-294 616.5,-306 616.5,-306 616.5,-312 610.5,-318 604.5,-318"/>
+<text text-anchor="middle" x="536" y="-303.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">货币与金融</text>
+<text text-anchor="middle" x="536" y="-290.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">金本位→信用货币→区块链</text>
+</g>
+<g id="edge3" class="edge">
+<title>root&#45;&gt;l1_money</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M463.64,-375.69C478.08,-360.79 497.4,-340.85 512.44,-325.32"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="515,-327.71 519.44,-318.09 509.97,-322.84 515,-327.71"/>
+</g>
+<g id="node5" class="node">
+<title>l1_org</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M778.5,-318C778.5,-318 677.5,-318 677.5,-318 671.5,-318 665.5,-312 665.5,-306 665.5,-306 665.5,-294 665.5,-294 665.5,-288 671.5,-282 677.5,-282 677.5,-282 778.5,-282 778.5,-282 784.5,-282 790.5,-288 790.5,-294 790.5,-294 790.5,-306 790.5,-306 790.5,-312 784.5,-318 778.5,-318"/>
+<text text-anchor="middle" x="728" y="-303.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">组织决策思维</text>
+<text text-anchor="middle" x="728" y="-290.4" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="12.00" fill="white">管理 × 止损 × 制度</text>
+</g>
+<g id="edge4" class="edge">
+<title>root&#45;&gt;l1_org</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M505.54,-375.93C553.83,-359.67 620.23,-337.3 667.89,-321.25"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="669.11,-324.53 677.47,-318.02 666.87,-317.9 669.11,-324.53"/>
+</g>
+<g id="node6" class="node">
+<title>l2_fairchild</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M56,-224C56,-224 12,-224 12,-224 6,-224 0,-218 0,-212 0,-212 0,-200 0,-200 0,-194 6,-188 12,-188 12,-188 56,-188 56,-188 62,-188 68,-194 68,-200 68,-200 68,-212 68,-212 68,-218 62,-224 56,-224"/>
+<text text-anchor="middle" x="34" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">仙童半导体</text>
+<text text-anchor="middle" x="34" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">现代VC起源</text>
+</g>
+<g id="edge5" class="edge">
+<title>l1_vc&#45;&gt;l2_fairchild</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M129.27,-281.91C110.91,-267.48 84.44,-246.66 64.05,-230.63"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="66.04,-227.74 56.01,-224.31 61.71,-233.24 66.04,-227.74"/>
+</g>
+<g id="node7" class="node">
+<title>l2_fund</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M178.5,-224C178.5,-224 123.5,-224 123.5,-224 117.5,-224 111.5,-218 111.5,-212 111.5,-212 111.5,-200 111.5,-200 111.5,-194 117.5,-188 123.5,-188 123.5,-188 178.5,-188 178.5,-188 184.5,-188 190.5,-194 190.5,-200 190.5,-200 190.5,-212 190.5,-212 190.5,-218 184.5,-224 178.5,-224"/>
+<text text-anchor="middle" x="151" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">基金结构</text>
+<text text-anchor="middle" x="151" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">LP/GP·7+3年</text>
+</g>
+<g id="edge6" class="edge">
+<title>l1_vc&#45;&gt;l2_fund</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M151,-281.7C151,-268.46 151,-249.95 151,-234.66"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="154.5,-234.23 151,-224.23 147.5,-234.23 154.5,-234.23"/>
+</g>
+<g id="node8" class="node">
+<title>l2_doerr</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M296.5,-224C296.5,-224 245.5,-224 245.5,-224 239.5,-224 233.5,-218 233.5,-212 233.5,-212 233.5,-200 233.5,-200 233.5,-194 239.5,-188 245.5,-188 245.5,-188 296.5,-188 296.5,-188 302.5,-188 308.5,-194 308.5,-200 308.5,-200 308.5,-212 308.5,-212 308.5,-218 302.5,-224 296.5,-224"/>
+<text text-anchor="middle" x="271" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">约翰·杜尔</text>
+<text text-anchor="middle" x="271" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">投人·影响力</text>
+</g>
+<g id="edge7" class="edge">
+<title>l1_phil&#45;&gt;l2_doerr</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M335.14,-281.7C323.11,-267.69 306.01,-247.77 292.49,-232.03"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="294.96,-229.53 285.79,-224.23 289.65,-234.09 294.96,-229.53"/>
+</g>
+<g id="node9" class="node">
+<title>l2_lynch</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M414,-224C414,-224 364,-224 364,-224 358,-224 352,-218 352,-212 352,-212 352,-200 352,-200 352,-194 358,-188 364,-188 364,-188 414,-188 414,-188 420,-188 426,-194 426,-200 426,-200 426,-212 426,-212 426,-218 420,-224 414,-224"/>
+<text text-anchor="middle" x="389" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">彼得·林奇</text>
+<text text-anchor="middle" x="389" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">PEG·须鲸法</text>
+</g>
+<g id="edge8" class="edge">
+<title>l1_phil&#45;&gt;l2_lynch</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M357.34,-281.7C363.06,-268.2 371.1,-249.23 377.65,-233.78"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="381.02,-234.8 381.7,-224.23 374.57,-232.07 381.02,-234.8"/>
+</g>
+<g id="node10" class="node">
+<title>l2_gold</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M522.5,-224C522.5,-224 481.5,-224 481.5,-224 475.5,-224 469.5,-218 469.5,-212 469.5,-212 469.5,-200 469.5,-200 469.5,-194 475.5,-188 481.5,-188 481.5,-188 522.5,-188 522.5,-188 528.5,-188 534.5,-194 534.5,-200 534.5,-200 534.5,-212 534.5,-212 534.5,-218 528.5,-224 522.5,-224"/>
+<text text-anchor="middle" x="502" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">金本位</text>
+<text text-anchor="middle" x="502" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">抵押→信用</text>
+</g>
+<g id="edge9" class="edge">
+<title>l1_money&#45;&gt;l2_gold</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M529.6,-281.7C524.62,-268.2 517.61,-249.23 511.9,-233.78"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="515.12,-232.39 508.37,-224.23 508.55,-234.82 515.12,-232.39"/>
+</g>
+<g id="node11" class="node">
+<title>l2_blockchain</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M640.5,-224C640.5,-224 589.5,-224 589.5,-224 583.5,-224 577.5,-218 577.5,-212 577.5,-212 577.5,-200 577.5,-200 577.5,-194 583.5,-188 589.5,-188 589.5,-188 640.5,-188 640.5,-188 646.5,-188 652.5,-194 652.5,-200 652.5,-200 652.5,-212 652.5,-212 652.5,-218 646.5,-224 640.5,-224"/>
+<text text-anchor="middle" x="615" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">区块链</text>
+<text text-anchor="middle" x="615" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">生产关系重构</text>
+</g>
+<g id="edge10" class="edge">
+<title>l1_money&#45;&gt;l2_blockchain</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M550.86,-281.7C562.89,-267.69 579.99,-247.77 593.51,-232.03"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="596.35,-234.09 600.21,-224.23 591.04,-229.53 596.35,-234.09"/>
+</g>
+<g id="node12" class="node">
+<title>l2_matrix</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M748.5,-224C748.5,-224 707.5,-224 707.5,-224 701.5,-224 695.5,-218 695.5,-212 695.5,-212 695.5,-200 695.5,-200 695.5,-194 701.5,-188 707.5,-188 707.5,-188 748.5,-188 748.5,-188 754.5,-188 760.5,-194 760.5,-200 760.5,-200 760.5,-212 760.5,-212 760.5,-218 754.5,-224 748.5,-224"/>
+<text text-anchor="middle" x="728" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">矩阵式管理</text>
+<text text-anchor="middle" x="728" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">双重汇报</text>
+</g>
+<g id="edge11" class="edge">
+<title>l1_org&#45;&gt;l2_matrix</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M728,-281.7C728,-268.46 728,-249.95 728,-234.66"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="731.5,-234.23 728,-224.23 724.5,-234.23 731.5,-234.23"/>
+</g>
+<g id="node13" class="node">
+<title>l2_jcurve</title>
+<path fill="#fffaf2" stroke="#e8d5c4" d="M866.5,-224C866.5,-224 815.5,-224 815.5,-224 809.5,-224 803.5,-218 803.5,-212 803.5,-212 803.5,-200 803.5,-200 803.5,-194 809.5,-188 815.5,-188 815.5,-188 866.5,-188 866.5,-188 872.5,-188 878.5,-194 878.5,-200 878.5,-200 878.5,-212 878.5,-212 878.5,-218 872.5,-224 866.5,-224"/>
+<text text-anchor="middle" x="841" y="-209" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">J曲线/止损</text>
+<text text-anchor="middle" x="841" y="-198" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">滞后·厄运链</text>
+</g>
+<g id="edge12" class="edge">
+<title>l1_org&#45;&gt;l2_jcurve</title>
+<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M748.99,-281.91C766.72,-267.48 792.29,-246.66 811.97,-230.63"/>
+<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="814.19,-233.34 819.74,-224.31 809.77,-227.91 814.19,-233.34"/>
+</g>
+<g id="node14" class="node">
+<title>l3_drucker</title>
+<path fill="#fffaf2" stroke="#d4a574" stroke-width="1.5" d="M291.5,-130C291.5,-130 250.5,-130 250.5,-130 244.5,-130 238.5,-124 238.5,-118 238.5,-118 238.5,-106 238.5,-106 238.5,-100 244.5,-94 250.5,-94 250.5,-94 291.5,-94 291.5,-94 297.5,-94 303.5,-100 303.5,-106 303.5,-106 303.5,-118 303.5,-118 303.5,-124 297.5,-130 291.5,-130"/>
+<text text-anchor="middle" x="271" y="-115" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">德鲁克定律</text>
+<text text-anchor="middle" x="271" y="-104" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">贡献 &gt; 成就</text>
+</g>
+<g id="edge13" class="edge">
+<title>l2_doerr&#45;&gt;l3_drucker</title>
+<path fill="none" stroke="#2980b9" stroke-width="1.5" d="M271,-187.7C271,-174.46 271,-155.95 271,-140.66"/>
+<polygon fill="#2980b9" stroke="#2980b9" stroke-width="1.5" points="274.5,-140.23 271,-130.23 267.5,-140.23 274.5,-140.23"/>
+</g>
+<g id="node15" class="node">
+<title>l3_ogilvy</title>
+<path fill="#fffaf2" stroke="#d4a574" stroke-width="1.5" d="M414.5,-130C414.5,-130 363.5,-130 363.5,-130 357.5,-130 351.5,-124 351.5,-118 351.5,-118 351.5,-106 351.5,-106 351.5,-100 357.5,-94 363.5,-94 363.5,-94 414.5,-94 414.5,-94 420.5,-94 426.5,-100 426.5,-106 426.5,-106 426.5,-118 426.5,-118 426.5,-124 420.5,-130 414.5,-130"/>
+<text text-anchor="middle" x="389" y="-115" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">奥格威定律</text>
+<text text-anchor="middle" x="389" y="-104" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">雇用更强的人</text>
+</g>
+<g id="edge14" class="edge">
+<title>l2_lynch&#45;&gt;l3_ogilvy</title>
+<path fill="none" stroke="#2980b9" stroke-width="1.5" d="M389,-187.7C389,-174.46 389,-155.95 389,-140.66"/>
+<polygon fill="#2980b9" stroke="#2980b9" stroke-width="1.5" points="392.5,-140.23 389,-130.23 385.5,-140.23 392.5,-140.23"/>
+</g>
+<g id="node16" class="node">
+<title>l3_corecomp</title>
+<path fill="#fffaf2" stroke="#d4a574" stroke-width="1.5" d="M645.5,-130C645.5,-130 584.5,-130 584.5,-130 578.5,-130 572.5,-124 572.5,-118 572.5,-118 572.5,-106 572.5,-106 572.5,-100 578.5,-94 584.5,-94 584.5,-94 645.5,-94 645.5,-94 651.5,-94 657.5,-100 657.5,-106 657.5,-106 657.5,-118 657.5,-118 657.5,-124 651.5,-130 645.5,-130"/>
+<text text-anchor="middle" x="615" y="-115" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">核心竞争力</text>
+<text text-anchor="middle" x="615" y="-104" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">整合 &gt; 自有技术</text>
+</g>
+<g id="edge15" class="edge">
+<title>l2_blockchain&#45;&gt;l3_corecomp</title>
+<path fill="none" stroke="#2980b9" stroke-width="1.5" d="M615,-187.7C615,-174.46 615,-155.95 615,-140.66"/>
+<polygon fill="#2980b9" stroke="#2980b9" stroke-width="1.5" points="618.5,-140.23 615,-130.23 611.5,-140.23 618.5,-140.23"/>
+</g>
+<g id="node17" class="node">
+<title>l3_usmca</title>
+<polygon fill="#fffaf2" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="5,2" points="878.5,-130 803.5,-130 803.5,-94 878.5,-94 878.5,-130"/>
+<text text-anchor="middle" x="841" y="-115" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">美墨加协定</text>
+<text text-anchor="middle" x="841" y="-104" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="10.00" fill="#5a3e3e">制度动态改良</text>
+</g>
+<g id="edge16" class="edge">
+<title>l2_jcurve&#45;&gt;l3_usmca</title>
+<path fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="5,2" d="M841,-187.7C841,-174.46 841,-155.95 841,-140.66"/>
+<polygon fill="#27ae60" stroke="#27ae60" stroke-width="1.5" points="844.5,-140.23 841,-130.23 837.5,-140.23 844.5,-140.23"/>
+</g>
+<g id="node18" class="node">
+<title>l4_peg</title>
+<path fill="#fdf6ec" stroke="#e8d5c4" d="M412.5,-36C412.5,-36 365.5,-36 365.5,-36 359.5,-36 353.5,-30 353.5,-24 353.5,-24 353.5,-12 353.5,-12 353.5,-6 359.5,0 365.5,0 365.5,0 412.5,0 412.5,0 418.5,0 424.5,-6 424.5,-12 424.5,-12 424.5,-24 424.5,-24 424.5,-30 418.5,-36 412.5,-36"/>
+<text text-anchor="middle" x="389" y="-20.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="9.00" fill="#5a3e3e">PEG指标</text>
+<text text-anchor="middle" x="389" y="-10.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="9.00" fill="#5a3e3e">林奇秘密武器</text>
+</g>
+<g id="edge17" class="edge">
+<title>l3_ogilvy&#45;&gt;l4_peg</title>
+<path fill="none" stroke="#d4a574" d="M389,-93.7C389,-80.46 389,-61.95 389,-46.66"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="392.5,-46.23 389,-36.23 385.5,-46.23 392.5,-46.23"/>
+</g>
+<g id="node19" class="node">
+<title>l4_cb</title>
+<path fill="#fdf6ec" stroke="#e8d5c4" d="M581,-36C581,-36 543,-36 543,-36 537,-36 531,-30 531,-24 531,-24 531,-12 531,-12 531,-6 537,0 543,0 543,0 581,0 581,0 587,0 593,-6 593,-12 593,-12 593,-24 593,-24 593,-30 587,-36 581,-36"/>
+<text text-anchor="middle" x="562" y="-20.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="9.00" fill="#5a3e3e">央行平衡表</text>
+<text text-anchor="middle" x="562" y="-10.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="9.00" fill="#5a3e3e">扩表/缩表</text>
+</g>
+<g id="edge18" class="edge">
+<title>l3_corecomp&#45;&gt;l4_cb</title>
+<path fill="none" stroke="#d4a574" d="M605.03,-93.7C597.11,-79.95 585.91,-60.5 576.92,-44.9"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="579.95,-43.14 571.92,-36.23 573.88,-46.64 579.95,-43.14"/>
+</g>
+<g id="node20" class="node">
+<title>l4_siege</title>
+<path fill="#fdf6ec" stroke="#e8d5c4" d="M686,-36C686,-36 648,-36 648,-36 642,-36 636,-30 636,-24 636,-24 636,-12 636,-12 636,-6 642,0 648,0 648,0 686,0 686,0 692,0 698,-6 698,-12 698,-12 698,-24 698,-24 698,-30 692,-36 686,-36"/>
+<text text-anchor="middle" x="667" y="-20.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="9.00" fill="#5a3e3e">攻城与守城</text>
+<text text-anchor="middle" x="667" y="-10.8" font-family="PingFang SC,Noto Sans SC,Microsoft YaHei,sans-serif" font-size="9.00" fill="#5a3e3e">资源配置</text>
+</g>
+<g id="edge19" class="edge">
+<title>l3_corecomp&#45;&gt;l4_siege</title>
+<path fill="none" stroke="#d4a574" d="M624.78,-93.7C632.48,-80.07 643.34,-60.86 652.11,-45.34"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="655.39,-46.65 657.26,-36.23 649.3,-43.21 655.39,-46.65"/>
+</g>
+</g>
+</svg>`;
+  document.getElementById('svgContainer').innerHTML=svg;
+}
+
+// ==================== QUIZ DATA ====================
+// answer indices: each of 0,1,2,3 appears exactly 5 times (20 questions)
+const quizData = [
+  {q:'J曲线理论由哪位美国政治学家提出？',opts:['伊恩·布雷默','塞缪尔·亨廷顿','弗朗西斯·福山','约瑟夫·奈'],ans:0,exp:'伊恩·布雷默在其著作《J曲线：懂得为什么国家会兴亡》中提出该理论，基于对多国发展路径的研究。'},
+  {q:'风险投资的英文缩写是什么？',opts:['PE','VC','LP','GP'],ans:1,exp:'VC（Venture Capital）。PE是私募基金，LP是有限合伙人，GP是普通合伙人。'},
+  {q:'德鲁克定律强调用哪个词替代"成就"？',opts:['效率','利润','贡献','创新'],ans:2,exp:'德鲁克说："如果你从词汇中删除成就，取而代之的是贡献，你将在商业和职业生涯中取得最好的成绩。"'},
+  {q:'奥格威定律的核心启示是什么？',opts:['广告要有创意','客户永远是对的','降低成本是王道','雇用比自已更强的人'],ans:3,exp:'奥格威说："雇用比我们小的人，我们成为矮人公司。雇用比我们更高大的人，我们成为巨人公司。"'},
+  {q:'PEG指标由哪位投资大师发明？',opts:['彼得·林奇','沃伦·巴菲特','比尔·米勒','约翰·杜尔'],ans:0,exp:'林奇在管理麦哲伦基金期间发明了PEG（市盈率相对盈利增长比率），作为秘密武器从未公开。退休后公开此指标，因被广泛使用而失去超额收益能力。'},
+  {q:'比特币作为日常交易媒介的最主要问题是什么？',opts:['币值波动大','交易成本高、速度慢','缺乏政府背书','总量有限'],ans:1,exp:'比特币交易成本约20美元（信用卡仅3美分），交割时间2小时-2天，不适合日常小额交易。去中心化验证机制是效率低下的根源。'},
+  {q:'矩阵式管理中员工的双重汇报关系是指？',opts:['总裁和副总裁','人事经理和技术经理','部门经理和项目经理','甲方和乙方'],ans:2,exp:'员工同时向人事经理（负责行政事务、人员培养）和技术经理/项目经理（负责日常工作安排、技术指导）汇报。'},
+  {q:'USMCA（美墨加贸易协定）取代了哪个旧协定？',opts:['TPP','WTO','NAFTA','GATT'],ans:3,exp:'NAFTA（北美自由贸易协定）由克林顿时期签署，2018年被USMCA取代。三国间贸易额达10000亿美元。'},
+  {q:'约翰·杜尔评估创业项目的第一个核心问题是什么？',opts:['两年后世界会有什么不同','你的估值是多少','你的竞争对手是谁','你什么时候能盈利'],ans:0,exp:'杜尔通过"假如我投资了，两年后世界会有什么不同？"来判断项目的差异化价值。仅声称"比现有公司做得更好"的项目会被拒绝。'},
+  {q:'仙童半导体的投资模式由谁促成？',opts:['J.P.摩根','阿瑟·洛克','保罗·格雷厄姆','唐·瓦伦丁'],ans:1,exp:'阿瑟·洛克（Arthur Rock）促成了"硅谷八叛徒"与费尔柴尔德家族的投资协议，奠定了现代风险投资模式，被称为"风投之父"。'},
+  {q:'M2货币供应量不包含以下哪项？',opts:['活期存款','M1+定期存款+理财产品','股市资金','流通中现金'],ans:2,exp:'M2不包含股市资金，因股市资金"只在股市循环"，流入大于流出时不影响实体经济流通。'},
+  {q:'止损的核心原则是什么？',opts:['永远不卖亏损的股票','尽快把损失赚回来','分散投资降低风险','接受局部损失避免更大灾难'],ans:3,exp:'止损的本质是接受已发生的损失，避免为补救小错而引发"厄运链"。伯奇尔香肠事件和淮海战役都是止损失败的经典案例。'},
+  {q:'彼得·林奇的"鸡尾酒会理论"中，场景三（所有人围着投资人转）意味着什么？',opts:['股市有点过热','股市即将上涨','应该全部抛售','市场极度悲观'],ans:0,exp:'场景三表示过度乐观，股市已经有点过热。场景四（他人向专业投资人推荐股票）则是非理性繁荣信号，下跌即将来临。'},
+  {q:'吴军将区块链定位为什么？',opts:['生产力工具','生产关系','支付系统','数据存储'],ans:1,exp:'区块链被定义为"新型生产关系"——重构信任机制和利益分配模式。AI是生产力（大脑）、IoT是感官、区块链是神经系统（生产关系）。'},
+  {q:'根据吴军的观点，核心竞争力是否等同于掌握核心技术？',opts:['完全等同','不等同，核心竞争力是整合资源的能力','取决于行业','只有制造业不等同'],ans:2,exp:'核心竞争力≠核心技术。德国汽车变速箱依赖日本、徕卡相机CMOS依赖索尼，但仍是行业顶尖。"整合资源、把事情做好的能力"才是真正的竞争力。'},
+  {q:'Y Combinator的创始人是谁？',opts:['阿瑟·洛克','唐·瓦伦丁','约翰·杜尔','保罗·格雷厄姆'],ans:3,exp:'保罗·格雷厄姆（Paul Graham），《黑客与画家》作者，罗德岛设计学院+康奈尔计算机博士背景，2005年创立YC。'},
+  {q:'风险投资基金的典型期限是？',opts:['7+3年','3+2年','5+2年','10+5年'],ans:0,exp:'典型"7+3"模式：7年投资期+3年退出期，资金赎回周期长，需确保投资资金在10年内无需使用。'},
+  {q:'"攻城与守城"矛盾在信息时代的最大风险是什么？',opts:['市场可能瞬间消失','员工工资过高','产品研发太慢','竞争对手太多'],ans:1,exp:'信息时代受摩尔定律影响，市场可能"瞬间消失"（如PC时代→移动时代转型中微软错失手机操作系统），部门山头化导致灭顶之灾。'},
+  {q:'美元与黄金正式脱钩发生在什么时期？',opts:['南北战争时期','1973-1976年布雷顿森林体系崩溃','2008年金融危机','二战期间'],ans:2,exp:'布雷顿森林体系1944年确立，因美国过量印钞导致黄金储备不足，1973-1976年崩溃。此后美元转为美国政府信用背书。'},
+  {q:'比尔·米勒管理的价值信托基金创造了什么纪录？',opts:['10年回报超过标普500','年化回报率40%','最大基金规模','连续15年回报超过标普500'],ans:3,exp:'1991-2005年连续15年回报超过标普500指数，全球唯一纪录。从概率论看，纯运气达成此结果的概率仅为一亿分之一。'}
+];
+
+// Short answer questions
+const shortAnswerData = [
+  {q:'用一句话解释"J曲线"的核心含义，并举一个生活中的例子。',
+   ref:'J曲线指事物发展初期可能出现短期下滑（打破原有平衡），坚持正确方向越过拐点后进入持续上升通道。生活例子：学习新技能（如网球纠正动作）初期水平下降，坚持后能力大幅提升。'},
+  {q:'为什么吴军说"核心技术≠核心竞争力"？请结合德国汽车的案例说明。',
+   ref:'因为真正的竞争力是"整合资源、把事情做好的能力"。德国保时捷和宝马的变速箱依赖日本Aisin和Jacto，但这不影响它们制造一流汽车。核心竞争力体现在整车设计、品牌和工程整合能力上。'},
+  {q:'彼得·林奇的PEG指标为什么在公开后失效了？这说明了投资领域的什么规律？',
+   ref:'信息价值衰减定律：任何为大众所知的信息在投资上都没有价值。PEG被所有基金广泛采用后，相关股票立即被高估，超额收益消失。这验证了信息论的核心原理——已知信息因普及而丧失降低不确定性的能力。'},
+  {q:'约翰·杜尔问创业者的三个经典问题是什么？这三个问题分别检验什么？',
+   ref:'①"两年后世界会有什么不同？"——检验差异化和影响力。②"为什么Google不做？"——检验对巨头决策逻辑的理解。③"你的壁垒在哪？"——检验不可复制的竞争壁垒。'},
+  {q:'Blockchain（区块链）作为"生产关系"与AI作为"生产力"的区别是什么？',
+   ref:'AI通过替代或增强人类思维来提升生产效率（生产力维度）；区块链通过去中心化信任机制、重新定义利益分配方式（生产关系维度）。AI让人做得更快更好，区块链改变谁得到什么回报。'},
+  {q:'德鲁克定律中"贡献"和"成就"的本质区别是什么？为什么德鲁克更强调贡献？',
+   ref:'成就是短期内可量化的个人或部门产出（如KPI），贡献是对客户、员工、股东的长期价值。德鲁克认为成就导向导致短期主义（抢功劳、忽视老客户），而贡献导向创造可持续增长。'},
+  {q:'解释"厄运链"的形成机制，并给出至少两个斩断方法。',
+   ref:'厄运链机制：初始小失误→情绪化应对→扩大影响→二次补救出错→更大灾难。斩断方法：①止损（接受已发生的损失）；②认命（承认能力边界，放弃侥幸心理）；③冷静处理（一次只处理一件事）。'},
+  {q:'为什么吴军认为"好的投资人从来不画K线"？从信息论角度解释。',
+   ref:'信息价值体现在降低不确定性。K线等技术指标成为公开知识后，其信息已完全反映在股价中，不再具有预测价值。真正有效的信号（如林奇的PEG）一定是未公开的。'},
+  {q:'USMCA协定中墨西哥为什么接受"75%零件必须产自本土"的条款？这体现了什么谈判原则？',
+   ref:'因为该条款可吸引外资在墨西哥进行实质性加工，提升自身工业能力。体现的谈判原则：表面让步可能隐藏长远利益，追求"长远利益总和最大化"而非短期占便宜。'},
+  {q:'简述凯鹏华盈（KPCB）与红杉资本在投资哲学上的核心差异。',
+   ref:'KPCB聚焦"正向社会价值"，优先投资能对世界带来正面进步的企业，深度参与投后管理；红杉资本聚焦"技术跳变+行业首创"，更看重技术革命性和创始人背景，投资阶段分层精确（种子期/早期/发展期）。'}
+];
+
+// ==================== STATE ====================
+const STORAGE_KEY = 'mks_invest_decision';
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    return raw?JSON.parse(raw):{learned:{},quizDone:{},wrongList:[],examHistory:[],simProgress:0};
+  }catch(e){return{learned:{},quizDone:{},wrongList:[],examHistory:[],simProgress:0};}
+}
+function saveState(s){localStorage.setItem(STORAGE_KEY,JSON.stringify(s))}
+let state=loadState();
+
+// ==================== TABS ====================
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    const t=document.querySelector(`.tab-content[data-tab="${btn.dataset.tab}"]`);
+    if(t)t.classList.add('active');
+    if(btn.dataset.tab==='3')resetExam();
+  });
+});
+
+function switchTab(idx){
+  const btn=document.querySelector(`.tab-btn[data-tab="${idx}"]`);
+  if(btn)btn.click();
+}
+
+// ==================== PROGRESS ====================
+function updateProgress(){
+  const total=concepts.length;
+  const done=concepts.filter(c=>state.learned[c.id]).length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('progressPct').textContent=pct+'%';
+  document.getElementById('progressFill').style.width=pct+'%';
+}
+
+// ==================== TAB 0: DASHBOARD ====================
+function renderDashboard(){
+  // Concept grid
+  const grid=document.getElementById('conceptGrid');
+  grid.innerHTML=concepts.map(c=>`
+    <div class="concept-card${c.core?' core':''}" onclick="switchTab(1);flipToConcept('${c.id}')">
+      ${c.core?'<span class="mks-star">★</span>':''}
+      <div class="icon">${c.icon}</div>
+      <div class="name">${c.name}</div>
+      <div class="brief">${c.brief}</div>
+      ${state.learned[c.id]?'<span class="mks-badge">已学</span>':''}
+    </div>
+  `).join('');
+
+  // MKS core grid
+  document.getElementById('mksCoreGrid').innerHTML=mksCore.map(c=>`
+    <div class="concept-card core" onclick="switchTab(1);flipToConcept('${c.id}')">
+      <span class="mks-star">★</span>
+      <div class="icon">${c.icon}</div>
+      <div class="name">${c.name}</div>
+      <div class="brief">${c.brief}</div>
+    </div>
+  `).join('');
+
+  // Boundary table
+  document.getElementById('boundaryTable').innerHTML=boundary.map((b,i)=>`
+    <tr><td>${i+1}. ${b.item}</td><td>${b.scene}</td></tr>
+  `).join('');
+
+  renderSVG();
+  updateProgress();
+}
+
+// ==================== TAB 1: FLIP CARDS ====================
+let currentFlipIdx=0;
+function flipToConcept(id){
+  const idx=concepts.findIndex(c=>c.id===id);
+  if(idx>=0){currentFlipIdx=idx;renderFlipCard();}
+}
+function renderFlipCard(){
+  const c=concepts[currentFlipIdx];
+  document.getElementById('flipName').textContent=c.icon+' '+c.name;
+  document.getElementById('flipBack').innerHTML=`
+    <h4>定义</h4><p>${c.def}</p>
+    <h4>类比（商业/财务场景）</h4><p>${c.analogy}</p>
+    <h4>正面示例</h4><p>${c.example}</p>
+    <h4>反面示例</h4><p>${c.counter}</p>
+  `;
+  document.getElementById('flipCounter').textContent=(currentFlipIdx+1)+' / '+concepts.length;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('flipLearned').textContent=state.learned[c.id]?'✓ 已学':'✓ 标记已学';
+}
+document.getElementById('flipPrev').addEventListener('click',()=>{
+  currentFlipIdx=(currentFlipIdx-1+concepts.length)%concepts.length;renderFlipCard();
+});
+document.getElementById('flipNext').addEventListener('click',()=>{
+  currentFlipIdx=(currentFlipIdx+1)%concepts.length;renderFlipCard();
+});
+document.getElementById('flipToggle').addEventListener('click',()=>{
+  document.getElementById('flipInner').classList.toggle('flipped');
+});
+document.getElementById('flipInner').addEventListener('click',()=>{
+  document.getElementById('flipInner').classList.toggle('flipped');
+});
+document.getElementById('flipLearned').addEventListener('click',()=>{
+  const c=concepts[currentFlipIdx];
+  state.learned[c.id]=!state.learned[c.id];
+  saveState(state);
+  renderFlipCard();
+  renderDashboard();
+});
+
+// ==================== TAB 2: QUIZ ====================
+function renderQuiz(){
+  const container=document.getElementById('quizList');
+  container.innerHTML=quizData.map((q,i)=>{
+    const done=state.quizDone[i];
+    let html=`<div class="quiz-card${done?done.correct?' correct':' wrong':''}" id="quizCard${i}">`;
+    html+=`<div class="quiz-q">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt,j)=>{
+      let cls='quiz-opt';
+      if(done){
+        if(j===q.ans)cls+=' correct-ans';
+        else if(j===done.chosen&&!done.correct)cls+=' wrong';
+      }
+      html+=`<div class="${cls}" onclick="answerQuiz(${i},${j})">${'ABCD'[j]}. ${opt}</div>`;
+    });
+    if(done){
+      html+=`<div class="quiz-fb ${done.correct?'right':'wrong-fb'}">${done.correct?'✓ 正确！':'✗ 错误。'} ${q.exp}</div>`;
+    }
+    html+='</div>';
+    return html;
+  }).join('');
+}
+
+function answerQuiz(qIdx,chosen){
+  if(state.quizDone[qIdx])return;
+  const q=quizData[qIdx];
+  const correct=chosen===q.ans;
+  state.quizDone[qIdx]={chosen,correct};
+  if(!correct)state.wrongList.push({type:'mc',idx:qIdx,q:q.q,chosen:q.opts[chosen],correctAns:q.opts[q.ans],exp:q.exp,time:Date.now()});
+  saveState(state);
+  renderQuiz();
+  updateProgress();
+}
+document.getElementById('quizReset').addEventListener('click',()=>{
+  state.quizDone={};state.wrongList=[];saveState(state);renderQuiz();renderReview();
+});
+
+// ==================== TAB 3: EXAM ====================
+let examInterval=null,examSeconds=0,examQuestions=[],examActive=false;
+function resetExam(){
+  clearInterval(examInterval);examActive=false;examSeconds=0;
+  document.getElementById('examTimer').textContent='15:00';
+  document.getElementById('examTimer').classList.remove('warning');
+  document.getElementById('examContent').innerHTML='';
+  document.getElementById('examResult').style.display='none';
+  document.getElementById('examStart').style.display='';
+}
+document.getElementById('examStart').addEventListener('click',startExam);
+
+function startExam(){
+  // Pick 7 random MCQs + 3 random short answers
+  const mcIndices=shuffleArr([...Array(quizData.length).keys()]).slice(0,7);
+  const saIndices=shuffleArr([...Array(shortAnswerData.length).keys()]).slice(0,3);
+  examQuestions=[...mcIndices.map(i=>({type:'mc',idx:i,...quizData[i]})),...saIndices.map(i=>({type:'sa',idx:i,...shortAnswerData[i]}))];
+  examQuestions=shuffleArr(examQuestions);
+  examSeconds=15*60;examActive=true;
+  document.getElementById('examStart').style.display='none';
+  document.getElementById('examResult').style.display='none';
+  renderExamContent();
+  examInterval=setInterval(()=>{
+    examSeconds--;
+    const m=Math.floor(examSeconds/60),s=examSeconds%60;
+    document.getElementById('examTimer').textContent=m+':'+String(s).padStart(2,'0');
+    if(examSeconds<=120)document.getElementById('examTimer').classList.add('warning');
+    if(examSeconds<=0){submitExam();}
+  },1000);
+}
+
+function renderExamContent(){
+  const container=document.getElementById('examContent');
+  container.innerHTML=examQuestions.map((q,i)=>{
+    let h=`<div class="quiz-card" id="examQ${i}"><div class="quiz-q">${i+1}. ${q.q}</div>`;
+    if(q.type==='mc'){
+      q.opts.forEach((opt,j)=>{
+        h+=`<div class="quiz-opt" onclick="selectExamOpt(${i},${j})" id="examOpt${i}_${j}">${'ABCD'[j]}. ${opt}</div>`;
+      });
+    }else{
+      h+=`<textarea id="examSA${i}" style="width:100%;min-height:80px;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:.85rem;font-family:inherit" placeholder="请输入你的答案..."></textarea>`;
+    }
+    h+='</div>';
+    return h;
+  }).join('');
+  container.innerHTML+=`<button class="btn" onclick="submitExam()" style="margin-top:12px">提交试卷</button>`;
+}
+
+const examAnswers={};
+function selectExamOpt(qIdx,optIdx){
+  if(!examActive)return;
+  examAnswers[qIdx]=optIdx;
+  examQuestions[qIdx].opts.forEach((_,j)=>{
+    const el=document.getElementById('examOpt'+qIdx+'_'+j);
+    if(el)el.classList.toggle('selected',j===optIdx);
+  });
+}
+
+function submitExam(){
+  clearInterval(examInterval);examActive=false;
+  let mcCorrect=0,mcTotal=0,saTotal=0;
+  const results=[];
+  examQuestions.forEach((q,i)=>{
+    if(q.type==='mc'){
+      mcTotal++;
+      const chosen=examAnswers[i];
+      const correct=chosen===q.ans;
+      if(correct)mcCorrect++;
+      results.push({q:q.q,correct,chosen:chosen!==undefined?q.opts[chosen]:'未作答',correctAns:q.opts[q.ans]});
+      if(!correct&&chosen!==undefined){
+        state.wrongList.push({type:'mc',idx:q.idx,q:q.q,chosen:q.opts[chosen],correctAns:q.opts[q.ans],exp:q.exp,time:Date.now()});
+      }
+    }else{
+      saTotal++;
+    }
+  });
+  const score=mcCorrect;
+  const total=mcTotal;
+  saveState(state);
+
+  const pct=Math.round(score/total*100);
+  let grade='',suggestion='';
+  if(pct>=85){grade='优秀';suggestion='概念掌握扎实，继续保持！';}
+  else if(pct>=60){grade='良好';suggestion='建议复习错题对应的核心概念。';}
+  else{grade='需加强';suggestion='建议回到知识卡片模式系统学习。';}
+
+  const weakConcepts=[...new Set(results.filter(r=>!r.correct).map(r=>r.q))].slice(0,3).join('、');
+
+  document.getElementById('examContent').innerHTML='';
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML=`
+    <div class="score">${score} / ${total}</div>
+    <div class="grade">评级：${grade}（正确率 ${pct}%）</div>
+    <p style="font-size:.88rem;color:var(--text2);margin:8px 0">${suggestion}</p>
+    ${weakConcepts?`<p style="font-size:.83rem;color:var(--accent)">薄弱概念：${weakConcepts}</p>`:''}
+    <p style="font-size:.78rem;color:var(--text2)">简答题请对照参考答案自行评估（答对要点即得分）</p>
+    <button class="btn btn-outline btn-sm" onclick="switchTab(4)">查看错题</button>
+    <h3 style="margin-top:16px">题目解析</h3>
+    ${results.map((r,i)=>`<div style="text-align:left;font-size:.83rem;padding:6px 0;border-bottom:1px solid var(--border)">${i+1}. ${r.q}<br><span style="color:${r.correct?'var(--green)':'var(--accent)'}">${r.correct?'✓':'✗'} 正确答案：${r.correctAns}</span>${!r.correct&&r.exp?`<br><span style="color:var(--text2)">${r.exp}</span>`:''}</div>`).join('')}
+    <button class="btn" style="margin-top:12px" onclick="resetExam()">重新考试</button>
+  `;
+  state.examHistory.push({score,total,pct,date:Date.now()});
+  saveState(state);
+}
+
+// ==================== TAB 4: REVIEW ====================
+function renderReview(){
+  // Wrong book
+  const wb=document.getElementById('wrongBook');
+  if(state.wrongList.length===0){
+    wb.innerHTML='<p style="color:var(--text2)">暂无错题记录。去题库练习吧！</p>';
+  }else{
+    wb.innerHTML='<button class="btn btn-sm btn-outline" style="margin-bottom:10px" onclick="state.wrongList=[];saveState(state);renderReview();renderQuiz();">清空错题本</button>'+state.wrongList.map((w,i)=>`
+      <div class="quiz-card" style="font-size:.83rem">
+        <strong>${i+1}. ${w.q}</strong><br>
+        你的答案：<span style="color:var(--accent)">${w.chosen}</span><br>
+        正确答案：<span style="color:var(--green)">${w.correctAns}</span><br>
+        <span style="color:var(--text2)">${w.exp||''}</span>
+      </div>
+    `).join('');
+  }
+
+  // Stats
+  const sp=document.getElementById('statsPanel');
+  const totalMC=Object.keys(state.quizDone).length;
+  const correctMC=Object.values(state.quizDone).filter(d=>d.correct).length;
+  const accuracy=totalMC?Math.round(correctMC/totalMC*100):0;
+  const days=state.examHistory.length;
+  sp.innerHTML=`
+    <table class="stat-table">
+      <tr><th>指标</th><th>数值</th></tr>
+      <tr><td>总做题数（选择题）</td><td>${totalMC} / 20</td></tr>
+      <tr><td>正确率</td><td>${accuracy}%</td></tr>
+      <tr><td>错题数</td><td>${state.wrongList.length}</td></tr>
+      <tr><td>完成考试次数</td><td>${days}</td></tr>
+      <tr><td>已学概念</td><td>${concepts.filter(c=>state.learned[c.id]).length} / ${concepts.length}</td></tr>
+    </table>
+  `;
+}
+
+// ==================== TAB 5: MINDMAP ====================
+function renderMindmap(){
+  document.getElementById('mindmap').innerHTML=buildTree([
+    {label:'资本与决策的核心驱动',children:[
+      {label:'风险投资体系',children:[
+        {label:'起源：仙童半导体（1957）→ 硅谷八叛徒'},
+        {label:'基金结构：LP/GP、7+3年、2%+20%'},
+        {label:'投资阶段：天使轮→A轮→B轮→退出'},
+        {label:'退出方式：上市（1%）/ 并购（20%）/ 破产（80%）'},
+        {label:'顶级机构：KPCB、红杉资本、YC'},
+        {label:'中国现状：95%基金亏损、伪VC泛滥'},
+      ]},
+      {label:'投资大师哲学',children:[
+        {label:'约翰·杜尔：投人、影响力、潜行阶段、生态网络'},
+        {label:'彼得·林奇：PEG指标、须鲸式投资、鸡尾酒会理论'},
+        {label:'比尔·米勒：最大价值、估值体系多样性、连续15年跑赢'},
+      ]},
+      {label:'货币与金融',children:[
+        {label:'货币起源：记账工具说 vs 金属货币说'},
+        {label:'金本位→布雷顿森林体系→信用货币'},
+        {label:'央行平衡表：扩表（印钱）/缩表（回收货币）'},
+        {label:'M0/M1/M2：基础货币到广义货币的派生'},
+        {label:'虚拟货币：比特币的局限（成本、速度、波动）'},
+        {label:'区块链：生产关系、AI+IoT+区块链=超级智能'},
+      ]},
+      {label:'公司管理',children:[
+        {label:'德鲁克定律：贡献 > 成就'},
+        {label:'奥格威定律：雇用更强的人'},
+        {label:'矩阵式管理：双重汇报、动态项目团队'},
+        {label:'攻城与守城：创新研发 vs 维持现有'},
+        {label:'练兵与带兵：培养体系 vs 指挥执行'},
+      ]},
+      {label:'决策思维',children:[
+        {label:'J曲线：改革先下行后上升，坚持一致性'},
+        {label:'止损：斩断厄运链，接受局部损失'},
+        {label:'滞后效应：冬至→1月最冷，效果有时间延迟'},
+        {label:'制度 vs 个人：系统方法优于依赖天才'},
+        {label:'核心竞争力：整合力 > 自有技术'},
+        {label:'国际化：四位一体（资源/文化/需求/规范）'},
+      ]},
+    ]}
+  ]);
+}
+
+function buildTree(nodes,depth=0){
+  return nodes.map(n=>{
+    const hasChildren=n.children&&n.children.length>0;
+    const id='mm_'+Math.random().toString(36).slice(2,8);
+    if(hasChildren){
+      return `<div class="mindmap-node">
+        <span class="mindmap-toggle" onclick="toggleMindmap('${id}')" id="${id}_tgl">${n.label}</span>
+        <div class="mindmap-children" id="${id}">${buildTree(n.children,depth+1)}</div>
+      </div>`;
+    }
+    return `<div class="mindmap-node"><span class="mindmap-leaf">· ${n.label}</span></div>`;
+  }).join('');
+}
+
+function toggleMindmap(id){
+  const children=document.getElementById(id);
+  const toggle=document.getElementById(id+'_tgl');
+  children.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+// ==================== TAB 6: SOCRATIC ====================
+function renderSocratic(){
+  const questions=[
+    {q:'为什么说"高风险不一定带来高回报"？',layers:[
+      '正向关系不成立：高风险项目因参与者少，资本可能获得更高议价权，但非必然。真正的高回报需要正确的判断——看对技术、看对人、看对时机。',
+      '更深一层：市场有效性会快速消除"低风险高回报"的套利机会，但"高风险低回报"的项目会一直存在，因为信息不对称和认知偏差让大量资本涌入劣质项目。',
+      '最底层：投资的本质不是"承担风险"而是"识别风险"。巴菲特和杜尔的超额回报不是因为承担了更多风险，而是因为他们比别人更准确地判断了哪些风险值得承担。'
+    ]},
+    {q:'如果区块链的去中心化导致效率低下，为什么还要研究它？',layers:[
+      '区块链的核心价值不在"去中心化"本身，而在"无需信任第三方的信任机制"。智能合约、溯源、数据确权等场景中，信任成本远高于效率成本。',
+      '更深一层：区块链的"效率低下"是当前技术阶段的问题，不是本质缺陷。Dfinity已将交易确认时间从1小时降至1秒——技术进步可以缩小效率差距。',
+      '最底层：区块链的真正意义是生产关系的重构——当AI替代了大量生产力工作后，人类社会需要新的利益分配机制。区块链提供了"贡献可量化、分配可自动执行"的可能。'
+    ]},
+    {q:'J曲线理论听起来很简单，为什么现实中大部分人仍然做不到？',layers:[
+      '因为人天生厌恶损失（损失厌恶偏差）。J曲线下行段的损失是即时、确定的，而上行段的收益是未来、不确定的——大脑的杏仁核会放大当前痛苦。',
+      '更深一层：社会评价体系强化了短期主义。资本市场看季度财报、职场看年度绩效、社交媒体追求即时反馈——这些制度性的"反J曲线"机制让坚持变得困难。',
+      '最底层：真正的J曲线坚持需要"信念"——不是盲目的固执，而是基于深度认知的确信。巴菲特几年研究一只股票，不是因为他比别人更有耐心，而是他的研究深度让他确信拐点一定会来。'
+    ]},
+    {q:'德鲁克定律说"贡献>成就"，但绩效考核不都是看成就吗？这不矛盾吗？',layers:[
+      '德鲁克不是否定成就，而是指出"只关注成就"的管理方式会腐蚀组织的长期能力。成就导向导致抢功劳、短期主义、忽视客户留存——最终成就也会消失。',
+      '更深一层：贡献是可以体现在成就中的，但需要更长的评估周期和更多维度的指标。Google把"公民奖"和"服务器90天无故障"视为高绩效——这些都是贡献驱动成就的实践。',
+      '最底层：德鲁克定律的真正对象不是员工，而是管理者。管理者选择用什么标准评价人，就决定了组织文化。如果一个组织的管理者只看短期成就，再好的员工也会变成"油滑的人"。'
+    ]},
+    {q:'核心竞争力不是核心技术——那中国企业为什么还要投入芯片自研？',layers:[
+      '关键区别：当外部供应商愿意且能够提供一流技术时，自研不是必需的（德国汽车用日本变速箱）。但当供应商"不愿意"或"不能"提供时，自研就是核心竞争力的屏障。',
+      '更深一层：华为被断供芯片不是因为没有"整合能力"，而是因为地缘政治改变了供应商的意愿——这属于不可控的外部风险。自研在这种情况下不是效率选择，而是生存选择。',
+      '最底层：核心竞争力是动态的——在自由贸易时代整合力是核心竞争力，在技术封锁时代自主可控成为核心竞争力的一部分。小米模式的局限性在市场正常时看不见，在供应链断裂时才暴露。'
+    ]}
+  ];
+  document.getElementById('socraticList').innerHTML=questions.map((sq,i)=>`
+    <div class="socratic-item">
+      <div class="socratic-q" onclick="toggleSocratic(${i})" id="sq_q_${i}">
+        <span>${i+1}. ${sq.q}</span><span style="font-size:.75rem;color:var(--text2)">▶</span>
+      </div>
+      ${sq.layers.map((a,j)=>`<div class="socratic-a" id="sq_a_${i}_${j}"><strong>第${j+1}层追问：</strong>${a}</div>`).join('')}
+    </div>
+  `).join('');
+}
+function toggleSocratic(idx){
+  const layers=document.querySelectorAll(`[id^="sq_a_${idx}_"]`);
+  const qEl=document.getElementById('sq_q_'+idx);
+  const isOpen=layers[0].classList.contains('open');
+  layers.forEach(l=>l.classList.toggle('open',!isOpen));
+  qEl.classList.toggle('open',!isOpen);
+}
+
+// ==================== TAB 7: CASE STUDY ====================
+// (Inline in HTML above)
+
+// ==================== TAB 8: DECISION SIM ====================
+function renderSim(){
+  const scenarios=[
+    {
+      title:'第1轮：早期投资选择',
+      desc:'你是天使投资人，面前有三个创业项目：A. 一个声称"比Google更好的搜索引擎"；B. 一个利用区块链做供应链金融的平台，创始人有10年国际贸易经验；C. 一个"共享雨伞"项目，押金19元，预计覆盖100个城市。每个项目索要50万美元种子轮。',
+      choices:[
+        {label:'A. 投资"更好的搜索引擎"',feedback:'差选择。约翰·杜尔第一问："两年后世界会有什么不同？"仅"比现有更好"不构成差异化。Google可以通过自我改进实现优化，新进入者几乎没有壁垒。',level:'bad'},
+        {label:'B. 投资区块链供应链金融平台',feedback:'好选择（MKS视角）：①解决真实痛点（三角债、过桥贷款）；②创始人有行业壁垒（10年国际贸易经验）；③技术有门槛（区块链智能合约）；④符合杜尔"创始人懂行业"标准。',level:'good'},
+        {label:'C. 投资共享雨伞',feedback:'差选择。①低技术门槛（无跳跃性），大公司可快速复制；②资产损耗高、客单价低；③不符合凯鹏华盈"花小钱做大生意"原则。属于典型的"模式创新泡沫"。',level:'bad'},
+      ]
+    },
+    {
+      title:'第2轮：止损决策',
+      desc:'你持有的一只股票从买入价下跌了40%。公司基本面：行业地位从第2下滑至第5，新CEO上任后战略摇摆不定，但公司账面现金仍充裕。你已经在这只股票上投入了总资产的30%。现在你怎么办？',
+      choices:[
+        {label:'A. 继续持有，等它反弹回本',feedback:'差选择。这是典型的"沉没成本谬误"——因为投入了30%就想等回本，忽略了公司基本面恶化的信号。彼得·林奇的原则："给每个人一次机会，但不上两次当。"如果基本面变差，越等损失越大。',level:'bad'},
+        {label:'B. 加仓摊平成本',feedback:'最差选择。这是止损的反面教材——为补救小错（40%浮亏）而扩大风险（再投入更多资金）。巴菲特强调"永远不要用杠杆"，加仓摊平本质上是杠杆思维的变种。淮海战役的教训：为救44军赔上5个兵团。',level:'bad'},
+        {label:'C. 立即卖出，接受损失',feedback:'正确选择。止损的核心原则：接受局部损失，避免更大灾难。公司从行业第2降至第5、新CEO战略摇摆——这些都是J曲线下行段仍在恶化、拐点未到的信号。保留70%的资金寻找更确定的机会。',level:'good'},
+      ]
+    },
+    {
+      title:'第3轮：人才决策',
+      desc:'你是一家成长型科技公司的CEO，需要招聘CTO。候选人A：BAT背景，技术全面，但要价高且要求独立决策权。候选人B：技术扎实但不如A全面，性格谦逊，愿意融入现有团队。候选人C：创业公司技术合伙人，有从0到1的经验，但缺乏大团队管理经验。',
+      choices:[
+        {label:'A. 选BAT背景的技术大牛',feedback:'需谨慎。能力匹配是优势，但要价高且要求独立决策权可能引发团队矛盾。奥格威定律讲究"雇用更强的人"，但前提是这个人愿意融入团队而非割裂团队。需进一步沟通"独立决策权"的边界。',level:'mid'},
+        {label:'B. 选谦逊的技术扎实者',feedback:'可能是武大郎开店心态——因为对方"谦逊、愿意融入"而选择，规避了管理挑战，但也放弃了更高的技术天花板。如果你的目标是成为行业第一，这可能是次优选择。',level:'mid'},
+        {label:'C. 选有0到1经验的创业型CTO',feedback:'好选择（MKS视角）：①公司处于成长期，需要的是"攻城"能力而非"守城"能力；②从0到1的经验比大团队管理经验更契合当前阶段（管理可以后续补）；③约翰·杜尔的"明天的企业家"公式：今天的创始人=明天的企业家，需要包容差异化风格。',level:'good'},
+      ]
+    }
+  ];
+  document.getElementById('simScenarios').innerHTML=scenarios.map((sc,si)=>`
+    <div class="sim-scenario" id="sim${si}">
+      <h3>${sc.title}</h3>
+      <p style="font-size:.85rem">${sc.desc}</p>
+      <div class="sim-choices">
+        ${sc.choices.map((ch,ci)=>`<div class="sim-choice" onclick="chooseSim(${si},${ci})" id="simChoice${si}_${ci}">${ch.label}</div>`).join('')}
+      </div>
+      <div class="sim-feedback" id="simFB${si}"></div>
+    </div>
+  `).join('');
+}
+
+function chooseSim(si,ci){
+  const scenarios=[
+    [{level:'bad'},{level:'good'},{level:'bad'}],
+    [{level:'bad'},{level:'bad'},{level:'good'}],
+    [{level:'mid'},{level:'mid'},{level:'good'}]
+  ];
+  const feedbacks=[
+    [
+      '差选择。约翰·杜尔第一问："两年后世界会有什么不同？"仅"比现有更好"不构成差异化。Google可以通过自我改进实现优化，新进入者几乎没有壁垒。',
+      '好选择（MKS视角）：①解决真实痛点（三角债、过桥贷款）；②创始人有行业壁垒（10年国际贸易经验）；③技术有门槛（区块链智能合约）；④符合杜尔"创始人懂行业"标准。',
+      '差选择。①低技术门槛（无跳跃性），大公司可快速复制；②资产损耗高、客单价低；③不符合凯鹏华盈"花小钱做大生意"原则。属于典型的"模式创新泡沫"。'
+    ],
+    [
+      '差选择。这是典型的"沉没成本谬误"——因为投入了30%就想等回本，忽略了公司基本面恶化的信号。彼得·林奇的原则："给每个人一次机会，但不上两次当。"',
+      '最差选择。这是止损的反面教材——为补救小错（40%浮亏）而扩大风险（再投入更多资金）。淮海战役的教训：为救44军赔上5个兵团。',
+      '正确选择。止损的核心原则：接受局部损失，避免更大灾难。公司从行业第2降至第5、新CEO战略摇摆——J曲线下行段仍在恶化。保留70%的资金寻找更确定的机会。'
+    ],
+    [
+      '需谨慎。能力匹配是优势，但要价高且要求独立决策权可能引发团队矛盾。奥格威定律讲究"雇用更强的人"，但前提是这个人愿意融入团队。需进一步沟通"独立决策权"的边界。',
+      '可能是武大郎开店心态——因为对方"谦逊、愿意融入"而选择，规避了管理挑战，但也放弃了更高的技术天花板。如果你的目标是成为行业第一，这可能是次优选择。',
+      '好选择（MKS视角）：①公司处于成长期，需要"攻城"能力而非"守城"能力；②从0到1的经验比大团队管理经验更契合当前阶段；③约翰·杜尔的"明天的企业家"公式：需要包容差异化风格。'
+    ]
+  ];
+  const levels=scenarios[si][ci].level;
+  const fb=document.getElementById('simFB'+si);
+  fb.textContent=feedbacks[si][ci];
+  fb.className='sim-feedback show '+(levels==='good'?'good':levels==='mid'?'mid':'bad');
+
+  document.querySelectorAll(`#sim${si} .sim-choice`).forEach(el=>el.classList.remove('chosen'));
+  document.getElementById('simChoice'+si+'_'+ci).classList.add('chosen');
+  state.simProgress=Math.max(state.simProgress,si+1);
+  saveState(state);
+}
+
+// ==================== UTILS ====================
+function shuffleArr(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ==================== INIT ====================
+function init(){
+  renderDashboard();
+  renderFlipCard();
+  renderQuiz();
+  resetExam();
+  renderReview();
+  renderMindmap();
+  // Expand first level of mindmap by default
+  setTimeout(()=>{
+    document.querySelectorAll('.mindmap-toggle').forEach((el,i)=>{
+      if(i<5)el.click();
+    });
+  },100);
+  renderSocratic();
+  renderSim();
+}
+init();
+</script>
+</body>
+</html>

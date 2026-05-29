@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>历史与文明对话 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5a5a;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"▸";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+.svg-container{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-container svg{min-width:700px;display:block;margin:0 auto}
+.back-home{text-align:center;margin:16px 0;font-size:.85rem}
+.back-home a{color:var(--text-light);text-decoration:none;border-bottom:1px dashed var(--border);padding-bottom:2px}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="back-home"><a href="index.html" title="返回知识主板">← 返回知识主板</a></div>
+<h1>历史与文明对话</h1>
+<p class="subtitle">吴军·硅谷来信第一季 · 穿越时空与文明对话——国民特性、历史人物、全球化，理解世界运行的深层规律</p>
+
+<!-- Tab Bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">苏格拉底问答</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- Tab 0: Dashboard -->
+<div class="tab-panel active" id="panel0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">通过对比不同文明的国民特性、解读历史人物的成败得失、剖析全球化的深层逻辑，<strong>理解世界运行的底层规律</strong>——为什么不同国家的人行为模式如此不同？农业文明与商业文明的DNA如何塑造了今天的冲突？个人如何在全球化浪潮中找准自己的位置？</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
+<h3>概念关系图</h3>
+<div class="svg-container"><svg id="conceptMap" viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg"></svg></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span>━━ 主线关系</span><span style="color:var(--accent)">━━ 对立张力</span><span style="color:var(--gold)">━━ 支撑关系</span><span style="color:var(--success)">━━ 应用层</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（15条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>瓦格纳《尼伯龙根的指环》四部曲剧情</td><td>理解德国民族心理时引用</td></tr>
+<tr><td>毕达哥拉斯学派对无理数的压制</td><td>讨论认知偏见与权威时举例</td></tr>
+<tr><td>《小山词》与《纳兰词》的艺术特色</td><td>理解《红楼梦》人物原型溯源</td></tr>
+<tr><td>帕绍三河交汇的地理特征</td><td>欧洲旅行文化背景知识</td></tr>
+<tr><td>布谷钟的机械原理（三铅锤驱动）</td><td>德国工艺精神的具体例证</td></tr>
+<tr><td>林茨的开普勒与布鲁克纳</td><td>中欧科学艺术史背景</td></tr>
+<tr><td>匈牙利塞切尼温泉浴场下棋文化</td><td>理解东欧生活传统</td></tr>
+<tr><td>纽伦堡审判选址的双重原因</td><td>二战历史讨论中的细节</td></tr>
+<tr><td>宋祁《木兰花》"红杏枝头春意闹"</td><td>宋代文学与社会风貌分析</td></tr>
+<tr><td>晏几道的家世背景与词风</td><td>理解中国文人士大夫传统</td></tr>
+<tr><td>《几何原本》对林肯论证的影响</td><td>法律与逻辑学交叉领域</td></tr>
+<tr><td>查士丁尼《法学阶梯》三分类法</td><td>罗马法体系的基本框架</td></tr>
+<tr><td>谢道韫"咏絮之才"典故出处</td><td>中国古代才女文化背景</td></tr>
+<tr><td>约翰·亚当斯"三代文明发展论"</td><td>文化发展阶段的宏观参照</td></tr>
+<tr><td>《五月花号公约》五大原则</td><td>理解美国政治文化源头</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径（5阶段推荐顺序）</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立框架：</strong>先学「文明类型（农业vs商业）」+「国民特性总论」，这是理解一切差异的钥匙</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>深化国别：</strong>依次学习日本→美国→英国→法国→德国→意大利国民特性，建立跨国比较视角</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>历史纵深：</strong>学习王莽、班超、郭嘉、谢道韫等历史人物，理解人性不变与制度变量</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>全球化视角：</strong>学习全球化此消彼长规律、欧洲衰落原因，建立宏观格局思维</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>人文升华：</strong>读《红楼梦》人物、庄子哲学、贵族精神，将知识内化为人生态度与处世智慧</div></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 1: Knowledge Cards -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: Quiz System -->
+<div class="tab-panel" id="panel2">
+<div class="card"><h3>选择题（共20题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p>
+<div id="choiceQuiz"></div>
+</div>
+<div class="card"><h3>简答题（共10题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p>
+<div id="shortQuiz"></div>
+</div>
+</div>
+
+<!-- Tab 3: Exam Mode -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- Tab 4: Review Mode -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+
+<!-- Tab 5: Mind Map -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>历史与文明对话 · 思维导图</h3><div id="mindmap"></div></div>
+</div>
+
+<!-- Tab 6: Socratic Dialogue -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p><div id="socratic"></div></div>
+</div>
+
+<!-- Tab 7: Case Study -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解「王莽改革失败」</h3><div id="caseStudy"></div></div>
+</div>
+
+<!-- Tab 8: Decision Simulation -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p><div id="decisionSim"></div></div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ===== DATA STORE =====
+const concepts = [
+  {id:'c1',name:'国民特性',def:'不同国家/民族在长期历史中形成的稳定的集体行为模式与价值取向，是理解国际交往、商业合作、文化冲突的第一把钥匙。',analogy:'如同不同操作系统（Windows/Mac/Linux）——表面功能相似，底层逻辑截然不同。做跨国生意如同在多种操作系统间做兼容开发。',example:'德国人"生活是具体的"：做菜用量杯量勺；日本人"宁可慢不能停"：工程师Miso做项目实验穷尽所有组合；美国人"爱管闲事"：邻居噪音报警。',counter:'误以为产品好=人品好。瑞士产品精良但瑞士人排外、规则至上；德国产品好且德国人开放包容。不能从产品推断国民性。'},
+  {id:'c2',name:'农业文明 vs 商业文明',def:'世界文明的两大主线。农业文明源于古埃及/古印度/古中国，强调自给自足、中央集权、土地情结；商业文明源于美索不达米亚/古希腊，强调贸易交换、契约精神、地方自治。',analogy:'如同两个操作系统——农业文明是"单机版"，自给自足、垂直整合；商业文明是"联网版"，依赖交换、规则、品牌。从单机切到联网需要重装整个思维系统。',example:'贾府庄园自产自用（农业文明）；荷兰东印度公司全球贸易靠契约（商业文明）。中国公司倾向垂直整合"什么都自己做"，美国公司专注单一领域深耕。',counter:'工业革命后商业文明占优，但农业文明在历史上长期领先，两者各有适用场景。日本是商业文明外壳+农业文明内核的混合体。'},
+  {id:'c3',name:'全球化此消彼长',def:'全球化表面上共赢，实质是全球GDP份额的零和博弈。新兴国家崛起必然导致原有强国份额下降。理解这一点才能看懂贸易摩擦、产业转移、欧洲衰落的底层逻辑。',analogy:'如同一个大池子里的水，总量固定，有人多舀一瓢就有人少一瓢。欧美中产阶级的失落不是中国人"偷走"了工作，而是全球产业链重构的必然结果。',example:'中国对美出口从服装玩具升级为机电产品和IT产品；韩国汽车从被嘲笑到超越美国三大；经互会因强制分工失败证明人为安排不可持续。',counter:'全球化不是纯零和——技术革命可以做大蛋糕。但短期（人的生命周期内）此消彼长效应占主导，不能指望"最终会好"来回避现实阵痛。'},
+  {id:'c4',name:'制度塑造行为',def:'人的行为习惯主要由制度环境塑造，而非先天民族性格。同一民族在不同制度下表现截然不同，改变制度才能改变行为。',analogy:'如同不同土壤长出不同植物——意大利人不是天生懒散，而是"勤劳无奖赏、懒惰无惩罚"的制度设计导致了行为选择；日本人的"残忍"是禅宗被改造后的文化结果。',example:'意大利人日常懒散但足球防守滴水不漏——因为足球表现与金钱回报直接挂钩；罗马兵团曾以纪律严明著称，说明制度变量＞人性常量。',counter:'制度不是万能的——印度"修心不修身"的文化价值观延续数千年，说明深层文化基因难以被短期制度改变。'},
+  {id:'c5',name:'文化基因',def:'一个文明的底层代码——包括宗教、语言、历史记忆、价值排序——如同操作系统的内核，决定了上层应用（制度、行为、经济）的可能性边界。',analogy:'如同一个人的"出厂设置"——犹太人的商业基因源于千年流散史；日本的"报恩文化"源于封闭岛国的互惠生存逻辑；印度的"修心不修身"源于婆罗门教的终极关怀。',example:'德国人通过瓦格纳歌剧形成英雄情结→促成国家统一→但为纳粹崛起埋下思想根源；美国的"反国王"传统源于五月花号移民对权力的天然警惕。',counter:'文化基因不是宿命论——美籍日裔在美国环境中成长为完全不同的行事风格，说明环境可以覆盖基因表达。'},
+  {id:'c6',name:'勇气与见识',def:'见识决定选择空间的上限，勇气决定能否将见识转化为行动。庄子"井蛙不可语海"说见识局限，班超"不入虎穴焉得虎子"说勇气的力量。',analogy:'见识如同地图——地图上没有标注的地方，你再努力也走不到；勇气如同引擎——有地图但不敢出发，等于没有地图。ChatGPT不会给你勇气和见识，它只是更精确的地图。',example:'班超以36人横行西域50余国，低成本高成效；谢道韫城破时持刀杀贼保护外孙；苏轼"天下有大勇者，卒然临之而不惊"。',counter:'勇气不等于鲁莽——郭嘉有识人之明但不具备曹操的实干勇气；领袖需要"脑和手"兼具。'},
+  {id:'c7',name:'利益与人性',def:'利益是理解人类行为最可靠的钥匙。小人以短期小利损害长远根本利益；全球化中各国以自身利益最大化行动；理解利益格局才能穿透道德话语看到真相。',analogy:'如同物理学的"最小作用量原理"——人的行为轨迹沿着利益最小阻力路径前行。道德是表面涂层，利益是底层引力。不是人坏，是引力定律使然。',example:'孟尝君罢相后门客离散——"富贵多士，贫贱寡友"是利益规律不是道德问题；美国人不为交情损害自身利益——帮人前计算成本收益。',counter:'只看利益会沦为冷血——圣方济各放弃家财服务穷人，不以自身利益计算；庄子"逍遥游"追求的恰是超越利益的绝对精神自由。'},
+  {id:'c8',name:'文明对话',def:'通过比较不同文明的思维方式和行为模式，突破自身文明的无意识牢笼，建立"元认知"——意识到自己的文明也是一种"地方性知识"。',analogy:'如同鱼最后才知道水的存在——你在农耕文明中长大，以为"关系""面子""权威"是天经地义的，直到看见商业文明中"就事论事""对事不对人"的运作方式。',example:'中国人"讨说法"vs美国人"法庭见"——都是解决冲突，但一个是道德逻辑一个是法律逻辑；法国人限购奢侈品不是歧视中国人，而是平等逻辑下维持中产消费。',counter:'文明对话不是文明优劣——农业文明的"人情温度"恰好是商业文明所缺失的。最高境界是"出入自如"，而非厚此薄彼。'},
+  {id:'c9',name:'幸福的多维本质',def:'幸福≠物质丰富。吴军提出幸福的三维度：爱情和婚姻、对未来的期望、生活的态度（从容与优雅）。18世纪的贵族物质远不如现代人，但可能更幸福。',analogy:'如同手机参数——RAM和CPU（物质）很重要，但系统流畅度（幸福感）更取决于软件优化（婚姻质量、未来预期、生活态度）。参数拉满但系统卡顿的手机没人想要。',example:'日本男人表面受妻子温柔照顾，实际工资全交、零花钱极少、晚年可能被离婚扫地出门；意大利经济一团糟但国民天性是欧洲最乐观的。',counter:'物质是基础层——极度贫困下谈"优雅从容"是站着说话不腰疼。约翰·亚当斯说第一代解决生存，到第三代才追求艺术。'},
+  {id:'c10',name:'具体性思维',def:'德国人"生活是具体的"——拒绝抽象空谈，一切评价和决策基于可量化、可比较的具体事实。这是德国制造质量、社会治理有效性的方法论根基。',analogy:'如同做菜——中餐"凭手感"（少许盐、适量油），德国厨房"凭量杯"（盐3克、油15毫升）。前者依赖经验直觉，后者依赖标准流程。两种方式在各自领域都有优势，但可复制性和稳定性差异巨大。',example:'徕卡镜头刻度线宽度有明确规范；德国论文呈现全流程中间结果而非仅结论；政策推行前公示具体数据让公众决策；日本代工德国镜头合格率仅20%+。',counter:'具体性可能扼杀灵感和艺术——庄子"无用之用"、黛玉"作诗的性格"都是对过度功利的必要平衡。"具体"是工具不是目的。'},
+];
+
+const mksCoreIds = ['c2','c4','c7','c8'];
+
+// ===== QUIZ QUESTIONS =====
+const choiceQuestions = [
+  {q:'与印度"修心不修身"形成鲜明对比的文明体育观念来自？',o:['中华文明','伊斯兰文明','古希腊文明','古埃及文明'],a:2},
+  {q:'德国人"生活是具体的"哲学的核心内涵是？',o:['追求物质享受','拒绝抽象空谈，注重具体数据和细节','严格遵守时间表','强调集体主义精神'],a:1},
+  {q:'王莽改革失败的根本原因是什么？',o:['慷他人之慨，以损害他人利益实现个人理想','个人品德败坏','改革措施过于激进','遇到了天灾'],a:0},
+  {q:'吴军将《红楼梦》中的贾府归入哪种文明类型？',o:['商业文明','游牧文明','海洋文明','农业文明'],a:3},
+  {q:'意大利南北方人差异的根本原因是？',o:['经济发展水平不同','历史与地理造成的文化分野','政治制度不同','宗教派别不同'],a:1},
+  {q:'识别"小人"的关键标准是什么？',o:['是否说人坏话','是否经常迟到','是否利用他人弱点提供小利而损害其核心利益','是否穿着体面'],a:2},
+  {q:'美国《独立宣言》在世界历史上的独特之处是？',o:['第一个将追求幸福权写入立国文件','第一个宣布独立','第一个废除奴隶制','第一个实行民主选举'],a:0},
+  {q:'法国人最典型的"认知矛盾"是什么？',o:['喜欢奢侈品却收入低','被贴上浪漫标签但实际性观念保守','号称自由却限制言论','标榜平等却等级森严'],a:3},
+  {q:'班超出使西域的核心能力是什么？',o:['强大的军事力量','以极少资源靠勇气和智慧达成战略目标','精通多国语言','拥有巨额财富'],a:1},
+  {q:'吴军认为全球化的真实本质是什么？',o:['所有国家一起变富','GDP份额的此消彼长零和博弈','只是暂时的困难','最终会自然平衡'],a:2},
+  {q:'英国人在公共场合和私下最大的矛盾是？',o:['表面一本正经，私下相对开放','喜欢社交但不会聊天','穿着讲究但饮食糟糕','重视隐私但爱管闲事'],a:0},
+  {q:'庄子"望洋兴叹"典故的核心启示是？',o:['海洋很危险','人应该远离水边','河神太小气','见识限制认知，人外有人天外有天'],a:3},
+  {q:'德国产品和瑞士产品的共同特点是？',o:['价格低廉','设计花哨','质量考究、做工精良','产量巨大'],a:2},
+  {q:'晴雯悲剧最具警示意义的自身原因是什么？',o:['长得太漂亮','岗位职责模糊、错判权力核心、恃宠而骄','不够聪明','不会写诗'],a:1},
+  {q:'薛宝钗的悲剧属于哪种类型？',o:['第一种——自身错误导致','第二种——环境约束导致','第二种——爱情悲剧','第三种——无人做错却命运使然'],a:3},
+  {q:'日本人"宁可慢，但不能停"的工作方式反映了什么？',o:['追求持续改进，为质量牺牲速度','工作效率低下','不重视结果','故意拖延时间'],a:0},
+  {q:'罗马法对后世影响力巨大的根本原因是什么？',o:['罗马帝国武力强大','构建了类似几何学的公理化演绎体系','条文数量最多','废除得最晚'],a:2},
+  {q:'印度体育长期落后的根本原因是什么？',o:['人口太少','"修心不修身"的文化价值观鄙视体力活动','经济太穷','气候不宜运动'],a:1},
+  {q:'郭嘉作为顶级谋臣的核心能力是什么？',o:['冲锋陷阵','写诗作文','管理后勤','精准识人、洞察局势'],a:3},
+  {q:'瓦格纳《指环》四部曲贯穿始终的核心驱动力是？',o:['对权力和财富的欲望及其诅咒','爱情故事','家族复仇','寻找宝藏'],a:0}
+];
+
+const shortQuestions = [
+  {q:'为什么说"从产品好坏推断国民特性"存在系统性偏差？',a:'德瑞产品都精良，但德国人开放包容，瑞士人排外规则至上。产品的质量更多反映工业体系和质量管理能力，而非人群的社交开放性。同理，不能因某些国家产品差就推断那里的人品性不好。产品与人品是两个维度。'},
+  {q:'农业文明的七大特征是什么？至少列出四项。',a:'①中央集权与大工程偏好；②顶层设计思维；③自给自足与小圈子观念；④品牌意识薄弱；⑤人口数量崇拜；⑥土地情结；⑦保守自保倾向。这些特征在《红楼梦》贾府和当代中国企业中都能找到对应。'},
+  {q:'"王莽综合征"在当代的具体表现有哪些？',a:'以"为你好"的名义站在道德制高点设计他人生活；空谈社会正义却不愿付出实际成本；推行平均主义政策但自身不愿承担代价（如教授呼吁公平却私下避税）。核心是慷他人之慨。'},
+  {q:'德国"生活是具体的"哲学与中国"差不多"文化的本质区别是什么？',a:'德国人做决策需量化数据支撑（如同做菜用量杯量勺），中国人常凭经验和感觉判断（如同凭手感做菜）。前者可复制性强、稳定但可能僵化；后者灵活快捷但质量波动大。两种思维各有优势场景。'},
+  {q:'为什么说"见识比努力更重要"？用庄子的观点回答。',a:'庄子说"井蛙不可语海，夏虫不可语冰"——你的认知边界决定了你努力的方向和天花板。见识受限的人再努力也是在井底精进。突破见识的路径：与比自己好的人为伍、亲身到一流环境中去、读经过时间检验的经典。'},
+  {q:'美国"反国王"传统的三大表现是什么？',a:'①政治领域：华盛顿拒绝王权、小罗斯福后修宪限任期、警惕"独裁者"；②经济领域：视垄断为"经济国王"，禁止跨行业垄断；③社会文化：不崇拜领域权威，认为"神是人创造的"。'},
+  {q:'日本人的"报恩文化"对商业交往的启示是什么？',a:'不要让日本人背上"恩情债"——即使帮助对方也需淡化付出，避免让对方产生亏欠感从而不计代价报恩。送礼要轻描淡写（"路过顺便买的"）。接受恩惠后需明确报答。这与美国人的"明码标价利益计算"形成鲜明对比。'},
+  {q:'从《红楼梦》贾府的衰落能得出什么组织管理启示？',a:'①组织衰老是系统性问题，再优秀的CEO（王熙凤）也只能延缓不能逆转；②缺乏新鲜血液（新进士）和外部输入导致熵增；③个人需"改换门庭"规避衰落，组织需"彻底改革"并关注下一代培养；④顺应时代大势比细节精进更重要。'},
+  {q:'吴军提出的幸福三个维度是什么？为什么物质丰富不一定幸福？',a:'①爱情和婚姻的质量；②对未来的确定期望（"明年比今年好"）；③生活的态度（内心有责任和荣誉，外在从容优雅）。18世纪贵族物质远不如现代人但可能更幸福——幸福与物质的关系是边际递减的，越过基本线后更多取决于精神维度。'},
+  {q:'如何用圣方济各vs王莽的对比来辨别"真伪理想主义者"？',a:'圣方济各放弃家财亲自服务穷人，用自身资源行动；王莽强制重新分配他人财富实现"大同"理想。判断标准：真正的理想主义者通过自身资源与行动实践，不强制他人付出。空谈公平却不愿开放住房接纳无家可归者，就是当代"王莽"。'}
+];
+
+// ===== STATE =====
+let learnedCards = JSON.parse(localStorage.getItem('mks_learned')||'[]');
+let wrongAnswers = JSON.parse(localStorage.getItem('mks_wrong')||'[]');
+let currentCardIdx = 0;
+let cardFlipped = false;
+let examInterval = null;
+let examSeconds = 0;
+let examActive = false;
+let examQuestions = [];
+let examAnswers = [];
+let quizAnswered = JSON.parse(localStorage.getItem('mks_quiz_answered')||'[]');
+let shortRevealed = JSON.parse(localStorage.getItem('mks_short_revealed')||'[]');
+
+function save(){localStorage.setItem('mks_learned',JSON.stringify(learnedCards));localStorage.setItem('mks_wrong',JSON.stringify(wrongAnswers));localStorage.setItem('mks_quiz_answered',JSON.stringify(quizAnswered));localStorage.setItem('mks_short_revealed',JSON.stringify(shortRevealed));}
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');
+  document.getElementById('panel'+this.dataset.tab).classList.add('active');
+  if(this.dataset.tab==='4') renderReview();
+}));
+
+// ===== SVG CONCEPT MAP =====
+function renderSVG() {
+  const svg = `<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="780pt" height="290pt"
+ viewBox="0.00 0.00 779.50 290.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 286)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-286 775.5,-286 775.5,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="0" d="M480,-282C480,-282 388,-282 388,-282 382,-282 376,-276 376,-270 376,-270 376,-258 376,-258 376,-252 382,-246 388,-246 388,-246 480,-246 480,-246 486,-246 492,-252 492,-258 492,-258 492,-270 492,-270 492,-276 486,-282 480,-282"/>
+<text text-anchor="middle" x="434" y="-260.3" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">历史与文明对话</text>
+</g>
+<!-- agri -->
+<g id="node2" class="node">
+<title>agri</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M242,-200C242,-200 182,-200 182,-200 176,-200 170,-194 170,-188 170,-188 170,-176 170,-176 170,-170 176,-164 182,-164 182,-164 242,-164 242,-164 248,-164 254,-170 254,-176 254,-176 254,-188 254,-188 254,-194 248,-200 242,-200"/>
+<text text-anchor="middle" x="212" y="-179.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">农业文明思维</text>
+</g>
+<!-- root&#45;&gt;agri -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;agri</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M386.65,-245.94C350.53,-232.92 300.82,-215.01 263.68,-201.62"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="264.63,-198.25 254.04,-198.15 262.26,-204.83 264.63,-198.25"/>
+<text text-anchor="middle" x="346.5" y="-220.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">分化</text>
+</g>
+<!-- comm -->
+<g id="node3" class="node">
+<title>comm</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M464,-200C464,-200 404,-200 404,-200 398,-200 392,-194 392,-188 392,-188 392,-176 392,-176 392,-170 398,-164 404,-164 404,-164 464,-164 464,-164 470,-164 476,-170 476,-176 476,-176 476,-188 476,-188 476,-194 470,-200 464,-200"/>
+<text text-anchor="middle" x="434" y="-179.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">商业文明思维</text>
+</g>
+<!-- root&#45;&gt;comm -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;comm</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M434,-245.64C434,-235.3 434,-221.94 434,-210.22"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="437.5,-210.05 434,-200.05 430.5,-210.05 437.5,-210.05"/>
+<text text-anchor="middle" x="443.5" y="-220.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">分化</text>
+</g>
+<!-- hist -->
+<g id="node4" class="node">
+<title>hist</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M641,-200C641,-200 581,-200 581,-200 575,-200 569,-194 569,-188 569,-188 569,-176 569,-176 569,-170 575,-164 581,-164 581,-164 641,-164 641,-164 647,-164 653,-170 653,-176 653,-176 653,-188 653,-188 653,-194 647,-200 641,-200"/>
+<text text-anchor="middle" x="611" y="-179.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">历史人物智慧</text>
+</g>
+<!-- root&#45;&gt;hist -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;hist</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M471.97,-245.84C498.8,-233.71 534.95,-217.37 563.66,-204.39"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="565.42,-207.44 573.09,-200.13 562.54,-201.06 565.42,-207.44"/>
+<text text-anchor="middle" x="543.5" y="-220.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">借鉴</text>
+</g>
+<!-- central -->
+<g id="node5" class="node">
+<title>central</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M89,-118C89,-118 29,-118 29,-118 23,-118 17,-112 17,-106 17,-106 17,-94 17,-94 17,-88 23,-82 29,-82 29,-82 89,-82 89,-82 95,-82 101,-88 101,-94 101,-94 101,-106 101,-106 101,-112 95,-118 89,-118"/>
+<text text-anchor="middle" x="59" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">中央集权</text>
+<text text-anchor="middle" x="59" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">自上而下设计</text>
+</g>
+<!-- agri&#45;&gt;central -->
+<g id="edge4" class="edge">
+<title>agri&#45;&gt;central</title>
+<path fill="none" stroke="#b8860b" d="M179.18,-163.84C156.29,-151.87 125.55,-135.8 100.89,-122.9"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="102.25,-119.67 91.77,-118.13 99.01,-125.87 102.25,-119.67"/>
+<text text-anchor="middle" x="154.5" y="-138.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">特征</text>
+</g>
+<!-- self -->
+<g id="node6" class="node">
+<title>self</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M191,-118C191,-118 131,-118 131,-118 125,-118 119,-112 119,-106 119,-106 119,-94 119,-94 119,-88 125,-82 131,-82 131,-82 191,-82 191,-82 197,-82 203,-88 203,-94 203,-94 203,-106 203,-106 203,-112 197,-118 191,-118"/>
+<text text-anchor="middle" x="161" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">自给自足</text>
+<text text-anchor="middle" x="161" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">贾府庄园模式</text>
+</g>
+<!-- agri&#45;&gt;self -->
+<g id="edge5" class="edge">
+<title>agri&#45;&gt;self</title>
+<path fill="none" stroke="#b8860b" d="M200.93,-163.64C194.07,-152.87 185.13,-138.85 177.44,-126.79"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="180.2,-124.6 171.87,-118.05 174.29,-128.36 180.2,-124.6"/>
+<text text-anchor="middle" x="199.5" y="-138.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">特征</text>
+</g>
+<!-- land -->
+<g id="node7" class="node">
+<title>land</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M293,-118C293,-118 233,-118 233,-118 227,-118 221,-112 221,-106 221,-106 221,-94 221,-94 221,-88 227,-82 233,-82 233,-82 293,-82 293,-82 299,-82 305,-88 305,-94 305,-94 305,-106 305,-106 305,-112 299,-118 293,-118"/>
+<text text-anchor="middle" x="263" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">土地情结</text>
+<text text-anchor="middle" x="263" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">人口数量崇拜</text>
+</g>
+<!-- agri&#45;&gt;land -->
+<g id="edge6" class="edge">
+<title>agri&#45;&gt;land</title>
+<path fill="none" stroke="#b8860b" d="M223.07,-163.64C229.93,-152.87 238.87,-138.85 246.56,-126.79"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="249.71,-128.36 252.13,-118.05 243.8,-124.6 249.71,-128.36"/>
+<text text-anchor="middle" x="250.5" y="-138.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">关联</text>
+</g>
+<!-- contract -->
+<g id="node8" class="node">
+<title>contract</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M373,-118C373,-118 335,-118 335,-118 329,-118 323,-112 323,-106 323,-106 323,-94 323,-94 323,-88 329,-82 335,-82 335,-82 373,-82 373,-82 379,-82 385,-88 385,-94 385,-94 385,-106 385,-106 385,-112 379,-118 373,-118"/>
+<text text-anchor="middle" x="354" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">契约精神</text>
+<text text-anchor="middle" x="354" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">规则至上</text>
+</g>
+<!-- comm&#45;&gt;contract -->
+<g id="edge7" class="edge">
+<title>comm&#45;&gt;contract</title>
+<path fill="none" stroke="#b8860b" d="M416.64,-163.64C405.45,-152.45 390.74,-137.74 378.39,-125.39"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="380.6,-122.65 371.05,-118.05 375.65,-127.6 380.6,-122.65"/>
+<text text-anchor="middle" x="408.5" y="-138.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">特征</text>
+</g>
+<!-- brand -->
+<g id="node9" class="node">
+<title>brand</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M453,-118C453,-118 415,-118 415,-118 409,-118 403,-112 403,-106 403,-106 403,-94 403,-94 403,-88 409,-82 415,-82 415,-82 453,-82 453,-82 459,-82 465,-88 465,-94 465,-94 465,-106 465,-106 465,-112 459,-118 453,-118"/>
+<text text-anchor="middle" x="434" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">品牌导向</text>
+<text text-anchor="middle" x="434" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">地方自治</text>
+</g>
+<!-- comm&#45;&gt;brand -->
+<g id="edge8" class="edge">
+<title>comm&#45;&gt;brand</title>
+<path fill="none" stroke="#b8860b" d="M434,-163.64C434,-153.3 434,-139.94 434,-128.22"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="437.5,-128.05 434,-118.05 430.5,-128.05 437.5,-128.05"/>
+<text text-anchor="middle" x="443.5" y="-138.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">特征</text>
+</g>
+<!-- law -->
+<g id="node10" class="node">
+<title>law</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M544.5,-118C544.5,-118 495.5,-118 495.5,-118 489.5,-118 483.5,-112 483.5,-106 483.5,-106 483.5,-94 483.5,-94 483.5,-88 489.5,-82 495.5,-82 495.5,-82 544.5,-82 544.5,-82 550.5,-82 556.5,-88 556.5,-94 556.5,-94 556.5,-106 556.5,-106 556.5,-112 550.5,-118 544.5,-118"/>
+<text text-anchor="middle" x="520" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">法律仲裁</text>
+<text text-anchor="middle" x="520" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">第三方裁决</text>
+</g>
+<!-- comm&#45;&gt;law -->
+<g id="edge9" class="edge">
+<title>comm&#45;&gt;law</title>
+<path fill="none" stroke="#b8860b" d="M452.66,-163.64C464.8,-152.35 480.8,-137.46 494.16,-125.04"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="496.73,-127.42 501.67,-118.05 491.97,-122.3 496.73,-127.42"/>
+<text text-anchor="middle" x="492.5" y="-138.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">关联</text>
+</g>
+<!-- courage -->
+<g id="node11" class="node">
+<title>courage</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M635.5,-118C635.5,-118 586.5,-118 586.5,-118 580.5,-118 574.5,-112 574.5,-106 574.5,-106 574.5,-94 574.5,-94 574.5,-88 580.5,-82 586.5,-82 586.5,-82 635.5,-82 635.5,-82 641.5,-82 647.5,-88 647.5,-94 647.5,-94 647.5,-106 647.5,-106 647.5,-112 641.5,-118 635.5,-118"/>
+<text text-anchor="middle" x="611" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">勇气与见识</text>
+<text text-anchor="middle" x="611" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">班超·庄子</text>
+</g>
+<!-- hist&#45;&gt;courage -->
+<g id="edge10" class="edge">
+<title>hist&#45;&gt;courage</title>
+<path fill="none" stroke="#c0392b" d="M611,-163.64C611,-153.3 611,-139.94 611,-128.22"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="614.5,-128.05 611,-118.05 607.5,-128.05 614.5,-128.05"/>
+</g>
+<!-- interest -->
+<g id="node12" class="node">
+<title>interest</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M737.5,-118C737.5,-118 688.5,-118 688.5,-118 682.5,-118 676.5,-112 676.5,-106 676.5,-106 676.5,-94 676.5,-94 676.5,-88 682.5,-82 688.5,-82 688.5,-82 737.5,-82 737.5,-82 743.5,-82 749.5,-88 749.5,-94 749.5,-94 749.5,-106 749.5,-106 749.5,-112 743.5,-118 737.5,-118"/>
+<text text-anchor="middle" x="713" y="-103.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">利益与人性</text>
+<text text-anchor="middle" x="713" y="-91.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">王莽·郭嘉</text>
+</g>
+<!-- hist&#45;&gt;interest -->
+<g id="edge11" class="edge">
+<title>hist&#45;&gt;interest</title>
+<path fill="none" stroke="#c0392b" d="M632.88,-163.84C647.54,-152.34 667.02,-137.07 683.1,-124.45"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="685.45,-127.06 691.15,-118.13 681.13,-121.55 685.45,-127.06"/>
+</g>
+<!-- global -->
+<g id="node13" class="node">
+<title>global</title>
+<path fill="#fffaf2" stroke="#27ae60" d="M106,-36C106,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 106,0 106,0 112,0 118,-6 118,-12 118,-12 118,-24 118,-24 118,-30 112,-36 106,-36"/>
+<text text-anchor="middle" x="59" y="-21.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#27ae60">全球化理解</text>
+<text text-anchor="middle" x="59" y="-9.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#27ae60">此消彼长·产业转移</text>
+</g>
+<!-- central&#45;&gt;global -->
+<g id="edge12" class="edge">
+<title>central&#45;&gt;global</title>
+<path fill="none" stroke="#27ae60" stroke-dasharray="5,2" d="M59,-81.64C59,-71.3 59,-57.94 59,-46.22"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="62.5,-46.05 59,-36.05 55.5,-46.05 62.5,-46.05"/>
+<text text-anchor="middle" x="68.5" y="-56.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">应用</text>
+</g>
+<!-- cross -->
+<g id="node14" class="node">
+<title>cross</title>
+<path fill="#fffaf2" stroke="#27ae60" d="M635,-36C635,-36 575,-36 575,-36 569,-36 563,-30 563,-24 563,-24 563,-12 563,-12 563,-6 569,0 575,0 575,0 635,0 635,0 641,0 647,-6 647,-12 647,-12 647,-24 647,-24 647,-30 641,-36 635,-36"/>
+<text text-anchor="middle" x="605" y="-21.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#27ae60">跨文化交往</text>
+<text text-anchor="middle" x="605" y="-9.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#27ae60">国民特性应用</text>
+</g>
+<!-- courage&#45;&gt;cross -->
+<g id="edge13" class="edge">
+<title>courage&#45;&gt;cross</title>
+<path fill="none" stroke="#27ae60" stroke-dasharray="5,2" d="M609.7,-81.64C608.92,-71.3 607.92,-57.94 607.04,-46.22"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="610.52,-45.76 606.28,-36.05 603.54,-46.28 610.52,-45.76"/>
+<text text-anchor="middle" x="618.5" y="-56.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">应用</text>
+</g>
+<!-- decision -->
+<g id="node15" class="node">
+<title>decision</title>
+<path fill="#fffaf2" stroke="#27ae60" d="M759.5,-36C759.5,-36 676.5,-36 676.5,-36 670.5,-36 664.5,-30 664.5,-24 664.5,-24 664.5,-12 664.5,-12 664.5,-6 670.5,0 676.5,0 676.5,0 759.5,0 759.5,0 765.5,0 771.5,-6 771.5,-12 771.5,-12 771.5,-24 771.5,-24 771.5,-30 765.5,-36 759.5,-36"/>
+<text text-anchor="middle" x="718" y="-21.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#27ae60">个人决策</text>
+<text text-anchor="middle" x="718" y="-9.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#27ae60">幸福·职业·人生</text>
+</g>
+<!-- interest&#45;&gt;decision -->
+<g id="edge14" class="edge">
+<title>interest&#45;&gt;decision</title>
+<path fill="none" stroke="#27ae60" stroke-dasharray="5,2" d="M714.08,-81.64C714.73,-71.3 715.57,-57.94 716.3,-46.22"/>
+<polygon fill="#27ae60" stroke="#27ae60" points="719.8,-46.25 716.93,-36.05 712.82,-45.81 719.8,-46.25"/>
+<text text-anchor="middle" x="725.5" y="-56.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9.00">应用</text>
+</g>
+</g>
+</svg>`;
+  document.getElementById('conceptMap').innerHTML = svg;
+}
+renderSVG();
+
+// ===== DASHBOARD CONCEPTS =====
+function renderConcepts(){
+  const grid=document.getElementById('conceptGrid');
+  grid.innerHTML=concepts.map(c=>`<div class="concept-card" onclick="switchTab(1);setCard(${concepts.indexOf(c)})"><strong>${c.name}</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">${c.def.slice(0,60)}...</p></div>`).join('');
+  const mks=document.getElementById('mksCoreGrid');
+  mks.innerHTML=mksCoreIds.map(id=>{
+    const c=concepts.find(x=>x.id===id);
+    return `<div class="concept-card mks-core"><strong>★ ${c.name}</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">${c.def.slice(0,80)}...</p></div>`;
+  }).join('');
+}
+renderConcepts();
+
+function updateProgress(){
+  const pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('totalProgress').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct>0?`学习进度 ${pct}%（${learnedCards.length}/${concepts.length}）`:'尚未开始学习';
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+}
+updateProgress();
+
+// ===== TAB 1: KNOWLEDGE CARDS =====
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ===== TAB 2: QUIZ =====
+function renderChoiceQuiz(){
+  const div=document.getElementById('choiceQuiz');
+  div.innerHTML=choiceQuestions.map((q,i)=>{
+    const answered=quizAnswered.includes(i);
+    const correct=q.a;
+    let opts=q.o.map((o,j)=>{
+      let cls='quiz-option';
+      if(answered){
+        if(j===correct)cls+=' correct';
+        else cls+=' wrong';
+      }
+      return `<div class="${cls}" onclick="${answered?'':'answerChoice('+i+','+j+',this)'}">${'ABCD'[j]}. ${o}${answered&&j===correct?' ✓':''}</div>`;
+    }).join('');
+    return `<div style="margin-bottom:14px"><strong style="color:var(--accent)">${i+1}. ${q.q}</strong>${opts}</div>`;
+  }).join('');
+}
+renderChoiceQuiz();
+
+function answerChoice(qIdx,choice,el){
+  if(quizAnswered.includes(qIdx))return;
+  const correct=choiceQuestions[qIdx].a;
+  quizAnswered.push(qIdx);
+  if(choice!==correct){
+    wrongAnswers.push({type:'choice',idx:qIdx,question:choiceQuestions[qIdx].q,userAnswer:choiceQuestions[qIdx].o[choice],correctAnswer:choiceQuestions[qIdx].o[correct]});
+  }
+  save();
+  // re-render this question
+  renderChoiceQuiz();
+}
+
+function renderShortQuiz(){
+  const div=document.getElementById('shortQuiz');
+  div.innerHTML=shortQuestions.map((q,i)=>{
+    const revealed=shortRevealed.includes(i);
+    return `<div style="margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px">
+      <strong style="color:var(--accent)">${i+1}. ${q.q}</strong>
+      ${revealed?`<div style="margin-top:6px;padding:10px;background:#fef9f2;border-radius:6px;color:var(--text-light);font-size:.88rem">${q.a}</div>`:`<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="revealShort(${i})">查看参考思路</button>`}
+    </div>`;
+  }).join('');
+}
+renderShortQuiz();
+
+function revealShort(i){if(!shortRevealed.includes(i)){shortRevealed.push(i);save();renderShortQuiz()}}
+
+// ===== TAB 3: EXAM MODE =====
+function startExam(){
+  if(examActive)return;
+  examActive=true;
+  examSeconds=15*60;
+  document.getElementById('startExamBtn').style.display='none';
+  document.getElementById('examResult').style.display='none';
+  // Select random questions: 7 choice + 3 short
+  let cIdx=[],sIdx=[];
+  while(cIdx.length<7){let r=Math.floor(Math.random()*choiceQuestions.length);if(!cIdx.includes(r))cIdx.push(r)}
+  while(sIdx.length<3){let r=Math.floor(Math.random()*shortQuestions.length);if(!sIdx.includes(r))sIdx.push(r)}
+  examQuestions={choice:cIdx,short:sIdx};
+  examAnswers=new Array(7).fill(-1);
+  renderExam();
+  document.getElementById('examArea').style.display='block';
+  examInterval=setInterval(updateTimer,1000);
+}
+
+function updateTimer(){
+  examSeconds--;
+  const m=Math.floor(examSeconds/60),s=examSeconds%60;
+  document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;
+  if(examSeconds<=0){submitExam()}
+}
+
+function renderExam(){
+  const div=document.getElementById('examArea');
+  let html='';
+  examQuestions.choice.forEach((idx,i)=>{
+    const q=choiceQuestions[idx];
+    let opts=q.o.map((o,j)=>`<div class="quiz-option" onclick="selectExam(${i},${j})" id="examOpt${i}_${j}">${'ABCD'[j]}. ${o}</div>`).join('');
+    html+=`<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">${i+1}. ${q.q}</strong>${opts}</div>`;
+  });
+  examQuestions.short.forEach((idx,i)=>{
+    html+=`<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">${i+8}. ${shortQuestions[idx].q}</strong><p style="color:var(--text-light);font-size:.82rem;margin-top:4px">（简答题，请在心中作答后点击"提交"查看参考思路）</p></div>`;
+  });
+  html+=`<button class="btn btn-primary" onclick="submitExam()">提交答卷</button>`;
+  div.innerHTML=html;
+}
+
+function selectExam(i,j){
+  examAnswers[i]=j;
+  for(let k=0;k<4;k++){const el=document.getElementById('examOpt'+i+'_'+k);if(el){el.classList.remove('selected');if(k===j)el.classList.add('selected')}}
+}
+
+function submitExam(){
+  clearInterval(examInterval);
+  examActive=false;
+  document.getElementById('examTimer').textContent='00:00';
+  let score=0;
+  let detail='';
+  examQuestions.choice.forEach((idx,i)=>{
+    const q=choiceQuestions[idx];
+    const user=examAnswers[i];
+    const correct=q.a;
+    const isCorrect=user===correct;
+    if(isCorrect)score++;
+    else{wrongAnswers.push({type:'exam',idx,question:q.q,userAnswer:user>=0?q.o[user]:'未作答',correctAnswer:q.o[correct]})}
+    detail+=`<div style="margin:6px 0;padding:8px;border-radius:6px;background:${isCorrect?'#eafaf1':'#fdecea'}"><strong>${i+1}. ${q.q}</strong><br>你的答案：${user>=0?q.o[user]:'未作答'} ${isCorrect?'✓':'✗'}<br>正确答案：${q.o[correct]}</div>`;
+  });
+  examQuestions.short.forEach((idx,i)=>{
+    const q=shortQuestions[idx];
+    detail+=`<div style="margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2"><strong>${i+8}. ${q.q}</strong><br>${q.a}</div>`;
+  });
+  save();
+  const pct=Math.round(score/7*100);
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML=`<h3 style="color:${pct>=70?'var(--success)':'var(--accent)'}">得分：${score}/7（${pct}%）</h3>${detail}<button class="btn btn-outline" onclick="document.getElementById('startExamBtn').style.display='inline-block';document.getElementById('examResult').style.display='none';document.getElementById('examArea').style.display='none';document.getElementById('examTimer').textContent='15:00'">重新考试</button>`;
+  document.getElementById('examArea').style.display='none';
+}
+
+// ===== TAB 4: REVIEW =====
+function renderReview(){
+  const totalQ=quizAnswered.length;
+  const correctQ=quizAnswered.length-wrongAnswers.filter(w=>w.type==='choice').length;
+  const pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+  const days=Math.max(1,Math.ceil((Date.now()-new Date('2026-05-01').getTime())/86400000));
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="card stat-item"><div class="stat-value">${totalQ}</div><div class="stat-label">总答题数</div></div>
+    <div class="card stat-item"><div class="stat-value">${pct}%</div><div class="stat-label">正确率</div></div>
+    <div class="card stat-item"><div class="stat-value">${days}</div><div class="stat-label">学习天数</div></div>
+  `;
+  const wb=document.getElementById('wrongBook');
+  if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--success)">暂无错题，继续保持！</p>';}
+  else{wb.innerHTML=wrongAnswers.map((w,i)=>`<div style="margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0"><strong>${w.question}</strong><br><span style="color:var(--accent)">你的答案：${w.userAnswer}</span><br><span style="color:var(--success)">正确答案：${w.correctAnswer}</span></div>`).join('');}
+  // Weak concepts
+  const conceptMap={};
+  wrongAnswers.forEach(w=>{
+    let qIdx=w.idx;
+    if(choiceQuestions[qIdx]){
+      const topic=choiceQuestions[qIdx].q.slice(0,8);
+      conceptMap[topic]=conceptMap[topic]||{topic,count:0,questions:[]};
+      conceptMap[topic].count++;
+      conceptMap[topic].questions.push(w.question);
+    }
+  });
+  const sorted=Object.values(conceptMap).sort((a,b)=>b.count-a.count);
+  document.getElementById('weakConcepts').innerHTML=sorted.length>0?sorted.map(c=>`<div style="margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px"><strong>错${c.count}题：</strong>${c.questions[0].slice(0,40)}...</div>`).join(''):'<p style="color:var(--success)">暂无薄弱概念</p>';
+}
+
+// ===== TAB 5: MIND MAP =====
+function renderMindMap(){
+  const tree=[
+    {label:'历史与文明对话',open:true,children:[
+      {label:'一、国民特性解码',open:true,children:[
+        {label:'日本人：宁可慢不能停 / 报恩文化 / 好面子 / 享受衰退',leaf:true},
+        {label:'美国人：追求幸福 / 反国王 / 法律仲裁 / 经济动物',leaf:true},
+        {label:'英国人：公私分裂 / 难打交道 / 先扬后抑 / 效率秘诀',leaf:true},
+        {label:'法国人：浪漫标签vs保守实际 / 平等优先 / 仇视商业',leaf:true},
+        {label:'德国人：开放包容 / 历史反思 / 生活是具体的',leaf:true},
+        {label:'意大利人：易深交 / 南北对立 / 制度塑造行为',leaf:true},
+        {label:'瑞士人：规则至上 / 排外 / 做好最后1%',leaf:true},
+        {label:'印度人：修心不修身 / 文化自负 / 忽视体育',leaf:true}
+      ]},
+      {label:'二、文明类型深度对比',open:true,children:[
+        {label:'农业文明：古埃及/古印度/古中国 → 法国/德国/前苏联',leaf:true},
+        {label:'七大特征：中央集权 / 顶层设计 / 自给自足 / 无品牌 / 人口崇拜 / 土地情结 / 保守自保',leaf:true},
+        {label:'商业文明：美索不达米亚/古希腊 → 意大利/荷兰/英国/美国/日本',leaf:true},
+        {label:'核心特征：契约精神 / 品牌导向 / 地方自治 / 法律仲裁',leaf:true},
+        {label:'中国转型：改革开放不足两代人，观念转变缓慢',leaf:true}
+      ]},
+      {label:'三、全球化逻辑',open:true,children:[
+        {label:'此消彼长：全球GDP份额固定，新兴国家崛起=老牌国家衰落',leaf:true},
+        {label:'欧洲衰落：过度福利 / 工作时间极短 / 产业竞争力丧失',leaf:true},
+        {label:'个人启示：从底层做起但必须升级 / 警惕"老本陷阱" / 远离平均主义',leaf:true}
+      ]},
+      {label:'四、历史人物智慧',open:true,children:[
+        {label:'王莽：好心办坏事 / 慷他人之慨 / "王莽综合征"',leaf:true},
+        {label:'圣方济各：以自身资源行动 / 真理想主义者的标杆',leaf:true},
+        {label:'班超：不入虎穴焉得虎子 / 以36人横行西域50国',leaf:true},
+        {label:'郭嘉：识人知事 / 《十胜十败》/ 谋臣与领袖的分工',leaf:true},
+        {label:'谢道韫：咏絮之才 / 城破杀贼 / 勇气教育',leaf:true},
+        {label:'庄子：逍遥游 / 见识决定成败 / 井蛙不可语海',leaf:true}
+      ]},
+      {label:'五、经典与人文精神',open:true,children:[
+        {label:'《红楼梦》：理解中国农耕文明的钥匙 / 四阶段阅读法',leaf:true},
+        {label:'林黛玉困境："作诗的性格"vs"做人的性格" / AI不可替代的人类天赋',leaf:true},
+        {label:'薛宝钗悲剧：第三种悲剧——无人做错，命运使然',leaf:true},
+        {label:'晴雯悲剧：岗位模糊 / 错判权力 / 恃宠而骄',leaf:true},
+        {label:'瓦格纳《指环》：英雄情结→国家统一→纳粹崛起的思想根源',leaf:true},
+        {label:'贵族精神：责任/荣誉/从容/优雅 / 幸福三维度',leaf:true},
+        {label:'罗马法vs几何学：公理化演绎体系 / 自然法原则',leaf:true}
+      ]}
+    ]}
+  ];
+  document.getElementById('mindmap').innerHTML=buildTree(tree);
+  // Attach toggle events
+  document.querySelectorAll('.tree-toggle').forEach(el=>{
+    el.addEventListener('click',function(){
+      this.classList.toggle('open');
+      const children=this.nextElementSibling;
+      if(children)children.classList.toggle('open');
+    });
+  });
+}
+
+function buildTree(nodes){
+  return nodes.map(n=>{
+    if(n.leaf)return `<div class="tree-leaf">${n.label}</div>`;
+    let cls=n.open?'open':'';
+    return `<div class="tree-node"><div class="tree-toggle ${cls}">${n.label}</div><div class="tree-children ${cls}">${buildTree(n.children||[])}</div></div>`;
+  }).join('');
+}
+renderMindMap();
+
+// ===== TAB 6: SOCRATIC DIALOGUE =====
+function renderSocratic(){
+  const data=[
+    {q:'为什么说"农业文明vs商业文明"是理解一切差异的根密钥？',a:'因为一个国家的外交风格、企业管理模式、个人行为习惯，表面千差万别，深层都可追溯到其文明起源路径。农业文明需要集权修水利→形成等级制和权威崇拜；商业文明需要跨海贸易→形成契约和平等协商。当农业文明的中国企业出海并购商业文明的欧美公司时，冲突不在管理技术层面，而在文明DNA层面。',sub:[
+      {q:'那日本呢？它明明是岛国，为什么有那么多农业文明特征？',a:'日本虽然是海岛，但是农业立国（稻作文明），且长期锁国。它的商业精神是明治维新后嫁接上去的，底层依然是"村社会"逻辑：重面子、讲等级、怕失败。这正是"文化基因"概念的价值——表面的制度可以快速改变，深层的集体无意识需要几代人。'},
+      {q:'当代互联网公司算不算"商业文明"？',a:'算，而且是最彻底的形式——产品面向全球市场、依赖品牌和用户信任、通过契约（用户协议）和法律解决纠纷。但中国互联网公司仍有农业文明残余：倾向垂直整合（什么都自己做）、偏好独家控制而非开放生态、组织内部仍有强烈的"老板文化"。'}
+    ]},
+    {q:'"制度塑造行为"的反面——文化会不会反过来锁死制度？',a:'这正是印度的案例。印度独立后建立了民主制度，照搬英国议会制，但婆罗门"修心不修身"的文化基因延续三千年，导致体育投入意愿为零、种姓制度名义废除实际仍在运行。文化是"慢变量"，制度是"快变量"。快变量可以改，但若慢变量不动，快变量会被慢慢拉回原来的轨道。',sub:[
+      {q:'那中国改革开放算不算"慢变量被快变量改变"？',a:'正是。四十年市场经济实践，已经让至少两代中国人的行为模式从"等分配"变为"自己争"——这就是制度改变文化的证据。但有些深层的东西很难改：对权威的依赖、对关系的迷信、对"面子"的执着。这是"一代人多一点"vs"三千年积淀"的角力。'}
+    ]},
+    {q:'王莽的理想如果放在今天，会不会成功？',a:'不会。因为王莽的核心问题不是"时代局限"，而是人性规律——强制重新分配他人的财富永远会遭到抵抗，不管用什么制度包装。北欧高福利不是因为"平均主义理想"，而是因为人均资源丰富+高度信任+小国寡民。忽略约束条件的"好心"，本质上是一种智力懒惰。',sub:[
+      {q:'那慈善和福利的区别在哪里？',a:'圣方济各模式：用我的资源帮助他人，自愿、自发、可复制。王莽模式：用你的资源实现我的理想，强制、自上而下、不可持续。辨别标准很简单：提议者自己先做，就是慈善；提议者要别人做而自己不做，就是王莽。'}
+    ]},
+    {q:'勇气和见识哪个更重要？',a:'见识是"知道往哪走"，勇气是"敢走"。没有见识的勇气是蛮干，没有勇气的见识是纸上谈兵。班超有见识（知道西域各国的利益格局）也有勇气（36人就敢夜袭匈奴使团）；郭嘉有见识（精准识人知事）但缺乏领袖型的实干勇气。所以郭嘉是顶级谋臣，曹操才是领袖。在今天的职场——大多数人缺的不是见识（信息时代见识容易获得），而是把认知转化为行动的勇气。'}
+  ];
+  document.getElementById('socratic').innerHTML=data.map((d,i)=>`
+    <div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">${i+1}. ${d.q}</span></div>
+    <div class="socratic-a">${d.a}${d.sub?d.sub.map((s,j)=>`<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ ${s.q}</span></div><div class="socratic-sub">${s.a}</div>`).join(''):''}</div>
+  `).join('');
+}
+renderSocratic();
+
+function toggleSocratic(el){el.nextElementSibling.classList.toggle('open')}
+function toggleSocraticSub(el){el.nextElementSibling.classList.toggle('open')}
+
+// ===== TAB 7: CASE STUDY =====
+function renderCaseStudy(){
+  document.getElementById('caseStudy').innerHTML=`
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px">
+  <div class="card"><strong style="color:var(--accent)">背景</strong><p style="font-size:.85rem;margin-top:4px">西汉末年，王莽以外戚身份篡汉自立，建立新朝。他推行了一系列理想主义改革：土地国有化、禁止奴婢买卖、"五均六管"经济管控。</p></div>
+  <div class="card"><strong style="color:var(--accent)">结果</strong><p style="font-size:.85rem;margin-top:4px">新朝成为中国历史上唯一一代而亡的中央政权。西汉末人口约6000万，东汉初降至2800万，减少超过一半。改革引发的社会动荡是首要原因。</p></div>
+  <div class="card"><strong style="color:var(--accent)">核心矛盾</strong><p style="font-size:.85rem;margin-top:4px">王莽的动机可能不全是"伪善"——胡适称其为"中国第一位社会主义者"。但好动机+坏方法=灾难性后果。</p></div>
+  <div class="card"><strong style="color:var(--accent)">现代映射</strong><p style="font-size:.85rem;margin-top:4px">"王莽综合征"：有良好出发点但站在道德制高点上造成危害。白左现象、慈善作秀、平均主义政策均属此类。</p></div>
+</div>
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>MKS四维度拆解</h3>
+<div style="margin:8px 0"><strong style="color:var(--accent)">1. 利益分析：</strong>王莽的改革动了所有人的蛋糕——地主失去土地、商人失去经营权、农民失去自由选择。改革没有创造增量，只是重新分存量。任何改革如果不能做大蛋糕，只分蛋糕，必然遭到所有利益受损方的联合反击。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">2. 制度设计：</strong>"五均六管"本质上是2000年前的"计划经济"——政府定价、政府经营、政府分配。信息不对称和激励不相容两个致命缺陷在当时完全没有解决手段，也不可能解决。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">3. 人性假设：</strong>王莽假设人是道德动物——只要制度设计合理，人们就会配合。实际上人是利益动物。圣方济各的慈善之所以成功，恰恰因为他没有假设别人会配合，而是自己先做。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">4. 文化土壤：</strong>农业文明对"大同社会"的集体想象是王莽改革能获得初期支持的舆论基础。但这种想象本身就是农业文明的产物——商业文明不会幻想"平均分配"，而是相信"公平交换"。</div>
+</div>`;
+}
+renderCaseStudy();
+
+// ===== TAB 8: DECISION SIMULATION =====
+function renderDecision(){
+  const scenarios=[
+    {s:'你是一家中国公司的海外业务负责人，即将首次与日本客户谈判。对方团队提前两周发来详细议程和问题清单。你应该？',opts:[
+      {text:'按中国习惯：先用饭局拉近关系，再谈正事',result:'日本人在商务中极度重视"面子"——讨价还价需在酒桌私下进行，而非正式场合。你的做法可能被理解为"不尊重议程"。更好的做法是：严格按议程推进，会后再安排非正式交流。',mks:'国民特性·日本人：好面子/报恩文化。日本商务中"公私分明"程度甚至高于美国——正式场合只谈公事。'},
+      {text:'严格按对方发来的议程逐项推进，展现专业度',result:'这是正确选择。日本人"宁可慢但不能停"，他们花大量时间准备是因为要对每个细节负责。你展现出的对流程的尊重，本身就是建立信任的第一步。',mks:'国民特性·日本人：不能容忍局部失败。在日本人看来，"准备充分"本身就是诚意。'},
+      {text:'建议取消议程，改为工厂参观+自由交流',result:'这会让对方感到被冒犯——他们已经花了数周准备，你直接推翻意味着"你们的工作没有价值"。日本人会因为"失面子"而在后续合作中处处设防。',mks:'国民特性·日本人：极好面子。否定对方的前期投入等于否定对方本人。'}
+    ]},
+    {s:'你在德国公司工作，老板让你做一个项目评估报告。你应该怎么呈现？',opts:[
+      {text:'写一份简洁的Executive Summary，结论先行，细节放附录',result:'这在德国公司会让人觉得"不踏实"。德国人的核心思维是"生活是具体的"——没有数据和过程的结论是不可信的。',mks:'德国具体性思维：论文要呈现全流程中间结果，做菜要精确称量。'},
+      {text:'呈现全流程数据、中间结果、比较分析、量化指标，最后得出结论',result:'这是德国人认可的方式。即使内容较长，只要逻辑严密、数据充分，他们会认为你"做足了功课"。在德国公司，冗长不是缺点，不精确才是。',mks:'德国具体性思维+制度塑造行为：德国质量管理体系要求可追溯、可复现。'},
+      {text:'做一份精美的PPT，多用图表和视觉元素',result:'图表是加分项，但不能替代数据。如果图表背后没有扎实的数据支撑，德国人会礼貌地说"有趣的呈现"，但心里已经打了差评。',mks:'德国具体性思维：形式永远在内容之后。"差不多"在德国行不通。'}
+    ]},
+    {s:'你的创业团队有两位核心成员产生严重分歧：A认为应该专注单一产品做到极致，B主张多元化快速扩张分担风险。你应该？',opts:[
+      {text:'学习美国模式——专注单一领域深耕，拒绝多元化',result:'美国反垄断传统的底层逻辑是"专注"。但你的具体行业和市场阶段可能不同。美国企业不是不想多元化，而是法律和资本市场不允许——这恰好是商业文明的"规则约束"优势。',mks:'美国"反国王"传统+商业文明逻辑：规则限制了多元化冲动，迫使企业成为细分领域全球冠军。'},
+      {text:'分析你的行业处于哪个阶段：成长期（聚焦）还是成熟期（多元），再做判断',result:'这才是正确的思考框架。没有放之四海皆准的战略，只有匹配具体条件的策略。郭嘉之所以是顶级谋臣，正是因为他从来不套模板，而是具体分析每个人、每件事。',mks:'郭嘉的识人知事+具体性思维：战略判断的本质是信息处理质量，不是模板套用。'},
+      {text:'学习亚洲企业模式——垂直整合，打造生态闭环',result:'农业文明的"自给自足"思维会驱动你什么都想做——就像贾府的庄园什么都自己生产。但当代互联网的生态闭环和贾府庄园有本质区别：前者建立在开放协议和用户规模之上，后者是封闭的。',mks:'农业文明的自给自足vs商业文明的生态协作：闭环不等于封闭。'}
+    ]}
+  ];
+  document.getElementById('decisionSim').innerHTML=scenarios.map((sc,i)=>`
+    <div class="decision-scenario">
+      <strong>第${i+1}轮：</strong>${sc.s}
+      <div class="decision-options">${sc.opts.map((o,j)=>`<div class="decision-opt" onclick="showDecision(${i},${j})">${'ABC'[j]}. ${o.text.slice(0,60)}...</div>`).join('')}</div>
+      <div class="decision-result" id="decisionResult${i}">
+        <div style="margin-bottom:6px"><strong>反馈：</strong>${sc.opts[0].result}</div>
+        <div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>${sc.opts[0].mks}</div>
+      </div>
+    </div>
+  `).join('');
+}
+renderDecision();
+
+function showDecision(scenarioIdx,optIdx){
+  const scenarios=[
+    [{result:'按中国习惯：先用饭局拉近关系，再谈正事',mks:'国民特性·日本人：好面子/报恩文化。日本商务中"公私分明"程度甚至高于美国——正式场合只谈公事。'},{result:'这是正确选择。日本人"宁可慢但不能停"，他们花大量时间准备是因为要对每个细节负责。你展现出的对流程的尊重，本身就是建立信任的第一步。',mks:'国民特性·日本人：不能容忍局部失败。在日本人看来，"准备充分"本身就是诚意。'},{result:'这会让对方感到被冒犯——他们已经花了数周准备，你直接推翻意味着"你们的工作没有价值"。日本人会因为"失面子"而在后续合作中处处设防。',mks:'国民特性·日本人：极好面子。否定对方的前期投入等于否定对方本人。'}],
+    [{result:'这在德国公司会让人觉得"不踏实"。德国人的核心思维是"生活是具体的"——没有数据和过程的结论是不可信的。',mks:'德国具体性思维：论文要呈现全流程中间结果，做菜要精确称量。'},{result:'这是德国人认可的方式。即使内容较长，只要逻辑严密、数据充分，他们会认为你"做足了功课"。在德国公司，冗长不是缺点，不精确才是。',mks:'德国具体性思维+制度塑造行为：德国质量管理体系要求可追溯、可复现。'},{result:'图表是加分项，但不能替代数据。如果图表背后没有扎实的数据支撑，德国人会礼貌地说"有趣的呈现"，但心里已经打了差评。',mks:'德国具体性思维：形式永远在内容之后。"差不多"在德国行不通。'}],
+    [{result:'美国反垄断传统的底层逻辑是"专注"。但你的具体行业和市场阶段可能不同。美国企业不是不想多元化，而是法律和资本市场不允许——这恰好是商业文明的"规则约束"优势。',mks:'美国"反国王"传统+商业文明逻辑：规则限制了多元化冲动，迫使企业成为细分领域全球冠军。'},{result:'这才是正确的思考框架。没有放之四海皆准的战略，只有匹配具体条件的策略。郭嘉之所以是顶级谋臣，正是因为他从来不套模板，而是具体分析每个人、每件事。',mks:'郭嘉的识人知事+具体性思维：战略判断的本质是信息处理质量，不是模板套用。'},{result:'农业文明的"自给自足"思维会驱动你什么都想做——就像贾府的庄园什么都自己生产。但当代互联网的生态闭环和贾府庄园有本质区别：前者建立在开放协议和用户规模之上，后者是封闭的。',mks:'农业文明的自给自足vs商业文明的生态协作：闭环不等于封闭。'}]
+  ];
+  const r=scenarios[scenarioIdx][optIdx];
+  const el=document.getElementById('decisionResult'+scenarioIdx);
+  el.style.display='block';
+  el.innerHTML=`<div style="margin-bottom:6px"><strong>反馈：</strong>${r.result}</div><div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>${r.mks}</div>`;
+}
+
+// ===== UTILITY =====
+function switchTab(idx){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector(`.tab-btn[data-tab="${idx}"]`).classList.add('active');
+  document.getElementById('panel'+idx).classList.add('active');
+  if(idx===4)renderReview();
+}
+</script>
+</body>
+</html>

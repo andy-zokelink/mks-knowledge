@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>艺术审美与品味 · 最小知识集</title>
+<style>
+  :root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#e67e22;--accent3:#8b4513;--text:#3d2f2f;--muted:#8b7355;--border:#e8d5c4;--shadow:0 2px 12px rgba(60,20,0,.08);--radius:10px;--fs:clamp(15px,2vw,17px);--fs-sm:clamp(13px,1.5vw,14px);--fs-lg:clamp(20px,3vw,26px);--fs-xl:clamp(26px,4vw,36px);--maxw:960px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);font-size:var(--fs);line-height:1.7;min-height:100vh}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+  header{text-align:center;padding:32px 16px 20px;background:linear-gradient(135deg,#3d1f0a 0%,#6b2f1a 40%,#c0392b 100%);color:#fff;margin-bottom:0}
+  header h1{font-size:var(--fs-xl);font-weight:700;margin-bottom:6px;letter-spacing:.02em}
+  header p{font-size:var(--fs-sm);opacity:.9;max-width:700px;margin:0 auto}
+  .home-btn{display:inline-block;margin-top:10px;padding:5px 16px;border:1px solid rgba(255,255,255,.5);border-radius:20px;color:#fff;font-size:var(--fs-sm);text-decoration:none;transition:all .2s}
+  .home-btn:hover{background:rgba(255,255,255,.15)}
+  .tabs{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:6px 8px 0;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+  .tab-btn{padding:7px 12px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:var(--fs-sm);border-radius:8px 8px 0 0;transition:all .2s;white-space:nowrap}
+  .tab-btn:hover{color:var(--accent);background:rgba(192,57,43,.05)}
+  .tab-btn.active{color:var(--accent);background:var(--card);font-weight:700;border:1px solid var(--border);border-bottom:2px solid var(--card);margin-bottom:-2px}
+  .tab-panel{display:none;animation:fadeIn .35s ease}
+  .tab-panel.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .section{margin:24px 0}
+  .section-title{font-size:var(--fs-lg);font-weight:700;color:var(--accent);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--accent);display:flex;align-items:center;gap:8px}
+  .section-title .ico{font-size:1.2em}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);transition:all .2s}
+  .card:hover{box-shadow:0 4px 18px rgba(60,20,0,.12);transform:translateY(-2px)}
+  .card h3{font-size:1.05em;color:var(--accent);margin-bottom:8px}
+  .card p{font-size:var(--fs-sm);color:var(--muted)}
+  .card.mks{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fff8f0,#fffaf2)}
+  .card.mks h3::before{content:'★ ';color:#e67e22}
+  .mks-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+  .progress-wrap{margin:16px 0}
+  .progress-label{display:flex;justify-content:space-between;font-size:var(--fs-sm);margin-bottom:4px}
+  .progress-bar{height:14px;background:var(--border);border-radius:7px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:7px;transition:width .5s}
+  /* SVG */
+  .svg-wrap{overflow-x:auto;margin:16px 0;background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .svg-wrap svg{display:block;margin:0 auto;min-width:700px}
+  /* Table */
+  .tbl-wrap{overflow-x:auto;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:600}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  tr:nth-child(even){background:rgba(192,57,43,.03)}
+  /* Flip card */
+  .flip-container{perspective:1000px;margin:0 auto;max-width:500px}
+  .flipper{position:relative;width:100%;height:360px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+  .flipper.flipped{transform:rotateY(180deg)}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;box-shadow:var(--shadow);border:1px solid var(--border)}
+  .flip-front{background:linear-gradient(135deg,#6b2f1a,#c0392b);color:#fff;font-size:1.3em;font-weight:700;text-align:center}
+  .flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);text-align:left;overflow-y:auto;justify-content:flex-start;font-size:var(--fs-sm)}
+  .flip-back h4{color:var(--accent);margin:6px 0 3px}
+  .flip-back p{margin:2px 0;line-height:1.5}
+  .flip-nav{display:flex;justify-content:center;gap:12px;align-items:center;margin-top:12px}
+  .flip-nav button{padding:8px 20px;border:none;border-radius:20px;cursor:pointer;font-size:var(--fs-sm);transition:all .2s;background:var(--accent);color:#fff}
+  .flip-nav button:hover{opacity:.85}
+  .flip-nav button.learned-btn{background:var(--accent2)}
+  .flip-nav button.learned-btn.learned{background:#27ae60}
+  /* Quiz */
+  .quiz-q{margin:20px 0;padding:18px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+  .quiz-q .q-title{font-weight:700;margin-bottom:8px}
+  .quiz-q .opt{display:block;padding:8px 14px;margin:4px 0;border-radius:6px;cursor:pointer;transition:all .15s;border:1px solid var(--border)}
+  .quiz-q .opt:hover{background:rgba(192,57,43,.06)}
+  .quiz-q .opt.correct{background:#d4edda;border-color:#27ae60}
+  .quiz-q .opt.wrong{background:#f8d7da;border-color:var(--accent)}
+  .quiz-q .opt.chosen{font-weight:700}
+  .quiz-feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:var(--fs-sm);display:none}
+  .quiz-feedback.correct{display:block;background:#d4edda;color:#155724}
+  .quiz-feedback.wrong{display:block;background:#f8d7da;color:#721c24}
+  /* Socratic */
+  .soc-item{margin:12px 0;padding:14px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+  .soc-item .soc-q{font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .soc-item .soc-a{display:none;margin-top:8px;padding:8px 12px;background:#f9f3ea;border-radius:6px;font-size:var(--fs-sm);line-height:1.6}
+  .soc-item.open .soc-a{display:block}
+  /* Case */
+  .case-box{margin:16px 0;padding:18px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+  .case-box h4{color:var(--accent);margin-bottom:8px}
+  /* Decision */
+  .decision-round{padding:20px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  .decision-round .opt-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;transition:all .2s;font-size:var(--fs-sm)}
+  .decision-round .opt-btn:hover{border-color:var(--accent);background:rgba(192,57,43,.03)}
+  .decision-round .opt-btn.selected{border-color:var(--accent);background:rgba(192,57,43,.08)}
+  /* Mind map */
+  .mind-tree{margin:16px 0}
+  .mind-tree .node{padding:4px 0 4px 20px;border-left:2px solid var(--border);margin-left:8px;position:relative}
+  .mind-tree .node::before{content:'';position:absolute;left:-2px;top:16px;width:14px;height:2px;background:var(--border)}
+  .mind-tree .node .label{cursor:pointer;font-weight:600;color:var(--accent);user-select:none}
+  .mind-tree .node .label .arrow{margin-right:6px;font-size:10px;display:inline-block;transition:transform .2s;width:12px}
+  .mind-tree .node.collapsed>.children{display:none}
+  .mind-tree .node.collapsed>.label .arrow{transform:rotate(-90deg)}
+  .mind-tree .children{padding-left:8px}
+  .mind-tree .leaf{color:var(--text);font-size:var(--fs-sm);padding:3px 0}
+  /* Stats */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+  .stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .stat-card .num{font-size:2em;font-weight:700;color:var(--accent)}
+  .stat-card .lbl{font-size:var(--fs-sm);color:var(--muted)}
+  /* Exam */
+  .exam-timer{text-align:center;font-size:1.5em;font-weight:700;color:var(--accent);margin:12px 0}
+  /* Btn */
+  .btn{padding:10px 22px;border:none;border-radius:22px;cursor:pointer;font-size:var(--fs-sm);background:var(--accent);color:#fff;transition:all .2s;font-weight:600}
+  .btn:hover{opacity:.85}
+  .btn-outline{border:2px solid var(--accent);background:transparent;color:var(--accent)}
+  .btn-sm{padding:5px 14px;font-size:12px}
+  /* Path */
+  .path-steps{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .path-step{flex:1;min-width:140px;padding:14px;background:var(--card);border-radius:var(--radius);text-align:center;box-shadow:var(--shadow);position:relative}
+  .path-step .step-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;line-height:32px;margin:0 auto 8px;font-weight:700}
+  .path-step .step-t{font-weight:700;font-size:var(--fs-sm)}
+  .path-step .step-d{font-size:12px;color:var(--muted);margin-top:4px}
+  /* Responsive */
+  @media(max-width:640px){
+    .tabs{gap:1px;padding:4px}
+    .tab-btn{padding:5px 8px;font-size:11px}
+    .cards{grid-template-columns:1fr}
+    .flipper{height:420px}
+    .path-steps{flex-direction:column}
+  }
+  /* Input */
+  textarea{width:100%;min-height:80px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:var(--fs-sm);resize:vertical}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .inline-flex{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>艺术审美与品味 · 最小知识集</h1>
+  <p>审美是一种可以训练的能力 —— 摄影、红酒、奢侈品、博物馆，让生活更有品质</p>
+  <a href="index.html" class="home-btn" title="返回知识主板">← 返回知识主板</a>
+</header>
+
+<div class="tabs" id="tabBar"><button class="tab-btn active" data-tab="0">知识集总览</button><button class="tab-btn" data-tab="1">知识卡片</button><button class="tab-btn" data-tab="2">题库系统</button><button class="tab-btn" data-tab="3">考试模式</button><button class="tab-btn" data-tab="4">复习模式</button><button class="tab-btn" data-tab="5">思维导图</button><button class="tab-btn" data-tab="6">深度追问</button><button class="tab-btn" data-tab="7">案例分析</button><button class="tab-btn" data-tab="8">实战决策</button></div>
+
+<div class="container">
+
+<!-- ===== TAB 0: 知识集总览 ===== -->
+<div class="tab-panel active" id="panel0">
+  <div class="section">
+    <div class="section-title"><span class="ico">🎯</span> 核心目标</div>
+    <div class="card" style="text-align:center;font-size:1.1em;padding:24px"><strong>审美是一种可以训练的能力</strong> —— 通过系统学习摄影、艺术品鉴、奢侈品认知与博物馆素养，从"看"到"看见"，在日常中提取意义，让生活更有品质。</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="ico">🧩</span> 10 个核心概念</div>
+    <div class="cards">
+      <div class="card"><h3>1. 摄影vs记录</h3><p>记录是保存信息，摄影是观察的艺术——重点不在所见之物，而在观察的视角和关注的重点。</p></div>
+      <div class="card"><h3>2. 到达与视角</h3><p>到达是第一要素（物理突破），视角是灵魂（主观重构），两者均无法被后期弥补。</p></div>
+      <div class="card"><h3>3. 构图法则</h3><p>决定画面元素的取舍与层级——把什么东西放进去，哪个唱主角，哪个唱配角。</p></div>
+      <div class="card"><h3>4. 光线与色彩</h3><p>颜色要正、要有搭配对比、善用虚化。漫射自然光是专业首选。</p></div>
+      <div class="card"><h3>5. 黑白摄影</h3><p>去除色彩干扰，聚焦构图/轮廓/光线。高对比度产生特殊美感与视觉力度。</p></div>
+      <div class="card"><h3>6. 感染力</h3><p>真实是根基，主题突出是手段，场景吸引力是牵引，亲和力是归宿。</p></div>
+      <div class="card"><h3>7. 奢侈品定义</h3><p>极致品质 + 非必需品属性（凡勃伦商品）。核心功能是炫耀性消费。</p></div>
+      <div class="card"><h3>8. 奢侈品商业逻辑</h3><p>技术进步免疫力 + 二手市场流动性 + 品牌故事传播力 = 奢侈品可持续价值。</p></div>
+      <div class="card"><h3>9. 风味审美</h3><p>红酒与咖啡的品鉴有客观标准——产区/品种/工艺/陈化决定风味阶梯。</p></div>
+      <div class="card"><h3>10. 博物馆素养</h3><p>文物性+艺术性+稀缺性三维评估。博物馆是文明坐标中的审美教育场。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="ico">⭐</span> MKS 核心（骨架中的骨架）</div>
+    <div class="cards">
+      <div class="card mks"><h3>审美是可训练的能力</h3><p>审美不是天赋，而是可通过系统训练获得的判断力。从摄影基本功到红酒品鉴，从奢侈品价值判断到博物馆文物评估，每一步都有方法论。这是整个模块的元认知。</p></div>
+      <div class="card mks"><h3>摄影创作链</h3><p><strong>到达 > 视角 > 构图 > 光影 > 后期</strong>——这是一条不可逆的优先级链条。前两项"不可修复"，后三项"可部分弥补"。理解了这个优先级，就理解了摄影的本质。</p></div>
+      <div class="card mks"><h3>奢侈品价值三要素</h3><p><strong>技术进步免疫力</strong>（抗贬值）+ <strong>二手市场流动性</strong>（易变现）+ <strong>品牌故事传播力</strong>（情感溢价）。三者缺一不可，这是区分真奢侈与伪奢侈的铁三角。</p></div>
+      <div class="card mks"><h3>体验深度 = 品味厚度</h3><p>咖啡喝的是"风味"不是"咖啡因"，红酒品的是"层次"不是"酒精"，博物馆看的是"文明坐标"不是"打卡清单"。品味的提升来自体验的深度，而非消费的广度。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="ico">📊</span> 学习进度</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>知识卡片学习</span><span id="progLabel">0 / 10</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progBar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="ico">🔗</span> 概念关系图</div>
+    <div class="svg-wrap" id="svgMap"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="ico">📌</span> 边界知识（15条）</div>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+      <tbody>
+        <tr><td>极光摄影参数 (ISO2000-4000, F2.8, 6-8s)</td><td>极地旅行摄影准备</td></tr>
+        <tr><td>赤道仪 (抵消地球自转)</td><td>深空星野摄影</td></tr>
+        <tr><td>ND过滤器 (中灰密度镜)</td><td>强光下大光圈/长曝光</td></tr>
+        <tr><td>徕卡M系列 vs SL系列</td><td>旁轴vs无反相机选择</td></tr>
+        <tr><td>波特酒 (Port) 与冰酒 (Icewine)</td><td>甜点酒搭配</td></tr>
+        <tr><td>香水前调/中调/后调</td><td>香水选购与品鉴</td></tr>
+        <tr><td>机械表机芯类型 (手动/自动/陀飞轮)</td><td>腕表鉴赏入门</td></tr>
+        <tr><td>凯尔特音乐体系 (风笛/竖琴/民歌)</td><td>欧洲传统音乐欣赏</td></tr>
+        <tr><td>歌剧角色分类 (女高音/男高音/男中音等)</td><td>歌剧欣赏基础</td></tr>
+        <tr><td>英语诗歌格律 (抑扬格/扬抑格)</td><td>英文诗歌鉴赏</td></tr>
+        <tr><td>日本茶道 (抹茶道/煎茶道)</td><td>东方美学体验</td></tr>
+        <tr><td>巧克力品鉴 (可可含量/产地/发酵度)</td><td>美食鉴赏</td></tr>
+        <tr><td>橄榄油分级 (特级初榨/初榨/精炼)</td><td>食材选购</td></tr>
+        <tr><td>高迪建筑哲学 (曲线属于上帝)</td><td>建筑旅行导览</td></tr>
+        <tr><td>伊比利亚火腿分级 (bellota/recebo/campo)</td><td>西班牙美食体验</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="ico">🗺️</span> 学习路径（5阶段）</div>
+    <div class="path-steps">
+      <div class="path-step"><div class="step-num">1</div><div class="step-t">审美元认知</div><div class="step-d">理解"记录vs创作"的根本区别，建立"审美可训练"的信念</div></div>
+      <div class="path-step"><div class="step-num">2</div><div class="step-t">摄影七要素</div><div class="step-d">端平/清晰/曝光/构图/主题/光线/色彩，建立视觉判断力</div></div>
+      <div class="path-step"><div class="step-num">3</div><div class="step-t">奢侈品鉴赏</div><div class="step-d">定义/品牌故事/价值三要素/定价逻辑，建立消费判断力</div></div>
+      <div class="path-step"><div class="step-num">4</div><div class="step-t">风味品鉴</div><div class="step-d">红酒产区与品种、咖啡品类与烘烤，建立味觉审美</div></div>
+      <div class="path-step"><div class="step-num">5</div><div class="step-t">博物馆素养</div><div class="step-d">十大博物馆/绘画四阶段/文物价值三维，建立文化坐标</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 1: 学习卡片 ===== -->
+<div class="tab-panel" id="panel1">
+  <div class="section">
+    <div class="section-title"><span class="ico">🃏</span> 知识卡片 <span style="font-size:var(--fs-sm);font-weight:400;color:var(--muted)">点击卡片翻转</span></div>
+    <div class="flip-container">
+      <div class="flipper" id="flipper" onclick="flipCard()">
+        <div class="flip-front" id="flipFront">摄影 vs 记录</div>
+        <div class="flip-back" id="flipBack"></div>
+      </div>
+    </div>
+    <div class="flip-nav">
+      <button onclick="prevCard()">◀ 上一张</button>
+  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
+  <span id="cardIdx" style="font-size:var(--fs-sm)">1 / 10</span>
+      <button onclick="nextCard()">下一张 ▶</button>
+      <button class="learned-btn" id="learnedBtn" onclick="markLearned()">✓ 标记已学习</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 2: 题库 ===== -->
+<div class="tab-panel" id="panel2">
+  <div class="section">
+    <div class="section-title"><span class="ico">📝</span> 选择题（20题）</div>
+    <div id="mcQuiz"></div>
+    <div class="section-title" style="margin-top:32px"><span class="ico">✍️</span> 简答题（10题）</div>
+    <div id="saQuiz"></div>
+  </div>
+</div>
+
+<!-- ===== TAB 3: 考试模式 ===== -->
+<div class="tab-panel" id="panel3">
+  <div class="section">
+    <div class="section-title"><span class="ico">⏱️</span> 考试模式 <span style="font-size:var(--fs-sm);font-weight:400">随机抽取 7道选择 + 3道简答，限时15分钟</span></div>
+    <div class="exam-timer" id="examTimer">15:00</div>
+    <button class="btn" id="examStart" onclick="startExam()">开始考试</button>
+    <div id="examContent"></div>
+    <button class="btn hidden" id="examSubmit" onclick="submitExam()" style="margin-top:16px">提交答卷</button>
+    <div id="examResult"></div>
+  </div>
+</div>
+
+<!-- ===== TAB 4: 复习模式 ===== -->
+<div class="tab-panel" id="panel4">
+  <div class="section">
+    <div class="section-title"><span class="ico">📊</span> 学习统计</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num" id="statTotal">0</div><div class="lbl">总答题数</div></div>
+      <div class="stat-card"><div class="num" id="statCorrect">0</div><div class="lbl">正确率</div></div>
+      <div class="stat-card"><div class="num" id="statDays">0</div><div class="lbl">学习天数</div></div>
+      <div class="stat-card"><div class="num" id="statCards">0</div><div class="lbl">已学卡片</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><span class="ico">📕</span> 错题本</div>
+    <div id="wrongBook"><p style="color:var(--muted)">暂无错题，继续保持！</p></div>
+  </div>
+  <div class="section">
+    <div class="section-title"><span class="ico">🎯</span> 概念薄弱点</div>
+    <div id="weakConcepts"><p style="color:var(--muted)">答题数据不足，完成更多题目后显示分析。</p></div>
+  </div>
+</div>
+
+<!-- ===== TAB 5: 思维导图 ===== -->
+<div class="tab-panel" id="panel5">
+  <div class="section">
+    <div class="section-title"><span class="ico">🧠</span> 审美与品味 · 思维导图</div>
+    <div class="mind-tree" id="mindTree"></div>
+  </div>
+</div>
+
+<!-- ===== TAB 6: 深度追问 ===== -->
+<div class="tab-panel" id="panel6">
+  <div class="section">
+    <div class="section-title"><span class="ico">❓</span> 苏格拉底追问</div>
+    <div id="socratic"></div>
+  </div>
+</div>
+
+<!-- ===== TAB 7: 案例分析 ===== -->
+<div class="tab-panel" id="panel7">
+  <div class="section">
+    <div class="section-title"><span class="ico">🔍</span> 案例分析：哈耶克拯救瑞士钟表业</div>
+    <div class="case-box">
+      <h4>▎背景</h4>
+      <p>1964年东京奥运会展示石英技术后，日本手表以低价冲击市场。瑞士钟表全球销售份额从90%暴跌至20%。业界认为高劳动力成本使瑞士无法与日本竞争。</p>
+    </div>
+    <div class="case-box">
+      <h4>▎MKS 四维度拆解</h4>
+      <p><strong>核心概念应用：</strong>奢侈品的"技术进步免疫力"——石英表使瑞士表"精准可靠"的优势丧失，哈耶克重新定义消费者价值，将手表从"计时工具"转向"身份彰显"。</p>
+      <p><strong>品牌定位重构：</strong>欧米茄绑定探月等高端场景，宝玑关联精致生活方式，Swatch品牌覆盖年轻低端市场——防火墙策略保护高端品牌不稀释。</p>
+      <p><strong>产业整合：</strong>合并SSIH与ASUAG为斯沃琪集团，部件标准化+集中生产+砍产品线（欧米茄从2000款减至130款）。</p>
+      <p><strong>结果验证：</strong>销售额占比从20%回升至55%，平均售价600美元 vs 中国表2美元。</p>
+    </div>
+    <div class="case-box">
+      <h4>▎审美洞察</h4>
+      <p>奢侈品的本质是"情感价值"而非"功能价值"。审美判断力的核心是区分"我愿意为什么付费"——为功能付费有上限，为情感/身份付费无上限。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 8: 实战决策 ===== -->
+<div class="tab-panel" id="panel8">
+  <div class="section">
+    <div class="section-title"><span class="ico">🎯</span> 审美决策模拟（3轮）</div>
+    <div id="decisionSim"></div>
+  </div>
+</div>
+
+</div><!-- container -->
+
+<script>
+// ========== DATA ==========
+
+const cardsData = [
+  {id:'c0',front:'摄影 vs 记录',back:'<h4>定义</h4><p>摄影是观察的艺术，记录是保存信息。摄影重点不在"所见之物"，而在"观察的视角和关注的重点"。</p><h4>类比</h4><p>好比写日记 vs 写散文——日记记录"做了什么"，散文表达"感受到了什么"。</p><h4>示例</h4><p>同一瀑布：全景式记录 → 捕捉落地瞬间 → 长曝光如梦如幻。三级跃升就是"记录→创作"的光谱。</p><h4>反例</h4><p>旅游时拍"到此一游"照、聚会合影、明信片式日出日落——都是记录，不是摄影。</p>'},
+  {id:'c1',front:'到达与视角',back:'<h4>定义</h4><p>到达是第一要素（物理位置的突破），视角是灵魂（主观重构）。两者均无法被后期弥补。</p><h4>类比</h4><p>好比素材与剪辑——到达是获取独特素材，视角是独特的剪辑角度。后期只能调色，不能改变素材。</p><h4>示例</h4><p>8844米珠峰用手机拍 > 3000米用专业设备。站在少女峰顶俯视冰川，"云和群峰都在你下面"的景观不可复制。</p><h4>反例</h4><p>依赖广角镜头在平地拍大教堂全景，不如退后至城门内利用拱形框架拍摄——后者才是视角创新。</p>'},
+  {id:'c2',front:'构图法则',back:'<h4>定义</h4><p>决定画面元素的取舍与层级——"将什么东西放到照片里去，同时哪个在前，哪个在后，哪个唱主角，哪个唱配角"。</p><h4>类比</h4><p>好比舞台调度——导演决定谁站C位、谁做背景、灯光打在哪。构图就是照片的舞台调度。</p><h4>示例</h4><p>三角形构图：强化建筑高耸感（近距广角拍小教堂）、场景自然形成三角形（斜坡房子与地面）。圆形构图：教堂作为圆心，乌云向四周发散。</p><h4>反例</h4><p>传统全景正面拍城堡——"明信片水平"，达标但无灵气。改为以雕像为主体侧拍，宫殿做配角，画面立刻生动。</p>'},
+  {id:'c3',front:'光线与色彩',back:'<h4>定义</h4><p>颜色要正（色彩还原准确）、要有搭配对比（互补色布局）、善用虚化（营造柔和均匀的色彩质感）。</p><h4>类比</h4><p>好比化妆——底妆要正（色温准确），眼影要有对比（红绿互补），高光要柔和（虚化过渡）。</p><h4>示例</h4><p>纽伦堡古城采用红绿颜色搭配形成视觉对比。日落前1小时光线柔和，适合拍摄普通景物。夜景小光圈让灯光呈现星线效果。</p><h4>反例</h4><p>依赖Photoshop过度调色追求"打翻调色板"的效果——颜色失真。避免正面强光（闪光灯直射人脸过白）。</p>'},
+  {id:'c4',front:'黑白摄影',back:'<h4>定义</h4><p>去除色彩干扰，聚焦构图/轮廓/光线三大要素。黑白像素清晰度约为彩色像素的两倍，对比度更高。</p><h4>类比</h4><p>好比读纯文本 vs 读图文混排——去掉图片后，文字的排版结构和字体本身的力度就凸显了。</p><h4>示例</h4><p>杂乱城市街头、色彩不美观的场景、需要强化线条/光影的主题——黑白处理后可"化干扰为亮点"。宝马博物馆扶手转化为亮丽线条。</p><h4>反例</h4><p>色彩本身为核心元素的风景照（如火山口湖的湛蓝色）——此时黑白摄影会损失核心信息。</p>'},
+  {id:'c5',front:'感染力',back:'<h4>定义</h4><p>真实是根基（拒绝过度修图），主题突出是手段（单张照片仅突出1个主题），场景吸引力是牵引（激发"亲眼去看"的欲望），亲和力是归宿（不哗众取宠）。</p><h4>类比</h4><p>好比讲故事——好故事不一定最华丽，但一定最真、最聚焦、最能让你产生"我也想去体验"的冲动。</p><h4>示例</h4><p>《时代广场的胜利日》——美感+二战胜利狂喜情绪。《地球升起》——月球荒凉与蓝色地球对比唤起环保意识。</p><h4>反例</h4><p>过度PS合成照片——失去可信度。元素堆砌无主题——观众不知道看哪里。哗众取宠的古怪题材——不知所云。</p>'},
+  {id:'c6',front:'奢侈品定义',back:'<h4>定义</h4><p>两大特征：极致品质（材料/工艺无妥协）+ 非必需品属性（凡勃伦商品，核心功能为"炫耀性消费"）。</p><h4>类比</h4><p>好比米其林三星 vs 快餐——都能填饱肚子，但前者满足的是对"极致体验"的追求而非"饱腹"需求。</p><h4>示例</h4><p>爱马仕铂金包（纯手工/一年等候期/价格万元美元级）。百达翡丽手表（"十月怀胎"制作周期/15年以上经验技师）。</p><h4>反例</h4><p>Apple Watch奢侈版（受摩尔定律影响快速贬值）、诺基亚威图手机——电子产品无法维持奢侈品的保值属性。徕卡相机普通版（功能驱动，非奢侈品）。</p>'},
+  {id:'c7',front:'奢侈品商业逻辑',back:'<h4>定义</h4><p>三要素模型：技术进步免疫力（抗贬值）+ 二手市场流动性（易变现）+ 品牌故事传播力（情感溢价）。</p><h4>类比</h4><p>好比购房——抗跌的地段（免疫力）、好转手的户型（流动性）、有故事的小区文化（故事）。三者兼具才是好资产。</p><h4>示例</h4><p>斯坦威钢琴80年二手价3万美元（新琴5-6万）。百达翡丽限量版二手超百万美元。爱马仕手袋二手流动性远高于路易威登。</p><h4>反例</h4><p>卡地亚刻字戒指（个性化过强→流动性差）。小众艺术家作品（市场认知度低→变现困难）。</p>'},
+  {id:'c8',front:'风味审美',back:'<h4>定义</h4><p>红酒与咖啡的品鉴有客观标准——产区（土壤/气候/朝向）、品种（葡萄/咖啡豆种）、工艺（发酵/烘烤/陈化）共同决定风味阶梯。</p><h4>类比</h4><p>好比茶叶品鉴——龙井vs碧螺春vs铁观音，不同产区/品种/工艺产生截然不同的风味。喝得多了，味蕾自然建立"坐标系"。</p><h4>示例</h4><p>波尔多五大一级庄（拉菲/拉图/玛歌/奥比昂/木桐）。阿拉比卡咖啡豆（牙买加蓝山/夏威夷科纳/埃塞俄比亚基尼卡）。</p><h4>反例</h4><p>82年拉菲已进入收藏阶段（非最佳饮用期）。星巴克用廉价咖啡豆（每磅几十美分），单杯成本不足2美分。红酒加雪碧破坏风味。</p>'},
+  {id:'c9',front:'博物馆素养',back:'<h4>定义</h4><p>文物价值三维评估：文物性（历史事件见证）+ 艺术性（里程碑意义）+ 稀缺性（时间/数量稀缺）。博物馆是文明坐标中的审美教育场。</p><h4>类比</h4><p>好比电影史课——你看的不是单部电影，而是通过电影理解一个时代的审美、技术与价值观变迁。</p><h4>示例</h4><p>大英博物馆罗赛塔石碑（文物性：古埃及文字破译关键；稀缺性：唯一多语言对照石碑）。卢浮宫汉谟拉比法典（世界最早成文法典）。</p><h4>反例</h4><p>到博物馆只拍"镇馆之宝"、不听讲解、不看说明——如同看电影只看海报不看正片。</p>'}
+];
+
+// MCQ: 20 questions, answer index 0-3 each 5 times
+// Distribution: A(0)=5, B(1)=5, C(2)=5, D(3)=5
+const mcQuestions = [
+  {q:'摄影与记录的本质区别是什么？',opts:['摄影依赖设备自动处理，记录依赖手动设定','摄影是观察的艺术和思想的表达，记录是客观保存信息','摄影只使用黑白模式，记录使用彩色模式','摄影必须用专业相机，记录只能用手机'],ans:1,exp:'摄影的核心是"观察的视角和关注的重点"，是通过静止画面表达思想。记录仅仅是客观保存场景信息。'},
+  {q:'好摄影的第一要素是什么？',opts:['后期处理','光线与色彩','到达（在正确的时间到达正确的地点）','设备与技术'],ans:2,exp:'到达是第一要素，重要性远超设备和技术。《舌尖上的中国》摄影师经验：海拔高度直接决定视觉震撼力。'},
+  {q:'摄影各要素的正确优先级是？',opts:['构图 > 光线 > 到达 > 视角 > 后期','后期 > 光线 > 构图 > 视角 > 到达','视角 > 到达 > 后期 > 构图 > 光线','到达 > 视角 > 构图 > 光影 > 后期'],ans:3,exp:'到达和视角"不可修复"，构图/光影/后期可部分弥补。这是徕卡学院训练营中反复强调的核心方法论。'},
+  {q:'三角形构图的摄影效果是什么？',opts:['增强稳定感与高度感','营造梦幻模糊效果','减少画面元素数量','自动调整白平衡'],ans:0,exp:'三角形构图的核心效果是增强画面的稳定感（场景自然形成的三角形）和高度感（近距广角拍建筑形成的高耸效果）。'},
+  {q:'黑白摄影相比彩色摄影的优势是？',opts:['色彩更丰富','文件体积更小','高对比度、去色聚焦、更高清晰度','更适合拍摄自然风光'],ans:2,exp:'黑白照片对比度更高、去除色彩干扰使注意力集中于图像本质、像素清晰度约为彩色两倍。'},
+  {q:'照片感染力的根基是什么？',opts:['后期修图','稀缺题材','高像素','真实性'],ans:3,exp:'真实性是感染力的根基。拒绝过度修图，依赖光学记录现实。若《地球升起》为PS作品将丧失可信度。'},
+  {q:'以下哪项是奢侈品的核心特征？',opts:['极致品质与非必需品属性','高价格和品牌知名度','手工制作和限量版','历史悠久和贵族传统'],ans:0,exp:'极致品质（材料/工艺无妥协）+ 非必需品属性（凡勃伦商品，炫耀性消费）。高价格是结果而非定义。'},
+  {q:'奢侈品价值三要素不包括以下哪项？',opts:['技术进步免疫力','二手市场流动性','品牌故事传播力','产品功能创新力'],ans:3,exp:'三要素是技术进步免疫力（抗贬值）、二手市场流动性（易变现）、品牌故事传播力（情感溢价）。功能创新不是奢侈品的核心逻辑。'},
+  {q:'哈耶克拯救瑞士钟表业的核心策略是？',opts:['降价与日本手表竞争','将手表从"计时工具"重新定义为"身份彰显"','全部搬迁至亚洲生产','放弃机械表只做石英表'],ans:1,exp:'哈耶克认识到石英表使"精准可靠"优势丧失，转而构建情感价值壁垒——欧米茄绑定探月、宝玑关联精致生活方式。'},
+  {q:'1855年波尔多列级酒庄评级中，一级庄有几个？',opts:['3个','7个','5个','10个'],ans:2,exp:'1855年评级共5个一级庄：拉菲、拉图、玛歌、奥比昂、木桐（后补入）。61个名酒分为5级。'},
+  {q:'以下哪个不是好照片的客观要求？',opts:['使用最高像素的相机','把相机端平','曝光不要过度','把照片拍清楚'],ans:0,exp:'好照片的7项基本要求中不包括高像素设备。端平、拍清楚、曝光适度是基础中的基础，与设备档次无关。'},
+  {q:'阿拉比卡与罗布斯塔咖啡豆的核心区别是？',opts:['阿拉比卡产量更高','罗布斯塔只产自非洲','两者没有任何区别','阿拉比卡口感好层次丰富，罗布斯塔苦味重'],ans:3,exp:'阿拉比卡（60%产量）口感好层次丰富但咖啡因较低；罗布斯塔（40%产量）苦味重但咖啡因为阿拉比卡2-3倍。'},
+  {q:'西方教堂彩色玻璃窗的象征意义是？',opts:['展示教会财富','象征天堂圣光','单纯装饰美观','阻挡强烈阳光'],ans:1,exp:'彩色玻璃窗由彩色马赛克玻璃拼成，象征天堂圣光。威尼斯曾因出产彩色玻璃获巨大财富。'},
+  {q:'文艺复兴前后欧洲绘画四阶段演变顺序是？',opts:['天上→天上人间→人间天上→人间','人间天上→人间→天上→天上人间','人间→人间天上→天上人间→天上','天上人间→天上→人间→人间天上'],ans:0,exp:'天上（纯宗教/神至高无上）→天上人间（引入希腊神话但有压抑感）→人间天上（直接反映人间幸福）→人间（涵盖人性善恶）。'},
+  {q:'米其林三星评级体系创立于哪一年？',opts:['1900年','1926年','1931年','1950年'],ans:2,exp:'1926年引入星号标记，1931年确立三星评级体系。米其林指南本身创立于1900年（初为免费发放的旅行指南）。'},
+  {q:'毕加索不同创作时期的核心驱动力是什么？',opts:['个人生活状态与时代事件的交织','纯粹的技术实验','其他画家的影响','对金钱的追求'],ans:0,exp:'蓝色时期（穷困潦倒→阴郁色调）、古典时期（结婚生子→宁静秀美）、格尔尼卡时期（西班牙内战→灰黑白三色）。'},
+  {q:'以下哪个是香槟酒的必备条件？',opts:['使用任何产区的葡萄均可','必须产自法国香槟产区、通过瓶中二次发酵产生气泡','酒精含量必须超过20%','必须使用红葡萄酿造'],ans:1,exp:'只有法国香槟产区出产的发泡白葡萄酒才能被称为香槟。核心工艺是瓶中二次发酵（产生气泡）。红葡萄榨白葡萄酒是其独特技术之一。'},
+  {q:'世界三大男高音不包括以下哪位？',opts:['卡雷拉斯','多明戈','帕瓦罗蒂','安德烈·波切利'],ans:3,exp:'世界三大男高音为卡雷拉斯（以嗓音音色取胜）、多明戈（超强可塑性）、帕瓦罗蒂（天生禀赋）。波切利是跨界美声歌手。'},
+  {q:'莫扎特与迈克尔·杰克逊的"河流模型"对比说明了什么？',opts:['莫扎特更受欢迎','影响力由宽度/深度/长度决定，深层影响力更持久','流行音乐比古典音乐优秀','活得更久的人影响力更大'],ans:1,exp:'莫扎特如"不宽但深远绵长的河"（受众较少但影响持久），迈克尔·杰克逊如"很宽但浅且短的河"（受众广但不持久）。'},
+  {q:'奢侈品行业"中国制造"现象的核心原因不包括？',opts:['中国制造比意大利制造节省30-40%成本','欧洲年轻一代不愿继承工匠职业','中国有更先进的技术设备','全球化分工形成的格局难以逆转'],ans:2,exp:'根本原因是成本控制和欧洲工匠短缺，而非中国技术更先进。欧洲师傅带设备来华培训工人，品质获认可。'}
+];
+
+const saQuestions = [
+  {q:'简述"记录"与"摄影"的核心区别，并举例说明。',ref:'摄影是观察的艺术和思想的表达，记录是客观保存场景信息。例：同一瀑布——全景记录（到此一游）vs 捕捉落地瞬间（初级创作）vs 长曝光如梦如幻（专业摄影）。核心差异在于是否有"观察的视角"。'},
+  {q:'为什么说"到达"比设备和技术更重要？',ref:'到达是获取独特素材的前提，无法被后期弥补。《舌尖上的中国》摄影师：8844米珠峰用手机拍的效果远超3000米用专业设备。物理位置的突破直接决定视觉震撼力。'},
+  {q:'奢侈品的"技术进步免疫力"是指什么？举一个正面案例和一个反面案例。',ref:'指能够对抗通货膨胀、长期维持价值甚至升值的能力。正面：斯坦威钢琴80年二手价3万美元（新琴5-6万）。反面：Apple Watch奢侈版因摩尔定律迅速贬值——电子产品无法维持奢侈品保值属性。'},
+  {q:'哈耶克拯救瑞士钟表业的三步战略是什么？',ref:'1.品牌定位重构：将手表从"计时工具"转向"身份彰显"；2.产业整合：合并SSIH与ASUAG为斯沃琪集团，部件标准化，砍产品线；3.市场分层：高端品牌维持壁垒（宝玑/宝珀），低端品牌争夺份额（Swatch）。'},
+  {q:'简述波尔多左右岸产区的核心差异。',ref:'左岸（梅多克最著名）：仅产红酒，酒庄密集产量大，以赤霞珠为主混酿。右岸（圣爱美隆/波美侯）：红酒品质优异但产量较低，未纳入1855年评级体系，每10年自评一次，性价比高。'},
+  {q:'欧洲绘画四阶段"天上→天上人间→人间天上→人间"分别指什么？',ref:'天上（文艺复兴前）：纯宗教题材，神至高无上。天上人间（文艺复兴初期）：引入希腊神话但仍有压抑感。人间天上（中后期）：直接反映人间生活与幸福。人间（后期）：涵盖生活美好与人性丑恶。'},
+  {q:'什么是"凡勃伦商品"？为什么奢侈品属于此类？',ref:'凡勃伦商品是以经济学家凡勃伦命名的商品类型，其核心功能为"炫耀性消费"。需求弹性极高——收入下降时优先削减。奢侈品满足的不是功能需求而是社会身份彰显需求。'},
+  {q:'红酒风味的四大来源分别是什么？',ref:'1.土壤与自然环境（火山灰/海洋原生质/微气候）；2.发酵工艺（酵母/温度/周期控制）；3.橡木桶陈化（橡木产地/烧烤程度/陈化时间）；4.混酿调配（不同品种按比例混合，调酒师个性化塑造）。'},
+  {q:'米其林指南从"免费"改为"付费"模式说明了什么商业逻辑？',ref:'免费资讯因无成本投入被用户低估（被用作垫桌腿），付费后倒逼内容升级为专业评论体系。验证了"资讯免费，知识付费"的商业规律——有价值的东西需要付费来让用户认真对待。'},
+  {q:'博物馆藏品的"文物性、艺术性、稀缺性"三维评估各指什么？各举一例。',ref:'文物性：作为历史事件的见证（卢浮宫《汉谟拉比法典》——世界最早成文法典）。艺术性：里程碑意义的艺术成就（米开朗基罗《创世纪》——人类绘画巅峰）。稀缺性：年代/数量稀缺（《亚尼的死者之书》——现存最完整古埃及纸莎草文献）。'}
+];
+
+// ========== STATE ==========
+let currentCard = 0;
+let learned = new Set(JSON.parse(localStorage.getItem('mks_art_learned')||'[]'));
+let wrongList = JSON.parse(localStorage.getItem('mks_art_wrong')||'[]');
+let quizAnswers = JSON.parse(localStorage.getItem('mks_art_quiz')||'{}');
+let examActive = false, examTimerId = null, examData = [];
+let stats = JSON.parse(localStorage.getItem('mks_art_stats')||'{"total":0,"correct":0,"days":[],"cards":0}');
+
+function saveState(){ localStorage.setItem('mks_art_learned',JSON.stringify([...learned])); localStorage.setItem('mks_art_wrong',JSON.stringify(wrongList)); localStorage.setItem('mks_art_quiz',JSON.stringify(quizAnswers)); stats.cards=learned.size; localStorage.setItem('mks_art_stats',JSON.stringify(stats)); }
+function recordAnswer(conceptId,correct){
+  stats.total++; if(correct) stats.correct++;
+  const today = new Date().toDateString();
+  if(!stats.days.includes(today)) stats.days.push(today);
+  stats.cards = learned.size;
+  saveState();
+}
+
+// ========== TABS ==========
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');
+  const idx=parseInt(this.dataset.tab);
+  document.getElementById('panel'+idx).classList.add('active');
+  if(idx===0) renderSVG(),updateProgress();
+  if(idx===1) renderCard();
+  if(idx===2) renderQuiz();
+  if(idx===4) renderReview();
+  if(idx===5) renderMindTree();
+  if(idx===6) renderSocratic();
+  if(idx===8) renderDecisions();
+}));
+
+// ========== TAB 0: SVG ==========
+function renderSVG() {
+  const svg = `<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="1002pt" height="282pt"
+ viewBox="0.00 0.00 1002.00 282.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 278)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-278 998,-278 998,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#c0392b" stroke="black" stroke-width="0" cx="543.5" cy="-209" rx="65" ry="65"/>
+<text text-anchor="middle" x="543.5" y="-212.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">审美能力</text>
+<text text-anchor="middle" x="543.5" y="-197.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">(可训练)</text>
+</g>
+<!-- photo -->
+<g id="node2" class="node">
+<title>photo</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M230,-108C230,-108 199,-108 199,-108 193,-108 187,-102 187,-96 187,-96 187,-84 187,-84 187,-78 193,-72 199,-72 199,-72 230,-72 230,-72 236,-72 242,-78 242,-84 242,-84 242,-96 242,-96 242,-102 236,-108 230,-108"/>
+<text text-anchor="middle" x="214.5" y="-87.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">📷 摄影</text>
+</g>
+<!-- root&#45;&gt;photo -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;photo</title>
+<path fill="none" stroke="#c0392b" stroke-width="2.5" d="M482.39,-186.27C414.72,-162.2 307.8,-124.18 251.69,-104.23"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2.5" points="252.75,-100.89 242.15,-100.83 250.4,-107.48 252.75,-100.89"/>
+</g>
+<!-- luxury -->
+<g id="node3" class="node">
+<title>luxury</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M559,-108C559,-108 528,-108 528,-108 522,-108 516,-102 516,-96 516,-96 516,-84 516,-84 516,-78 522,-72 528,-72 528,-72 559,-72 559,-72 565,-72 571,-78 571,-84 571,-84 571,-96 571,-96 571,-102 565,-108 559,-108"/>
+<text text-anchor="middle" x="543.5" y="-87.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">💎 奢品</text>
+</g>
+<!-- root&#45;&gt;luxury -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;luxury</title>
+<path fill="none" stroke="#e67e22" stroke-width="2.5" d="M543.5,-143.68C543.5,-134.73 543.5,-125.96 543.5,-118.23"/>
+<polygon fill="#e67e22" stroke="#e67e22" stroke-width="2.5" points="547,-118.07 543.5,-108.07 540,-118.07 547,-118.07"/>
+</g>
+<!-- museum -->
+<g id="node4" class="node">
+<title>museum</title>
+<path fill="#d4a574" stroke="black" stroke-width="0" d="M837,-108C837,-108 806,-108 806,-108 800,-108 794,-102 794,-96 794,-96 794,-84 794,-84 794,-78 800,-72 806,-72 806,-72 837,-72 837,-72 843,-72 849,-78 849,-84 849,-84 849,-96 849,-96 849,-102 843,-108 837,-108"/>
+<text text-anchor="middle" x="821.5" y="-87.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">🏛️ 博物</text>
+</g>
+<!-- root&#45;&gt;museum -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;museum</title>
+<path fill="none" stroke="#8b4513" stroke-width="2.5" d="M603.14,-182.9C658.1,-159.77 737.96,-126.16 784.33,-106.65"/>
+<polygon fill="#8b4513" stroke="#8b4513" stroke-width="2.5" points="785.83,-109.81 793.69,-102.7 783.12,-103.36 785.83,-109.81"/>
+</g>
+<!-- photo1 -->
+<g id="node5" class="node">
+<title>photo1</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M61,-36C61,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 61,0 61,0 67,0 73,-6 73,-12 73,-12 73,-24 73,-24 73,-30 67,-36 61,-36"/>
+<text text-anchor="middle" x="36.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">记录vs创作</text>
+</g>
+<!-- photo&#45;&gt;photo1 -->
+<g id="edge4" class="edge">
+<title>photo&#45;&gt;photo1</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M186.69,-78.06C158.83,-67.11 115.48,-50.06 82.5,-37.09"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="83.65,-33.78 73.06,-33.38 81.08,-40.29 83.65,-33.78"/>
+</g>
+<!-- photo2 -->
+<g id="node6" class="node">
+<title>photo2</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M147.5,-36C147.5,-36 103.5,-36 103.5,-36 97.5,-36 91.5,-30 91.5,-24 91.5,-24 91.5,-12 91.5,-12 91.5,-6 97.5,0 103.5,0 103.5,0 147.5,0 147.5,0 153.5,0 159.5,-6 159.5,-12 159.5,-12 159.5,-24 159.5,-24 159.5,-30 153.5,-36 147.5,-36"/>
+<text text-anchor="middle" x="125.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">到达&gt;视角</text>
+</g>
+<!-- photo&#45;&gt;photo2 -->
+<g id="edge5" class="edge">
+<title>photo&#45;&gt;photo2</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M192.5,-71.7C181.29,-62.88 167.5,-52.03 155.35,-42.47"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="157.27,-39.54 147.25,-36.1 152.94,-45.04 157.27,-39.54"/>
+</g>
+<!-- photo3 -->
+<g id="node7" class="node">
+<title>photo3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M239,-36C239,-36 190,-36 190,-36 184,-36 178,-30 178,-24 178,-24 178,-12 178,-12 178,-6 184,0 190,0 190,0 239,0 239,0 245,0 251,-6 251,-12 251,-12 251,-24 251,-24 251,-30 245,-36 239,-36"/>
+<text text-anchor="middle" x="214.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">构图·光色</text>
+</g>
+<!-- photo&#45;&gt;photo3 -->
+<g id="edge6" class="edge">
+<title>photo&#45;&gt;photo3</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M214.5,-71.7C214.5,-63.98 214.5,-54.71 214.5,-46.11"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="218,-46.1 214.5,-36.1 211,-46.1 218,-46.1"/>
+</g>
+<!-- flavor -->
+<g id="node14" class="node">
+<title>flavor</title>
+<path fill="#fffaf2" stroke="#e67e22" stroke-width="1.5" d="M334,-36C334,-36 281,-36 281,-36 275,-36 269,-30 269,-24 269,-24 269,-12 269,-12 269,-6 275,0 281,0 281,0 334,0 334,0 340,0 346,-6 346,-12 346,-12 346,-24 346,-24 346,-30 340,-36 334,-36"/>
+<text text-anchor="middle" x="307.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#e67e22">🍷 风味审美</text>
+</g>
+<!-- photo&#45;&gt;flavor -->
+<g id="edge13" class="edge">
+<title>photo&#45;&gt;flavor</title>
+<path fill="none" stroke="#e67e22" stroke-dasharray="5,2" d="M237.49,-71.7C249.31,-62.8 263.89,-51.82 276.68,-42.2"/>
+<polygon fill="#e67e22" stroke="#e67e22" points="278.89,-44.91 284.78,-36.1 274.68,-39.32 278.89,-44.91"/>
+</g>
+<!-- lux1 -->
+<g id="node8" class="node">
+<title>lux1</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M414.5,-36C414.5,-36 376.5,-36 376.5,-36 370.5,-36 364.5,-30 364.5,-24 364.5,-24 364.5,-12 364.5,-12 364.5,-6 370.5,0 376.5,0 376.5,0 414.5,0 414.5,0 420.5,0 426.5,-6 426.5,-12 426.5,-12 426.5,-24 426.5,-24 426.5,-30 420.5,-36 414.5,-36"/>
+<text text-anchor="middle" x="395.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">极致品质</text>
+</g>
+<!-- luxury&#45;&gt;lux1 -->
+<g id="edge7" class="edge">
+<title>luxury&#45;&gt;lux1</title>
+<path fill="none" stroke="#e67e22" stroke-width="1.5" d="M515.66,-75.83C493.16,-65.19 461.19,-50.07 435.88,-38.1"/>
+<polygon fill="#e67e22" stroke="#e67e22" stroke-width="1.5" points="437.07,-34.79 426.54,-33.68 434.08,-41.12 437.07,-34.79"/>
+</g>
+<!-- lux2 -->
+<g id="node9" class="node">
+<title>lux2</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M528,-36C528,-36 457,-36 457,-36 451,-36 445,-30 445,-24 445,-24 445,-12 445,-12 445,-6 451,0 457,0 457,0 528,0 528,0 534,0 540,-6 540,-12 540,-12 540,-24 540,-24 540,-30 534,-36 528,-36"/>
+<text text-anchor="middle" x="492.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">品牌价值三要素</text>
+</g>
+<!-- luxury&#45;&gt;lux2 -->
+<g id="edge8" class="edge">
+<title>luxury&#45;&gt;lux2</title>
+<path fill="none" stroke="#e67e22" stroke-width="1.5" d="M530.89,-71.7C524.9,-63.47 517.62,-53.48 511.02,-44.42"/>
+<polygon fill="#e67e22" stroke="#e67e22" stroke-width="1.5" points="513.68,-42.13 504.96,-36.1 508.02,-46.25 513.68,-42.13"/>
+</g>
+<!-- lux3 -->
+<g id="node10" class="node">
+<title>lux3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M619,-36C619,-36 570,-36 570,-36 564,-36 558,-30 558,-24 558,-24 558,-12 558,-12 558,-6 564,0 570,0 570,0 619,0 619,0 625,0 631,-6 631,-12 631,-12 631,-24 631,-24 631,-30 625,-36 619,-36"/>
+<text text-anchor="middle" x="594.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">凡勃伦商品</text>
+</g>
+<!-- luxury&#45;&gt;lux3 -->
+<g id="edge9" class="edge">
+<title>luxury&#45;&gt;lux3</title>
+<path fill="none" stroke="#e67e22" stroke-width="1.5" d="M556.11,-71.7C562.1,-63.47 569.38,-53.48 575.98,-44.42"/>
+<polygon fill="#e67e22" stroke="#e67e22" stroke-width="1.5" points="578.98,-46.25 582.04,-36.1 573.32,-42.13 578.98,-46.25"/>
+</g>
+<!-- music -->
+<g id="node15" class="node">
+<title>music</title>
+<path fill="#fffaf2" stroke="#c0392b" stroke-width="1.5" d="M692,-36C692,-36 661,-36 661,-36 655,-36 649,-30 649,-24 649,-24 649,-12 649,-12 649,-6 655,0 661,0 661,0 692,0 692,0 698,0 704,-6 704,-12 704,-12 704,-24 704,-24 704,-30 698,-36 692,-36"/>
+<text text-anchor="middle" x="676.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#c0392b">🎵 音乐</text>
+</g>
+<!-- luxury&#45;&gt;music -->
+<g id="edge14" class="edge">
+<title>luxury&#45;&gt;music</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M571.06,-74.5C591.03,-63.98 618.24,-49.66 640.01,-38.2"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="641.76,-41.24 648.98,-33.49 638.5,-35.05 641.76,-41.24"/>
+</g>
+<!-- mus1 -->
+<g id="node11" class="node">
+<title>mus1</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M764.5,-36C764.5,-36 734.5,-36 734.5,-36 728.5,-36 722.5,-30 722.5,-24 722.5,-24 722.5,-12 722.5,-12 722.5,-6 728.5,0 734.5,0 734.5,0 764.5,0 764.5,0 770.5,0 776.5,-6 776.5,-12 776.5,-12 776.5,-24 776.5,-24 776.5,-30 770.5,-36 764.5,-36"/>
+<text text-anchor="middle" x="749.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">文物性</text>
+</g>
+<!-- museum&#45;&gt;mus1 -->
+<g id="edge10" class="edge">
+<title>museum&#45;&gt;mus1</title>
+<path fill="none" stroke="#8b4513" stroke-width="1.5" d="M803.7,-71.7C794.9,-63.14 784.12,-52.66 774.5,-43.3"/>
+<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="776.7,-40.57 767.09,-36.1 771.82,-45.58 776.7,-40.57"/>
+</g>
+<!-- mus2 -->
+<g id="node12" class="node">
+<title>mus2</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M836.5,-36C836.5,-36 806.5,-36 806.5,-36 800.5,-36 794.5,-30 794.5,-24 794.5,-24 794.5,-12 794.5,-12 794.5,-6 800.5,0 806.5,0 806.5,0 836.5,0 836.5,0 842.5,0 848.5,-6 848.5,-12 848.5,-12 848.5,-24 848.5,-24 848.5,-30 842.5,-36 836.5,-36"/>
+<text text-anchor="middle" x="821.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">艺术性</text>
+</g>
+<!-- museum&#45;&gt;mus2 -->
+<g id="edge11" class="edge">
+<title>museum&#45;&gt;mus2</title>
+<path fill="none" stroke="#8b4513" stroke-width="1.5" d="M821.5,-71.7C821.5,-63.98 821.5,-54.71 821.5,-46.11"/>
+<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="825,-46.1 821.5,-36.1 818,-46.1 825,-46.1"/>
+</g>
+<!-- mus3 -->
+<g id="node13" class="node">
+<title>mus3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M908.5,-36C908.5,-36 878.5,-36 878.5,-36 872.5,-36 866.5,-30 866.5,-24 866.5,-24 866.5,-12 866.5,-12 866.5,-6 872.5,0 878.5,0 878.5,0 908.5,0 908.5,0 914.5,0 920.5,-6 920.5,-12 920.5,-12 920.5,-24 920.5,-24 920.5,-30 914.5,-36 908.5,-36"/>
+<text text-anchor="middle" x="893.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">稀缺性</text>
+</g>
+<!-- museum&#45;&gt;mus3 -->
+<g id="edge12" class="edge">
+<title>museum&#45;&gt;mus3</title>
+<path fill="none" stroke="#8b4513" stroke-width="1.5" d="M839.3,-71.7C848.1,-63.14 858.88,-52.66 868.5,-43.3"/>
+<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="871.18,-45.58 875.91,-36.1 866.3,-40.57 871.18,-45.58"/>
+</g>
+<!-- lit -->
+<g id="node16" class="node">
+<title>lit</title>
+<path fill="#fffaf2" stroke="#8b4513" stroke-width="1.5" d="M982,-36C982,-36 951,-36 951,-36 945,-36 939,-30 939,-24 939,-24 939,-12 939,-12 939,-6 945,0 951,0 951,0 982,0 982,0 988,0 994,-6 994,-12 994,-12 994,-24 994,-24 994,-30 988,-36 982,-36"/>
+<text text-anchor="middle" x="966.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#8b4513">📖 文学</text>
+</g>
+<!-- museum&#45;&gt;lit -->
+<g id="edge15" class="edge">
+<title>museum&#45;&gt;lit</title>
+<path fill="none" stroke="#8b4513" stroke-dasharray="5,2" d="M849.11,-75.67C871.99,-64.62 904.7,-48.83 929.78,-36.72"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="931.5,-39.78 938.99,-32.28 928.46,-33.48 931.5,-39.78"/>
+</g>
+</g>
+</svg>`;
+  document.getElementById('svgMap').innerHTML = svg;
+}
+
+// ========== TAB 1: Cards ==========
+function renderCard(){
+  const c = cardsData[currentCard];
+  document.getElementById('flipFront').textContent = c.front;
+  document.getElementById('flipBack').innerHTML = c.back;
+  document.getElementById('flipper').classList.remove('flipped');
+  document.getElementById('cardIdx').textContent = (currentCard+1)+' / '+cardsData.length;
+  const lb = document.getElementById('learnedBtn');
+  if(learned.has(c.id)){ lb.textContent='✓ 已学习'; lb.classList.add('learned'); }
+  else{ lb.textContent='✓ 标记已学习'; lb.classList.remove('learned'); }
+}
+function flipCard(){ document.getElementById('flipper').classList.toggle('flipped'); }
+function prevCard(){ currentCard=(currentCard-1+cardsData.length)%cardsData.length; renderCard(); }
+function nextCard(){ currentCard=(currentCard+1)%cardsData.length; renderCard(); }
+function markLearned(){
+  const c = cardsData[currentCard];
+  if(learned.has(c.id)){ learned.delete(c.id); } else { learned.add(c.id); }
+  saveState(); renderCard(); updateProgress();
+}
+
+// ========== PROGRESS ==========
+function updateProgress(){
+  const n=learned.size, t=cardsData.length;
+  document.getElementById('progLabel').textContent=n+' / '+t;
+  document.getElementById('progBar').style.width=(n/t*100)+'%';
+}
+
+// ========== TAB 2: Quiz ==========
+function renderQuiz(){
+  let h='';
+  mcQuestions.forEach((q,i)=>{
+    const aKey='mc_'+i;
+    const chosen=quizAnswers[aKey]!==undefined?quizAnswers[aKey]:-1;
+    h+='<div class="quiz-q"><div class="q-title">'+(i+1)+'. '+q.q+'</div>';
+    q.opts.forEach((o,j)=>{
+      let cls='opt';
+      if(chosen>=0){
+        if(j===q.ans) cls+=' correct';
+        if(j===chosen&&j!==q.ans) cls+=' wrong';
+        if(j===chosen) cls+=' chosen';
+      }
+      h+='<div class="'+cls+'" onclick="pickMC('+i+','+j+',this)">'+'ABCD'[j]+'. '+o+'</div>';
+    });
+    if(chosen>=0){
+      h+='<div class="quiz-feedback '+(chosen===q.ans?'correct':'wrong')+'">'+(chosen===q.ans?'✓ 正确！':'✗ 错误')+' '+q.exp+'</div>';
+    }
+    h+='</div>';
+  });
+  document.getElementById('mcQuiz').innerHTML=h;
+
+  let sh='';
+  saQuestions.forEach((q,i)=>{
+    const aKey='sa_'+i;
+    const val=quizAnswers[aKey]||'';
+    sh+='<div class="quiz-q"><div class="q-title">'+(i+1)+'. '+q.q+'</div>';
+    sh+='<textarea id="sa_'+i+'" onchange="saveSA('+i+')">'+val+'</textarea>';
+    sh+='<button class="btn btn-sm btn-outline" style="margin-top:6px" onclick="showRef('+i+')">查看参考要点</button>';
+    sh+='<div id="ref_'+i+'" class="quiz-feedback" style="background:#fff3cd;color:#856404"></div>';
+    sh+='</div>';
+  });
+  document.getElementById('saQuiz').innerHTML=sh;
+}
+
+function pickMC(i,j,el){
+  const key='mc_'+i;
+  if(quizAnswers[key]!==undefined) return;
+  quizAnswers[key]=j;
+  const correct=j===mcQuestions[i].ans;
+  recordAnswer('mc_'+i,correct);
+  if(!correct) wrongList.push({type:'mc',idx:i,q:mcQuestions[i].q,user:mcQuestions[i].opts[j],ans:mcQuestions[i].opts[mcQuestions[i].ans],exp:mcQuestions[i].exp,time:Date.now()});
+  saveState(); renderQuiz();
+}
+
+function saveSA(i){
+  const key='sa_'+i;
+  const val=document.getElementById('sa_'+i).value.trim();
+  if(val) quizAnswers[key]=val; else delete quizAnswers[key];
+  saveState();
+}
+
+function showRef(i){
+  const ref=document.getElementById('ref_'+i);
+  ref.style.display='block';
+  ref.innerHTML='<strong>参考要点：</strong>'+saQuestions[i].ref;
+}
+
+// ========== TAB 3: Exam ==========
+function startExam(){
+  if(examActive) return;
+  examActive=true;
+  document.getElementById('examStart').classList.add('hidden');
+  document.getElementById('examSubmit').classList.remove('hidden');
+
+  // Pick 7 MC + 3 SA
+  const mcP=shuffle([...Array(mcQuestions.length).keys()]).slice(0,7);
+  const saP=shuffle([...Array(saQuestions.length).keys()]).slice(0,3);
+  examData=[...mcP.map(i=>({type:'mc',idx:i,...mcQuestions[i]})),...saP.map(i=>({type:'sa',idx:i,...saQuestions[i]}))];
+  examData=shuffle(examData);
+
+  let h='';
+  examData.forEach((q,i)=>{
+    if(q.type==='mc'){
+      h+='<div class="quiz-q"><div class="q-title">'+(i+1)+'. '+q.q+'</div>';
+      q.opts.forEach((o,j)=>h+='<div class="opt" onclick="pickExam('+i+','+j+',this)">'+'ABCD'[j]+'. '+o+'</div>');
+      h+='</div>';
+    }else{
+      h+='<div class="quiz-q"><div class="q-title">'+(i+1)+'. '+q.q+'</div>';
+      h+='<textarea id="exam_sa_'+i+'"></textarea></div>';
+    }
+  });
+  document.getElementById('examContent').innerHTML=h;
+  document.getElementById('examResult').innerHTML='';
+
+  let sec=15*60;
+  document.getElementById('examTimer').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+  examTimerId=setInterval(()=>{
+    sec--;
+    document.getElementById('examTimer').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+    if(sec<=0){ clearInterval(examTimerId); submitExam(); }
+  },1000);
+}
+
+let examPicks={};
+function pickExam(i,j,el){
+  if(examPicks[i]!==undefined) return;
+  examPicks[i]=j;
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.style.pointerEvents='none');
+  el.classList.add('chosen');
+}
+
+function submitExam(){
+  if(!examActive) return;
+  examActive=false;
+  clearInterval(examTimerId);
+  document.getElementById('examSubmit').classList.add('hidden');
+
+  let score=0,total=examData.length,details='';
+  examData.forEach((q,i)=>{
+    if(q.type==='mc'){
+      const pick=examPicks[i];
+      const correct=pick===q.ans;
+      if(correct) score++;
+      else wrongList.push({type:'mc',idx:q.idx,q:q.q,user:pick!==undefined?q.opts[pick]:'未作答',ans:q.opts[q.ans],exp:q.exp,time:Date.now()});
+      recordAnswer('exam_mc_'+q.idx,correct);
+      details+='<p>'+(i+1)+'. '+(correct?'✓ 正确':'✗ 错误（选'+'ABCD'[pick||0]+'，正确为'+'ABCD'[q.ans]+'）')+' — '+q.exp+'</p>';
+    } else {
+      details+='<p>'+(i+1)+'. 简答题已记录。参考要点：'+q.ref.substring(0,80)+'...</p>';
+    }
+  });
+  saveState();
+
+  document.getElementById('examResult').innerHTML='<div class="card" style="margin-top:16px"><h3>考试成绩：'+score+' / '+total+'</h3>'+details+'</div>';
+}
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+// ========== TAB 4: Review ==========
+function renderReview(){
+  document.getElementById('statTotal').textContent=stats.total;
+  document.getElementById('statCorrect').textContent=stats.total>0?Math.round(stats.correct/stats.total*100)+'%':'0%';
+  document.getElementById('statDays').textContent=stats.days.length;
+  document.getElementById('statCards').textContent=learned.size;
+
+  // Wrong book
+  let wh='';
+  if(wrongList.length===0){
+    wh='<p style="color:var(--muted)">暂无错题，继续保持!</p>';
+  }else{
+    wh='<button class="btn btn-sm" onclick="clearWrong()" style="margin-bottom:12px">清空错题本</button>';
+    wrongList.slice().reverse().forEach((w,i)=>{
+      wh+='<div class="quiz-q"><div class="q-title">'+(wrongList.length-i)+'. '+w.q+'</div>';
+      wh+='<p style="font-size:var(--fs-sm)">你的答案：<span style="color:var(--accent)">'+(w.user||'未作答')+'</span></p>';
+      wh+='<p style="font-size:var(--fs-sm)">正确答案：<span style="color:#27ae60">'+w.ans+'</span></p>';
+      wh+='<p style="font-size:var(--fs-sm);color:var(--muted)">'+w.exp+'</p></div>';
+    });
+  }
+  document.getElementById('wrongBook').innerHTML=wh;
+
+  // Weak concepts
+  const conceptErr={};
+  wrongList.forEach(w=>{
+    const q=w.q;
+    let cat='其他';
+    if(q.includes('摄影')||q.includes('构图')||q.includes('照片')||q.includes('黑白')||q.includes('相机')||q.includes('视角')||q.includes('到达')) cat='摄影';
+    else if(q.includes('奢侈品')||q.includes('路易')||q.includes('香奈儿')||q.includes('哈耶克')||q.includes('中国制造')||q.includes('定价')) cat='奢侈品';
+    else if(q.includes('红酒')||q.includes('波尔多')||q.includes('香槟')||q.includes('咖啡')||q.includes('阿拉比卡')) cat='风味审美';
+    else if(q.includes('绘画')||q.includes('毕加索')||q.includes('博物馆')||q.includes('教堂')||q.includes('文艺复兴')) cat='博物馆与艺术';
+    conceptErr[cat]=(conceptErr[cat]||0)+1;
+  });
+  let wch='';
+  if(Object.keys(conceptErr).length===0){
+    wch='<p style="color:var(--muted)">答题数据不足，完成更多题目后显示分析。</p>';
+  }else{
+    const sorted=Object.entries(conceptErr).sort((a,b)=>b[1]-a[1]);
+    sorted.forEach(([k,v])=>wch+='<div class="card" style="margin:4px 0"><strong>'+k+'</strong> — 错'+v+'题 <span style="color:var(--muted);font-size:12px">建议重做相关题目并复习对应卡片</span></div>');
+  }
+  document.getElementById('weakConcepts').innerHTML=wch;
+}
+
+function clearWrong(){ wrongList=[]; saveState(); renderReview(); }
+
+// ========== TAB 5: Mind Map ==========
+function renderMindTree(){
+  document.getElementById('mindTree').innerHTML=`
+<div class="node" id="rootNode">
+  <div class="label" onclick="toggleNode('rootNode')"><span class="arrow">▼</span> 🎯 审美能力（可训练）</div>
+  <div class="children">
+    <div class="node" id="n1">
+      <div class="label" onclick="toggleNode('n1')"><span class="arrow">▼</span> 📷 摄影：从记录到创作</div>
+      <div class="children">
+        <div class="leaf">• 第一讲：摄影vs记录——观察的艺术</div>
+        <div class="leaf">• 第二讲：7项好照片基本要求（端平/清晰/曝光/主题...）</div>
+        <div class="leaf">• 第三讲：主题——摄影是给照片增加思想的过程</div>
+        <div class="leaf">• 第四讲：到达（物理突破）> 视角（主观重构）</div>
+        <div class="leaf">• 第五讲：构图——三角形构图/圆形构图/人物元素运用</div>
+        <div class="leaf">• 第六讲：光线与色彩——颜色正/对比/虚化</div>
+        <div class="leaf">• 第七讲：黑白摄影——去色聚焦的视觉力度</div>
+        <div class="leaf">• 第八讲：感染力——真实/主题/共鸣</div>
+        <div class="leaf">• 第九讲：特殊技巧与后期处理（ND滤镜/Raw格式）</div>
+      </div>
+    </div>
+    <div class="node" id="n2">
+      <div class="label" onclick="toggleNode('n2')"><span class="arrow">▼</span> 💎 奢侈品：价值判断的逻辑</div>
+      <div class="children">
+        <div class="leaf">• 奢侈品定义：极致品质 + 非必需品（凡勃伦商品）</div>
+        <div class="leaf">• 价值三要素：技术进步免疫力/二手流动性/品牌故事</div>
+        <div class="leaf">• 定价之迷：固定成本20-25% + 隐性成本（广告/库存/稀缺）</div>
+        <div class="leaf">• 中国制造真相：30-40%成本节省 + 欧洲工匠短缺</div>
+        <div class="leaf">• 哈耶克案例：从计时工具到身份彰显的战略转型</div>
+        <div class="leaf">• 品牌故事：香奈儿/古驰/普拉达的传奇与争议</div>
+        <div class="leaf">• 奢侈品集团化：LVMH/斯沃琪/开云</div>
+      </div>
+    </div>
+    <div class="node" id="n3">
+      <div class="label" onclick="toggleNode('n3')"><span class="arrow">▼</span> 🍷 风味审美：味觉的坐标系</div>
+      <div class="children">
+        <div class="leaf">• 红酒品类：波尔多瓶/勃艮第瓶/罗纳河谷瓶/香槟瓶</div>
+        <div class="leaf">• 品酒方法：观色→闻香→品味，红酒配红肉</div>
+        <div class="leaf">• 波尔多分级：1855年列级61个名酒，5个一级庄</div>
+        <div class="leaf">• 风味四来源：土壤/发酵/橡木桶/混酿调配</div>
+        <div class="leaf">• 咖啡品类：阿拉比卡（60%）vs 罗布斯塔（40%）</div>
+        <div class="leaf">• 烘烤工艺：轻度/中度/深度对风味的影响</div>
+        <div class="leaf">• 香槟技术：瓶中二次发酵 + 手工摇瓶除渣</div>
+        <div class="leaf">• 干邑分级：V.S / V.S.O.P / X.O / 百乐廷</div>
+      </div>
+    </div>
+    <div class="node" id="n4">
+      <div class="label" onclick="toggleNode('n4')"><span class="arrow">▼</span> 🏛️ 博物馆：文明坐标中的审美</div>
+      <div class="children">
+        <div class="leaf">• 十大博物馆：卢浮宫/大英/大都会/梵蒂冈/乌菲兹...</div>
+        <div class="leaf">• 藏品评估三维：文物性/艺术性/稀缺性</div>
+        <div class="leaf">• 绘画四阶段：天上→天上人间→人间天上→人间</div>
+        <div class="leaf">• 教堂看点：彩色玻璃/壁画雕塑/名人墓/管风琴</div>
+        <div class="leaf">• MoMA三宝：记忆的永恒/阿维尼翁的少女/睡莲</div>
+        <div class="leaf">• 大英六宝：死者之书/人首翼牛像/洪水石板...</div>
+        <div class="leaf">• 古希腊雕塑：萨莫色雷斯的胜利女神</div>
+      </div>
+    </div>
+    <div class="node" id="n5">
+      <div class="label" onclick="toggleNode('n5')"><span class="arrow">▼</span> 🎵 音乐与文学：跨文化共鸣</div>
+      <div class="children">
+        <div class="leaf">• 《奇异恩典》：从约翰·牛顿到凯尔特女人乐队</div>
+        <div class="leaf">• 卡雷拉斯/多明戈/帕瓦罗蒂——世界三大男高音</div>
+        <div class="leaf">• 金色大厅情结：施特劳斯≠古典音乐</div>
+        <div class="leaf">• 雪莱与叶芝：浪漫主义与象征主义的传承</div>
+        <div class="leaf">• 《斯卡保罗集市》：中世纪游吟诗人的爱情隐喻</div>
+        <div class="leaf">• 柏辽兹《幻想交响曲》：标题音乐与爱情叙事</div>
+        <div class="leaf">• 莫扎特：河流模型——深度>宽度>长度</div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function toggleNode(id){
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+// ========== TAB 6: Socratic ==========
+function renderSocratic(){
+  const qs=[
+    {q:'为什么说"审美是可以训练的"？这是否意味着审美有"标准答案"？',a1:'审美可以训练，就像味觉可以训练一样——一个从未喝过红酒的人无法分辨波尔多和纳帕的区别，但经过系统品鉴后就能建立"坐标系"。',a2:'但这不意味着审美有"标准答案"。训练提供的是"判断框架"而非"唯一标准"——你知道为什么这张照片好（到达稀缺+视角独特+构图有力），但你仍然可以主观偏好不同的风格。训练提高的是"分辨力"而非规定"偏好"。'},
+    {q:'如果"到达"是第一要素，那没有条件去珠峰的人是不是就不可能拍出好照片？',a1:'"到达"的本质不是"去远方"，而是"比其他人多走一步"——楼梯间的特殊角度、门洞后的独特框架、低角度拍摄的动感，都是"到达"。',a2:'关键不是去了多远的地方，而是你有没有在"正确的时间到达正确的地点"。"到达"是可以微缩的——在自家楼下找到别人没注意到的角度，也是"到达"。'},
+    {q:'奢侈品的高价是否就是"智商税"？为什么有人愿意花10万买一块机械表？',a1:'从功能角度看，10万的机械表走时不如100元的石英表精准——这是事实。但消费者的购买动机不是"计时"，而是"身份彰显"和"情感价值"。',a2:'这就像有人愿意花1000元吃米其林而不是10元吃快餐——填饱肚子的功能是一样的。关键在于你是否认可"情感价值"作为一种"真实价值"。如果你不认可，那确实不买就好。但否认这种价值的存在，是混淆了"功能需求"和"情感需求"。'},
+    {q:'如果多数奢侈品都是中国制造，那"法国制造""意大利制造"的标签是不是欺骗？',a1:'这是一个灰色地带。行业辩护的理由是：技术和设备来自欧洲，中国工厂是"专属生产"而非"代工"，铭牌由品牌方严格管控。但消费者感受到的信息不对称是真实的。',a2:'更深层的问题是：奢侈品的价值究竟在"产地"还是在"品牌故事"？如果香奈儿5号香水的配方、工艺、品质管控完全一样，只是生产线搬到了广东，它的价值应该变化吗？这是当代消费伦理尚未解决的核心矛盾。'},
+    {q:'红酒品鉴中"好喝"是否完全主观？为什么有人觉得拉菲"还不如超市50块的酒好喝"？',a1:'个人口味偏好当然存在——有人喜欢浓郁醇厚的纳帕赤霞珠，有人偏爱清淡优雅的勃艮第黑皮诺。这都合理。',a2:'但"好喝"不完全等于"品质高"。品质有客观维度：葡萄的产区条件、酿造工艺的精细度、陈化时间的充足度、酒体的层次感和余味长度。你完全可以主观偏好超市50块的酒，但客观品质的判断标准依然存在。审美训练就是帮你建立这两个维度的区分。'},
+    {q:'博物馆的"打卡式"参观和"沉浸式"参观究竟差在哪里？',a1:'打卡式：看镇馆之宝→拍照→发朋友圈→离开。沉浸式：提前了解背景→带着问题去看→在作品前停留→记下感受→回去查资料→建立知识连接。',a2:'两者的核心差异在于"主动性"。沉浸式参观是你带着"内在问题"去博物馆寻求答案——你对文艺复兴好奇，于是你在乌菲兹博物馆看到的不只是一幅画，而是一个时代的思想史。品味的厚度来自这种"深度连接"，而非"清单勾选"的数量。'}
+  ];
+  let h='';
+  qs.forEach((q,i)=>{
+    h+='<div class="soc-item" onclick="this.classList.toggle(\'open\')"><div class="soc-q"><span>'+(i+1)+'. '+q.q+'</span><span style="font-size:12px">▶</span></div><div class="soc-a"><p><strong>第一层：</strong>'+q.a1+'</p><p style="margin-top:6px"><strong>第二层：</strong>'+q.a2+'</p></div></div>';
+  });
+  document.getElementById('socratic').innerHTML=h;
+}
+
+// ========== TAB 8: Decisions ==========
+function renderDecisions(){
+  const rounds=[
+    {scene:'你计划去欧洲旅行一周，预算有限。以下哪个行程组合最能提升你的审美素养？',opts:[
+      {label:'巴黎卢浮宫（半天）+ 米兰大教堂（门口拍照）+ 巴塞罗那高迪建筑（半天）+ 购物三天',feedback:'"购物三天"说明你还没有真正把审美放在优先位置。卢浮宫半天和米兰大教堂门口拍照都是"打卡式"体验——你没有给深度一个机会。',mks:'★ MKS核心"体验深度=品味厚度"：一个博物馆沉浸一天胜过十个景点打卡一周。'},
+      {label:'佛罗伦萨三整天（乌菲兹博物馆/圣母百花大教堂/市政广场/圣洛伦佐教堂）+ 米兰两天（最后的晚餐/米兰大教堂/圣莫里西奥教堂）+ 可选的葡萄酒庄半日',feedback:'这是"深度优先"的选择。佛罗伦萨是文艺复兴的心脏，三整天刚好建立对"绘画四阶段"的感性认知。米兰两天的教堂深度游将宗教/艺术/建筑融为一体。酒庄半日是"风味审美"的实战。',mks:'★ 三个MKS核心全覆盖：摄影创作链（教堂构图实践）、奢侈品价值判断（意大利品牌发源地）、体验深度>消费广度。'},
+      {label:'巴黎卢浮宫（一天）+ 香榭丽舍奢侈品店购物（一天）+ 凡尔赛宫（半天）+ 各地米其林餐厅打卡',feedback:'这是一个"消费导向"而非"学习导向"的行程。米其林打卡和奢侈品购物虽然也能提升品味，但它们更多是"结果"而非"方法"——你学到了如何判断一个包的价值了吗？还是仅仅消费了它？',mks:'审美训练注重"方法论"而非"消费清单"。奢侈品购物本身不会提升审美判断力，理解其商业逻辑才会。'}
+    ]},
+    {scene:'你想开始学习品鉴红酒，预算约3000元。以下哪种投入方式最合理？',opts:[
+      {label:'买一瓶拉菲副牌（小拉菲）或同价位名庄酒，体验"顶级红酒"的味道',feedback:'小拉菲本质是用30年以下嫩藤葡萄酿造，品质仅相当于普通酒庄水平。中国市场炒作使其价格涨至原价的3-4倍。你花3000元买到的不是"顶级体验"，而是"品牌溢价"和一个可能让你对红酒产生误解的样本。',mks:'★ MKS核心"奢侈品价值三要素"的反面案例：品牌故事很强，但产品本身的技术进步免疫力和二手流动性不足。'},
+      {label:'买3-4瓶中档价位的不同产区/品种红酒（如波尔多五级庄+加州纳帕+智利佳美娜+澳洲西拉），同时购买一本入门品鉴指南',feedback:'这是"建立坐标系"的正确方法。不同产区/品种的对比是最快的品鉴学习路径。一本书帮你建立"观色/闻香/品味"的方法论框架。3000元刚好覆盖4瓶品质不错的酒+一本专业入门书。',mks:'★ MKS核心"风味审美"：品鉴能力来自"比较"而非"单点体验"。4个产区=4个坐标点，帮你建立味觉参照系。'},
+      {label:'参加一个红酒品鉴课程（通常含多款酒样），花全部预算在"知识"上',feedback:'这也是非常好的选择。品鉴课程提供的是"引导式对比品鉴"——在老师带领下同时品尝多款酒，快速建立判断标准。缺点是缺少"自己的酒"可以后续练习和回顾。',mks:'如果预算允许，最佳策略是"课程+自购2瓶练习"的组合。但纯课程投入也远优于买一瓶名酒。'}
+    ]},
+    {scene:'你看到朋友圈有人买了最新款的徕卡相机（3万+），拍的照片还不如你的手机。你觉得问题出在哪？',opts:[
+      {label:'他买到了假货或低端型号，性能不行',feedback:'徕卡的品质是世界顶级的——问题基本不可能在设备上。这恰好符合"器材党"现象的描述：高端设备但停留在"记录"思维。',mks:'本模块反复强调的核心认知：摄影的第一要素不是设备，是"到达"和"视角"。8844米用手机>3000米用专业设备。'},
+      {label:'他没有掌握摄影的基本功——端平、对焦、曝光、构图、主题',feedback:'这是最可能的诊断。没有基本功，再贵的设备也是浪费。好照片需要客观技术基础（端平/清晰/曝光/构图/主题/光线/色彩）+ 主观审美。',mks:'★ MKS核心"摄影创作链"：到达>视角>构图>光影>后期。设备甚至不在这个链条里——它是"辅助"而非"要素"。'},
+      {label:'他的审美不行——没有"摄影眼"，拍不出好照片是性格问题',feedback:'"审美"确实是可以训练的能力，不是天生"有"或"没有"。问题不在于"性格"而在于"方法论"。他没有停下来思考：我的主题是什么？我的视角在哪里？哪些元素应该舍弃？',mks:'★ 最核心的MKS元认知：审美是可以训练的能力。不是"他审美不行所以拍不好"，而是"他没有接受训练所以还没建立审美判断框架"。'}
+    ]}
+  ];
+
+  let h='';
+  rounds.forEach((r,i)=>{
+    h+='<div class="decision-round" id="dr_'+i+'"><h4>第'+(i+1)+'轮：'+r.scene+'</h4>';
+    r.opts.forEach((o,j)=>{
+      h+='<button class="opt-btn" onclick="pickDecision('+i+','+j+',\''+o.feedback.replace(/'/g,"\\'")+'\',\''+o.mks.replace(/'/g,"\\'")+'\')">'+(j===0?'A':j===1?'B':'C')+'. '+o.label+'</button>';
+    });
+    h+='<div id="dfb_'+i+'" style="display:none;margin-top:12px;padding:12px;border-radius:8px"></div></div>';
+  });
+  document.getElementById('decisionSim').innerHTML=h;
+}
+
+function pickDecision(roundIdx,optIdx,feedback,mks){
+  const fb=document.getElementById('dfb_'+roundIdx);
+  const btns=document.querySelectorAll('#dr_'+roundIdx+' .opt-btn');
+  btns.forEach((b,j)=>{ b.classList.remove('selected'); if(j===optIdx) b.classList.add('selected'); b.style.pointerEvents='none'; });
+  fb.style.display='block';
+  fb.style.background=optIdx===1?'#d4edda':'#fdf6ec';
+  fb.style.border=optIdx===1?'1px solid #27ae60':'1px solid var(--border)';
+  fb.innerHTML=(optIdx===1?'<strong style="color:#27ae60">✓ 最佳选择</strong><br>':'<strong style="color:var(--accent)">!</strong><br>')+feedback+'<br><small style="color:var(--muted)">'+mks+'</small>';
+}
+
+// ========== INIT ==========
+renderSVG(); updateProgress();
+renderCard();
+
+// ========== INIT TAB 5 ==========
+renderMindTree();
+</script>
+</body>
+</html>
