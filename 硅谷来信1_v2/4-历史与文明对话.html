@@ -23,7 +23,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;b
 .container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
 h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
 .subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
-.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
 .tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tab-btn:hover:not(.active){background:#f5e6d3}
@@ -98,15 +98,33 @@ h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin
   .tab-bar{flex-wrap:nowrap}
 }
 
-.home-link { display: inline-block; margin-top: 12px; padding: 6px 20px; border: 2px solid var(--accent); border-radius: 20px; color: var(--accent); text-decoration: none; font-size: .88rem; transition: all .25s; }
-.home-link:hover { background: var(--accent); color: #fff; }
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
 </style>
 </head>
 <body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>历史与文明对话 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
 <div class="container">
 
-<a href="index.html" class="home-link">← 返回知识主板</a>
-<h1>历史与文明对话</h1>
 <p class="subtitle">吴军·硅谷来信第一季 · 穿越时空与文明对话——国民特性、历史人物、全球化，理解世界运行的深层规律</p>
 
 <!-- Tab Bar -->
@@ -144,7 +162,7 @@ h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin
 
 <div class="card">
 <h3>概念关系图</h3>
-<div class="svg-wrap"><svg id="conceptMap" viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg"></svg></div>
+<div class="svg-wrap" id="conceptMap"></div>
 <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
   <span>━━ 主线关系</span><span style="color:var(--accent)">━━ 对立张力</span><span style="color:var(--gold)">━━ 支撑关系</span><span style="color:var(--success)">━━ 应用层</span>
 </div>

@@ -21,14 +21,24 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Noto Serif SC","Source Han Serif SC",Georgia,"Songti SC",serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
 .container{max-width:960px;margin:0 auto;padding:clamp(12px,2vw,24px)}
-header{text-align:center;padding:clamp(24px,4vw,48px) 0 clamp(16px,3vw,32px)}
-header h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);margin-bottom:8px}
-header .sub{font-size:clamp(0.85rem,1.5vw,1rem);color:var(--text2)}
-header .home-link{display:inline-block;margin-top:10px;font-size:0.85rem;color:var(--accent2);text-decoration:none;border:1px solid var(--accent2);padding:4px 14px;border-radius:20px;transition:all .2s}
-header .home-link:hover{background:var(--accent2);color:#fff}
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
 
 /* Tabs */
-.tab-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:8px 0;margin-bottom:20px}
+.tab-nav{position:sticky;top:44px;z-index:99;background:var(--bg);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:8px 0;margin-bottom:20px}
 .tab-nav button{flex:1;min-width:70px;padding:8px 6px;font-size:clamp(0.7rem,1.2vw,0.82rem);border:none;background:transparent;color:var(--text2);cursor:pointer;border-radius:6px 6px 0 0;transition:all .2s;font-family:inherit;white-space:nowrap}
 .tab-nav button:hover{color:var(--accent);background:rgba(192,57,43,0.05)}
 .tab-nav button.active{color:var(--accent);font-weight:700;border-bottom:3px solid var(--accent);background:rgba(192,57,43,0.06)}
@@ -162,12 +172,10 @@ header .home-link:hover{background:var(--accent2);color:#fff}
 </head>
 <body>
 <div class="container">
-<header>
+<div class="top-bar">
   <h1>投资与财富 · 最小知识集</h1>
-  <p class="sub">吴军·硅谷来信第一季 —— 从巴菲特午餐到卡尼曼，投资不仅是赚钱更是思维方式</p>
-  <p class="sub" style="font-size:0.8rem;margin-top:4px">理解财富的底层逻辑 · 42篇笔记提炼</p>
-  <a href="index.html" class="home-link" title="返回知识主板">← 返回知识主板</a>
-</header>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
 
 <nav class="tab-nav" id="tabNav"></nav>
 
