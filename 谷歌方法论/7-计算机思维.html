@@ -1037,7 +1037,7 @@ function renderQuizPractice(){
   const container = document.getElementById('quizContainer');
   let html = '';
   currentQuestions.forEach((q,i)=>{
-    const isChoice = q.opts || q.options || q.answer !== undefined || q.ans !== undefined;
+    const isChoice = q.opts || q.options || q.o;
     if(isChoice){
       const options = q.opts || q.options;
       html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div>';
@@ -1057,7 +1057,7 @@ function selectQuizChoice(qIdx,optIdx){
   if(userAnswers[qIdx]!==undefined) return;
   userAnswers[qIdx] = optIdx;
   const q = currentQuestions[qIdx];
-  const correctIdx = q.answer !== undefined ? q.answer : (q.ans !== undefined ? q.ans : -1);
+  const correctIdx = q.a !== undefined ? q.a : (q.ans !== undefined ? q.ans : (q.answer !== undefined ? q.answer : -1));
   const isCorrect = optIdx === correctIdx;
   const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
   allOpts.forEach((el,j)=>{
@@ -1067,22 +1067,22 @@ function selectQuizChoice(qIdx,optIdx){
   const fb = document.getElementById('fb'+qIdx);
   fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
   fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
-  if(q.explain||q.explanation) fb.textContent += ' ' + (q.explain||q.explanation);
+  const explainText = q.exp || q.explain || q.explanation || q.r || ''; if(explainText) fb.textContent += ' ' + explainText;
   const correctCount = Object.values(userAnswers).filter((v,i)=>{
     const qi = currentQuestions[i];
-    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    const ci = qi.a !== undefined ? qi.a : (qi.ans !== undefined ? qi.ans : (qi.answer !== undefined ? qi.answer : -1));
     return v === ci;
   }).length;
-  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.o).length;
   document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
 }
 function submitQuizPractice(){
   const correctCount = Object.values(userAnswers).filter((v,i)=>{
     const qi = currentQuestions[i];
-    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    const ci = qi.a !== undefined ? qi.a : (qi.ans !== undefined ? qi.ans : (qi.answer !== undefined ? qi.answer : -1));
     return v === ci;
   }).length;
-  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.o).length;
   alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
   clearInterval(quizTimerInterval);
 }

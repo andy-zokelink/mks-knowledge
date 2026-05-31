@@ -1340,7 +1340,7 @@ function renderQuizPractice(){
   var container = document.getElementById('quizContainer');
   var html = '';
   currentQuestions.forEach(function(q,i){
-    var isChoice = q.opts || q.options || q.answer !== undefined || q.ans !== undefined;
+    var isChoice = q.opts || q.options || q.o;
     if(isChoice){
       var options = q.opts || q.options;
       html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div>';
@@ -1360,7 +1360,7 @@ function selectQuizChoice(qIdx,optIdx){
   if(userAnswers[qIdx]!==undefined) return;
   userAnswers[qIdx] = optIdx;
   var q = currentQuestions[qIdx];
-  var correctIdx = q.answer !== undefined ? q.answer : (q.ans !== undefined ? q.ans : -1);
+  var correctIdx = q.a !== undefined ? q.a : (q.ans !== undefined ? q.ans : (q.answer !== undefined ? q.answer : -1));
   var isCorrect = optIdx === correctIdx;
   var allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
   allOpts.forEach(function(el,j){
@@ -1370,22 +1370,22 @@ function selectQuizChoice(qIdx,optIdx){
   var fb = document.getElementById('fb'+qIdx);
   fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
   fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
-  if(q.explain||q.explanation) fb.textContent += ' ' + (q.explain||q.explanation);
+  var explainText = q.exp || q.explain || q.explanation || q.r || ''; if(explainText) fb.textContent += ' ' + explainText;
   var correctCount = Object.values(userAnswers).filter(function(v,i){
     var qi = currentQuestions[i];
-    var ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    var ci = qi.a !== undefined ? qi.a : (qi.ans !== undefined ? qi.ans : (qi.answer !== undefined ? qi.answer : -1));
     return v === ci;
   }).length;
-  var totalChoice = currentQuestions.filter(function(qi){return qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined}).length;
+  var totalChoice = currentQuestions.filter(function(qi){return qi.opts||qi.options||qi.o;}).length;
   document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
 }
 function submitQuizPractice(){
   var correctCount = Object.values(userAnswers).filter(function(v,i){
     var qi = currentQuestions[i];
-    var ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    var ci = qi.a !== undefined ? qi.a : (qi.ans !== undefined ? qi.ans : (qi.answer !== undefined ? qi.answer : -1));
     return v === ci;
   }).length;
-  var totalChoice = currentQuestions.filter(function(qi){return qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined}).length;
+  var totalChoice = currentQuestions.filter(function(qi){return qi.opts||qi.options||qi.o;}).length;
   alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
   clearInterval(quizTimerInterval);
 }
