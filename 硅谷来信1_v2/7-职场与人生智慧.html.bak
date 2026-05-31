@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>职场与人生智慧 · 最小知识集</title>
+<style>
+:root{
+  --bg:#fdf6ec; --card:#fffaf2; --accent:#c0392b; --accent2:#e74c3c;
+  --text:#3d2f2f; --sub:#6b5555; --border:#e8d5c4; --gold:#b8860b;
+  --success:#27ae60; --warn:#e67e22; --light:#faf3e6;
+  --shadow:0 2px 12px rgba(60,30,30,.07); --radius:10px;
+  font-size:clamp(14px,1.6vw,16px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.7}
+.container{max-width:960px;margin:0 auto;padding:12px 16px}
+
+/* Header */
+.header{text-align:center;padding:28px 16px 16px}
+.header h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);margin-bottom:6px}
+.header .sub{color:var(--sub);font-size:.9rem}
+.header .back-link{display:inline-block;margin-top:8px;font-size:.82rem;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 14px;border-radius:20px;transition:all .2s}
+.header .back-link:hover{background:var(--accent);color:#fff}
+
+/* Tabs */
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px 0;background:var(--bg);border-bottom:2px solid var(--border);margin-bottom:16px}
+.tab-btn{flex:0 0 auto;padding:6px 12px;border:1px solid var(--border);border-radius:18px;background:var(--card);color:var(--text);cursor:pointer;font-size:.82rem;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{background:var(--light);border-color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none;animation:fadeIn .35s}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;border-left:3px solid var(--accent)}
+.card h3{color:var(--accent);margin-bottom:8px;font-size:1.05rem}
+.card .meta{color:var(--sub);font-size:.82rem}
+
+/* Grid */
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+
+/* Progress */
+.progress-wrap{margin:14px 0}
+.progress-label{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px;color:var(--sub)}
+.progress-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:5px;transition:width .5s}
+
+/* Concept cards */
+.concept-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;text-align:center;transition:transform .2s;cursor:default}
+.concept-card:hover{transform:translateY(-3px)}
+.concept-card .icon{font-size:1.8rem;margin-bottom:6px}
+.concept-card h4{color:var(--accent);font-size:.95rem;margin-bottom:4px}
+.concept-card p{color:var(--sub);font-size:.8rem}
+.concept-card.star{border:2px solid var(--gold);background:linear-gradient(135deg,#fffaf2,#fff8e7)}
+
+/* Badge */
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.badge-star{background:#fff3cd;color:var(--gold)}
+.badge-done{background:#d4edda;color:var(--success)}
+.badge-pending{background:#f8d7da;color:var(--accent)}
+
+/* SVG */
+.svg-wrap{overflow-x:auto;margin:14px 0;padding:10px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.svg-wrap svg{display:block;min-width:700px;margin:0 auto}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px;font-size:.78rem;color:var(--sub)}
+
+/* Flip card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Quiz */
+.quiz-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
+.quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+.quiz-card .q-text{font-size:.95rem;margin-bottom:12px}
+.quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem}
+.quiz-card .option:hover{background:var(--light);border-color:var(--accent)}
+.quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+.quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+.quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+.quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem}
+.quiz-card .feedback.correct{background:#d4edda;color:#155724}
+.quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+.quiz-timer{text-align:center;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:8px}
+.essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--light)}
+.btn{display:inline-block;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:.88rem;transition:all .2s}
+.btn:hover{background:var(--accent2)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+
+/* Tree */
+.tree{font-size:.9rem}
+.tree-node{margin:2px 0}
+.tree-toggle{cursor:pointer;user-select:none;color:var(--accent);font-weight:600}
+.tree-toggle::before{content:'▸ ';display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none;margin-left:20px;border-left:1px dashed var(--border);padding-left:12px}
+.tree-children.open{display:block}
+.tree-leaf{color:var(--sub);padding:2px 0}
+
+/* Socratic */
+.soc-item{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.soc-q{padding:12px 16px;background:var(--light);cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.soc-q:hover{background:#f5e6d3}
+.soc-q::after{content:'+';font-size:1.2rem;color:var(--accent);transition:transform .2s}
+.soc-q.open::after{content:'−'}
+.soc-a{display:none;padding:12px 16px;background:var(--card);font-size:.88rem;color:var(--sub);line-height:1.7}
+.soc-a.open{display:block}
+
+/* Case */
+.case-block{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:12px}
+.case-block h4{color:var(--accent);margin-bottom:8px}
+
+/* Decision sim */
+.sim-scenario{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
+.sim-scenario h4{color:var(--accent);margin-bottom:8px}
+.sim-choice{display:block;width:100%;text-align:left;padding:10px 16px;margin:4px 0;border:1px solid var(--border);border-radius:8px;background:var(--light);cursor:pointer;transition:all .2s;font-size:.88rem}
+.sim-choice:hover{background:#ffe8e4;border-color:var(--accent)}
+.sim-choice.chosen{border-color:var(--accent);background:#ffe8e4}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.stat-item{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;text-align:center}
+.stat-item .num{font-size:1.8rem;font-weight:700;color:var(--accent)}
+.stat-item .lbl{font-size:.78rem;color:var(--sub)}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+.data-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+.data-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.data-table tr:nth-child(even){background:var(--light)}
+
+/* Responsive */
+@media(max-width:600px){
+  .tab-bar{gap:2px}
+  .tab-btn{padding:5px 8px;font-size:.72rem}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .flip-wrap{max-width:100%}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Star accent */
+.mks-star{color:var(--gold);font-size:.9rem}
+
+/* Path steps */
+.path-step{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;padding:12px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.path-num{flex:0 0 36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
+.path-info h4{margin-bottom:2px;font-size:.92rem}
+.path-info p{font-size:.8rem;color:var(--sub)}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Header -->
+<header class="header">
+<h1>🏛️ 职场与人生智慧</h1>
+<p class="sub">吴军·硅谷来信第一季 · 56篇笔记提炼 · 最小知识集</p>
+<div class="back-home"><a href="index.html" title="返回知识主板">← 返回知识主板</a></div>
+
+</header>
+
+<!-- Tab Bar -->
+<nav class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="0">📊 总览</button>
+<button class="tab-btn" data-tab="1">🃏 知识卡片</button>
+<button class="tab-btn" data-tab="2">📝 题库</button>
+<button class="tab-btn" data-tab="3">⏱️ 考试</button>
+<button class="tab-btn" data-tab="4">🔄 复习</button>
+<button class="tab-btn" data-tab="5">🧭 思维导图</button>
+<button class="tab-btn" data-tab="6">💬 深度追问</button>
+<button class="tab-btn" data-tab="7">🔍 案例分析</button>
+<button class="tab-btn" data-tab="8">🎲 实战决策</button>
+</nav>
+
+<!-- ========== TAB 0: 知识集总览 ========== -->
+<div class="tab-content active" data-tab="0">
+
+<!-- 核心目标 -->
+<div class="card">
+<h3>🎯 核心目标</h3>
+<p>在职场和人生中找到自己的位置——沟通、择业、幸福、命运，活得更明白。通过<b>自我认知</b>和<b>环境理解</b>双轮驱动，在复杂世界中做出明智选择。</p>
+</div>
+
+<!-- 学习进度 -->
+<div class="progress-wrap">
+<div class="progress-label"><span>📖 学习进度</span><span id="progressPct">0%</span></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<!-- 10个核心概念 -->
+<h3 style="margin:16px 0 10px">🔑 核心概念（10个）</h3>
+<div class="grid2" id="conceptGrid">
+</div>
+
+<!-- ★ MKS核心 -->
+<h3 style="margin:16px 0 10px">⭐ 最小知识集核心（4个必须深刻理解）</h3>
+<div class="grid2" id="mksGrid">
+</div>
+
+<!-- SVG概念关系图 -->
+<h3 style="margin:16px 0 10px">🕸️ 概念关系图</h3>
+<div class="svg-wrap" id="svgContainer"></div>
+
+<!-- 边界知识表 -->
+<h3 style="margin:16px 0 10px">📋 边界知识（只需知道存在）</h3>
+<div class="card" style="overflow-x:auto">
+<table class="data-table" id="boundaryTable"></table>
+</div>
+
+<!-- 学习路径 -->
+<h3 style="margin:16px 0 10px">🗺️ 学习路径（5阶段）</h3>
+<div id="learningPath"></div>
+
+</div>
+
+<!-- ========== TAB 1: 知识卡片 ========== -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- ========== TAB 2: 题库系统 ========== -->
+<div class="tab-content" data-tab="2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--sub)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+</div>
+
+<!-- ========== TAB 3: 考试模式 ========== -->
+<div class="tab-content" data-tab="3">
+<h3 style="margin-bottom:10px">⏱️ 考试模式</h3>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:12px">从题库随机抽取 7道选择题 + 3道简答题，限时15分钟</p>
+<button class="btn" id="startExamBtn" onclick="startExam()">🎯 开始考试</button>
+<div class="quiz-timer" id="examTimer" style="display:none"></div>
+<div id="examContainer"></div>
+</div>
+
+<!-- ========== TAB 4: 复习模式 ========== -->
+<div class="tab-content" data-tab="4">
+<h3 style="margin-bottom:10px">🔄 复习模式</h3>
+
+<h4 style="margin:12px 0 8px">📊 学习统计</h4>
+<div class="stat-grid" id="statGrid">
+  <div class="stat-item"><div class="num" id="statTotal">0</div><div class="lbl">总答题数</div></div>
+  <div class="stat-item"><div class="num" id="statCorrect">0</div><div class="lbl">正确数</div></div>
+  <div class="stat-item"><div class="num" id="statRate">0%</div><div class="lbl">正确率</div></div>
+  <div class="stat-item"><div class="num" id="statDays">0</div><div class="lbl">学习天数</div></div>
+</div>
+
+<h4 style="margin:12px 0 8px">📕 错题本</h4>
+<div id="wrongBook" style="max-height:400px;overflow-y:auto">
+  <p style="color:var(--sub);font-size:.85rem">暂无错题记录</p>
+</div>
+
+<h4 style="margin:12px 0 8px">🎯 概念薄弱点分析</h4>
+<div id="weakAnalysis">
+  <p style="color:var(--sub);font-size:.85rem">暂无答题数据</p>
+</div>
+</div>
+
+<!-- ========== TAB 5: 思维导图 ========== -->
+<div class="tab-content" data-tab="5">
+<h3 style="margin-bottom:10px">🧭 思维导图</h3>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px">可折叠/展开的层级结构，覆盖核心概念与发展脉络</p>
+<div class="tree" id="mindmap"></div>
+</div>
+
+<!-- ========== TAB 6: 苏格拉底问答 ========== -->
+<div class="tab-content" data-tab="6">
+<h3 style="margin-bottom:10px">💬 苏格拉底深度追问</h3>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px">对每个核心概念 2-3 层追问，点击展开答案</p>
+<div id="socraticContainer"></div>
+</div>
+
+<!-- ========== TAB 7: 案例分析 ========== -->
+<div class="tab-content" data-tab="7">
+<h3 style="margin-bottom:10px">🔍 案例分析：曼哈顿计划</h3>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px">用MKS四维度拆解"好老板"的真实案例</p>
+<div id="caseStudy"></div>
+</div>
+
+<!-- ========== TAB 8: 实战决策 ========== -->
+<div class="tab-content" data-tab="8">
+<h3 style="margin-bottom:10px">🎲 实战决策模拟</h3>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px">3轮决策模拟，每轮3选项 + 反馈 + MKS分析</p>
+<div id="simContainer"></div>
+</div>
+
+</div><!-- container -->
+
+<script>
+// ========== DATA ==========
+
+// Core concepts (10)
+const concepts = [
+  {id:'c1',name:'沟通智慧',icon:'🗣️',desc:'好消息当面早说，坏消息延迟合说；面对面沟通不可替代；PageRank原理提升个人影响力',star:true},
+  {id:'c2',name:'职业发展',icon:'📈',desc:'五级工程师体系；职业≠工作；第一份工作重成长不重薪资；"第二条腿"隐性能力',star:true},
+  {id:'c3',name:'幸福与选择',icon:'😊',desc:'好消息拆分、坏消息合并；先坏后好的顺序原则；向死而生的生命视角',star:false},
+  {id:'c4',name:'主动性与命运',icon:'🚀',desc:'上帝垂青主动的人；成功是小概率事件；不要过分算概率；成长就是克制心中的孙悟空',star:true},
+  {id:'c5',name:'职场生存',icon:'🛡️',desc:'识别五类高危人群；远离势利小人；理解腐食者作用；不做伪工作者',star:false},
+  {id:'c6',name:'识人用人',icon:'👁️',desc:'好老板三能力（视野/识人/担当）；能吏塔列朗；三种好公司利益导向',star:false},
+  {id:'c7',name:'自我成长',icon:'🌱',desc:'10000小时定律；朗道等级体系；打破规则做重塑者；引擎与刹车的平衡',star:false},
+  {id:'c8',name:'人生智慧',icon:'🧘',desc:'比穷更可怕的是缺见识/缺爱/缺规矩；不要那么匆忙；朴素是富豪的专利',star:true},
+  {id:'c9',name:'思维方式',icon:'🧠',desc:'阿希实验与从众心理；证伪优于证实；"狗的会计问题"规则陷阱；成本思维',star:false},
+  {id:'c10',name:'财富观念',icon:'💎',desc:'捐赠文化是财富境界；得体形象管理；便宜眼泪的代价；效果重于形式',star:false}
+];
+
+// Concept card details for flip mode
+const conceptDetails = [
+  {
+    name:'沟通智慧',
+    define:'基于信息论和人类进化心理学的有效信息传递策略：好消息当面早说、坏消息延迟一次性说、面对面沟通不可替代、PageRank式权威权重积累。',
+    analog:'如同商业谈判：关键条款面对面敲定（非邮件来回），先抛出对自己有利的条件（好消息），再集中披露风险项（坏消息合并），建立行业口碑吸引更多合作方（权威权重）。',
+    example:'Google前工程主管阿兰·尤斯塔斯亲自为工程师更换LCD显示器建立亲民形象；IBM并购莲花公司泄密事件中口头传播的速度远超正式媒体。',
+    counter:'在微信上争论敏感话题、用邮件通知解雇消息、试图通过群发邮件说服所有人——忽略沟通媒介与消息性质的匹配。'
+  },
+  {
+    name:'职业发展',
+    define:'基于朗道等级体系的五级工程师职业框架：五级独立完成任务、四级带领团队、三级设计盈利产品、二级创造不可替代产品、一级开创产业。核心是职业（长期积累）非工作（短期交易）。',
+    analog:'如同投资组合管理：第一份工作选择如同早期投资——不应追求短期分红（高薪），而应选择能带来复利效应的成长平台（Google/微软的工程训练），十年后回报可达同龄人3-5倍。',
+    example:'约翰·霍普金斯大学米勒教授通过跨实验室合作（第二条腿）提升影响力；林巧稚因对患者的关怀态度被协和破格录取。',
+    counter:'把"专业"当"特长"——中国数学专业学生成为数学家不足1%；因雅虎多给20%薪资放弃Google，3年后职级落后同学一级。'
+  },
+  {
+    name:'幸福与选择',
+    define:'幸福是可以通过信息传递策略主动管理的心理状态：好消息拆分释放多次愉悦、坏消息合并缩短痛苦周期、好坏并存时先坏后好、短期牺牲换长期舒适（如小房子换短通勤）。',
+    analog:'如同企业收益分配：10%工资涨幅+10%年终奖带来双重满足感（好消拆拆分），而20%一次涨薪的单次幸福感更低。又如财务坏账一次性计提（坏消息合并），比分季度计提对股价冲击更小。',
+    example:'辞退员工时直接通知而非提前暗示——缩短痛苦周期；北京CBD小房子（通勤短）优于大兴大房子（每日3小时通勤痛苦）。',
+    counter:'癌症病人提前一年得知病情后长期恐惧、孩子提前一周到美国适应却因倒计时焦虑无法参加夏令营——坏消息早说的经典反例。'
+  },
+  {
+    name:'主动性与命运',
+    define:'"上帝垂青主动的人"——机会不是等来的。成功本质是小概率事件的叠加，顶尖5%的人兴趣驱动不在乎失败概率，而多数人因过度算计概率而错失行动窗口。',
+    analog:'如同风险投资：VC不会因为单个项目成功率<10%就拒绝投资——他们理解一个百倍回报项目足以覆盖99个失败。个人职业决策同理：关键机会（如加入Google）的成功概率极低但回报极高。',
+    example:'阿里巴巴在8848等先驱失败后，主动解决支付（支付宝）、信用（评价体系）、物流三大基础设施问题而成功；史蒂芬森从矿工文盲逆袭为"火车之父"。',
+    counter:'硅谷工程师为"作家梦"放弃15年工作积累却6次投稿被拒——兴趣驱动的代价是不考虑大环境的可行性。'
+  },
+  {
+    name:'职场生存',
+    define:'理解组织新陈代谢规律：腐食者（淘汰机制）是组织健康的必要条件；识别五种易被淘汰人群（预设淘汰对象、关系户、职级失衡者、非核心事务者、未证明价值的新人）。',
+    analog:'如同企业财务风控：定期审视自己的"资产负债表"——你的技能是否属于核心业务（核心资产），你的岗位是否仅为满足末位淘汰指标而设（不良资产），你的关系网络是否有实质支持（流动性储备）。',
+    example:'做空机构如浑水公司通过揭露财务造假发挥市场净化作用（腐食者的正面价值）；Google/Facebook以"产生多大效果"而非"多忙"评价员工。',
+    counter:'雅虎员工在梅耶尔高压下"认真上班"频繁改版却不增加功能——典型的伪工作；楚国两次因小人（费无忌、李园）亡国。'
+  },
+  {
+    name:'识人用人',
+    define:'好老板的二维模型：业务主管（如奥本海默）需跨学科知识、信念驱动、深入细节；人事主管（如格罗夫斯）需视野开阔、识人有术、敢于担当。能吏（能力强者）应与核心成员区别管理，通过利益绑定而非道德评判。',
+    analog:'如同足球队管理：教练（业务主管）需了解每个位置的战术细节，总经理（人事主管）负责转会谈判和资源保障。球星（能吏）即使性格有争议，只要能为球队带来胜利就值得签下，但需合同条款（利益绑定）约束。',
+    example:'格罗夫斯力排众议选定有"共产主义倾向"的奥本海默为技术负责人，并从财政部协调14700吨白银解决线圈材料短缺；塔列朗通过维也纳会议利用列强矛盾保住了战败法国的大国地位。',
+    counter:'春申君养士三千却被门客李园灭门——"当断不断，反受其乱"；亚洲企业因"任人唯亲"淘汰能吏导致短寿。'
+  },
+  {
+    name:'自我成长',
+    define:'10000小时定律需要"三板斧破四困境"：正确的方法论（非简单重复）、及时反馈、持续专注。朗道等级每级能力差10倍。成长需要"引擎"（进取）和"刹车"（知止）的平衡。',
+    analog:'如同企业研发投入：爱迪生发明电灯不是靠一次灵感而是千次实验（10000小时），其中每次失败（刹车反馈）帮助排除错误路径，最终找到正确方案。段永平的"不做清单"如同产品的需求裁剪——决定不做什么比做什么更重要。',
+    example:'作者从"全中国都会"的生意转向"全球仅两巴掌数得过来"的语音识别领域；丁肇中教授专注于万分之几成功率的粲夸克实验获得诺贝尔奖。',
+    counter:'30多岁改行学编程"为改变而改变"——近万小时刻意练习的时间成本被忽略；奥巴马政府"引擎过强缺乏刹车"导致全民健保等政策失败。'
+  },
+  {
+    name:'人生智慧',
+    define:'比穷更可怕的是缺乏见识、缺乏爱、缺乏规矩。人生短暂，唯一能把握的只有今天。"向死而生"——以剩余生命倒推法规划优先级，拒绝伪工作者式的无效忙碌。',
+    analog:'如同企业战略规划：用"终局思维"倒推——假设公司只剩3年寿命，哪些业务值得全力以赴？哪些日常琐事可以果断放弃？见识=市场洞察力，爱=企业文化，规矩=合规体系，缺一不可。',
+    example:'作者经历金融危机一天财富损失20%仍能安睡——"活着就有希望"；从腾讯/Google离开是因为生命清单上有更重要的事。',
+    counter:'八旬老太向飞机发动机撒钱祈福（缺乏规矩）、得势后心肠冷漠的祁同伟（缺乏爱）、坚信"小时穷一辈子穷"的宿命论者（缺乏见识）。'
+  },
+  {
+    name:'思维方式',
+    define:'独立思考的四大工具：阿希实验（警惕从众）、证伪思维（科学精神）、成本思维（机会成本评估）、规则审视（"狗的会计问题"——不被既有规则束缚）。',
+    analog:'如同投资决策：2010年美国股市闪电崩盘中宝洁瞬间暴跌37%无任何负面新闻——从众心理导致"先行动后思考"。理性投资者应在此时利用"未来回望法"（6个月后看今天，会发现恐慌毫无逻辑支撑），果断买入而非跟风抛售。',
+    example:'Google/雅虎恪守版权规则时YouTube无视规则以免费模式获1亿用户（规则重塑者）；福岛核事故时的抢盐潮——代入6个月后视角会发现其荒谬性。',
+    counter:'粮油公司因"藏獒入账科目争议"放弃更高效的安保方案——典型的"狗的会计问题"；"李双江儿子事件导致ST天一跌停"——毫无逻辑关联。'
+  },
+  {
+    name:'财富观念',
+    define:'真正财富境界的标尺不是豪车名表而是社会贡献（捐赠）。"朴素是富豪的专利"——已被认可的精英可超越外在评价体系。职业早期需通过得体形象建立信任，后期随地位提升可逐步简化。',
+    analog:'如同企业品牌建设：初创公司需要精心包装（得体形象）获取第一桶金，成熟后的Google/苹果可以"简约"（朴素特权）——因为产品本身已是品牌背书。捐赠=企业的ESG投入，长期提升社会信任资本。',
+    example:'洛克菲勒未发财时即捐赠收入5%；布隆伯格向约翰·霍普金斯大学累计捐助7亿美元；1945年国军因军容不整接收台湾导致民众失望，新六军全副美式装备接收南京则重塑国家自豪感。',
+    counter:'白宫菜园耗费250万美元基金（年回报够两个中等农庄收入），本质是"便宜眼泪"的政治表演——收益远小于投入的"好心办坏事"。'
+  }
+];
+
+// Boundary knowledge (15 items)
+const boundary = [
+  {name:'FOXP2基因与语言能力',scene:'理解人类沟通能力的生物学基础，在跨学科交流中展现知识广度'},
+  {name:'交直流输电技术史',scene:'理解技术发展螺旋上升的规律，在判断新兴技术时避免绝对化'},
+  {name:'美国选举人团制度',scene:'理解利益集团政治的运作逻辑，在国际商务谈判中把握多方利益'},
+  {name:'伯尔叛国案判例',scene:'理解"民利优先于民意"的法治原则，在组织决策中平衡公平与利益'},
+  {name:'迪亚兹诉泛美航空案',scene:'理解"善意职业资格"的法律边界，在招聘和人力资源管理中合规操作'},
+  {name:'美国空乘行业变迁',scene:'理解工会与女权运动对社会职业结构的影响，作为组织变革的参照'},
+  {name:'嬉皮士运动与硅谷精神',scene:'理解颠覆式创新的文化根源，在创新管理中识别"建设性叛逆者"'},
+  {name:'Google Calico抗衰老项目',scene:'理解科技巨头的前沿布局逻辑，在战略规划中区分"探索型"与"落地型"项目'},
+  {name:'人类基因组计划',scene:'理解大规模科研协作模式，在大型项目管理中参考其分阶段推进策略'},
+  {name:'荷兰联省共和国制度',scene:'理解"地方自治+上层刹车"的社会结构原型，在组织设计中平衡集权与分权'},
+  {name:'OKR目标管理方法',scene:'理解Google的目标管理工具，在团队管理中应用公开透明+挑战性目标设定'},
+  {name:'消耗跟踪曲线',scene:'将任务量化为百分比并追踪实际vs计划进度的项目管理工具'},
+  {name:'1930年代美国孤立主义',scene:'理解美国外交政策的历史摇摆，在国际商务中预测政策周期性变化'},
+  {name:'IBM从硬件到服务的转型',scene:'理解百年企业的战略重塑逻辑，作为企业生命周期管理的参考案例'},
+  {name:'《娱乐至死》核心观点',scene:'理解信息时代注意力经济的底层逻辑，在产品设计中警惕"娱乐化陷阱"'}
+];
+
+// Learning path (5 stages)
+const learningPath = [
+  {step:1,title:'建立认知框架',desc:'先学「沟通智慧」和「人生智慧」——这是所有其他概念的底层操作系统，直接影响你如何接收和处理后续所有信息。'},
+  {step:2,title:'理解职业发展',desc:'学习「职业发展」和「自我成长」——建立朗道等级体系和10000小时定律的框架，明确自己当前的位置和下一级目标。'},
+  {step:3,title:'掌握职场生存',desc:'学习「职场生存」和「识人用人」——理解组织的淘汰机制、小人的识别方法、好老板的标准，减少不必要的职业损耗。'},
+  {step:4,title:'提升思维层次',desc:'学习「思维方式」和「财富观念」——培养独立思考能力、成本思维、从众警惕，建立超越物质的财富境界。'},
+  {step:5,title:'整合行动',desc:'学习「幸福与选择」和「主动性与命运」——将前述所有知识转化为行动：主动出击、概率思维、幸福管理，完成从"知道"到"做到"的跨越。'}
+];
+
+// Quiz data: 20 choice questions. Correct answer index evenly distributed (each 0-3 appears 5 times)
+const quizData = [
+  // === ans=0: 5 questions ===
+  {type:'choice',q:'阿希实验的核心结论是什么？',opts:['社会压力导致个体丧失独立判断','匿名环境下人们不再从众','多数人的意见总是正确的','个体在独处时判断最准确'],ans:0,explain:'1952年阿希实验发现三分之一被试屈从于群体错误答案，多伊奇-杰拉德实验证明从众根源是内心被"洗脑"而非怕被视为异类。'},
+  {type:'choice',q:'吴军认为，"成长的过程"本质是什么？',opts:['否认掉心中的"孙悟空"','积累越来越多的知识','学会服从社会规则','建立稳定的人际关系网'],ans:0,explain:'成长即逐渐"杀死"心目中无所不能的幻想，具有跨文化普遍性（美国青少年通过抛售超级英雄玩具完成心理告别）。'},
+  {type:'choice',q:'吴军面试技巧的核心第一步是什么？',opts:['用自己的语言复述问题确认理解','展示过去的工作成就','直接给出最优解决方案','询问面试官对公司的看法'],ans:0,explain:'约25%面试者因未听懂问题就回答而失败。复述问题确认理解——即使最终未答出也能证明双方可在同一水平交流。'},
+  {type:'choice',q:'五级工程师体系中，"能独立解决问题，完成工程工作"是哪一级？',opts:['第五级','第三级','第四级','第一级'],ans:0,explain:'第五级是基础层。京东工程师独立开发"情侣购书数据分析工具"即第五级。每升一级能力差距为数量级（10倍）。'},
+  {type:'choice',q:'关于"职业员工 vs 管理者"的核心问题，吴军认为？',opts:['员工要抬起头看全局，管理者要弯下腰看细节','员工应专注技术，管理者应专注战略','两者都需要MBA学历','员工和管理者的能力要求完全相同'],ans:0,explain:'职业员工易"只见色块不见全局"，管理者易"只见森林不见树木"，双方需向对方维度延伸，形成互补。'},
+
+  // === ans=1: 5 questions ===
+  {type:'choice',q:'吴军认为第一份工作最应该看重什么？',opts:['工资水平','成长空间和职业习惯养成','工作轻松程度','公司的品牌知名度'],ans:1,explain:'"几乎没有人靠第一份工作的工资发财"。应关注快速成长机会、良好职业习惯和全行业视野（十年后收入达同龄人3-5倍）。'},
+  {type:'choice',q:'格罗夫斯在曼哈顿计划中展现了哪项核心能力？',opts:['亲自指导每位科学家的实验','以超低价从比利时商人处购得关键铀矿石','发明了原子弹的理论框架','说服德国科学家加入美国团队'],ans:1,explain:'格罗夫斯在计划初期即预见到铀矿石的重要性，以400万美元超低价购得，展现"视野开阔、眼光长远"的人事主管能力。'},
+  {type:'choice',q:'吴军提出的"幸福四大原则"不包括哪项？',opts:['好消息早说，坏消息晚说','好坏并存时，先好后坏','多个好消息分说，多个坏消息合说','拆分好消息，合并坏消息'],ans:1,explain:'好坏并存时应"先坏后好"，用后续好消息缓解坏消息冲击，符合"Bad news first"原则。先好后坏会降低最终体验。'},
+  {type:'choice',q:'以下哪项不属于"比穷更可怕"的三大核心缺陷？',opts:['缺乏见识','缺乏人脉','缺乏爱','缺乏规矩'],ans:1,explain:'吴军明确指出三大缺陷是缺乏见识、缺乏爱、缺乏规矩。金钱可通过一生努力获得，这三样素质后天培养难度极大。'},
+  {type:'choice',q:'根据PageRank算法原理，提升个人意见影响力的最佳策略是？',opts:['尽可能多地发表观点','争取权威人士的认可和背书','在所有社交平台上保持活跃','避免与任何人产生意见冲突'],ans:1,explain:'赫胥黎为达尔文进化论背书、脱不花确认罗胖身份——权威人士的一票权重远高于普通大众的多数票。'},
+
+  // === ans=2: 5 questions ===
+  {type:'choice',q:'吴军认为传递坏消息的最优策略是什么？',opts:['提前暗示，给予心理准备','委婉告知，表达歉意','直接通知，缩短痛苦周期','先发邮件预警，再当面沟通'],ans:2,explain:'直接通知策略让痛苦周期最短。研究表明坏消息应"晚通知"，避免提前告知导致长期煎熬（如癌症病人心理研究所示）。'},
+  {type:'choice',q:'"狗的会计问题"隐喻了什么？',opts:['财务人员专业能力不足','创业公司缺乏专业财务管理','组织因既有规则拒绝更优方案','大型企业必须遵守会计准则'],ans:2,explain:'粮油公司因"藏獒入账科目争议"放弃高效安保方案，揭示了组织在既有规则下放弃更优解的普遍现象。'},
+  {type:'choice',q:'关于"创业与择业"，吴军的核心观点是？',opts:['大学生应优先选择创业','只要有激情就应该创业','创业与择业本质一致，需基于四大因素理性选择','择业应先于创业至少5年'],ans:2,explain:'创业与择业都需基于大环境、兴趣动态性、长期特长发展和成功经验积累。不鼓励大学生退学创业（适合比例<万分之一）。'},
+  {type:'choice',q:'"引擎与刹车"理论中，"刹车"代表什么？',opts:['政府监管和法律制度','经济衰退和市场调整','经验者的风险提示和自我约束','竞争对手的制衡'],ans:2,explain:'刹车=约束与智慧。巴菲特和段永平的"不做清单"、贾里尼克告诉学生"什么不管用"都是刹车的典型实践。'},
+  {type:'choice',q:'关于"先就业还是先择业"，吴军的差异化建议是？',opts:['所有人都应先就业后择业','所有人都应先择业后就业','富裕家庭先择业后就业，中产家庭先就业后择业','中产家庭先择业后就业，富裕家庭先就业后择业'],ans:2,explain:'富裕家庭有经济缓冲可花1年增加见识再决定方向；中产家庭需先经济独立，通过工作实践发现自身真正的兴趣和能力。'},
+
+  // === ans=3: 5 questions ===
+  {type:'choice',q:'"腐食者"在社会中的核心作用是什么？',opts:['加速社会资源消耗','制造市场恐慌获利','维持社会阶层固化','淘汰落后组织，释放资源给健康个体'],ans:3,explain:'如同秃鹫清理动物尸体维持生态平衡，社会腐食者（做空机构、竞争淘汰）通过新陈代谢机制促进资源优化配置。'},
+  {type:'choice',q:'做空机构（如浑水公司）被吴军比作什么？',opts:['金融市场的掠食者','创新的催化剂','经济的破坏者','社会的腐食者——市场清道夫'],ans:3,explain:'如同自然界秃鹫不攻击健康个体，做空机构通过揭露财务造假净化市场。中美对做空机制的不同监管态度导致市场透明度差异。'},
+  {type:'choice',q:'吴军认为避免从众错误的关键策略不包括？',opts:['凡事先动脑，后动手','与大众不同时寻求客观验证','检查决策的内在逻辑自洽性','跟随大多数专业人士的判断'],ans:3,explain:'即使是专业人士（如基金经理）也会受从众心理影响。应使用"未来回望法"将决策置于未来视角审视合理性。'},
+  {type:'choice',q:'"朴素是富豪的专利"意味着什么？',opts:['所有人都应追求朴素穿着','富豪天生品味低调','穿着越朴素越容易成功','非精英阶层更需通过得体形象获取机会'],ans:3,explain:'精英因成就已被认可可超越外在评价体系。普通人若自恃有内涵而忽视外表，多数会在交往中丢失机会。职业早期得体形象是必要投资。'},
+  {type:'choice',q:'丁肇中教授对实验成功概率的态度是什么？',opts:['成功率低于50%不应启动','只做成功率超过90%的实验','不关心概率，全凭直觉','1%的成功率在实验领域已是"极高"'],ans:3,explain:'丁肇中认为关键不是量化概率大小，而是区分"毫无希望"与"存在希望"。粲夸克发现实验成功率仅万分之几却获得诺贝尔奖。'}
+];
+
+// Essay questions (10)
+const essayData = [
+  {q:'请用自己的语言解释"好消息拆分、坏消息合并"原则，并举一个工作场景中的例子。',ref:'幸福与选择'},
+  {q:'结合五级工程师体系，评估你当前所处的等级，并说明提升到下一级需要培养哪项"第二条腿"能力。',ref:'职业发展'},
+  {q:'举一个你亲身经历的"阿希实验式从众"场景，分析当时为什么没有独立判断。',ref:'思维方式'},
+  {q:'如果你是一位团队管理者，请设计一个具体的方案来识别和防范团队中的"伪工作者"。',ref:'职场生存'},
+  {q:'用一个你熟悉的商业案例，说明"引擎与刹车"的平衡是如何体现的。',ref:'自我成长'},
+  {q:'在面试中如何运用"听懂问题-复述确认"的两步法？请结合具体面试场景描述。',ref:'沟通智慧'},
+  {q:'请分析你所在组织的利益导向（员工/顾客/投资人优先），并说明这对你个人职业策略的影响。',ref:'识人用人'},
+  {q:'"向死而生"的生命视角如何帮助你重新排列工作和生活的优先级？请列出具体调整。',ref:'人生智慧'},
+  {q:'如果你发现公司存在"狗的会计问题"式的规则束缚，你会如何推动变革？',ref:'思维方式'},
+  {q:'请设计一个30天的"上帝垂青主动的人"行动计划，包含至少3个具体的主动行动。',ref:'主动性与命运'}
+];
+
+// ========== STATE ==========
+const LS = {
+  get(k,d){try{const v=localStorage.getItem('wj_mks_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('wj_mks_'+k,JSON.stringify(v))}catch(e){}}
+};
+let state = {
+  learnedCards: LS.get('cards',[]),
+  wrongBook: LS.get('wrong',[]),
+  quizHistory: LS.get('history',[]),
+  studyDays: LS.get('days',0),
+  currentCard: 0,
+  quizMode: false,
+  examActive: false,
+  simRound: 0
+};
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded',()=>{
+  initTabs();
+  initDashboard();
+  initFlipCards();
+  initMindmap();
+  initSocratic();
+  initCaseStudy();
+  initSimulation();
+  updateReviewStats();
+  recordStudyDay();
+});
+
+function recordStudyDay(){
+  const today = new Date().toISOString().slice(0,10);
+  const last = LS.get('lastStudy','');
+  if(last !== today){
+    state.studyDays = LS.get('days',0)+1;
+    LS.set('days',state.studyDays);
+    LS.set('lastStudy',today);
+  }
+}
+
+// ========== TABS ==========
+function initTabs(){
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+      btn.classList.add('active');
+      const idx = btn.dataset.tab;
+      document.querySelector('[data-tab="'+idx+'"].tab-content').classList.add('active');
+      if(idx==='4') updateReviewStats();
+    });
+  });
+}
+
+// ========== TAB 0: DASHBOARD ==========
+function initDashboard(){
+  // Concept grid
+  const grid = document.getElementById('conceptGrid');
+  concepts.forEach(c=>{
+    const cls = c.star ? 'concept-card star' : 'concept-card';
+    grid.innerHTML += `<div class="${cls}"><div class="icon">${c.icon}</div><h4>${c.name}</h4><p>${c.desc}</p>${c.star?'<span class="badge badge-star">★ MKS核心</span>':''}</div>`;
+  });
+
+  // MKS core grid
+  const mksGrid = document.getElementById('mksGrid');
+  concepts.filter(c=>c.star).forEach(c=>{
+    mksGrid.innerHTML += `<div class="concept-card star"><div class="icon">${c.icon}</div><h4>⭐ ${c.name}</h4><p>${c.desc}</p><p style="margin-top:4px;font-size:.75rem;color:var(--gold)">骨架中的骨架——理解了这个，其余概念自然串联</p></div>`;
+  });
+
+  // SVG diagram
+  document.getElementById('svgContainer').innerHTML = buildSVG();
+
+  // Boundary table
+  const bt = document.getElementById('boundaryTable');
+  bt.innerHTML = '<thead><tr><th>知识点</th><th>使用场景</th></tr></thead><tbody>'+boundary.map(b=>`<tr><td>${b.name}</td><td>${b.scene}</td></tr>`).join('')+'</tbody>';
+
+  // Learning path
+  const lp = document.getElementById('learningPath');
+  learningPath.forEach(s=>{
+    lp.innerHTML += `<div class="path-step"><div class="path-num">${s.step}</div><div class="path-info"><h4>${s.title}</h4><p>${s.desc}</p></div></div>`;
+  });
+
+  updateProgress();
+}
+
+function buildSVG(){
+  return `<svg viewBox="0 0 880 620" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/></filter>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
+  <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2471a3"/></marker>
+  <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1e8449"/></marker>
+</defs>
+
+<!-- Root node -->
+<rect x="330" y="15" width="220" height="52" rx="26" fill="#c0392b" filter="url(#shadow)"/>
+<text x="440" y="38" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">知己 · 知世 · 找到位置</text>
+<text x="440" y="55" text-anchor="middle" fill="#fdd" font-size="10">Finding Your Place</text>
+
+<!-- Branch lines from root -->
+<line x1="370" y1="67" x2="200" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="510" y1="67" x2="680" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+
+<!-- Level 1: 自我认知 -->
+<rect x="80" y="112" width="140" height="46" rx="10" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+<text x="150" y="132" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">内在世界</text>
+<text x="150" y="148" text-anchor="middle" fill="#6b5555" font-size="10">自我认知与成长</text>
+
+<!-- Level 1: 环境认知 -->
+<rect x="660" y="112" width="140" height="46" rx="10" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+<text x="730" y="132" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">外部世界</text>
+<text x="730" y="148" text-anchor="middle" fill="#6b5555" font-size="10">环境认知与适应</text>
+
+<!-- Sub branches from 自我认知 -->
+<line x1="120" y1="158" x2="70" y2="210" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<line x1="150" y1="158" x2="150" y2="210" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<line x1="180" y1="158" x2="230" y2="210" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+<!-- Sub branches from 环境认知 -->
+<line x1="700" y1="158" x2="650" y2="210" stroke="#1e8449" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+<line x1="730" y1="158" x2="730" y2="210" stroke="#1e8449" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+<line x1="760" y1="158" x2="810" y2="210" stroke="#1e8449" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+<!-- 自我认知 children -->
+<rect x="20" y="212" width="100" height="40" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1" filter="url(#shadow)"/>
+<text x="70" y="230" text-anchor="middle" fill="#2471a3" font-size="11" font-weight="bold">幸福与选择</text>
+<text x="70" y="244" text-anchor="middle" fill="#666" font-size="9">消息时机策略</text>
+
+<rect x="115" y="212" width="70" height="40" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1" filter="url(#shadow)"/>
+<text x="150" y="230" text-anchor="middle" fill="#2471a3" font-size="11" font-weight="bold">人生智慧</text>
+<text x="150" y="244" text-anchor="middle" fill="#666" font-size="9">向死而生</text>
+
+<rect x="205" y="212" width="90" height="40" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1" filter="url(#shadow)"/>
+<text x="250" y="230" text-anchor="middle" fill="#2471a3" font-size="11" font-weight="bold">主动性与命运</text>
+<text x="250" y="244" text-anchor="middle" fill="#666" font-size="9">上帝垂青主动者</text>
+
+<!-- 环境认知 children -->
+<rect x="595" y="212" width="100" height="40" rx="8" fill="#e8f8f0" stroke="#1e8449" stroke-width="1" filter="url(#shadow)"/>
+<text x="645" y="230" text-anchor="middle" fill="#1e8449" font-size="11" font-weight="bold">沟通智慧</text>
+<text x="645" y="244" text-anchor="middle" fill="#666" font-size="9">PageRank原则</text>
+
+<rect x="695" y="212" width="70" height="40" rx="8" fill="#e8f8f0" stroke="#1e8449" stroke-width="1" filter="url(#shadow)"/>
+<text x="730" y="230" text-anchor="middle" fill="#1e8449" font-size="11" font-weight="bold">职场生存</text>
+<text x="730" y="244" text-anchor="middle" fill="#666" font-size="9">防小人识高危</text>
+
+<rect x="770" y="212" width="90" height="40" rx="8" fill="#e8f8f0" stroke="#1e8449" stroke-width="1" filter="url(#shadow)"/>
+<text x="815" y="230" text-anchor="middle" fill="#1e8449" font-size="11" font-weight="bold">识人用人</text>
+<text x="815" y="244" text-anchor="middle" fill="#666" font-size="9">好老板三能力</text>
+
+<!-- Cross connections from children down -->
+<line x1="70" y1="252" x2="70" y2="310" stroke="#2471a3" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="150" y1="252" x2="150" y2="310" stroke="#2471a3" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="250" y1="252" x2="250" y2="310" stroke="#2471a3" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="645" y1="252" x2="645" y2="310" stroke="#1e8449" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="730" y1="252" x2="730" y2="310" stroke="#1e8449" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="815" y1="252" x2="815" y2="310" stroke="#1e8449" stroke-width="1" stroke-dasharray="4,2"/>
+
+<!-- Bottom layer: skills/abilities -->
+<rect x="15" y="312" width="100" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="65" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">自我成长</text>
+<text x="65" y="344" text-anchor="middle" fill="#999" font-size="8">10000h+五级体系</text>
+
+<rect x="115" y="312" width="80" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="155" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">思维方式</text>
+<text x="155" y="344" text-anchor="middle" fill="#999" font-size="8">独立思考工具</text>
+
+<rect x="210" y="312" width="110" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="265" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">财富观念</text>
+<text x="265" y="344" text-anchor="middle" fill="#999" font-size="8">捐赠+形象管理</text>
+
+<rect x="580" y="312" width="100" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="630" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">职业发展</text>
+<text x="630" y="344" text-anchor="middle" fill="#999" font-size="8">择业四大因素</text>
+
+<rect x="700" y="312" width="100" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="750" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">拒绝与边界</text>
+<text x="750" y="344" text-anchor="middle" fill="#999" font-size="8">四类请求策略</text>
+
+<!-- Bridge: self ↔ world interaction -->
+<line x1="300" y1="260" x2="580" y2="260" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6,3"/>
+<text x="440" y="280" text-anchor="middle" fill="#c0392b" font-size="10" font-style="italic">知行合一：内在认知驱动外在行动 ←→ 外在反馈校准内在认知</text>
+
+<!-- Arrows between bottom concepts -->
+<path d="M 320 332 L 575 332" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+<text x="440" y="370" text-anchor="middle" fill="#b8860b" font-size="9" font-style="italic">所有能力最终服务于"找到位置"这一核心目标</text>
+
+<!-- Legend -->
+<rect x="190" y="395" width="500" height="80" rx="8" fill="#faf7f0" stroke="#e8d5c4" stroke-width="1"/>
+<text x="440" y="415" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold">图例</text>
+<line x1="230" y1="430" x2="280" y2="430" stroke="#c0392b" stroke-width="2"/>
+<text x="285" y="434" fill="#3d2f2f" font-size="10">根→主干（核心命题）</text>
+<line x1="390" y1="430" x2="440" y2="430" stroke="#2471a3" stroke-width="1.5"/>
+<text x="445" y="434" fill="#3d2f2f" font-size="10">内在世界维度</text>
+<line x1="555" y1="430" x2="605" y2="430" stroke="#1e8449" stroke-width="1.5"/>
+<text x="610" y="434" fill="#3d2f2f" font-size="10">外部世界维度</text>
+<line x1="230" y1="452" x2="280" y2="452" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="285" y="456" fill="#3d2f2f" font-size="10">跨域能力层</text>
+<line x1="390" y1="452" x2="440" y2="452" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6,3"/>
+<text x="445" y="456" fill="#3d2f2f" font-size="10">知行互动桥梁</text>
+</svg>`;
+}
+
+function updateProgress(){
+  const total = concepts.length;
+  const learned = state.learnedCards.length;
+  const pct = total>0 ? Math.round(learned/total*100) : 0;
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+}
+
+// ========== TAB 1: FLIP CARDS ==========
+function initFlipCards(){
+  state.currentCard = LS.get('cardIdx',0);
+  renderFlipCard();
+}
+
+function renderFlipCard(){
+  const i = state.currentCard;
+  const c = conceptDetails[i];
+  const isLearned = state.learnedCards.includes(concepts[i].id);
+  document.getElementById('flipFront').innerHTML = `<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${concepts[i].icon} ${concepts[i].name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${isLearned?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML = `<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.define}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>${c.analog}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('cardIndex').textContent = `${i+1} / ${conceptDetails.length}`;
+  document.getElementById('cardProgress').style.width = `${Math.round(state.learnedCards.length/concepts.length*100)}%`;
+  document.getElementById('cardLearned').textContent = state.learnedCards.length;
+  const btn = document.getElementById('markLearnedBtn');
+  if(isLearned){ btn.textContent='✓ 已学习'; btn.classList.add('done'); }
+  else { btn.textContent='✓ 标记已学习'; btn.classList.remove('done'); }
+  document.getElementById('flipInner').classList.remove('flipped');
+}
+function flipCard(){
+  document.getElementById('flipInner').classList.toggle('flipped');
+}
+function prevCard(){
+  state.currentCard = (state.currentCard-1+conceptDetails.length)%conceptDetails.length;
+  LS.set('cardIdx',state.currentCard);
+  renderFlipCard();
+}
+
+function nextCard(){
+  state.currentCard = (state.currentCard+1)%conceptDetails.length;
+  LS.set('cardIdx',state.currentCard);
+  renderFlipCard();
+}
+
+function markLearned(){
+  const id = concepts[state.currentCard].id;
+  if(!state.learnedCards.includes(id)){
+    state.learnedCards.push(id);
+    LS.set('cards',state.learnedCards);
+  }else{
+    state.learnedCards = state.learnedCards.filter(x=>x!==id);
+    LS.set('cards',state.learnedCards);
+  }
+  updateProgress();
+  renderFlipCard();
+}
+
+// ========== TAB 2: QUIZ ==========
+let currentQuestions = [];
+let quizTimerInterval = null;
+let quizTimeLeft = 0;
+let userAnswers = {};
+
+function startQuiz(){
+  // Shuffle and pick 10 choice + 3 essay
+  const shuffled = [...quizData].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...essayData].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  state.quizMode = true;
+  quizTimeLeft = 900; // 15 min
+  document.getElementById('quizScore').textContent = '';
+  renderQuiz();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'block';
+  updateTimerDisplay(elemId);
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      if(state.examActive) submitExam();
+    }
+  },1000);
+}
+
+function updateTimerDisplay(elemId){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuiz(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    if(q.type==='choice'){
+      html += `<div class="quiz-card" id="qcard${i}">
+        <div class="q-num">选择题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>`;
+      q.opts.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        const dis = userAnswers[i]!==undefined ? 'disabled' : '';
+        html += `<div class="option${sel}" onclick="selectChoice(${i},${j})" id="opt${i}_${j}">${'ABCD'[j]}. ${o}</div>`;
+      });
+      html += `<div id="fb${i}"></div></div>`;
+    }else{
+      html += `<div class="quiz-card">
+        <div class="q-num">简答题 ${i+1} <span class="badge badge-star">${q.ref}</span></div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="essay-area" id="essay${i}" placeholder="输入你的回答...">${userAnswers[i]||''}</textarea>
+      </div>`;
+    }
+  });
+  html += '<button class="btn" onclick="submitQuiz()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const isCorrect = optIdx === q.ans;
+  // Highlight
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===q.ans?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  // Feedback
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
+  fb.textContent += ' '+q.explain;
+
+  // Record
+  const rec = {qIdx, correct: isCorrect, concept: concepts.find(c=>c.desc.includes(q.explain.slice(0,8)))?.name||''};
+  state.quizHistory.push(rec);
+  LS.set('history',state.quizHistory);
+  if(!isCorrect){
+    state.wrongBook.push({...q, userAns: optIdx, time: new Date().toISOString()});
+    LS.set('wrong',state.wrongBook);
+  }
+
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]?.type==='choice'&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.type==='choice').length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuiz(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]?.type==='choice'&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.type==='choice').length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案中的ref概念）');
+  clearInterval(quizTimerInterval);
+  state.quizMode = false;
+}
+
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+}
+
+// ========== TAB 3: EXAM ==========
+function startExam(){
+  state.examActive = true;
+  // 7 choice + 3 essay
+  const shuffled = [...quizData].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...essayData].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,7), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('examTimer').style.display = 'block';
+  document.getElementById('startExamBtn').style.display = 'none';
+  renderExam();
+  startQuizTimer('examTimer');
+}
+
+function renderExam(){
+  const container = document.getElementById('examContainer');
+  let html = '<h4 style="margin-bottom:10px">📋 7道选择题 + 3道简答题 · 限时15分钟</h4>';
+  currentQuestions.forEach((q,i)=>{
+    if(q.type==='choice'){
+      html += `<div class="quiz-card" id="ecard${i}">
+        <div class="q-num">选择题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>`;
+      q.opts.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += `<div class="option${sel}" onclick="selectExamChoice(${i},${j})" id="eopt${i}_${j}">${'ABCD'[j]}. ${o}</div>`;
+      });
+      html += `<div id="efb${i}"></div></div>`;
+    }else{
+      html += `<div class="quiz-card">
+        <div class="q-num">简答题 ${i+1} <span class="badge badge-star">${q.ref}</span></div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="essay-area" id="eessay${i}" placeholder="输入你的回答...">${userAnswers[i]||''}</textarea>
+      </div>`;
+    }
+  });
+  html += '<button class="btn" onclick="submitExam()">📩 提交试卷</button>';
+  container.innerHTML = html;
+}
+
+function selectExamChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const isCorrect = optIdx === q.ans;
+  const allOpts = document.querySelectorAll('#ecard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===q.ans?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('efb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' '+q.explain;
+  // Record wrong
+  if(!isCorrect){
+    state.wrongBook.push({...q, userAns: optIdx, time: new Date().toISOString()});
+    LS.set('wrong',state.wrongBook);
+  }
+  state.quizHistory.push({qIdx, correct: isCorrect});
+  LS.set('history',state.quizHistory);
+}
+
+function submitExam(){
+  clearInterval(quizTimerInterval);
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]?.type==='choice'&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.type==='choice').length;
+  const pct = totalChoice>0 ? Math.round(correctCount/totalChoice*100) : 0;
+  const weakConcepts = {};
+  state.wrongBook.forEach(w=>{if(w.concept){weakConcepts[w.concept]=(weakConcepts[w.concept]||0)+1;}});
+  const weakList = Object.entries(weakConcepts).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+'('+v+'题)').join('、')||'暂无';
+  document.getElementById('examContainer').innerHTML += `
+    <div class="card" style="margin-top:14px">
+      <h3>📊 考试结果</h3>
+      <p>选择题得分: <b>${correctCount}/${totalChoice}</b> (${pct}%)</p>
+      <p>简答题请自行对照参考答案评估</p>
+      <p>薄弱概念: ${weakList}</p>
+      <p style="font-size:.8rem;color:var(--sub);margin-top:6px">错题已自动收入错题本，可在"复习"标签查看</p>
+    </div>`;
+  document.getElementById('examTimer').style.display = 'none';
+  document.getElementById('startExamBtn').style.display = 'inline-block';
+  state.examActive = false;
+}
+
+// ========== TAB 4: REVIEW ==========
+function updateReviewStats(){
+  const history = LS.get('history',[]);
+  const total = history.length;
+  const correct = history.filter(h=>h.correct).length;
+  const rate = total>0 ? Math.round(correct/total*100) : 0;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statRate').textContent = rate+'%';
+  document.getElementById('statDays').textContent = LS.get('days',0);
+
+  // Wrong book
+  const wrong = LS.get('wrong',[]);
+  const wb = document.getElementById('wrongBook');
+  if(wrong.length===0){
+    wb.innerHTML = '<p style="color:var(--sub);font-size:.85rem">暂无错题记录 🎉</p>';
+  }else{
+    wb.innerHTML = wrong.map((w,i)=>{
+      const correctOpt = w.opts ? w.opts[w.ans] : '';
+      const userOpt = w.opts ? w.opts[w.userAns] : '';
+      return `<div class="quiz-card">
+        <div class="q-num">错题 ${i+1}</div>
+        <div class="q-text">${w.q}</div>
+        <p style="color:var(--accent);font-size:.85rem">你的答案: ${userOpt||'未选'}</p>
+        <p style="color:var(--success);font-size:.85rem">正确答案: ${correctOpt}</p>
+        <p style="font-size:.82rem;color:var(--sub)">${w.explain||''}</p>
+      </div>`;
+    }).join('');
+    wb.innerHTML += '<button class="btn btn-outline btn-sm" onclick="clearWrongBook()" style="margin-top:8px">清空错题本</button>';
+  }
+
+  // Weak analysis
+  const wa = document.getElementById('weakAnalysis');
+  const conceptErrors = {};
+  wrong.forEach(w=>{
+    // Try to match concept from question text
+    for(const c of concepts){
+      if(w.q.includes(c.name.slice(0,2)) || (w.explain||'').includes(c.name.slice(0,2))){
+        conceptErrors[c.name] = (conceptErrors[c.name]||0)+1;
+        break;
+      }
+    }
+  });
+  const sorted = Object.entries(conceptErrors).sort((a,b)=>b[1]-a[1]);
+  if(sorted.length===0){
+    wa.innerHTML = '<p style="color:var(--sub);font-size:.85rem">暂无答题数据，开始做题后自动分析</p>';
+  }else{
+    wa.innerHTML = '<div class="card"><ul style="padding-left:20px">'+sorted.map(([k,v])=>`<li><b>${k}</b>: ${v}道错题 ${v>=3?'⚠️ 重点关注':''}</li>`).join('')+'</ul></div>';
+  }
+}
+
+function clearWrongBook(){
+  if(confirm('确定清空所有错题记录？')){
+    LS.set('wrong',[]);
+    state.wrongBook = [];
+    updateReviewStats();
+  }
+}
+
+// ========== TAB 5: MINDMAP ==========
+function initMindmap(){
+  document.getElementById('mindmap').innerHTML = buildTree();
+  // Add click handlers
+  document.querySelectorAll('.tree-toggle').forEach(el=>{
+    el.addEventListener('click',function(){
+      this.classList.toggle('open');
+      this.nextElementSibling.classList.toggle('open');
+    });
+  });
+}
+
+function buildTree(){
+  return `
+<div class="tree-node"><span class="tree-toggle open">知己·知世·找到位置（根节点）</span>
+<div class="tree-children open">
+
+  <div class="tree-node"><span class="tree-toggle open">🌿 内在世界 — 自我认知与成长</span>
+  <div class="tree-children open">
+    <div class="tree-node"><span class="tree-toggle">幸福与选择</span>
+    <div class="tree-children">
+      <div class="tree-leaf">好消息拆分vs坏消息合并原则</div>
+      <div class="tree-leaf">先坏后好的顺序策略</div>
+      <div class="tree-leaf">短期牺牲换长期舒适（小房子短通勤）</div>
+      <div class="tree-leaf">多个消息的组合策略</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">人生智慧</span>
+    <div class="tree-children">
+      <div class="tree-leaf">向死而生：生命倒推法规划</div>
+      <div class="tree-leaf">比穷更可怕：缺见识/缺爱/缺规矩</div>
+      <div class="tree-leaf">不要那么匆忙：慢三拍原则</div>
+      <div class="tree-leaf">朴素特权：成就即最佳形象背书</div>
+      <div class="tree-leaf">趁现在：阿格丽姬与帕瓦罗蒂的启示</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">主动性与命运</span>
+    <div class="tree-children">
+      <div class="tree-leaf">上帝垂青主动的人</div>
+      <div class="tree-leaf">成功是小概率事件的叠加</div>
+      <div class="tree-leaf">不要过分算概率（丁肇中启示）</div>
+      <div class="tree-leaf">成长=否认心中的孙悟空</div>
+      <div class="tree-leaf">这个世界没有欠你什么</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">自我成长</span>
+    <div class="tree-children">
+      <div class="tree-leaf">10000小时定律三板斧破四困境</div>
+      <div class="tree-leaf">朗道五级工程师体系</div>
+      <div class="tree-leaf">第二条腿——暗处的隐性技能</div>
+      <div class="tree-leaf">引擎（进取）与刹车（知止）的平衡</div>
+      <div class="tree-leaf">打破规则做重塑者（YouTube案例）</div>
+    </div></div>
+  </div></div>
+
+  <div class="tree-node"><span class="tree-toggle open">🏛️ 外部世界 — 环境认知与适应</span>
+  <div class="tree-children open">
+    <div class="tree-node"><span class="tree-toggle">沟通智慧</span>
+    <div class="tree-children">
+      <div class="tree-leaf">好消息当面早说，坏消息延迟合说</div>
+      <div class="tree-leaf">面对面沟通的进化优势</div>
+      <div class="tree-leaf">跨国公司专业沟通六原则</div>
+      <div class="tree-leaf">PageRank式权威权重积累</div>
+      <div class="tree-leaf">如何体面拒绝而不罪人（四类请求）</div>
+      <div class="tree-leaf">面试技巧：听懂问题-复述确认</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">职场生存</span>
+    <div class="tree-children">
+      <div class="tree-leaf">不做伪工作者（效果>忙碌）</div>
+      <div class="tree-leaf">识别五类高危"牺牲品"</div>
+      <div class="tree-leaf">远离势利小人（费无忌/李园启示）</div>
+      <div class="tree-leaf">理解腐食者的双重作用</div>
+      <div class="tree-leaf">职场四大误区和四个破法</div>
+      <div class="tree-leaf">被语言暴力激怒时的应对策略</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">识人用人</span>
+    <div class="tree-children">
+      <div class="tree-leaf">好老板：人事主管（格罗夫斯型）+业务主管（奥本海默型）</div>
+      <div class="tree-leaf">能吏塔列朗——通过利益绑定而非道德评判</div>
+      <div class="tree-leaf">三种好公司：员工/顾客/投资人利益优先型</div>
+      <div class="tree-leaf">个人利益权衡：对公司/对老板/对下属三选一</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">思维方式</span>
+    <div class="tree-children">
+      <div class="tree-leaf">阿希实验与从众心理警惕</div>
+      <div class="tree-leaf">"狗的会计问题"——不被既有规则束缚</div>
+      <div class="tree-leaf">证伪优于证实的科学思维</div>
+      <div class="tree-leaf">成本思维与机会成本评估</div>
+      <div class="tree-leaf">瀑布效应——从众行为的放大链</div>
+      <div class="tree-leaf">"未来回望法"检验决策</div>
+    </div></div>
+    <div class="tree-node"><span class="tree-toggle">财富观念</span>
+    <div class="tree-children">
+      <div class="tree-leaf">捐赠文化是真正的财富境界</div>
+      <div class="tree-leaf">得体形象管理——职业早期的必要投资</div>
+      <div class="tree-leaf">便宜眼泪的代价——效果重于形式</div>
+      <div class="tree-leaf">高价策略：用合理价格购买好公司/好人才</div>
+    </div></div>
+  </div></div>
+
+  <div class="tree-node"><span class="tree-toggle">🔄 职业发展（知行交汇点）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">五级工程师：每级能力差距10倍</div>
+    <div class="tree-leaf">职业（终身事业）≠ 工作（短期交易）</div>
+    <div class="tree-leaf">择业四大因素：大环境/兴趣/特长/成功积累</div>
+    <div class="tree-leaf">第一份工作重成长不重薪资</div>
+    <div class="tree-leaf">"先就业后择业"vs"先择业后就业"的差异化策略</div>
+    <div class="tree-leaf">OKR目标管理：公开透明+挑战性目标（0.7-0.8为理想）</div>
+    <div class="tree-leaf">职业员工抬起头，管理者弯下腰</div>
+  </div></div>
+
+</div></div>`;
+}
+
+// ========== TAB 6: SOCRATIC ==========
+function initSocratic(){
+  const data = [
+    {concept:'沟通智慧',layers:[
+      {q:'为什么面对面沟通比书面沟通更有效？',a:'这是人类进化数万年的结果。口头面对面交流植根于基因中，带来信息可信度和说服力的天然优势。IBM并购莲花公司泄密事件中，口头传递速度远超正式媒体；94%的股票购买决定源于亲友推荐而非媒体新闻。'},
+      {q:'如果面对面不可行，该如何最大化沟通效果？',a:'遵循"媒介匹配"原则：好消息用高带宽渠道（当面>电话>邮件），坏消息需解释时当面、非重要时邮件；主观事务当面（避免留底被误解），客观事务邮件（立此存照）。'}
+    ]},
+    {concept:'职业发展',layers:[
+      {q:'五级工程师体系中，为什么每级差距是10倍？',a:'朗道等级体系发现，科学家的能力分布遵循数量级差异。一级（产业开创者如爱迪生）能创造全新市场，五级只能完成给定任务——这种差异不仅是技术能力，更是视野、判断和影响力的指数级差距。'},
+      {q:'如果我目前在第五级，如何突破到第四级？',a:'核心是"愿景-目标-道路"的拆解能力和团队领导力——你需要的不只是写好代码，而是能判断"应该造海湾大桥还是快速浮桥"（目标拆解），并带动他人一起实现。沟通能力是获得这个机会的关键。'}
+    ]},
+    {concept:'幸福与选择',layers:[
+      {q:'"向死而生"听起来很消极，为什么反而能让人更积极？',a:'恰恰相反——知道自己终有一死，才会认真对待"今天"。用剩余生命倒推法：计算还能做多少事，按重要性排列，果断放弃不重要的事务。作者因此离开腾讯和Google——生命清单上有更重要的事。'},
+      {q:'如果所有决策都"向死而生"，不会让人过于焦虑吗？',a:'关键在于区分"可以做"和"必须做"。向死而生不是要你做完所有事，而是帮你放弃不值得的事——当难以抉择时，回想阿格丽姬和帕瓦罗蒂的故事：很多时候没有下一次，甚至明天也靠不住。"从容而优雅的生活"才是目标。'}
+    ]},
+    {concept:'主动性与命运',layers:[
+      {q:'"上帝垂青主动的人"——但现实中主动有时会被视为"出风头"怎么办？',a:'区分"主动"和"出位"：主动是做好本职工作基础上，让上级了解你的进展、承担更多责任、在关键时刻提出建设性方案。史蒂芬森从矿工文盲逆袭为火车之父——不是靠出风头，而是靠持续学习（夜校）+解决实际问题（发明矿用安全灯）。'},
+      {q:'既然成功是小概率事件，为什么还要努力？',a:'丁肇中给出了最好的答案："如果我们什么也不做，不去进行检测，那我们永远也不会知道真相是什么。"1%的成功率在实验领域已是"极高"。不做=概率为零，做=概率大于零。而且努力本身就有复利效应——作者获欧洲最佳论文奖（0.3%概率）后，学术地位的确立带来了后续所有机会。'}
+    ]},
+    {concept:'职场生存',layers:[
+      {q:'"腐食者"听起来像贬义词，吴军为什么说它有正面价值？',a:'如同自然界秃鹫清理尸体维持生态平衡，组织中的淘汰机制（腐食者）防止系统因缺乏新陈代谢而死亡。浑水公司揭露东方纸业造假导致股价暴跌90%——这对被骗的投资者是保护，对市场诚信是促进。关键是理解其存在逻辑，避免自己成为"腐食对象"。'},
+      {q:'如何判断自己是否在做"伪工作"？',a:'问自己三个问题：①我的工作对公司核心业务有实质贡献吗？②如果我不做这件事，三个月后有什么实际后果？③我做的事提升了我的长期能力吗？如果答案都是"否"，你很可能在做伪工作。Google/Facebook用"产生多大效果"而非"多忙"来评价——这是终极检验标准。'}
+    ]},
+    {concept:'识人用人',layers:[
+      {q:'好老板的标准看起来很理想化——现实中找不到怎么办？',a:'格罗夫斯和奥本海默的案例不是让你"找到一模一样的老板"，而是给你评估标准。至少要避开两种"坏老板"：争功诿过的人事主管、高高在上脱离细节的业务主管。如果你现在的老板属于后者，至少可以"抱学本事的心态干2年"，边做边找更好机会。'},
+      {q:'塔列朗作为"能吏"道德有问题——我们能和这样的人合作吗？',a:'关键在于：他忠于职守（对法国忠诚）而非忠于个人（对拿破仑不忠）。这是"能吏"与"小人"的本质区别——能吏能力极强+忠于职责，小人则可能为私利反噬其主。与能吏合作要用商业文明方式（利益绑定），而非农耕文明方式（用人不疑/清除异己）。'}
+    ]}
+  ];
+
+  const container = document.getElementById('socraticContainer');
+  data.forEach(d=>{
+    let html = `<h4 style="color:var(--accent);margin:12px 0 6px">${d.concept}</h4>`;
+    d.layers.forEach((l,i)=>{
+      html += `<div class="soc-item">
+        <div class="soc-q" onclick="toggleSoc(this)">第${i+1}层：${l.q}</div>
+        <div class="soc-a">${l.a}</div>
+      </div>`;
+    });
+    container.innerHTML += html;
+  });
+}
+
+function toggleSoc(el){
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// ========== TAB 7: CASE STUDY ==========
+function initCaseStudy(){
+  document.getElementById('caseStudy').innerHTML = `
+<div class="case-block">
+  <h4>📌 案例背景：曼哈顿计划（1942-1945）</h4>
+  <p style="font-size:.88rem;color:var(--sub)">二战期间美国研製原子弹的秘密计划，从启动到成功仅3年，创造复杂系统工程的奇迹。核心管理团队：人事主管格罗夫斯将军 + 技术主管奥本海默。</p>
+</div>
+
+<div class="case-block">
+  <h4>1️⃣ 概念识别：好老板的二维模型</h4>
+  <p style="font-size:.88rem;color:var(--sub)"><b>人事主管（格罗夫斯型）</b>：视野开阔（初期即锁定铀矿石）、识人有术（力排众议选定奥本海默）、敢于担当（FBI调查时力挺、协调14700吨白银）。</p>
+  <p style="font-size:.88rem;color:var(--sub);margin-top:6px"><b>业务主管（奥本海默型）</b>：跨学科知识（物理学+化学+工程）、信念驱动（不为金钱为反法西斯）、深入细节（亲自指导每位下属、拒绝办公室发号施令）。</p>
+</div>
+
+<div class="case-block">
+  <h4>2️⃣ 关系分析：两种角色的互补机制</h4>
+  <p style="font-size:.88rem;color:var(--sub)">格罗夫斯解决"外部约束"——资源获取、政治保护、组织安全；奥本海默解决"内部创造"——技术攻关、团队激励、现场决策。两人各自发挥特长而非互相替代——这正是"三种好公司利益导向"中"专注一方"原则在管理层级上的体现。</p>
+</div>
+
+<div class="case-block">
+  <h4>3️⃣ 类比迁移：当代企业管理的映射</h4>
+  <p style="font-size:.88rem;color:var(--sub)">CEO=格罗夫斯（定方向、配资源、扛风险），CTO=奥本海默（技术决策、团队文化、细节把控）。与此对照，"坏老板"的两类表现——人事主管争功诿过（出事推下属挡子弹）、业务主管脱离细节（被下属以"缺人"蒙蔽）——都违反了曼哈顿案例揭示的基本原则。</p>
+</div>
+
+<div class="case-block">
+  <h4>4️⃣ 核心启示</h4>
+  <p style="font-size:.88rem;color:var(--sub)">好组织需要两种管理者互补而非互替。创业团队尤其需要：创始人负责"引擎"（奥本海默型技术驱动）+ 合伙人负责"刹车和资源"（格罗夫斯型后勤保障）。识别哪种类型的领导是你需要的，比寻找"完美的全能老板"更现实。</p>
+</div>`;
+}
+
+// ========== TAB 8: DECISION SIMULATION ==========
+const simData = [
+  {
+    scenario:'第一轮：你是刚毕业的名校硕士，收到了两个Offer：A公司（顶级大厂）年薪30万，B公司（快速成长的创业公司）年薪22万+期权。你如何选择？',
+    choices:[
+      {text:'选A：大厂平台好，能学到规范流程',feedback:'✓ 明智之选。符合"第一份工作重成长不重薪资"原则——Google/微软3年工程能力显著强于二三线公司。但需警惕"过客心态"，认真投入而非敷衍。',analysis:'大厂=高成长平台的复利效应，十年后收入可达同龄人3-5倍。'},
+      {text:'选B：创业公司期权可能爆发式增长',feedback:'⚠️ 高风险选择。创业成功率<1%，且早期阶段你学到的东西可能不成体系（"野路子"）。如果你在原有领域已成功（"成功是成功之母"），跨界创业更可行；作为新人，先在大平台积累更稳妥。',analysis:'"为创业而创业"是吴军明确反对的——需基于大环境、兴趣、特长和成功积累四大因素。'},
+      {text:'两家都不选，继续读博深造',feedback:'需要进一步思考：读博是为了逃避选择还是真正的学术兴趣？如果是后者且领域具有长期稀缺性（如作者选择的语音识别），则值得投入。但谨防"博士后陷阱"——美国博士后常是找不到正式工作的过渡选择。',analysis:'关键问题：你的专业≠你的特长。中国数学专业学生成为数学家比例<1%。'}
+    ]
+  },
+  {
+    scenario:'第二轮：你已工作三年，业绩优秀但最近被调到一个"可有可无"的边缘项目。直属老板暗示这是"过渡安排"，但你担心自己被"腐食"。你怎么办？',
+    choices:[
+      {text:'主动找老板沟通，了解项目对公司的核心价值，争取更有影响力的任务',feedback:'✓ 最优策略。"上帝垂青主动的人"——让上级了解你的能力和意愿。但同时通过独立渠道验证项目是否真的"核心"（PageRank原则：找高权重信息源确认），避免被安抚性承诺拖延。',analysis:'主动沟通+独立验证=用"环境认知"校准"内在判断"。'},
+      {text:'默默接受，相信老板的安排',feedback:'⚠️ 被动等待可能是危险的。吴军明确列出了五类高危人群，其中"从事非核心事务者"和"职级与责任失衡者"都在列。日本企业因保留无价值资深员工导致30年发展停滞的教训值得警惕。',analysis:'被动=放弃主动权。"上帝派了消防员和直升机，是你自己拒绝了帮助"。'},
+      {text:'立即开始找新工作',feedback:'可以并行进行但不建议立即跳槽。先判断是临时过渡还是长期边缘化（如3个月后仍未变化则危险信号）。注意"单位景气时换部门，动荡期避免变动"的时机原则——新人/调岗者在裁员时首当其冲。',analysis:'理性做法：一边在现岗位保持专业产出，一边为Plan B做准备。'}
+    ]
+  },
+  {
+    scenario:'第三轮：你负责一个创新项目，但公司的财务流程和合规规则严重制约进展——连购买必要的开发工具都需要层层审批。团队成员士气低落，有人建议"绕过规则先做再说"。你会？',
+    choices:[
+      {text:'先小范围"灰度"推进，用成果倒逼规则修改',feedback:'✓ 务实策略。YouTube的启示：在规则明确前抢占市场——但前提是你的行动不违法、不损害公司核心利益。"不做规则破坏者，做规则重塑者"——用成果证明新规则的必要性，而非对抗旧规则。',analysis:'"狗的会计问题"的反面解法：当规则阻碍更优方案时，先证明方案的价值，再推动规则修改。'},
+      {text:'严格遵守规则，逐级汇报等待批准',feedback:'⚠️ 过于保守可能导致错失窗口期。Google/雅虎因恪守版权规则错失视频市场（被YouTube以免费模式超越）。但完全无视规则也有风险——关键是区分"核心规则"（法律/安全）和"流程规则"（财务科目分类等）。',analysis:'粮油公司的教训：因"藏獒入账争议"放弃高效方案——十年后改雇3名保安，成本更高效果更差。'},
+      {text:'辞职创业，自己做这个项目',feedback:'需要深思熟虑。创业需满足四大因素：大环境（市场需求是否真实）、兴趣（是否持续热爱）、特长（你的技能是否稀缺且可积累）、成功积累（你在这个领域已有成功经验吗？）——如果四项都满足且时机成熟，这可能是正确选择。',analysis:'"成功是成功之母"——在跨界创业前，先在原有领域取得可验证的成功。'}
+    ]
+  }
+];
+
+function initSimulation(){
+  state.simRound = LS.get('simRound',0);
+  renderSim();
+}
+
+function renderSim(){
+  const container = document.getElementById('simContainer');
+  if(state.simRound >= simData.length){
+    container.innerHTML = `<div class="card"><h3>🎉 三轮决策模拟完成！</h3><p style="color:var(--sub)">回顾你在每轮的选择，思考这些决策背后的MKS原理：<br>1. 你的选择偏主动还是被动？<br>2. 你是否考虑了长期成长vs短期利益？<br>3. 你如何看待规则与创新的关系？</p><button class="btn" onclick="resetSim()">重新开始</button></div>`;
+    return;
+  }
+  const s = simData[state.simRound];
+  container.innerHTML = `<div class="sim-scenario">
+    <h4>🎯 ${s.scenario}</h4>
+    ${s.choices.map((c,i)=>`<button class="sim-choice" onclick="chooseSim(${i})">${'🔹🔸🔷'[i]} ${c.text}</button>`).join('')}
+    <div id="simFeedback" style="margin-top:12px"></div>
+  </div>`;
+}
+
+function chooseSim(idx){
+  const s = simData[state.simRound];
+  const c = s.choices[idx];
+  const fb = document.getElementById('simFeedback');
+  fb.innerHTML = `<div class="card">
+    <h4>${c.feedback}</h4>
+    <p style="font-size:.82rem;color:var(--accent);margin-top:4px">📊 MKS分析：${c.analysis}</p>
+    <button class="btn btn-sm" onclick="nextSimRound()" style="margin-top:8px">下一轮 ▶</button>
+  </div>`;
+  document.querySelectorAll('.sim-choice').forEach(el=>el.disabled=true);
+  document.querySelectorAll('.sim-choice')[idx].classList.add('chosen');
+}
+
+function nextSimRound(){
+  state.simRound++;
+  LS.set('simRound',state.simRound);
+  renderSim();
+}
+
+function resetSim(){
+  state.simRound = 0;
+  LS.set('simRound',0);
+  renderSim();
+}
+</script>
+</body>
+</html>
