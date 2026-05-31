@@ -152,12 +152,12 @@ a:hover { text-decoration: underline; }
 .tree { font-size: 14px; }
 .tree ul { list-style: none; padding-left: 20px; }
 .tree li { position: relative; padding: 4px 0; }
-.tree .node-header { cursor: pointer; font-weight: 600; color: var(--accent); }
-.tree .node-header::before { content: "\25b8 "; font-size: 10px; }
-.tree .node-header.open::before { content: "\25be "; }
-.tree .leaf { color: var(--text-light); }
-.tree .node-children { display: none; }
-.tree .node-children.open { display: block; }
+.tree .node { cursor: pointer; font-weight: 600; color: var(--accent); }
+.tree .node::before { content: "\25b8 "; font-size: 10px; }
+.tree .node.open::before { content: "\25be " ; }
+
+.tree .children { display: none; }
+.tree .children.open { display: block; }
 
 /* Socratic */
 .socratic-q { margin-bottom: 12px; }
@@ -227,6 +227,20 @@ th { color: var(--accent); font-weight: 600; }
   .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
 }
+
+/* Quiz practice system */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fef9f4;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:#27ae60!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
 </style>
 </head>
 <body>
@@ -380,6 +394,16 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 5: 思维导图 ==================== -->
 <div class="tab-content" data-tab="5">
+<div class="card">
+  <h2>人生算法 · 概念关系图</h2>
+  <p style="color:var(--text-light);font-size:13px;margin-bottom:12px;">基于Graphviz dot引擎生成的概念关系图——展示10个核心概念之间的分层架构、驱动关系与交叉反馈回路。</p>
+  <div class="svg-wrap" id="conceptGraphSVG"></div>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;line-height:2;">
+    <span style="color:#c0392b;font-weight:600;">━━ 核心驱动关系</span>&nbsp; 根→类→概念的层级驱动链路&nbsp;&nbsp;
+    <span style="color:#b8653a;font-weight:600;">━━ 方法论派生</span>&nbsp; 类到具体概念的派生关系&nbsp;&nbsp;
+    <span style="color:#8b7355;border-bottom:2px dashed #8b7355;">--- 交叉反馈</span>&nbsp; 跨系统的认知-行动反馈回路
+  </p>
+</div>
 <div class="card">
   <h2>人生算法 · 思维导图</h2>
   <p style="color:var(--text-light);font-size:13px;">可折叠/展开的层级树形结构。点击节点展开子级。</p>
@@ -649,9 +673,258 @@ const saQuestions = [
 ];
 
 // ======== SVG CONCEPT MAP ========
+// ======== SVG CONCEPT MAP (Graphviz dot generated) ========
 function renderSVG() {
-  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1398 240"><defs><marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker><marker id="arrGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#d4a574"/></marker><marker id="arrBrown" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b7355"/></marker><filter id="shadow"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.15"/></filter></defs><rect width="1398" height="240" fill="#fdf6ec" rx="8"/><rect x="475" y="8" width="450" height="48" rx="8" fill="#c0392b" filter="url(#shadow)"/><text x="700" y="28" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">人生算法</text><text x="700" y="46" text-anchor="middle" fill="#fdd" font-size="11">认知系统 × 行动系统 → 优化人生决策</text><line x1="550" y1="56" x2="300" y2="98" stroke="#c0392b" stroke-width="2" marker-end="url(#arrRed)"/><line x1="850" y1="56" x2="1100" y2="98" stroke="#c0392b" stroke-width="2" marker-end="url(#arrRed)"/><rect x="170" y="98" width="230" height="36" rx="8" fill="#d4a574" filter="url(#shadow)"/><text x="285" y="115" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">认知引擎（看世界）</text><text x="285" y="129" text-anchor="middle" fill="#fef9f4" font-size="9">思维模型 · 判断框架 · 自我觉察</text><rect x="1000" y="98" width="230" height="36" rx="8" fill="#d4a574" filter="url(#shadow)"/><text x="1115" y="115" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">行动系统（做事情）</text><text x="1115" y="129" text-anchor="middle" fill="#fef9f4" font-size="9">时间管理 · 习惯设计 · 关系经营</text><line x1="200" y1="134" x2="80" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="285" y1="134" x2="200" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="370" y1="134" x2="450" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><rect x="10" y="180" width="140" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="80" y="197" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="600">证伪与理性 ★</text><text x="80" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">区分经验与理性</text><rect x="160" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="220" y="197" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="600">自我认知 ★</text><text x="220" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">主观世界管理</text><rect x="300" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="360" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">策略博弈</text><text x="360" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">单次vs多次游戏</text><line x1="1025" y1="134" x2="920" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="1115" y1="134" x2="1030" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="1200" y1="134" x2="1130" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><rect x="810" y="180" width="130" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="875" y="197" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="600">长期主义 ★</text><text x="875" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">指数增长·临界点</text><rect x="950" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="1010" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">时间优化</text><text x="1010" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">四个15分钟策略</text><rect x="1080" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="1140" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">习惯系统</text><text x="1140" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">原子习惯·聚焦启动</text><rect x="1210" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="1270" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">困境破局</text><text x="1270" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">程序排查法</text><path d="M300,201 Q480,190 810,201" fill="none" stroke="#8b7355" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrBrown)"/><text x="555" y="195" text-anchor="middle" fill="#8b7355" font-size="8">认知驱动行动</text><path d="M870,222 Q750,240 250,222" fill="none" stroke="#8b7355" stroke-width="0.8" stroke-dasharray="5,3" marker-end="url(#arrBrown)"/><text x="560" y="238" text-anchor="middle" fill="#8b7355" font-size="8">行动结果反馈修正认知</text></svg>';
-  document.getElementById('svgContainer').innerHTML = svg;
+  const svg = `<!-- Title: G Pages: 1 -->
+<svg width="1406pt" height="248pt"
+ viewBox="0.00 0.00 1405.60 247.60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(28.8 218.8)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-28.8,28.8 -28.8,-218.8 1376.8,-218.8 1376.8,28.8 -28.8,28.8"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2" d="M701.5,-190C701.5,-190 509.5,-190 509.5,-190 503.5,-190 497.5,-184 497.5,-178 497.5,-178 497.5,-164 497.5,-164 497.5,-158 503.5,-152 509.5,-152 509.5,-152 701.5,-152 701.5,-152 707.5,-152 713.5,-158 713.5,-164 713.5,-164 713.5,-178 713.5,-178 713.5,-184 707.5,-190 701.5,-190"/>
+<text text-anchor="middle" x="605.5" y="-174.8" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="14.00" fill="white">人生算法</text>
+<text text-anchor="middle" x="605.5" y="-159.8" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="14.00" fill="white">认知×行动→优化人生决策</text>
+</g>
+<!-- cog -->
+<g id="node2" class="node">
+<title>cog</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M409.5,-112C409.5,-112 253.5,-112 253.5,-112 247.5,-112 241.5,-106 241.5,-100 241.5,-100 241.5,-88 241.5,-88 241.5,-82 247.5,-76 253.5,-76 253.5,-76 409.5,-76 409.5,-76 415.5,-76 421.5,-82 421.5,-88 421.5,-88 421.5,-100 421.5,-100 421.5,-106 415.5,-112 409.5,-112"/>
+<text text-anchor="middle" x="331.5" y="-97.4" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="12.00" fill="white">认知引擎（看世界）</text>
+<text text-anchor="middle" x="331.5" y="-84.4" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="12.00" fill="white">思维模型·判断框架·自我觉察</text>
+</g>
+<!-- root&#45;&gt;cog -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;cog</title>
+<path fill="none" stroke="#c0392b" stroke-width="2.5" d="M539.52,-151.94C498.39,-140.68 445.45,-126.19 403.27,-114.64"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2.5" points="404.19,-111.27 393.62,-112 402.34,-118.02 404.19,-111.27"/>
+</g>
+<!-- act -->
+<g id="node3" class="node">
+<title>act</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M957.5,-112C957.5,-112 801.5,-112 801.5,-112 795.5,-112 789.5,-106 789.5,-100 789.5,-100 789.5,-88 789.5,-88 789.5,-82 795.5,-76 801.5,-76 801.5,-76 957.5,-76 957.5,-76 963.5,-76 969.5,-82 969.5,-88 969.5,-88 969.5,-100 969.5,-100 969.5,-106 963.5,-112 957.5,-112"/>
+<text text-anchor="middle" x="879.5" y="-97.4" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="12.00" fill="white">行动系统（做事情）</text>
+<text text-anchor="middle" x="879.5" y="-84.4" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="12.00" fill="white">时间管理·习惯设计·关系经营</text>
+</g>
+<!-- root&#45;&gt;act -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;act</title>
+<path fill="none" stroke="#c0392b" stroke-width="2.5" d="M671.48,-151.94C712.61,-140.68 765.55,-126.19 807.73,-114.64"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2.5" points="808.66,-118.02 817.38,-112 806.81,-111.27 808.66,-118.02"/>
+</g>
+<!-- cog&#45;&gt;act -->
+<g id="edge23" class="edge">
+<title>cog&#45;&gt;act</title>
+<path fill="none" stroke="#8b7355" stroke-width="0.8" stroke-dasharray="5,2" d="M421.67,-86.58C540.83,-78.7 659.98,-78.48 779.14,-85.92"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="0.8" points="778.98,-89.42 789.19,-86.57 779.43,-82.43 778.98,-89.42"/>
+</g>
+<!-- c0 -->
+<g id="node4" class="node">
+<title>c0</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M103,-36C103,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 103,0 103,0 109,0 115,-6 115,-12 115,-12 115,-24 115,-24 115,-30 109,-36 103,-36"/>
+<text text-anchor="middle" x="57.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">算法思维 ★</text>
+<text text-anchor="middle" x="57.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">找核心·简方法</text>
+</g>
+<!-- cog&#45;&gt;c0 -->
+<g id="edge3" class="edge">
+<title>cog&#45;&gt;c0</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M268.29,-75.93C225.39,-64.34 168.72,-49.04 124.95,-37.22"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="125.82,-33.83 115.25,-34.6 123.99,-40.58 125.82,-33.83"/>
+</g>
+<!-- c1 -->
+<g id="node5" class="node">
+<title>c1</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M240,-36C240,-36 149,-36 149,-36 143,-36 137,-30 137,-24 137,-24 137,-12 137,-12 137,-6 143,0 149,0 149,0 240,0 240,0 246,0 252,-6 252,-12 252,-12 252,-24 252,-24 252,-30 246,-36 240,-36"/>
+<text text-anchor="middle" x="194.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">证伪与理性 ★</text>
+<text text-anchor="middle" x="194.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">概率思维·反证实</text>
+</g>
+<!-- cog&#45;&gt;c1 -->
+<g id="edge4" class="edge">
+<title>cog&#45;&gt;c1</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M299.73,-75.84C280.45,-65.42 255.66,-52.03 234.98,-40.87"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="236.56,-37.74 226.1,-36.07 233.24,-43.9 236.56,-37.74"/>
+</g>
+<!-- c3 -->
+<g id="node6" class="node">
+<title>c3</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M377,-36C377,-36 286,-36 286,-36 280,-36 274,-30 274,-24 274,-24 274,-12 274,-12 274,-6 280,0 286,0 286,0 377,0 377,0 383,0 389,-6 389,-12 389,-12 389,-24 389,-24 389,-30 383,-36 377,-36"/>
+<text text-anchor="middle" x="331.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">自我认知 ★</text>
+<text text-anchor="middle" x="331.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">主观管理·自我和解</text>
+</g>
+<!-- cog&#45;&gt;c3 -->
+<g id="edge5" class="edge">
+<title>cog&#45;&gt;c3</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M331.5,-75.84C331.5,-67.06 331.5,-56.16 331.5,-46.27"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="335,-46.07 331.5,-36.07 328,-46.07 335,-46.07"/>
+</g>
+<!-- c4 -->
+<g id="node7" class="node">
+<title>c4</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M514,-36C514,-36 423,-36 423,-36 417,-36 411,-30 411,-24 411,-24 411,-12 411,-12 411,-6 417,0 423,0 423,0 514,0 514,0 520,0 526,-6 526,-12 526,-12 526,-24 526,-24 526,-30 520,-36 514,-36"/>
+<text text-anchor="middle" x="468.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">策略博弈</text>
+<text text-anchor="middle" x="468.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">单次vs多次游戏</text>
+</g>
+<!-- cog&#45;&gt;c4 -->
+<g id="edge6" class="edge">
+<title>cog&#45;&gt;c4</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M363.27,-75.84C382.55,-65.42 407.34,-52.03 428.02,-40.87"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="429.76,-43.9 436.9,-36.07 426.44,-37.74 429.76,-43.9"/>
+</g>
+<!-- act&#45;&gt;cog -->
+<g id="edge24" class="edge">
+<title>act&#45;&gt;cog</title>
+<path fill="none" stroke="#8b7355" stroke-width="0.8" stroke-dasharray="5,2" d="M789.19,-101.43C670.03,-109.3 550.88,-109.52 431.72,-102.07"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="0.8" points="431.88,-98.57 421.67,-101.42 431.43,-105.56 431.88,-98.57"/>
+</g>
+<!-- c2 -->
+<g id="node8" class="node">
+<title>c2</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M651,-36C651,-36 560,-36 560,-36 554,-36 548,-30 548,-24 548,-24 548,-12 548,-12 548,-6 554,0 560,0 560,0 651,0 651,0 657,0 663,-6 663,-12 663,-12 663,-24 663,-24 663,-30 657,-36 651,-36"/>
+<text text-anchor="middle" x="605.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">长期主义 ★</text>
+<text text-anchor="middle" x="605.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#c0392b">指数增长·临界点</text>
+</g>
+<!-- act&#45;&gt;c2 -->
+<g id="edge7" class="edge">
+<title>act&#45;&gt;c2</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M816.29,-75.93C773.39,-64.34 716.72,-49.04 672.95,-37.22"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="673.82,-33.83 663.25,-34.6 671.99,-40.58 673.82,-33.83"/>
+</g>
+<!-- c5 -->
+<g id="node9" class="node">
+<title>c5</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M788,-36C788,-36 697,-36 697,-36 691,-36 685,-30 685,-24 685,-24 685,-12 685,-12 685,-6 691,0 697,0 697,0 788,0 788,0 794,0 800,-6 800,-12 800,-12 800,-24 800,-24 800,-30 794,-36 788,-36"/>
+<text text-anchor="middle" x="742.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">时间优化</text>
+<text text-anchor="middle" x="742.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">4×15分钟策略</text>
+</g>
+<!-- act&#45;&gt;c5 -->
+<g id="edge8" class="edge">
+<title>act&#45;&gt;c5</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M847.73,-75.84C828.45,-65.42 803.66,-52.03 782.98,-40.87"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="784.56,-37.74 774.1,-36.07 781.24,-43.9 784.56,-37.74"/>
+</g>
+<!-- c6 -->
+<g id="node10" class="node">
+<title>c6</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M925,-36C925,-36 834,-36 834,-36 828,-36 822,-30 822,-24 822,-24 822,-12 822,-12 822,-6 828,0 834,0 834,0 925,0 925,0 931,0 937,-6 937,-12 937,-12 937,-24 937,-24 937,-30 931,-36 925,-36"/>
+<text text-anchor="middle" x="879.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">习惯系统</text>
+<text text-anchor="middle" x="879.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">原子习惯·环境塑造</text>
+</g>
+<!-- act&#45;&gt;c6 -->
+<g id="edge9" class="edge">
+<title>act&#45;&gt;c6</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M879.5,-75.84C879.5,-67.06 879.5,-56.16 879.5,-46.27"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="883,-46.07 879.5,-36.07 876,-46.07 883,-46.07"/>
+</g>
+<!-- c7 -->
+<g id="node11" class="node">
+<title>c7</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1062,-36C1062,-36 971,-36 971,-36 965,-36 959,-30 959,-24 959,-24 959,-12 959,-12 959,-6 965,0 971,0 971,0 1062,0 1062,0 1068,0 1074,-6 1074,-12 1074,-12 1074,-24 1074,-24 1074,-30 1068,-36 1062,-36"/>
+<text text-anchor="middle" x="1016.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">困境破局</text>
+<text text-anchor="middle" x="1016.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">程序排查法四步</text>
+</g>
+<!-- act&#45;&gt;c7 -->
+<g id="edge10" class="edge">
+<title>act&#45;&gt;c7</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M911.27,-75.84C930.55,-65.42 955.34,-52.03 976.02,-40.87"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="977.76,-43.9 984.9,-36.07 974.44,-37.74 977.76,-43.9"/>
+</g>
+<!-- c8 -->
+<g id="node12" class="node">
+<title>c8</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1199,-36C1199,-36 1108,-36 1108,-36 1102,-36 1096,-30 1096,-24 1096,-24 1096,-12 1096,-12 1096,-6 1102,0 1108,0 1108,0 1199,0 1199,0 1205,0 1211,-6 1211,-12 1211,-12 1211,-24 1211,-24 1211,-30 1205,-36 1199,-36"/>
+<text text-anchor="middle" x="1153.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">人际关系权重</text>
+<text text-anchor="middle" x="1153.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">斗米恩担米仇</text>
+</g>
+<!-- act&#45;&gt;c8 -->
+<g id="edge11" class="edge">
+<title>act&#45;&gt;c8</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M942.71,-75.93C985.61,-64.34 1042.28,-49.04 1086.05,-37.22"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="1087.01,-40.58 1095.75,-34.6 1085.18,-33.83 1087.01,-40.58"/>
+</g>
+<!-- c9 -->
+<g id="node13" class="node">
+<title>c9</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1336,-36C1336,-36 1245,-36 1245,-36 1239,-36 1233,-30 1233,-24 1233,-24 1233,-12 1233,-12 1233,-6 1239,0 1245,0 1245,0 1336,0 1336,0 1342,0 1348,-6 1348,-12 1348,-12 1348,-24 1348,-24 1348,-30 1342,-36 1336,-36"/>
+<text text-anchor="middle" x="1290.5" y="-21" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">行动导向</text>
+<text text-anchor="middle" x="1290.5" y="-10" font-family="Noto Serif SC, Source Han Serif SC, SimSun, serif" font-size="10.00" fill="#5a3e3e">从知到行·独特认知</text>
+</g>
+<!-- act&#45;&gt;c9 -->
+<g id="edge12" class="edge">
+<title>act&#45;&gt;c9</title>
+<path fill="none" stroke="#b8653a" stroke-width="1.8" d="M969.78,-80.02C1039.16,-69.56 1137.24,-53.71 1222.5,-36 1222.6,-35.98 1222.71,-35.96 1222.81,-35.93"/>
+<polygon fill="#b8653a" stroke="#b8653a" stroke-width="1.8" points="1223.67,-39.33 1232.7,-33.79 1222.19,-32.49 1223.67,-39.33"/>
+</g>
+<!-- c0&#45;&gt;c2 -->
+<g id="edge14" class="edge">
+<title>c0&#45;&gt;c2</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M87.09,-36.14C101.45,-43.91 119.29,-52.08 136.5,-56 220.78,-75.22 441.17,-75.01 525.5,-56 539.37,-52.87 553.65,-47.05 566.24,-40.89"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="568.2,-43.82 575.5,-36.14 565.01,-37.59 568.2,-43.82"/>
+</g>
+<!-- c0&#45;&gt;c7 -->
+<g id="edge13" class="edge">
+<title>c0&#45;&gt;c7</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M87.09,-36.14C101.45,-43.91 119.29,-52.08 136.5,-56 223.27,-75.78 850.73,-75.78 937.5,-56 951.22,-52.87 965.33,-47.05 977.76,-40.88"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="979.64,-43.85 986.91,-36.14 976.42,-37.64 979.64,-43.85"/>
+</g>
+<!-- c1&#45;&gt;c2 -->
+<g id="edge15" class="edge">
+<title>c1&#45;&gt;c2</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M224.09,-36.14C238.45,-43.91 256.29,-52.08 273.5,-56 382.7,-80.9 416.24,-80.63 525.5,-56 539.37,-52.87 553.65,-47.05 566.24,-40.89"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="568.2,-43.82 575.5,-36.14 565.01,-37.59 568.2,-43.82"/>
+</g>
+<!-- c3&#45;&gt;c8 -->
+<g id="edge16" class="edge">
+<title>c3&#45;&gt;c8</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M361.09,-36.14C375.45,-43.91 393.29,-52.08 410.5,-56 482.43,-72.4 1002.57,-72.4 1074.5,-56 1088.22,-52.87 1102.33,-47.05 1114.76,-40.88"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="1116.64,-43.85 1123.91,-36.14 1113.42,-37.64 1116.64,-43.85"/>
+</g>
+<!-- c3&#45;&gt;c9 -->
+<g id="edge17" class="edge">
+<title>c3&#45;&gt;c9</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M361.09,-36.14C375.45,-43.91 393.29,-52.08 410.5,-56 497.27,-75.78 1124.73,-75.78 1211.5,-56 1225.22,-52.87 1239.33,-47.05 1251.76,-40.88"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="1253.64,-43.85 1260.91,-36.14 1250.42,-37.64 1253.64,-43.85"/>
+</g>
+<!-- c4&#45;&gt;c8 -->
+<g id="edge18" class="edge">
+<title>c4&#45;&gt;c8</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M498.09,-36.14C512.45,-43.91 530.29,-52.08 547.5,-56 661.68,-82.03 960.32,-82.03 1074.5,-56 1088.22,-52.87 1102.33,-47.05 1114.76,-40.88"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="1116.64,-43.85 1123.91,-36.14 1113.42,-37.64 1116.64,-43.85"/>
+</g>
+<!-- c2&#45;&gt;c6 -->
+<g id="edge19" class="edge">
+<title>c2&#45;&gt;c6</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M635.5,-36.14C650.04,-43.91 668.1,-52.08 685.5,-56 735.36,-67.24 750.67,-67.36 800.5,-56 814.22,-52.87 828.33,-47.05 840.76,-40.88"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="842.64,-43.85 849.91,-36.14 839.42,-37.64 842.64,-43.85"/>
+</g>
+<!-- c2&#45;&gt;c9 -->
+<g id="edge22" class="edge">
+<title>c2&#45;&gt;c9</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M635.5,-36.14C650.04,-43.91 668.1,-52.08 685.5,-56 799.53,-81.71 1097.54,-81.98 1211.5,-56 1225.22,-52.87 1239.33,-47.05 1251.76,-40.88"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="1253.64,-43.85 1260.91,-36.14 1250.42,-37.64 1253.64,-43.85"/>
+</g>
+<!-- c6&#45;&gt;c7 -->
+<g id="edge20" class="edge">
+<title>c6&#45;&gt;c7</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M937.03,-18C940.88,-18 944.73,-18 948.57,-18"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="948.76,-21.5 958.76,-18 948.76,-14.5 948.76,-21.5"/>
+</g>
+<!-- c9&#45;&gt;c7 -->
+<g id="edge21" class="edge">
+<title>c9&#45;&gt;c7</title>
+<path fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" d="M1260.91,-36.14C1246.55,-43.91 1228.71,-52.08 1211.5,-56 1161.67,-67.36 1146.36,-67.24 1096.5,-56 1082.63,-52.87 1068.35,-47.05 1055.76,-40.89"/>
+<polygon fill="#8b7355" stroke="#8b7355" stroke-width="1.2" points="1056.99,-37.59 1046.5,-36.14 1053.8,-43.82 1056.99,-37.59"/>
+</g>
+</g>
+</svg>
+`;
+  // Render to tab0 container
+  const c0 = document.getElementById('svgContainer');
+  if (c0) c0.innerHTML = svg;
+  // Render to tab5 container
+  const c5 = document.getElementById('conceptGraphSVG');
+  if (c5) c5.innerHTML = svg;
 }
 
 // ======== INIT TABS ========
@@ -737,6 +1010,7 @@ function updateProgress() {
   document.getElementById('cardLearned').textContent = learnedCards.length;
   document.getElementById('quizProgress').textContent = totalDone + '/30';
   document.getElementById('quizBar').style.width = ((totalDone / 30) * 100) + '%';
+  const el2=document.getElementById('cardLearned');if(el2)el2.textContent=learnedCards.length;
 }
 
 // ======== TAB 1: FLIP CARDS ========
@@ -1167,10 +1441,10 @@ function renderMindTree() {
       const hasChildren = n.children && n.children.length > 0;
       html += '<li>';
       if (hasChildren) {
-        html += '<span class="node-header" onclick="toggleMindmap(this, this.nextElementSibling)">'+n.name+'</span>';
-        html += '<div class="node-children">'+renderTree(n.children)+'</div>';
+        html += '<span class="node" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')">'+n.name+'</span>';
+        html += '<div class="children">'+renderTree(n.children)+'</div>';
       } else {
-        html += '<span class="leaf">'+n.name+'</span>';
+        html += '<span style="color:var(--text-light);">'+n.name+'</span>';
       }
       html += '</li>';
     });
@@ -1319,7 +1593,10 @@ function init() {
 }
 
 init();
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 </script>
+
+<!-- JS_PLACEHOLDER -->
 
 </body>
 </html>

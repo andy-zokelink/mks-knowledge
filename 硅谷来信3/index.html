@@ -5,74 +5,1179 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>吴军·硅谷来信³ — 最小知识集</title>
 <style>
-:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--text:#3d2f2f;--text-light:#6b5b5b;--border:#e8d5c4;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,0.06)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;max-width:960px;margin:0 auto;padding:20px}
-.header{text-align:center;padding:40px 20px 30px}
-.header h1{font-size:2rem;color:var(--accent);margin-bottom:8px}
-.header p{color:var(--text-light);font-size:1rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:20px}
-.card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;text-decoration:none;color:var(--text);display:block}
-.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.1)}
-.card .num{font-size:.75rem;color:var(--accent);font-weight:700;margin-bottom:4px}
-.card h3{font-size:1.1rem;color:var(--accent);margin-bottom:6px}
-.card .desc{font-size:.85rem;color:var(--text-light);line-height:1.5}
-.card .count{font-size:.75rem;color:var(--text-light);margin-top:8px;opacity:.7}
-.footer{text-align:center;padding:30px;color:var(--text-light);font-size:.8rem}
-.back{display:inline-block;margin:20px 0;color:var(--accent);text-decoration:none;font-size:.9rem}
-.back:hover{text-decoration:underline}
+/* ============================================================
+   "从硅谷寄来的信件" — 硅谷来信³ 导航页
+   设计概念：一封封摊在桌面上的信，从海外邮局寄来
+   ============================================================ */
+
+:root {
+  --bg:        #fdf6ec;
+  --desk:      #d4a574;
+  --desk-dark: #8b6914;
+  --envelope:  #fffaf2;
+  --envelope-shadow: #f0e6d8;
+  --accent:    #c0392b;
+  --accent2:   #8b0000;
+  --text:      #3d2f2f;
+  --text-light:#6b5b5b;
+  --gold:      #b8860b;
+  --border:    #e8d5c4;
+
+  /* Stamp colors per theme */
+  --stamp1: #722f37; /* 哲学 - 深酒红 */
+  --stamp2: #2d5a27; /* 教育 - 森绿 */
+  --stamp3: #b8860b; /* 文明 - 金色 */
+  --stamp4: #1a3a5c; /* 科技 - 深蓝 */
+  --stamp5: #8b6914; /* 财富 - 古铜金 */
+  --stamp6: #4a1a5c; /* 人生算法 - 深紫 */
+  --stamp7: #8b1a2b; /* 文学艺术 - 玫瑰红 */
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+/* ============================================================
+   BACKGROUND — 木质桌面 + 纸张纹理
+   ============================================================ */
+body {
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               "Noto Serif SC", "Source Han Serif SC", serif;
+  background:
+    /* 桌面木纹 */
+    linear-gradient(175deg,
+      #e8cfa0 0%, #d4a574 15%, #c89860 30%, #d4a574 50%,
+      #c89860 65%, #d4a574 80%, #bf8f5a 100%
+    ),
+    /* 细微噪点模拟纸张纹理 */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139,105,20,0.03) 2px,
+      rgba(139,105,20,0.03) 4px
+    );
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 桌面暗角 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 60%,
+    rgba(60,30,10,0.25) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 桌面木纹纹理线 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 40px,
+    rgba(139,105,20,0.06) 40px,
+    rgba(139,105,20,0.06) 42px
+  ),
+  repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 120px,
+    rgba(139,105,20,0.04) 120px,
+    rgba(139,105,20,0.04) 122px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   MAIN WRAPPER
+   ============================================================ */
+.main-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   AIR MAIL 顶部装饰条
+   ============================================================ */
+.airmail-strip {
+  width: 100%;
+  height: 18px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #c0392b,
+    #c0392b 8px,
+    #fff 8px,
+    #fff 10px,
+    #1a5276 10px,
+    #1a5276 18px,
+    #fff 18px,
+    #fff 20px
+  );
+  border-radius: 4px 4px 0 0;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.airmail-strip-bottom {
+  border-radius: 0 0 4px 4px;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.airmail-label {
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  color: #1a5276;
+  text-transform: uppercase;
+  padding: 4px 0;
+  font-weight: 700;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+/* ============================================================
+   HEADER — 信封地址栏样式
+   ============================================================ */
+.header {
+  background: linear-gradient(180deg, #fffef9 0%, #fef9f0 100%);
+  border: 2px solid #d4c5a9;
+  border-radius: 6px;
+  padding: 36px 40px;
+  margin: 20px 0 30px;
+  position: relative;
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.12),
+    inset 0 0 0 1px rgba(255,255,255,0.8);
+  /* 信封内衬纹理 */
+  background-image:
+    linear-gradient(
+      0deg,
+      transparent 24px,
+      rgba(180,160,130,0.08) 25px
+    );
+  background-size: 100% 25px;
+}
+
+/* 信封地址栏边框装饰 — 四个角 */
+.header::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border: 1px dashed rgba(180,160,130,0.5);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.header-inner {
+  position: relative;
+  text-align: center;
+}
+
+/* 寄件人标签 */
+.from-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  padding: 3px 14px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  font-family: "Georgia", serif;
+}
+
+.header h1 {
+  font-size: 2.6rem;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  /* 钢印压纹效果 */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.8),
+    0 2px 4px rgba(192,57,43,0.15);
+}
+
+.header .subtitle {
+  font-size: 1rem;
+  color: var(--text-light);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.header .subtitle .airplane {
+  display: inline-block;
+  animation: fly 3s ease-in-out infinite;
+}
+
+@keyframes fly {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(4px) translateY(-2px); }
+  75% { transform: translateX(-4px) translateY(2px); }
+}
+
+/* 邮戳装饰 */
+.postmark-decor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border: 3px solid rgba(192,57,43,0.3);
+  border-radius: 50%;
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-12deg);
+  font-size: 0.55rem;
+  color: rgba(192,57,43,0.5);
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.postmark-decor::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(192,57,43,0.25);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   BACK LINK
+   ============================================================ */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  color: var(--accent2);
+}
+
+/* ============================================================
+   ENVELOPE GRID
+   ============================================================ */
+.envelope-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px 24px;
+  margin: 10px 0 30px;
+  /* 让最后一个信封居中 */
+}
+
+/* 7个信封的布局：3+3+1，最后一个居中 */
+.envelope-grid .envelope-wrapper:nth-child(7) {
+  grid-column: 2 / 3;
+}
+
+/* ============================================================
+   ENVELOPE WRAPPER — 控制旋转和定位
+   ============================================================ */
+.envelope-wrapper {
+  perspective: 800px;
+  /* 每个信封轻微旋转，模拟散落效果 */
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              z-index 0.4s;
+  position: relative;
+  z-index: 1;
+}
+
+.envelope-wrapper:nth-child(1) { --rot: -2.2deg; }
+.envelope-wrapper:nth-child(2) { --rot: 1.6deg; }
+.envelope-wrapper:nth-child(3) { --rot: -1.4deg; }
+.envelope-wrapper:nth-child(4) { --rot: 2.0deg; }
+.envelope-wrapper:nth-child(5) { --rot: -1.8deg; }
+.envelope-wrapper:nth-child(6) { --rot: 1.2deg; }
+.envelope-wrapper:nth-child(7) { --rot: -2.5deg; }
+
+.envelope-wrapper:hover {
+  transform: rotate(0deg) scale(1.04);
+  z-index: 10;
+}
+
+/* ============================================================
+   ENVELOPE CARD — 信封本身
+   ============================================================ */
+.envelope {
+  background: linear-gradient(175deg, #fffef9 0%, #fef9f2 30%, #fdf5ea 100%);
+  border-radius: 4px 4px 8px 8px;
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.12),
+    0 1px 3px rgba(0,0,0,0.08),
+    inset 0 0 0 1px rgba(255,255,255,0.6);
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+
+.envelope:hover {
+  box-shadow:
+    0 12px 36px rgba(0,0,0,0.18),
+    0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 信封封口 flap */
+.envelope::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: linear-gradient(180deg,
+    #f5ecd7 0%,
+    #fdf5ea 60%,
+    transparent 100%
+  );
+  clip-path: polygon(0 0, 50% 70%, 100% 0);
+  z-index: 2;
+  border-bottom: 1px solid rgba(180,160,130,0.3);
+  transition: clip-path 0.3s ease;
+}
+
+.envelope:hover::before {
+  clip-path: polygon(0 0, 50% 90%, 100% 0);
+}
+
+/* 信封折痕线 */
+.envelope::after {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(180,160,130,0.25) 15%,
+    rgba(180,160,130,0.25) 85%,
+    transparent
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ============================================================
+   ENVELOPE INNER CONTENT
+   ============================================================ */
+.envelope-body {
+  padding: 32px 22px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   POSTMARK — 圆形邮戳
+   ============================================================ */
+.postmark {
+  position: absolute;
+  top: 28px;
+  left: 14px;
+  width: 58px;
+  height: 58px;
+  border: 2px solid rgba(192,57,43,0.35);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.42rem;
+  color: rgba(192,57,43,0.55);
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  transform: rotate(-15deg);
+  pointer-events: none;
+  z-index: 4;
+  background: rgba(255,255,255,0.5);
+}
+
+.postmark::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed rgba(192,57,43,0.2);
+  border-radius: 50%;
+}
+
+.postmark .pm-loc {
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================================
+   STAMP — 主题邮票
+   每个邮票有独特颜色，齿孔效果用 dashed outline 模拟
+   ============================================================ */
+.stamp {
+  position: absolute;
+  top: 24px;
+  right: 16px;
+  width: 62px;
+  height: 76px;
+  z-index: 5;
+  pointer-events: none;
+  background: var(--stamp-bg, #722f37);
+  /* 外边框模拟邮票白边 */
+  border: 3px solid rgba(255,255,255,0.25);
+  /* 齿孔效果 — 用 dashed outline 模拟 */
+  outline: 2px dashed rgba(255,255,255,0.5);
+  outline-offset: -5px;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.2),
+    inset 0 0 0 2px rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 4px 4px;
+  border-radius: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.envelope:hover .stamp {
+  transform: scale(1.08);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.25),
+    inset 0 0 0 2px rgba(255,255,255,0.1);
+}
+
+.stamp-icon {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.stamp-label {
+  font-size: 0.42rem;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.stamp-value {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.95);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+/* ============================================================
+   STAMP ICONS — 7个主题的CSS图标
+   ============================================================ */
+
+/* 1. 哲学与思想 — 智慧之眼/猫头鹰 */
+.stamp-icon.philosophy {
+  width: 28px; height: 22px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50% 50% 40% 40%;
+  position: relative;
+}
+.stamp-icon.philosophy::before,
+.stamp-icon.philosophy::after {
+  content: '';
+  position: absolute;
+  width: 8px; height: 10px;
+  background: var(--stamp1, #722f37);
+  border-radius: 50%;
+  top: 5px;
+}
+.stamp-icon.philosophy::before { left: 4px; }
+.stamp-icon.philosophy::after { right: 4px; }
+.stamp-icon.philosophy .pupil {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  top: 8px;
+}
+.stamp-icon.philosophy .pupil:nth-child(1) { left: 7px; }
+.stamp-icon.philosophy .pupil:nth-child(2) { right: 8px; }
+.stamp-icon.philosophy .beak {
+  position: absolute;
+  bottom: 1px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid rgba(255,255,255,0.85);
+}
+
+/* 2. 教育与成长 — 幼苗 */
+.stamp-icon.education {
+  width: 26px; height: 30px;
+  position: relative;
+}
+.stamp-icon.education .stem {
+  position: absolute;
+  bottom: 2px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 18px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 1px;
+}
+.stamp-icon.education .leaf-l,
+.stamp-icon.education .leaf-r {
+  position: absolute;
+  width: 10px; height: 6px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  top: 10px;
+}
+.stamp-icon.education .leaf-l {
+  right: 50%;
+  transform: rotate(-35deg);
+  margin-right: 1px;
+}
+.stamp-icon.education .leaf-r {
+  left: 50%;
+  transform: rotate(35deg);
+  margin-left: 1px;
+}
+.stamp-icon.education .bud {
+  position: absolute;
+  top: 2px; left: 50%;
+  transform: translateX(-50%);
+  width: 5px; height: 5px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+}
+
+/* 3. 文明与制度 — 希腊柱 */
+.stamp-icon.civilization {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 28px;
+}
+.stamp-icon.civilization .pillar {
+  width: 5px;
+  background: rgba(255,255,255,0.85);
+  position: relative;
+  border-radius: 1px;
+}
+.stamp-icon.civilization .pillar::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -2px;
+  width: 9px;
+  height: 4px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 1px;
+}
+.stamp-icon.civilization .pillar:nth-child(1) { height: 22px; }
+.stamp-icon.civilization .pillar:nth-child(2) { height: 28px; }
+.stamp-icon.civilization .pillar:nth-child(3) { height: 22px; }
+.stamp-icon.civilization .pediment {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 26px;
+  height: 3px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 2px 2px 0 0;
+}
+
+/* 4. 科技与趋势 — 芯片/电路 */
+.stamp-icon.technology {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.7);
+  border-radius: 3px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  padding: 4px;
+}
+.stamp-icon.technology .node {
+  width: 4px; height: 4px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  margin: auto;
+}
+
+/* 5. 财富与投资 — 金币叠 */
+.stamp-icon.wealth {
+  width: 24px; height: 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+}
+.stamp-icon.wealth .coin {
+  width: 22px; height: 7px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  position: relative;
+}
+.stamp-icon.wealth .coin::after {
+  content: '';
+  position: absolute;
+  top: 1px; left: 4px; right: 4px;
+  height: 1px;
+  background: var(--stamp5, #8b6914);
+  opacity: 0.4;
+}
+.stamp-icon.wealth .coin:last-child {
+  width: 24px;
+  height: 8px;
+}
+
+/* 6. 人生算法 — 齿轮/罗盘 */
+.stamp-icon.algorithm {
+  width: 24px; height: 24px;
+  border: 3px solid rgba(255,255,255,0.85);
+  border-radius: 50%;
+  position: relative;
+}
+.stamp-icon.algorithm::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+}
+.stamp-icon.algorithm::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px; height: 2px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 1px;
+  box-shadow:
+    0 0 0 2px var(--stamp6, #4a1a5c),
+    0 0 0 3px rgba(255,255,255,0.7);
+  animation: none;
+}
+
+/* 7. 文学与艺术 — 鹅毛笔 */
+.stamp-icon.arts {
+  width: 22px; height: 28px;
+  position: relative;
+}
+.stamp-icon.arts .quill {
+  position: absolute;
+  bottom: 2px; left: 50%;
+  transform: translateX(-50%) rotate(15deg);
+  width: 3px; height: 24px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 40% 40% 0 0;
+}
+.stamp-icon.arts .feather {
+  position: absolute;
+  bottom: 16px; left: 50%;
+  transform: translateX(-50%) rotate(15deg);
+  width: 12px; height: 10px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 0 80% 20% 40%;
+}
+.stamp-icon.arts .ink {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 5px; height: 3px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 0 0 50% 50%;
+}
+
+/* ============================================================
+   CARD CONTENT
+   ============================================================ */
+.envelope .topic-num {
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+.envelope .topic-title {
+  font-size: 1.15rem;
+  color: var(--accent);
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+  position: relative;
+  display: inline-block;
+}
+
+/* 标题下划线 — 信封手写风格 */
+.envelope .topic-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(192,57,43,0.3) 20%,
+    rgba(192,57,43,0.3) 80%,
+    transparent
+  );
+}
+
+.envelope .topic-desc {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.envelope .letter-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  color: var(--text-light);
+  opacity: 0.7;
+  border-top: 1px dashed rgba(180,160,130,0.4);
+  padding-top: 8px;
+  width: 100%;
+}
+
+.envelope .letter-count::before {
+  content: '✉';
+  font-size: 0.7rem;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 28px 20px;
+  color: var(--text-light);
+  font-size: 0.78rem;
+  opacity: 0.7;
+  letter-spacing: 0.06em;
+}
+
+.footer::before {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 1px;
+  background: rgba(180,160,130,0.5);
+  margin: 0 auto 14px;
+}
+
+/* ============================================================
+   DECORATIVE ELEMENTS — 桌面上的小物件
+   ============================================================ */
+
+/* 回形针装饰 */
+.paperclip {
+  position: absolute;
+  width: 30px;
+  height: 50px;
+  border: 2px solid #b0b0b0;
+  border-radius: 50% 50% 50% 50% / 40% 40% 40% 40%;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.paperclip::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 30px;
+  background: #b0b0b0;
+  border-radius: 1px;
+}
+
+/* ============================================================
+   AIR MAIL 边栏装饰
+   ============================================================ */
+.airmail-side-left,
+.airmail-side-right {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 8px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.airmail-side-left {
+  left: 12px;
+  background: repeating-linear-gradient(
+    180deg,
+    #c0392b, #c0392b 12px,
+    #fff, #fff 14px,
+    #1a5276, #1a5276 26px,
+    #fff, #fff 28px
+  );
+}
+
+.airmail-side-right {
+  right: 12px;
+  background: repeating-linear-gradient(
+    180deg,
+    #c0392b, #c0392b 12px,
+    #fff, #fff 14px,
+    #1a5276, #1a5276 26px,
+    #fff, #fff 28px
+  );
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+
+/* Tablet: 2 columns */
+@media (max-width: 900px) {
+  .envelope-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 18px;
+  }
+  .envelope-grid .envelope-wrapper:nth-child(7) {
+    grid-column: 1 / -1;
+    max-width: 380px;
+    justify-self: center;
+    width: 100%;
+  }
+
+  .header h1 { font-size: 2rem; }
+  .header { padding: 24px 20px; }
+
+  .postmark-decor {
+    width: 66px; height: 66px;
+    right: 14px;
+    font-size: 0.45rem;
+  }
+
+  .stamp {
+    width: 52px; height: 64px;
+    top: 22px; right: 12px;
+  }
+  .stamp-icon { width: 26px; height: 26px; }
+  .stamp-label { font-size: 0.38rem; }
+  .stamp-value { font-size: 0.52rem; }
+  .postmark { width: 50px; height: 50px; top: 26px; left: 10px; font-size: 0.38rem; }
+
+  /* Reduce rotation on tablet */
+  .envelope-wrapper:nth-child(1) { --rot: -1.2deg; }
+  .envelope-wrapper:nth-child(2) { --rot: 0.8deg; }
+  .envelope-wrapper:nth-child(3) { --rot: -0.6deg; }
+  .envelope-wrapper:nth-child(4) { --rot: 1.0deg; }
+  .envelope-wrapper:nth-child(5) { --rot: -0.8deg; }
+  .envelope-wrapper:nth-child(6) { --rot: 0.6deg; }
+  .envelope-wrapper:nth-child(7) { --rot: -1.0deg; }
+
+  .airmail-side-left, .airmail-side-right { display: none; }
+}
+
+/* Mobile: single column */
+@media (max-width: 600px) {
+  body { padding: 10px; }
+
+  .envelope-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .envelope-grid .envelope-wrapper:nth-child(7) {
+    grid-column: 1;
+    max-width: none;
+  }
+
+  .header h1 { font-size: 1.6rem; }
+  .header .subtitle { font-size: 0.85rem; }
+  .header { padding: 18px 14px; margin: 14px 0 20px; }
+  .from-label { font-size: 0.6rem; padding: 2px 10px; }
+
+  .postmark-decor {
+    width: 54px; height: 54px;
+    right: 8px;
+    font-size: 0.38rem;
+  }
+
+  .envelope-body { padding: 28px 16px 16px; }
+  .stamp { width: 48px; height: 58px; top: 20px; right: 10px; }
+  .stamp-icon { width: 22px; height: 22px; }
+  .stamp-label { font-size: 0.35rem; }
+  .stamp-value { font-size: 0.48rem; }
+  .postmark { width: 44px; height: 44px; top: 24px; left: 8px; font-size: 0.35rem; }
+
+  .envelope .topic-title { font-size: 1.05rem; }
+  .envelope .topic-desc { font-size: 0.75rem; }
+
+  /* Minimal rotation on mobile */
+  .envelope-wrapper:nth-child(1) { --rot: -0.5deg; }
+  .envelope-wrapper:nth-child(2) { --rot: 0.3deg; }
+  .envelope-wrapper:nth-child(3) { --rot: -0.3deg; }
+  .envelope-wrapper:nth-child(4) { --rot: 0.4deg; }
+  .envelope-wrapper:nth-child(5) { --rot: -0.3deg; }
+  .envelope-wrapper:nth-child(6) { --rot: 0.2deg; }
+  .envelope-wrapper:nth-child(7) { --rot: -0.4deg; }
+
+  .airmail-strip { height: 10px; }
+  .airmail-side-left, .airmail-side-right { display: none; }
+}
 </style>
 </head>
 <body>
-<a href="../index.html" class="back">← 返回知识总库</a>
-<div class="header">
-<h1>吴军·硅谷来信³</h1>
-<p>289篇笔记 → 7大专题 → 最小知识集</p>
+
+<!-- 航空邮件边栏装饰 -->
+<div class="airmail-side-left"></div>
+<div class="airmail-side-right"></div>
+
+<div class="main-wrapper">
+  <!-- 航空邮件顶部条纹 -->
+  <div class="airmail-strip"></div>
+  <div class="airmail-label">✈ &nbsp;PAR AVION · 航空邮件 · AIR MAIL&nbsp; ✈</div>
+
+  <!-- 返回链接 -->
+  <a href="../index.html" class="back-link">← 返回知识总库</a>
+
+  <!-- 页头 — 信封地址栏风格 -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="from-label">FROM: Silicon Valley, California</div>
+      <h1>吴军·硅谷来信³</h1>
+      <p class="subtitle">
+        <span class="airplane">✈</span> 从硅谷寄来的289封信 · 7封主题信札
+      </p>
+    </div>
+    <!-- 装饰性邮戳 -->
+    <div class="postmark-decor">
+      硅谷<br>邮局<br>2026<br>SILICON<br>VALLEY
+    </div>
+  </header>
+
+  <!-- 信封网格 -->
+  <div class="envelope-grid">
+
+    <!-- ====== 专题 1：哲学与思想 ====== -->
+    <div class="envelope-wrapper">
+      <a href="1-哲学与思想.html" class="envelope" style="--stamp-bg: var(--stamp1)">
+        <!-- 邮票 -->
+        <div class="stamp" style="--stamp-bg: var(--stamp1)">
+          <div class="stamp-icon philosophy">
+            <span class="pupil"></span>
+            <span class="pupil"></span>
+            <span class="beak"></span>
+          </div>
+          <span class="stamp-label">智慧</span>
+          <span class="stamp-value">42</span>
+        </div>
+        <!-- 邮戳 -->
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <!-- 内容 -->
+        <div class="envelope-body">
+          <div class="topic-num">专题 1</div>
+          <div class="topic-title">哲学与思想</div>
+          <div class="topic-desc">对话尼采、亚里士多德、维特根斯坦等哲学大家，探讨理性、智慧与人生终极命题</div>
+          <div class="letter-count">42 封信</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ====== 专题 2：教育与成长 ====== -->
+    <div class="envelope-wrapper">
+      <a href="2-教育与成长.html" class="envelope" style="--stamp-bg: var(--stamp2)">
+        <div class="stamp" style="--stamp-bg: var(--stamp2)">
+          <div class="stamp-icon education">
+            <span class="bud"></span>
+            <span class="leaf-l"></span>
+            <span class="leaf-r"></span>
+            <span class="stem"></span>
+          </div>
+          <span class="stamp-label">成长</span>
+          <span class="stamp-value">37</span>
+        </div>
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <div class="envelope-body">
+          <div class="topic-num">专题 2</div>
+          <div class="topic-title">教育与成长</div>
+          <div class="topic-desc">从卢梭到杜威，从皮亚杰到终身教育，探寻教育本质与认知成长的底层逻辑</div>
+          <div class="letter-count">37 封信</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ====== 专题 3：文明与制度 ====== -->
+    <div class="envelope-wrapper">
+      <a href="3-文明与制度.html" class="envelope" style="--stamp-bg: var(--stamp3)">
+        <div class="stamp" style="--stamp-bg: var(--stamp3)">
+          <div class="stamp-icon civilization" style="position:relative">
+            <span class="pediment"></span>
+            <span class="pillar"></span>
+            <span class="pillar"></span>
+            <span class="pillar"></span>
+          </div>
+          <span class="stamp-label">文明</span>
+          <span class="stamp-value">48</span>
+        </div>
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <div class="envelope-body">
+          <div class="topic-num">专题 3</div>
+          <div class="topic-title">文明与制度</div>
+          <div class="topic-desc">穿越罗马兴衰、启蒙运动、美国建国与犹太文明，洞察历史规律与制度演进</div>
+          <div class="letter-count">48 封信</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ====== 专题 4：科技与趋势 ====== -->
+    <div class="envelope-wrapper">
+      <a href="4-科技与趋势.html" class="envelope" style="--stamp-bg: var(--stamp4)">
+        <div class="stamp" style="--stamp-bg: var(--stamp4)">
+	          <div class="stamp-icon technology">
+              <span class="node"></span><span class="node"></span>
+              <span class="node"></span><span class="node"></span>
+            </div>
+            <span class="stamp-label">科技</span>
+            <span class="stamp-value">39</span>
+        </div>
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <div class="envelope-body">
+          <div class="topic-num">专题 4</div>
+          <div class="topic-title">科技与趋势</div>
+          <div class="topic-desc">从碳中和到脑机接口，从AI到6G，硅谷前沿观察与未来科技全景解读</div>
+          <div class="letter-count">39 封信</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ====== 专题 5：财富与投资 ====== -->
+    <div class="envelope-wrapper">
+      <a href="5-财富与投资.html" class="envelope" style="--stamp-bg: var(--stamp5)">
+        <div class="stamp" style="--stamp-bg: var(--stamp5)">
+          <div class="stamp-icon wealth">
+              <span class="coin"></span>
+              <span class="coin"></span>
+              <span class="coin"></span>
+            </div>
+            <span class="stamp-label">财富</span>
+            <span class="stamp-value">37</span>
+        </div>
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <div class="envelope-body">
+          <div class="topic-num">专题 5</div>
+          <div class="topic-title">财富与投资</div>
+          <div class="topic-desc">从财务规划到资产配置，从通胀应对到数据资产，构建个人财富增长的系统框架</div>
+          <div class="letter-count">37 封信</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ====== 专题 6：人生算法 ====== -->
+    <div class="envelope-wrapper">
+      <a href="6-人生算法.html" class="envelope" style="--stamp-bg: var(--stamp6)">
+        <div class="stamp" style="--stamp-bg: var(--stamp6)">
+          <div class="stamp-icon algorithm"></div>
+            <span class="stamp-label">算法</span>
+            <span class="stamp-value">50</span>
+        </div>
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <div class="envelope-body">
+          <div class="topic-num">专题 6</div>
+          <div class="topic-title">人生算法</div>
+          <div class="topic-desc">从职业选择到时间管理，从人际关系到思维升级，用算法思维优化人生决策</div>
+          <div class="letter-count">50 封信</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ====== 专题 7：文学与艺术 ====== -->
+    <div class="envelope-wrapper">
+      <a href="7-文学与艺术.html" class="envelope" style="--stamp-bg: var(--stamp7)">
+        <div class="stamp" style="--stamp-bg: var(--stamp7)">
+          <div class="stamp-icon arts">
+              <span class="feather"></span>
+              <span class="quill"></span>
+              <span class="ink"></span>
+            </div>
+            <span class="stamp-label">艺术</span>
+            <span class="stamp-value">36</span>
+        </div>
+        <div class="postmark">
+          <span class="pm-loc">硅谷</span>邮局<br>2026
+        </div>
+        <div class="envelope-body">
+          <div class="topic-num">专题 7</div>
+          <div class="topic-title">文学与艺术</div>
+          <div class="topic-desc">从莎士比亚到但丁，从威尔第到村上春树，穿行经典文学艺术的永恒之美</div>
+          <div class="letter-count">36 封信</div>
+        </div>
+      </a>
+    </div>
+
+  </div><!-- /.envelope-grid -->
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    基于吴军·硅谷来信³ 289篇笔记 · MKS最小知识集方法 · 2026.05.29
+  </footer>
+
+  <!-- 底部航空邮件条纹 -->
+  <div class="airmail-strip airmail-strip-bottom"></div>
 </div>
-<div class="grid">
-<a href="1-哲学与思想.html" class="card">
-<div class="num">专题 1</div>
-<h3>哲学与思想</h3>
-<div class="desc">对话尼采、亚里士多德、维特根斯坦等哲学大家，探讨理性、智慧与人生终极命题</div>
-<div class="count">42篇笔记</div>
-</a>
-<a href="2-教育与成长.html" class="card">
-<div class="num">专题 2</div>
-<h3>教育与成长</h3>
-<div class="desc">从卢梭到杜威，从皮亚杰到终身教育，探寻教育本质与认知成长的底层逻辑</div>
-<div class="count">37篇笔记</div>
-</a>
-<a href="3-文明与制度.html" class="card">
-<div class="num">专题 3</div>
-<h3>文明与制度</h3>
-<div class="desc">穿越罗马兴衰、启蒙运动、美国建国与犹太文明，洞察历史规律与制度演进</div>
-<div class="count">48篇笔记</div>
-</a>
-<a href="4-科技与趋势.html" class="card">
-<div class="num">专题 4</div>
-<h3>科技与趋势</h3>
-<div class="desc">从碳中和到脑机接口，从AI到6G，硅谷前沿观察与未来科技全景解读</div>
-<div class="count">39篇笔记</div>
-</a>
-<a href="5-财富与投资.html" class="card">
-<div class="num">专题 5</div>
-<h3>财富与投资</h3>
-<div class="desc">从财务规划到资产配置，从通胀应对到数据资产，构建个人财富增长的系统框架</div>
-<div class="count">37篇笔记</div>
-</a>
-<a href="6-人生算法.html" class="card">
-<div class="num">专题 6</div>
-<h3>人生算法</h3>
-<div class="desc">从职业选择到时间管理，从人际关系到思维升级，用算法思维优化人生决策</div>
-<div class="count">50篇笔记</div>
-</a>
-<a href="7-文学与艺术.html" class="card">
-<div class="num">专题 7</div>
-<h3>文学与艺术</h3>
-<div class="desc">从莎士比亚到但丁，从威尔第到村上春树，穿行经典文学艺术的永恒之美</div>
-<div class="count">36篇笔记</div>
-</a>
-</div>
-<div class="footer">基于吴军·硅谷来信³ 289篇笔记 | MKS最小知识集方法 | 2026.05.29</div>
+
 </body>
 </html>
