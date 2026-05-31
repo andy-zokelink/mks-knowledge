@@ -114,33 +114,14 @@ a:hover { text-decoration: underline; }
 .svg-wrap { overflow-x: auto; margin: 10px 0; }
 .svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
 
-/* Flip card */
-.flip-container { perspective: 1000px; width: 100%; max-width: 480px; margin: 0 auto; }
-.flipper {
-  position: relative; width: 100%; height: 320px;
-  transition: transform 0.6s; transform-style: preserve-3d;
-}
-.flipper.flipped { transform: rotateY(180deg); }
-.flip-front, .flip-back {
-  position: absolute; width: 100%; backface-visibility: hidden;
-  border-radius: var(--radius); padding: 24px;
-  background: var(--card); box-shadow: var(--shadow);
-  border: 1px solid var(--border); height: 320px;
-}
-.flip-back { transform: rotateY(180deg); }
-.flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
-.flip-btn {
-  background: var(--accent); color: #fff;
-}
-.flip-btn:hover { background: #a93226; }
-.flip-nav button {
-  padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
-  color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
-  font-family: inherit; transition: all 0.2s;
-}
-.flip-nav button:hover { background: var(--accent); color: #fff; }
-.flip-nav .learned-btn { background: #27ae60; color: #fff; border-color: #27ae60; }
-.flip-nav .learned-btn.learned { background: #fff; color: #27ae60; }
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
 /* Question styling */
 .quiz-question { margin-bottom: 20px; }
@@ -222,7 +203,7 @@ th { color: var(--accent); font-weight: 600; }
   .container { padding: 0 8px 40px; }
   .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
-  .flip-front, .flip-back { padding: 16px; min-height: 320px; }
+    .flip-front, .flip-back { padding: 16px; min-height: 280px; }
 }
 </style>
 </head>
@@ -305,23 +286,17 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 1: 知识卡片 ==================== -->
 <div class="tab-content" data-tab="1">
-<div class="card">
-  <h2 style="text-align:center;">翻转知识卡片</h2>
-  <p style="text-align:center;color:var(--text-light);">点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度</p>
-</div>
-<div class="flip-container" id="flipContainer">
-  <div class="flipper" id="flipper" onclick="flipCard()">
-    <div class="flip-front" id="flipFront"></div>
-    <div class="flip-back" id="flipBack"></div>
-  </div>
-</div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-  <button onclick="prevCard()">◀ 上一个</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">✓ 标记已学习</button>
-  <button onclick="nextCard()">下一个 ▶</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
-<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span> &nbsp; </p>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ==================== TAB 2: 题库系统 ==================== -->
@@ -414,52 +389,52 @@ th { color: var(--accent); font-weight: 600; }
 // ======== DATA ========
 
 const concepts = [
-  { id: 0, name: "证伪思维", star: true, short: "科学理论必须可被证明错误，区分科学与伪科学的根本标准",
+  { id:'c1', name: "证伪思维", star: true, short: "科学理论必须可被证明错误，区分科学与伪科学的根本标准",
     def: "科学理论必须可被证明错误。不可证伪的命题（如算命、占星）不是科学，而是伪科学。这是区分科学与非科学的根本标准，由卡尔·波普尔提出。",
     analogy: "就像法庭上的「无罪推定」——控方必须提供可被反驳的证据，而不是让被告自证清白。科学也需要随时准备接受「反证」。",
     example: "爱因斯坦的广义相对论预言光线会在引力场中弯曲——这是一个可证伪的预测。1919年日食观测证实了它。如果观测结果不符，理论就会被推翻。",
     counter: "「明天可能下雨也可能不下」——这个陈述永远正确，但毫无信息量，因为它不可证伪。算命先生说「你近期会有贵人相助」同样无法被证明错误。" },
-  { id: 1, name: "逻辑判断", star: true, short: "运用逻辑推理筛选信息，识别论证中的矛盾和谬误",
+  { id:'c2', name: "逻辑判断", star: true, short: "运用逻辑推理筛选信息，识别论证中的矛盾和谬误",
     def: "运用逻辑推理筛选信息，识别论证中的矛盾、谬误和不合理假设。在信息过载时代，这是最稀缺的过滤能力——判断对错的难度远低于解决问题本身。",
     analogy: "像一个思维「筛子」——把信息放进去，筛掉那些逻辑不自洽的，留下经得起推敲的。好的论证像精密的瑞士手表，每个齿轮都咬合紧密。",
     example: "面对「罗斯柴尔德家族财富以6%年增长率持续200年已达几十万亿美元」的说法，吴军用逻辑反驳：如果陶朱公1两银子以6%增长2500年，财富将达10^63两，远超宇宙原子总数，由此揭露指数增长在现实中的荒谬性。",
     counter: "「英国靠老处女称霸世界」——猫多→老鼠少→蜜蜂多→苜蓿多→牛多→牛肉多→水手强→海军强→称霸。每步仅有微弱相关性，经多轮传递后关联近乎为零，是典型过度解读。" },
-  { id: 2, name: "成本思维", star: false, short: "通过分析背后的投入-产出逻辑判断动机合理性",
+  { id:'c3', name: "成本思维", star: false, short: "通过分析背后的投入-产出逻辑判断动机合理性",
     def: "通过分析行为背后的投入-产出逻辑，判断动机的合理性。理解「没有免费的午餐」，透过表面看本质。",
     analogy: "如同一副「商业透视镜」——戴上它，你看到的不再是销售人员热情的笑脸，而是他投入的时间成本和获客成本，以及这些成本最终由谁买单。",
     example: "老年人购买保健品：销售人员投入大量时间陪伴老人（时间成本），失败推销的成本需分摊到成交客户身上（获客成本），而保健品公司「出事即跑路」（犯错成本极低）。三方面揭示「关心」背后的逐利本质。",
     counter: "明星媒体人创业失败——原以为名气=能力，但忽略了原单位平台提供的背书价值。一旦脱离平台，维持名气的成本剧增而收益锐减。" },
-  { id: 3, name: "跨界思维", star: false, short: "跨领域融合产生创新，前提是原领域具备扎实基础",
+  { id:'c4', name: "跨界思维", star: false, short: "跨领域融合产生创新，前提是原领域具备扎实基础",
     def: "跨领域融合产生创新，打破单一思维定式。真正的跨界是结果而非目的，需要扎实的原领域基础。",
     analogy: "如同生物界的「杂交优势」——两种不同基因的植物杂交，往往产生更优秀的后代。但前提是每一方的基因都足够优秀和稳定。",
     example: "贾里尼克（通信领域专家）将人工智能视为通信/数据问题而非模仿人类智能，突破传统计算机科学家的思维定式。特斯拉将IT领域的锂电池技术引入汽车行业，解决传统车企铅酸电池续航难题。",
     counter: "跨界不是「浅尝辄止」。爱因斯坦的小提琴仅为爱好（水平不高），不是真正的跨界。真正的跨界如冯·诺依曼——在数学、计算机、物理、博弈论等多个领域都有深刻建树。" },
-  { id: 4, name: "减法思维", star: true, short: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标",
+  { id:'c5', name: "减法思维", star: true, short: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标",
     def: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标。庄子「吾生也有涯，而知也无涯」——以有限追无限，必败。",
     analogy: "就像整理一个塞满杂物的房间——不是往里添置新柜子，而是果断扔掉不需要的东西。腾出的空间才是真正的收获。",
     example: "吴军2014年底从Google辞职：常规思维是高薪工作应优先保障，但他以「时间价值最大化」为标准，发现占用最多时间的高薪工作恰恰是需要舍弃的对象。硅谷一家视频识别公司从长长的任务清单减到仅保留1件核心事，最终被亚马逊高价收购。",
     counter: "同时做很多事的「低水平忙碌」——两倍时间仅获两倍收益。而集中时间做好一件事，两倍时间可获10倍收益。捡芝麻的人永远没有时间捡西瓜。" },
-  { id: 5, name: "常识判断", star: true, short: "常识优于复杂模型，简单规律胜过新奇解释",
+  { id:'c6', name: "常识判断", star: true, short: "常识优于复杂模型，简单规律胜过新奇解释",
     def: "常识优于复杂模型，简单规律胜过新奇解释。经过长期证伪筛选的常识，往往比「专家」的复杂理论更可靠。",
     analogy: "就像天气预报——老祖宗看云识天气的经验（「朝霞不出门，晚霞行千里」）有时比复杂的数值预报模型还准。常识是千百年经验浓缩的智慧。",
     example: "巴菲特不看《华尔街日报》、不信股评、不画K线。他通过逛百货店观察商品受欢迎程度、看店铺顾客数量来判断投资标的。2008年通过比较苹果店与微软店的顾客流量，准确预测苹果市值将超越微软。",
     counter: "过度解读的「新奇解释」——如将温州个别老板跑路推导为中国经济寒冬，忽视数十万家企业中个别案例不具统计意义。常识告诉我们：个别企业破产是行业整合常态。" },
-  { id: 6, name: "专业素养", star: false, short: "稳定性 + 流程化 + 体系知识 + 持续学习",
+  { id:'c7', name: "专业素养", star: false, short: "稳定性 + 流程化 + 体系知识 + 持续学习",
     def: "稳定性 + 流程化 + 体系知识 + 持续学习。职业选手与业余选手的本质区别不在于偶尔的超常发挥，而在于持续稳定的高水平输出。",
     analogy: "就像一个顶级钢琴家演奏简单的《小奏鸣曲》——看似平凡的曲目，却能弹出丰富的层次感和情感张力。真正的专业是在简单事物上展现极致水准。",
     example: "吴军与职业高尔夫教练杰夫同场竞技：杰夫9洞成绩-3杆（持续稳定），而吴军+9杆（好球与坏球交替）。职业选手的稳定发挥来自于严格遵循流程、情绪控制和系统的做事方法。",
     counter: "业余爱好者可能偶尔打出「神仙球」，但无法复制。就像「民间科学家」可能碰巧说对一件事，但缺乏系统方法和可重复性，无法稳定输出。" },
-  { id: 7, name: "渐进改良", star: false, short: "「最好是更好的敌人」——迭代优于一步到位",
+  { id:'c8', name: "渐进改良", star: false, short: "「最好是更好的敌人」——迭代优于一步到位",
     def: "「最好是更好的敌人」——过度追求完美可能导致一事无成，接受阶段性改进反而更有效。迭代优于一步到位。",
     analogy: "就像手机系统更新——不是等一个「完美版本」再发布，而是每周/每月推送小更新，不断修复bug、增加功能。多次「更好」的累积最终超越一次「最好」。",
     example: "美国禁枪法案：民主党追求全面禁枪（「最好」），共和党只同意背景调查（「更好」），双方互不让步导致法案均未通过，禁枪改革完全失败。如果接受部分改进（如对不良记录者禁枪），至少能实现有限成果。",
     counter: "特斯拉电动车：存在做工粗糙、系统死机等问题，但通过持续迭代5年间品质提升速度远超传统车企。若追求初始完美，可能「十几年造不出车」。" },
-  { id: 8, name: "期望值最大化", star: false, short: "通过定义收益函数驱动系统自动优化",
+  { id:'c9', name: "期望值最大化", star: false, short: "通过定义收益函数驱动系统自动优化",
     def: "通过定义合理的收益函数驱动系统自动优化。在组织管理中，设定正确的激励机制比「教育员工」更有效。",
     analogy: "就像设计一个自动导航系统——你不需要手动控制每一个操作，只需设定好目的地（收益函数），导航系统会自动计算出最优路径并不断调整方向。",
     example: "高考政策：若体育成绩占高考50%，家长就会自动让孩子参加体育锻炼，学校会加大体育投入。Google将专利奖励提高后专利数量跃居全球前十。IBM将专利申请与绩效挂钩，成为美国专利冠军。",
     counter: "只讲价值观不设计激励——很多公司天天开会「教育员工」要创新、要合作，但考核体系却只奖励短期业绩。员工行为会向收益函数方向优化，而非口头说教的方向。" },
-  { id: 9, name: "一万小时定律", star: false, short: "技能精进需要有效积累，避免四大误区",
+  { id:'c10', name: "一万小时定律", star: false, short: "技能精进需要有效积累，避免四大误区",
     def: "技能精进需要有效积累而非简单重复。避免四大误区：简单重复、习惯性失败、林黛玉式困境（自我封闭）、狗熊掰棒子（无积累）。",
     analogy: "就像运动员训练——不是每天跑同样的距离就叫训练，而是要有针对性地突破自己的极限。有效的一万小时像是雕刻家反复雕琢，无效的一万小时像是水流反复冲刷同一块石头。",
     example: "吴军提出「三板斧」破解四大困境：第一板斧「愿景-目标-道路」避免简单重复；第二板斧「从不同意见中找合理之处」打破习惯性失败和林黛玉式困境；第三板斧「凡事做记录」解决狗熊掰棒子问题。",
@@ -642,257 +617,90 @@ const saQuestions = [
   { q: "请用「看问题的方法」和「做事的方法」两个维度分析莱特兄弟成功发明飞机的原因。", ref: "莱特兄弟的成功体现了「看问题方法×做事方法」的完美结合。看问题方法：1）科学态度——系统学习凯利的空气动力学理论，而非凭经验摸索；2）逻辑判断——通过风洞试验修正李林塔尔的升力计算误差（多算60%）；3）证伪思维——用可重复试验验证每一个假设。做事方法：1）充分准备（减法思维）——宁可做700-1000次滑翔试验，不仓促试飞；2）专业素养——科学方法进行200多种翼形测试；3）渐进改良——从风筝→滑翔机→动力飞机，逐步迭代。两者结合，形成强大的「认知操作系统」，最终改变了人类交通史。" }
 ];
 
+// ======== SVG CONCEPT MAP ========
 function renderSVG() {
-  // Concept map pre-rendered by Graphviz dot
-  // Generated at build time from concepts array data
-  const svg = `<svg width="1382pt" height="447pt"
- viewBox="0.00 0.00 1382.00 446.95" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 442.95)">
-<title>G</title>
-<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-442.95 1378,-442.95 1378,4 -4,4"/>
-<!-- root -->
-<g id="node1" class="node">
-<title>root</title>
-<ellipse fill="#c0392b" stroke="black" stroke-width="2" cx="612.5" cy="-401.48" rx="152.06" ry="37.45"/>
-<text text-anchor="middle" x="612.5" y="-412.78" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">思维方法论</text>
-<text text-anchor="middle" x="612.5" y="-397.78" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">━━━━━━━━━━━</text>
-<text text-anchor="middle" x="612.5" y="-382.78" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">看问题 × 做事 = 认知操作系统</text>
-</g>
-<!-- see -->
-<g id="node2" class="node">
-<title>see</title>
-<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M433.5,-328C433.5,-328 355.5,-328 355.5,-328 349.5,-328 343.5,-322 343.5,-316 343.5,-316 343.5,-304 343.5,-304 343.5,-298 349.5,-292 355.5,-292 355.5,-292 433.5,-292 433.5,-292 439.5,-292 445.5,-298 445.5,-304 445.5,-304 445.5,-316 445.5,-316 445.5,-322 439.5,-328 433.5,-328"/>
-<text text-anchor="middle" x="394.5" y="-306.3" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">看问题的方法</text>
-</g>
-<!-- root&#45;&gt;see -->
-<g id="edge1" class="edge">
-<title>root&#45;&gt;see</title>
-<path fill="none" stroke="#c0392b" stroke-width="2" d="M535.95,-369.06C506.01,-356.77 472.48,-343 445.58,-331.96"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="446.57,-328.59 435.99,-328.03 443.91,-335.06 446.57,-328.59"/>
-</g>
-<!-- do -->
-<g id="node3" class="node">
-<title>do</title>
-<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M996.5,-328C996.5,-328 932.5,-328 932.5,-328 926.5,-328 920.5,-322 920.5,-316 920.5,-316 920.5,-304 920.5,-304 920.5,-298 926.5,-292 932.5,-292 932.5,-292 996.5,-292 996.5,-292 1002.5,-292 1008.5,-298 1008.5,-304 1008.5,-304 1008.5,-316 1008.5,-316 1008.5,-322 1002.5,-328 996.5,-328"/>
-<text text-anchor="middle" x="964.5" y="-306.3" font-family="Noto Serif SC" font-size="14.00" fill="#ffffff">做事的方法</text>
-</g>
-<!-- root&#45;&gt;do -->
-<g id="edge2" class="edge">
-<title>root&#45;&gt;do</title>
-<path fill="none" stroke="#c0392b" stroke-width="2" d="M716.68,-373.99C780.35,-357.81 859.16,-337.78 910.57,-324.71"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="911.65,-328.05 920.48,-322.19 909.92,-321.26 911.65,-328.05"/>
-</g>
-<!-- falsify -->
-<g id="node4" class="node">
-<title>falsify</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M119,-256C119,-256 12,-256 12,-256 6,-256 0,-250 0,-244 0,-244 0,-230 0,-230 0,-224 6,-218 12,-218 12,-218 119,-218 119,-218 125,-218 131,-224 131,-230 131,-230 131,-244 131,-244 131,-250 125,-256 119,-256"/>
-<text text-anchor="middle" x="65.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">证伪思维 ★</text>
-<text text-anchor="middle" x="65.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">区分科学与伪科学</text>
-</g>
-<!-- see&#45;&gt;falsify -->
-<g id="edge3" class="edge">
-<title>see&#45;&gt;falsify</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M343.32,-298.79C294.06,-288.85 217.23,-273.08 141.09,-256.1"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="141.85,-252.68 131.32,-253.92 140.32,-259.51 141.85,-252.68"/>
-</g>
-<!-- logic -->
-<g id="node5" class="node">
-<title>logic</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M239.5,-256C239.5,-256 161.5,-256 161.5,-256 155.5,-256 149.5,-250 149.5,-244 149.5,-244 149.5,-230 149.5,-230 149.5,-224 155.5,-218 161.5,-218 161.5,-218 239.5,-218 239.5,-218 245.5,-218 251.5,-224 251.5,-230 251.5,-230 251.5,-244 251.5,-244 251.5,-250 245.5,-256 239.5,-256"/>
-<text text-anchor="middle" x="200.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">逻辑判断 ★</text>
-<text text-anchor="middle" x="200.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">信息筛除谬误</text>
-</g>
-<!-- see&#45;&gt;logic -->
-<g id="edge4" class="edge">
-<title>see&#45;&gt;logic</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M348.03,-291.99C321.44,-282.26 287.83,-269.96 259.4,-259.56"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="260.57,-256.26 249.98,-256.11 258.17,-262.83 260.57,-256.26"/>
-</g>
-<!-- cost -->
-<g id="node6" class="node">
-<title>cost</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M373.5,-256C373.5,-256 281.5,-256 281.5,-256 275.5,-256 269.5,-250 269.5,-244 269.5,-244 269.5,-230 269.5,-230 269.5,-224 275.5,-218 281.5,-218 281.5,-218 373.5,-218 373.5,-218 379.5,-218 385.5,-224 385.5,-230 385.5,-230 385.5,-244 385.5,-244 385.5,-250 379.5,-256 373.5,-256"/>
-<text text-anchor="middle" x="327.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">成本思维</text>
-<text text-anchor="middle" x="327.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">投入产出透视镜</text>
-</g>
-<!-- see&#45;&gt;cost -->
-<g id="edge5" class="edge">
-<title>see&#45;&gt;cost</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M378.28,-291.81C370.21,-283.26 360.3,-272.76 351.39,-263.31"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="353.91,-260.89 344.5,-256.02 348.82,-265.69 353.91,-260.89"/>
-</g>
-<!-- common_sense -->
-<g id="node7" class="node">
-<title>common_sense</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M507.5,-256C507.5,-256 415.5,-256 415.5,-256 409.5,-256 403.5,-250 403.5,-244 403.5,-244 403.5,-230 403.5,-230 403.5,-224 409.5,-218 415.5,-218 415.5,-218 507.5,-218 507.5,-218 513.5,-218 519.5,-224 519.5,-230 519.5,-230 519.5,-244 519.5,-244 519.5,-250 513.5,-256 507.5,-256"/>
-<text text-anchor="middle" x="461.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">常识判断 ★</text>
-<text text-anchor="middle" x="461.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">简单规律胜复杂</text>
-</g>
-<!-- see&#45;&gt;common_sense -->
-<g id="edge6" class="edge">
-<title>see&#45;&gt;common_sense</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M410.72,-291.81C418.79,-283.26 428.7,-272.76 437.61,-263.31"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="440.18,-265.69 444.5,-256.02 435.09,-260.89 440.18,-265.69"/>
-</g>
-<!-- expected_val -->
-<g id="node8" class="node">
-<title>expected_val</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M657,-256C657,-256 550,-256 550,-256 544,-256 538,-250 538,-244 538,-244 538,-230 538,-230 538,-224 544,-218 550,-218 550,-218 657,-218 657,-218 663,-218 669,-224 669,-230 669,-230 669,-244 669,-244 669,-250 663,-256 657,-256"/>
-<text text-anchor="middle" x="603.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">期望值最大化</text>
-<text text-anchor="middle" x="603.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">收益函数驱动优化</text>
-</g>
-<!-- see&#45;&gt;expected_val -->
-<g id="edge7" class="edge">
-<title>see&#45;&gt;expected_val</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M444.56,-291.99C473.33,-282.22 509.73,-269.85 540.44,-259.42"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="541.85,-262.64 550.19,-256.11 539.6,-256.01 541.85,-262.64"/>
-</g>
-<!-- subtract -->
-<g id="node9" class="node">
-<title>subtract</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M810,-256C810,-256 699,-256 699,-256 693,-256 687,-250 687,-244 687,-244 687,-230 687,-230 687,-224 693,-218 699,-218 699,-218 810,-218 810,-218 816,-218 822,-224 822,-230 822,-230 822,-244 822,-244 822,-250 816,-256 810,-256"/>
-<text text-anchor="middle" x="754.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">减法思维 ★</text>
-<text text-anchor="middle" x="754.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">主动舍弃·聚焦核心</text>
-</g>
-<!-- do&#45;&gt;subtract -->
-<g id="edge8" class="edge">
-<title>do&#45;&gt;subtract</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M920.48,-294.12C890.59,-284.01 850.62,-270.5 817.4,-259.27"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="818.37,-255.9 807.77,-256.01 816.12,-262.53 818.37,-255.9"/>
-</g>
-<!-- crossover -->
-<g id="node10" class="node">
-<title>crossover</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M944.5,-256C944.5,-256 852.5,-256 852.5,-256 846.5,-256 840.5,-250 840.5,-244 840.5,-244 840.5,-230 840.5,-230 840.5,-224 846.5,-218 852.5,-218 852.5,-218 944.5,-218 944.5,-218 950.5,-218 956.5,-224 956.5,-230 956.5,-230 956.5,-244 956.5,-244 956.5,-250 950.5,-256 944.5,-256"/>
-<text text-anchor="middle" x="898.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">跨界思维</text>
-<text text-anchor="middle" x="898.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">跨领域融合创新</text>
-</g>
-<!-- do&#45;&gt;crossover -->
-<g id="edge9" class="edge">
-<title>do&#45;&gt;crossover</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M948.52,-291.81C940.65,-283.35 931.01,-272.97 922.29,-263.6"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="924.62,-260.96 915.25,-256.02 919.5,-265.73 924.62,-260.96"/>
-</g>
-<!-- professionalism -->
-<g id="node11" class="node">
-<title>professionalism</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M1074,-256C1074,-256 987,-256 987,-256 981,-256 975,-250 975,-244 975,-244 975,-230 975,-230 975,-224 981,-218 987,-218 987,-218 1074,-218 1074,-218 1080,-218 1086,-224 1086,-230 1086,-230 1086,-244 1086,-244 1086,-250 1080,-256 1074,-256"/>
-<text text-anchor="middle" x="1030.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">专业素养</text>
-<text text-anchor="middle" x="1030.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">稳定·流程·体系</text>
-</g>
-<!-- do&#45;&gt;professionalism -->
-<g id="edge10" class="edge">
-<title>do&#45;&gt;professionalism</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M980.48,-291.81C988.35,-283.35 997.99,-272.97 1006.71,-263.6"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="1009.5,-265.73 1013.75,-256.02 1004.38,-260.96 1009.5,-265.73"/>
-</g>
-<!-- incremental -->
-<g id="node12" class="node">
-<title>incremental</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M1223,-256C1223,-256 1116,-256 1116,-256 1110,-256 1104,-250 1104,-244 1104,-244 1104,-230 1104,-230 1104,-224 1110,-218 1116,-218 1116,-218 1223,-218 1223,-218 1229,-218 1235,-224 1235,-230 1235,-230 1235,-244 1235,-244 1235,-250 1229,-256 1223,-256"/>
-<text text-anchor="middle" x="1169.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">渐进改良</text>
-<text text-anchor="middle" x="1169.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">最好是更好的敌人</text>
-</g>
-<!-- do&#45;&gt;incremental -->
-<g id="edge11" class="edge">
-<title>do&#45;&gt;incremental</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M1008.73,-293.68C1037.64,-283.67 1075.8,-270.45 1107.69,-259.41"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="1109.07,-262.63 1117.37,-256.05 1106.78,-256.02 1109.07,-262.63"/>
-</g>
-<!-- ten_k_hours -->
-<g id="node13" class="node">
-<title>ten_k_hours</title>
-<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" d="M1362,-256C1362,-256 1265,-256 1265,-256 1259,-256 1253,-250 1253,-244 1253,-244 1253,-230 1253,-230 1253,-224 1259,-218 1265,-218 1265,-218 1362,-218 1362,-218 1368,-218 1374,-224 1374,-230 1374,-230 1374,-244 1374,-244 1374,-250 1368,-256 1362,-256"/>
-<text text-anchor="middle" x="1313.5" y="-240.8" font-family="Noto Serif SC" font-size="14.00">一万小时定律</text>
-<text text-anchor="middle" x="1313.5" y="-225.8" font-family="Noto Serif SC" font-size="14.00">有效积累·三板斧</text>
-</g>
-<!-- do&#45;&gt;ten_k_hours -->
-<g id="edge12" class="edge">
-<title>do&#45;&gt;ten_k_hours</title>
-<path fill="none" stroke="#d4a574" stroke-width="1.5" d="M1008.82,-301.57C1062.19,-292.41 1154.72,-275.86 1243.06,-256.26"/>
-<polygon fill="#d4a574" stroke="#d4a574" stroke-width="1.5" points="1243.98,-259.64 1252.97,-254.04 1242.45,-252.81 1243.98,-259.64"/>
-</g>
-<!-- falsify&#45;&gt;logic -->
-<g id="edge18" class="edge">
-<title>falsify&#45;&gt;logic</title>
-<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M131.15,-237C133.8,-237 136.45,-237 139.09,-237"/>
-<polygon fill="#d4a574" stroke="#d4a574" points="139.3,-240.5 149.3,-237 139.3,-233.5 139.3,-240.5"/>
-</g>
-<!-- cognition -->
-<g id="node14" class="node">
-<title>cognition</title>
-<path fill="#fffaf2" stroke="#8b7355" stroke-width="1.5" d="M518,-182C518,-182 437,-182 437,-182 431,-182 425,-176 425,-170 425,-170 425,-156 425,-156 425,-150 431,-144 437,-144 437,-144 518,-144 518,-144 524,-144 530,-150 530,-156 530,-156 530,-170 530,-170 530,-176 524,-182 518,-182"/>
-<text text-anchor="middle" x="477.5" y="-166.8" font-family="Noto Serif SC" font-size="14.00">认知操作系统</text>
-<text text-anchor="middle" x="477.5" y="-151.8" font-family="Noto Serif SC" font-size="14.00">(思维 × 行为)</text>
-</g>
-<!-- falsify&#45;&gt;cognition -->
-<g id="edge13" class="edge">
-<title>falsify&#45;&gt;cognition</title>
-<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M131.29,-219.91C134.4,-219.24 137.48,-218.6 140.5,-218 235.56,-199.01 346.75,-182.23 414.64,-172.6"/>
-<polygon fill="#8b7355" stroke="#8b7355" points="415.33,-176.04 424.74,-171.18 414.35,-169.11 415.33,-176.04"/>
-</g>
-<!-- logic&#45;&gt;cognition -->
-<g id="edge14" class="edge">
-<title>logic&#45;&gt;cognition</title>
-<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M251.52,-220.52C254.55,-219.65 257.56,-218.81 260.5,-218 312.25,-203.81 371.39,-189.2 414.84,-178.76"/>
-<polygon fill="#8b7355" stroke="#8b7355" points="415.79,-182.13 424.7,-176.4 414.16,-175.32 415.79,-182.13"/>
-</g>
-<!-- common_sense&#45;&gt;cost -->
-<g id="edge19" class="edge">
-<title>common_sense&#45;&gt;cost</title>
-<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M403.39,-237C400.8,-237 398.2,-237 395.61,-237"/>
-<polygon fill="#d4a574" stroke="#d4a574" points="395.6,-233.5 385.6,-237 395.6,-240.5 395.6,-233.5"/>
-</g>
-<!-- subtract&#45;&gt;incremental -->
-<g id="edge20" class="edge">
-<title>subtract&#45;&gt;incremental</title>
-<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M789.84,-256.05C804.98,-263.19 823.15,-270.43 840.5,-274 947.59,-296.06 979.56,-296.76 1086.5,-274 1099.9,-271.15 1113.77,-265.97 1126.23,-260.38"/>
-<polygon fill="#d4a574" stroke="#d4a574" points="1127.9,-263.46 1135.47,-256.05 1124.93,-257.12 1127.9,-263.46"/>
-</g>
-<!-- subtract&#45;&gt;cognition -->
-<g id="edge15" class="edge">
-<title>subtract&#45;&gt;cognition</title>
-<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M686.74,-218.39C642.01,-206.76 583.83,-191.64 540.18,-180.29"/>
-<polygon fill="#8b7355" stroke="#8b7355" points="540.81,-176.84 530.25,-177.71 539.05,-183.62 540.81,-176.84"/>
-</g>
-<!-- crossover&#45;&gt;professionalism -->
-<g id="edge22" class="edge">
-<title>crossover&#45;&gt;professionalism</title>
-<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M956.51,-237C959.16,-237 961.82,-237 964.47,-237"/>
-<polygon fill="#d4a574" stroke="#d4a574" points="964.72,-240.5 974.72,-237 964.72,-233.5 964.72,-240.5"/>
-</g>
-<!-- professionalism&#45;&gt;ten_k_hours -->
-<g id="edge21" class="edge">
-<title>professionalism&#45;&gt;ten_k_hours</title>
-<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M1060.61,-256.03C1073.59,-263.16 1089.26,-270.4 1104.5,-274 1161.16,-287.38 1178.7,-286.79 1235.5,-274 1248.08,-271.17 1261.01,-266.06 1272.63,-260.53"/>
-<polygon fill="#d4a574" stroke="#d4a574" points="1274.26,-263.63 1281.65,-256.04 1271.13,-257.37 1274.26,-263.63"/>
-</g>
-<!-- professionalism&#45;&gt;cognition -->
-<g id="edge16" class="edge">
-<title>professionalism&#45;&gt;cognition</title>
-<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M974.97,-219.99C971.78,-219.27 968.6,-218.6 965.5,-218 814.43,-188.92 633.81,-174 540.4,-167.73"/>
-<polygon fill="#8b7355" stroke="#8b7355" points="540.48,-164.23 530.27,-167.06 540.02,-171.21 540.48,-164.23"/>
-</g>
-<!-- destiny -->
-<g id="node15" class="node">
-<title>destiny</title>
-<path fill="#fffaf2" stroke="#c0392b" stroke-width="2" d="M492.5,-108C492.5,-108 462.5,-108 462.5,-108 456.5,-108 450.5,-102 450.5,-96 450.5,-96 450.5,-84 450.5,-84 450.5,-78 456.5,-72 462.5,-72 462.5,-72 492.5,-72 492.5,-72 498.5,-72 504.5,-78 504.5,-84 504.5,-84 504.5,-96 504.5,-96 504.5,-102 498.5,-108 492.5,-108"/>
-<text text-anchor="middle" x="477.5" y="-86.3" font-family="Noto Serif SC" font-size="14.00">命 运</text>
-</g>
-<!-- cognition&#45;&gt;destiny -->
-<g id="edge17" class="edge">
-<title>cognition&#45;&gt;destiny</title>
-<path fill="none" stroke="#c0392b" stroke-width="2" d="M477.5,-143.72C477.5,-135.97 477.5,-126.79 477.5,-118.27"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="481,-118 477.5,-108 474,-118 481,-118"/>
-</g>
-<!-- quote -->
-<g id="node16" class="node">
-<title>quote</title>
-<path fill="#fdf6ec" stroke="transparent" stroke-width="1.5" d="M577.5,-36C577.5,-36 377.5,-36 377.5,-36 371.5,-36 365.5,-30 365.5,-24 365.5,-24 365.5,-12 365.5,-12 365.5,-6 371.5,0 377.5,0 377.5,0 577.5,0 577.5,0 583.5,0 589.5,-6 589.5,-12 589.5,-12 589.5,-24 589.5,-24 589.5,-30 583.5,-36 577.5,-36"/>
-<text text-anchor="middle" x="477.5" y="-14.3" font-family="Noto Serif SC" font-size="14.00" fill="#c0392b">&quot;大富靠命，小富靠运&quot; —— 吴军</text>
-</g>
-<!-- destiny&#45;&gt;quote -->
-</g>
+  const svg = `<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2980b9"/></marker>
+    <marker id="arrOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e67e22"/></marker>
+    <marker id="arrPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8e44ad"/></marker>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
+    <filter id="shadow"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#c0392b" font-size="15" font-weight="700">看问题方法 × 做事方法 → 认知操作系统 → 命运</text>
+
+  <!-- Central convergence: 认知操作系统 -->
+  <ellipse cx="450" cy="330" rx="100" ry="38" fill="#8e44ad" opacity=".12" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="450" y="324" text-anchor="middle" fill="#8e44ad" font-weight="700" font-size="14">认知操作系统</text>
+  <text x="450" y="342" text-anchor="middle" fill="#8e44ad" font-weight="600" font-size="11">(思维 × 行为)</text>
+
+  <!-- × symbol -->
+  <text x="450" y="290" text-anchor="middle" fill="#c0392b" font-weight="700" font-size="20" opacity=".5">×</text>
+
+  <!-- Destiny -->
+  <line x1="450" y1="368" x2="450" y2="450" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <ellipse cx="450" cy="475" rx="50" ry="25" fill="#c0392b" opacity=".08"/>
+  <text x="450" y="480" text-anchor="middle" fill="#c0392b" font-weight="700" font-size="16">命 运</text>
+
+  <!-- Left column: 看问题的方法 -->
+  <rect x="30" y="65" width="185" height="36" rx="8" fill="#2980b9" opacity=".12"/>
+  <text x="122" y="89" text-anchor="middle" fill="#2980b9" font-weight="700" font-size="14">看问题的方法</text>
+
+  <!-- Left concepts: 证伪, 逻辑, 成本, 常识, 期望值 -->
+  <rect x="25" y="125" width="195" height="34" rx="6" fill="#2980b9" opacity=".08" stroke="#2980b9" stroke-width="1"/>
+  <text x="122" y="147" text-anchor="middle" fill="#2980b9" font-weight="600" font-size="12">证伪思维 ★</text>
+  <line x1="30" y1="142" x2="350" y2="330" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="25" y="173" width="195" height="34" rx="6" fill="#2980b9" opacity=".08" stroke="#2980b9" stroke-width="1"/>
+  <text x="122" y="195" text-anchor="middle" fill="#2980b9" font-weight="600" font-size="12">逻辑判断 ★</text>
+  <line x1="30" y1="190" x2="350" y2="330" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="25" y="221" width="195" height="34" rx="6" fill="#2980b9" opacity=".08" stroke="#2980b9" stroke-width="1"/>
+  <text x="122" y="243" text-anchor="middle" fill="#2980b9" font-weight="600" font-size="12">成本思维</text>
+  <line x1="30" y1="238" x2="350" y2="330" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="25" y="269" width="195" height="34" rx="6" fill="#2980b9" opacity=".08" stroke="#2980b9" stroke-width="1"/>
+  <text x="122" y="291" text-anchor="middle" fill="#2980b9" font-weight="600" font-size="12">常识判断 ★</text>
+  <line x1="30" y1="286" x2="350" y2="330" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="25" y="317" width="195" height="34" rx="6" fill="#2980b9" opacity=".08" stroke="#2980b9" stroke-width="1"/>
+  <text x="122" y="339" text-anchor="middle" fill="#2980b9" font-weight="600" font-size="12">期望值最大化</text>
+  <line x1="30" y1="334" x2="350" y2="330" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <!-- Right column: 做事的方法 -->
+  <rect x="685" y="65" width="185" height="36" rx="8" fill="#e67e22" opacity=".12"/>
+  <text x="777" y="89" text-anchor="middle" fill="#e67e22" font-weight="700" font-size="14">做事的方法</text>
+
+  <!-- Right concepts: 减法, 跨界, 专业, 渐进, 一万小时 -->
+  <rect x="680" y="125" width="195" height="34" rx="6" fill="#e67e22" opacity=".08" stroke="#e67e22" stroke-width="1"/>
+  <text x="777" y="147" text-anchor="middle" fill="#e67e22" font-weight="600" font-size="12">减法思维 ★</text>
+  <line x1="870" y1="142" x2="550" y2="330" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="680" y="173" width="195" height="34" rx="6" fill="#e67e22" opacity=".08" stroke="#e67e22" stroke-width="1"/>
+  <text x="777" y="195" text-anchor="middle" fill="#e67e22" font-weight="600" font-size="12">跨界思维</text>
+  <line x1="870" y1="190" x2="550" y2="330" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="680" y="221" width="195" height="34" rx="6" fill="#e67e22" opacity=".08" stroke="#e67e22" stroke-width="1"/>
+  <text x="777" y="243" text-anchor="middle" fill="#e67e22" font-weight="600" font-size="12">专业素养</text>
+  <line x1="870" y1="238" x2="550" y2="330" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="680" y="269" width="195" height="34" rx="6" fill="#e67e22" opacity=".08" stroke="#e67e22" stroke-width="1"/>
+  <text x="777" y="291" text-anchor="middle" fill="#e67e22" font-weight="600" font-size="12">渐进改良</text>
+  <line x1="870" y1="286" x2="550" y2="330" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <rect x="680" y="317" width="195" height="34" rx="6" fill="#e67e22" opacity=".08" stroke="#e67e22" stroke-width="1"/>
+  <text x="777" y="339" text-anchor="middle" fill="#e67e22" font-weight="600" font-size="12">一万小时定律</text>
+  <line x1="870" y1="334" x2="550" y2="330" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>
+
+  <!-- Quote -->
+  <rect x="250" y="515" width="400" height="32" rx="6" fill="#fce4dc" opacity=".7"/>
+  <text x="450" y="536" text-anchor="middle" fill="#c0392b" font-weight="600" font-size="12">"大富靠命，小富靠运" —— 吴军</text>
+
+  <!-- Legend -->
+  <text x="40" y="570" fill="#2980b9" font-size="10" opacity=".6">★ = MKS 核心概念（四个核心贯穿始终）</text>
+  <text x="500" y="570" fill="#8a7a6a" font-size="10" opacity=".6">思维方法论 | 吴军·硅谷来信</text>
 </svg>`;
   document.getElementById('svgContainer').innerHTML = svg;
 }
@@ -921,7 +729,7 @@ function renderDashboard() {
   concepts.forEach((c, i) => {
     const starClass = c.star ? ' star' : '';
     const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
-    html += `<div class="concept-card${starClass}" onclick="switchTab(1);flipToCard(${i})">
+    html += `<div class="concept-card${starClass}" onclick="switchTab(1);setCard(${i})">
       <span class="num">${i+1}</span><strong>${c.name}</strong>${starBadge}
       <p style="font-size:12px;color:var(--text-light);margin-top:6px;">${c.short}</p>
     </div>`;
@@ -961,117 +769,64 @@ function renderDashboard() {
 }
 
 // ======== PROGRESS ========
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem('mks_thinking_progress') || '{}'); } catch(e) { return {}; }
+let learnedCards = JSON.parse(localStorage.getItem('mks_thinking_learned')||'[]');
+let answeredMCQ = JSON.parse(localStorage.getItem('mks_thinking_answeredMCQ')||'{}');
+let answeredSAQ = JSON.parse(localStorage.getItem('mks_thinking_answeredSAQ')||'{}');
+let errorMCQ = JSON.parse(localStorage.getItem('mks_thinking_errorMCQ')||'[]');
+
+function save(){
+  localStorage.setItem('mks_thinking_learned',JSON.stringify(learnedCards));
+  localStorage.setItem('mks_thinking_answeredMCQ',JSON.stringify(answeredMCQ));
+  localStorage.setItem('mks_thinking_answeredSAQ',JSON.stringify(answeredSAQ));
+  localStorage.setItem('mks_thinking_errorMCQ',JSON.stringify(errorMCQ));
 }
-function saveProgress(p) { localStorage.setItem('mks_thinking_progress', JSON.stringify(p)); }
+
+function getProgress() {
+  return { learnedCards, answeredMCQ, answeredSAQ, errorMCQ };
+}
+function saveProgress(p) {
+  learnedCards = p.learnedCards || [];
+  answeredMCQ = p.answeredMCQ || {};
+  answeredSAQ = p.answeredSAQ || {};
+  errorMCQ = p.errorMCQ || [];
+  save();
+}
 
 function updateProgress() {
-  const p = getProgress();
-  const learnedCards = p.learnedCards || [];
-  const answeredMCQ = p.answeredMCQ || {};
-  const answeredSAQ = p.answeredSAQ || {};
-
-  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
-  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
   const mcDone = Object.keys(answeredMCQ).length;
   const saDone = Object.keys(answeredSAQ).length;
   const totalDone = mcDone + saDone;
+  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
+  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
   document.getElementById('quizProgress').textContent = `${totalDone}/30`;
   document.getElementById('quizBar').style.width = `${(totalDone / 30) * 100}%`;
-
-  if (typeof currentCardIdx !== 'undefined') {
-    updateLearnedBtn();
-  }
+  document.getElementById('cardLearned').textContent = learnedCards.length;
 }
 
 // ======== TAB 1: FLIP CARDS ========
 let currentCardIdx = 0;
 let cardFlipped = false;
 
-function flipCard() {
-  document.getElementById('flipper').classList.toggle('flipped');
-  cardFlipped = !cardFlipped;
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（生活场景）：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
-function renderCard() {
-  const icons = ['🔬','⚙️','📡','🧬','🔗','💡','📊','🛡️','🤝','🎯'];
-  const icon = icons[currentCardIdx % icons.length];
-  const c = concepts[currentCardIdx];
-  document.getElementById('flipFront').innerHTML = `
-    <div class="concept-icon">${icon}</div>
-    <div class="concept-name">${c.name}</div>
-    ${c.star ? '<div class="star-badge-front">★ 核心概念</div>' : ''}
-    <div class="hint">点击翻转</div>
-  `;
-  document.getElementById('flipBack').innerHTML = `
-    <h3 style="color:var(--accent);margin-bottom:8px;">${c.name}</h3>
-    <div style="font-size:13px;">
-      <p><strong>定义：</strong>${c.def}</p>
-      <p style="margin-top:8px;"><strong>类比（生活场景）：</strong>${c.analogy}</p>
-      <p style="margin-top:8px;"><strong>示例：</strong>${c.example}</p>
-      <p style="margin-top:8px;"><strong>反例：</strong>${c.counter}</p>
-    </div>
-  `;
-  document.getElementById('cardIndex').textContent = `${currentCardIdx+1}/10`;
-  updateLearnedBtn();
-}
+setCard(0);
 
-function flipToCard(idx) {
-  currentCardIdx = idx;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-  switchTab(1);
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
 }
-
-function prevCard() {
-  currentCardIdx = (currentCardIdx - 1 + concepts.length) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-}
-
-function nextCard() {
-  currentCardIdx = (currentCardIdx + 1) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-}
-
-function updateLearnedBtn() {
-  const p = getProgress();
-  const learnedCards = p.learnedCards || [];
-  const btn = document.getElementById('learnedBtn');
-  if (learnedCards.includes(currentCardIdx)) {
-    btn.textContent = '✓ 已学习';
-    btn.classList.add('learned');
-  } else {
-    btn.textContent = '✓ 标记已学习';
-    btn.classList.remove('learned');
-  }
-}
-
-function toggleLearned() {
-  const p = getProgress();
-  if (!p.learnedCards) p.learnedCards = [];
-  const idx = p.learnedCards.indexOf(currentCardIdx);
-  if (idx >= 0) {
-    p.learnedCards.splice(idx, 1);
-  } else {
-    p.learnedCards.push(currentCardIdx);
-  }
-  saveProgress(p);
-  updateLearnedBtn();
-  updateProgress();
-}
-
-// Flip on click
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('flipper').addEventListener('click', function() {
-    cardFlipped = !cardFlipped;
-    this.classList.toggle('flipped', cardFlipped);
-  });
-});
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 
 // ======== TAB 2: MCQ + SAQ ========
 function renderMCQ() {

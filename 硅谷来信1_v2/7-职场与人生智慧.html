@@ -67,20 +67,14 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 .legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px;font-size:.78rem;color:var(--sub)}
 
 /* Flip card */
-.flip-wrap{position:relative;width:100%;max-width:500px;margin:0 auto 16px;perspective:1000px}
-.flip-card{position:relative;width:100%;height:320px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
-.flip-card.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:var(--shadow)}
-.flip-front{background:linear-gradient(135deg,var(--accent),#8b1a1a);color:#fff;text-align:center}
-.flip-front h3{font-size:1.3rem;margin-bottom:6px}
-.flip-back{background:var(--card);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left}
-.flip-back h4{color:var(--accent);margin-bottom:6px}
-.flip-back p{font-size:.88rem;margin-bottom:4px;color:var(--sub)}
-.flip-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}
-.flip-nav button{padding:6px 16px;border:1px solid var(--border);border-radius:20px;background:var(--card);cursor:pointer;color:var(--text);transition:all .2s}
-.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.flip-nav .learn-btn{background:var(--success);color:#fff;border:none}
-.flip-nav .learn-btn.done{background:#ccc}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
 /* Quiz */
 .quiz-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
@@ -161,9 +155,6 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 .path-num{flex:0 0 36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
 .path-info h4{margin-bottom:2px;font-size:.92rem}
 .path-info p{font-size:.8rem;color:var(--sub)}
-
-.home-link { display: inline-block; margin-top: 12px; padding: 6px 20px; border: 2px solid var(--accent); border-radius: 20px; color: var(--accent); text-decoration: none; font-size: .88rem; transition: all .25s; }
-.home-link:hover { background: var(--accent); color: #fff; }
 </style>
 </head>
 <body>
@@ -174,9 +165,8 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 <header class="header">
 <h1>🏛️ 职场与人生智慧</h1>
 <p class="sub">吴军·硅谷来信第一季 · 56篇笔记提炼 · 最小知识集</p>
-<a href="index.html" class="back-link" title="返回知识主板">← 返回知识主板</a>
+<div class="back-home"><a href="index.html" title="返回知识主板">← 返回知识主板</a></div>
 
-  <a href="index.html" class="home-link">← 返回知识主板</a>
 </header>
 
 <!-- Tab Bar -->
@@ -234,22 +224,18 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 </div>
 
 <!-- ========== TAB 1: 知识卡片 ========== -->
-<div class="tab-content" data-tab="1">
-<h3 style="margin-bottom:10px">🃏 翻转知识卡片</h3>
-<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px">，翻页浏览全部核心概念</p>
-<div class="flip-wrap">
-  <div class="flip-card" id="flipCard" onclick="flipCard()">
-    <div class="flip-front"><h3 id="flipTitle"></h3><p style="font-size:.85rem;opacity:.8">点击翻转 →</p></div>
-    <div class="flip-back" id="flipBack"></div>
-  </div>
-</div>
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-  <button onclick="prevCard()">◀ 上一个</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <span style="font-size:.85rem;color:var(--sub)" id="cardIdx">1 / 10</span>
-  <button class="learn-btn" id="learnBtn" onclick="markLearned()">✔ 标记已学习</button>
-  <button onclick="nextCard()">下一个 ▶</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ========== TAB 2: 题库系统 ========== -->
@@ -575,217 +561,119 @@ function initDashboard(){
 }
 
 function buildSVG(){
-  return `<svg width="1080pt" height="385pt"
- viewBox="0.00 0.00 1080.00 385.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(36 349)">
-<title>G</title>
-<polygon fill="#fdf6ec" stroke="transparent" points="-36,36 -36,-349 1044,-349 1044,36 -36,36"/>
-<g id="clust1" class="cluster">
-<title>cluster_legend</title>
-<path fill="#faf7f0" stroke="#e8d5c4" d="M440,-232C440,-232 988,-232 988,-232 994,-232 1000,-238 1000,-244 1000,-244 1000,-293 1000,-293 1000,-299 994,-305 988,-305 988,-305 440,-305 440,-305 434,-305 428,-299 428,-293 428,-293 428,-244 428,-244 428,-238 434,-232 440,-232"/>
-<text text-anchor="middle" x="450" y="-291.4" font-family="Times,serif" font-size="12.00" fill="#3d2f2f">图 例</text>
-</g>
-<!-- root -->
-<g id="node1" class="node">
-<title>root</title>
-<path fill="#c0392b" stroke="#a93226" stroke-width="2" d="M395.5,-279C395.5,-279 252.5,-279 252.5,-279 246.5,-279 240.5,-273 240.5,-267 240.5,-267 240.5,-249 240.5,-249 240.5,-243 246.5,-237 252.5,-237 252.5,-237 395.5,-237 395.5,-237 401.5,-237 407.5,-243 407.5,-249 407.5,-249 407.5,-267 407.5,-267 407.5,-273 401.5,-279 395.5,-279"/>
-<text text-anchor="middle" x="324" y="-263" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="15.00" fill="#ffffff">知己·知世·找到位置</text>
-<text text-anchor="middle" x="324" y="-246" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="15.00" fill="#ffffff">Finding Your Place</text>
-</g>
-<!-- inner -->
-<g id="node2" class="node">
-<title>inner</title>
-<path fill="#fdebd0" stroke="#b9770e" stroke-width="2" d="M298,-194C298,-194 216,-194 216,-194 210,-194 204,-188 204,-182 204,-182 204,-170 204,-170 204,-164 210,-158 216,-158 216,-158 298,-158 298,-158 304,-158 310,-164 310,-170 310,-170 310,-182 310,-182 310,-188 304,-194 298,-194"/>
-<text text-anchor="middle" x="257" y="-179.6" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="13.00" fill="#b9770e">内在世界</text>
-<text text-anchor="middle" x="257" y="-165.6" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="13.00" fill="#b9770e">自我认知与成长</text>
-</g>
-<!-- root&#45;&gt;inner -->
-<g id="edge1" class="edge">
-<title>root&#45;&gt;inner</title>
-<path fill="none" stroke="#b9770e" stroke-width="2" d="M307.09,-236.81C298.23,-226.23 287.3,-213.18 277.92,-201.97"/>
-<polygon fill="#b9770e" stroke="#b9770e" stroke-width="2" points="280.51,-199.62 271.4,-194.2 275.14,-204.11 280.51,-199.62"/>
-</g>
-<!-- outer -->
-<g id="node3" class="node">
-<title>outer</title>
-<path fill="#fadbd8" stroke="#c0392b" stroke-width="2" d="M485,-194C485,-194 403,-194 403,-194 397,-194 391,-188 391,-182 391,-182 391,-170 391,-170 391,-164 397,-158 403,-158 403,-158 485,-158 485,-158 491,-158 497,-164 497,-170 497,-170 497,-182 497,-182 497,-188 491,-194 485,-194"/>
-<text text-anchor="middle" x="444" y="-179.6" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="13.00" fill="#c0392b">外部世界</text>
-<text text-anchor="middle" x="444" y="-165.6" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="13.00" fill="#c0392b">环境认知与适应</text>
-</g>
-<!-- root&#45;&gt;outer -->
-<g id="edge2" class="edge">
-<title>root&#45;&gt;outer</title>
-<path fill="none" stroke="#c0392b" stroke-width="2" d="M354.28,-236.81C371.07,-225.62 392.02,-211.65 409.45,-200.03"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="411.82,-202.66 418.2,-194.2 407.94,-196.83 411.82,-202.66"/>
-</g>
-<!-- inner&#45;&gt;outer -->
-<g id="edge9" class="edge">
-<title>inner&#45;&gt;outer</title>
-<path fill="none" stroke="#8b4513" stroke-width="1.5" stroke-dasharray="5,2" d="M310.32,-176C333.85,-176 357.38,-176 380.92,-176"/>
-<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="381,-179.5 391,-176 381,-172.5 381,-179.5"/>
-</g>
-<!-- c1 -->
-<g id="node4" class="node">
-<title>c1</title>
-<path fill="#fef9e7" stroke="#b7950b" stroke-width="1.5" d="M93.5,-115C93.5,-115 28.5,-115 28.5,-115 22.5,-115 16.5,-109 16.5,-103 16.5,-103 16.5,-91 16.5,-91 16.5,-85 22.5,-79 28.5,-79 28.5,-79 93.5,-79 93.5,-79 99.5,-79 105.5,-85 105.5,-91 105.5,-91 105.5,-103 105.5,-103 105.5,-109 99.5,-115 93.5,-115"/>
-<text text-anchor="middle" x="61" y="-100.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#b7950b">幸福与选择</text>
-<text text-anchor="middle" x="61" y="-87.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#b7950b">消息时机策略</text>
-</g>
-<!-- inner&#45;&gt;c1 -->
-<g id="edge3" class="edge">
-<title>inner&#45;&gt;c1</title>
-<path fill="none" stroke="#b7950b" stroke-width="1.5" d="M213.5,-157.91C184.07,-146.35 145.01,-131 113.79,-118.74"/>
-<polygon fill="#b7950b" stroke="#b7950b" stroke-width="1.5" points="114.96,-115.44 104.38,-115.04 112.4,-121.96 114.96,-115.44"/>
-</g>
-<!-- c2 -->
-<g id="node5" class="node">
-<title>c2</title>
-<path fill="#fef9e7" stroke="#b7950b" stroke-width="1.5" d="M195.5,-115C195.5,-115 154.5,-115 154.5,-115 148.5,-115 142.5,-109 142.5,-103 142.5,-103 142.5,-91 142.5,-91 142.5,-85 148.5,-79 154.5,-79 154.5,-79 195.5,-79 195.5,-79 201.5,-79 207.5,-85 207.5,-91 207.5,-91 207.5,-103 207.5,-103 207.5,-109 201.5,-115 195.5,-115"/>
-<text text-anchor="middle" x="175" y="-100.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#b7950b">人生智慧</text>
-<text text-anchor="middle" x="175" y="-87.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#b7950b">向死而生</text>
-</g>
-<!-- inner&#45;&gt;c2 -->
-<g id="edge4" class="edge">
-<title>inner&#45;&gt;c2</title>
-<path fill="none" stroke="#b7950b" stroke-width="1.5" d="M238.8,-157.91C227.55,-147.34 212.93,-133.62 200.53,-121.98"/>
-<polygon fill="#b7950b" stroke="#b7950b" stroke-width="1.5" points="202.83,-119.33 193.15,-115.04 198.04,-124.44 202.83,-119.33"/>
-</g>
-<!-- c3 -->
-<g id="node6" class="node">
-<title>c3</title>
-<path fill="#fef9e7" stroke="#b7950b" stroke-width="1.5" d="M325.5,-115C325.5,-115 248.5,-115 248.5,-115 242.5,-115 236.5,-109 236.5,-103 236.5,-103 236.5,-91 236.5,-91 236.5,-85 242.5,-79 248.5,-79 248.5,-79 325.5,-79 325.5,-79 331.5,-79 337.5,-85 337.5,-91 337.5,-91 337.5,-103 337.5,-103 337.5,-109 331.5,-115 325.5,-115"/>
-<text text-anchor="middle" x="287" y="-100.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#b7950b">主动性与命运</text>
-<text text-anchor="middle" x="287" y="-87.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#b7950b">上帝垂青主动者</text>
-</g>
-<!-- inner&#45;&gt;c3 -->
-<g id="edge5" class="edge">
-<title>inner&#45;&gt;c3</title>
-<path fill="none" stroke="#b7950b" stroke-width="1.5" d="M263.66,-157.91C267.46,-148.14 272.32,-135.68 276.62,-124.65"/>
-<polygon fill="#b7950b" stroke="#b7950b" stroke-width="1.5" points="279.99,-125.63 280.36,-115.04 273.47,-123.09 279.99,-125.63"/>
-</g>
-<!-- c4 -->
-<g id="node7" class="node">
-<title>c4</title>
-<path fill="#fdedec" stroke="#c0392b" stroke-width="1.5" d="M451,-115C451,-115 379,-115 379,-115 373,-115 367,-109 367,-103 367,-103 367,-91 367,-91 367,-85 373,-79 379,-79 379,-79 451,-79 451,-79 457,-79 463,-85 463,-91 463,-91 463,-103 463,-103 463,-109 457,-115 451,-115"/>
-<text text-anchor="middle" x="415" y="-100.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#c0392b">沟通智慧</text>
-<text text-anchor="middle" x="415" y="-87.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#c0392b">PageRank原则</text>
-</g>
-<!-- outer&#45;&gt;c4 -->
-<g id="edge6" class="edge">
-<title>outer&#45;&gt;c4</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M437.56,-157.91C433.88,-148.14 429.19,-135.68 425.04,-124.65"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="428.22,-123.17 421.42,-115.04 421.67,-125.63 428.22,-123.17"/>
-</g>
-<!-- c5 -->
-<g id="node8" class="node">
-<title>c5</title>
-<path fill="#fdedec" stroke="#c0392b" stroke-width="1.5" d="M687.5,-115C687.5,-115 622.5,-115 622.5,-115 616.5,-115 610.5,-109 610.5,-103 610.5,-103 610.5,-91 610.5,-91 610.5,-85 616.5,-79 622.5,-79 622.5,-79 687.5,-79 687.5,-79 693.5,-79 699.5,-85 699.5,-91 699.5,-91 699.5,-103 699.5,-103 699.5,-109 693.5,-115 687.5,-115"/>
-<text text-anchor="middle" x="655" y="-100.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#c0392b">职场生存</text>
-<text text-anchor="middle" x="655" y="-87.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#c0392b">防小人识高危</text>
-</g>
-<!-- outer&#45;&gt;c5 -->
-<g id="edge7" class="edge">
-<title>outer&#45;&gt;c5</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M490.83,-157.91C523.32,-146.06 566.69,-130.23 600.69,-117.82"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="602.28,-120.97 610.47,-114.25 599.88,-114.39 602.28,-120.97"/>
-</g>
-<!-- c6 -->
-<g id="node9" class="node">
-<title>c6</title>
-<path fill="#fdedec" stroke="#c0392b" stroke-width="1.5" d="M569.5,-115C569.5,-115 504.5,-115 504.5,-115 498.5,-115 492.5,-109 492.5,-103 492.5,-103 492.5,-91 492.5,-91 492.5,-85 498.5,-79 504.5,-79 504.5,-79 569.5,-79 569.5,-79 575.5,-79 581.5,-85 581.5,-91 581.5,-91 581.5,-103 581.5,-103 581.5,-109 575.5,-115 569.5,-115"/>
-<text text-anchor="middle" x="537" y="-100.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#c0392b">识人用人</text>
-<text text-anchor="middle" x="537" y="-87.4" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="12.00" fill="#c0392b">好老板三能力</text>
-</g>
-<!-- outer&#45;&gt;c6 -->
-<g id="edge8" class="edge">
-<title>outer&#45;&gt;c6</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M464.64,-157.91C477.52,-147.24 494.29,-133.36 508.44,-121.65"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="510.95,-124.11 516.42,-115.04 506.48,-118.72 510.95,-124.11"/>
-</g>
-<!-- s1 -->
-<g id="node10" class="node">
-<title>s1</title>
-<path fill="#faf3e6" stroke="#d4a76a" d="M92,-36C92,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 92,0 92,0 98,0 104,-6 104,-12 104,-12 104,-24 104,-24 104,-30 98,-36 92,-36"/>
-<text text-anchor="middle" x="52" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">自我成长</text>
-<text text-anchor="middle" x="52" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">10000h+五级体系</text>
-</g>
-<!-- c1&#45;&gt;s1 -->
-<g id="edge10" class="edge">
-<title>c1&#45;&gt;s1</title>
-<path fill="none" stroke="#d4a76a" stroke-dasharray="5,2" d="M59,-78.91C57.87,-69.24 56.43,-56.93 55.15,-45.98"/>
-<polygon fill="#d4a76a" stroke="#d4a76a" points="58.63,-45.57 53.99,-36.04 51.68,-46.38 58.63,-45.57"/>
-</g>
-<!-- s2 -->
-<g id="node11" class="node">
-<title>s2</title>
-<path fill="#faf3e6" stroke="#d4a76a" d="M205,-36C205,-36 145,-36 145,-36 139,-36 133,-30 133,-24 133,-24 133,-12 133,-12 133,-6 139,0 145,0 145,0 205,0 205,0 211,0 217,-6 217,-12 217,-12 217,-24 217,-24 217,-30 211,-36 205,-36"/>
-<text text-anchor="middle" x="175" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">思维方式</text>
-<text text-anchor="middle" x="175" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">独立思考工具</text>
-</g>
-<!-- c2&#45;&gt;s2 -->
-<g id="edge11" class="edge">
-<title>c2&#45;&gt;s2</title>
-<path fill="none" stroke="#d4a76a" stroke-dasharray="5,2" d="M175,-78.91C175,-69.34 175,-57.18 175,-46.32"/>
-<polygon fill="#d4a76a" stroke="#d4a76a" points="178.5,-46.04 175,-36.04 171.5,-46.04 178.5,-46.04"/>
-</g>
-<!-- s3 -->
-<g id="node12" class="node">
-<title>s3</title>
-<path fill="#faf3e6" stroke="#d4a76a" d="M324,-36C324,-36 258,-36 258,-36 252,-36 246,-30 246,-24 246,-24 246,-12 246,-12 246,-6 252,0 258,0 258,0 324,0 324,0 330,0 336,-6 336,-12 336,-12 336,-24 336,-24 336,-30 330,-36 324,-36"/>
-<text text-anchor="middle" x="291" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">财富观念</text>
-<text text-anchor="middle" x="291" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">捐赠+形象管理</text>
-</g>
-<!-- c3&#45;&gt;s3 -->
-<g id="edge12" class="edge">
-<title>c3&#45;&gt;s3</title>
-<path fill="none" stroke="#d4a76a" stroke-dasharray="5,2" d="M287.89,-78.91C288.38,-69.34 289.02,-57.18 289.58,-46.32"/>
-<polygon fill="#d4a76a" stroke="#d4a76a" points="293.09,-46.21 290.11,-36.04 286.1,-45.85 293.09,-46.21"/>
-</g>
-<!-- s4 -->
-<g id="node13" class="node">
-<title>s4</title>
-<path fill="#faf3e6" stroke="#d4a76a" d="M506,-36C506,-36 446,-36 446,-36 440,-36 434,-30 434,-24 434,-24 434,-12 434,-12 434,-6 440,0 446,0 446,0 506,0 506,0 512,0 518,-6 518,-12 518,-12 518,-24 518,-24 518,-30 512,-36 506,-36"/>
-<text text-anchor="middle" x="476" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">职业发展</text>
-<text text-anchor="middle" x="476" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">择业四大因素</text>
-</g>
-<!-- c4&#45;&gt;s4 -->
-<g id="edge13" class="edge">
-<title>c4&#45;&gt;s4</title>
-<path fill="none" stroke="#d4a76a" stroke-dasharray="5,2" d="M428.54,-78.91C436.67,-68.64 447.17,-55.4 456.22,-43.97"/>
-<polygon fill="#d4a76a" stroke="#d4a76a" points="459.03,-46.05 462.5,-36.04 453.55,-41.71 459.03,-46.05"/>
-</g>
-<!-- s5 -->
-<g id="node14" class="node">
-<title>s5</title>
-<path fill="#faf3e6" stroke="#d4a76a" d="M685,-36C685,-36 625,-36 625,-36 619,-36 613,-30 613,-24 613,-24 613,-12 613,-12 613,-6 619,0 625,0 625,0 685,0 685,0 691,0 697,-6 697,-12 697,-12 697,-24 697,-24 697,-30 691,-36 685,-36"/>
-<text text-anchor="middle" x="655" y="-21.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">拒绝与边界</text>
-<text text-anchor="middle" x="655" y="-9.2" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="11.00" fill="#6b5555">四类请求策略</text>
-</g>
-<!-- c5&#45;&gt;s5 -->
-<g id="edge14" class="edge">
-<title>c5&#45;&gt;s5</title>
-<path fill="none" stroke="#d4a76a" stroke-dasharray="5,2" d="M655,-78.91C655,-69.34 655,-57.18 655,-46.32"/>
-<polygon fill="#d4a76a" stroke="#d4a76a" points="658.5,-46.04 655,-36.04 651.5,-46.04 658.5,-46.04"/>
-</g>
-<!-- c6&#45;&gt;s4 -->
-<g id="edge15" class="edge">
-<title>c6&#45;&gt;s4</title>
-<path fill="none" stroke="#d4a76a" stroke-dasharray="5,2" d="M523.46,-78.91C515.33,-68.64 504.83,-55.4 495.78,-43.97"/>
-<polygon fill="#d4a76a" stroke="#d4a76a" points="498.45,-41.71 489.5,-36.04 492.97,-46.05 498.45,-41.71"/>
-</g>
-<!-- l0 -->
-<g id="node15" class="node">
-<title>l0</title>
-<path fill="transparent" stroke="transparent" d="M979.5,-276C979.5,-276 668.5,-276 668.5,-276 662.5,-276 656.5,-270 656.5,-264 656.5,-264 656.5,-252 656.5,-252 656.5,-246 662.5,-240 668.5,-240 668.5,-240 979.5,-240 979.5,-240 985.5,-240 991.5,-246 991.5,-252 991.5,-252 991.5,-264 991.5,-264 991.5,-270 985.5,-276 979.5,-276"/>
-<text text-anchor="middle" x="824" y="-255.5" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00">━━━ 根→主干（核心命题） &#160;━━━ 内在世界维度 &#160;━━━ 外部世界维度</text>
-</g>
-<!-- l1 -->
-<g id="node16" class="node">
-<title>l1</title>
-<path fill="transparent" stroke="transparent" d="M615.5,-276C615.5,-276 448.5,-276 448.5,-276 442.5,-276 436.5,-270 436.5,-264 436.5,-264 436.5,-252 436.5,-252 436.5,-246 442.5,-240 448.5,-240 448.5,-240 615.5,-240 615.5,-240 621.5,-240 627.5,-246 627.5,-252 627.5,-252 627.5,-264 627.5,-264 627.5,-270 621.5,-276 615.5,-276"/>
-<text text-anchor="middle" x="532" y="-255.5" font-family="PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif" font-size="10.00">╌╌╌ 跨域能力层 &#160;╌╌╌ 知行互动桥梁</text>
-</g>
-</g>
+  return `<svg viewBox="0 0 880 620" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/></filter>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
+  <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2471a3"/></marker>
+  <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1e8449"/></marker>
+</defs>
+
+<!-- Root node -->
+<rect x="330" y="15" width="220" height="52" rx="26" fill="#c0392b" filter="url(#shadow)"/>
+<text x="440" y="38" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">知己 · 知世 · 找到位置</text>
+<text x="440" y="55" text-anchor="middle" fill="#fdd" font-size="10">Finding Your Place</text>
+
+<!-- Branch lines from root -->
+<line x1="370" y1="67" x2="200" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="510" y1="67" x2="680" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+
+<!-- Level 1: 自我认知 -->
+<rect x="80" y="112" width="140" height="46" rx="10" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+<text x="150" y="132" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">内在世界</text>
+<text x="150" y="148" text-anchor="middle" fill="#6b5555" font-size="10">自我认知与成长</text>
+
+<!-- Level 1: 环境认知 -->
+<rect x="660" y="112" width="140" height="46" rx="10" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+<text x="730" y="132" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="bold">外部世界</text>
+<text x="730" y="148" text-anchor="middle" fill="#6b5555" font-size="10">环境认知与适应</text>
+
+<!-- Sub branches from 自我认知 -->
+<line x1="120" y1="158" x2="70" y2="210" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<line x1="150" y1="158" x2="150" y2="210" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<line x1="180" y1="158" x2="230" y2="210" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+<!-- Sub branches from 环境认知 -->
+<line x1="700" y1="158" x2="650" y2="210" stroke="#1e8449" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+<line x1="730" y1="158" x2="730" y2="210" stroke="#1e8449" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+<line x1="760" y1="158" x2="810" y2="210" stroke="#1e8449" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+<!-- 自我认知 children -->
+<rect x="20" y="212" width="100" height="40" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1" filter="url(#shadow)"/>
+<text x="70" y="230" text-anchor="middle" fill="#2471a3" font-size="11" font-weight="bold">幸福与选择</text>
+<text x="70" y="244" text-anchor="middle" fill="#666" font-size="9">消息时机策略</text>
+
+<rect x="115" y="212" width="70" height="40" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1" filter="url(#shadow)"/>
+<text x="150" y="230" text-anchor="middle" fill="#2471a3" font-size="11" font-weight="bold">人生智慧</text>
+<text x="150" y="244" text-anchor="middle" fill="#666" font-size="9">向死而生</text>
+
+<rect x="205" y="212" width="90" height="40" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1" filter="url(#shadow)"/>
+<text x="250" y="230" text-anchor="middle" fill="#2471a3" font-size="11" font-weight="bold">主动性与命运</text>
+<text x="250" y="244" text-anchor="middle" fill="#666" font-size="9">上帝垂青主动者</text>
+
+<!-- 环境认知 children -->
+<rect x="595" y="212" width="100" height="40" rx="8" fill="#e8f8f0" stroke="#1e8449" stroke-width="1" filter="url(#shadow)"/>
+<text x="645" y="230" text-anchor="middle" fill="#1e8449" font-size="11" font-weight="bold">沟通智慧</text>
+<text x="645" y="244" text-anchor="middle" fill="#666" font-size="9">PageRank原则</text>
+
+<rect x="695" y="212" width="70" height="40" rx="8" fill="#e8f8f0" stroke="#1e8449" stroke-width="1" filter="url(#shadow)"/>
+<text x="730" y="230" text-anchor="middle" fill="#1e8449" font-size="11" font-weight="bold">职场生存</text>
+<text x="730" y="244" text-anchor="middle" fill="#666" font-size="9">防小人识高危</text>
+
+<rect x="770" y="212" width="90" height="40" rx="8" fill="#e8f8f0" stroke="#1e8449" stroke-width="1" filter="url(#shadow)"/>
+<text x="815" y="230" text-anchor="middle" fill="#1e8449" font-size="11" font-weight="bold">识人用人</text>
+<text x="815" y="244" text-anchor="middle" fill="#666" font-size="9">好老板三能力</text>
+
+<!-- Cross connections from children down -->
+<line x1="70" y1="252" x2="70" y2="310" stroke="#2471a3" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="150" y1="252" x2="150" y2="310" stroke="#2471a3" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="250" y1="252" x2="250" y2="310" stroke="#2471a3" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="645" y1="252" x2="645" y2="310" stroke="#1e8449" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="730" y1="252" x2="730" y2="310" stroke="#1e8449" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="815" y1="252" x2="815" y2="310" stroke="#1e8449" stroke-width="1" stroke-dasharray="4,2"/>
+
+<!-- Bottom layer: skills/abilities -->
+<rect x="15" y="312" width="100" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="65" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">自我成长</text>
+<text x="65" y="344" text-anchor="middle" fill="#999" font-size="8">10000h+五级体系</text>
+
+<rect x="115" y="312" width="80" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="155" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">思维方式</text>
+<text x="155" y="344" text-anchor="middle" fill="#999" font-size="8">独立思考工具</text>
+
+<rect x="210" y="312" width="110" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="265" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">财富观念</text>
+<text x="265" y="344" text-anchor="middle" fill="#999" font-size="8">捐赠+形象管理</text>
+
+<rect x="580" y="312" width="100" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="630" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">职业发展</text>
+<text x="630" y="344" text-anchor="middle" fill="#999" font-size="8">择业四大因素</text>
+
+<rect x="700" y="312" width="100" height="40" rx="8" fill="#fef9e7" stroke="#b8860b" stroke-width="1" filter="url(#shadow)"/>
+<text x="750" y="330" text-anchor="middle" fill="#b8860b" font-size="10" font-weight="bold">拒绝与边界</text>
+<text x="750" y="344" text-anchor="middle" fill="#999" font-size="8">四类请求策略</text>
+
+<!-- Bridge: self ↔ world interaction -->
+<line x1="300" y1="260" x2="580" y2="260" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6,3"/>
+<text x="440" y="280" text-anchor="middle" fill="#c0392b" font-size="10" font-style="italic">知行合一：内在认知驱动外在行动 ←→ 外在反馈校准内在认知</text>
+
+<!-- Arrows between bottom concepts -->
+<path d="M 320 332 L 575 332" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+<text x="440" y="370" text-anchor="middle" fill="#b8860b" font-size="9" font-style="italic">所有能力最终服务于"找到位置"这一核心目标</text>
+
+<!-- Legend -->
+<rect x="190" y="395" width="500" height="80" rx="8" fill="#faf7f0" stroke="#e8d5c4" stroke-width="1"/>
+<text x="440" y="415" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold">图例</text>
+<line x1="230" y1="430" x2="280" y2="430" stroke="#c0392b" stroke-width="2"/>
+<text x="285" y="434" fill="#3d2f2f" font-size="10">根→主干（核心命题）</text>
+<line x1="390" y1="430" x2="440" y2="430" stroke="#2471a3" stroke-width="1.5"/>
+<text x="445" y="434" fill="#3d2f2f" font-size="10">内在世界维度</text>
+<line x1="555" y1="430" x2="605" y2="430" stroke="#1e8449" stroke-width="1.5"/>
+<text x="610" y="434" fill="#3d2f2f" font-size="10">外部世界维度</text>
+<line x1="230" y1="452" x2="280" y2="452" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="285" y="456" fill="#3d2f2f" font-size="10">跨域能力层</text>
+<line x1="390" y1="452" x2="440" y2="452" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6,3"/>
+<text x="445" y="456" fill="#3d2f2f" font-size="10">知行互动桥梁</text>
 </svg>`;
 }
 
@@ -807,25 +695,19 @@ function renderFlipCard(){
   const i = state.currentCard;
   const c = conceptDetails[i];
   const isLearned = state.learnedCards.includes(concepts[i].id);
-  document.getElementById('flipTitle').textContent = concepts[i].icon+' '+concepts[i].name;
-  document.getElementById('flipBack').innerHTML = `
-    <h4>📖 定义</h4><p>${c.define}</p>
-    <h4>💼 商业类比</h4><p>${c.analog}</p>
-    <h4>✅ 示例</h4><p>${c.example}</p>
-    <h4>❌ 反例</h4><p>${c.counter}</p>
-  `;
-  document.getElementById('cardIdx').textContent = (i+1)+' / '+conceptDetails.length;
-  const btn = document.getElementById('learnBtn');
-  if(isLearned){ btn.textContent='✔ 已学习'; btn.classList.add('done'); }
-  else { btn.textContent='✔ 标记已学习'; btn.classList.remove('done'); }
-  const card = document.getElementById('flipCard');
-  card.classList.remove('flipped');
+  document.getElementById('flipFront').innerHTML = `<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${concepts[i].icon} ${concepts[i].name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${isLearned?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML = `<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.define}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>${c.analog}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('cardIndex').textContent = `${i+1} / ${conceptDetails.length}`;
+  document.getElementById('cardProgress').style.width = `${Math.round(state.learnedCards.length/concepts.length*100)}%`;
+  document.getElementById('cardLearned').textContent = state.learnedCards.length;
+  const btn = document.getElementById('markLearnedBtn');
+  if(isLearned){ btn.textContent='✓ 已学习'; btn.classList.add('done'); }
+  else { btn.textContent='✓ 标记已学习'; btn.classList.remove('done'); }
+  document.getElementById('flipInner').classList.remove('flipped');
 }
-
 function flipCard(){
-  document.getElementById('flipCard').classList.toggle('flipped');
+  document.getElementById('flipInner').classList.toggle('flipped');
 }
-
 function prevCard(){
   state.currentCard = (state.currentCard-1+conceptDetails.length)%conceptDetails.length;
   LS.set('cardIdx',state.currentCard);

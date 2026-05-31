@@ -67,20 +67,14 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 .legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px;font-size:.78rem;color:var(--sub)}
 
 /* Flip card */
-.flip-wrap{position:relative;width:100%;max-width:500px;margin:0 auto 16px;perspective:1000px}
-.flip-card{position:relative;width:100%;min-height:240px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
-.flip-card.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:var(--shadow)}
-.flip-front{background:linear-gradient(135deg,var(--accent),#8b1a1a);color:#fff;text-align:center}
-.flip-front h3{font-size:1.3rem;margin-bottom:6px}
-.flip-back{background:var(--card);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left}
-.flip-back h4{color:var(--accent);margin-bottom:6px}
-.flip-back p{font-size:.88rem;margin-bottom:4px;color:var(--sub)}
-.flip-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}
-.flip-nav button{padding:6px 16px;border:1px solid var(--border);border-radius:20px;background:var(--card);cursor:pointer;color:var(--text);transition:all .2s}
-.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.flip-nav .learn-btn{background:var(--success);color:#fff;border:none}
-.flip-nav .learn-btn.done{background:#ccc}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
 /* Quiz */
 .quiz-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
@@ -171,7 +165,8 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 <header class="header">
 <h1>🏛️ 职场与人生智慧</h1>
 <p class="sub">吴军·硅谷来信第一季 · 56篇笔记提炼 · 最小知识集</p>
-<a href="index.html" class="back-link" title="返回知识主板">← 返回知识主板</a>
+<div class="back-home"><a href="index.html" title="返回知识主板">← 返回知识主板</a></div>
+
 </header>
 
 <!-- Tab Bar -->
@@ -229,22 +224,18 @@ body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino 
 </div>
 
 <!-- ========== TAB 1: 知识卡片 ========== -->
-<div class="tab-content" data-tab="1">
-<h3 style="margin-bottom:10px">🃏 翻转知识卡片</h3>
-<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px">，翻页浏览全部核心概念</p>
-<div class="flip-wrap">
-  <div class="flip-card" id="flipCard" onclick="flipCard()">
-    <div class="flip-front"><h3 id="flipTitle"></h3><p style="font-size:.85rem;opacity:.8">点击翻转 →</p></div>
-    <div class="flip-back" id="flipBack"></div>
-  </div>
-</div>
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-  <button onclick="prevCard()">◀ 上一个</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <span style="font-size:.85rem;color:var(--sub)" id="cardIdx">1 / 10</span>
-  <button class="learn-btn" id="learnBtn" onclick="markLearned()">✔ 标记已学习</button>
-  <button onclick="nextCard()">下一个 ▶</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ========== TAB 2: 题库系统 ========== -->
@@ -704,25 +695,19 @@ function renderFlipCard(){
   const i = state.currentCard;
   const c = conceptDetails[i];
   const isLearned = state.learnedCards.includes(concepts[i].id);
-  document.getElementById('flipTitle').textContent = concepts[i].icon+' '+concepts[i].name;
-  document.getElementById('flipBack').innerHTML = `
-    <h4>📖 定义</h4><p>${c.define}</p>
-    <h4>💼 商业类比</h4><p>${c.analog}</p>
-    <h4>✅ 示例</h4><p>${c.example}</p>
-    <h4>❌ 反例</h4><p>${c.counter}</p>
-  `;
-  document.getElementById('cardIdx').textContent = (i+1)+' / '+conceptDetails.length;
-  const btn = document.getElementById('learnBtn');
-  if(isLearned){ btn.textContent='✔ 已学习'; btn.classList.add('done'); }
-  else { btn.textContent='✔ 标记已学习'; btn.classList.remove('done'); }
-  const card = document.getElementById('flipCard');
-  card.classList.remove('flipped');
+  document.getElementById('flipFront').innerHTML = `<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${concepts[i].icon} ${concepts[i].name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${isLearned?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML = `<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.define}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>${c.analog}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('cardIndex').textContent = `${i+1} / ${conceptDetails.length}`;
+  document.getElementById('cardProgress').style.width = `${Math.round(state.learnedCards.length/concepts.length*100)}%`;
+  document.getElementById('cardLearned').textContent = state.learnedCards.length;
+  const btn = document.getElementById('markLearnedBtn');
+  if(isLearned){ btn.textContent='✓ 已学习'; btn.classList.add('done'); }
+  else { btn.textContent='✓ 标记已学习'; btn.classList.remove('done'); }
+  document.getElementById('flipInner').classList.remove('flipped');
 }
-
 function flipCard(){
-  document.getElementById('flipCard').classList.toggle('flipped');
+  document.getElementById('flipInner').classList.toggle('flipped');
 }
-
 function prevCard(){
   state.currentCard = (state.currentCard-1+conceptDetails.length)%conceptDetails.length;
   LS.set('cardIdx',state.currentCard);

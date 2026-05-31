@@ -46,20 +46,14 @@
   td{padding:8px 12px;border-bottom:1px solid var(--border)}
   tr:last-child td{border-bottom:none}
   tr:nth-child(even){background:rgba(192,57,43,.03)}
-  /* Flip card */
-  .flip-container{perspective:1000px;margin:0 auto;max-width:500px}
-  .flipper{position:relative;width:100%;height:360px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
-  .flipper.flipped{transform:rotateY(180deg)}
-  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;box-shadow:var(--shadow);border:1px solid var(--border)}
-  .flip-front{background:linear-gradient(135deg,#6b2f1a,#c0392b);color:#fff;font-size:1.3em;font-weight:700;text-align:center}
-  .flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);text-align:left;overflow-y:auto;justify-content:flex-start;font-size:var(--fs-sm)}
-  .flip-back h4{color:var(--accent);margin:6px 0 3px}
-  .flip-back p{margin:2px 0;line-height:1.5}
-  .flip-nav{display:flex;justify-content:center;gap:12px;align-items:center;margin-top:12px}
-  .flip-nav button{padding:8px 20px;border:none;border-radius:20px;cursor:pointer;font-size:var(--fs-sm);transition:all .2s;background:var(--accent);color:#fff}
-  .flip-nav button:hover{opacity:.85}
-  .flip-nav button.learned-btn{background:var(--accent2)}
-  .flip-nav button.learned-btn.learned{background:#27ae60}
+  .flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
   /* Quiz */
   .quiz-q{margin:20px 0;padding:18px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
   .quiz-q .q-title{font-weight:700;margin-bottom:8px}
@@ -117,7 +111,7 @@
     .tabs{gap:1px;padding:4px}
     .tab-btn{padding:5px 8px;font-size:11px}
     .cards{grid-template-columns:1fr}
-    .flipper{height:420px}
+    .flip-inner{height:clamp(280px,60vw,420px)}
     .path-steps{flex-direction:column}
   }
   /* Input */
@@ -125,9 +119,6 @@
   textarea:focus{outline:none;border-color:var(--accent)}
   .inline-flex{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .hidden{display:none}
-
-.home-link { display: inline-block; margin-top: 12px; padding: 6px 20px; border: 2px solid var(--accent); border-radius: 20px; color: var(--accent); text-decoration: none; font-size: .88rem; transition: all .25s; }
-.home-link:hover { background: var(--accent); color: #fff; }
 </style>
 </head>
 <body>
@@ -135,8 +126,6 @@
   <h1>艺术审美与品味 · 最小知识集</h1>
   <p>审美是一种可以训练的能力 —— 摄影、红酒、奢侈品、博物馆，让生活更有品质</p>
   <a href="index.html" class="home-btn" title="返回知识主板">← 返回知识主板</a>
-
-  <a href="index.html" class="home-link">← 返回知识主板</a>
 </header>
 
 <div class="tabs" id="tabBar"><button class="tab-btn active" data-tab="0">知识集总览</button><button class="tab-btn" data-tab="1">知识卡片</button><button class="tab-btn" data-tab="2">题库系统</button><button class="tab-btn" data-tab="3">考试模式</button><button class="tab-btn" data-tab="4">复习模式</button><button class="tab-btn" data-tab="5">思维导图</button><button class="tab-btn" data-tab="6">深度追问</button><button class="tab-btn" data-tab="7">案例分析</button><button class="tab-btn" data-tab="8">实战决策</button></div>
@@ -229,22 +218,17 @@
 
 <!-- ===== TAB 1: 学习卡片 ===== -->
 <div class="tab-panel" id="panel1">
-  <div class="section">
-    <div class="section-title"><span class="ico">🃏</span> 知识卡片 <span style="font-size:var(--fs-sm);font-weight:400;color:var(--muted)">点击卡片翻转</span></div>
-    <div class="flip-container">
-      <div class="flipper" id="flipper" onclick="flipCard()">
-        <div class="flip-front" id="flipFront">摄影 vs 记录</div>
-        <div class="flip-back" id="flipBack"></div>
-      </div>
-    </div>
-    <div class="flip-nav">
-      <button onclick="prevCard()">◀ 上一张</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <span id="cardIdx" style="font-size:var(--fs-sm)">1 / 10</span>
-      <button onclick="nextCard()">下一张 ▶</button>
-      <button class="learned-btn" id="learnedBtn" onclick="markLearned()">✓ 标记已学习</button>
-    </div>
-  </div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ===== TAB 2: 题库 ===== -->
@@ -341,12 +325,12 @@
 <script>
 // ========== DATA ==========
 
-const cardsData = [
-  {id:'c0',front:'摄影 vs 记录',back:'<h4>定义</h4><p>摄影是观察的艺术，记录是保存信息。摄影重点不在"所见之物"，而在"观察的视角和关注的重点"。</p><h4>类比</h4><p>好比写日记 vs 写散文——日记记录"做了什么"，散文表达"感受到了什么"。</p><h4>示例</h4><p>同一瀑布：全景式记录 → 捕捉落地瞬间 → 长曝光如梦如幻。三级跃升就是"记录→创作"的光谱。</p><h4>反例</h4><p>旅游时拍"到此一游"照、聚会合影、明信片式日出日落——都是记录，不是摄影。</p>'},
-  {id:'c1',front:'到达与视角',back:'<h4>定义</h4><p>到达是第一要素（物理位置的突破），视角是灵魂（主观重构）。两者均无法被后期弥补。</p><h4>类比</h4><p>好比素材与剪辑——到达是获取独特素材，视角是独特的剪辑角度。后期只能调色，不能改变素材。</p><h4>示例</h4><p>8844米珠峰用手机拍 > 3000米用专业设备。站在少女峰顶俯视冰川，"云和群峰都在你下面"的景观不可复制。</p><h4>反例</h4><p>依赖广角镜头在平地拍大教堂全景，不如退后至城门内利用拱形框架拍摄——后者才是视角创新。</p>'},
-  {id:'c2',front:'构图法则',back:'<h4>定义</h4><p>决定画面元素的取舍与层级——"将什么东西放到照片里去，同时哪个在前，哪个在后，哪个唱主角，哪个唱配角"。</p><h4>类比</h4><p>好比舞台调度——导演决定谁站C位、谁做背景、灯光打在哪。构图就是照片的舞台调度。</p><h4>示例</h4><p>三角形构图：强化建筑高耸感（近距广角拍小教堂）、场景自然形成三角形（斜坡房子与地面）。圆形构图：教堂作为圆心，乌云向四周发散。</p><h4>反例</h4><p>传统全景正面拍城堡——"明信片水平"，达标但无灵气。改为以雕像为主体侧拍，宫殿做配角，画面立刻生动。</p>'},
-  {id:'c3',front:'光线与色彩',back:'<h4>定义</h4><p>颜色要正（色彩还原准确）、要有搭配对比（互补色布局）、善用虚化（营造柔和均匀的色彩质感）。</p><h4>类比</h4><p>好比化妆——底妆要正（色温准确），眼影要有对比（红绿互补），高光要柔和（虚化过渡）。</p><h4>示例</h4><p>纽伦堡古城采用红绿颜色搭配形成视觉对比。日落前1小时光线柔和，适合拍摄普通景物。夜景小光圈让灯光呈现星线效果。</p><h4>反例</h4><p>依赖Photoshop过度调色追求"打翻调色板"的效果——颜色失真。避免正面强光（闪光灯直射人脸过白）。</p>'},
-  {id:'c4',front:'黑白摄影',back:'<h4>定义</h4><p>去除色彩干扰，聚焦构图/轮廓/光线三大要素。黑白像素清晰度约为彩色像素的两倍，对比度更高。</p><h4>类比</h4><p>好比读纯文本 vs 读图文混排——去掉图片后，文字的排版结构和字体本身的力度就凸显了。</p><h4>示例</h4><p>杂乱城市街头、色彩不美观的场景、需要强化线条/光影的主题——黑白处理后可"化干扰为亮点"。宝马博物馆扶手转化为亮丽线条。</p><h4>反例</h4><p>色彩本身为核心元素的风景照（如火山口湖的湛蓝色）——此时黑白摄影会损失核心信息。</p>'},
+const concepts = [
+  {id:'c1',name:'摄影 vs 记录',front:'摄影 vs 记录',back:'<h4>定义</h4><p>摄影是观察的艺术，记录是保存信息。摄影重点不在"所见之物"，而在"观察的视角和关注的重点"。</p><h4>类比</h4><p>好比写日记 vs 写散文——日记记录"做了什么"，散文表达"感受到了什么"。</p><h4>示例</h4><p>同一瀑布：全景式记录 → 捕捉落地瞬间 → 长曝光如梦如幻。三级跃升就是"记录→创作"的光谱。</p><h4>反例</h4><p>旅游时拍"到此一游"照、聚会合影、明信片式日出日落——都是记录，不是摄影。</p>'},
+  {id:'c2',name:'到达与视角',front:'到达与视角',back:'<h4>定义</h4><p>到达是第一要素（物理位置的突破），视角是灵魂（主观重构）。两者均无法被后期弥补。</p><h4>类比</h4><p>好比素材与剪辑——到达是获取独特素材，视角是独特的剪辑角度。后期只能调色，不能改变素材。</p><h4>示例</h4><p>8844米珠峰用手机拍 > 3000米用专业设备。站在少女峰顶俯视冰川，"云和群峰都在你下面"的景观不可复制。</p><h4>反例</h4><p>依赖广角镜头在平地拍大教堂全景，不如退后至城门内利用拱形框架拍摄——后者才是视角创新。</p>'},
+  {id:'c3',name:'构图法则',front:'构图法则',back:'<h4>定义</h4><p>决定画面元素的取舍与层级——"将什么东西放到照片里去，同时哪个在前，哪个在后，哪个唱主角，哪个唱配角"。</p><h4>类比</h4><p>好比舞台调度——导演决定谁站C位、谁做背景、灯光打在哪。构图就是照片的舞台调度。</p><h4>示例</h4><p>三角形构图：强化建筑高耸感（近距广角拍小教堂）、场景自然形成三角形（斜坡房子与地面）。圆形构图：教堂作为圆心，乌云向四周发散。</p><h4>反例</h4><p>传统全景正面拍城堡——"明信片水平"，达标但无灵气。改为以雕像为主体侧拍，宫殿做配角，画面立刻生动。</p>'},
+  {id:'c4',name:'光线与色彩',front:'光线与色彩',back:'<h4>定义</h4><p>颜色要正（色彩还原准确）、要有搭配对比（互补色布局）、善用虚化（营造柔和均匀的色彩质感）。</p><h4>类比</h4><p>好比化妆——底妆要正（色温准确），眼影要有对比（红绿互补），高光要柔和（虚化过渡）。</p><h4>示例</h4><p>纽伦堡古城采用红绿颜色搭配形成视觉对比。日落前1小时光线柔和，适合拍摄普通景物。夜景小光圈让灯光呈现星线效果。</p><h4>反例</h4><p>依赖Photoshop过度调色追求"打翻调色板"的效果——颜色失真。避免正面强光（闪光灯直射人脸过白）。</p>'},
+  {id:'c5',name:'黑白摄影',front:'黑白摄影',back:'<h4>定义</h4><p>去除色彩干扰，聚焦构图/轮廓/光线三大要素。黑白像素清晰度约为彩色像素的两倍，对比度更高。</p><h4>类比</h4><p>好比读纯文本 vs 读图文混排——去掉图片后，文字的排版结构和字体本身的力度就凸显了。</p><h4>示例</h4><p>杂乱城市街头、色彩不美观的场景、需要强化线条/光影的主题——黑白处理后可"化干扰为亮点"。宝马博物馆扶手转化为亮丽线条。</p><h4>反例</h4><p>色彩本身为核心元素的风景照（如火山口湖的湛蓝色）——此时黑白摄影会损失核心信息。</p>'},
   {id:'c5',front:'感染力',back:'<h4>定义</h4><p>真实是根基（拒绝过度修图），主题突出是手段（单张照片仅突出1个主题），场景吸引力是牵引（激发"亲眼去看"的欲望），亲和力是归宿（不哗众取宠）。</p><h4>类比</h4><p>好比讲故事——好故事不一定最华丽，但一定最真、最聚焦、最能让你产生"我也想去体验"的冲动。</p><h4>示例</h4><p>《时代广场的胜利日》——美感+二战胜利狂喜情绪。《地球升起》——月球荒凉与蓝色地球对比唤起环保意识。</p><h4>反例</h4><p>过度PS合成照片——失去可信度。元素堆砌无主题——观众不知道看哪里。哗众取宠的古怪题材——不知所云。</p>'},
   {id:'c6',front:'奢侈品定义',back:'<h4>定义</h4><p>两大特征：极致品质（材料/工艺无妥协）+ 非必需品属性（凡勃伦商品，核心功能为"炫耀性消费"）。</p><h4>类比</h4><p>好比米其林三星 vs 快餐——都能填饱肚子，但前者满足的是对"极致体验"的追求而非"饱腹"需求。</p><h4>示例</h4><p>爱马仕铂金包（纯手工/一年等候期/价格万元美元级）。百达翡丽手表（"十月怀胎"制作周期/15年以上经验技师）。</p><h4>反例</h4><p>Apple Watch奢侈版（受摩尔定律影响快速贬值）、诺基亚威图手机——电子产品无法维持奢侈品的保值属性。徕卡相机普通版（功能驱动，非奢侈品）。</p>'},
   {id:'c7',front:'奢侈品商业逻辑',back:'<h4>定义</h4><p>三要素模型：技术进步免疫力（抗贬值）+ 二手市场流动性（易变现）+ 品牌故事传播力（情感溢价）。</p><h4>类比</h4><p>好比购房——抗跌的地段（免疫力）、好转手的户型（流动性）、有故事的小区文化（故事）。三者兼具才是好资产。</p><h4>示例</h4><p>斯坦威钢琴80年二手价3万美元（新琴5-6万）。百达翡丽限量版二手超百万美元。爱马仕手袋二手流动性远高于路易威登。</p><h4>反例</h4><p>卡地亚刻字戒指（个性化过强→流动性差）。小众艺术家作品（市场认知度低→变现困难）。</p>'},
@@ -426,203 +410,83 @@ document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',func
 }));
 
 // ========== TAB 0: SVG ==========
-function renderSVG() {
-  const svg = `<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: G Pages: 1 -->
-<svg width="1002pt" height="282pt"
- viewBox="0.00 0.00 1002.00 282.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 278)">
-<title>G</title>
-<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-278 998,-278 998,4 -4,4"/>
-<!-- root -->
-<g id="node1" class="node">
-<title>root</title>
-<ellipse fill="#c0392b" stroke="black" stroke-width="0" cx="543.5" cy="-209" rx="65" ry="65"/>
-<text text-anchor="middle" x="543.5" y="-212.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">审美能力</text>
-<text text-anchor="middle" x="543.5" y="-197.8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14.00" fill="white">(可训练)</text>
-</g>
-<!-- photo -->
-<g id="node2" class="node">
-<title>photo</title>
-<path fill="#d4a574" stroke="black" stroke-width="0" d="M230,-108C230,-108 199,-108 199,-108 193,-108 187,-102 187,-96 187,-96 187,-84 187,-84 187,-78 193,-72 199,-72 199,-72 230,-72 230,-72 236,-72 242,-78 242,-84 242,-84 242,-96 242,-96 242,-102 236,-108 230,-108"/>
-<text text-anchor="middle" x="214.5" y="-87.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">📷 摄影</text>
-</g>
-<!-- root&#45;&gt;photo -->
-<g id="edge1" class="edge">
-<title>root&#45;&gt;photo</title>
-<path fill="none" stroke="#c0392b" stroke-width="2.5" d="M482.39,-186.27C414.72,-162.2 307.8,-124.18 251.69,-104.23"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2.5" points="252.75,-100.89 242.15,-100.83 250.4,-107.48 252.75,-100.89"/>
-</g>
-<!-- luxury -->
-<g id="node3" class="node">
-<title>luxury</title>
-<path fill="#d4a574" stroke="black" stroke-width="0" d="M559,-108C559,-108 528,-108 528,-108 522,-108 516,-102 516,-96 516,-96 516,-84 516,-84 516,-78 522,-72 528,-72 528,-72 559,-72 559,-72 565,-72 571,-78 571,-84 571,-84 571,-96 571,-96 571,-102 565,-108 559,-108"/>
-<text text-anchor="middle" x="543.5" y="-87.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">💎 奢品</text>
-</g>
-<!-- root&#45;&gt;luxury -->
-<g id="edge2" class="edge">
-<title>root&#45;&gt;luxury</title>
-<path fill="none" stroke="#e67e22" stroke-width="2.5" d="M543.5,-143.68C543.5,-134.73 543.5,-125.96 543.5,-118.23"/>
-<polygon fill="#e67e22" stroke="#e67e22" stroke-width="2.5" points="547,-118.07 543.5,-108.07 540,-118.07 547,-118.07"/>
-</g>
-<!-- museum -->
-<g id="node4" class="node">
-<title>museum</title>
-<path fill="#d4a574" stroke="black" stroke-width="0" d="M837,-108C837,-108 806,-108 806,-108 800,-108 794,-102 794,-96 794,-96 794,-84 794,-84 794,-78 800,-72 806,-72 806,-72 837,-72 837,-72 843,-72 849,-78 849,-84 849,-84 849,-96 849,-96 849,-102 843,-108 837,-108"/>
-<text text-anchor="middle" x="821.5" y="-87.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="white">🏛️ 博物</text>
-</g>
-<!-- root&#45;&gt;museum -->
-<g id="edge3" class="edge">
-<title>root&#45;&gt;museum</title>
-<path fill="none" stroke="#8b4513" stroke-width="2.5" d="M603.14,-182.9C658.1,-159.77 737.96,-126.16 784.33,-106.65"/>
-<polygon fill="#8b4513" stroke="#8b4513" stroke-width="2.5" points="785.83,-109.81 793.69,-102.7 783.12,-103.36 785.83,-109.81"/>
-</g>
-<!-- photo1 -->
-<g id="node5" class="node">
-<title>photo1</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M61,-36C61,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 61,0 61,0 67,0 73,-6 73,-12 73,-12 73,-24 73,-24 73,-30 67,-36 61,-36"/>
-<text text-anchor="middle" x="36.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">记录vs创作</text>
-</g>
-<!-- photo&#45;&gt;photo1 -->
-<g id="edge4" class="edge">
-<title>photo&#45;&gt;photo1</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M186.69,-78.06C158.83,-67.11 115.48,-50.06 82.5,-37.09"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="83.65,-33.78 73.06,-33.38 81.08,-40.29 83.65,-33.78"/>
-</g>
-<!-- photo2 -->
-<g id="node6" class="node">
-<title>photo2</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M147.5,-36C147.5,-36 103.5,-36 103.5,-36 97.5,-36 91.5,-30 91.5,-24 91.5,-24 91.5,-12 91.5,-12 91.5,-6 97.5,0 103.5,0 103.5,0 147.5,0 147.5,0 153.5,0 159.5,-6 159.5,-12 159.5,-12 159.5,-24 159.5,-24 159.5,-30 153.5,-36 147.5,-36"/>
-<text text-anchor="middle" x="125.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">到达&gt;视角</text>
-</g>
-<!-- photo&#45;&gt;photo2 -->
-<g id="edge5" class="edge">
-<title>photo&#45;&gt;photo2</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M192.5,-71.7C181.29,-62.88 167.5,-52.03 155.35,-42.47"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="157.27,-39.54 147.25,-36.1 152.94,-45.04 157.27,-39.54"/>
-</g>
-<!-- photo3 -->
-<g id="node7" class="node">
-<title>photo3</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M239,-36C239,-36 190,-36 190,-36 184,-36 178,-30 178,-24 178,-24 178,-12 178,-12 178,-6 184,0 190,0 190,0 239,0 239,0 245,0 251,-6 251,-12 251,-12 251,-24 251,-24 251,-30 245,-36 239,-36"/>
-<text text-anchor="middle" x="214.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">构图·光色</text>
-</g>
-<!-- photo&#45;&gt;photo3 -->
-<g id="edge6" class="edge">
-<title>photo&#45;&gt;photo3</title>
-<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M214.5,-71.7C214.5,-63.98 214.5,-54.71 214.5,-46.11"/>
-<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="218,-46.1 214.5,-36.1 211,-46.1 218,-46.1"/>
-</g>
-<!-- flavor -->
-<g id="node14" class="node">
-<title>flavor</title>
-<path fill="#fffaf2" stroke="#e67e22" stroke-width="1.5" d="M334,-36C334,-36 281,-36 281,-36 275,-36 269,-30 269,-24 269,-24 269,-12 269,-12 269,-6 275,0 281,0 281,0 334,0 334,0 340,0 346,-6 346,-12 346,-12 346,-24 346,-24 346,-30 340,-36 334,-36"/>
-<text text-anchor="middle" x="307.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#e67e22">🍷 风味审美</text>
-</g>
-<!-- photo&#45;&gt;flavor -->
-<g id="edge13" class="edge">
-<title>photo&#45;&gt;flavor</title>
-<path fill="none" stroke="#e67e22" stroke-dasharray="5,2" d="M237.49,-71.7C249.31,-62.8 263.89,-51.82 276.68,-42.2"/>
-<polygon fill="#e67e22" stroke="#e67e22" points="278.89,-44.91 284.78,-36.1 274.68,-39.32 278.89,-44.91"/>
-</g>
-<!-- lux1 -->
-<g id="node8" class="node">
-<title>lux1</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M414.5,-36C414.5,-36 376.5,-36 376.5,-36 370.5,-36 364.5,-30 364.5,-24 364.5,-24 364.5,-12 364.5,-12 364.5,-6 370.5,0 376.5,0 376.5,0 414.5,0 414.5,0 420.5,0 426.5,-6 426.5,-12 426.5,-12 426.5,-24 426.5,-24 426.5,-30 420.5,-36 414.5,-36"/>
-<text text-anchor="middle" x="395.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">极致品质</text>
-</g>
-<!-- luxury&#45;&gt;lux1 -->
-<g id="edge7" class="edge">
-<title>luxury&#45;&gt;lux1</title>
-<path fill="none" stroke="#e67e22" stroke-width="1.5" d="M515.66,-75.83C493.16,-65.19 461.19,-50.07 435.88,-38.1"/>
-<polygon fill="#e67e22" stroke="#e67e22" stroke-width="1.5" points="437.07,-34.79 426.54,-33.68 434.08,-41.12 437.07,-34.79"/>
-</g>
-<!-- lux2 -->
-<g id="node9" class="node">
-<title>lux2</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M528,-36C528,-36 457,-36 457,-36 451,-36 445,-30 445,-24 445,-24 445,-12 445,-12 445,-6 451,0 457,0 457,0 528,0 528,0 534,0 540,-6 540,-12 540,-12 540,-24 540,-24 540,-30 534,-36 528,-36"/>
-<text text-anchor="middle" x="492.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">品牌价值三要素</text>
-</g>
-<!-- luxury&#45;&gt;lux2 -->
-<g id="edge8" class="edge">
-<title>luxury&#45;&gt;lux2</title>
-<path fill="none" stroke="#e67e22" stroke-width="1.5" d="M530.89,-71.7C524.9,-63.47 517.62,-53.48 511.02,-44.42"/>
-<polygon fill="#e67e22" stroke="#e67e22" stroke-width="1.5" points="513.68,-42.13 504.96,-36.1 508.02,-46.25 513.68,-42.13"/>
-</g>
-<!-- lux3 -->
-<g id="node10" class="node">
-<title>lux3</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M619,-36C619,-36 570,-36 570,-36 564,-36 558,-30 558,-24 558,-24 558,-12 558,-12 558,-6 564,0 570,0 570,0 619,0 619,0 625,0 631,-6 631,-12 631,-12 631,-24 631,-24 631,-30 625,-36 619,-36"/>
-<text text-anchor="middle" x="594.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">凡勃伦商品</text>
-</g>
-<!-- luxury&#45;&gt;lux3 -->
-<g id="edge9" class="edge">
-<title>luxury&#45;&gt;lux3</title>
-<path fill="none" stroke="#e67e22" stroke-width="1.5" d="M556.11,-71.7C562.1,-63.47 569.38,-53.48 575.98,-44.42"/>
-<polygon fill="#e67e22" stroke="#e67e22" stroke-width="1.5" points="578.98,-46.25 582.04,-36.1 573.32,-42.13 578.98,-46.25"/>
-</g>
-<!-- music -->
-<g id="node15" class="node">
-<title>music</title>
-<path fill="#fffaf2" stroke="#c0392b" stroke-width="1.5" d="M692,-36C692,-36 661,-36 661,-36 655,-36 649,-30 649,-24 649,-24 649,-12 649,-12 649,-6 655,0 661,0 661,0 692,0 692,0 698,0 704,-6 704,-12 704,-12 704,-24 704,-24 704,-30 698,-36 692,-36"/>
-<text text-anchor="middle" x="676.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#c0392b">🎵 音乐</text>
-</g>
-<!-- luxury&#45;&gt;music -->
-<g id="edge14" class="edge">
-<title>luxury&#45;&gt;music</title>
-<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M571.06,-74.5C591.03,-63.98 618.24,-49.66 640.01,-38.2"/>
-<polygon fill="#c0392b" stroke="#c0392b" points="641.76,-41.24 648.98,-33.49 638.5,-35.05 641.76,-41.24"/>
-</g>
-<!-- mus1 -->
-<g id="node11" class="node">
-<title>mus1</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M764.5,-36C764.5,-36 734.5,-36 734.5,-36 728.5,-36 722.5,-30 722.5,-24 722.5,-24 722.5,-12 722.5,-12 722.5,-6 728.5,0 734.5,0 734.5,0 764.5,0 764.5,0 770.5,0 776.5,-6 776.5,-12 776.5,-12 776.5,-24 776.5,-24 776.5,-30 770.5,-36 764.5,-36"/>
-<text text-anchor="middle" x="749.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">文物性</text>
-</g>
-<!-- museum&#45;&gt;mus1 -->
-<g id="edge10" class="edge">
-<title>museum&#45;&gt;mus1</title>
-<path fill="none" stroke="#8b4513" stroke-width="1.5" d="M803.7,-71.7C794.9,-63.14 784.12,-52.66 774.5,-43.3"/>
-<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="776.7,-40.57 767.09,-36.1 771.82,-45.58 776.7,-40.57"/>
-</g>
-<!-- mus2 -->
-<g id="node12" class="node">
-<title>mus2</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M836.5,-36C836.5,-36 806.5,-36 806.5,-36 800.5,-36 794.5,-30 794.5,-24 794.5,-24 794.5,-12 794.5,-12 794.5,-6 800.5,0 806.5,0 806.5,0 836.5,0 836.5,0 842.5,0 848.5,-6 848.5,-12 848.5,-12 848.5,-24 848.5,-24 848.5,-30 842.5,-36 836.5,-36"/>
-<text text-anchor="middle" x="821.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">艺术性</text>
-</g>
-<!-- museum&#45;&gt;mus2 -->
-<g id="edge11" class="edge">
-<title>museum&#45;&gt;mus2</title>
-<path fill="none" stroke="#8b4513" stroke-width="1.5" d="M821.5,-71.7C821.5,-63.98 821.5,-54.71 821.5,-46.11"/>
-<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="825,-46.1 821.5,-36.1 818,-46.1 825,-46.1"/>
-</g>
-<!-- mus3 -->
-<g id="node13" class="node">
-<title>mus3</title>
-<path fill="#fffaf2" stroke="#5a3e3e" d="M908.5,-36C908.5,-36 878.5,-36 878.5,-36 872.5,-36 866.5,-30 866.5,-24 866.5,-24 866.5,-12 866.5,-12 866.5,-6 872.5,0 878.5,0 878.5,0 908.5,0 908.5,0 914.5,0 920.5,-6 920.5,-12 920.5,-12 920.5,-24 920.5,-24 920.5,-30 914.5,-36 908.5,-36"/>
-<text text-anchor="middle" x="893.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#5a3e3e">稀缺性</text>
-</g>
-<!-- museum&#45;&gt;mus3 -->
-<g id="edge12" class="edge">
-<title>museum&#45;&gt;mus3</title>
-<path fill="none" stroke="#8b4513" stroke-width="1.5" d="M839.3,-71.7C848.1,-63.14 858.88,-52.66 868.5,-43.3"/>
-<polygon fill="#8b4513" stroke="#8b4513" stroke-width="1.5" points="871.18,-45.58 875.91,-36.1 866.3,-40.57 871.18,-45.58"/>
-</g>
-<!-- lit -->
-<g id="node16" class="node">
-<title>lit</title>
-<path fill="#fffaf2" stroke="#8b4513" stroke-width="1.5" d="M982,-36C982,-36 951,-36 951,-36 945,-36 939,-30 939,-24 939,-24 939,-12 939,-12 939,-6 945,0 951,0 951,0 982,0 982,0 988,0 994,-6 994,-12 994,-12 994,-24 994,-24 994,-30 988,-36 982,-36"/>
-<text text-anchor="middle" x="966.5" y="-15.2" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11.00" fill="#8b4513">📖 文学</text>
-</g>
-<!-- museum&#45;&gt;lit -->
-<g id="edge15" class="edge">
-<title>museum&#45;&gt;lit</title>
-<path fill="none" stroke="#8b4513" stroke-dasharray="5,2" d="M849.11,-75.67C871.99,-64.62 904.7,-48.83 929.78,-36.72"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="931.5,-39.78 938.99,-32.28 928.46,-33.48 931.5,-39.78"/>
-</g>
-</g>
+function renderSVG(){
+  const svg = `<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c0392b"/><stop offset="100%" stop-color="#e67e22"/></linearGradient>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#c0392b"/></marker>
+  </defs>
+  <!-- Central node -->
+  <circle cx="450" cy="120" r="50" fill="url(#g1)" opacity=".95"/>
+  <text x="450" y="115" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">审美能力</text>
+  <text x="450" y="135" text-anchor="middle" fill="#fff" font-size="11" opacity=".9">(可训练)</text>
+
+  <!-- Level 1: 3 main branches -->
+  <!-- 摄影 -->
+  <line x1="410" y1="165" x2="180" y2="260" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <rect x="110" y="255" width="140" height="40" rx="8" fill="#c0392b" opacity=".9"/>
+  <text x="180" y="280" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">📷 摄影</text>
+
+  <!-- 奢侈品 -->
+  <line x1="450" y1="170" x2="450" y2="240" stroke="#e67e22" stroke-width="2.5" marker-end="url(#arr)"/>
+  <rect x="380" y="235" width="140" height="40" rx="8" fill="#e67e22" opacity=".9"/>
+  <text x="450" y="260" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">💎 奢品</text>
+
+  <!-- 博物 -->
+  <line x1="490" y1="165" x2="640" y2="260" stroke="#8b4513" stroke-width="2.5" marker-end="url(#arr)"/>
+  <rect x="570" y="255" width="140" height="40" rx="8" fill="#8b4513" opacity=".9"/>
+  <text x="640" y="280" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">🏛️ 博物</text>
+
+  <!-- 摄影 subnodes -->
+  <line x1="180" y1="295" x2="100" y2="360" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="95" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">记录vs创作</text>
+  <line x1="180" y1="295" x2="180" y2="360" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="175" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">到达>视角</text>
+  <line x1="180" y1="295" x2="260" y2="360" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="265" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">构图·光色</text>
+
+  <!-- 奢侈 subnodes -->
+  <line x1="450" y1="275" x2="370" y2="350" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="365" y="370" text-anchor="middle" fill="#3d2f2f" font-size="11">极致品质</text>
+  <line x1="450" y1="275" x2="450" y2="350" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="450" y="370" text-anchor="middle" fill="#3d2f2f" font-size="11">品牌价值三要素</text>
+  <line x1="450" y1="275" x2="530" y2="350" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="540" y="370" text-anchor="middle" fill="#3d2f2f" font-size="11">凡勃伦商品</text>
+
+  <!-- 博物 subnodes -->
+  <line x1="640" y1="295" x2="560" y2="360" stroke="#8b4513" stroke-width="1.5"/>
+  <text x="555" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">文物性</text>
+  <line x1="640" y1="295" x2="640" y2="360" stroke="#8b4513" stroke-width="1.5"/>
+  <text x="640" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">艺术性</text>
+  <line x1="640" y1="295" x2="720" y2="360" stroke="#8b4513" stroke-width="1.5"/>
+  <text x="725" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">稀缺性</text>
+
+  <!-- Bottom: 风味 · 音乐 · 文学 -->
+  <rect x="250" y="440" width="120" height="36" rx="8" fill="#fdf6ec" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="310" y="463" text-anchor="middle" fill="#e67e22" font-size="12" font-weight="600">🍷 风味审美</text>
+
+  <rect x="400" y="440" width="100" height="36" rx="8" fill="#fdf6ec" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="450" y="463" text-anchor="middle" fill="#c0392b" font-size="12" font-weight="600">🎵 音乐</text>
+
+  <rect x="530" y="440" width="100" height="36" rx="8" fill="#fdf6ec" stroke="#8b4513" stroke-width="1.5"/>
+  <text x="580" y="463" text-anchor="middle" fill="#8b4513" font-size="12" font-weight="600">📖 文学</text>
+
+  <!-- Cross connections (dashed) -->
+  <line x1="310" y1="440" x2="180" y2="410" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
+  <line x1="450" y1="440" x2="450" y2="410" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
+  <line x1="580" y1="440" x2="640" y2="410" stroke="#8b4513" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
+
+  <!-- Legend -->
+  <rect x="20" y="500" width="280" height="90" rx="8" fill="#fdf6ec" stroke="#e8d5c4" stroke-width="1"/>
+  <text x="35" y="520" fill="#3d2f2f" font-size="11" font-weight="700">图例</text>
+  <line x1="35" y1="540" x2="65" y2="540" stroke="#c0392b" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="75" y="544" fill="#3d2f2f" font-size="10">因果关系</text>
+  <line x1="35" y1="560" x2="65" y2="560" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="75" y="564" fill="#3d2f2f" font-size="10">关联关系</text>
+  <rect x="35" y="568" width="13" height="7" rx="3" fill="#c0392b" opacity=".9"/>
+  <text x="55" y="580" fill="#3d2f2f" font-size="10">核心节点</text>
+  <rect x="110" y="568" width="13" height="7" rx="3" fill="#fdf6ec" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="130" y="580" fill="#3d2f2f" font-size="10">扩展领域</text>
 </svg>`;
   document.getElementById('svgMap').innerHTML = svg;
 }
@@ -630,23 +494,15 @@ function renderSVG() {
 // ========== TAB 1: Cards ==========
 function renderCard(){
   const c = cardsData[currentCard];
-  document.getElementById('flipFront').textContent = c.front;
+  const isLearned = learned.has(c.id);
+  document.getElementById('flipFront').innerHTML = `<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name || c.front}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${isLearned?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
   document.getElementById('flipBack').innerHTML = c.back;
-  document.getElementById('flipper').classList.remove('flipped');
-  document.getElementById('cardIdx').textContent = (currentCard+1)+' / '+cardsData.length;
-  const lb = document.getElementById('learnedBtn');
-  if(learned.has(c.id)){ lb.textContent='✓ 已学习'; lb.classList.add('learned'); }
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = (currentCard+1)+' / '+cardsData.length;
+  const lb = document.getElementById('markLearnedBtn');
+  if(isLearned){ lb.textContent='✓ 已学习'; lb.classList.add('learned'); }
   else{ lb.textContent='✓ 标记已学习'; lb.classList.remove('learned'); }
 }
-function flipCard(){ document.getElementById('flipper').classList.toggle('flipped'); }
-function prevCard(){ currentCard=(currentCard-1+cardsData.length)%cardsData.length; renderCard(); }
-function nextCard(){ currentCard=(currentCard+1)%cardsData.length; renderCard(); }
-function markLearned(){
-  const c = cardsData[currentCard];
-  if(learned.has(c.id)){ learned.delete(c.id); } else { learned.add(c.id); }
-  saveState(); renderCard(); updateProgress();
-}
-
 // ========== PROGRESS ==========
 function updateProgress(){
   const n=learned.size, t=cardsData.length;

@@ -115,59 +115,14 @@ a:hover { text-decoration: underline; }
 .svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
 
 /* Flip card */
-.flip-container { perspective: 1000px; width: 100%; max-width: 480px; margin: 0 auto; }
-.flipper {
-  position: relative; width: 100%; height: 420px;
-  transition: transform 0.6s; transform-style: preserve-3d;
-}
-.flipper.flipped { transform: rotateY(180deg); }
-.flip-front {
-  background: linear-gradient(160deg, #3d2f2f 0%, #5a3e2b 50%, #7a5230 100%);
-  color: #fdf6ec; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  height: 420px; position: relative; overflow: hidden;
-}
-.flip-front::before {
-  content: ''; position: absolute; top: -30%; right: -20%;
-  width: 200px; height: 200px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(212,165,116,0.15) 0%, transparent 70%);
-}
-.flip-front .concept-icon {
-  font-size: 40px; margin-bottom: 16px; opacity: 0.7;
-}
-.flip-front .concept-name {
-  font-size: clamp(20px, 4vw, 28px); font-weight: 700;
-  letter-spacing: 0.05em; margin-bottom: 8px;
-}
-.flip-front .star-badge-front {
-  display: inline-block; background: #c0392b; color: #fdf6ec;
-  font-size: 12px; padding: 2px 10px; border-radius: 10px;
-  letter-spacing: 0.1em;
-}
-.flip-front .hint {
-  position: absolute; bottom: 16px; font-size: 12px;
-  color: rgba(253,246,236,0.4); letter-spacing: 0.08em;
-}
-.flip-front, .flip-back {
-  position: absolute; width: 100%; height: 420px; backface-visibility: hidden;
-  border-radius: var(--radius); padding: 24px;
-  background: var(--card); box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-}
-.flip-back { transform: rotateY(180deg); overflow-y: auto; }
-.flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
-.flip-btn {
-  background: var(--accent); color: #fff;
-}
-.flip-btn:hover { background: #a93226; }
-.flip-nav button {
-  padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
-  color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
-  font-family: inherit; transition: all 0.2s;
-}
-.flip-nav button:hover { background: var(--accent); color: #fff; }
-.flip-nav .learned-btn { background: #27ae60; color: #fff; border-color: #27ae60; }
-.flip-nav .learned-btn.learned { background: #fff; color: #27ae60; }
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
 /* Question styling */
 .quiz-question { margin-bottom: 20px; }
@@ -249,34 +204,6 @@ th { color: var(--accent); font-weight: 600; }
   .container { padding: 0 8px 40px; }
   .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
-  .flip-front {
-  background: linear-gradient(160deg, #3d2f2f 0%, #5a3e2b 50%, #7a5230 100%);
-  color: #fdf6ec; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  height: 420px; position: absolute; overflow: hidden;
-}
-.flip-front::before {
-  content: ''; position: absolute; top: -30%; right: -20%;
-  width: 200px; height: 200px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(212,165,116,0.15) 0%, transparent 70%);
-}
-.flip-front .concept-icon {
-  font-size: 40px; margin-bottom: 16px; opacity: 0.7;
-}
-.flip-front .concept-name {
-  font-size: clamp(20px, 4vw, 28px); font-weight: 700;
-  letter-spacing: 0.05em; margin-bottom: 8px;
-}
-.flip-front .star-badge-front {
-  display: inline-block; background: #c0392b; color: #fdf6ec;
-  font-size: 12px; padding: 2px 10px; border-radius: 10px;
-  letter-spacing: 0.1em;
-}
-.flip-front .hint {
-  position: absolute; bottom: 16px; font-size: 12px;
-  color: rgba(253,246,236,0.4); letter-spacing: 0.08em;
-}
-.flip-front, .flip-back { padding: 16px; height: 420px; position: absolute; }
 }
 </style>
 </head>
@@ -360,23 +287,17 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 1: 知识卡片 ==================== -->
 <div class="tab-content" data-tab="1">
-<div class="card">
-  <h2 style="text-align:center;">翻转知识卡片</h2>
-  <p style="text-align:center;color:var(--text-light);">点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度</p>
-</div>
-<div class="flip-container" id="flipContainer">
-  <div class="flipper" id="flipper" onclick="flipCard()">
-    <div class="flip-front" id="flipFront"></div>
-    <div class="flip-back" id="flipBack"></div>
-  </div>
-</div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-  <button onclick="prevCard()">◀ 上一个</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">✓ 标记已学习</button>
-  <button onclick="nextCard()">下一个 ▶</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
-<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span></p>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ==================== TAB 2: 题库系统 ==================== -->
@@ -469,52 +390,52 @@ th { color: var(--accent); font-weight: 600; }
 // ======== DATA ========
 
 const concepts = [
-  { id: 0, name: "自然垄断", star: true, short: "通过持续降价而非提价形成壁垒，消除竞争导致社会活力消失",
+  { id:'c1', name: "自然垄断", star: true, short: "通过持续降价而非提价形成壁垒，消除竞争导致社会活力消失",
     def: "企业凭借技术或效率优势，通过持续降价（而非提价）使新进入者无法生存，最终消除竞争选项的垄断形态。",
     analogy: "如同一条免费高速公路——建设者投入巨大但免费通行，所有收费小路都无法与之竞争，最终只剩这一条路。",
     example: "洛克菲勒标准石油将煤油零售价降低80%；腾讯免费社交产品；滴滴补贴司机端。",
     counter: "中国电信/石油等行政垄断——靠牌照门槛而非效率优势，属于可通过政策调整打破的垄断。" },
-  { id: 1, name: "IT产业零边际成本", star: true, short: "软件复制成本趋近于零，毛利率可达80%+，定价由技术附加值决定",
+  { id:'c2', name: "IT产业零边际成本", star: true, short: "软件复制成本趋近于零，毛利率可达80%+，定价由技术附加值决定",
     def: "IT产品的核心特征是复制成本趋近于零（拷贝一万份与一份成本相当），毛利率普遍超80%。",
     analogy: "造第一把钥匙花了一万块，但复制一把只需几毛钱——传统工业每把钥匙都要同样的材料和工时。",
     example: "微软Windows系统、Google搜索、Adobe软件均遵循此规律，成为行业壁垒的核心来源。",
     counter: "汽车制造——每辆车的材料、工时线性增长，无法通过复制降低成本，毛利率远低于IT产业。" },
-  { id: 2, name: "数据驱动方法", star: true, short: "AI的核心方法论：不模拟人脑，而是用数据+数学模型解决问题",
+  { id:'c3', name: "数据驱动方法", star: true, short: "AI的核心方法论：不模拟人脑，而是用数据+数学模型解决问题",
     def: "不试图仿真人类思维过程，而是通过大量数据训练数学模型来解决问题——这是当前几乎所有AI成就的基础。",
     analogy: "不去教计算机'鸟怎么飞'，而是直接给它空气动力学公式——莱特兄弟的方法击败了'鸟飞派'。",
     example: "Google语音识别、AlphaGo的棋谱学习、淘宝推荐系统均基于数据驱动而非规则模拟。",
     counter: "传统专家系统——试图把人类专家的规则一条条编码进程序，面对复杂场景力不从心。" },
-  { id: 3, name: "机器智能", star: false, short: "本质是分类器，解决的是数学问题而非模拟人脑神经",
+  { id:'c4', name: "机器智能", star: false, short: "本质是分类器，解决的是数学问题而非模拟人脑神经",
     def: "机器智能（深度学习等）本质是特殊的分类器——将问题转化为分类问题，通过大规模计算和数学模型解决。",
     analogy: "就像照相机不是模拟人眼构造，而是用光学+传感器直接成像——机器智能绕过'模拟人脑'，直接用数学解决。",
     example: "图像识别=将像素分类为'猫/狗'；围棋=将棋盘状态分类为'胜/负/平'；语音识别=将音频分类为文字。",
     counter: "真正的人类智能——包含情感、价值判断、创造性等'不可计算问题'，超出图灵机理论范畴。" },
-  { id: 4, name: "区块链即生产关系", star: false, short: "机器智能提升生产力，区块链重构生产关系（所有权/关系/分配）",
+  { id:'c5', name: "区块链即生产关系", star: false, short: "机器智能提升生产力，区块链重构生产关系（所有权/关系/分配）",
     def: "区块链作为分布式不可篡改账本，改变了生产工具所有权、人与人关系、利益分配制度三大生产关系要素。",
     analogy: "相当于从'公司记账'变为'全村公开账本'——每个人都能查看、验证，但谁也无法偷偷修改。",
     example: "网约车用区块链可实现<1%抽成（vs滴滴15-25%）；大数据医疗可实现'数据使用与拥有分离'。",
     counter: "传统中心化平台——服务器归公司所有，规则由公司制定，利润由公司分配，用户无议价权。" },
-  { id: 5, name: "颠覆式创新", star: true, short: "小公司靠'杀手功能+技术放大效应'形成对大公司的非对称优势",
+  { id:'c6', name: "颠覆式创新", star: true, short: "小公司靠'杀手功能+技术放大效应'形成对大公司的非对称优势",
     def: "小公司利用新兴技术趋势，构建独特杀手功能并持续受益于外部技术进步，形成传统巨头难以复制的代际优势。",
     analogy: "蒸汽船对大帆船——初期又小又不可靠，但'能逆风航行'的杀手功能，加上机械革命持续加持，最终淘汰大帆船。",
     example: "Google的PageRank（杀手功能）+ 互联网规模扩张（技术放大）；ARM低功耗芯片 + 移动设备爆发。",
     counter: "仅靠概念和融资的'独角兽'——没有真正的技术代差，与巨头处于同一技术水平，难以竞争。" },
-  { id: 6, name: "带宽决定商业规模", star: false, short: "信息传输速率上限决定生意大小，互联网企业本质是控制信息带宽",
+  { id:'c7', name: "带宽决定商业规模", star: false, short: "信息传输速率上限决定生意大小，互联网企业本质是控制信息带宽",
     def: "香农第二定理指出信息传输速率存在理论上限（带宽）。商业场景中，人脉/信息触达能力=商业带宽，直接决定生意规模。",
     analogy: "农耕时代口口相传只能做邻里生意，互联网时代一条信息可以瞬间触达全球——带宽的指数级提升就是商业规模的指数级提升。",
     example: "滴滴/Uber不拥有汽车但掌握供需匹配带宽；Airbnb不拥有酒店但掌握住宿信息带宽。",
     counter: "拥有大量实体资产但信息触达能力弱的企业——如传统出租车公司，车辆再多也无法匹配海量需求。" },
-  { id: 7, name: "专利防御长城", star: false, short: "专利本质是防御工具而非进攻武器，创新期靠速度而非专利取胜",
+  { id:'c8', name: "专利防御长城", star: false, short: "专利本质是防御工具而非进攻武器，创新期靠速度而非专利取胜",
     def: "专利真正的作用是防御——创新高发期靠快速将技术转化为产品取胜，稳定期才需要用专利保护'侧翼和后翼'。",
     analogy: "曼施坦因的闪电战——进攻是最好的防守。创新公司跑步前进时不需要城墙，跑不动了才需要修长城。",
     example: "IBM（半个世纪专利数量第一，防御期策略）；高通（用系列专利覆盖CDMA所有实现方式）。",
     counter: "创新高增长期的Facebook专利排名仅100-200名——真正的竞争力来自技术和产品，而非专利数量。" },
-  { id: 8, name: "合作经济", star: false, short: "新技术不颠覆原有产业，而是通过'原有产业+新技术=新产业'实现升级",
+  { id:'c9', name: "合作经济", star: false, short: "新技术不颠覆原有产业，而是通过'原有产业+新技术=新产业'实现升级",
     def: "互联网和机器智能不是颠覆者，而是改造者。核心公式：原有产业 + 新技术 = 新产业。",
     analogy: "如同电——不是'颠覆'了冶铜业，而是'电解技术+传统冶铜=高纯度精铜产业'。产业还在，只是升级了。",
     example: "银行业+互联网=在线银行；零售业+互联网=电商；广告业+互联网=精准广告。",
     counter: "'互联网+'概念——把互联网当作颠覆一切的魔法，脱离原有产业的真实需求，沦为空谈。" },
-  { id: 9, name: "信息论应对不确定性", star: false, short: "信息论是信息时代的核心方法论——用信息消除不确定性",
+  { id:'c10', name: "信息论应对不确定性", star: false, short: "信息论是信息时代的核心方法论——用信息消除不确定性",
     def: "20世纪后世界不确定性成为常态，信息论（香农1948年创立）提供了用信息消除不确定性的科学方法论。",
     analogy: "如同在漆黑房间里——每多一盏灯（多一条信息），你就更清楚房间的布局，不确定的恐惧也随之消失。",
     example: "大数据思维本质是信息论应用；拼多多的商品推荐=用用户行为信息消除购买决策不确定性。",
@@ -859,7 +780,7 @@ function renderDashboard() {
   concepts.forEach((c, i) => {
     const starClass = c.star ? ' star' : '';
     const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
-    html += `<div class="concept-card${starClass}" onclick="switchTab(1);flipToCard(${i})">
+    html += `<div class="concept-card${starClass}" onclick="switchTab(1);setCard(${i})">
       <span class="num">${i+1}</span><strong>${c.name}</strong>${starBadge}
       <p style="font-size:12px;color:var(--text-light);margin-top:6px;">${c.short}</p>
     </div>`;
@@ -899,119 +820,69 @@ function renderDashboard() {
 }
 
 // ======== PROGRESS ========
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem('mks_tech_biz_progress') || '{}'); } catch(e) { return {}; }
+let learnedCards = JSON.parse(localStorage.getItem('mks_tech_biz_learned')||'[]');
+let answeredMCQ = JSON.parse(localStorage.getItem('mks_tech_biz_answeredMCQ')||'{}');
+let answeredSAQ = JSON.parse(localStorage.getItem('mks_tech_biz_answeredSAQ')||'{}');
+let errorMCQ = JSON.parse(localStorage.getItem('mks_tech_biz_errorMCQ')||'[]');
+
+function save(){
+  localStorage.setItem('mks_tech_biz_learned',JSON.stringify(learnedCards));
+  localStorage.setItem('mks_tech_biz_answeredMCQ',JSON.stringify(answeredMCQ));
+  localStorage.setItem('mks_tech_biz_answeredSAQ',JSON.stringify(answeredSAQ));
+  localStorage.setItem('mks_tech_biz_errorMCQ',JSON.stringify(errorMCQ));
 }
-function saveProgress(p) { localStorage.setItem('mks_tech_biz_progress', JSON.stringify(p)); }
+
+function getProgress() {
+  return {
+    learnedCards: learnedCards,
+    answeredMCQ: answeredMCQ,
+    answeredSAQ: answeredSAQ,
+    errorMCQ: errorMCQ
+  };
+}
+function saveProgress(p) {
+  learnedCards = p.learnedCards || [];
+  answeredMCQ = p.answeredMCQ || {};
+  answeredSAQ = p.answeredSAQ || {};
+  errorMCQ = p.errorMCQ || [];
+  save();
+}
 
 function updateProgress() {
-  const p = getProgress();
-  const learnedCards = p.learnedCards || [];
-  const answeredMCQ = p.answeredMCQ || {};
-  const answeredSAQ = p.answeredSAQ || {};
-
-  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
-  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
   const mcDone = Object.keys(answeredMCQ).length;
   const saDone = Object.keys(answeredSAQ).length;
   const totalDone = mcDone + saDone;
+  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
+  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
   document.getElementById('quizProgress').textContent = `${totalDone}/30`;
   document.getElementById('quizBar').style.width = `${(totalDone / 30) * 100}%`;
-
-  // Update learned button in card tab
-  if (typeof currentCardIdx !== 'undefined') {
-    updateLearnedBtn();
-  }
+  document.getElementById('cardLearned').textContent = learnedCards.length;
 }
 
 // ======== TAB 1: FLIP CARDS ========
 let currentCardIdx = 0;
 let cardFlipped = false;
 
-
-function flipCard() {
-  document.getElementById('flipper').classList.toggle('flipped');
-  cardFlipped = !cardFlipped;
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
-function renderCard() {
-  const c = concepts[currentCardIdx];
-  const icons = ['🔬','⚙️','📡','🧬','🔗','💡','📊','🛡️','🤝','🎯'];
-  const icon = icons[currentCardIdx % icons.length];
-  document.getElementById('flipFront').innerHTML = `
-    <div class="concept-icon">${icon}</div>
-    <div class="concept-name">${c.name}</div>
-    ${c.star ? '<div class="star-badge-front">★ 核心概念</div>' : ''}
-    <div class="hint">点击翻转</div>
-  `;
-  document.getElementById('flipBack').innerHTML = `
-    <h3 style="color:var(--accent);margin-bottom:10px;font-size:16px;">${c.name}</h3>
-    <div style="font-size:13px;line-height:1.8;">
-      <p><strong>定义：</strong>${c.def}</p>
-      <p style="margin-top:8px;"><strong>类比：</strong>${c.analogy}</p>
-      <p style="margin-top:8px;"><strong>示例：</strong>${c.example}</p>
-      <p style="margin-top:8px;"><strong>反例：</strong>${c.counter}</p>
-    </div>
-  `;
-  document.getElementById('cardIndex').textContent = `${currentCardIdx+1}/10`;
-  updateLearnedBtn();
-}
+setCard(0);
 
-function flipToCard(idx) {
-  currentCardIdx = idx;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-  switchTab(1);
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
 }
-
-function prevCard() {
-  currentCardIdx = (currentCardIdx - 1 + concepts.length) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-}
-
-function nextCard() {
-  currentCardIdx = (currentCardIdx + 1) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-}
-
-function updateLearnedBtn() {
-  const p = getProgress();
-  const learnedCards = p.learnedCards || [];
-  const btn = document.getElementById('learnedBtn');
-  if (learnedCards.includes(currentCardIdx)) {
-    btn.textContent = '✓ 已学习';
-    btn.classList.add('learned');
-  } else {
-    btn.textContent = '✓ 标记已学习';
-    btn.classList.remove('learned');
-  }
-}
-
-function toggleLearned() {
-  const p = getProgress();
-  if (!p.learnedCards) p.learnedCards = [];
-  const idx = p.learnedCards.indexOf(currentCardIdx);
-  if (idx >= 0) {
-    p.learnedCards.splice(idx, 1);
-  } else {
-    p.learnedCards.push(currentCardIdx);
-  }
-  saveProgress(p);
-  updateLearnedBtn();
-  updateProgress();
-}
-
-// Flip on click
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('flipper').addEventListener('click', function() {
-    cardFlipped = !cardFlipped;
-    this.classList.toggle('flipped', cardFlipped);
-  });
-});
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 
 // ======== TAB 2: MCQ + SAQ ========
 function renderMCQ() {

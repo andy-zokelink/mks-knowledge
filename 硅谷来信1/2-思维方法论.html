@@ -114,33 +114,14 @@ a:hover { text-decoration: underline; }
 .svg-wrap { overflow-x: auto; margin: 10px 0; }
 .svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
 
-/* Flip card */
-.flip-container { perspective: 1000px; width: 100%; max-width: 480px; margin: 0 auto; }
-.flipper {
-  position: relative; width: 100%; min-height: 280px;
-  transition: transform 0.6s; transform-style: preserve-3d;
-}
-.flipper.flipped { transform: rotateY(180deg); }
-.flip-front, .flip-back {
-  position: absolute; width: 100%; backface-visibility: hidden;
-  border-radius: var(--radius); padding: 24px;
-  background: var(--card); box-shadow: var(--shadow);
-  border: 1px solid var(--border); min-height: 280px;
-}
-.flip-back { transform: rotateY(180deg); }
-.flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; }
-.flip-btn {
-  background: var(--accent); color: #fff;
-}
-.flip-btn:hover { background: #a93226; }
-.flip-nav button {
-  padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
-  color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
-  font-family: inherit; transition: all 0.2s;
-}
-.flip-nav button:hover { background: var(--accent); color: #fff; }
-.flip-nav .learned-btn { background: #27ae60; color: #fff; border-color: #27ae60; }
-.flip-nav .learned-btn.learned { background: #fff; color: #27ae60; }
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
 /* Question styling */
 .quiz-question { margin-bottom: 20px; }
@@ -222,7 +203,7 @@ th { color: var(--accent); font-weight: 600; }
   .container { padding: 0 8px 40px; }
   .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
-  .flip-front, .flip-back { padding: 16px; height: 420px; }
+    .flip-front, .flip-back { padding: 16px; min-height: 280px; }
 }
 </style>
 </head>
@@ -305,23 +286,17 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 1: 知识卡片 ==================== -->
 <div class="tab-content" data-tab="1">
-<div class="card">
-  <h2 style="text-align:center;">翻转知识卡片</h2>
-  <p style="text-align:center;color:var(--text-light);">点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度</p>
-</div>
-<div class="flip-container" id="flipContainer">
-  <div class="flipper" id="flipper" onclick="flipCard()">
-    <div class="flip-front" id="flipFront"></div>
-    <div class="flip-back" id="flipBack"></div>
-  </div>
-</div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-  <button onclick="prevCard()">◀ 上一个</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">✓ 标记已学习</button>
-  <button onclick="nextCard()">下一个 ▶</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
-<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span> &nbsp; </p>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ==================== TAB 2: 题库系统 ==================== -->
@@ -414,52 +389,52 @@ th { color: var(--accent); font-weight: 600; }
 // ======== DATA ========
 
 const concepts = [
-  { id: 0, name: "证伪思维", star: true, short: "科学理论必须可被证明错误，区分科学与伪科学的根本标准",
+  { id:'c1', name: "证伪思维", star: true, short: "科学理论必须可被证明错误，区分科学与伪科学的根本标准",
     def: "科学理论必须可被证明错误。不可证伪的命题（如算命、占星）不是科学，而是伪科学。这是区分科学与非科学的根本标准，由卡尔·波普尔提出。",
     analogy: "就像法庭上的「无罪推定」——控方必须提供可被反驳的证据，而不是让被告自证清白。科学也需要随时准备接受「反证」。",
     example: "爱因斯坦的广义相对论预言光线会在引力场中弯曲——这是一个可证伪的预测。1919年日食观测证实了它。如果观测结果不符，理论就会被推翻。",
     counter: "「明天可能下雨也可能不下」——这个陈述永远正确，但毫无信息量，因为它不可证伪。算命先生说「你近期会有贵人相助」同样无法被证明错误。" },
-  { id: 1, name: "逻辑判断", star: true, short: "运用逻辑推理筛选信息，识别论证中的矛盾和谬误",
+  { id:'c2', name: "逻辑判断", star: true, short: "运用逻辑推理筛选信息，识别论证中的矛盾和谬误",
     def: "运用逻辑推理筛选信息，识别论证中的矛盾、谬误和不合理假设。在信息过载时代，这是最稀缺的过滤能力——判断对错的难度远低于解决问题本身。",
     analogy: "像一个思维「筛子」——把信息放进去，筛掉那些逻辑不自洽的，留下经得起推敲的。好的论证像精密的瑞士手表，每个齿轮都咬合紧密。",
     example: "面对「罗斯柴尔德家族财富以6%年增长率持续200年已达几十万亿美元」的说法，吴军用逻辑反驳：如果陶朱公1两银子以6%增长2500年，财富将达10^63两，远超宇宙原子总数，由此揭露指数增长在现实中的荒谬性。",
     counter: "「英国靠老处女称霸世界」——猫多→老鼠少→蜜蜂多→苜蓿多→牛多→牛肉多→水手强→海军强→称霸。每步仅有微弱相关性，经多轮传递后关联近乎为零，是典型过度解读。" },
-  { id: 2, name: "成本思维", star: false, short: "通过分析背后的投入-产出逻辑判断动机合理性",
+  { id:'c3', name: "成本思维", star: false, short: "通过分析背后的投入-产出逻辑判断动机合理性",
     def: "通过分析行为背后的投入-产出逻辑，判断动机的合理性。理解「没有免费的午餐」，透过表面看本质。",
     analogy: "如同一副「商业透视镜」——戴上它，你看到的不再是销售人员热情的笑脸，而是他投入的时间成本和获客成本，以及这些成本最终由谁买单。",
     example: "老年人购买保健品：销售人员投入大量时间陪伴老人（时间成本），失败推销的成本需分摊到成交客户身上（获客成本），而保健品公司「出事即跑路」（犯错成本极低）。三方面揭示「关心」背后的逐利本质。",
     counter: "明星媒体人创业失败——原以为名气=能力，但忽略了原单位平台提供的背书价值。一旦脱离平台，维持名气的成本剧增而收益锐减。" },
-  { id: 3, name: "跨界思维", star: false, short: "跨领域融合产生创新，前提是原领域具备扎实基础",
+  { id:'c4', name: "跨界思维", star: false, short: "跨领域融合产生创新，前提是原领域具备扎实基础",
     def: "跨领域融合产生创新，打破单一思维定式。真正的跨界是结果而非目的，需要扎实的原领域基础。",
     analogy: "如同生物界的「杂交优势」——两种不同基因的植物杂交，往往产生更优秀的后代。但前提是每一方的基因都足够优秀和稳定。",
     example: "贾里尼克（通信领域专家）将人工智能视为通信/数据问题而非模仿人类智能，突破传统计算机科学家的思维定式。特斯拉将IT领域的锂电池技术引入汽车行业，解决传统车企铅酸电池续航难题。",
     counter: "跨界不是「浅尝辄止」。爱因斯坦的小提琴仅为爱好（水平不高），不是真正的跨界。真正的跨界如冯·诺依曼——在数学、计算机、物理、博弈论等多个领域都有深刻建树。" },
-  { id: 4, name: "减法思维", star: true, short: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标",
+  { id:'c5', name: "减法思维", star: true, short: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标",
     def: "生命有限，主动舍弃无关紧要的事务，聚焦核心目标。庄子「吾生也有涯，而知也无涯」——以有限追无限，必败。",
     analogy: "就像整理一个塞满杂物的房间——不是往里添置新柜子，而是果断扔掉不需要的东西。腾出的空间才是真正的收获。",
     example: "吴军2014年底从Google辞职：常规思维是高薪工作应优先保障，但他以「时间价值最大化」为标准，发现占用最多时间的高薪工作恰恰是需要舍弃的对象。硅谷一家视频识别公司从长长的任务清单减到仅保留1件核心事，最终被亚马逊高价收购。",
     counter: "同时做很多事的「低水平忙碌」——两倍时间仅获两倍收益。而集中时间做好一件事，两倍时间可获10倍收益。捡芝麻的人永远没有时间捡西瓜。" },
-  { id: 5, name: "常识判断", star: true, short: "常识优于复杂模型，简单规律胜过新奇解释",
+  { id:'c6', name: "常识判断", star: true, short: "常识优于复杂模型，简单规律胜过新奇解释",
     def: "常识优于复杂模型，简单规律胜过新奇解释。经过长期证伪筛选的常识，往往比「专家」的复杂理论更可靠。",
     analogy: "就像天气预报——老祖宗看云识天气的经验（「朝霞不出门，晚霞行千里」）有时比复杂的数值预报模型还准。常识是千百年经验浓缩的智慧。",
     example: "巴菲特不看《华尔街日报》、不信股评、不画K线。他通过逛百货店观察商品受欢迎程度、看店铺顾客数量来判断投资标的。2008年通过比较苹果店与微软店的顾客流量，准确预测苹果市值将超越微软。",
     counter: "过度解读的「新奇解释」——如将温州个别老板跑路推导为中国经济寒冬，忽视数十万家企业中个别案例不具统计意义。常识告诉我们：个别企业破产是行业整合常态。" },
-  { id: 6, name: "专业素养", star: false, short: "稳定性 + 流程化 + 体系知识 + 持续学习",
+  { id:'c7', name: "专业素养", star: false, short: "稳定性 + 流程化 + 体系知识 + 持续学习",
     def: "稳定性 + 流程化 + 体系知识 + 持续学习。职业选手与业余选手的本质区别不在于偶尔的超常发挥，而在于持续稳定的高水平输出。",
     analogy: "就像一个顶级钢琴家演奏简单的《小奏鸣曲》——看似平凡的曲目，却能弹出丰富的层次感和情感张力。真正的专业是在简单事物上展现极致水准。",
     example: "吴军与职业高尔夫教练杰夫同场竞技：杰夫9洞成绩-3杆（持续稳定），而吴军+9杆（好球与坏球交替）。职业选手的稳定发挥来自于严格遵循流程、情绪控制和系统的做事方法。",
     counter: "业余爱好者可能偶尔打出「神仙球」，但无法复制。就像「民间科学家」可能碰巧说对一件事，但缺乏系统方法和可重复性，无法稳定输出。" },
-  { id: 7, name: "渐进改良", star: false, short: "「最好是更好的敌人」——迭代优于一步到位",
+  { id:'c8', name: "渐进改良", star: false, short: "「最好是更好的敌人」——迭代优于一步到位",
     def: "「最好是更好的敌人」——过度追求完美可能导致一事无成，接受阶段性改进反而更有效。迭代优于一步到位。",
     analogy: "就像手机系统更新——不是等一个「完美版本」再发布，而是每周/每月推送小更新，不断修复bug、增加功能。多次「更好」的累积最终超越一次「最好」。",
     example: "美国禁枪法案：民主党追求全面禁枪（「最好」），共和党只同意背景调查（「更好」），双方互不让步导致法案均未通过，禁枪改革完全失败。如果接受部分改进（如对不良记录者禁枪），至少能实现有限成果。",
     counter: "特斯拉电动车：存在做工粗糙、系统死机等问题，但通过持续迭代5年间品质提升速度远超传统车企。若追求初始完美，可能「十几年造不出车」。" },
-  { id: 8, name: "期望值最大化", star: false, short: "通过定义收益函数驱动系统自动优化",
+  { id:'c9', name: "期望值最大化", star: false, short: "通过定义收益函数驱动系统自动优化",
     def: "通过定义合理的收益函数驱动系统自动优化。在组织管理中，设定正确的激励机制比「教育员工」更有效。",
     analogy: "就像设计一个自动导航系统——你不需要手动控制每一个操作，只需设定好目的地（收益函数），导航系统会自动计算出最优路径并不断调整方向。",
     example: "高考政策：若体育成绩占高考50%，家长就会自动让孩子参加体育锻炼，学校会加大体育投入。Google将专利奖励提高后专利数量跃居全球前十。IBM将专利申请与绩效挂钩，成为美国专利冠军。",
     counter: "只讲价值观不设计激励——很多公司天天开会「教育员工」要创新、要合作，但考核体系却只奖励短期业绩。员工行为会向收益函数方向优化，而非口头说教的方向。" },
-  { id: 9, name: "一万小时定律", star: false, short: "技能精进需要有效积累，避免四大误区",
+  { id:'c10', name: "一万小时定律", star: false, short: "技能精进需要有效积累，避免四大误区",
     def: "技能精进需要有效积累而非简单重复。避免四大误区：简单重复、习惯性失败、林黛玉式困境（自我封闭）、狗熊掰棒子（无积累）。",
     analogy: "就像运动员训练——不是每天跑同样的距离就叫训练，而是要有针对性地突破自己的极限。有效的一万小时像是雕刻家反复雕琢，无效的一万小时像是水流反复冲刷同一块石头。",
     example: "吴军提出「三板斧」破解四大困境：第一板斧「愿景-目标-道路」避免简单重复；第二板斧「从不同意见中找合理之处」打破习惯性失败和林黛玉式困境；第三板斧「凡事做记录」解决狗熊掰棒子问题。",
@@ -754,7 +729,7 @@ function renderDashboard() {
   concepts.forEach((c, i) => {
     const starClass = c.star ? ' star' : '';
     const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
-    html += `<div class="concept-card${starClass}" onclick="switchTab(1);flipToCard(${i})">
+    html += `<div class="concept-card${starClass}" onclick="switchTab(1);setCard(${i})">
       <span class="num">${i+1}</span><strong>${c.name}</strong>${starBadge}
       <p style="font-size:12px;color:var(--text-light);margin-top:6px;">${c.short}</p>
     </div>`;
@@ -794,117 +769,64 @@ function renderDashboard() {
 }
 
 // ======== PROGRESS ========
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem('mks_thinking_progress') || '{}'); } catch(e) { return {}; }
+let learnedCards = JSON.parse(localStorage.getItem('mks_thinking_learned')||'[]');
+let answeredMCQ = JSON.parse(localStorage.getItem('mks_thinking_answeredMCQ')||'{}');
+let answeredSAQ = JSON.parse(localStorage.getItem('mks_thinking_answeredSAQ')||'{}');
+let errorMCQ = JSON.parse(localStorage.getItem('mks_thinking_errorMCQ')||'[]');
+
+function save(){
+  localStorage.setItem('mks_thinking_learned',JSON.stringify(learnedCards));
+  localStorage.setItem('mks_thinking_answeredMCQ',JSON.stringify(answeredMCQ));
+  localStorage.setItem('mks_thinking_answeredSAQ',JSON.stringify(answeredSAQ));
+  localStorage.setItem('mks_thinking_errorMCQ',JSON.stringify(errorMCQ));
 }
-function saveProgress(p) { localStorage.setItem('mks_thinking_progress', JSON.stringify(p)); }
+
+function getProgress() {
+  return { learnedCards, answeredMCQ, answeredSAQ, errorMCQ };
+}
+function saveProgress(p) {
+  learnedCards = p.learnedCards || [];
+  answeredMCQ = p.answeredMCQ || {};
+  answeredSAQ = p.answeredSAQ || {};
+  errorMCQ = p.errorMCQ || [];
+  save();
+}
 
 function updateProgress() {
-  const p = getProgress();
-  const learnedCards = p.learnedCards || [];
-  const answeredMCQ = p.answeredMCQ || {};
-  const answeredSAQ = p.answeredSAQ || {};
-
-  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
-  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
   const mcDone = Object.keys(answeredMCQ).length;
   const saDone = Object.keys(answeredSAQ).length;
   const totalDone = mcDone + saDone;
+  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
+  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
   document.getElementById('quizProgress').textContent = `${totalDone}/30`;
   document.getElementById('quizBar').style.width = `${(totalDone / 30) * 100}%`;
-
-  if (typeof currentCardIdx !== 'undefined') {
-    updateLearnedBtn();
-  }
+  document.getElementById('cardLearned').textContent = learnedCards.length;
 }
 
 // ======== TAB 1: FLIP CARDS ========
 let currentCardIdx = 0;
 let cardFlipped = false;
 
-function flipCard() {
-  document.getElementById('flipper').classList.toggle('flipped');
-  cardFlipped = !cardFlipped;
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（生活场景）：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
-function renderCard() {
-  const icons = ['🔬','⚙️','📡','🧬','🔗','💡','📊','🛡️','🤝','🎯'];
-  const icon = icons[currentCardIdx % icons.length];
-  const c = concepts[currentCardIdx];
-  document.getElementById('flipFront').innerHTML = `
-    <div class="concept-icon">${icon}</div>
-    <div class="concept-name">${c.name}</div>
-    ${c.star ? '<div class="star-badge-front">★ 核心概念</div>' : ''}
-    <div class="hint">点击翻转</div>
-  `;
-  document.getElementById('flipBack').innerHTML = `
-    <h3 style="color:var(--accent);margin-bottom:8px;">${c.name}</h3>
-    <div style="font-size:13px;">
-      <p><strong>定义：</strong>${c.def}</p>
-      <p style="margin-top:8px;"><strong>类比（生活场景）：</strong>${c.analogy}</p>
-      <p style="margin-top:8px;"><strong>示例：</strong>${c.example}</p>
-      <p style="margin-top:8px;"><strong>反例：</strong>${c.counter}</p>
-    </div>
-  `;
-  document.getElementById('cardIndex').textContent = `${currentCardIdx+1}/10`;
-  updateLearnedBtn();
-}
+setCard(0);
 
-function flipToCard(idx) {
-  currentCardIdx = idx;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-  switchTab(1);
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
 }
-
-function prevCard() {
-  currentCardIdx = (currentCardIdx - 1 + concepts.length) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-}
-
-function nextCard() {
-  currentCardIdx = (currentCardIdx + 1) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipper').classList.remove('flipped');
-  renderCard();
-}
-
-function updateLearnedBtn() {
-  const p = getProgress();
-  const learnedCards = p.learnedCards || [];
-  const btn = document.getElementById('learnedBtn');
-  if (learnedCards.includes(currentCardIdx)) {
-    btn.textContent = '✓ 已学习';
-    btn.classList.add('learned');
-  } else {
-    btn.textContent = '✓ 标记已学习';
-    btn.classList.remove('learned');
-  }
-}
-
-function toggleLearned() {
-  const p = getProgress();
-  if (!p.learnedCards) p.learnedCards = [];
-  const idx = p.learnedCards.indexOf(currentCardIdx);
-  if (idx >= 0) {
-    p.learnedCards.splice(idx, 1);
-  } else {
-    p.learnedCards.push(currentCardIdx);
-  }
-  saveProgress(p);
-  updateLearnedBtn();
-  updateProgress();
-}
-
-// Flip on click
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('flipper').addEventListener('click', function() {
-    cardFlipped = !cardFlipped;
-    this.classList.toggle('flipped', cardFlipped);
-  });
-});
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 
 // ======== TAB 2: MCQ + SAQ ========
 function renderMCQ() {
