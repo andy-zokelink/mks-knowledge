@@ -1,0 +1,159 @@
+digraph G {
+    rankdir=TB;
+    bgcolor="#fdf6ec";
+    fontname="Noto Sans SC";
+    compound=true;
+    nodesep=0.6;
+    ranksep=1.2;
+    splines=polyline;
+
+    /* Root node */
+    root [label="科技思维 × 人类未来\n“从碳中和到脑机接口，从 AI 到6G”",
+          shape=box, style="filled,rounded", fillcolor="#c0392b", fontcolor="white",
+          fontsize=13, width=3.2, penwidth=2];
+
+    /* Theme cluster: 能源与环境 */
+    subgraph cluster_E {
+        label="能源与环境";
+        style="filled,rounded"; fillcolor="#fef9f2"; color="#d4a574"; penwidth=2;
+        fontsize=13; fontcolor="#5a3e3e"; labelloc="t";
+        t_energy [label="碳中和·绿色氢·储能·CCS",
+                  shape=box, style="filled,rounded", fillcolor="#d4a574", fontcolor="white",
+                  fontsize=11, width=2.8];
+        c1 [label="★ 碳中和系统论\n三阶段框架·碳配额交易·蓄电技术",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+    }
+
+    /* Theme cluster: 信息与智能 */
+    subgraph cluster_I {
+        label="信息与智能";
+        style="filled,rounded"; fillcolor="#fef9f2"; color="#d4a574"; penwidth=2;
+        fontsize=13; fontcolor="#5a3e3e"; labelloc="t";
+        t_info [label="AI · 6G · 脑机接口·定位技术",
+                shape=box, style="filled,rounded", fillcolor="#d4a574", fontcolor="white",
+                fontsize=11, width=2.8];
+        c2 [label="★ AI产业三波演进\n规则→统计学习→因果推理",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+        c4 [label="★ 6G与太赫兹通信\n1Tbps·中美两套标准·2030商用",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+        c5 [label="脑机接口与人机融合\n单向→双向闭环·智能假肢",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+        c6 [label="信息论基础\n香农定律·信息换能量",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+    }
+
+    /* Theme cluster: 材料与生物 */
+    subgraph cluster_B {
+        label="材料与生物";
+        style="filled,rounded"; fillcolor="#fef9f2"; color="#d4a574"; penwidth=2;
+        fontsize=13; fontcolor="#5a3e3e"; labelloc="t";
+        t_bio [label="纳米材料·mRNA·人工器官",
+               shape=box, style="filled,rounded", fillcolor="#d4a574", fontcolor="white",
+               fontsize=11, width=2.8];
+        c_nano [label="纳米纤维与储能\n小缝隙+低纤维·纳米硅负极",
+                shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+                fontsize=10, penwidth=1.5, color="#d4a574"];
+        c_mrna [label="mRNA疫苗技术\n不含病毒·成本1/5~1/10",
+                shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+                fontsize=10, penwidth=1.5, color="#d4a574"];
+    }
+
+    /* Theme cluster: 制度与方法 */
+    subgraph cluster_M {
+        label="制度与方法";
+        style="filled,rounded"; fillcolor="#fef9f2"; color="#d4a574"; penwidth=2;
+        fontsize=13; fontcolor="#5a3e3e"; labelloc="t";
+        t_method [label="科研体制·试错法·系统论",
+                  shape=box, style="filled,rounded", fillcolor="#d4a574", fontcolor="white",
+                  fontsize=11, width=2.8];
+        c3 [label="★ 技术预测三维框架\n动力×条件×空间",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+        c7 [label="科学试错方法论\n杜威五步法·逐项迭代",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+        c8 [label="科研转化体制设计\n布什原则·贝赫-多尔法案",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+        c9 [label="模式识别与贝叶斯\nP1 vs P2不可兼得·损失最小化",
+            shape=box, style="filled,rounded", fillcolor="#fdf6ec", fontcolor="#3d2f2f",
+            fontsize=10, penwidth=1.5, color="#d4a574"];
+    }
+
+    /* Cross-cutting impact node */
+    c10 [label="★ 科技的社会双刃剑\n福祉↑但不公↑·靠近源头",
+         shape=box, style="filled,rounded", fillcolor="#fef0e0", fontcolor="#3d2f2f",
+         fontsize=10, penwidth=1.5, color="#b8860b"];
+
+    /* ===== CORE EDGES (solid) ===== */
+    /* Root to themes */
+    root -> t_energy [color="#c0392b", penwidth=2.5, style=solid];
+    root -> t_info   [color="#c0392b", penwidth=2.5, style=solid];
+    root -> t_bio    [color="#c0392b", penwidth=2.5, style=solid];
+    root -> t_method [color="#c0392b", penwidth=2.5, style=solid];
+
+    /* Theme to concepts */
+    t_energy -> c1    [color="#c0392b", penwidth=2, style=solid];
+    t_info   -> c2    [color="#c0392b", penwidth=2, style=solid];
+    t_info   -> c4    [color="#c0392b", penwidth=2, style=solid];
+    t_info   -> c5    [color="#c0392b", penwidth=2, style=solid];
+    t_info   -> c6    [color="#c0392b", penwidth=2, style=solid];
+    t_bio    -> c_nano [color="#c0392b", penwidth=2, style=solid];
+    t_bio    -> c_mrna [color="#c0392b", penwidth=2, style=solid];
+    t_method -> c3    [color="#c0392b", penwidth=2, style=solid];
+    t_method -> c7    [color="#c0392b", penwidth=2, style=solid];
+    t_method -> c8    [color="#c0392b", penwidth=2, style=solid];
+    t_method -> c9    [color="#c0392b", penwidth=2, style=solid];
+
+    /* ===== SECONDARY EDGES (dashed) ===== */
+    /* 信息论 underpins AI and 6G */
+    c6 -> c2 [color="#8b7355", penwidth=1.5, style=dashed,
+              label="理论根基", fontsize=9, fontcolor="#8b7355"];
+    c6 -> c4 [color="#8b7355", penwidth=1.5, style=dashed,
+              label="香农定律约束", fontsize=9, fontcolor="#8b7355"];
+
+    /* AI drives BCI */
+    c2 -> c5 [color="#d4a574", penwidth=1.5, style=dashed,
+              label="AI处理器降噪", fontsize=9, fontcolor="#d4a574"];
+
+    /* 试错法 methodology for all */
+    c7 -> c1 [color="#8b7355", penwidth=1.2, style=dashed,
+              label="逐项验证", fontsize=8, fontcolor="#8b7355"];
+    c7 -> c2 [color="#8b7355", penwidth=1.2, style=dashed,
+              label="渐进完美", fontsize=8, fontcolor="#8b7355"];
+
+    /* 预测框架 evaluates */
+    c3 -> c1 [color="#8b7355", penwidth=1.2, style=dashed,
+              label="评估技术", fontsize=8, fontcolor="#8b7355"];
+    c3 -> c4 [color="#8b7355", penwidth=1.2, style=dashed,
+              label="三维检验", fontsize=8, fontcolor="#8b7355"];
+    c3 -> c2 [color="#8b7355", penwidth=1.2, style=dashed,
+              label="判断趋势", fontsize=8, fontcolor="#8b7355"];
+
+    /* 科研体制 enables tech */
+    c8 -> c1 [color="#b8860b", penwidth=1.2, style=dashed,
+              label="制度土壤", fontsize=8, fontcolor="#b8860b"];
+    c8 -> c4 [color="#b8860b", penwidth=1.2, style=dashed,
+              label="DARPA模式", fontsize=8, fontcolor="#b8860b"];
+
+    /* 贝叶斯/模式识别 foundation for AI */
+    c9 -> c2 [color="#8b7355", penwidth=1.2, style=dashed,
+              label="分类基础", fontsize=8, fontcolor="#8b7355"];
+
+    /* 纳米 ↔ 储能 cross-domain */
+    c_nano -> c1 [color="#b8860b", penwidth=1.2, style=dashed,
+                  label="纳米硅负极储电", fontsize=8, fontcolor="#b8860b"];
+
+    /* 社会影响 ← all tech */
+    c1 -> c10 [color="#b8860b", penwidth=1.2, style=dotted,
+               label="碳中和转型成本", fontsize=8, fontcolor="#b8860b"];
+    c2 -> c10 [color="#b8860b", penwidth=1.2, style=dotted,
+               label="就业结构变化", fontsize=8, fontcolor="#b8860b"];
+    c4 -> c10 [color="#b8860b", penwidth=1.2, style=dotted,
+               label="信息鸿沟", fontsize=8, fontcolor="#b8860b"];
+}
