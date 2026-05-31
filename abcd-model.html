@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABCD 战略模型 — Andy 理论框架</title>
+<style>
+  :root { --bg: #fdf6ec; --card: #fffaf2; --accent: #c0392b; --text: #3d2f2f; --text-light: #6b5b5b; --border: #e8d5c4; --cyan: #0d9488; --violet: #7c3aed; --amber: #d97706; --emerald: #059669; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, "Noto Sans SC", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 2rem; text-align: center; margin-bottom: 8px; }
+  h1 span { color: var(--accent); }
+  .subtitle { text-align: center; color: var(--text-light); margin-bottom: 48px; font-size: 0.95rem; }
+  h2 { font-size: 1.3rem; margin: 48px 0 20px; padding-left: 12px; border-left: 3px solid var(--accent); }
+  h3 { font-size: 1rem; color: var(--text-light); margin: 24px 0 12px; }
+  
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  
+  /* ABCD 四柱 */
+  .abcd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .pillar { border-radius: 10px; padding: 24px 20px; text-align: center; }
+  .pillar .letter { font-size: 2.4rem; font-weight: 800; margin-bottom: 4px; }
+  .pillar .name { font-size: 0.85rem; opacity: 0.8; margin-bottom: 12px; }
+  .pillar .desc { font-size: 0.82rem; line-height: 1.6; }
+  .pillar-a { background: #fef2f2; border: 2px solid #fca5a5; } .pillar-a .letter { color: #dc2626; }
+  .pillar-b { background: #f5f3ff; border: 2px solid #c4b5fd; } .pillar-b .letter { color: #7c3aed; }
+  .pillar-c { background: #ecfdf5; border: 2px solid #6ee7b7; } .pillar-c .letter { color: #059669; }
+  .pillar-d { background: #fffbeb; border: 2px solid #fcd34d; } .pillar-d .letter { color: #d97706; }
+  
+  /* Flow arrows */
+  .flow { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 20px 0; font-size: 0.9rem; }
+  .flow .step { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; white-space: nowrap; }
+  .flow .arrow { color: var(--accent); font-size: 1.2rem; }
+  .flow .step.highlight { background: #fef2f2; border-color: #fca5a5; font-weight: 600; }
+  
+  /* Hierarchy */
+  .hierarchy { display: flex; flex-direction: column; gap: 0; align-items: center; }
+  .h-level { display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .h-box { border-radius: 8px; padding: 6px 18px; font-size: 0.85rem; border: 1px solid var(--border); background: var(--card); }
+  .h-box.top { background: #fef2f2; border-color: #fca5a5; font-weight: 600; }
+  .h-box.bot { background: #f5f3ff; border-color: #c4b5fd; }
+  .h-box.fork { border-style: dashed; }
+  .h-down { color: var(--text-light); font-size: 1.2rem; margin: 4px 0; }
+  .h-fork-label { font-size: 0.75rem; color: var(--text-light); margin: 2px 0; }
+  
+  /* Carrier grid */
+  .carrier-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .carrier { border-radius: 10px; padding: 20px 14px; text-align: center; border: 1px solid var(--border); }
+  .carrier .icon { font-size: 2rem; margin-bottom: 8px; }
+  .carrier .c-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; }
+  .carrier .c-items { font-size: 0.78rem; color: var(--text-light); line-height: 1.7; }
+  .carrier .c-tool { font-size: 0.72rem; color: var(--accent); margin-top: 8px; }
+  .c-text { background: #fffbeb; }
+  .c-img { background: #f0fdf4; }
+  .c-audio { background: #fef2f2; }
+  .c-video { background: #f5f3ff; }
+  .c-num { background: #ecfeff; }
+  
+  /* Summary cards */
+  .insight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .insight { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .insight .i-title { font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+  .insight .i-body { font-size: 0.82rem; color: var(--text-light); line-height: 1.7; }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .abcd-grid { grid-template-columns: repeat(2, 1fr); }
+    .carrier-grid { grid-template-columns: repeat(2, 1fr); }
+    .insight-grid { grid-template-columns: 1fr; }
+    .flow { font-size: 0.8rem; gap: 4px; }
+    .flow .step { padding: 6px 10px; }
+  }
+  @media (max-width: 480px) {
+    .abcd-grid { grid-template-columns: 1fr; }
+    .carrier-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1><span>ABCD</span> 战略模型</h1>
+<p class="subtitle">Andy 理论框架 · 2026-05-30 定稿 · 预计运行二三十年</p>
+
+<!-- 四柱 -->
+<div class="abcd-grid">
+  <div class="pillar pillar-a">
+    <div class="letter">A</div>
+    <div class="name">人工智能</div>
+    <div class="desc">吃算力 + 吃数据<br>产生价值<br>核心引擎</div>
+  </div>
+  <div class="pillar pillar-b">
+    <div class="letter">B</div>
+    <div class="name">区块链</div>
+    <div class="desc">确权<br>价值分配<br>信任层</div>
+  </div>
+  <div class="pillar pillar-c">
+    <div class="letter">C</div>
+    <div class="name">云计算</div>
+    <div class="desc">算力基础设施<br>弹性供给<br>底座</div>
+  </div>
+  <div class="pillar pillar-d">
+    <div class="letter">D</div>
+    <div class="name">数据</div>
+    <div class="desc">唯一抓手<br>能量划过的痕迹<br>石油时代的化石</div>
+  </div>
+</div>
+
+<!-- 核心逻辑 -->
+<div class="card" style="text-align:center;">
+  <p style="font-size:1.05rem; font-weight:600; margin-bottom:12px;">🔑 核心逻辑</p>
+  <div class="flow">
+    <span class="step" style="border-width:2px; font-weight:600;">管好数据</span>
+    <span class="arrow">→</span>
+    <span class="step">模型消化<br>数据 + 算力</span>
+    <span class="arrow">→</span>
+    <span class="step highlight">产生价值</span>
+  </div>
+  <p style="color:var(--text-light); font-size:0.85rem; margin-top:12px;">工具是解码器，数据才是矿藏本身。从数据出发，别无他法。</p>
+</div>
+
+<!-- ====== D 的展开 ====== -->
+<h2>D · 数据体系（展开）</h2>
+
+<!-- 粒度层级 -->
+<div class="card">
+  <h3>一、粒度层级（从大到小）</h3>
+  <div class="hierarchy">
+    <div class="h-level"><span class="h-box top">前沿技术</span></div>
+    <div class="h-down">↓</div>
+    <div class="h-level"><span class="h-box top">行业</span></div>
+    <div class="h-down">↓</div>
+    <div class="h-level"><span class="h-box top">赛道</span></div>
+    <div class="h-down">↓</div>
+    <div class="h-level"><span class="h-box top">公司</span></div>
+    <div class="h-down">↓</div>
+    <div class="h-level"><span class="h-box top">产品</span></div>
+    <div class="h-down">↓</div>
+    <div class="h-level"><span class="h-box top" style="font-size:1rem;">商品</span></div>
+    <div class="h-fork-label">（在此分叉）</div>
+    <div style="display:flex; gap:40px; align-items:flex-start; margin-top:4px;">
+      <div style="text-align:center;">
+        <div class="h-down">↙ 数据对象</div>
+        <div class="h-level"><span class="h-box bot fork">SKU</span><span class="h-box bot fork">交易记录</span><span class="h-box bot fork">库存</span></div>
+      </div>
+      <div style="text-align:center;">
+        <div class="h-down">↘ 加工工具</div>
+        <div class="h-level"><span class="h-box" style="background:#f5f3ff;border-color:#c4b5fd;">软件工具</span><span class="h-box" style="background:#f5f3ff;border-color:#c4b5fd;">skill</span><span class="h-box" style="background:#f5f3ff;border-color:#c4b5fd;">算法</span><span class="h-box" style="background:#f5f3ff;border-color:#c4b5fd;">模型</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 生命周期 -->
+<div class="card">
+  <h3>二、数据生命周期（螺旋反馈）</h3>
+  <div class="flow">
+    <span class="step">产生</span><span class="arrow">→</span>
+    <span class="step">采集</span><span class="arrow">→</span>
+    <span class="step">存储</span><span class="arrow">→</span>
+    <span class="step">处理</span><span class="arrow">→</span>
+    <span class="step highlight">应用</span>
+  </div>
+  <div style="text-align:center; margin-top:8px;">
+    <span style="color:var(--accent); font-size:0.85rem;">↻ 「应用」产生新数据，回到「产生」——螺旋上升，非单向管道</span>
+  </div>
+  <div style="display:flex; gap:12px; justify-content:center; margin-top:20px; flex-wrap:wrap;">
+    <span style="font-size:0.78rem; background:#fef2f2; padding:4px 12px; border-radius:20px; border:1px solid #fca5a5;">原始 → 清洗</span>
+    <span style="font-size:0.78rem; background:#fffbeb; padding:4px 12px; border-radius:20px; border:1px solid #fcd34d;">信号 vs 噪声</span>
+    <span style="font-size:0.78rem; background:#f0fdf4; padding:4px 12px; border-radius:20px; border:1px solid #6ee7b7;">时效性标尺</span>
+    <span style="font-size:0.78rem; background:#f5f3ff; padding:4px 12px; border-radius:20px; border:1px solid #c4b5fd;">数据归属：公开/专有/个人</span>
+  </div>
+</div>
+
+<!-- 五类载体 -->
+<div class="card">
+  <h3>三、数据载体五类 + 对应工具策略</h3>
+  <div class="carrier-grid">
+    <div class="carrier c-text">
+      <div class="icon">📝</div>
+      <div class="c-name">文本</div>
+      <div class="c-items">小红书 · 微博<br>广告词 · skill<br>开源代码</div>
+      <div class="c-tool">✅ 深度调研 skill</div>
+    </div>
+    <div class="carrier c-img">
+      <div class="icon">🖼️</div>
+      <div class="c-name">图像</div>
+      <div class="c-items">商品图<br>淘宝商品页<br>截图 · 图表</div>
+      <div class="c-tool">🔄 Kimi 视觉<br>待建专用 skill</div>
+    </div>
+    <div class="carrier c-audio">
+      <div class="icon">🎵</div>
+      <div class="c-name">声音</div>
+      <div class="c-items">歌曲<br>语音消息<br>播客</div>
+      <div class="c-tool">⏳ 待规划</div>
+    </div>
+    <div class="carrier c-video">
+      <div class="icon">🎬</div>
+      <div class="c-name">视频</div>
+      <div class="c-items">短视频<br>电影<br>直播</div>
+      <div class="c-tool">⏳ 待规划</div>
+    </div>
+    <div class="carrier c-num">
+      <div class="icon">📊</div>
+      <div class="c-name">数值序列</div>
+      <div class="c-items">股市时间序列<br>财报数据<br>传感器数据</div>
+      <div class="c-tool">✅ 量价罗盘<br>sales.db</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 技术循环 ====== -->
+<h2>技术演进循环</h2>
+<div class="card">
+  <div class="flow">
+    <span class="step">诞生</span><span class="arrow">→</span>
+    <span class="step">应用</span><span class="arrow">→</span>
+    <span class="step">普及</span><span class="arrow">→</span>
+    <span class="step">成熟</span>
+  </div>
+  <div style="text-align:center; margin-top:8px;">
+    <span style="color:var(--accent); font-size:0.85rem;">→ 催生新技术 → 回到「诞生」，循环往复</span>
+  </div>
+  <p style="color:var(--text-light); font-size:0.82rem; margin-top:16px; text-align:center;">对应 D 的粒度层级：新技术落在「前沿技术」层 → 应用落地形成「行业/赛道」→ 成熟期细化到「产品/商品」</p>
+</div>
+
+<!-- 核心洞察 -->
+<h2>关键洞察</h2>
+<div class="insight-grid">
+  <div class="insight">
+    <div class="i-title">🎯 唯一抓手</div>
+    <div class="i-body">数据是起点也是终点。管好数据→模型消化→价值产出，没有第二条路。</div>
+  </div>
+  <div class="insight">
+    <div class="i-title">⛽ 石油类比</div>
+    <div class="i-body">数据是远古生物化石的沉淀，藏着能量密码。内燃机/蒸汽机解码石油，AI 模型解码数据。</div>
+  </div>
+  <div class="insight">
+    <div class="i-title">🔗 交叉价值</div>
+    <div class="i-body">五种载体独立看是孤岛，合在一起是信号。股市序列 + 同公司新闻文本 = 可行动的洞察。</div>
+  </div>
+  <div class="insight">
+    <div class="i-title">🔄 螺旋进化</div>
+    <div class="i-body">数据生命周期不是管道是螺旋——「应用」产出的报告又变成新的文本数据，进入下一轮。</div>
+  </div>
+  <div class="insight">
+    <div class="i-title">📐 分叉设计</div>
+    <div class="i-body">粒度层级在「商品」处分叉：往左走数据对象（SKU/交易），往右走加工工具（skill/算法）。</div>
+  </div>
+  <div class="insight">
+    <div class="i-title">⚠️ 归属边界</div>
+    <div class="i-body">不是所有数据都能拿。公开/专有/个人——归属层决定了采集策略的天花板。</div>
+  </div>
+</div>
+
+<p style="text-align:center; color:var(--text-light); font-size:0.78rem; margin-top:48px;">ABCD 战略模型 · Andy · 2026-05-30 定稿 · 05-31 细化 D 体系</p>
+
+</body>
+</html>
