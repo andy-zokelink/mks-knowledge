@@ -6,49 +6,45 @@
 <title>吴军·硅谷来信 — 知识主板</title>
 <style>
 /* ============================================================
-   "视野之窗" — 硅谷来信¹ 知识主板导航页
-   设计概念：一扇打开的窗户，从温暖的室内望见浩瀚宇宙
-   7个专题化作7个不同的世界/星球，散布在窗外视野中
+   「窗外的世界」— 硅谷来信¹ 知识主板导航页
+   设计概念：一扇真实的木框窗户，窗外是辽阔的风景
+   7个专题化作窗台上的7张卡片/路牌，指向不同的世界
    ============================================================ */
 
 :root {
-  --room-bg: #fdf6ec;
-  --room-dark: #f5ead5;
-  --frame-outer: #8b6914;
-  --frame-mid: #b8904a;
-  --frame-inner: #d4a574;
-  --frame-light: #e8cfa0;
+  --wall-bg: #fdf6ec;
+  --wall-dark: #f5ead5;
   --text: #3d2f2f;
   --text-light: #6b5b5b;
-  --accent: #c0392b;
+  --accent: #b53434;
 
-  /* 7个世界的颜色 */
-  --w1: #3b82f6; --w1-glow: rgba(59,130,246,0.5);
-  --w2: #ef4444; --w2-glow: rgba(239,68,68,0.5);
-  --w3: #f59e0b; --w3-glow: rgba(245,158,11,0.5);
-  --w4: #b8860b; --w4-glow: rgba(184,134,11,0.5);
-  --w5: #a855f7; --w5-glow: rgba(168,85,247,0.5);
-  --w6: #10b981; --w6-glow: rgba(16,185,129,0.5);
-  --w7: #6366f1; --w7-glow: rgba(99,102,241,0.5);
+  /* 7个专题的柔和自然色调 */
+  --c1: #5b8cbd;
+  --c2: #c4706a;
+  --c3: #b8944a;
+  --c4: #9b7a4a;
+  --c5: #9b72b0;
+  --c6: #6b9b6b;
+  --c7: #6b7db3;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 /* ============================================================
-   ROOM — 温暖的室内空间
+   ROOM — 温暖的室内
    ============================================================ */
 body {
   font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", serif;
   background:
-    /* 暖色墙面基底 */
-    linear-gradient(180deg, #fdf6ec 0%, #faf1e0 30%, #f5ead5 60%, #fdf6ec 100%),
-    /* 细腻墙纸纹理 */
+    /* 暖色墙面 */
+    linear-gradient(180deg, #fdf6ec 0%, #faf1e0 25%, #f5ead5 55%, #fdf6ec 100%),
+    /* 墙纸细纹 */
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 3px,
-      rgba(139,105,20,0.015) 3px,
-      rgba(139,105,20,0.015) 6px
+      rgba(139,105,20,0.012) 3px,
+      rgba(139,105,20,0.012) 6px
     );
   background-attachment: fixed;
   color: var(--text);
@@ -58,29 +54,28 @@ body {
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  position: relative;
 }
 
-/* 墙面暗角 — 模拟室内灯光 */
+/* 室内灯光暗角 */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 40%,
-    transparent 40%,
-    rgba(60,30,10,0.12) 100%);
+  background: radial-gradient(ellipse at 50% 35%,
+    transparent 35%,
+    rgba(50,30,10,0.10) 100%);
   pointer-events: none;
   z-index: 0;
 }
 
 /* ============================================================
-   HEADER — 墙上的铭牌
+   HEADER — 铭牌
    ============================================================ */
 .header {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 36px 20px 24px;
+  padding: 32px 20px 20px;
   width: 100%;
 }
 
@@ -88,475 +83,704 @@ body::before {
   display: inline-block;
   background: linear-gradient(180deg, #fffef9 0%, #fdf5ea 100%);
   border: 2px solid #d4c5a9;
-  border-radius: 8px;
-  padding: 20px 40px 16px;
+  border-radius: 6px;
+  padding: 18px 36px 14px;
   box-shadow:
-    0 2px 12px rgba(0,0,0,0.08),
+    0 2px 10px rgba(0,0,0,0.06),
     inset 0 0 0 1px rgba(255,255,255,0.8);
   position: relative;
 }
 
-/* 铭牌四角装饰 */
 .header .plaque::before {
   content: '';
   position: absolute;
-  top: 4px; left: 4px; right: 4px; bottom: 4px;
-  border: 1px dashed rgba(180,160,130,0.4);
-  border-radius: 4px;
+  top: 3px; left: 3px; right: 3px; bottom: 3px;
+  border: 1px dashed rgba(180,160,130,0.35);
+  border-radius: 3px;
   pointer-events: none;
 }
 
 .header h1 {
-  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-size: clamp(1.2rem, 3vw, 1.9rem);
   color: var(--accent);
   font-weight: 900;
-  letter-spacing: 0.06em;
-  margin-bottom: 4px;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
 }
 
 .header .subtitle {
-  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  font-size: clamp(0.7rem, 1.3vw, 0.85rem);
   color: var(--text-light);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
-/* Stats row */
 .stats-row {
   display: flex;
   justify-content: center;
-  gap: 28px;
-  margin-top: 14px;
+  gap: 24px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 .stat-item { text-align: center; }
 .stat-num {
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-size: clamp(1rem, 2vw, 1.3rem);
   font-weight: 800;
   color: #8b6914;
   line-height: 1.2;
 }
 .stat-label {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--text-light);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================================
-   WINDOW CONTAINER — 窗户主体
+   WINDOW CONTAINER
    ============================================================ */
 .window-wrapper {
   position: relative;
   z-index: 1;
   width: 92%;
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
-  /* 墙面阴影 — 窗框投射在墙上的影子 */
-  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 10px 28px rgba(0,0,0,0.22));
 }
 
 /* ============================================================
-   WINDOW FRAME — 窗框（多层嵌套营造立体深度）
+   WINDOW FRAME — 多层木框（写实木纹 + 立体厚度）
    ============================================================ */
 
-/* 最外层 — 墙面开口的阴影 */
+/* 最外层 — 嵌在墙里的窗框外缘 */
 .window-outer {
-  background: linear-gradient(180deg, #b8904a 0%, #8b6914 30%, #6b4c1e 70%, #8b6914 100%);
-  border-radius: 16px;
+  background:
+    /* 木纹底色 */
+    linear-gradient(180deg, #9b7a3a 0%, #8b6914 20%, #7a5c10 50%, #8b6914 80%, #9b7a3a 100%),
+    /* 木纹细线 */
+    repeating-linear-gradient(
+      89deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.06) 2px,
+      rgba(0,0,0,0.06) 3px,
+      transparent 3px,
+      transparent 6px,
+      rgba(255,255,255,0.04) 6px,
+      rgba(255,255,255,0.04) 7px,
+      transparent 7px
+    ),
+    /* 木纹年轮曲线感 */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 8px,
+      rgba(0,0,0,0.04) 8px,
+      rgba(0,0,0,0.04) 9px,
+      transparent 9px,
+      transparent 14px,
+      rgba(255,255,255,0.03) 14px,
+      rgba(255,255,255,0.03) 15px,
+      transparent 15px
+    );
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.25),
+    0 0 0 3px rgba(139,105,20,0.15);
+}
+
+/* 中层框 — 略浅色调 */
+.window-middle {
+  background:
+    linear-gradient(180deg, #c89860 0%, #b8904a 20%, #a07830 50%, #b8904a 80%, #c89860 100%),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.05) 3px,
+      rgba(0,0,0,0.05) 4px,
+      transparent 4px,
+      transparent 7px
+    );
+  border-radius: 8px;
   padding: 10px;
   box-shadow:
-    inset 0 2px 8px rgba(0,0,0,0.3),
-    0 0 0 4px rgba(139,105,20,0.2);
-  position: relative;
+    inset 0 1px 3px rgba(255,255,255,0.3),
+    inset 0 -2px 4px rgba(0,0,0,0.15);
 }
 
-/* 窗框四角接合装饰 */
-.window-outer::before,
-.window-outer::after {
-  content: '';
-  position: absolute;
-  width: 20px; height: 20px;
-  border: 2px solid rgba(255,255,255,0.15);
-  pointer-events: none;
-  z-index: 2;
-}
-.window-outer::before {
-  top: 6px; left: 6px;
-  border-right: none; border-bottom: none;
-  border-radius: 3px 0 0 0;
-}
-.window-outer::after {
-  top: 6px; right: 6px;
-  border-left: none; border-bottom: none;
-  border-radius: 0 3px 0 0;
-}
-
-.window-outer .corner-bl,
-.window-outer .corner-br {
-  position: absolute;
-  width: 20px; height: 20px;
-  border: 2px solid rgba(255,255,255,0.15);
-  pointer-events: none;
-  z-index: 2;
-}
-.window-outer .corner-bl {
-  bottom: 6px; left: 6px;
-  border-right: none; border-top: none;
-  border-radius: 0 0 0 3px;
-}
-.window-outer .corner-br {
-  bottom: 6px; right: 6px;
-  border-left: none; border-top: none;
-  border-radius: 0 0 3px 0;
-}
-
-/* 中层 — 窗框主体 */
-.window-middle {
-  background: linear-gradient(180deg, #d4a574 0%, #c89860 20%, #b8904a 50%, #c89860 80%, #d4a574 100%);
-  border-radius: 10px;
-  padding: 8px;
-  box-shadow: inset 0 1px 4px rgba(255,255,255,0.3);
-}
-
-/* 内层 — 窗框内侧 */
+/* 内层框 — 最浅色、最细 */
 .window-inner {
-  background: linear-gradient(180deg, #e8cfa0 0%, #d4a574 30%, #c89860 70%, #d4a574 100%);
-  border-radius: 6px;
-  padding: 6px;
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+  background:
+    linear-gradient(180deg, #d4a574 0%, #c89860 25%, #b8904a 60%, #c89860 100%),
+    repeating-linear-gradient(
+      88deg,
+      transparent,
+      transparent 4px,
+      rgba(0,0,0,0.03) 4px,
+      rgba(0,0,0,0.03) 5px,
+      transparent 5px
+    );
+  border-radius: 5px;
+  padding: 8px;
+  box-shadow:
+    inset 0 0 6px rgba(0,0,0,0.15),
+    inset 0 1px 2px rgba(255,255,255,0.25);
 }
 
-/* 最内层 — 玻璃边缘的框 */
+/* 玻璃压条 — 深色窄边 */
 .window-glass-frame {
-  background: #5a3e2b;
-  border-radius: 4px;
-  padding: 4px;
-  box-shadow: inset 0 0 4px rgba(0,0,0,0.4);
+  background:
+    linear-gradient(180deg, #5a3e2b 0%, #4a3220 50%, #3d2818 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.15) 3px,
+      rgba(0,0,0,0.15) 4px,
+      transparent 4px
+    );
+  border-radius: 3px;
+  padding: 0;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
+  line-height: 0;
 }
 
 /* ============================================================
-   COSMIC VIEW — 窗外宇宙视野
+   LANDSCAPE VIEW — 窗外风景
    ============================================================ */
-.cosmic-view {
+.landscape {
   position: relative;
+  width: 100%;
+  height: 520px;
   border-radius: 2px;
-  background: linear-gradient(180deg,
-    #020024 0%,
-    #0a0a3e 15%,
-    #0d0d4a 30%,
-    #1a0a3e 50%,
-    #0d1040 70%,
-    #0a0a2e 100%
-  );
   overflow: hidden;
-  min-height: 520px;
-  /* 窗玻璃反光 */
+  background: #1a2a4a; /* fallback */
 }
 
-/* 玻璃反光效果 */
-.cosmic-view::after {
+/* ---- 天空 ---- */
+.sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    #3a5078 0%,      /* 顶部：深蓝夜空 */
+    #5a7090 8%,
+    #7a90a8 16%,
+    #a0b8c8 28%,
+    #c0b8a0 45%,     /* 中段：过渡 */
+    #d4a870 62%,     /* 金色区域 */
+    #e8c090 72%,
+    #f0c890 80%,     /* 地平线：暖金 */
+    #e8c888 88%,
+    #d0a870 100%
+  );
+}
+
+/* ---- 夕阳/晨光 ---- */
+.sun-glow {
+  position: absolute;
+  bottom: 18%;
+  left: 22%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle,
+    rgba(255,240,210,0.9) 0%,
+    rgba(255,220,160,0.6) 15%,
+    rgba(255,200,120,0.3) 30%,
+    rgba(255,180,80,0.1) 50%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* 太阳本体 */
+.sun-disc {
+  position: absolute;
+  bottom: 22%;
+  left: 24%;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle,
+    #fffef5 0%,
+    #fff8e0 30%,
+    #ffe0a0 70%,
+    rgba(255,200,100,0) 100%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ---- 云层 — 几缕薄云 ---- */
+.cloud {
+  position: absolute;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cloud-1 {
+  top: 12%;
+  left: 15%;
+  width: 180px;
+  height: 30px;
+  filter: blur(12px);
+  background: rgba(255,255,255,0.12);
+}
+.cloud-2 {
+  top: 22%;
+  right: 10%;
+  width: 220px;
+  height: 24px;
+  filter: blur(14px);
+  background: rgba(255,240,220,0.10);
+}
+.cloud-3 {
+  top: 35%;
+  left: 55%;
+  width: 140px;
+  height: 20px;
+  filter: blur(10px);
+  background: rgba(255,220,180,0.10);
+}
+
+/* ---- 远山 第1层（最远、最淡） ---- */
+.mountains-far {
+  position: absolute;
+  bottom: 35%;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(180deg,
+    rgba(140,160,180,0.5) 0%,
+    rgba(140,160,180,0.7) 40%,
+    rgba(140,160,180,0.55) 100%
+  );
+  clip-path: polygon(
+    0% 100%, 0% 55%, 3% 45%, 7% 52%, 12% 38%, 17% 48%, 22% 32%, 26% 42%,
+    31% 35%, 35% 44%, 40% 28%, 44% 38%, 48% 32%, 53% 40%, 57% 34%,
+    62% 42%, 66% 36%, 70% 44%, 74% 38%, 78% 46%, 82% 40%, 86% 48%,
+    90% 42%, 93% 50%, 96% 44%, 100% 52%, 100% 100%
+  );
+}
+
+/* ---- 远山 第2层（稍近、略深） ---- */
+.mountains-mid {
+  position: absolute;
+  bottom: 32%;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(180deg,
+    rgba(100,120,140,0.6) 0%,
+    rgba(100,120,140,0.8) 35%,
+    rgba(90,110,130,0.7) 100%
+  );
+  clip-path: polygon(
+    0% 100%, 0% 62%, 5% 50%, 10% 56%, 15% 44%, 20% 52%, 26% 38%,
+    32% 48%, 37% 34%, 43% 42%, 48% 36%, 53% 44%, 58% 30%,
+    64% 40%, 69% 34%, 74% 42%, 80% 36%, 85% 44%, 90% 38%,
+    94% 46%, 97% 40%, 100% 48%, 100% 100%
+  );
+}
+
+/* ---- 城市天际线（远处剪影） ---- */
+.city-skyline {
+  position: absolute;
+  bottom: 36%;
+  left: 54%;
+  right: 5%;
+  height: 60px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  opacity: 0.6;
+}
+.city-skyline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(120,135,155,0.5) 0%,
+    rgba(130,140,160,0.6) 100%
+  );
+  mask-image: linear-gradient(180deg,
+    rgba(0,0,0,0.8) 0%,
+    rgba(0,0,0,0.6) 100%
+  );
+}
+
+/* 城市建筑剪影 */
+.city-skyline .bld {
+  background: rgba(130,140,160,0.55);
+  flex: 0 0 auto;
+  border-radius: 1px 1px 0 0;
+}
+.city-skyline .bld:nth-child(1) { width: 14px; height: 35px; }
+.city-skyline .bld:nth-child(2) { width: 8px; height: 50px; }
+.city-skyline .bld:nth-child(3) { width: 10px; height: 28px; }
+.city-skyline .bld:nth-child(4) { width: 6px; height: 42px; }
+.city-skyline .bld:nth-child(5) { width: 12px; height: 38px; }
+.city-skyline .bld:nth-child(6) { width: 7px; height: 55px; }
+.city-skyline .bld:nth-child(7) { width: 9px; height: 22px; }
+.city-skyline .bld:nth-child(8) { width: 11px; height: 45px; }
+.city-skyline .bld:nth-child(9) { width: 6px; height: 32px; }
+.city-skyline .bld:nth-child(10) { width: 13px; height: 40px; }
+.city-skyline .bld:nth-child(11) { width: 8px; height: 48px; }
+.city-skyline .bld:nth-child(12) { width: 10px; height: 25px; }
+.city-skyline .bld:nth-child(13) { width: 5px; height: 36px; }
+
+/* ---- 水面/海湾 ---- */
+.water {
+  position: absolute;
+  bottom: 30%;
+  left: 25%;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(180deg,
+    rgba(180,170,150,0.4) 0%,
+    rgba(200,180,140,0.5) 20%,
+    rgba(210,180,120,0.6) 40%,
+    rgba(200,170,110,0.5) 60%,
+    rgba(180,160,100,0.4) 80%,
+    rgba(160,150,100,0.3) 100%
+  );
+  border-radius: 0 0 60% 0 / 10px;
+}
+
+/* 水面反光细线 */
+.water::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(255,240,210,0.15) 1px,
+      rgba(255,240,210,0.15) 2px,
+      transparent 2px,
+      transparent 5px
+    );
+}
+
+/* 水面落日倒影 */
+.water-reflection {
+  position: absolute;
+  bottom: 32%;
+  left: 27%;
+  width: 40px;
+  height: 24px;
+  background: linear-gradient(180deg,
+    rgba(255,240,200,0.5) 0%,
+    rgba(255,220,150,0.3) 40%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  filter: blur(3px);
+}
+
+/* ---- 近山/丘陵 ---- */
+.hills {
+  position: absolute;
+  bottom: 28%;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg,
+    rgba(80,100,70,0.65) 0%,
+    rgba(70,90,60,0.75) 50%,
+    rgba(60,80,55,0.7) 100%
+  );
+  clip-path: polygon(
+    0% 100%, 0% 55%, 8% 42%, 16% 50%, 22% 38%, 28% 46%,
+    35% 32%, 42% 44%, 48% 36%, 54% 42%, 60% 30%,
+    66% 40%, 72% 34%, 78% 42%, 84% 36%, 90% 44%,
+    95% 38%, 100% 46%, 100% 100%
+  );
+}
+
+/* ---- 原野/草地（前景） ---- */
+.field {
+  position: absolute;
+  bottom: 25%;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(180deg,
+    rgba(100,120,70,0.55) 0%,
+    rgba(110,130,80,0.6) 25%,
+    rgba(120,140,85,0.65) 50%,
+    rgba(100,120,65,0.6) 75%,
+    rgba(90,110,60,0.55) 100%
+  );
+}
+
+/* 田野纹理 */
+.field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      2deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.03) 3px,
+      rgba(0,0,0,0.03) 4px,
+      transparent 4px
+    );
+}
+
+/* ---- 近景：几棵树 ---- */
+.tree {
+  position: absolute;
+  bottom: 25%;
+  pointer-events: none;
+}
+.tree-1 {
+  left: 8%;
+  width: 50px;
+  height: 100px;
+  background: linear-gradient(180deg,
+    rgba(40,60,35,0.7) 0%,
+    rgba(45,65,40,0.75) 60%,
+    rgba(35,50,30,0.8) 100%
+  );
+  clip-path: polygon(
+    30% 0%, 70% 0%, 80% 15%, 75% 25%, 85% 30%,
+    78% 40%, 88% 50%, 80% 55%, 82% 65%,
+    75% 70%, 78% 80%, 55% 85%, 45% 85%,
+    25% 80%, 28% 70%, 20% 65%, 22% 55%,
+    15% 50%, 25% 40%, 18% 30%, 28% 25%,
+    22% 15%
+  );
+  border-radius: 40% 40% 0 0;
+}
+.tree-2 {
+  right: 6%;
+  width: 40px;
+  height: 85px;
+  background: linear-gradient(180deg,
+    rgba(35,55,30,0.65) 0%,
+    rgba(40,60,35,0.7) 60%,
+    rgba(30,45,25,0.75) 100%
+  );
+  clip-path: polygon(
+    35% 0%, 65% 0%, 75% 12%, 68% 22%, 80% 28%,
+    72% 38%, 78% 48%, 70% 55%, 75% 65%,
+    60% 70%, 65% 82%, 48% 88%, 35% 85%,
+    38% 72%, 25% 65%, 30% 55%, 20% 48%,
+    28% 38%, 22% 28%, 35% 22%, 28% 12%
+  );
+  border-radius: 40% 40% 0 0;
+}
+
+/* ---- 小路（前景） ---- */
+.path {
+  position: absolute;
+  bottom: 25%;
+  left: 35%;
+  width: 30px;
+  height: 100px;
+  background: linear-gradient(180deg,
+    rgba(180,160,120,0.4) 0%,
+    rgba(170,150,110,0.3) 100%
+  );
+  clip-path: polygon(30% 0%, 70% 0%, 90% 100%, 10% 100%);
+}
+
+/* ---- 玻璃反光 ---- */
+.glass-glare {
+  position: absolute;
+  inset: 0;
+  background:
     linear-gradient(135deg,
-      rgba(255,255,255,0.04) 0%,
-      transparent 30%,
-      transparent 60%,
-      rgba(255,255,255,0.03) 80%,
-      rgba(255,255,255,0.06) 100%
+      rgba(255,255,255,0.06) 0%,
+      transparent 25%,
+      transparent 70%,
+      rgba(255,255,255,0.04) 85%,
+      rgba(255,255,255,0.07) 100%
     ),
     linear-gradient(225deg,
       transparent 0%,
-      rgba(255,255,255,0.02) 40%,
-      transparent 60%
+      rgba(255,255,255,0.03) 35%,
+      transparent 65%
     );
   pointer-events: none;
-  z-index: 5;
+  z-index: 10;
   border-radius: 2px;
 }
 
-/* 窗玻璃上的细微灰尘/反射 — 十字星光 */
-.cosmic-view .glass-flare {
-  position: absolute;
-  top: 12%;
-  right: 18%;
-  width: 80px;
-  height: 2px;
-  background: rgba(255,255,255,0.08);
-  transform: rotate(-30deg);
-  pointer-events: none;
-  z-index: 6;
-  border-radius: 1px;
-}
-.cosmic-view .glass-flare::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%) rotate(90deg);
-  width: 80px;
-  height: 2px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 1px;
-}
-
-/* ============================================================
-   STARS CANVAS
-   ============================================================ */
-#starfield {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-/* ============================================================
-   NEBULA GRADIENTS — 星云背景
-   ============================================================ */
-.nebula {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.3;
-  pointer-events: none;
-  z-index: 1;
-}
-.nebula-1 {
-  top: 10%; left: 15%;
-  width: 300px; height: 200px;
-  background: radial-gradient(ellipse, rgba(59,130,246,0.3), transparent);
-  animation: nebulaDrift 20s ease-in-out infinite;
-}
-.nebula-2 {
-  top: 40%; right: 10%;
-  width: 250px; height: 180px;
-  background: radial-gradient(ellipse, rgba(168,85,247,0.25), transparent);
-  animation: nebulaDrift 25s ease-in-out infinite reverse;
-}
-.nebula-3 {
-  bottom: 15%; left: 30%;
-  width: 200px; height: 150px;
-  background: radial-gradient(ellipse, rgba(16,185,129,0.2), transparent);
-  animation: nebulaDrift 22s ease-in-out infinite 5s;
-}
-.nebula-4 {
-  top: 20%; right: 30%;
-  width: 180px; height: 120px;
-  background: radial-gradient(ellipse, rgba(245,158,11,0.2), transparent);
-  animation: nebulaDrift 18s ease-in-out infinite 8s;
-}
-
-@keyframes nebulaDrift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(20px, -15px) scale(1.05); }
-  50% { transform: translate(-10px, 10px) scale(0.95); }
-  75% { transform: translate(-20px, -5px) scale(1.02); }
-}
-
-/* ============================================================
-   WORLDS CONTAINER — 世界布局
-   ============================================================ */
-.worlds {
-  position: relative;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto auto;
-  gap: 24px 20px;
-  padding: 32px 28px;
-  align-items: start;
-  justify-items: center;
-}
-
-/* 桌面端布局 — 7个星球散布成星座 */
-.worlds .world-card:nth-child(1) { grid-column: 1; grid-row: 1; }
-.worlds .world-card:nth-child(2) { grid-column: 2; grid-row: 1; }
-.worlds .world-card:nth-child(3) { grid-column: 3; grid-row: 1; }
-.worlds .world-card:nth-child(4) { grid-column: 4; grid-row: 1; }
-.worlds .world-card:nth-child(5) { grid-column: 1; grid-row: 2; }
-.worlds .world-card:nth-child(6) { grid-column: 2 / span 2; grid-row: 2; }
-.worlds .world-card:nth-child(7) { grid-column: 4; grid-row: 2; }
-
-/* ============================================================
-   WORLD CARD — 星球卡片
-   ============================================================ */
-.world-card {
-  position: relative;
-  text-decoration: none;
-  color: #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-              filter 0.3s ease;
-  z-index: 1;
-}
-
-/* 星球本体 */
-.world-orb {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.4s ease;
-  box-shadow:
-    0 0 40px var(--glow-color, rgba(100,100,255,0.4)),
-    0 0 80px var(--glow-color, rgba(100,100,255,0.15)),
-    inset 0 -8px 20px rgba(0,0,0,0.3),
-    inset 0 4px 12px rgba(255,255,255,0.1);
-}
-
-/* 星球表面纹理 */
-.world-orb::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--planet-bg, radial-gradient(circle at 35% 35%, #3b82f6, #1e3a5f));
-  opacity: 0.85;
-}
-
-/* 星球大气光晕 */
-.world-orb::after {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    var(--glow-color, rgba(100,100,255,0.3)) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.world-card:hover .world-orb {
-  transform: scale(1.08);
-  box-shadow:
-    0 0 60px var(--glow-color, rgba(100,100,255,0.6)),
-    0 0 120px var(--glow-color, rgba(100,100,255,0.25)),
-    inset 0 -8px 20px rgba(0,0,0,0.3),
-    inset 0 4px 12px rgba(255,255,255,0.15);
-}
-
-.world-card:hover .world-orb::after {
-  opacity: 1;
-}
-
-/* 星球上的内容 */
-.world-icon {
-  font-size: 2rem;
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-  transition: transform 0.3s ease;
-}
-.world-card:hover .world-icon {
-  transform: scale(1.1);
-}
-
-.world-name {
-  font-size: 0.7rem;
-  font-weight: 700;
-  position: relative;
-  z-index: 1;
-  letter-spacing: 0.03em;
-  text-align: center;
-  margin-top: 2px;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  color: #fff;
-  line-height: 1.3;
-  max-width: 110px;
-}
-
-.world-count {
-  font-size: 0.6rem;
-  opacity: 0.7;
-  position: relative;
-  z-index: 1;
-  margin-top: 1px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-}
-
-/* 星球下方的轨道环装饰 */
-.orbit-ring {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%) rotateX(75deg);
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.1);
-  pointer-events: none;
-  transition: border-color 0.3s ease;
-}
-.world-card:hover .orbit-ring {
-  border-color: rgba(255,255,255,0.2);
-}
-
-/* ============================================================
-   每个世界的独特色彩和氛围
-   ============================================================ */
-.world--tech  { --planet-bg: radial-gradient(circle at 35% 35%, #60a5fa, #2563eb, #1e3a5f); --glow-color: var(--w1-glow); }
-.world--think { --planet-bg: radial-gradient(circle at 35% 35%, #f87171, #dc2626, #4a1010); --glow-color: var(--w2-glow); }
-.world--invest { --planet-bg: radial-gradient(circle at 35% 35%, #fbbf24, #d97706, #5a3408); --glow-color: var(--w3-glow); }
-.world--history { --planet-bg: radial-gradient(circle at 35% 35%, #e2b04a, #b8860b, #3d2804); --glow-color: var(--w4-glow); }
-.world--art    { --planet-bg: radial-gradient(circle at 35% 35%, #c084fc, #9333ea, #2d084a); --glow-color: var(--w5-glow); }
-.world--edu    { --planet-bg: radial-gradient(circle at 35% 35%, #34d399, #059669, #052e1a); --glow-color: var(--w6-glow); }
-.world--career { --planet-bg: radial-gradient(circle at 35% 35%, #818cf8, #4f46e5, #1a1040); --glow-color: var(--w7-glow); }
-
-/* ============================================================
-   PLANET FLOATING ANIMATION
-   ============================================================ */
-.world-card:nth-child(1) { animation: floatA 6s ease-in-out infinite; }
-.world-card:nth-child(2) { animation: floatB 7s ease-in-out infinite 0.5s; }
-.world-card:nth-child(3) { animation: floatC 5.5s ease-in-out infinite 1s; }
-.world-card:nth-child(4) { animation: floatA 6.5s ease-in-out infinite 1.5s; }
-.world-card:nth-child(5) { animation: floatB 5s ease-in-out infinite 2s; }
-.world-card:nth-child(6) { animation: floatC 7.5s ease-in-out infinite 0.8s; }
-.world-card:nth-child(7) { animation: floatA 6s ease-in-out infinite 2.5s; }
-
-@keyframes floatA {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-@keyframes floatB {
-  0%, 100% { transform: translateY(0); }
-  33% { transform: translateY(-8px); }
-  66% { transform: translateY(-4px); }
-}
-@keyframes floatC {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* Hover overrides float */
-.world-card:hover {
-  animation-play-state: paused;
-}
 
 /* ============================================================
    WINDOW SILL — 窗台
    ============================================================ */
-.windowsill {
+.sill-area {
   position: relative;
-  z-index: 1;
-  margin: 0 auto;
+  z-index: 2;
   width: 94%;
-  max-width: 1240px;
-  height: 18px;
-  background: linear-gradient(180deg, #d4a574 0%, #c89860 40%, #b8904a 100%);
-  border-radius: 0 0 6px 6px;
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+  max-width: 1120px;
+  margin: 0 auto;
 }
+
+/* 窗台上表面 — 卡片立于此上 */
+.sill-top {
+  height: 22px;
+  background: linear-gradient(180deg,
+    #f0dbb0 0%,
+    #e8cfa0 20%,
+    #d4a574 55%,
+    #c89860 100%
+  );
+  border-radius: 2px 2px 0 0;
+  box-shadow:
+    0 1px 4px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  margin: 0 6px;
+}
+
+/* 窗台前立面 */
+.sill-front {
+  height: 20px;
+  background:
+    linear-gradient(180deg, #c89860 0%, #b8904a 30%, #a07830 60%, #b8904a 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.04) 2px,
+      rgba(0,0,0,0.04) 3px,
+      transparent 3px
+    );
+  border-radius: 0 0 4px 4px;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.13),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  margin: 0 5px;
+  margin-bottom: 2px;
+}
+
+/* 窗台装饰线 */
+.sill-front::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: rgba(0,0,0,0.15);
+  margin: 3px 20px 0;
+  border-radius: 1px;
+}
+
+/* ============================================================
+   CARDS ON SILL — 窗台上的7张卡片
+   ============================================================ */
+.cards-row {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 4px 10px 0;
+  margin-bottom: -4px;
+}
+
+/* 单张卡片 */
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  background: linear-gradient(180deg, #fffef9 0%, #fdf5ea 100%);
+  border: 1.5px solid #d4c5a9;
+  border-radius: 4px;
+  padding: 12px 14px 10px;
+  width: 130px;
+  min-width: 100px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.06),
+    0 1px 2px rgba(0,0,0,0.04);
+  position: relative;
+}
+
+/* 卡片顶部彩色装饰条 */
+.topic-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  border-radius: 0 0 2px 2px;
+}
+
+/* 卡片底部微阴影 — 模拟立在窗台上的立体感 */
+.topic-card::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 8%;
+  right: 8%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
+
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10),
+    0 2px 4px rgba(0,0,0,0.05);
+}
+.topic-card:hover::after {
+  bottom: -6px;
+  left: 4%;
+  right: 4%;
+  background: rgba(0,0,0,0.12);
+}
+
+/* 卡片图标 */
+.card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+/* 卡片标题 */
+.card-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+}
+/* 卡片计数 */
+.card-count {
+  font-size: 0.58rem;
+  color: var(--text-light);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* ---- 7个主题的配色 ---- */
+.topic--tech::before  { background: var(--c1); }
+.topic--think::before  { background: var(--c2); }
+.topic--invest::before { background: var(--c3); }
+.topic--history::before { background: var(--c4); }
+.topic--art::before    { background: var(--c5); }
+.topic--edu::before    { background: var(--c6); }
+.topic--career::before { background: var(--c7); }
+
+/* ---- 图标颜色微调 ---- */
+.topic--tech .card-icon  { filter: hue-rotate(-10deg) saturate(0.7); }
+.topic--think .card-icon  { filter: hue-rotate(-5deg) saturate(0.7); }
+.topic--invest .card-icon { filter: hue-rotate(5deg) saturate(0.7); }
+.topic--history .card-icon { filter: hue-rotate(-3deg) saturate(0.6) brightness(0.9); }
+.topic--art .card-icon    { filter: hue-rotate(15deg) saturate(0.7); }
+.topic--edu .card-icon    { filter: hue-rotate(-15deg) saturate(0.6); }
+.topic--career .card-icon { filter: hue-rotate(-8deg) saturate(0.7); }
 
 /* ============================================================
    BACK LINK — 返回总库
@@ -565,7 +789,7 @@ body::before {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 20px;
+  padding: 22px 20px 10px;
 }
 
 .back-link {
@@ -574,12 +798,12 @@ body::before {
   gap: 6px;
   color: var(--accent);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   transition: color 0.2s;
 }
 .back-link:hover {
-  color: #8b0000;
+  color: #7a1e1e;
 }
 
 /* ============================================================
@@ -589,170 +813,117 @@ body::before {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 10px 20px 28px;
+  padding: 6px 20px 24px;
   color: var(--text-light);
-  font-size: 0.72rem;
-  opacity: 0.6;
-  letter-spacing: 0.05em;
+  font-size: 0.68rem;
+  opacity: 0.55;
+  letter-spacing: 0.06em;
 }
 
 /* ============================================================
-   SHOOTING STAR — 偶尔划过的流星
-   ============================================================ */
-.shooting-star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #fff;
-  border-radius: 50%;
-  z-index: 2;
-  pointer-events: none;
-  animation: shoot 3s ease-out infinite;
-  opacity: 0;
-}
-.shooting-star::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
-}
-.shooting-star:nth-child(1) { top: 15%; left: 60%; animation-delay: 0s; }
-.shooting-star:nth-child(2) { top: 30%; left: 25%; animation-delay: 7s; animation-duration: 2.5s; }
-.shooting-star:nth-child(3) { top: 50%; left: 70%; animation-delay: 14s; animation-duration: 3.5s; }
-
-@keyframes shoot {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) rotate(-25deg);
-  }
-  5% {
-    opacity: 1;
-  }
-  15% {
-    opacity: 0;
-    transform: translate(-180px, 80px) rotate(-25deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-180px, 80px) rotate(-25deg);
-  }
-}
-
-/* ============================================================
-   RESPONSIVE — 平板
+   RESPONSIVE — Tablet (≤900px)
    ============================================================ */
 @media (max-width: 900px) {
-  .cosmic-view {
-    min-height: 620px;
+  .landscape {
+    height: 380px;
   }
+  .window-outer { padding: 9px; border-radius: 10px; }
+  .window-middle { padding: 7px; border-radius: 6px; }
+  .window-inner { padding: 6px; border-radius: 4px; }
+  .window-glass-frame { border-radius: 2px; }
 
-  .worlds {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto auto;
-    gap: 20px 16px;
-    padding: 28px 20px;
+  /* 简化远山 */
+  .mountains-far { display: none; }
+
+  .cards-row {
+    gap: 10px;
   }
-
-  .worlds .world-card:nth-child(1) { grid-column: 1; grid-row: 1; }
-  .worlds .world-card:nth-child(2) { grid-column: 2; grid-row: 1; }
-  .worlds .world-card:nth-child(3) { grid-column: 3; grid-row: 1; }
-  .worlds .world-card:nth-child(4) { grid-column: 1; grid-row: 2; }
-  .worlds .world-card:nth-child(5) { grid-column: 2; grid-row: 2; }
-  .worlds .world-card:nth-child(6) { grid-column: 3; grid-row: 2; }
-  .worlds .world-card:nth-child(7) { grid-column: 1 / 4; grid-row: 3; }
-
-  .world-orb {
+  .topic-card {
     width: 110px;
-    height: 110px;
+    min-width: 85px;
+    padding: 10px 10px 8px;
   }
-  .world-icon { font-size: 1.7rem; }
-  .world-name { font-size: 0.65rem; max-width: 95px; }
+  .card-icon { font-size: 1.3rem; }
+  .card-title { font-size: 0.65rem; }
+  .card-count { font-size: 0.55rem; }
 
-  .window-outer { padding: 7px; }
-  .window-middle { padding: 6px; }
-  .window-inner { padding: 4px; }
-  .window-glass-frame { padding: 3px; }
+  .city-skyline {
+    left: 45%;
+  }
 }
 
 /* ============================================================
-   RESPONSIVE — 手机
+   RESPONSIVE — Mobile (≤600px)
    ============================================================ */
 @media (max-width: 600px) {
-  body { padding: 0; }
+  .header { padding: 20px 12px 14px; }
+  .header .plaque { padding: 12px 18px 10px; }
+  .stats-row { gap: 16px; }
 
-  .header { padding: 24px 14px 16px; }
-  .header .plaque { padding: 14px 20px 12px; }
-  .stats-row { gap: 18px; }
+  .window-wrapper { width: 96%; }
 
-  .window-wrapper {
-    width: 96%;
+  .landscape {
+    height: 280px;
   }
 
-  .cosmic-view {
-    min-height: auto;
-    aspect-ratio: auto;
+  .window-outer { padding: 6px; border-radius: 8px; }
+  .window-middle { padding: 5px; border-radius: 5px; }
+  .window-inner { padding: 4px; border-radius: 3px; }
+  .window-glass-frame { border-radius: 2px; }
+
+  /* 简化风景层次 */
+  .mountains-far,
+  .mountains-mid { display: none; }
+  .city-skyline { left: 40%; right: 3%; }
+  .water { bottom: 28%; }
+  .hills { bottom: 26%; }
+  .field { bottom: 22%; }
+  .tree { display: none; }
+  .path { display: none; }
+
+  .sun-glow {
+    width: 120px;
+    height: 120px;
+    bottom: 16%;
+    left: 18%;
+  }
+  .sun-disc {
+    width: 32px;
+    height: 32px;
+    bottom: 20%;
+    left: 20%;
   }
 
-  .worlds {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto auto;
-    gap: 16px 14px;
-    padding: 20px 14px;
+  .cards-row {
+    gap: 8px;
+    padding: 6px 4px 0;
   }
-
-  .worlds .world-card:nth-child(1) { grid-column: 1; grid-row: 1; }
-  .worlds .world-card:nth-child(2) { grid-column: 2; grid-row: 1; }
-  .worlds .world-card:nth-child(3) { grid-column: 1; grid-row: 2; }
-  .worlds .world-card:nth-child(4) { grid-column: 2; grid-row: 2; }
-  .worlds .world-card:nth-child(5) { grid-column: 1; grid-row: 3; }
-  .worlds .world-card:nth-child(6) { grid-column: 2; grid-row: 3; }
-  .worlds .world-card:nth-child(7) { grid-column: 1 / 3; grid-row: 4; }
-
-  .world-orb {
-    width: 90px;
-    height: 90px;
-  }
-  .world-icon { font-size: 1.4rem; }
-  .world-name { font-size: 0.6rem; max-width: 80px; }
-  .world-count { font-size: 0.55rem; }
-
-  .window-outer { padding: 5px; border-radius: 10px; }
-  .window-middle { padding: 4px; border-radius: 7px; }
-  .window-inner { padding: 3px; border-radius: 4px; }
-  .window-glass-frame { padding: 2px; }
-
-  .windowsill { height: 12px; }
-
-  .nebula { display: none; }
-  .shooting-star { display: none; }
-  .orbit-ring { display: none; }
-}
-
-/* 极小屏幕 */
-@media (max-width: 380px) {
-  .worlds {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 14px;
-  }
-  .worlds .world-card:nth-child(n) {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .world-orb {
+  .topic-card {
     width: 80px;
-    height: 80px;
+    min-width: 60px;
+    padding: 8px 6px 6px;
+    border-radius: 3px;
   }
+  .topic-card::before {
+    left: 6px;
+    right: 6px;
+    height: 2px;
+  }
+  .card-icon { font-size: 1.1rem; }
+  .card-title { font-size: 0.58rem; }
+  .card-count { font-size: 0.5rem; }
+
+  .sill-top { height: 10px; }
+  .sill-front { height: 12px; }
+
+  .back-row { padding: 16px 16px 6px; }
 }
 </style>
 </head>
 <body>
 
 <!-- ============================================================
-     HEADER — 墙上的铭牌
+     HEADER
      ============================================================ -->
 <header class="header">
   <div class="plaque">
@@ -761,281 +932,150 @@ body::before {
     <div class="stats-row">
       <div class="stat-item">
         <div class="stat-num">7</div>
-        <div class="stat-label">知识世界</div>
+        <div class="stat-label">知识专题</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">374</div>
         <div class="stat-label">精选篇目</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">认知边界</div>
+        <div class="stat-num">⏳</div>
+        <div class="stat-label">穿越时空</div>
       </div>
     </div>
   </div>
 </header>
 
 <!-- ============================================================
-     WINDOW — 窗户（视野之窗）
+     WINDOW
      ============================================================ -->
 <div class="window-wrapper">
   <div class="window-outer">
-    <span class="corner-bl"></span>
-    <span class="corner-br"></span>
     <div class="window-middle">
       <div class="window-inner">
         <div class="window-glass-frame">
 
-          <!-- 窗外宇宙 -->
-          <div class="cosmic-view">
-            <!-- 星云装饰 -->
-            <div class="nebula nebula-1"></div>
-            <div class="nebula nebula-2"></div>
-            <div class="nebula nebula-3"></div>
-            <div class="nebula nebula-4"></div>
+          <!-- 窗外风景 -->
+          <div class="landscape">
 
-            <!-- 流星 -->
-            <div class="shooting-star"></div>
-            <div class="shooting-star"></div>
-            <div class="shooting-star"></div>
+            <!-- 天空 -->
+            <div class="sky"></div>
+
+            <!-- 太阳 -->
+            <div class="sun-glow"></div>
+            <div class="sun-disc"></div>
+
+            <!-- 云 -->
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+
+            <!-- 远山 -->
+            <div class="mountains-far"></div>
+            <div class="mountains-mid"></div>
+
+            <!-- 城市天际线 -->
+            <div class="city-skyline">
+              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+              <span class="bld"></span>
+            </div>
+
+            <!-- 水面 -->
+            <div class="water"></div>
+            <div class="water-reflection"></div>
+
+            <!-- 丘陵 -->
+            <div class="hills"></div>
+
+            <!-- 原野 -->
+            <div class="field"></div>
+
+            <!-- 小路 -->
+            <div class="path"></div>
+
+            <!-- 树 -->
+            <div class="tree tree-1"></div>
+            <div class="tree tree-2"></div>
 
             <!-- 玻璃反光 -->
-            <div class="glass-flare"></div>
+            <div class="glass-glare"></div>
 
-            <!-- 星空画布 -->
-            <canvas id="starfield"></canvas>
-
-            <!-- 7个世界 -->
-            <div class="worlds">
-
-              <!-- 1. 科技与商业逻辑 — 蓝色科技星球 -->
-              <a href="1-科技与商业逻辑.html" class="world-card world--tech">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">🔬</span>
-                  <span class="world-name">科技与商业逻辑</span>
-                  <span class="world-count">77 篇</span>
-                </div>
-              </a>
-
-              <!-- 2. 思维方法论 — 红色思维星球 -->
-              <a href="2-思维方法论.html" class="world-card world--think">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">🧠</span>
-                  <span class="world-name">思维方法论</span>
-                  <span class="world-count">58 篇</span>
-                </div>
-              </a>
-
-              <!-- 3. 投资与财富 — 金色财富星球 -->
-              <a href="3-投资与财富.html" class="world-card world--invest">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">💰</span>
-                  <span class="world-name">投资与财富</span>
-                  <span class="world-count">42 篇</span>
-                </div>
-              </a>
-
-              <!-- 4. 历史与文明对话 — 古铜文明星球 -->
-              <a href="4-历史与文明对话.html" class="world-card world--history">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">🏛️</span>
-                  <span class="world-name">历史与文明对话</span>
-                  <span class="world-count">39 篇</span>
-                </div>
-              </a>
-
-              <!-- 5. 艺术审美与品味 — 紫色艺术星球 -->
-              <a href="5-艺术审美与品味.html" class="world-card world--art">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">🎨</span>
-                  <span class="world-name">艺术审美与品味</span>
-                  <span class="world-count">61 篇</span>
-                </div>
-              </a>
-
-              <!-- 6. 教育与成长 — 绿色生命星球 -->
-              <a href="6-教育与成长.html" class="world-card world--edu">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">🌱</span>
-                  <span class="world-name">教育与成长</span>
-                  <span class="world-count">41 篇</span>
-                </div>
-              </a>
-
-              <!-- 7. 职场与人生智慧 — 靛蓝职场星球 -->
-              <a href="7-职场与人生智慧.html" class="world-card world--career">
-                <div class="orbit-ring"></div>
-                <div class="world-orb">
-                  <span class="world-icon">🎯</span>
-                  <span class="world-name">职场与人生智慧</span>
-                  <span class="world-count">56 篇</span>
-                </div>
-              </a>
-
-            </div><!-- /.worlds -->
-          </div><!-- /.cosmic-view -->
+          </div><!-- /.landscape -->
 
         </div>
       </div>
     </div>
   </div>
+</div><!-- /.window-wrapper -->
+
+<!-- ============================================================
+     WINDOW SILL + CARDS
+     ============================================================ -->
+<div class="sill-area">
+  <div class="cards-row">
+    <!-- 1. 科技与商业逻辑 -->
+    <a href="1-科技与商业逻辑.html" class="topic-card topic--tech">
+      <span class="card-icon">🔬</span>
+      <span class="card-title">科技与商业逻辑</span>
+      <span class="card-count">77 篇</span>
+    </a>
+    <!-- 2. 思维方法论 -->
+    <a href="2-思维方法论.html" class="topic-card topic--think">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">思维方法论</span>
+      <span class="card-count">58 篇</span>
+    </a>
+    <!-- 3. 投资与财富 -->
+    <a href="3-投资与财富.html" class="topic-card topic--invest">
+      <span class="card-icon">💰</span>
+      <span class="card-title">投资与财富</span>
+      <span class="card-count">42 篇</span>
+    </a>
+    <!-- 4. 历史与文明对话 -->
+    <a href="4-历史与文明对话.html" class="topic-card topic--history">
+      <span class="card-icon">🏛️</span>
+      <span class="card-title">历史与文明对话</span>
+      <span class="card-count">39 篇</span>
+    </a>
+    <!-- 5. 艺术审美与品味 -->
+    <a href="5-艺术审美与品味.html" class="topic-card topic--art">
+      <span class="card-icon">🎨</span>
+      <span class="card-title">艺术审美与品味</span>
+      <span class="card-count">61 篇</span>
+    </a>
+    <!-- 6. 教育与成长 -->
+    <a href="6-教育与成长.html" class="topic-card topic--edu">
+      <span class="card-icon">🌱</span>
+      <span class="card-title">教育与成长</span>
+      <span class="card-count">41 篇</span>
+    </a>
+    <!-- 7. 职场与人生智慧 -->
+    <a href="7-职场与人生智慧.html" class="topic-card topic--career">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">职场与人生智慧</span>
+      <span class="card-count">56 篇</span>
+    </a>
+  </div>
+  <div class="sill-top"></div>
+  <div class="sill-front"></div>
 </div>
 
-<!-- 窗台 -->
-<div class="windowsill"></div>
-
-<!-- 返回总库 -->
+<!-- ============================================================
+     BACK LINK
+     ============================================================ -->
 <div class="back-row">
   <a href="../index.html" class="back-link">← 返回知识总库</a>
 </div>
 
-<!-- 页脚 -->
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer class="footer">
   吴军·硅谷来信 · 第一季 · 知识主板 · 374篇 · 7个世界
 </footer>
-
-<!-- ============================================================
-     JAVASCRIPT — 星空画布
-     ============================================================ -->
-<script>
-(function(){
-  'use strict';
-
-  var canvas = document.getElementById('starfield');
-  if (!canvas) return;
-
-  var ctx = canvas.getContext('2d');
-  var stars = [];
-  var STAR_COUNT = 180;
-  var animationId;
-
-  function resizeCanvas() {
-    var parent = canvas.parentElement;
-    canvas.width = parent.clientWidth;
-    canvas.height = parent.clientHeight;
-  }
-
-  function createStar() {
-    return {
-      x: Math.random(),
-      y: Math.random(),
-      r: Math.random() * 1.8 + 0.3,
-      twinkleSpeed: Math.random() * 0.02 + 0.005,
-      twinkleOffset: Math.random() * Math.PI * 2,
-      baseOpacity: Math.random() * 0.6 + 0.4,
-      hue: Math.random() < 0.15
-        ? 200 + Math.random() * 40   // 蓝白星
-        : Math.random() < 0.1
-          ? 40 + Math.random() * 20   // 暖黄星
-          : 0                         // 纯白星
-    };
-  }
-
-  function initStars() {
-    stars = [];
-    for (var i = 0; i < STAR_COUNT; i++) {
-      stars.push(createStar());
-    }
-  }
-
-  function drawStars(timestamp) {
-    if (!canvas.width || !canvas.height) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    var w = canvas.width;
-    var h = canvas.height;
-
-    for (var i = 0; i < stars.length; i++) {
-      var s = stars[i];
-      var opacity = s.baseOpacity + Math.sin(timestamp * s.twinkleSpeed + s.twinkleOffset) * 0.25;
-      opacity = Math.max(0.2, Math.min(1, opacity));
-
-      var x = s.x * w;
-      var y = s.y * h;
-
-      // 外层柔光
-      if (s.r > 1.0 && opacity > 0.6) {
-        ctx.beginPath();
-        ctx.arc(x, y, s.r * 2.5, 0, Math.PI * 2);
-        var glowGrad = ctx.createRadialGradient(x, y, 0, x, y, s.r * 2.5);
-        if (s.hue) {
-          glowGrad.addColorStop(0, 'hsla(' + s.hue + ',80%,80%,' + (opacity * 0.4) + ')');
-        } else {
-          glowGrad.addColorStop(0, 'rgba(255,255,255,' + (opacity * 0.3) + ')');
-        }
-        glowGrad.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = glowGrad;
-        ctx.fill();
-      }
-
-      // 星点本体
-      ctx.beginPath();
-      ctx.arc(x, y, s.r, 0, Math.PI * 2);
-      if (s.hue) {
-        ctx.fillStyle = 'hsla(' + s.hue + ',80%,85%,' + opacity + ')';
-      } else {
-        ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
-      }
-      ctx.fill();
-    }
-  }
-
-  function animate(timestamp) {
-    drawStars(timestamp);
-    animationId = requestAnimationFrame(animate);
-  }
-
-  // 初始化
-  resizeCanvas();
-  initStars();
-  animationId = requestAnimationFrame(animate);
-
-  // 响应窗口大小变化
-  var resizeTimeout;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function() {
-      resizeCanvas();
-      initStars();
-    }, 200);
-  });
-
-  // 鼠标移动微交互 — 星空微弱跟随视差
-  var mouseX = 0.5, mouseY = 0.5;
-  var cosmicView = document.querySelector('.cosmic-view');
-  var nebulae = document.querySelectorAll('.nebula');
-  if (cosmicView) {
-    cosmicView.addEventListener('mousemove', function(e) {
-      var rect = cosmicView.getBoundingClientRect();
-      mouseX = (e.clientX - rect.left) / rect.width;
-      mouseY = (e.clientY - rect.top) / rect.height;
-
-      // 星云层微弱跟随鼠标，营造深度感
-      var dx = (mouseX - 0.5) * 20;
-      var dy = (mouseY - 0.5) * 15;
-      nebulae.forEach(function(n, i) {
-        var factor = 1 + i * 0.5;
-        n.style.transform = 'translate(' + (dx * factor) + 'px, ' + (dy * factor) + 'px)';
-      });
-    });
-    cosmicView.addEventListener('mouseleave', function() {
-      mouseX = 0.5;
-      mouseY = 0.5;
-      nebulae.forEach(function(n) {
-        n.style.transform = '';
-      });
-    });
-  }
-
-})();
-</script>
 
 </body>
 </html>
