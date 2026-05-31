@@ -411,84 +411,270 @@ document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',func
 
 // ========== TAB 0: SVG ==========
 function renderSVG(){
-  const svg = `<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c0392b"/><stop offset="100%" stop-color="#e67e22"/></linearGradient>
-    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#c0392b"/></marker>
-  </defs>
-  <!-- Central node -->
-  <circle cx="450" cy="120" r="50" fill="url(#g1)" opacity=".95"/>
-  <text x="450" y="115" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">审美能力</text>
-  <text x="450" y="135" text-anchor="middle" fill="#fff" font-size="11" opacity=".9">(可训练)</text>
-
-  <!-- Level 1: 3 main branches -->
-  <!-- 摄影 -->
-  <line x1="410" y1="165" x2="180" y2="260" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arr)"/>
-  <rect x="110" y="255" width="140" height="40" rx="8" fill="#c0392b" opacity=".9"/>
-  <text x="180" y="280" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">📷 摄影</text>
-
-  <!-- 奢侈品 -->
-  <line x1="450" y1="170" x2="450" y2="240" stroke="#e67e22" stroke-width="2.5" marker-end="url(#arr)"/>
-  <rect x="380" y="235" width="140" height="40" rx="8" fill="#e67e22" opacity=".9"/>
-  <text x="450" y="260" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">💎 奢品</text>
-
-  <!-- 博物 -->
-  <line x1="490" y1="165" x2="640" y2="260" stroke="#8b4513" stroke-width="2.5" marker-end="url(#arr)"/>
-  <rect x="570" y="255" width="140" height="40" rx="8" fill="#8b4513" opacity=".9"/>
-  <text x="640" y="280" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">🏛️ 博物</text>
-
-  <!-- 摄影 subnodes -->
-  <line x1="180" y1="295" x2="100" y2="360" stroke="#c0392b" stroke-width="1.5"/>
-  <text x="95" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">记录vs创作</text>
-  <line x1="180" y1="295" x2="180" y2="360" stroke="#c0392b" stroke-width="1.5"/>
-  <text x="175" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">到达>视角</text>
-  <line x1="180" y1="295" x2="260" y2="360" stroke="#c0392b" stroke-width="1.5"/>
-  <text x="265" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">构图·光色</text>
-
-  <!-- 奢侈 subnodes -->
-  <line x1="450" y1="275" x2="370" y2="350" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="365" y="370" text-anchor="middle" fill="#3d2f2f" font-size="11">极致品质</text>
-  <line x1="450" y1="275" x2="450" y2="350" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="450" y="370" text-anchor="middle" fill="#3d2f2f" font-size="11">品牌价值三要素</text>
-  <line x1="450" y1="275" x2="530" y2="350" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="540" y="370" text-anchor="middle" fill="#3d2f2f" font-size="11">凡勃伦商品</text>
-
-  <!-- 博物 subnodes -->
-  <line x1="640" y1="295" x2="560" y2="360" stroke="#8b4513" stroke-width="1.5"/>
-  <text x="555" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">文物性</text>
-  <line x1="640" y1="295" x2="640" y2="360" stroke="#8b4513" stroke-width="1.5"/>
-  <text x="640" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">艺术性</text>
-  <line x1="640" y1="295" x2="720" y2="360" stroke="#8b4513" stroke-width="1.5"/>
-  <text x="725" y="380" text-anchor="middle" fill="#3d2f2f" font-size="11">稀缺性</text>
-
-  <!-- Bottom: 风味 · 音乐 · 文学 -->
-  <rect x="250" y="440" width="120" height="36" rx="8" fill="#fdf6ec" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="310" y="463" text-anchor="middle" fill="#e67e22" font-size="12" font-weight="600">🍷 风味审美</text>
-
-  <rect x="400" y="440" width="100" height="36" rx="8" fill="#fdf6ec" stroke="#c0392b" stroke-width="1.5"/>
-  <text x="450" y="463" text-anchor="middle" fill="#c0392b" font-size="12" font-weight="600">🎵 音乐</text>
-
-  <rect x="530" y="440" width="100" height="36" rx="8" fill="#fdf6ec" stroke="#8b4513" stroke-width="1.5"/>
-  <text x="580" y="463" text-anchor="middle" fill="#8b4513" font-size="12" font-weight="600">📖 文学</text>
-
-  <!-- Cross connections (dashed) -->
-  <line x1="310" y1="440" x2="180" y2="410" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-  <line x1="450" y1="440" x2="450" y2="410" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-  <line x1="580" y1="440" x2="640" y2="410" stroke="#8b4513" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>
-
-  <!-- Legend -->
-  <rect x="20" y="500" width="280" height="90" rx="8" fill="#fdf6ec" stroke="#e8d5c4" stroke-width="1"/>
-  <text x="35" y="520" fill="#3d2f2f" font-size="11" font-weight="700">图例</text>
-  <line x1="35" y1="540" x2="65" y2="540" stroke="#c0392b" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="75" y="544" fill="#3d2f2f" font-size="10">因果关系</text>
-  <line x1="35" y1="560" x2="65" y2="560" stroke="#e67e22" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="75" y="564" fill="#3d2f2f" font-size="10">关联关系</text>
-  <rect x="35" y="568" width="13" height="7" rx="3" fill="#c0392b" opacity=".9"/>
-  <text x="55" y="580" fill="#3d2f2f" font-size="10">核心节点</text>
-  <rect x="110" y="568" width="13" height="7" rx="3" fill="#fdf6ec" stroke="#e67e22" stroke-width="1.5"/>
-  <text x="130" y="580" fill="#3d2f2f" font-size="10">扩展领域</text>
+  const svg = `<svg width="1438pt" height="295pt"
+ viewBox="0.00 0.00 1437.50 295.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 291)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-291 1433.5,-291 1433.5,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<path fill="#fffaf2" stroke="#e8d5c4" stroke-dasharray="5,2" d="M726.5,-208C726.5,-208 1409.5,-208 1409.5,-208 1415.5,-208 1421.5,-214 1421.5,-220 1421.5,-220 1421.5,-267 1421.5,-267 1421.5,-273 1415.5,-279 1409.5,-279 1409.5,-279 726.5,-279 726.5,-279 720.5,-279 714.5,-273 714.5,-267 714.5,-267 714.5,-220 714.5,-220 714.5,-214 720.5,-208 726.5,-208"/>
+<text text-anchor="middle" x="1068" y="-267" font-family="Times,serif" font-size="10.00" fill="#3d2f2f">图例</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2" d="M692.5,-252C692.5,-252 612.5,-252 612.5,-252 606.5,-252 600.5,-246 600.5,-240 600.5,-240 600.5,-228 600.5,-228 600.5,-222 606.5,-216 612.5,-216 612.5,-216 692.5,-216 692.5,-216 698.5,-216 704.5,-222 704.5,-228 704.5,-228 704.5,-240 704.5,-240 704.5,-246 698.5,-252 692.5,-252"/>
+<text text-anchor="middle" x="652.5" y="-237.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">审美能力</text>
+<text text-anchor="middle" x="652.5" y="-225.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">(可训练的判断力)</text>
+</g>
+<!-- visual -->
+<g id="node2" class="node">
+<title>visual</title>
+<path fill="#d4a574" stroke="black" d="M422.5,-180C422.5,-180 354.5,-180 354.5,-180 348.5,-180 342.5,-174 342.5,-168 342.5,-168 342.5,-156 342.5,-156 342.5,-150 348.5,-144 354.5,-144 354.5,-144 422.5,-144 422.5,-144 428.5,-144 434.5,-150 434.5,-156 434.5,-156 434.5,-168 434.5,-168 434.5,-174 428.5,-180 422.5,-180"/>
+<text text-anchor="middle" x="388.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">视觉审美</text>
+<text text-anchor="middle" x="388.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">摄影·构图·光色</text>
+</g>
+<!-- root&#45;&gt;visual -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;visual</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M600.34,-219.17C555.4,-207.25 490.69,-190.1 444.63,-177.88"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="445.37,-174.46 434.81,-175.28 443.58,-181.22 445.37,-174.46"/>
+</g>
+<!-- material -->
+<g id="node3" class="node">
+<title>material</title>
+<path fill="#d4a574" stroke="black" d="M679,-180C679,-180 626,-180 626,-180 620,-180 614,-174 614,-168 614,-168 614,-156 614,-156 614,-150 620,-144 626,-144 626,-144 679,-144 679,-144 685,-144 691,-150 691,-156 691,-156 691,-168 691,-168 691,-174 685,-180 679,-180"/>
+<text text-anchor="middle" x="652.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">物质审美</text>
+<text text-anchor="middle" x="652.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">奢侈品·收藏</text>
+</g>
+<!-- root&#45;&gt;material -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;material</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M652.5,-215.7C652.5,-207.98 652.5,-198.71 652.5,-190.11"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="656,-190.1 652.5,-180.1 649,-190.1 656,-190.1"/>
+</g>
+<!-- experiential -->
+<g id="node4" class="node">
+<title>experiential</title>
+<path fill="#d4a574" stroke="black" d="M937.5,-180C937.5,-180 869.5,-180 869.5,-180 863.5,-180 857.5,-174 857.5,-168 857.5,-168 857.5,-156 857.5,-156 857.5,-150 863.5,-144 869.5,-144 869.5,-144 937.5,-144 937.5,-144 943.5,-144 949.5,-150 949.5,-156 949.5,-156 949.5,-168 949.5,-168 949.5,-174 943.5,-180 937.5,-180"/>
+<text text-anchor="middle" x="903.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">体验审美</text>
+<text text-anchor="middle" x="903.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">风味·音乐·博物</text>
+</g>
+<!-- root&#45;&gt;experiential -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;experiential</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M689.25,-216C696.22,-213.1 703.52,-210.3 710.5,-208 755.65,-193.14 808.28,-181.21 847.16,-173.38"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="848.11,-176.76 857.24,-171.38 846.75,-169.89 848.11,-176.76"/>
+</g>
+<!-- photo -->
+<g id="node5" class="node">
+<title>photo</title>
+<path fill="#5a3e3e" stroke="black" d="M237.5,-108C237.5,-108 127.5,-108 127.5,-108 121.5,-108 115.5,-102 115.5,-96 115.5,-96 115.5,-84 115.5,-84 115.5,-78 121.5,-72 127.5,-72 127.5,-72 237.5,-72 237.5,-72 243.5,-72 249.5,-78 249.5,-84 249.5,-84 249.5,-96 249.5,-96 249.5,-102 243.5,-108 237.5,-108"/>
+<text text-anchor="middle" x="182.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">摄影创作链</text>
+<text text-anchor="middle" x="182.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">到达&gt;视角&gt;构图&gt;光色</text>
+</g>
+<!-- visual&#45;&gt;photo -->
+<g id="edge4" class="edge">
+<title>visual&#45;&gt;photo</title>
+<path fill="none" stroke="#d4a574" d="M342.27,-145.29C312.71,-135.24 274.07,-122.12 242.2,-111.28"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="243.13,-107.91 232.54,-108 240.88,-114.53 243.13,-107.91"/>
+</g>
+<!-- bw -->
+<g id="node6" class="node">
+<title>bw</title>
+<path fill="#5a3e3e" stroke="black" d="M365.5,-108C365.5,-108 279.5,-108 279.5,-108 273.5,-108 267.5,-102 267.5,-96 267.5,-96 267.5,-84 267.5,-84 267.5,-78 273.5,-72 279.5,-72 279.5,-72 365.5,-72 365.5,-72 371.5,-72 377.5,-78 377.5,-84 377.5,-84 377.5,-96 377.5,-96 377.5,-102 371.5,-108 365.5,-108"/>
+<text text-anchor="middle" x="322.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">黑白摄影</text>
+<text text-anchor="middle" x="322.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">去除色彩·聚焦结构</text>
+</g>
+<!-- visual&#45;&gt;bw -->
+<g id="edge5" class="edge">
+<title>visual&#45;&gt;bw</title>
+<path fill="none" stroke="#d4a574" d="M372.19,-143.7C364.19,-135.22 354.43,-124.86 345.68,-115.58"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="348.03,-112.98 338.63,-108.1 342.94,-117.78 348.03,-112.98"/>
+</g>
+<!-- emotion -->
+<g id="node7" class="node">
+<title>emotion</title>
+<path fill="#5a3e3e" stroke="black" d="M501.5,-108C501.5,-108 407.5,-108 407.5,-108 401.5,-108 395.5,-102 395.5,-96 395.5,-96 395.5,-84 395.5,-84 395.5,-78 401.5,-72 407.5,-72 407.5,-72 501.5,-72 501.5,-72 507.5,-72 513.5,-78 513.5,-84 513.5,-84 513.5,-96 513.5,-96 513.5,-102 507.5,-108 501.5,-108"/>
+<text text-anchor="middle" x="454.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">感染力</text>
+<text text-anchor="middle" x="454.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">真实·主题·场景·亲和</text>
+</g>
+<!-- visual&#45;&gt;emotion -->
+<g id="edge6" class="edge">
+<title>visual&#45;&gt;emotion</title>
+<path fill="none" stroke="#d4a574" d="M404.81,-143.7C412.81,-135.22 422.57,-124.86 431.32,-115.58"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="434.06,-117.78 438.37,-108.1 428.97,-112.98 434.06,-117.78"/>
+</g>
+<!-- lux_def -->
+<g id="node8" class="node">
+<title>lux_def</title>
+<path fill="#5a3e3e" stroke="black" d="M635.5,-108C635.5,-108 543.5,-108 543.5,-108 537.5,-108 531.5,-102 531.5,-96 531.5,-96 531.5,-84 531.5,-84 531.5,-78 537.5,-72 543.5,-72 543.5,-72 635.5,-72 635.5,-72 641.5,-72 647.5,-78 647.5,-84 647.5,-84 647.5,-96 647.5,-96 647.5,-102 641.5,-108 635.5,-108"/>
+<text text-anchor="middle" x="589.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">奢侈品定义</text>
+<text text-anchor="middle" x="589.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">极致品质+非必需品</text>
+</g>
+<!-- material&#45;&gt;lux_def -->
+<g id="edge7" class="edge">
+<title>material&#45;&gt;lux_def</title>
+<path fill="none" stroke="#d4a574" d="M636.93,-143.7C629.3,-135.22 619.98,-124.86 611.62,-115.58"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="614.19,-113.2 604.89,-108.1 608.98,-117.88 614.19,-113.2"/>
+</g>
+<!-- lux_biz -->
+<g id="node9" class="node">
+<title>lux_biz</title>
+<path fill="#5a3e3e" stroke="black" d="M755.5,-108C755.5,-108 677.5,-108 677.5,-108 671.5,-108 665.5,-102 665.5,-96 665.5,-96 665.5,-84 665.5,-84 665.5,-78 671.5,-72 677.5,-72 677.5,-72 755.5,-72 755.5,-72 761.5,-72 767.5,-78 767.5,-84 767.5,-84 767.5,-96 767.5,-96 767.5,-102 761.5,-108 755.5,-108"/>
+<text text-anchor="middle" x="716.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">奢侈品商业逻辑</text>
+<text text-anchor="middle" x="716.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">免疫×流动×故事</text>
+</g>
+<!-- material&#45;&gt;lux_biz -->
+<g id="edge8" class="edge">
+<title>material&#45;&gt;lux_biz</title>
+<path fill="none" stroke="#d4a574" d="M668.32,-143.7C676.07,-135.22 685.54,-124.86 694.02,-115.58"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="696.7,-117.85 700.86,-108.1 691.53,-113.12 696.7,-117.85"/>
+</g>
+<!-- flavor -->
+<g id="node10" class="node">
+<title>flavor</title>
+<path fill="#5a3e3e" stroke="black" d="M877,-108C877,-108 798,-108 798,-108 792,-108 786,-102 786,-96 786,-96 786,-84 786,-84 786,-78 792,-72 798,-72 798,-72 877,-72 877,-72 883,-72 889,-78 889,-84 889,-84 889,-96 889,-96 889,-102 883,-108 877,-108"/>
+<text text-anchor="middle" x="837.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">风味审美</text>
+<text text-anchor="middle" x="837.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">红酒·咖啡·茶品鉴</text>
+</g>
+<!-- experiential&#45;&gt;flavor -->
+<g id="edge9" class="edge">
+<title>experiential&#45;&gt;flavor</title>
+<path fill="none" stroke="#d4a574" d="M887.19,-143.7C879.19,-135.22 869.43,-124.86 860.68,-115.58"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="863.03,-112.98 853.63,-108.1 857.94,-117.78 863.03,-112.98"/>
+</g>
+<!-- museum -->
+<g id="node11" class="node">
+<title>museum</title>
+<path fill="#5a3e3e" stroke="black" d="M1020,-108C1020,-108 919,-108 919,-108 913,-108 907,-102 907,-96 907,-96 907,-84 907,-84 907,-78 913,-72 919,-72 919,-72 1020,-72 1020,-72 1026,-72 1032,-78 1032,-84 1032,-84 1032,-96 1032,-96 1032,-102 1026,-108 1020,-108"/>
+<text text-anchor="middle" x="969.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">博物馆素养</text>
+<text text-anchor="middle" x="969.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">文物性·艺术性·稀缺性</text>
+</g>
+<!-- experiential&#45;&gt;museum -->
+<g id="edge10" class="edge">
+<title>experiential&#45;&gt;museum</title>
+<path fill="none" stroke="#d4a574" d="M919.81,-143.7C927.81,-135.22 937.57,-124.86 946.32,-115.58"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="949.06,-117.78 953.37,-108.1 943.97,-112.98 949.06,-117.78"/>
+</g>
+<!-- music -->
+<g id="node17" class="node">
+<title>music</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M1133,-108C1133,-108 1062,-108 1062,-108 1056,-108 1050,-102 1050,-96 1050,-96 1050,-84 1050,-84 1050,-78 1056,-72 1062,-72 1062,-72 1133,-72 1133,-72 1139,-72 1145,-78 1145,-84 1145,-84 1145,-96 1145,-96 1145,-102 1139,-108 1133,-108"/>
+<text text-anchor="middle" x="1097.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">音乐·文学</text>
+<text text-anchor="middle" x="1097.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">跨艺术门类通感</text>
+</g>
+<!-- experiential&#45;&gt;music -->
+<g id="edge16" class="edge">
+<title>experiential&#45;&gt;music</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M949.97,-144.23C977.16,-134.42 1011.7,-121.96 1040.53,-111.56"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1041.85,-114.8 1050.06,-108.12 1039.47,-108.22 1041.85,-114.8"/>
+</g>
+<!-- photo&#45;&gt;lux_biz -->
+<g id="edge17" class="edge">
+<title>photo&#45;&gt;lux_biz</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M216.64,-108.16C231.77,-115.22 250.07,-122.46 267.5,-126 350.26,-142.8 565.48,-146.11 647.5,-126 658.65,-123.27 670,-118.38 680.19,-113.07"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="682.11,-116.01 689.19,-108.13 678.74,-109.88 682.11,-116.01"/>
+</g>
+<!-- arrive -->
+<g id="node12" class="node">
+<title>arrive</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M95,-36C95,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 95,0 95,0 101,0 107,-6 107,-12 107,-12 107,-24 107,-24 107,-30 101,-36 95,-36"/>
+<text text-anchor="middle" x="53.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00">到达与视角</text>
+<text text-anchor="middle" x="53.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00">不可修复的前两步</text>
+</g>
+<!-- photo&#45;&gt;arrive -->
+<g id="edge11" class="edge">
+<title>photo&#45;&gt;arrive</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M150.94,-71.88C133.84,-62.6 112.52,-51.03 94.18,-41.08"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="95.64,-37.88 85.18,-36.19 92.3,-44.04 95.64,-37.88"/>
+</g>
+<!-- compose -->
+<g id="node13" class="node">
+<title>compose</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M227.5,-36C227.5,-36 137.5,-36 137.5,-36 131.5,-36 125.5,-30 125.5,-24 125.5,-24 125.5,-12 125.5,-12 125.5,-6 131.5,0 137.5,0 137.5,0 227.5,0 227.5,0 233.5,0 239.5,-6 239.5,-12 239.5,-12 239.5,-24 239.5,-24 239.5,-30 233.5,-36 227.5,-36"/>
+<text text-anchor="middle" x="182.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00">构图法则</text>
+<text text-anchor="middle" x="182.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00">取舍·层级·主角配角</text>
+</g>
+<!-- photo&#45;&gt;compose -->
+<g id="edge12" class="edge">
+<title>photo&#45;&gt;compose</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M182.5,-71.7C182.5,-63.98 182.5,-54.71 182.5,-46.11"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="186,-46.1 182.5,-36.1 179,-46.1 186,-46.1"/>
+</g>
+<!-- light -->
+<g id="node14" class="node">
+<title>light</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M337.5,-36C337.5,-36 269.5,-36 269.5,-36 263.5,-36 257.5,-30 257.5,-24 257.5,-24 257.5,-12 257.5,-12 257.5,-6 263.5,0 269.5,0 269.5,0 337.5,0 337.5,0 343.5,0 349.5,-6 349.5,-12 349.5,-12 349.5,-24 349.5,-24 349.5,-30 343.5,-36 337.5,-36"/>
+<text text-anchor="middle" x="303.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00">光线与色彩</text>
+<text text-anchor="middle" x="303.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00">色温·互补·虚化</text>
+</g>
+<!-- photo&#45;&gt;light -->
+<g id="edge13" class="edge">
+<title>photo&#45;&gt;light</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M212.1,-71.88C228.07,-62.64 247.96,-51.13 265.11,-41.21"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="266.88,-44.23 273.79,-36.19 263.38,-38.17 266.88,-44.23"/>
+</g>
+<!-- emotion&#45;&gt;museum -->
+<g id="edge18" class="edge">
+<title>emotion&#45;&gt;museum</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M485.24,-108.14C498.91,-115.21 515.51,-122.45 531.5,-126 609.16,-143.26 811.72,-142.7 889.5,-126 902.54,-123.2 916.02,-118.1 928.12,-112.61"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="929.96,-115.61 937.49,-108.15 926.95,-109.29 929.96,-115.61"/>
+</g>
+<!-- luxury -->
+<g id="node16" class="node">
+<title>luxury</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M625,-36C625,-36 554,-36 554,-36 548,-36 542,-30 542,-24 542,-24 542,-12 542,-12 542,-6 548,0 554,0 554,0 625,0 625,0 631,0 637,-6 637,-12 637,-12 637,-24 637,-24 637,-30 631,-36 625,-36"/>
+<text text-anchor="middle" x="589.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00">凡勃伦商品</text>
+<text text-anchor="middle" x="589.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00">炫耀性消费本质</text>
+</g>
+<!-- lux_def&#45;&gt;luxury -->
+<g id="edge15" class="edge">
+<title>lux_def&#45;&gt;luxury</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M589.5,-71.7C589.5,-63.98 589.5,-54.71 589.5,-46.11"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="593,-46.1 589.5,-36.1 586,-46.1 593,-46.1"/>
+</g>
+<!-- brand -->
+<g id="node15" class="node">
+<title>brand</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M752,-36C752,-36 681,-36 681,-36 675,-36 669,-30 669,-24 669,-24 669,-12 669,-12 669,-6 675,0 681,0 681,0 752,0 752,0 758,0 764,-6 764,-12 764,-12 764,-24 764,-24 764,-30 758,-36 752,-36"/>
+<text text-anchor="middle" x="716.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00">品牌价值三要素</text>
+<text text-anchor="middle" x="716.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00">免疫·流动·故事</text>
+</g>
+<!-- lux_biz&#45;&gt;brand -->
+<g id="edge14" class="edge">
+<title>lux_biz&#45;&gt;brand</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M716.5,-71.7C716.5,-63.98 716.5,-54.71 716.5,-46.11"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="720,-46.1 716.5,-36.1 713,-46.1 720,-46.1"/>
+</g>
+<!-- l1 -->
+<g id="node18" class="node">
+<title>l1</title>
+<path fill="transparent" stroke="transparent" d="M1401.5,-252C1401.5,-252 1243.5,-252 1243.5,-252 1237.5,-252 1231.5,-246 1231.5,-240 1231.5,-240 1231.5,-228 1231.5,-228 1231.5,-222 1237.5,-216 1243.5,-216 1243.5,-216 1401.5,-216 1401.5,-216 1407.5,-216 1413.5,-222 1413.5,-228 1413.5,-228 1413.5,-240 1413.5,-240 1413.5,-246 1407.5,-252 1401.5,-252"/>
+<text text-anchor="middle" x="1322.5" y="-231.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">━━ 核心驱动关系（审美能力→三大领域）</text>
+</g>
+<!-- l2 -->
+<g id="node19" class="node">
+<title>l2</title>
+<path fill="transparent" stroke="transparent" d="M1201.5,-252C1201.5,-252 1079.5,-252 1079.5,-252 1073.5,-252 1067.5,-246 1067.5,-240 1067.5,-240 1067.5,-228 1067.5,-228 1067.5,-222 1073.5,-216 1079.5,-216 1079.5,-216 1201.5,-216 1201.5,-216 1207.5,-216 1213.5,-222 1213.5,-228 1213.5,-228 1213.5,-240 1213.5,-240 1213.5,-246 1207.5,-252 1201.5,-252"/>
+<text text-anchor="middle" x="1140.5" y="-231.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">━━ 方法论派生（领域→子概念）</text>
+</g>
+<!-- l3 -->
+<g id="node20" class="node">
+<title>l3</title>
+<path fill="transparent" stroke="transparent" d="M1037,-252C1037,-252 906,-252 906,-252 900,-252 894,-246 894,-240 894,-240 894,-228 894,-228 894,-222 900,-216 906,-216 906,-216 1037,-216 1037,-216 1043,-216 1049,-222 1049,-228 1049,-228 1049,-240 1049,-240 1049,-246 1043,-252 1037,-252"/>
+<text text-anchor="middle" x="971.5" y="-231.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">┅┅ 细节展开（方法论→具体要素）</text>
+</g>
+<!-- l4 -->
+<g id="node21" class="node">
+<title>l4</title>
+<path fill="transparent" stroke="transparent" d="M864,-252C864,-252 735,-252 735,-252 729,-252 723,-246 723,-240 723,-240 723,-228 723,-228 723,-222 729,-216 735,-216 735,-216 864,-216 864,-216 870,-216 876,-222 876,-228 876,-228 876,-240 876,-240 876,-246 870,-252 864,-252"/>
+<text text-anchor="middle" x="799.5" y="-231.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">┅┅ 跨域关联（视觉↔物质↔体验）</text>
+</g>
+</g>
 </svg>`;
-  document.getElementById('svgMap').innerHTML = svg;
+  document.getElementById(svgMap).innerHTML = svg;
 }
 
 // ========== TAB 1: Cards ==========

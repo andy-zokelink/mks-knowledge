@@ -620,139 +620,238 @@ const saQuestions = [
 
 // ======== SVG CONCEPT MAP ========
 function renderSVG() {
-  const svg = `<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
-    <marker id="arrGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#d4a574"/></marker>
-    <marker id="arrBrown" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#5a3e3e"/></marker>
-    <marker id="arrTaupe" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b7355"/></marker>
-    <marker id="arrDark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2c3e50"/></marker>
-    <filter id="shadow"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
-  </defs>
-
-  <!-- Root: 科技思维 × 商业逻辑 -->
-  <ellipse cx="450" cy="45" rx="140" ry="28" fill="#c0392b" filter="url(#shadow)"/>
-  <text x="450" y="41" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">科技思维 × 商业逻辑</text>
-  <text x="450" y="57" text-anchor="middle" fill="#fdd" font-size="10">驱动商业进化的核心张力</text>
-
-  <!-- Tier 1: 两大驱动力 -->
-  <line x1="335" y1="72" x2="200" y2="120" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
-  <text x="260" y="88" text-anchor="middle" fill="#c0392b" font-size="10">技术规律</text>
-  <line x1="565" y1="72" x2="700" y2="120" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
-  <text x="640" y="88" text-anchor="middle" fill="#c0392b" font-size="10">商业逻辑</text>
-
-  <!-- Tech laws node -->
-  <rect x="70" y="120" width="220" height="44" rx="10" fill="#d4a574" filter="url(#shadow)"/>
-  <text x="180" y="140" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">技术规律（供给侧）</text>
-  <text x="180" y="156" text-anchor="middle" fill="#fef9f4" font-size="10">零边际成本 · 数据驱动 · 摩尔定律</text>
-
-  <!-- Business logic node -->
-  <rect x="610" y="120" width="220" height="44" rx="10" fill="#d4a574" filter="url(#shadow)"/>
-  <text x="720" y="140" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">商业逻辑（需求侧）</text>
-  <text x="720" y="156" text-anchor="middle" fill="#fef9f4" font-size="10">垄断 · 竞争 · 价值创造 · 利益分配</text>
-
-  <!-- Tech sub-nodes -->
-  <line x1="140" y1="164" x2="100" y2="220" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
-  <line x1="180" y1="164" x2="180" y2="220" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
-  <line x1="220" y1="164" x2="260" y2="220" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
-
-  <rect x="28" y="220" width="130" height="40" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
-  <text x="93" y="239" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">零边际成本</text>
-  <text x="93" y="253" text-anchor="middle" fill="#d4a574" font-size="9">复制趋零 · IT壁垒</text>
-
-  <rect x="120" y="220" width="120" height="40" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
-  <text x="180" y="239" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">数据驱动方法</text>
-  <text x="180" y="253" text-anchor="middle" fill="#d4a574" font-size="9">AI底层范式</text>
-
-  <rect x="210" y="220" width="120" height="40" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
-  <text x="270" y="239" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">机器智能</text>
-  <text x="270" y="253" text-anchor="middle" fill="#d4a574" font-size="9">分类器 · 强化学习</text>
-
-  <!-- Biz sub-nodes -->
-  <line x1="670" y1="164" x2="630" y2="220" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
-  <line x1="720" y1="164" x2="720" y2="220" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
-  <line x1="770" y1="164" x2="810" y2="220" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
-
-  <rect x="558" y="220" width="130" height="40" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
-  <text x="623" y="239" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">自然垄断</text>
-  <text x="623" y="253" text-anchor="middle" fill="#d4a574" font-size="9">降价壁垒 · 零竞争</text>
-
-  <rect x="655" y="220" width="130" height="40" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
-  <text x="720" y="239" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">带宽决定规模</text>
-  <text x="720" y="253" text-anchor="middle" fill="#d4a574" font-size="9">信息触达 · 人脉</text>
-
-  <rect x="752" y="220" width="130" height="40" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
-  <text x="817" y="239" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">信息论</text>
-  <text x="817" y="253" text-anchor="middle" fill="#d4a574" font-size="9">消除不确定性</text>
-
-  <!-- Tier 3: Strategy layer -->
-  <line x1="93" y1="260" x2="50" y2="340" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
-  <line x1="180" y1="260" x2="140" y2="340" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
-  <line x1="270" y1="260" x2="230" y2="340" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
-  <line x1="623" y1="260" x2="570" y2="340" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
-  <line x1="720" y1="260" x2="680" y2="340" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
-  <line x1="817" y1="260" x2="790" y2="340" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
-
-  <rect x="10" y="340" width="155" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
-  <text x="87" y="358" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">颠覆式创新</text>
-  <text x="87" y="374" text-anchor="middle" fill="#f0dcc8" font-size="9">杀手功能+技术放大</text>
-
-  <rect x="175" y="340" width="155" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
-  <text x="252" y="358" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">专利防御长城</text>
-  <text x="252" y="374" text-anchor="middle" fill="#f0dcc8" font-size="9">长度+高度 </text>
-
-  <rect x="340" y="340" width="155" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
-  <text x="417" y="358" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">合作经济</text>
-  <text x="417" y="374" text-anchor="middle" fill="#f0dcc8" font-size="9">产业+新技术=新产业</text>
-
-  <rect x="505" y="340" width="155" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
-  <text x="582" y="358" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">共享/跟踪/众筹</text>
-  <text x="582" y="374" text-anchor="middle" fill="#f0dcc8" font-size="9">智能时代新商业</text>
-
-  <rect x="670" y="340" width="155" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
-  <text x="747" y="358" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">区块链与生产关系</text>
-  <text x="747" y="374" text-anchor="middle" fill="#f0dcc8" font-size="9">所有权·关系·分配</text>
-
-  <!-- Tier 4: Outcomes -->
-  <line x1="87" y1="384" x2="60" y2="470" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
-  <line x1="252" y1="384" x2="220" y2="470" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
-  <line x1="417" y1="384" x2="400" y2="470" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
-  <line x1="582" y1="384" x2="590" y2="470" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
-  <line x1="747" y1="384" x2="770" y2="470" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
-
-  <rect x="10" y="470" width="170" height="40" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
-  <text x="95" y="489" text-anchor="middle" fill="#fdf6ec" font-size="11">蚂蚁战胜大象</text>
-  <text x="95" y="503" text-anchor="middle" fill="#aab7c4" font-size="9">非对称竞争</text>
-
-  <rect x="195" y="470" width="170" height="40" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
-  <text x="280" y="489" text-anchor="middle" fill="#fdf6ec" font-size="11">防御稳固</text>
-  <text x="280" y="503" text-anchor="middle" fill="#aab7c4" font-size="9">专利壁垒 · 反制能力</text>
-
-  <rect x="380" y="470" width="170" height="40" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
-  <text x="465" y="489" text-anchor="middle" fill="#fdf6ec" font-size="11">产业升级</text>
-  <text x="465" y="503" text-anchor="middle" fill="#aab7c4" font-size="9">效率提升 · 新价值</text>
-
-  <rect x="565" y="470" width="170" height="40" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
-  <text x="650" y="489" text-anchor="middle" fill="#fdf6ec" font-size="11">规模扩大</text>
-  <text x="650" y="503" text-anchor="middle" fill="#aab7c4" font-size="9">消费增量</text>
-
-  <rect x="750" y="470" width="140" height="40" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
-  <text x="820" y="489" text-anchor="middle" fill="#fdf6ec" font-size="11">新型组织</text>
-  <text x="820" y="503" text-anchor="middle" fill="#aab7c4" font-size="9">分布式·信任</text>
-
-  <!-- Feedback arrow from outcomes back to root -->
-  <path d="M820,510 Q820,580 450,580 Q80,580 80,510" fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrRed)"/>
-  <text x="450" y="575" text-anchor="middle" fill="#c0392b" font-size="10" font-style="italic">反馈循环：商业结果验证并修正技术方向</text>
-
-  <!-- Cross connections: data → monopoly -->
-  <path d="M270,260 Q350,310 558,260" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
-  <text x="400" y="300" text-anchor="middle" fill="#d4a574" font-size="8">数据壁垒→自然垄断</text>
-
-  <!-- Cross: zero marginal cost → disruptive -->
-  <path d="M93,260 Q100,310 87,340" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
-  <text x="45" y="305" text-anchor="middle" fill="#d4a574" font-size="8">零成本=杀手功能</text>
+  const svg = `<svg width="1281pt" height="231pt"
+ viewBox="0.00 0.00 1280.50 231.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 227)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-227 1276.5,-227 1276.5,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<path fill="#fffaf2" stroke="#e8d5c4" stroke-dasharray="5,2" d="M661.5,-144C661.5,-144 1228.5,-144 1228.5,-144 1234.5,-144 1240.5,-150 1240.5,-156 1240.5,-156 1240.5,-203 1240.5,-203 1240.5,-209 1234.5,-215 1228.5,-215 1228.5,-215 661.5,-215 661.5,-215 655.5,-215 649.5,-209 649.5,-203 649.5,-203 649.5,-156 649.5,-156 649.5,-150 655.5,-144 661.5,-144"/>
+<text text-anchor="middle" x="945" y="-203" font-family="Times,serif" font-size="10.00" fill="#3d2f2f">图例</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2" d="M626.5,-188C626.5,-188 504.5,-188 504.5,-188 498.5,-188 492.5,-182 492.5,-176 492.5,-176 492.5,-164 492.5,-164 492.5,-158 498.5,-152 504.5,-152 504.5,-152 626.5,-152 626.5,-152 632.5,-152 638.5,-158 638.5,-164 638.5,-164 638.5,-176 638.5,-176 638.5,-182 632.5,-188 626.5,-188"/>
+<text text-anchor="middle" x="565.5" y="-173.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">教育与成长</text>
+<text text-anchor="middle" x="565.5" y="-161.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">看问题 × 做事情的双螺旋</text>
+</g>
+<!-- thinking -->
+<g id="node2" class="node">
+<title>thinking</title>
+<path fill="#d4a574" stroke="black" d="M418,-116C418,-116 335,-116 335,-116 329,-116 323,-110 323,-104 323,-104 323,-92 323,-92 323,-86 329,-80 335,-80 335,-80 418,-80 418,-80 424,-80 430,-86 430,-92 430,-92 430,-104 430,-104 430,-110 424,-116 418,-116"/>
+<text text-anchor="middle" x="376.5" y="-101.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">看问题的方法</text>
+<text text-anchor="middle" x="376.5" y="-89.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">思维框架与判断力</text>
+</g>
+<!-- root&#45;&gt;thinking -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;thinking</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M519.27,-151.88C492.97,-142.14 459.86,-129.87 432.14,-119.61"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="433.18,-116.26 422.58,-116.07 430.75,-122.82 433.18,-116.26"/>
+</g>
+<!-- doing -->
+<g id="node3" class="node">
+<title>doing</title>
+<path fill="#d4a574" stroke="black" d="M927,-116C927,-116 844,-116 844,-116 838,-116 832,-110 832,-104 832,-104 832,-92 832,-92 832,-86 838,-80 844,-80 844,-80 927,-80 927,-80 933,-80 939,-86 939,-92 939,-92 939,-104 939,-104 939,-110 933,-116 927,-116"/>
+<text text-anchor="middle" x="885.5" y="-101.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">做事的方法</text>
+<text text-anchor="middle" x="885.5" y="-89.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">行动策略与执行力</text>
+</g>
+<!-- root&#45;&gt;doing -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;doing</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M616.89,-151.96C626.35,-149.11 636.18,-146.32 645.5,-144 704.64,-129.27 773.05,-116.89 821.67,-108.87"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="822.43,-112.29 831.73,-107.22 821.3,-105.38 822.43,-112.29"/>
+</g>
+<!-- falsify -->
+<g id="node4" class="node">
+<title>falsify</title>
+<path fill="#5a3e3e" stroke="black" d="M95,-40C95,-40 12,-40 12,-40 6,-40 0,-34 0,-28 0,-28 0,-16 0,-16 0,-10 6,-4 12,-4 12,-4 95,-4 95,-4 101,-4 107,-10 107,-16 107,-16 107,-28 107,-28 107,-34 101,-40 95,-40"/>
+<text text-anchor="middle" x="53.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">证伪思维</text>
+<text text-anchor="middle" x="53.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">区分科学与伪科学</text>
+</g>
+<!-- thinking&#45;&gt;falsify -->
+<g id="edge3" class="edge">
+<title>thinking&#45;&gt;falsify</title>
+<path fill="none" stroke="#d4a574" d="M322.78,-88C269.9,-78.69 187.04,-62.87 116.5,-44 115.25,-43.66 113.98,-43.32 112.71,-42.96"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="113.43,-39.53 102.85,-40.08 111.47,-46.25 113.43,-39.53"/>
+</g>
+<!-- logic -->
+<g id="node5" class="node">
+<title>logic</title>
+<path fill="#5a3e3e" stroke="black" d="M223.5,-40C223.5,-40 137.5,-40 137.5,-40 131.5,-40 125.5,-34 125.5,-28 125.5,-28 125.5,-16 125.5,-16 125.5,-10 131.5,-4 137.5,-4 137.5,-4 223.5,-4 223.5,-4 229.5,-4 235.5,-10 235.5,-16 235.5,-16 235.5,-28 235.5,-28 235.5,-34 229.5,-40 223.5,-40"/>
+<text text-anchor="middle" x="180.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">逻辑判断</text>
+<text text-anchor="middle" x="180.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">识别谬误·筛选信息</text>
+</g>
+<!-- thinking&#45;&gt;logic -->
+<g id="edge4" class="edge">
+<title>thinking&#45;&gt;logic</title>
+<path fill="none" stroke="#d4a574" d="M331.04,-79.84C302.47,-69.05 265.44,-55.07 235.25,-43.67"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="236.3,-40.33 225.71,-40.07 233.83,-46.88 236.3,-40.33"/>
+</g>
+<!-- common -->
+<g id="node6" class="node">
+<title>common</title>
+<path fill="#5a3e3e" stroke="black" d="M357.5,-40C357.5,-40 265.5,-40 265.5,-40 259.5,-40 253.5,-34 253.5,-28 253.5,-28 253.5,-16 253.5,-16 253.5,-10 259.5,-4 265.5,-4 265.5,-4 357.5,-4 357.5,-4 363.5,-4 369.5,-10 369.5,-16 369.5,-16 369.5,-28 369.5,-28 369.5,-34 363.5,-40 357.5,-40"/>
+<text text-anchor="middle" x="311.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">常识判断</text>
+<text text-anchor="middle" x="311.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">简单规律&gt;复杂模型</text>
+</g>
+<!-- thinking&#45;&gt;common -->
+<g id="edge5" class="edge">
+<title>thinking&#45;&gt;common</title>
+<path fill="none" stroke="#d4a574" d="M361.42,-79.84C353.06,-70.31 342.5,-58.29 333.25,-47.76"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="335.72,-45.27 326.49,-40.07 330.46,-49.89 335.72,-45.27"/>
+</g>
+<!-- uni -->
+<g id="node7" class="node">
+<title>uni</title>
+<path fill="#5a3e3e" stroke="black" d="M483,-40C483,-40 400,-40 400,-40 394,-40 388,-34 388,-28 388,-28 388,-16 388,-16 388,-10 394,-4 400,-4 400,-4 483,-4 483,-4 489,-4 495,-10 495,-16 495,-16 495,-28 495,-28 495,-34 489,-40 483,-40"/>
+<text text-anchor="middle" x="441.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">大学之道</text>
+<text text-anchor="middle" x="441.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">投入产出分析动机</text>
+</g>
+<!-- thinking&#45;&gt;uni -->
+<g id="edge6" class="edge">
+<title>thinking&#45;&gt;uni</title>
+<path fill="none" stroke="#d4a574" d="M391.58,-79.84C399.94,-70.31 410.5,-58.29 419.75,-47.76"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="422.54,-49.89 426.51,-40.07 417.28,-45.27 422.54,-49.89"/>
+</g>
+<!-- reading -->
+<g id="node12" class="node">
+<title>reading</title>
+<path fill="#8b7355" stroke="black" d="M608,-44C608,-44 525,-44 525,-44 519,-44 513,-38 513,-32 513,-32 513,-12 513,-12 513,-6 519,0 525,0 525,0 608,0 608,0 614,0 620,-6 620,-12 620,-12 620,-32 620,-32 620,-38 614,-44 608,-44"/>
+<text text-anchor="middle" x="566.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">阅读的价值</text>
+<text text-anchor="middle" x="566.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">怡情·养性·长智</text>
+<text text-anchor="middle" x="566.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">跨界是结果非目的</text>
+</g>
+<!-- thinking&#45;&gt;reading -->
+<g id="edge11" class="edge">
+<title>thinking&#45;&gt;reading</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M420.57,-79.84C445.18,-70.25 476.27,-58.14 503.42,-47.57"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="504.8,-50.79 512.85,-43.9 502.26,-44.26 504.8,-50.79"/>
+</g>
+<!-- subtract -->
+<g id="node8" class="node">
+<title>subtract</title>
+<path fill="#5a3e3e" stroke="black" d="M736.5,-40C736.5,-40 650.5,-40 650.5,-40 644.5,-40 638.5,-34 638.5,-28 638.5,-28 638.5,-16 638.5,-16 638.5,-10 644.5,-4 650.5,-4 650.5,-4 736.5,-4 736.5,-4 742.5,-4 748.5,-10 748.5,-16 748.5,-16 748.5,-28 748.5,-28 748.5,-34 742.5,-40 736.5,-40"/>
+<text text-anchor="middle" x="693.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">减法思维</text>
+<text text-anchor="middle" x="693.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">生命有限·聚焦核心</text>
+</g>
+<!-- doing&#45;&gt;subtract -->
+<g id="edge7" class="edge">
+<title>doing&#45;&gt;subtract</title>
+<path fill="none" stroke="#d4a574" d="M840.97,-79.84C812.98,-69.05 776.7,-55.07 747.14,-43.67"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="748.38,-40.4 737.79,-40.07 745.86,-46.93 748.38,-40.4"/>
+</g>
+<!-- improve -->
+<g id="node9" class="node">
+<title>improve</title>
+<path fill="#5a3e3e" stroke="black" d="M862,-40C862,-40 779,-40 779,-40 773,-40 767,-34 767,-28 767,-28 767,-16 767,-16 767,-10 773,-4 779,-4 779,-4 862,-4 862,-4 868,-4 874,-10 874,-16 874,-16 874,-28 874,-28 874,-34 868,-40 862,-40"/>
+<text text-anchor="middle" x="820.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">渐进改良</text>
+<text text-anchor="middle" x="820.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">最好是更好的敌人</text>
+</g>
+<!-- doing&#45;&gt;improve -->
+<g id="edge8" class="edge">
+<title>doing&#45;&gt;improve</title>
+<path fill="none" stroke="#d4a574" d="M870.42,-79.84C862.06,-70.31 851.5,-58.29 842.25,-47.76"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="844.72,-45.27 835.49,-40.07 839.46,-49.89 844.72,-45.27"/>
+</g>
+<!-- prof -->
+<g id="node10" class="node">
+<title>prof</title>
+<path fill="#5a3e3e" stroke="black" d="M998.5,-40C998.5,-40 904.5,-40 904.5,-40 898.5,-40 892.5,-34 892.5,-28 892.5,-28 892.5,-16 892.5,-16 892.5,-10 898.5,-4 904.5,-4 904.5,-4 998.5,-4 998.5,-4 1004.5,-4 1010.5,-10 1010.5,-16 1010.5,-16 1010.5,-28 1010.5,-28 1010.5,-34 1004.5,-40 998.5,-40"/>
+<text text-anchor="middle" x="951.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">专业素养</text>
+<text text-anchor="middle" x="951.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">稳定·流程·体系·更新</text>
+</g>
+<!-- doing&#45;&gt;prof -->
+<g id="edge9" class="edge">
+<title>doing&#45;&gt;prof</title>
+<path fill="none" stroke="#d4a574" d="M900.81,-79.84C909.3,-70.31 920.02,-58.29 929.41,-47.76"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="932.23,-49.86 936.28,-40.07 927.01,-45.2 932.23,-49.86"/>
+</g>
+<!-- tenk -->
+<g id="node11" class="node">
+<title>tenk</title>
+<path fill="#5a3e3e" stroke="black" d="M1126.5,-40C1126.5,-40 1040.5,-40 1040.5,-40 1034.5,-40 1028.5,-34 1028.5,-28 1028.5,-28 1028.5,-16 1028.5,-16 1028.5,-10 1034.5,-4 1040.5,-4 1040.5,-4 1126.5,-4 1126.5,-4 1132.5,-4 1138.5,-10 1138.5,-16 1138.5,-16 1138.5,-28 1138.5,-28 1138.5,-34 1132.5,-40 1126.5,-40"/>
+<text text-anchor="middle" x="1083.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">一万小时定律</text>
+<text text-anchor="middle" x="1083.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">有效积累·破四误区</text>
+</g>
+<!-- doing&#45;&gt;tenk -->
+<g id="edge10" class="edge">
+<title>doing&#45;&gt;tenk</title>
+<path fill="none" stroke="#d4a574" d="M931.42,-79.84C960.29,-69.05 997.7,-55.07 1028.19,-43.67"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1029.68,-46.85 1037.83,-40.07 1027.23,-40.29 1029.68,-46.85"/>
+</g>
+<!-- harvard -->
+<g id="node13" class="node">
+<title>harvard</title>
+<path fill="#8b7355" stroke="black" d="M1260.5,-44C1260.5,-44 1168.5,-44 1168.5,-44 1162.5,-44 1156.5,-38 1156.5,-32 1156.5,-32 1156.5,-12 1156.5,-12 1156.5,-6 1162.5,0 1168.5,0 1168.5,0 1260.5,0 1260.5,0 1266.5,0 1272.5,-6 1272.5,-12 1272.5,-12 1272.5,-32 1272.5,-32 1272.5,-38 1266.5,-44 1260.5,-44"/>
+<text text-anchor="middle" x="1214.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">哈佛艾略特改革</text>
+<text text-anchor="middle" x="1214.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">收益函数驱动优化</text>
+<text text-anchor="middle" x="1214.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00" fill="#fdf6ec">激励设计&gt;口头说教</text>
+</g>
+<!-- doing&#45;&gt;harvard -->
+<g id="edge12" class="edge">
+<title>doing&#45;&gt;harvard</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M939.06,-87.85C990.09,-78.76 1069.22,-63.68 1146.27,-44.21"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1147.31,-47.55 1156.14,-41.69 1145.58,-40.77 1147.31,-47.55"/>
+</g>
+<!-- falsify&#45;&gt;common -->
+<g id="edge13" class="edge">
+<title>falsify&#45;&gt;common</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M78.48,-40.02C91.75,-48.49 108.75,-57.66 125.5,-62 172.83,-74.26 188.04,-73.73 235.5,-62 249.46,-58.55 263.68,-52.03 275.99,-45.23"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="278.09,-48.06 285,-40.03 274.59,-42 278.09,-48.06"/>
+</g>
+<!-- logic&#45;&gt;subtract -->
+<g id="edge14" class="edge">
+<title>logic&#45;&gt;subtract</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M205.86,-40.02C219.33,-48.49 236.56,-57.66 253.5,-62 332.29,-82.17 540.65,-81.95 619.5,-62 633.15,-58.55 647.02,-52.02 659,-45.23"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="660.95,-48.14 667.76,-40.02 657.37,-42.12 660.95,-48.14"/>
+</g>
+<!-- common&#45;&gt;improve -->
+<g id="edge15" class="edge">
+<title>common&#45;&gt;improve</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M338,-40.03C352.05,-48.5 369.99,-57.67 387.5,-62 465.38,-81.24 670.84,-82.12 748.5,-62 761.72,-58.58 775.09,-52.14 786.66,-45.42"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="788.81,-48.21 795.52,-40.02 785.16,-42.23 788.81,-48.21"/>
+</g>
+<!-- reading&#45;&gt;prof -->
+<g id="edge16" class="edge">
+<title>reading&#45;&gt;prof</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M597.99,-44.04C610.08,-51.25 624.38,-58.34 638.5,-62 689.27,-75.16 823.55,-74.44 874.5,-62 888.75,-58.52 903.3,-51.9 915.86,-45.03"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="917.67,-48.03 924.62,-40.03 914.2,-41.95 917.67,-48.03"/>
+</g>
+<!-- harvard&#45;&gt;tenk -->
+<g id="edge17" class="edge">
+<title>harvard&#45;&gt;tenk</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M1156.32,-22C1153.72,-22 1151.13,-22 1148.53,-22"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="1148.51,-18.5 1138.51,-22 1148.51,-25.5 1148.51,-18.5"/>
+</g>
+<!-- l1 -->
+<g id="node14" class="node">
+<title>l1</title>
+<path fill="transparent" stroke="transparent" d="M1220.5,-188C1220.5,-188 1086.5,-188 1086.5,-188 1080.5,-188 1074.5,-182 1074.5,-176 1074.5,-176 1074.5,-164 1074.5,-164 1074.5,-158 1080.5,-152 1086.5,-152 1086.5,-152 1220.5,-152 1220.5,-152 1226.5,-152 1232.5,-158 1232.5,-164 1232.5,-164 1232.5,-176 1232.5,-176 1232.5,-182 1226.5,-188 1220.5,-188"/>
+<text text-anchor="middle" x="1153.5" y="-167.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">━━ 核心驱动（根→看问题/做事情）</text>
+</g>
+<!-- l2 -->
+<g id="node15" class="node">
+<title>l2</title>
+<path fill="transparent" stroke="transparent" d="M1044,-188C1044,-188 913,-188 913,-188 907,-188 901,-182 901,-176 901,-176 901,-164 901,-164 901,-158 907,-152 913,-152 913,-152 1044,-152 1044,-152 1050,-152 1056,-158 1056,-164 1056,-164 1056,-176 1056,-176 1056,-182 1050,-188 1044,-188"/>
+<text text-anchor="middle" x="978.5" y="-167.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">━━ 方法论派生（维度→具体概念）</text>
+</g>
+<!-- l3 -->
+<g id="node16" class="node">
+<title>l3</title>
+<path fill="transparent" stroke="transparent" d="M870.5,-188C870.5,-188 762.5,-188 762.5,-188 756.5,-188 750.5,-182 750.5,-176 750.5,-176 750.5,-164 750.5,-164 750.5,-158 756.5,-152 762.5,-152 762.5,-152 870.5,-152 870.5,-152 876.5,-152 882.5,-158 882.5,-164 882.5,-164 882.5,-176 882.5,-176 882.5,-182 876.5,-188 870.5,-188"/>
+<text text-anchor="middle" x="816.5" y="-167.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">┅┅ 系统设计层（阅读/激励）</text>
+</g>
+<!-- l4 -->
+<g id="node17" class="node">
+<title>l4</title>
+<path fill="transparent" stroke="transparent" d="M720,-188C720,-188 669,-188 669,-188 663,-188 657,-182 657,-176 657,-176 657,-164 657,-164 657,-158 663,-152 669,-152 669,-152 720,-152 720,-152 726,-152 732,-158 732,-164 732,-164 732,-176 732,-176 732,-182 726,-188 720,-188"/>
+<text text-anchor="middle" x="694.5" y="-167.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">┅┅ 跨维度关联</text>
+</g>
+</g>
 </svg>`;
-  document.getElementById('svgContainer').innerHTML = svg;
+  document.getElementById(svgContainer).innerHTML = svg;
 }
 
 // ======== INIT TABS ========
