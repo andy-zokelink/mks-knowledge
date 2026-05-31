@@ -269,7 +269,7 @@ body{font-family:"Noto Serif SC","Source Han Serif SC",Georgia,"Songti SC",serif
     <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
   </div>
   <div id="quizContainer"></div>
-  <div id="staticQuiz" style="display:block">
+  <div id="staticQuiz" style="display:none">
   <div class="card"><h2>选择题（20题）</h2><p style="color:var(--text2)">点击选项即时判分，错题自动收入错题本</p></div>
   <div id="mcQuestions"></div>
   <div class="card" style="margin-top:20px"><h2>简答题（10题）</h2><p style="color:var(--text2)">输入你的答案后点击「查看参考答案」对比</p></div>
@@ -930,7 +930,6 @@ function startQuiz(){
   userAnswers = {};
   quizTimeLeft = 900;
   document.getElementById('quizScore').textContent = '';
-  document.getElementById('staticQuiz').style.display = 'none';
   renderQuizPractice();
   startQuizTimer('quizTimer');
 }
@@ -1014,7 +1013,6 @@ function resetQuiz(){
   document.getElementById('quizContainer').innerHTML = '';
   document.getElementById('quizScore').textContent = '';
   document.getElementById('quizTimer').style.display = 'none';
-  document.getElementById('staticQuiz').style.display = 'block';
 }
 
 // ===== TAB 3: QUESTION BANK =====
