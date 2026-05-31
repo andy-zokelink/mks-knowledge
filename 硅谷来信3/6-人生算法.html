@@ -115,15 +115,53 @@ a:hover { text-decoration: underline; }
 
 /* SVG container */
 .svg-wrap { overflow-x: auto; margin: 10px 0; }
-.svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
+.svg-wrap svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
 
 /* Flip card */
-.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
-.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
-.flip-inner.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
-.flip-front{background:var(--card)}
-.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-card {
+  perspective: 1000px;
+  height: clamp(220px, 40vw, 280px);
+  margin-bottom: 14px;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  padding: clamp(16px, 3vw, 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.flip-front {
+  background: var(--card);
+}
+.flip-back {
+  background: linear-gradient(135deg, #fffaf2, #fef5e7);
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  overflow-y: auto;
+  align-items: flex-start;
+  text-align: left;
+  font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+}
 .flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
 .flip-nav .btn{min-width:80px}
 
@@ -394,16 +432,6 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 5: 思维导图 ==================== -->
 <div class="tab-content" data-tab="5">
-<div class="card">
-  <h2>人生算法 · 概念关系图</h2>
-  <p style="color:var(--text-light);font-size:13px;margin-bottom:12px;">基于Graphviz dot引擎生成的概念关系图——展示10个核心概念之间的分层架构、驱动关系与交叉反馈回路。</p>
-  <div class="svg-wrap" id="conceptGraphSVG"></div>
-  <p style="font-size:12px;color:var(--text-light);margin-top:8px;line-height:2;">
-    <span style="color:#c0392b;font-weight:600;">━━ 核心驱动关系</span>&nbsp; 根→类→概念的层级驱动链路&nbsp;&nbsp;
-    <span style="color:#b8653a;font-weight:600;">━━ 方法论派生</span>&nbsp; 类到具体概念的派生关系&nbsp;&nbsp;
-    <span style="color:#8b7355;border-bottom:2px dashed #8b7355;">--- 交叉反馈</span>&nbsp; 跨系统的认知-行动反馈回路
-  </p>
-</div>
 <div class="card">
   <h2>人生算法 · 思维导图</h2>
   <p style="color:var(--text-light);font-size:13px;">可折叠/展开的层级树形结构。点击节点展开子级。</p>
@@ -1036,8 +1064,6 @@ function markLearned(){
   if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
   save();updateProgress();setCard(currentCardIdx);
 }
-document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
-
 // ======== TAB 2: RANDOM QUIZ PRACTICE ========
 let currentQuestions = [];
 let userAnswers = {};
