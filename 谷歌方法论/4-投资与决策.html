@@ -18,19 +18,25 @@ body{
 }
 .container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
 
-/* Header */
-.header{
-  text-align:center;padding:clamp(20px,4vw,40px) 0 clamp(12px,3vw,24px);
-  border-bottom:2px solid var(--border);margin-bottom:clamp(12px,2vw,20px);
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
 }
-.header h1{font-size:clamp(1.3rem,3.5vw,1.8rem);color:var(--accent);font-weight:700}
-.header .sub{font-size:clamp(.85rem,2vw,1rem);color:var(--text2);margin-top:4px}
-.header .home-link{display:inline-block;margin-top:8px;font-size:.85rem;color:var(--blue);text-decoration:none;border:1px solid var(--blue);padding:4px 14px;border-radius:16px;transition:all .2s}
-.header .home-link:hover{background:var(--blue);color:#fff}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
 
 /* Tab bar */
 .tab-bar{
-  position:sticky;top:0;z-index:100;background:var(--bg);
+  position:sticky;top:44px;z-index:100;background:var(--bg);
   display:flex;flex-wrap:wrap;gap:4px;padding:8px 0 12px;
   border-bottom:1px solid var(--border);margin-bottom:16px;
   overflow-x:auto;-webkit-overflow-scrolling:touch;
@@ -90,33 +96,29 @@ body{
 .svg-wrap svg{min-width:700px;display:block;margin:0 auto}
 
 /* Flip card */
-.flip-container{perspective:1000px;width:100%;max-width:600px;margin:0 auto 20px}
-.flip-inner{position:relative;width:100%;min-height:300px;transition:transform .5s;transform-style:preserve-3d}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
 .flip-inner.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{
-  position:absolute;width:100%;min-height:300px;backface-visibility:hidden;
-  border-radius:12px;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:28px 24px;text-align:center;
-}
-.flip-front{background:var(--card);border:2px solid var(--border);z-index:2}
-.flip-front .concept-name{font-size:1.3rem;font-weight:700;color:var(--accent)}
-.flip-front .hint{font-size:.82rem;color:var(--text2);margin-top:8px}
-.flip-back{
-  background:var(--card);border:2px solid var(--accent);transform:rotateY(180deg);
-  text-align:left;justify-content:flex-start;overflow-y:auto;
-}
-.flip-back h4{color:var(--accent);margin:6px 0 2px;font-size:.9rem}
-.flip-back p{font-size:.82rem;color:var(--text2);margin-bottom:4px}
-
-.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;position:relative;z-index:10;margin-top:16px;margin-bottom:12px}
-.flip-nav button{
-  padding:8px 18px;border:1px solid var(--border);border-radius:20px;
-  background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem;transition:all .2s;
-}
-.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.flip-counter{font-size:.85rem;color:var(--text2)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
 /* Quiz */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--green)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
+
 .quiz-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
 .quiz-card.correct{border-color:var(--green);background:#f0faf4}
 .quiz-card.wrong{border-color:var(--accent);background:#fef5f5}
@@ -216,13 +218,14 @@ body{
 </style>
 </head>
 <body>
+<div class="top-bar">
+  <h1>投资与决策 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
 <div class="container">
 
-<header class="header">
-  <h1>投资与决策 · 最小知识集</h1>
-  <p class="sub">风险投资、投资哲学、货币金融与决策思维 —— 39篇笔记精华提炼</p>
-  <a href="index.html" class="home-link">← 返回知识主板</a>
-</header>
+<p class="subtitle" style="text-align:center;color:var(--text2);font-size:clamp(.85rem,2vw,1rem);margin:8px 0 12px">风险投资、投资哲学、货币金融与决策思维 —— 39篇笔记精华提炼</p>
 
 <nav class="tab-bar" id="tabBar">
   <button class="tab-btn active" data-tab="0">知识总览</button>
@@ -238,23 +241,27 @@ body{
 
 <!-- ========== TAB 0: 知识总览 ========== -->
 <section class="tab-content active" data-tab="0">
-  <div class="card">
+
+
+<div class="card">
     <h2>核心目标</h2>
     <p style="font-size:1.05rem;font-weight:600;color:var(--accent)">
       理解资本的运行逻辑与决策的底层思维 —— 在不确定性中把握确定性，用制度和系统替代运气和直觉。
     </p>
-    <div class="progress-wrap">
-      <div class="progress-label"><span>学习进度</span><span id="progressPct">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-    </div>
+
   </div>
 
-  <div class="card">
+<div class="card">
     <h2>10 大核心概念</h2>
     <div class="concept-grid" id="conceptGrid"></div>
   </div>
 
-  <div class="card">
+<div class="card">
+    <h2>★ 最小知识集核心（4 个必须深刻理解）</h2>
+    <div class="concept-grid" id="mksCoreGrid"></div>
+  </div>
+
+<div class="card">
     <h2>概念关系图 <span style="font-size:.78rem;color:var(--text2)">（可左右滑动）</span></h2>
     <div class="svg-wrap" id="svgContainer"></div>
     <p style="font-size:.78rem;color:var(--text2);text-align:center;margin-top:8px">
@@ -265,17 +272,12 @@ body{
     </p>
   </div>
 
-  <div class="card">
-    <h2>★ 最小知识集核心（4 个必须深刻理解）</h2>
-    <div class="concept-grid" id="mksCoreGrid"></div>
-  </div>
-
-  <div class="card">
+<div class="card">
     <h2>边界知识表</h2>
     <table class="boundary-table"><tbody id="boundaryTable"></tbody></table>
   </div>
 
-  <div class="card">
+<div class="card">
     <h2>学习路径（5 阶段）</h2>
     <ol style="padding-left:20px;font-size:.88rem;line-height:2">
       <li><strong>先学止损与J曲线</strong> — 掌握决策底层思维，理解"滞后效应"是所有长期投入的共性</li>
@@ -285,32 +287,49 @@ body{
       <li><strong>最后补充公司管理与国际视野</strong> — 矩阵式管理、德鲁克定律、奥格威定律、贸易协定</li>
     </ol>
   </div>
+
+  <div class="card">
+    <h2>学习进度</h2>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>已完成</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
 </section>
 
 <!-- ========== TAB 1: 知识卡片 ========== -->
 <section class="tab-content" data-tab="1">
-  <div class="flip-container" id="flipCard">
-    <div class="flip-inner" id="flipInner">
-      <div class="flip-front"><div class="concept-name" id="flipName"></div><div class="hint">点击卡片翻转查看详情</div></div>
-      <div class="flip-back" id="flipBack"></div>
-    </div>
-  </div>
+  <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
   <div class="flip-nav">
-    <button id="flipPrev">◀ 上一个</button>
-    <span class="flip-counter" id="flipCounter">1 / 10</span>
-    <button id="flipToggle">翻转卡片</button>
-    <button id="flipLearned">✓ 标记已学</button>
-    <button id="flipNext">下一个 ▶</button>
+    <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+    <span style="font-size:.85rem;color:var(--text2)" id="cardIndex">1 / 10</span>
+    <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
   </div>
+  <div style="text-align:center;margin:8px 0">
+    <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.78rem;color:var(--text2)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </section>
 
 <!-- ========== TAB 2: 题库系统 ========== -->
 <section class="tab-content" data-tab="2">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-    <h2 style="margin:0">选择题练习（20题）</h2>
-    <button class="btn btn-sm btn-outline" id="quizReset">重置全部</button>
+  <h3 style="margin-bottom:10px">📝 题库系统</h3>
+  <div style="margin-bottom:12px">
+    <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+    <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+    <span style="margin-left:8px;font-size:.85rem;color:var(--text2)" id="quizScore"></span>
+    <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
   </div>
-  <div id="quizList"></div>
+  <div id="quizContainer"></div>
+  <div id="staticQuiz" style="display:block">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <h2 style="margin:0">选择题练习（20题）</h2>
+      <button class="btn btn-sm btn-outline" id="quizReset">重置全部</button>
+    </div>
+    <div id="quizList"></div>
+  </div>
 </section>
 
 <!-- ========== TAB 3: 考试模式 ========== -->
@@ -809,43 +828,54 @@ function renderDashboard(){
 }
 
 // ==================== TAB 1: FLIP CARDS ====================
-let currentFlipIdx=0;
+let learnedCards = concepts.filter(c => state.learned[c.id]).map(c => c.id);
+function save() {
+  concepts.forEach(c => { state.learned[c.id] = learnedCards.includes(c.id); });
+  saveState(state);
+}
+
+let currentCardIdx = 0;
+let cardFlipped = false;
+
 function flipToConcept(id){
   const idx=concepts.findIndex(c=>c.id===id);
-  if(idx>=0){currentFlipIdx=idx;renderFlipCard();}
+  if(idx>=0){currentCardIdx=idx;setCard(idx);}
 }
-function renderFlipCard(){
-  const c=concepts[currentFlipIdx];
-  document.getElementById('flipName').textContent=c.icon+' '+c.name;
-  document.getElementById('flipBack').innerHTML=`
-    <h4>定义</h4><p>${c.def}</p>
-    <h4>类比（商业/财务场景）</h4><p>${c.analogy}</p>
-    <h4>正面示例</h4><p>${c.example}</p>
-    <h4>反面示例</h4><p>${c.counter}</p>
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`
+    <h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name || c.title}</h3>
+    <p style="color:var(--text2);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>
+    ${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}
   `;
-  document.getElementById('flipCounter').textContent=(currentFlipIdx+1)+' / '+concepts.length;
+  document.getElementById('flipBack').innerHTML=`
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def || c.desc || ''}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.analogy || c.analog || ''}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--green)">示例：</strong>${c.example || c.eg || ''}</div>
+    <div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter || c.anti || ''}</div>
+  `;
   document.getElementById('flipInner').classList.remove('flipped');
-  document.getElementById('flipLearned').textContent=state.learned[c.id]?'✓ 已学':'✓ 标记已学';
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+  updateCardProgress();
 }
-document.getElementById('flipPrev').addEventListener('click',()=>{
-  currentFlipIdx=(currentFlipIdx-1+concepts.length)%concepts.length;renderFlipCard();
-});
-document.getElementById('flipNext').addEventListener('click',()=>{
-  currentFlipIdx=(currentFlipIdx+1)%concepts.length;renderFlipCard();
-});
-document.getElementById('flipToggle').addEventListener('click',()=>{
-  document.getElementById('flipInner').classList.toggle('flipped');
-});
-document.getElementById('flipInner').addEventListener('click',()=>{
-  document.getElementById('flipInner').classList.toggle('flipped');
-});
-document.getElementById('flipLearned').addEventListener('click',()=>{
-  const c=concepts[currentFlipIdx];
-  state.learned[c.id]=!state.learned[c.id];
-  saveState(state);
-  renderFlipCard();
-  renderDashboard();
-});
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+function updateCardProgress(){
+  const pct=concepts.length?Math.round(learnedCards.length/concepts.length*100):0;
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+}
 
 // ==================== TAB 2: QUIZ ====================
 function renderQuiz(){
@@ -883,6 +913,101 @@ function answerQuiz(qIdx,chosen){
 document.getElementById('quizReset').addEventListener('click',()=>{
   state.quizDone={};state.wrongList=[];saveState(state);renderQuiz();renderReview();
 });
+
+// ==================== TAB 2b: QUIZ PRACTICE ====================
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [...quizData].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...shortAnswerData].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'inline';
+  document.getElementById('staticQuiz').style.display = 'none';
+  renderQuizPractice();
+  startQuizTimer();
+}
+function startQuizTimer(){
+  clearInterval(quizTimerInterval);
+  updateQuizTimerDisplay();
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay();
+    if(quizTimeLeft<=0){clearInterval(quizTimerInterval);submitQuizPractice();}
+  },1000);
+}
+function updateQuizTimerDisplay(){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById('quizTimer').textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    const isChoice = q.opts || q.options || q.answer !== undefined || q.ans !== undefined;
+    if(isChoice){
+      const options = q.opts || q.options;
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div>';
+      options.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    } else {
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const correctIdx = q.answer !== undefined ? q.answer : (q.ans !== undefined ? q.ans : -1);
+  const isCorrect = optIdx === correctIdx;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+  fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
+  if(q.explain||q.explanation) fb.textContent += ' ' + (q.explain||q.explanation);
+  const correctCount = Object.values(userAnswers).filter((v,i)=>{
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>{
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
+}
 
 // ==================== TAB 3: EXAM ====================
 let examInterval=null,examSeconds=0,examQuestions=[],examActive=false;
@@ -1262,3 +1387,4 @@ init();
 </script>
 </body>
 </html>
+

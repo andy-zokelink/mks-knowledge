@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--文明与全球化 · 最小知识集-->
+<title>文明与全球化 · 最小知识集</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -17,6 +17,7 @@
   --gold: #d4a853;
   --green: #27ae60;
   --blue: #2980b9;
+  --shadow: 0 2px 12px rgba(60,30,20,.08);
 }
 body {
   font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "Songti SC", "SimSun", Georgia, serif;
@@ -27,22 +28,10 @@ body {
 }
 .container { max-width: 960px; margin: 0 auto; padding: 0 clamp(12px, 3vw, 24px); }
 
-/* header */
-.header {
-  text-align: center;
-  padding: clamp(24px, 5vw, 48px) 0 clamp(16px, 3vw, 32px);
-  border-bottom: 2px solid var(--border);
-  margin-bottom: 0;
-}
-.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--accent); letter-spacing: 0.05em; }
-.header .sub { font-size: clamp(0.85rem, 1.8vw, 1rem); color: var(--text-light); margin-top: 8px; }
-.header .home-link { display: inline-block; margin-top: 10px; font-size: 0.85rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 20px; padding: 4px 16px; transition: all 0.2s; }
-.header .home-link:hover { background: var(--accent); color: #fff; }
-
 /* tab bar */
 .tab-bar {
   display: flex; flex-wrap: wrap; gap: 4px;
-  position: sticky; top: 0; z-index: 100;
+  position: sticky; top: 44px; z-index: 100;
   background: var(--bg);
   padding: 8px 0 8px;
   border-bottom: 1px solid var(--border);
@@ -126,53 +115,7 @@ body {
 .path-step .step-content h4 { color: var(--accent); margin-bottom: 4px; }
 .path-step .step-content p { font-size: 0.85rem; color: var(--text-light); }
 
-/* flashcard */
-.flashcard-container { text-align: center; }
-.flashcard {
-  perspective: 1000px;
-  width: 100%;
-  max-width: 500px;
-  height: 340px;
-  margin: 0 auto 16px;
-  cursor: pointer;
-}
-.flashcard-inner {
-  position: relative;
-  width: 100%; height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
-.flashcard-front, .flashcard-back {
-  position: absolute;
-  width: 100%; height: 100%;
-  backface-visibility: hidden;
-  border-radius: 14px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--border);
-}
-.flashcard-front { background: var(--card); }
-.flashcard-front .concept-name { font-size: 1.5rem; color: var(--accent); font-weight: bold; margin-bottom: 12px; }
-.flashcard-front .hint { font-size: 0.85rem; color: var(--text-light); }
-.flashcard-back {
-  background: #fffefb;
-  transform: rotateY(180deg);
-  text-align: left;
-  align-items: flex-start;
-  overflow-y: auto;
-  font-size: 0.85rem;
-}
-.flashcard-back .dim { margin-bottom: 8px; }
-.flashcard-back .dim strong { color: var(--accent); }
-.flashcard-nav { display: flex; gap: 12px; justify-content: center; align-items: center; }
-.flashcard-nav button { padding: 8px 20px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer; border-radius: 8px; font-family: inherit; font-size: 0.85rem; transition: all 0.2s; }
-.flashcard-nav button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-.flashcard-nav .learned-btn { background: var(--green); color: #fff; border-color: var(--green); }
-.flashcard-nav .learned-btn.learned { opacity: 0.6; }
+/* flip card handled above */
 
 /* quiz */
 .quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 14px; }
@@ -251,6 +194,54 @@ body {
   .concept-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 }
 
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+.subtitle { text-align: center; font-size: clamp(0.85rem, 1.8vw, 1rem); color: var(--text-light); margin: 12px 0; }
+.btn { display: inline-block; padding: 8px 18px; background: var(--accent); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: .88rem; transition: all .2s; text-decoration: none; }
+.btn:hover { opacity: .9; }
+.btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+.btn-sm { padding: 5px 14px; font-size: .82rem; }
+.btn-success { background: var(--green); }
+.tag { display: inline-block; padding: 2px 10px; background: var(--green); color: #fff; border-radius: 10px; font-size: .78rem; }
+
+/* flip card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* quiz */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--green)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
+
 /* back to top */
 .back-top {
   position: fixed; bottom: 24px; right: 24px;
@@ -263,12 +254,13 @@ body {
 </head>
 <body>
 
-<div class="container">
-<div class="header">
+<div class="top-bar">
   <h1>文明与全球化 · 最小知识集</h1>
-  <p class="sub">基于吴军《谷歌方法论》「文明与全球化」93篇笔记提炼 | 大历史视角</p>
-  <a href="index.html" class="home-link">← 返回知识主板</a>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
 </div>
+
+<div class="container">
+<p class="subtitle">基于吴军《谷歌方法论》「文明与全球化」93篇笔记提炼 | 大历史视角</p>
 
 <nav class="tab-bar" id="tabBar">
   <button class="tab-btn active" data-tab="0">知识总览</button>
@@ -647,8 +639,8 @@ body {
 <div class="card">
   <h2>学习进度</h2>
   <div class="progress-wrap">
-    <div class="progress-label"><span>知识卡片已学习</span><span id="cardProgress">0 / 10</span></div>
-    <div class="progress-bar"><div class="progress-fill" id="cardProgressBar" style="width:0%"></div></div>
+    <div class="progress-label"><span>知识卡片已学习</span><span id="dashLearnedText">0 / 10</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="dashProgressBar" style="width:0%"></div></div>
   </div>
   <div class="progress-wrap">
     <div class="progress-label"><span>题目总正确率</span><span id="quizProgress">--</span></div>
@@ -662,34 +654,32 @@ body {
 <div class="card">
   <h2>翻转知识卡片</h2>
   <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;">点击卡片翻转查看四维解析（定义/类比/示例/反例），点击「已学习」标记进度</p>
-  <div class="flashcard-container">
-    <div class="flashcard" id="flashcard" onclick="flipCard()">
-      <div class="flashcard-inner">
-        <div class="flashcard-front">
-          <div class="concept-name" id="fcName">文明三公式</div>
-          <div class="hint">👆 点击翻转查看详解</div>
-        </div>
-        <div class="flashcard-back" id="fcBack">
-          <div class="dim"><strong>定义：</strong>1+1=2（抽象与确定性）、E=mc²（质能转化与超越直观）、熵（不确定性度量）</div>
-          <div class="dim"><strong>类比（商业场景）：</strong>1+1=2如同会计记账的基础——必须先定义"收入"概念才能做账；E=mc²如同发现"品牌价值可以转化为市场估值"；熵如同判断一个新兴市场的"信息缺口"有多大</div>
-          <div class="dim"><strong>示例：</strong>一张名片写下人类文明——让外星文明了解地球文明的思维水平</div>
-          <div class="dim"><strong>反例：</strong>AlphaGo虽能聚类形成有共性的类，但无法像人类一样"定义"概念</div>
-        </div>
-      </div>
-    </div>
-    <div class="flashcard-nav">
-      <button onclick="prevCard(event)">◀ 上一张</button>
-      <span id="fcIndex" style="font-size:0.85rem;">1 / 10</span>
-      <button onclick="nextCard(event)">下一张 ▶</button>
-      <button class="learned-btn" id="learnedBtn" onclick="markLearned(event)">✓ 已学习</button>
-    </div>
+  <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+  <div class="flip-nav">
+    <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+    <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+    <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
   </div>
+  <div style="text-align:center;margin:8px 0">
+    <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 </div>
 
 <!-- ========== TAB 3: 题库系统 ========== -->
 <div class="tab-content" data-tab="2">
 <div class="card">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:block">
   <h2>选择题（20题）</h2>
   <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;">选项A/B/C/D对应索引0/1/2/3，正确选项0-3均匀分布（各5题）</p>
   <div id="mcqContainer"></div>
@@ -697,6 +687,7 @@ body {
     <h2>简答题（10题）</h2>
     <div id="saContainer"></div>
   </div>
+</div>
 </div>
 </div>
 
@@ -847,16 +838,16 @@ body {
 // ==================== DATA ====================
 
 const flashcardData = [
-  {name:"文明三公式", def:"1+1=2（抽象与确定性）、E=mc²（质能转化与超越直观）、熵（不确定性度量）——人类文明最底层的认知框架", analog:"1+1=2如同会计记账的基础——必须先定义'收入'概念才能做账；E=mc²如同发现'品牌价值可以转化为市场估值'", example:"一张名片写下人类文明——让外星文明了解地球文明的思维水平", anti:"AlphaGo虽能聚类但无法像人类一样'定义'概念"},
-  {name:"非零和博弈", def:"纳什证明存在双赢状态——一方所得不必以另一方损失为代价。合作是获取最大利益的关键，这是文明最大的进步成果", analog:"如同开源社区：贡献代码的人没有'损失'什么，但整个社区变得更强，所有人受益", example:"美苏冷战通过谈判达成平衡——从双输核竞赛走向合作的典型案例", anti:"冯·诺依曼的零和博弈——讨价还价中的利益分配，一方获利必导致另一方损失"},
-  {name:"世界是能量的", def:"物理学最新成就：从夸克（旋转的能量圆锥）到希格斯场赋予质量，一切皆为能量。宇宙诞生于138亿年前的能量奇点", analog:"如同公司的'能量'不在于其资产清单，而在于组织能力和品牌势能——这些无形的东西才是核心", example:"朋友女儿的恋爱问题：表象是男生抠门，本质是缺乏真实感情（感情=能量）", anti:"传统认知'世界是物质的'——如同只看公司固定资产而忽视无形资产"},
-  {name:"农耕vs商业文明", def:"农耕文明自给自足、靠血缘维系、金字塔结构；商业文明依赖交换、靠合同信用维系、倾向平等", analog:"农耕文明如同家族企业——任人唯亲；商业文明如同上市公司——依赖契约和治理结构", example:"荷兰独立战争期间，交战双方仍保障对方在本国银行的资金安全——商业信誉高于政治", anti:"部分中国企业追求'大而全'、控制上下游、市值总和不及腾讯和苹果"},
-  {name:"日神与酒神", def:"阿波罗象征理性、秩序、节制；狄奥尼索斯象征生命力、迷狂、创造。二者互补，共同构成完整人性", analog:"如同企业管理：日神=KPI与流程（理性），酒神=团队文化与创新突破（感性），缺一不可", example:"王羲之醉酒创作《兰亭集序》，清醒后无法复现——酒神驱动的创造力", anti:"纯理性文化困境：19世纪末欧洲过度理性导致文化僵化（尼采批判的现象）"},
-  {name:"信息论方法论", def:"香农1948年揭示不确定性≒信息量的关系。核心：利用信息消除不确定性，是应对跳跃式变化的最佳思维工具", analog:"如同GPS导航：你不知道自己在哪（不确定性高），获得GPS信号（信息输入），就能精确决策", example:"大数据思维本质是信息论方法论的应用——通过海量数据消除商业决策的不确定性", anti:"单维度信息反复使用的IT从业者——事倍功半甚至劳而无功"},
-  {name:"三大IT定律", def:"摩尔定律（晶体管密度翻倍）、安迪-比尔定律（软件消耗硬件性能）、李嘉图定律（优质资源溢价持续扩大）", analog:"摩尔定律如同健身房会员费降价——同样价格买到更好服务；安迪-比尔定律如同游戏更新要求更高配置", example:"小米反向操作：利用预订模式制造时间差，元器件降价后盈利", anti:"雅虎/百度：缺乏移动策略而衰落——忽视安迪-比尔定律的推动力"},
-  {name:"规则与文明", def:"文明本质是从掠夺到守规矩的转变。1913年四川土匪定规则收过路费→'养鸡生蛋'而非'杀鸡取卵'", analog:"如同交通信号灯的发明：看似限制自由，实际给所有人带来安全和可预期性", example:"刘邦约法三章仅10字（杀人者死、伤人及盗抵罪）——动荡后通过极简规则重建秩序", anti:"软件盗版=竭泽而渔，摧毁付费生态，导致软件公司失去创新动力"},
-  {name:"旅行者困境", def:"考希克·巴苏1994年提出。两人分别估价，低者获奖高者受罚→纳什均衡趋近2美元（理论双输）", analog:"如同家长为孩子报补习班：第一个报的似乎领先，所有人都报时优势抵消，但谁也不敢先退", example:"iPhone抢购排队：从9点开门→8点→6点→半夜→提前数天——收益从100美元降至2美元", anti:"现实中多数人报价接近真实价值——人非完全理性，偏离纳什均衡反而获更高收益"},
-  {name:"莎士比亚智慧", def:"通过福斯塔夫等角色表达人文主义：对自由的向往、对秩序的嘲讽、对'欢乐天性'和'活在当下'的赞美", analog:"福斯塔夫之于哈尔王子，如同韦小宝之于康熙——市井智慧的导师，衬托主角的成长", example:"'福斯塔夫式的背景'（恩格斯语）：贵族权谋与市井生活交织的全景式社会图景", anti:"纯荣誉观（霍茨波视荣誉为生命）——福斯塔夫质疑'荣誉能替我重装一条腿吗？'"}
+  {id:0, name:"文明三公式", def:"1+1=2（抽象与确定性）、E=mc²（质能转化与超越直观）、熵（不确定性度量）——人类文明最底层的认知框架", analog:"1+1=2如同会计记账的基础——必须先定义'收入'概念才能做账；E=mc²如同发现'品牌价值可以转化为市场估值'", example:"一张名片写下人类文明——让外星文明了解地球文明的思维水平", anti:"AlphaGo虽能聚类但无法像人类一样'定义'概念"},
+  {id:1, name:"非零和博弈", def:"纳什证明存在双赢状态——一方所得不必以另一方损失为代价。合作是获取最大利益的关键，这是文明最大的进步成果", analog:"如同开源社区：贡献代码的人没有'损失'什么，但整个社区变得更强，所有人受益", example:"美苏冷战通过谈判达成平衡——从双输核竞赛走向合作的典型案例", anti:"冯·诺依曼的零和博弈——讨价还价中的利益分配，一方获利必导致另一方损失"},
+  {id:2, name:"世界是能量的", def:"物理学最新成就：从夸克（旋转的能量圆锥）到希格斯场赋予质量，一切皆为能量。宇宙诞生于138亿年前的能量奇点", analog:"如同公司的'能量'不在于其资产清单，而在于组织能力和品牌势能——这些无形的东西才是核心", example:"朋友女儿的恋爱问题：表象是男生抠门，本质是缺乏真实感情（感情=能量）", anti:"传统认知'世界是物质的'——如同只看公司固定资产而忽视无形资产"},
+  {id:3, name:"农耕vs商业文明", def:"农耕文明自给自足、靠血缘维系、金字塔结构；商业文明依赖交换、靠合同信用维系、倾向平等", analog:"农耕文明如同家族企业——任人唯亲；商业文明如同上市公司——依赖契约和治理结构", example:"荷兰独立战争期间，交战双方仍保障对方在本国银行的资金安全——商业信誉高于政治", anti:"部分中国企业追求'大而全'、控制上下游、市值总和不及腾讯和苹果"},
+  {id:4, name:"日神与酒神", def:"阿波罗象征理性、秩序、节制；狄奥尼索斯象征生命力、迷狂、创造。二者互补，共同构成完整人性", analog:"如同企业管理：日神=KPI与流程（理性），酒神=团队文化与创新突破（感性），缺一不可", example:"王羲之醉酒创作《兰亭集序》，清醒后无法复现——酒神驱动的创造力", anti:"纯理性文化困境：19世纪末欧洲过度理性导致文化僵化（尼采批判的现象）"},
+  {id:5, name:"信息论方法论", def:"香农1948年揭示不确定性≒信息量的关系。核心：利用信息消除不确定性，是应对跳跃式变化的最佳思维工具", analog:"如同GPS导航：你不知道自己在哪（不确定性高），获得GPS信号（信息输入），就能精确决策", example:"大数据思维本质是信息论方法论的应用——通过海量数据消除商业决策的不确定性", anti:"单维度信息反复使用的IT从业者——事倍功半甚至劳而无功"},
+  {id:6, name:"三大IT定律", def:"摩尔定律（晶体管密度翻倍）、安迪-比尔定律（软件消耗硬件性能）、李嘉图定律（优质资源溢价持续扩大）", analog:"摩尔定律如同健身房会员费降价——同样价格买到更好服务；安迪-比尔定律如同游戏更新要求更高配置", example:"小米反向操作：利用预订模式制造时间差，元器件降价后盈利", anti:"雅虎/百度：缺乏移动策略而衰落——忽视安迪-比尔定律的推动力"},
+  {id:7, name:"规则与文明", def:"文明本质是从掠夺到守规矩的转变。1913年四川土匪定规则收过路费→'养鸡生蛋'而非'杀鸡取卵'", analog:"如同交通信号灯的发明：看似限制自由，实际给所有人带来安全和可预期性", example:"刘邦约法三章仅10字（杀人者死、伤人及盗抵罪）——动荡后通过极简规则重建秩序", anti:"软件盗版=竭泽而渔，摧毁付费生态，导致软件公司失去创新动力"},
+  {id:8, name:"旅行者困境", def:"考希克·巴苏1994年提出。两人分别估价，低者获奖高者受罚→纳什均衡趋近2美元（理论双输）", analog:"如同家长为孩子报补习班：第一个报的似乎领先，所有人都报时优势抵消，但谁也不敢先退", example:"iPhone抢购排队：从9点开门→8点→6点→半夜→提前数天——收益从100美元降至2美元", anti:"现实中多数人报价接近真实价值——人非完全理性，偏离纳什均衡反而获更高收益"},
+  {id:9, name:"莎士比亚智慧", def:"通过福斯塔夫等角色表达人文主义：对自由的向往、对秩序的嘲讽、对'欢乐天性'和'活在当下'的赞美", analog:"福斯塔夫之于哈尔王子，如同韦小宝之于康熙——市井智慧的导师，衬托主角的成长", example:"'福斯塔夫式的背景'（恩格斯语）：贵族权谋与市井生活交织的全景式社会图景", anti:"纯荣誉观（霍茨波视荣誉为生命）——福斯塔夫质疑'荣誉能替我重装一条腿吗？'"}
 ];
 
 const mcqData = [
@@ -945,8 +936,7 @@ const decisionData = [
 ];
 
 // ==================== STATE ====================
-let currentCard = 0;
-let cardLearned = new Array(10).fill(false);
+let learnedCards = [];
 let totalAnswered = 0, totalCorrect = 0;
 let wrongList = [];
 let conceptWeak = {};
@@ -959,7 +949,7 @@ function lsGet(k, def) { try { const v = localStorage.getItem('mks_civ_'+k); ret
 function lsSet(k, v) { try { localStorage.setItem('mks_civ_'+k, JSON.stringify(v)); } catch(e) {} }
 
 function loadState() {
-  cardLearned = lsGet('cardLearned', new Array(10).fill(false));
+  learnedCards = lsGet('learnedCards', []);
   totalAnswered = lsGet('totalAnswered', 0);
   totalCorrect = lsGet('totalCorrect', 0);
   wrongList = lsGet('wrongList', []);
@@ -970,7 +960,8 @@ function loadState() {
   document.getElementById('statDays').textContent = savedDays.count;
 }
 
-function saveState() { lsSet('cardLearned', cardLearned); lsSet('totalAnswered', totalAnswered); lsSet('totalCorrect', totalCorrect); lsSet('wrongList', wrongList); lsSet('conceptWeak', conceptWeak); }
+function saveState() { lsSet('learnedCards', learnedCards); lsSet('totalAnswered', totalAnswered); lsSet('totalCorrect', totalCorrect); lsSet('wrongList', wrongList); lsSet('conceptWeak', conceptWeak); }
+function save() { saveState(); }
 
 // ==================== TAB NAV ====================
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -988,24 +979,42 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // ==================== FLASHCARD ====================
-function updateFlashcard() {
-  const d = flashcardData[currentCard];
-  document.getElementById('fcName').textContent = d.name;
-  document.getElementById('fcBack').innerHTML = '<div class="dim"><strong>定义：</strong>'+d.def+'</div><div class="dim"><strong>类比（商业场景）：</strong>'+d.analog+'</div><div class="dim"><strong>示例：</strong>'+d.example+'</div><div class="dim"><strong>反例：</strong>'+d.anti+'</div>';
-  document.getElementById('fcIndex').textContent = (currentCard+1)+' / 10';
-  const lb = document.getElementById('learnedBtn');
-  lb.textContent = cardLearned[currentCard] ? '✓ 已学习 ✓' : '✓ 已学习';
-  if (cardLearned[currentCard]) lb.classList.add('learned'); else lb.classList.remove('learned');
-  document.getElementById('flashcard').classList.remove('flipped');
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  const c=flashcardData[idx];
+  document.getElementById('flipFront').innerHTML=`
+    <h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name || c.title || c.front}</h3>
+    <p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>
+    ${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}
+  `;
+  document.getElementById('flipBack').innerHTML=`
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def || c.desc || c.back || ''}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.analogy || c.analog || ''}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--green)">示例：</strong>${c.example || c.eg || ''}</div>
+    <div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter || c.anti || ''}</div>
+  `;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${flashcardData.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
-function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
-function prevCard(e) { e.stopPropagation(); currentCard = (currentCard-1+10)%10; updateFlashcard(); }
-function nextCard(e) { e.stopPropagation(); currentCard = (currentCard+1)%10; updateFlashcard(); }
-function markLearned(e) { e.stopPropagation(); cardLearned[currentCard] = !cardLearned[currentCard]; updateFlashcard(); updateProgress(); saveState(); }
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<flashcardData.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=flashcardData[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 function updateProgress() {
-  const n = cardLearned.filter(v=>v).length;
-  document.getElementById('cardProgress').textContent = n+' / 10';
-  document.getElementById('cardProgressBar').style.width = (n*10)+'%';
+  const n = learnedCards.length;
+  document.getElementById('dashLearnedText').textContent = n+' / 10';
+  document.getElementById('dashProgressBar').style.width = (n*10)+'%';
+  if (document.getElementById('cardLearned')) document.getElementById('cardLearned').textContent = n;
   if (totalAnswered > 0) {
     const rate = Math.round(totalCorrect/totalAnswered*100);
     document.getElementById('quizProgress').textContent = rate+'%';
@@ -1245,16 +1254,105 @@ window.addEventListener('scroll', function() {
   document.getElementById('backTop').style.display = window.scrollY > 400 ? 'block' : 'none';
 });
 
+// ==================== QUIZ PRACTICE ====================
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [...mcqData].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...saData].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'inline';
+  document.getElementById('staticQuiz').style.display = 'none';
+  renderQuizPractice();
+  startQuizTimer();
+}
+function startQuizTimer(){
+  clearInterval(quizTimerInterval);
+  updateQuizTimerDisplay();
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay();
+    if(quizTimeLeft<=0){clearInterval(quizTimerInterval);submitQuizPractice();}
+  },1000);
+}
+function updateQuizTimerDisplay(){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById('quizTimer').textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    const isChoice = q.opts || q.options || q.answer !== undefined || q.ans !== undefined;
+    if(isChoice){
+      const options = q.opts || q.options;
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div>';
+      options.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    } else {
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const correctIdx = q.answer !== undefined ? q.answer : (q.ans !== undefined ? q.ans : -1);
+  const isCorrect = optIdx === correctIdx;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+  fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
+  if(q.explain||q.explanation) fb.textContent += ' ' + (q.explain||q.explanation);
+  const correctCount = Object.values(userAnswers).filter((v,i)=>{
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>{
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
+}
+
 // ==================== INIT ====================
 loadState();
-updateFlashcard();
+setCard(0);
 updateProgress();
-
-// Back home placeholder
-document.getElementById('backHome').addEventListener('click', function(e) {
-  e.preventDefault();
-  alert('返回首页入口已预留。在实际部署中，此处将链接到主页面或导航页。');
-});
 
 // Verify key distributions
 (function verify() {

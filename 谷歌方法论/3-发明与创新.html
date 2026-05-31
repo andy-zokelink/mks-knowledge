@@ -8,13 +8,23 @@
 :root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#e67e22;--text:#3d2f2f;--muted:#8b7355;--border:#e8d5c4;--gold:#d4a017;--green:#27ae60;--blue:#2980b9;--purple:#8e44ad}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
 .container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
-header{background:linear-gradient(135deg,#c0392b,#a93226);color:#fff;padding:clamp(16px,3vw,28px) 0;text-align:center;position:relative}
-header h1{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:700}
-header .sub{font-size:clamp(0.78rem,2vw,0.9rem);opacity:.85;margin-top:4px}
-.home-link{position:absolute;left:clamp(8px,2vw,20px);top:50%;transform:translateY(-50%);color:#fff;text-decoration:none;font-size:.85rem;padding:6px 12px;border:1px solid rgba(255,255,255,.4);border-radius:6px;transition:all .2s}
-.home-link:hover{background:rgba(255,255,255,.15)}
-.tab-nav{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:6px clamp(8px,2vw,16px);overflow-x:auto}
+.tab-nav{position:sticky;top:44px;z-index:100;background:var(--card);border-bottom:2px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:6px clamp(8px,2vw,16px);overflow-x:auto}
 .tab-btn{padding:7px 13px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:clamp(0.72rem,1.5vw,0.82rem);border-radius:6px;white-space:nowrap;transition:all .2s;font-family:inherit}
 .tab-btn:hover{background:var(--border);color:var(--text)}
 .tab-btn.active{background:var(--accent);color:#fff;font-weight:600}
@@ -47,15 +57,14 @@ header .sub{font-size:clamp(0.78rem,2vw,0.9rem);opacity:.85;margin-top:4px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
 .legend span{display:flex;align-items:center;gap:4px}
 .legend .dot{width:10px;height:10px;border-radius:50%}
-.flip-card{perspective:1000px;width:100%;max-width:480px;margin:20px auto;min-height:280px;max-height:600px;overflow:hidden}
-.flip-inner{position:relative;width:100%;min-height:280px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
 .flip-inner.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;width:100%;min-height:280px;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center}
-.flip-front{background:linear-gradient(135deg,var(--accent),#922b21);color:#fff;font-size:1.3rem;font-weight:700;z-index:2}
-.flip-back{background:var(--card);border:2px solid var(--border);transform:rotateY(180deg);text-align:left;align-items:flex-start;font-size:.82rem;line-height:1.6;overflow-y:auto;max-height:600px}
-.flip-back .dim{color:var(--accent);font-weight:600;margin-top:6px;font-size:.78rem}
-.flip-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;position:relative;z-index:10}
-.flip-nav .page-info{font-size:.82rem;color:var(--muted)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 .quiz-option{padding:10px 14px;margin:6px 0;background:var(--bg);border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.85rem}
 .quiz-option:hover{border-color:var(--accent);background:#fff5f5}
 .quiz-option.correct{border-color:var(--green);background:#eafaf1}
@@ -107,16 +116,27 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 .stat-row{flex-direction:column}
 }
 .entry-chip{display:inline-block;background:rgba(255,255,255,.2);color:#fff;text-decoration:none;padding:4px 10px;border-radius:14px;font-size:.72rem;margin-top:8px;border:1px solid rgba(255,255,255,.3)}
+
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--green)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
 </style>
 </head>
 <body>
 
-<header>
-<a href="index.html" class="home-link">← 返回知识主板</a>
-<h1>发明与创新 · 最小知识集</h1>
-<div class="sub">GPU 并行探索：从多条路径同时探索「如何从 0 到 1」</div>
-<div><span class="entry-chip">30 篇笔记提炼</span> <span class="entry-chip">吴军·谷歌方法论</span></div>
-</header>
+<div class="top-bar">
+  <h1>发明与创新 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
 
 <div class="tab-nav" id="tabNav">
 <button class="tab-btn active" data-tab="0">知识集总览</button>
@@ -132,6 +152,8 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 
 <div class="container">
 
+<p class="subtitle" style="font-size:clamp(.82rem,2vw,.92rem);color:var(--muted);margin:12px 0;text-align:center">GPU 并行探索：从多条路径同时探索「如何从 0 到 1」</p>
+
 <!-- TAB 0: 知识总览 -->
 <div class="tab-panel active" id="panel0">
 <div class="card">
@@ -145,7 +167,7 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 </div>
 
 <div class="card">
-<h3>★ 4 个骨架概念（MKS 核心）</h3>
+<h3>★ 最小知识集</h3>
 <div class="grid2" id="mksGrid"></div>
 </div>
 
@@ -174,7 +196,7 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 <div class="card">
 <h3>学习进度</h3>
 <div class="progress-wrap">
-<div class="progress-label"><span>卡片学习</span><span id="cardProgress">0/10</span></div>
+<div class="progress-label"><span>卡片学习</span><span id="dashCardLearned">0/10</span></div>
 <div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
 </div>
 <div class="progress-wrap">
@@ -190,22 +212,30 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 <h3>翻转卡片 · 点击翻转</h3>
 <p style="font-size:.82rem;color:var(--muted)">正面：概念名 | 背面：定义 / 类比 / 示例 / 反例</p>
 </div>
-<div class="flip-card" id="flipCard">
-<div class="flip-inner" id="flipInner" onclick="flipCard()">
-<div class="flip-front" id="flipFront">系统性方法</div>
-<div class="flip-back" id="flipBack"></div>
-</div>
-</div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-<button class="btn btn-outline btn-sm" onclick="prevCard()">&#8592; 上一张</button>
-<span class="page-info" id="cardPageInfo">1 / 10</span>
-<button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 &#8594;</button>
-<button class="btn btn-sm btn-gold" onclick="markLearned()" id="markBtn">✓ 标记已学</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--muted)" id="cardIndex">1 / N</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--muted)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- TAB 2: 题库系统 -->
 <div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--muted)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:block">
 <div class="card">
 <h3>选择题（20 道）</h3>
 <div id="mcQuestions"></div>
@@ -213,6 +243,7 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 <div class="card">
 <h3>简答题（10 道）</h3>
 <div id="saQuestions"></div>
+</div>
 </div>
 </div>
 
@@ -378,7 +409,7 @@ const saQuestions = [
 
 // ===== INIT =====
 let currentCardIdx = 0;
-let flipped = false;
+let cardFlipped = false;
 let learnedCards = JSON.parse(localStorage.getItem('inv_learned')||'[]');
 let wrongAnswers = JSON.parse(localStorage.getItem('inv_wrong')||'[]');
 let answeredQuestions = JSON.parse(localStorage.getItem('inv_answered')||'[]');
@@ -390,7 +421,7 @@ let decisionRound = 0;
 function renderConcepts(){
 let h='';
 concepts.forEach((c,i)=>{
-h+=`<div class="concept-card${c.mks?' mks':''}" onclick="switchTab(1);currentCardIdx=${i};renderCard();flipped=false;document.getElementById('flipInner').classList.remove('flipped')">
+h+=`<div class="concept-card${c.mks?' mks':''}" onclick="switchTab(1);setCard(${i})">
 <div class="num">${i+1}/10</div>
 <h4>${c.name}${c.mks?' <span class="star-badge">★ MKS</span>':''}</h4>
 <p>${c.desc}</p>
@@ -400,7 +431,7 @@ document.getElementById('conceptGrid').innerHTML=h;
 
 let m='';
 concepts.filter(c=>c.mks).forEach(c=>{
-m+=`<div class="concept-card mks" onclick="switchTab(1);currentCardIdx=${c.id};renderCard();flipped=false;document.getElementById('flipInner').classList.remove('flipped')">
+m+=`<div class="concept-card mks" onclick="switchTab(1);setCard(${c.id})">
 <div class="num">★</div>
 <h4>${c.name}<span class="star-badge">骨架概念</span></h4>
 <p>${c.desc}</p>
@@ -639,42 +670,38 @@ if(i<4) h+='<div class="stage-arrow">→</div>';
 document.getElementById('stagePath').innerHTML=h;
 }
 
-function renderCard(){
-const d=flipData[currentCardIdx];
-document.getElementById('flipFront').textContent=d.n;
-document.getElementById('flipBack').innerHTML=`<strong>${d.n}</strong><br><span class="dim">定义</span>${d.d}<br><span class="dim">类比（商业/财务）</span>${d.a}<br><span class="dim">示例</span>${d.e}<br><span class="dim">反例</span>${d.f}`;
-document.getElementById('cardPageInfo').textContent=`${currentCardIdx+1} / 10`;
-const marked=learnedCards.includes(currentCardIdx);
-document.getElementById('markBtn').textContent=marked?'✓ 已学习':'✓ 标记已学';
-document.getElementById('markBtn').style.background=marked?'var(--green)':'';
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  const c=flipData[idx];
+  document.getElementById('flipFront').innerHTML=`
+    <h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.n}</h3>
+    <p style="color:var(--muted);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>
+    ${learnedCards.includes(idx)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}
+  `;
+  document.getElementById('flipBack').innerHTML=`
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.d}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.a}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--green)">示例：</strong>${c.e}</div>
+    <div><strong style="color:var(--accent)">反例/边界：</strong>${c.f}</div>
+  `;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${flipData.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(idx)?'✓ 已学习':'✓ 标记已学习';
+  updateProgress();
 }
+setCard(0);
 
-function flipCard(){
-flipped=!flipped;
-document.getElementById('flipInner').classList.toggle('flipped',flipped);
-}
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
 
-function prevCard(){
-currentCardIdx=(currentCardIdx-1+10)%10;
-flipped=false;
-document.getElementById('flipInner').classList.remove('flipped');
-renderCard();
-}
-
-function nextCard(){
-currentCardIdx=(currentCardIdx+1)%10;
-flipped=false;
-document.getElementById('flipInner').classList.remove('flipped');
-renderCard();
-}
+function nextCard(){if(currentCardIdx<flipData.length-1)setCard(currentCardIdx+1)}
 
 function markLearned(){
-const idx=learnedCards.indexOf(currentCardIdx);
-if(idx>-1){learnedCards.splice(idx,1);}else{learnedCards.push(currentCardIdx);}
-localStorage.setItem('inv_learned',JSON.stringify(learnedCards));
-renderCard();
-updateProgress();
+  const idx=currentCardIdx;
+  if(learnedCards.includes(idx)){learnedCards=learnedCards.filter(x=>x!==idx)}else{learnedCards.push(idx)}
+  localStorage.setItem('inv_learned',JSON.stringify(learnedCards));
+  updateProgress();setCard(currentCardIdx);
 }
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 
 function renderMCQ(){
 let h='';
@@ -1085,8 +1112,12 @@ renderDecision();
 function updateProgress(){
 const cardPct=Math.round(learnedCards.length/10*100);
 const quizPct=Math.round(answeredQuestions.filter((x,i,a)=>a.indexOf(x)===i).length/30*100);
-document.getElementById('cardProgress').textContent=learnedCards.length+'/10';
+document.getElementById('dashCardLearned').textContent=learnedCards.length+'/10';
 document.getElementById('cardBar').style.width=cardPct+'%';
+  const flipBar = document.getElementById('cardProgress');
+  if(flipBar) flipBar.style.width = cardPct + '%';
+  const flipCount = document.getElementById('cardLearned');
+  if(flipCount) flipCount.textContent = learnedCards.length;
 document.getElementById('quizProgress').textContent=Math.min(answeredQuestions.filter((x,i,a)=>a.indexOf(x)===i).length,30)+'/30';
 document.getElementById('quizBar').style.width=quizPct+'%';
 }
@@ -1096,12 +1127,109 @@ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
 document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
 document.querySelector(`.tab-btn[data-tab="${idx}"]`).classList.add('active');
 document.getElementById(`panel${idx}`).classList.add('active');
-if(idx===1)renderCard();
+if(idx===1)setCard(currentCardIdx);
 if(idx===2){renderMCQ();renderSAQ();}
 if(idx===4){renderWrongBook();renderReview();}
 if(idx===8)renderDecision();
 updateProgress();
 }
+
+// ===== QUIZ PRACTICE =====
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...saQuestions].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'inline';
+  document.getElementById('staticQuiz').style.display = 'none';
+  renderQuizPractice();
+  startQuizTimer();
+}
+function startQuizTimer(){
+  clearInterval(quizTimerInterval);
+  updateQuizTimerDisplay();
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay();
+    if(quizTimeLeft<=0){clearInterval(quizTimerInterval);submitQuizPractice();}
+  },1000);
+}
+function updateQuizTimerDisplay(){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById('quizTimer').textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    const isChoice = q.opts || q.options || q.answer !== undefined || q.ans !== undefined;
+    if(isChoice){
+      const options = q.opts || q.options;
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div>';
+      options.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    } else {
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+(q.q||q.question)+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const correctIdx = q.answer !== undefined ? q.answer : (q.ans !== undefined ? q.ans : -1);
+  const isCorrect = optIdx === correctIdx;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+  fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
+  if(q.explain||q.explanation) fb.textContent += ' ' + (q.explain||q.explanation);
+  const correctCount = Object.values(userAnswers).filter((v,i)=>{
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>{
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi=>qi.opts||qi.options||qi.answer!==undefined||qi.ans!==undefined).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
+}
+
+// ===== END QUIZ PRACTICE =====
 
 // Toggle tree
 function toggleTree(el){

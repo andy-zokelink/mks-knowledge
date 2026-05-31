@@ -10,20 +10,30 @@
   --text: #3d2f2f; --muted: #8b7b7b; --border: #e8d5c4; --gold: #d4a017;
   --shadow: 0 2px 12px rgba(60,30,10,0.08);
   --radius: 12px;
+  --green: #27ae60;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 .container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
 
-/* Header */
-.header { text-align: center; padding: 28px 0 12px; }
-.header h1 { font-size: clamp(1.3rem, 3vw, 1.8rem); color: var(--accent); letter-spacing: 0.04em; }
-.header .sub { font-size: clamp(0.8rem, 1.8vw, 0.95rem); color: var(--muted); margin-top: 6px; }
-.header .home-link { display: inline-block; margin-top: 10px; font-size: 0.85rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 4px 16px; border-radius: 20px; transition: all 0.2s; }
-.header .home-link:hover { background: var(--accent); color: #fff; }
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
 
 /* Tab bar */
-.tab-bar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 4px; background: var(--bg); padding: 8px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.tab-bar { position: sticky; top: 44px; z-index: 100; display: flex; flex-wrap: wrap; gap: 4px; background: var(--bg); padding: 8px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
 .tab-btn { padding: 7px 13px; font-size: clamp(0.7rem, 1.5vw, 0.82rem); border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 20px; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
 .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
 .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
@@ -58,18 +68,28 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
 .svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
 
 /* Flip cards */
-.flip-container { perspective: 1000px; width: 100%; max-width: 500px; margin: 20px auto; }
-.flip-inner { position: relative; width: 100%; height: 300px; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; }
-.flip-container.flipped .flip-inner { transform: rotateY(180deg); }
-.flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: var(--card); }
-.flip-back { transform: rotateY(180deg); background: #fffef7; text-align: left; overflow-y: auto; }
-.flip-back .dim { font-size: 0.8rem; color: var(--accent); font-weight: bold; margin-top: 8px; }
-.flip-back .dim:first-child { margin-top: 0; }
-.flip-back p { font-size: 0.82rem; line-height: 1.6; margin: 2px 0 8px; }
-.flip-nav { display: flex; justify-content: center; gap: 12px; margin: 12px 0; }
-.flip-nav button { padding: 8px 20px; border: 1px solid var(--accent); background: var(--card); color: var(--accent); border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s; }
-.flip-nav button:hover { background: var(--accent); color: #fff; }
-.flip-index { text-align: center; font-size: 0.85rem; color: var(--muted); margin: 4px 0; }
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Quiz practice */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--green)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
 
 /* Quiz */
 .quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
@@ -91,8 +111,11 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
 .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 .btn-outline:hover { background: var(--accent); color: #fff; }
 .btn-sm { padding: 5px 14px; font-size: 0.78rem; }
+.btn-success { background: var(--green, #27ae60); color: #fff; }
+.btn-success:hover { background: #219a52; }
 .btn-gold { background: var(--gold); color: #fff; }
 .btn-gold:hover { opacity: 0.85; }
+.tag { display: inline-block; background: var(--green, #27ae60); color: #fff; font-size: 0.75rem; padding: 2px 10px; border-radius: 12px; }
 
 /* Mind map tree */
 .tree { padding: 10px 0; }
@@ -153,22 +176,21 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
   .tab-bar { gap: 3px; padding: 6px 0 8px; }
   .tab-btn { padding: 5px 9px; font-size: 0.68rem; }
   .concept-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-  .flip-container { width: 100%; max-width: 400px; }
-  .header h1 { font-size: 1.15rem; }
+  .flip-card { margin-bottom: 10px; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
 <body>
 
+<div class="top-bar">
+  <h1>硅谷与Google · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <div class="container">
-  <div class="header">
-    <h1>硅谷与Google · 工程文化实践</h1>
-    <p class="sub">共19篇笔记 ｜ 10个核心概念 ｜ 30道试题 ｜ 最小知识集学习系统</p>
-    <a href="index.html" class="home-link">← 返回知识主板</a>
-  </div>
 
   <div class="tab-bar" id="tabBar">
     <button class="tab-btn active" data-tab="0">知识集总览</button>
@@ -188,11 +210,12 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
       <h3>核心目标</h3>
       <p style="font-size:1.05rem;">理解硅谷顶级科技公司的<strong>工程师文化驱动体系</strong>——人才战略、产品哲学、技术架构、平台竞争、商业策略——掌握信息时代企业核心竞争力与个人成长的方法论框架。</p>
     </div>
+    <p style="text-align:center;font-size:0.9rem;color:var(--muted);margin-bottom:16px;">共19篇笔记 ｜ 10个核心概念 ｜ 30道试题 ｜ 最小知识集学习系统</p>
 
     <h3 style="margin-bottom:8px;">10个核心概念</h3>
     <div class="concept-grid" id="conceptGrid"></div>
 
-    <h3 style="margin-bottom:8px;">★ MKS 骨架概念（必须深刻理解）</h3>
+    <h3 style="margin-bottom:8px;">★ 最小知识集（MKS骨架概念，必须深刻理解）</h3>
     <div class="concept-grid" id="mksGrid"></div>
 
     <div class="card">
@@ -250,38 +273,44 @@ body { font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, s
 
   <!-- TAB 1: 知识卡片 -->
   <div class="tab-panel" data-panel="1">
-    <div class="flip-container" id="flipCard" onclick="document.getElementById('flipCard').classList.toggle('flipped')">
-      <div class="flip-inner">
-        <div class="flip-front"><div style="font-size:2rem;" id="fcIcon"></div><div style="font-size:1.2rem;font-weight:bold;color:var(--accent);margin-top:12px;" id="fcName"></div><p style="font-size:0.82rem;color:var(--muted);margin-top:8px;">点击翻转查看详情</p></div>
-        <div class="flip-back" id="fcBack"></div>
-      </div>
-    </div>
+    <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
     <div class="flip-nav">
-      <button onclick="prevCard()">◀ 上一张</button>
-      <button onclick="document.getElementById('flipCard').classList.toggle('flipped')">🔄 翻转</button>
-      <button onclick="nextCard()">下一张 ▶</button>
+      <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+      <span style="font-size:.85rem;color:var(--muted)" id="cardIndex">1 / 10</span>
+      <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
     </div>
-    <div class="flip-index" id="fcIndex"></div>
-    <div style="text-align:center;margin-top:8px;">
-      <button class="btn btn-gold btn-sm" onclick="markLearned()">★ 标记已学习</button>
+    <div style="text-align:center;margin:8px 0">
+      <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
     </div>
+    <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+    <p style="text-align:center;font-size:.78rem;color:var(--muted)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
   </div>
 
   <!-- TAB 2: 题库系统 -->
   <div class="tab-panel" data-panel="2">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-      <span style="font-weight:bold;">共20道选择题</span>
-      <button class="btn btn-outline btn-sm" onclick="shuffleMCQ()">🔀 随机抽题</button>
+    <h3 style="margin-bottom:10px">📝 题库系统</h3>
+    <div style="margin-bottom:12px">
+      <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+      <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+      <span style="margin-left:8px;font-size:.85rem;color:var(--muted)" id="quizScore"></span>
+      <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
     </div>
-    <div id="mcqList"></div>
-    <div style="text-align:center;margin-top:12px;">
-      <button class="btn btn-primary" onclick="checkAllMCQ()">提交全部选择题</button>
-      <span style="margin-left:12px;font-size:0.85rem;color:var(--muted);" id="mcqScore"></span>
-    </div>
+    <div id="quizContainer"></div>
+    <div id="staticQuiz" style="display:block">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <span style="font-weight:bold;">共20道选择题</span>
+        <button class="btn btn-outline btn-sm" onclick="shuffleMCQ()">🔀 随机抽题</button>
+      </div>
+      <div id="mcqList"></div>
+      <div style="text-align:center;margin-top:12px;">
+        <button class="btn btn-primary" onclick="checkAllMCQ()">提交全部选择题</button>
+        <span style="margin-left:12px;font-size:0.85rem;color:var(--muted);" id="mcqScore"></span>
+      </div>
 
-    <h3 style="margin-top:24px;margin-bottom:8px;">简答题（10道）</h3>
-    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">点击题目展开参考答案。用于自我检测理解深度。</p>
-    <div id="saList"></div>
+      <h3 style="margin-top:24px;margin-bottom:8px;">简答题（10道）</h3>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">点击题目展开参考答案。用于自我检测理解深度。</p>
+      <div id="saList"></div>
+    </div>
   </div>
 
   <!-- TAB 3: 考试模式 -->
@@ -409,7 +438,6 @@ let state = {
   studyDays: LS.get('days', 0),
   totalAnswered: LS.get('totalAns', 0),
   totalCorrect: LS.get('totalCor', 0),
-  cardIdx: 0,
   mcqOrder: [],
   examActive: false,
   examTimerId: null,
@@ -710,39 +738,64 @@ function renderSVG() {
 }
 
 function jumpToCard(id) {
-  state.cardIdx = id;
+  currentCardIdx = id;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-tab="1"]').classList.add('active');
   document.querySelector('[data-panel="1"]').classList.add('active');
-  renderCard();
+  setCard(currentCardIdx);
   window.scrollTo({ top: 200, behavior: 'smooth' });
 }
 
 // ============ FLIP CARDS (Tab 1) ============
-function renderCard() {
-  const c = concepts[state.cardIdx];
-  document.getElementById('fcIcon').textContent = c.icon;
-  document.getElementById('fcName').textContent = c.name;
-  document.getElementById('fcBack').innerHTML = '<div class="dim">定义</div><p>' + c.def + '</p><div class="dim">类比（商业/财务场景）</div><p>' + c.analog + '</p><div class="dim">示例</div><p>' + c.example + '</p><div class="dim">反例（什么不是）</div><p>' + c.anti + '</p>';
-  document.getElementById('fcIndex').textContent = (state.cardIdx + 1) + ' / ' + concepts.length;
-  document.getElementById('flipCard').classList.remove('flipped');
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx) {
+  currentCardIdx = idx; cardFlipped = false;
+  const c = concepts[idx];
+  document.getElementById('flipFront').innerHTML = `
+    <h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3>
+    <p style="color:var(--muted);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>
+    ${state.learnedConcepts.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}
+  `;
+  document.getElementById('flipBack').innerHTML = `
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.analog}</div>
+    <div style="margin-bottom:6px"><strong style="color:var(--green)">示例：</strong>${c.example}</div>
+    <div><strong style="color:var(--accent)">反例/边界：</strong>${c.anti}</div>
+  `;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = (idx + 1) + ' / ' + concepts.length;
+  document.getElementById('markLearnedBtn').textContent = state.learnedConcepts.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+  updateFlipProgress();
 }
 
-function prevCard() { state.cardIdx = (state.cardIdx - 1 + concepts.length) % concepts.length; renderCard(); }
-function nextCard() { state.cardIdx = (state.cardIdx + 1) % concepts.length; renderCard(); }
+function updateFlipProgress() {
+  const pct = concepts.length ? Math.round(state.learnedConcepts.length / concepts.length * 100) : 0;
+  document.getElementById('cardProgress').style.width = pct + '%';
+  document.getElementById('cardLearned').textContent = state.learnedConcepts.length;
+}
+
+function prevCard() { if (currentCardIdx > 0) setCard(currentCardIdx - 1); }
+function nextCard() { if (currentCardIdx < concepts.length - 1) setCard(currentCardIdx + 1); }
 
 function markLearned() {
-  const cid = concepts[state.cardIdx].id;
-  if (!state.learnedConcepts.includes(cid)) {
-    state.learnedConcepts.push(cid);
-    toast('★ 已标记：「' + concepts[state.cardIdx].name + '」学习完成');
-    saveState();
-    if (document.querySelector('[data-panel="0"]').classList.contains('active')) renderDashboard();
+  const id = concepts[currentCardIdx].id;
+  if (state.learnedConcepts.includes(id)) {
+    state.learnedConcepts = state.learnedConcepts.filter(x => x !== id);
   } else {
-    toast('已学习过「' + concepts[state.cardIdx].name + '」');
+    state.learnedConcepts.push(id);
   }
+  saveState();
+  updateFlipProgress();
+  setCard(currentCardIdx);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const fi = document.getElementById('flipInner');
+  if (fi) fi.addEventListener('click', function() { this.classList.toggle('flipped'); cardFlipped = !cardFlipped; });
+});
 
 // ============ MCQ (Tab 2) ============
 function shuffleArr(arr) {
@@ -1269,6 +1322,109 @@ function chooseDecisionSim(si, ci, btn) {
   result.style.background = ch.level === 'good' ? '#e8f5e9' : ch.level === 'mid' ? '#fff3e0' : '#ffebee';
 }
 
+// ============ QUIZ PRACTICE (Tab 2) ============
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz() {
+  const mcqArr = mcqBank;
+  const saArr = saBank;
+  const shuffled = [...mcqArr].sort(() => Math.random() - 0.5);
+  const essayShuffled = saArr.length ? [...saArr].sort(() => Math.random() - 0.5) : [];
+  currentQuestions = [...shuffled.slice(0, 10), ...essayShuffled.slice(0, 3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'inline';
+  document.getElementById('staticQuiz').style.display = 'none';
+  renderQuizPractice();
+  startQuizTimer();
+}
+
+function startQuizTimer() {
+  clearInterval(quizTimerInterval);
+  updateQuizTimerDisplay();
+  quizTimerInterval = setInterval(() => {
+    quizTimeLeft--;
+    updateQuizTimerDisplay();
+    if (quizTimeLeft <= 0) { clearInterval(quizTimerInterval); submitQuizPractice(); }
+  }, 1000);
+}
+
+function updateQuizTimerDisplay() {
+  const m = Math.floor(quizTimeLeft / 60);
+  const s = quizTimeLeft % 60;
+  document.getElementById('quizTimer').textContent = '⏱ ' + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function renderQuizPractice() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q, i) => {
+    const isChoice = q.opts || q.options || q.answer !== undefined || q.ans !== undefined;
+    if (isChoice) {
+      const options = q.opts || q.options;
+      html += '<div class="quiz-card" id="qcard' + i + '"><div class="q-num">选择题 ' + (i + 1) + '</div><div class="q-text">' + (q.q || q.question) + '</div>';
+      options.forEach((o, j) => {
+        const sel = userAnswers[i] === j ? ' selected' : '';
+        html += '<div class="option' + sel + '" onclick="selectQuizChoice(' + i + ',' + j + ')" id="opt' + i + '_' + j + '">' + 'ABCD'[j] + '. ' + o + '</div>';
+      });
+      html += '<div id="fb' + i + '"></div></div>';
+    } else {
+      html += '<div class="quiz-card"><div class="q-num">简答题 ' + (i + 1) + '</div><div class="q-text">' + (q.q || q.question) + '</div><textarea class="essay-area" id="essay' + i + '" placeholder="输入你的回答...">' + (userAnswers[i] || '') + '</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectQuizChoice(qIdx, optIdx) {
+  if (userAnswers[qIdx] !== undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const correctIdx = q.answer !== undefined ? q.answer : (q.ans !== undefined ? q.ans : -1);
+  const isCorrect = optIdx === correctIdx;
+  const allOpts = document.querySelectorAll('#qcard' + qIdx + ' .option');
+  allOpts.forEach((el, j) => {
+    el.classList.add(j === correctIdx ? 'correct' : (j === optIdx && !isCorrect ? 'wrong' : ''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb' + qIdx);
+  fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+  fb.textContent = isCorrect ? '✓ 正确！' : '✗ 错误。';
+  if (q.explain || q.explanation) fb.textContent += ' ' + (q.explain || q.explanation);
+  const correctCount = Object.values(userAnswers).filter((v, i) => {
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi => qi.opts || qi.options || qi.answer !== undefined || qi.ans !== undefined).length;
+  document.getElementById('quizScore').textContent = '得分: ' + correctCount + '/' + totalChoice;
+}
+
+function submitQuizPractice() {
+  const correctCount = Object.values(userAnswers).filter((v, i) => {
+    const qi = currentQuestions[i];
+    const ci = qi.answer !== undefined ? qi.answer : (qi.ans !== undefined ? qi.ans : -1);
+    return v === ci;
+  }).length;
+  const totalChoice = currentQuestions.filter(qi => qi.opts || qi.options || qi.answer !== undefined || qi.ans !== undefined).length;
+  alert('选择题得分: ' + correctCount + '/' + totalChoice + '\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz() {
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
+}
+
 // ============ INIT ============
 function init() {
   // Track study day
@@ -1280,7 +1436,7 @@ function init() {
   }
 
   renderDashboard();
-  renderCard();
+  setCard(0);
   shuffleMCQ();
   renderMCQ();
   renderSA();
