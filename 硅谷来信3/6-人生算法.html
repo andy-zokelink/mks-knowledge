@@ -15,6 +15,9 @@
   --border: #e8d5c4;
   --shadow: 0 2px 12px rgba(0,0,0,0.06);
   --radius: 10px;
+  --success: #27ae60;
+  --danger: #e74c3c;
+  --light: #fef9f4;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -74,15 +77,6 @@ a:hover { text-decoration: underline; }
 .card h2 { color: var(--accent); font-size: 18px; margin-bottom: 12px; }
 .card h3 { color: #5a3e3e; font-size: 15px; margin: 10px 0 6px; }
 
-/* Quiz card — must be quiz-card not card */
-.quiz-card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px;
-  border: 1px solid var(--border);
-}
-.quiz-card h2 { color: var(--accent); font-size: 18px; margin-bottom: 12px; }
-.quiz-card h3 { color: #5a3e3e; font-size: 15px; margin: 10px 0 6px; }
-
 /* Grid */
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
 .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
@@ -121,54 +115,30 @@ a:hover { text-decoration: underline; }
 
 /* SVG container */
 .svg-wrap { overflow-x: auto; margin: 10px 0; }
-.svg-wrap svg { max-width: 100%; height: auto; min-width: 700px; display: block; margin: 0 auto; }
+.svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
 
-/* Flip card — id=flipCard must be on .flip-inner */
-.flip-container { perspective: 1000px; width: 100%; max-width: 480px; margin: 0 auto; }
-.flip-inner {
-  position: relative; width: 100%; min-height: 420px;
-  transition: transform 0.6s; transform-style: preserve-3d;
-  cursor: pointer;
-}
-.flip-inner.flipped { transform: rotateY(180deg); }
-.flip-front, .flip-back {
-  position: absolute; width: 100%; backface-visibility: hidden;
-  border-radius: var(--radius); padding: 24px;
-  background: var(--card); box-shadow: var(--shadow);
-  border: 1px solid var(--border); min-height: 420px;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-}
-.flip-back { transform: rotateY(180deg); display: block; text-align: left; }
-.flip-back h3 { color: var(--accent); margin-bottom: 10px; }
-.flip-back p { margin: 6px 0; font-size: 13px; }
-.flip-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 14px 0; flex-wrap: wrap; }
-.flip-nav button {
-  padding: 8px 18px; border: 1px solid var(--accent); background: var(--card);
-  color: var(--accent); border-radius: 20px; cursor: pointer; font-size: 14px;
-  font-family: inherit; transition: all 0.2s;
-}
-.flip-nav button:hover { background: var(--accent); color: #fff; }
-.flip-nav .learned-btn { background: #27ae60; color: #fff; border-color: #27ae60; }
-.flip-nav .learned-btn.learned { background: #fff; color: #27ae60; }
-.flip-front .concept-icon { font-size: 48px; margin-bottom: 12px; }
-.flip-front .concept-name { font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
-.flip-front .star-badge-front { font-size: 13px; background: var(--accent); color: #fff; padding: 2px 10px; border-radius: 10px; margin-bottom: 10px; }
-.flip-front .hint { font-size: 12px; color: var(--text-light); }
+/* Flip card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
 
-/* Question styling — use q-option and q-feedback */
-.q-option {
+/* Question styling */
+.quiz-question { margin-bottom: 20px; }
+.quiz-question .q-text { font-weight: 600; margin-bottom: 10px; }
+.quiz-question .option {
   padding: 8px 14px; margin: 4px 0; border-radius: 6px;
   border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
   background: var(--card);
 }
-.q-option:hover { border-color: var(--accent2); background: #fef9f4; }
-.q-option.selected { border-color: var(--accent); background: #fef5f0; }
-.q-option.correct { border-color: #27ae60; background: #eafaf1; }
-.q-option.wrong { border-color: #e74c3c; background: #fdedec; }
-.q-feedback { font-size: 11px; color: var(--text-light); margin-top: 2px; }
-
-.quiz-question { margin-bottom: 20px; }
-.quiz-question .q-text { font-weight: 600; margin-bottom: 10px; }
+.quiz-question .option:hover { border-color: var(--accent2); background: #fef9f4; }
+.quiz-question .option.selected { border-color: var(--accent); background: #fef5f0; }
+.quiz-question .option.correct { border-color: #27ae60; background: #eafaf1; }
+.quiz-question .option.wrong { border-color: #e74c3c; background: #fdedec; }
 
 /* Timer */
 .timer {
@@ -178,15 +148,16 @@ a:hover { text-decoration: underline; }
 .timer.warning { animation: pulse 0.5s infinite alternate; }
 @keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
 
-/* Tree — support both .show and .open */
+/* Tree */
 .tree { font-size: 14px; }
 .tree ul { list-style: none; padding-left: 20px; }
 .tree li { position: relative; padding: 4px 0; }
-.tree .node { cursor: pointer; font-weight: 600; color: var(--accent); }
-.tree .node::before { content: "\25b8 "; font-size: 10px; }
-.tree .node.open::before { content: "\25be "; }
-.tree-children { display: none; }
-.tree-children.show, .tree-children.open { display: block; }
+.tree .node-header { cursor: pointer; font-weight: 600; color: var(--accent); }
+.tree .node-header::before { content: "\25b8 "; font-size: 10px; }
+.tree .node-header.open::before { content: "\25be "; }
+.tree .leaf { color: var(--text-light); }
+.tree .node-children { display: none; }
+.tree .node-children.open { display: block; }
 
 /* Socratic */
 .socratic-q { margin-bottom: 12px; }
@@ -222,6 +193,9 @@ th { color: var(--accent); font-weight: 600; }
 .btn-primary:hover { opacity: 0.9; }
 .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 .btn-outline:hover { background: var(--accent); color: #fff; }
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { opacity: 0.85; }
 
 /* Stats */
 .stat-box {
@@ -232,13 +206,26 @@ th { color: var(--accent); font-weight: 600; }
 .stat-box .num { font-size: 28px; font-weight: 700; color: var(--accent); }
 .stat-box .lbl { font-size: 12px; color: var(--text-light); }
 
+/* Quiz practice system */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:var(--light);border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--light)}
+.tag{display:inline-block;background:var(--success);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px}
+
 /* Responsive */
 @media (max-width: 600px) {
   .container { padding: 0 8px 40px; }
-  .card, .quiz-card { padding: 14px; }
+  .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
-  .flip-front, .flip-back { padding: 16px; min-height: 240px; }
-  .flip-inner { min-height: 240px; }
 }
 </style>
 </head>
@@ -247,7 +234,7 @@ th { color: var(--accent); font-weight: 600; }
 <!-- Top bar -->
 <div class="top-bar">
   <h1>人生算法 · 最小知识集</h1>
-  <a class="home-link" href="index.html">← 返回知识主板</a>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
 </div>
 
 <!-- Tab bar -->
@@ -320,38 +307,42 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 1: 知识卡片 ==================== -->
 <div class="tab-content" data-tab="1">
-<div class="card">
-  <h2 style="text-align:center;">翻转知识卡片</h2>
-  <p style="text-align:center;color:var(--text-light);">点击卡片翻转 | 左右箭头切换概念 | 标记已学习持久化进度</p>
-</div>
-<div class="flip-container" id="flipContainer">
-  <div class="flip-inner" id="flipCard" onclick="toggleFlip()">
-    <div class="flip-front" id="flipFront"></div>
-    <div class="flip-back" id="flipBack"></div>
-  </div>
-</div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
-  <button onclick="prevCard()">◀ 上一个</button>
-  <button onclick="toggleFlip()" style="background:var(--accent);color:#fff;">🔄 翻转</button>
-  <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">✓ 标记已学习</button>
-  <button onclick="nextCard()">下一个 ▶</button>
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
-<p style="text-align:center;font-size:13px;color:var(--text-light);margin-top:8px;">当前：<span id="cardIndex">1/10</span></p>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="fill" id="cardProgressBar2" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
 <!-- ==================== TAB 2: 题库系统 ==================== -->
 <div class="tab-content" data-tab="2">
-<div class="quiz-card">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card">
   <h2>选择题（20道）</h2>
-  <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。</p>
+  <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。正确选项索引0-3随机均匀分布。</p>
   <div id="mcqContainer"></div>
   <button class="btn btn-primary" onclick="resetMCQ()">重做选择题</button>
 </div>
-<div class="quiz-card">
+<div class="card">
   <h2>简答题（10道）</h2>
   <p style="color:var(--text-light);font-size:13px;">输入你的回答后点击"查看参考答案"对比。</p>
   <div id="saqContainer"></div>
   <button class="btn btn-primary" onclick="resetSAQ()">重做简答题</button>
+</div>
 </div>
 </div>
 
@@ -426,58 +417,55 @@ th { color: var(--accent); font-weight: 600; }
 </div><!-- /container -->
 
 <script>
-// ======== LS KEY ========
-var LS_KEY = 'mks_rensheng_algo_progress';
-
 // ======== DATA ========
 
-var concepts = [
-  { id: 0, name: '算法思维', star: true, short: '将复杂问题精简为核心问题，从简单方法入手逐步求解',
+const concepts = [
+  { id: 'c0', name: '算法思维', star: true, short: '将复杂问题精简为核心问题，从简单方法入手逐步求解',
     def: '解决复杂问题的两步法：1）找最核心的问题——将复杂问题精简成最本质、最简单的问题；2）从简单方法入手——用最符合常规的方法解决被精简后的核心问题。核心理念：没有解决核心问题的基础，后续复杂方法的尝试都是无意义的。',
     analogy: '就像程序员调试死循环——不是一上来就重写整个程序，而是从最内层的小模块开始排查。先检查具体做法（代码步骤），再检查想法（模块逻辑），最后才检查方向（程序架构）。不可颠倒排查顺序。',
     example: '股票投资：核心问题是满足80%人群的投资需求，简单方法是定投股指基金。但多数人为追求少量额外收益，过度关注选股和时机，反而忽视定投的核心价值——「丢了西瓜捡芝麻」。',
     counter: '反面案例：面对禁烟问题，一些人纠缠于「个人自由」等次要矛盾，导致简单有效的「限制吸烟场所」政策迟迟无法推进。美国2019年吸烟人数较2005年减少1/3，恰恰是抓住了「吸烟危害健康」这个核心矛盾。' },
-  { id: 1, name: '证伪与理性', star: true, short: '区分经验主义与理性主义，用概率思维替代直觉判断，警惕证实倾向',
+  { id: 'c1', name: '证伪与理性', star: true, short: '区分经验主义与理性主义，用概率思维替代直觉判断，警惕证实倾向',
     def: '经验主义依赖感官和实践积累（如大厨凭经验调味），理性主义试图归纳普适规律（如通过实验建立函数关系）。两者各有局限：纯粹理性主义面临「归纳法漏洞」（现实中的归纳都是不完全归纳），纯粹经验主义难以标准化。关键是用概率思维区分巧合与必然，警惕「证实倾向」——只记住证实的案例，忽视证伪的反例。',
     analogy: '就像判断一枚硬币是否公平——抛出10次全是正面，不能简单下结论说「这硬币有魔法」。需要用假设检验：原假设H0是「硬币公平」，备择假设H1是「硬币有问题」。通过统计方法计算，硬币作假的概率高达99.7%。这就是概率思维替代直觉判断。',
     example: '明朝皇室名字与化学元素的「巧合」：朱元璋规定子孙按五行偏旁取名，后期生僻字用尽被迫造字；清末徐寿翻译化学元素时恰好大量使用金字旁生僻字。两个独立规则驱动下，名称重合是必然结果，而非「未卜先知」。',
     counter: '「证实倾向」陷阱：某人声称自己有「95%灵验」的预测能力，但只记住成功的案例，忽略失败的。要得出「99%灵验」的结论，在考虑随机性前提下需要验证约22年（每月一次事件，仅一次失灵）。大药厂工程部门会重做研发部门实验，正是为了避免「夸大证实」误区。' },
-  { id: 2, name: '长期主义', star: true, short: '过滤短期波动直击未来终点，指数增长需要耐住临界点前的漫长等待',
+  { id: 'c2', name: '长期主义', star: true, short: '过滤短期波动直击未来终点，指数增长需要耐住临界点前的漫长等待',
     def: '真正践行长期主义需明确三大核心问题：1）目标是否值得长期投入（区分真实增长与夕阳产业的「虚假繁荣」）；2）回报的性质与规模（指数增长vs线性增长vs对数增长）；3）付出的成本与代价（拒绝短期诱惑）。核心公式：目标甄别 × 回报评估 × 过程管理 = 明智的长期主义。',
     analogy: '就像荷叶铺满池塘——第40天铺满池塘的荷叶，在第39天仅占50%，第35天仅占3%。多数人在达到临界点前已放弃。指数增长初期极其缓慢，突破临界点后才飞速增长。长期主义者需要的不是「毅力」，而是理解增长曲线的规律，并「享受过程」。',
     example: '特斯拉投资案例：2019年市值不足1000亿美元时，多数人只看到「汽车产业长期利润率为零」，但长期主义者看到的是「若实现无人驾驶转型服务，单车利润可增40倍」。2020年底市值峰值超6000亿美元。',
     counter: '思科股价的指数增长陷阱：上市后股价年翻番持续十余年，峰值1美元投资回报3000美元。但产业进入夕阳阶段后，尽管销售额后续增长3倍，扣除通胀后股价再未回到高点。长期主义≠盲目坚持，需判断底层逻辑是否可持续。' },
-  { id: 3, name: '自我认知', star: true, short: '正视主观世界的局限性，与自己和解，用自我关怀替代自我否定',
+  { id: 'c3', name: '自我认知', star: true, short: '正视主观世界的局限性，与自己和解，用自我关怀替代自我否定',
     def: '自我认知包含三个层次：1）主观世界管理——承认每个人活在自己的「剧本」中，主观虽重要但不可执着；2）自我和解——悲剧事件造成的外伤（客观伤害）可自愈，内伤（自我否定导致的持续性负面情绪）需要「同自己和解」来治愈；3）准确自我认知——区分显性认知（容易察觉的恐惧/偏好）和隐性认知（难以察觉的情绪触发模式）。',
     analogy: '就像萨古鲁的直升机比喻——阳光明媚时众人愉快，一片乌云出现就抱怨天气糟糕、决定降落。科学家预测无太阳18小时内地表生物将死亡，但人们却因「一片乌云」否定整个美好世界。生活中同事未打招呼就惴惴不安、下班堵车就心情糟透——本质都是将个人剧本的「糟糕剧情」等同于世界本身。',
     example: '自我关怀的生理机制：将对待亲友的同理心转向自身，可促进催产素分泌（男女均有），产生平静感、安全感，缓解焦虑。心理医生的核心作用是引导来访者「说出来」，完成情绪梳理——接受情绪→梳理情绪→承认阴暗面。',
     counter: '反面案例：北大2019年精神虐待事件——B女因M男的精神控制陷入「离开对方就无法生活」的认知陷阱。长期精神虐待破坏受害者自信心，使其无法完成「自我和解」。识别霸凌者的心理缺陷（缺乏共情能力、极端自我中心）是保护自己的关键。' },
-  { id: 4, name: '策略博弈', star: false, short: '区分单次游戏与多次游戏，用B计划对冲不确定性，理解纳什均衡的双输默认',
+  { id: 'c4', name: '策略博弈', star: false, short: '区分单次游戏与多次游戏，用B计划对冲不确定性，理解纳什均衡的双输默认',
     def: '博弈论在人生决策中的核心应用：1）单次游戏中作弊可能合算（期望值为正），但多次游戏中单次作弊被发现即清零所有收益，长期必然输光；2）无限游戏的目标是维持游戏长期存在，需避免马太效应；3）B计划不是「保底思维」而是积极争取胜利的对冲策略——通过并行方案弥补潜在损失。',
     analogy: '就像网球顶级选手的发球策略——一发通常激进（追求速度与角度），二发却非简单保守处理。费德勒/德约科维奇/纳达尔与普通一流选手的核心差距不在70%的一发成功率，而在30%的二发局面中仍能维持战术主动性。他们拥有「二发后的完整战术体系」即B计划。',
     example: 'NBA规则设计的无限游戏思维：1）选秀权倾斜——上赛季战绩差的球队优先选新秀；2）工资帽限制——防止单队垄断明星球员。结果：末位球队可快速翻身，保持赛事长期竞争性。多次游戏不用单次策略，无限游戏不用有限规则。',
     counter: '单次游戏的作弊陷阱：全班仅一人作弊，被发现概率5%，收益期望=10×95%-100×5%=4.5，单次数学上合算。但扩展到多次游戏（k=30次考试）：全部作弊成功概率仅21%，收益期望为-14，得不偿失。现实中作弊被发现概率远高于5%，损失远超100分（学籍、信誉）。' },
-  { id: 5, name: '时间优化', star: false, short: '时间是最宝贵资源，成功者每天比普通人多2小时有效时间',
+  { id: 'c5', name: '时间优化', star: false, short: '时间是最宝贵资源，成功者每天比普通人多2小时有效时间',
     def: '基于美国时间统计数据的时间管理框架：生活必需时间占50%（睡眠7.5h+家务4h），工作+通勤超10h，日均自由时间≤2h。成功人士（管理层/教授/投资人）与普通人的核心差异仅2小时/天——通过减少手机屏幕时间（-1h）、增加锻炼（+30min）、更高效工作（+2h但通勤更少）实现。',
     analogy: '就像「四个15分钟」策略——每天投入4个15分钟（共1小时）做小事：学一门外语、写日记、读5页书、与孩子聊天、冥想。一年后产生显著改变。时间的复利效应：每天1小时的差异，一年就是365小时，相当于9个工作周。',
     example: '手机时间审计：美国人日均手机使用4小时，其中社交软件占65-70%（2h40min），非必要使用至少1h。成功人士比平均少1h屏幕时间。如果用这1h来深度阅读，一年可读30-50本书。',
     counter: '时间陷阱：15-44岁美国人日均阅读时间仅10分钟（几乎可忽略），75岁以上才增至45分钟。大多数人的自由时间被手机吞噬，而非用于自我提升。典型的「用时间换微小的省钱」——如花1小时研究折扣省10元，时薪仅10元。' },
-  { id: 6, name: '习惯系统', star: false, short: '原子习惯通过环境塑造+替代疗法+聚焦启动+持续迭代实现质变',
+  { id: 'c6', name: '习惯系统', star: false, short: '原子习惯通过环境塑造+替代疗法+聚焦启动+持续迭代实现质变',
     def: '原子习惯（Atomic Habits）指微小到难以察觉的习惯改变，通过持续积累产生重大成果。四大核心要点：1）塑造环境——环境对行为的影响远大于意志力；2）替代疗法——坏习惯往往是特定需求的满足方式，找到替代方案可降低戒断难度；3）聚焦启动——将注意力放在「开始行动」而非「完成结果」上；4）持续迭代——习惯养成的关键是长期连续性，而非短期强度。',
     analogy: '就像英国自行车队的细节革新——通过数百项1%的微小改进（用酒精擦轮胎增加抓地性、将运输卡车内部涂成白色便于发现灰尘、运动衣增加电热功能保持肌肉温度），在2008北京奥运会获得6枚金牌，2012伦敦奥运会获7枚金牌并打破7项世界纪录。',
     example: '替代疗法案例：工作时总想吃零食（背后需求是放松与社交）→改为休息室与人聊天10分钟。吴军通过此法成功控制体重，《习惯的力量》作者杜希格减重近30斤。21天法则：持续启动21天可形成稳定习惯。',
     counter: '习惯改变的常见失败：过度依赖意志力而忽视环境设计。减肥者每天路过自助餐厅，单靠「忍住」几乎必然失败。正确做法是先改变环境——避免与热衷自助餐的朋友共餐。手机学习软件等工具仅对有学习意愿者有效，无法替代内在动机。' },
-  { id: 7, name: '困境破局', star: false, short: '困境是成长命题，用程序排查法从具体做法到战略方向逐层解套',
+  { id: 'c7', name: '困境破局', star: false, short: '困境是成长命题，用程序排查法从具体做法到战略方向逐层解套',
     def: '系统化困境应对方法论——三大错误模式（赌徒心理/闪逃心理/消沉自怜）→两位智者的启示（莱斯·布朗的困境即成长命题+科比的赛前能力准备模型）→程序排查法四步。核心原则：问题概率从高到低为具体做法错误 > 想法错误 > 方向错误，排查顺序不可颠倒——不要上来就怀疑人生。',
     analogy: '就像计算机程序调试——将人生目标实现视为嵌套式程序，困境如同「死循环」。排查顺序从内到外：先检查小模块步骤（具体做法），再检查大模块内部逻辑（做事想法），接着检查程序设计（事情本身合理性），最后才检查是否符合初始目标（方向正确性）。这就像修bug，不删整个程序只修问题代码。',
     example: '科比的新秀赛季困境：NBA新星时期连续5球未进，意识到高中联赛（30场/年）与NBA（80+场/年）的强度差异，发现腿部力量不足的能力短板。困境暴露未被发现的短处——「你可能并不足够了解自己」。三大高风险转型期：学校→社会、家庭角色转变、身体机能衰退期。',
     counter: '反面案例：赌徒心理——咬牙切齿式「拼了」心态，带忿忿情绪赌上一切蛮干，与自己较劲而非解决问题。如下棋时因情绪失控被对手利用心理弱点引诱犯错。闪逃心理则走向另一极端——遇轻微麻烦即改弦更张，不愿深入做事。' },
-  { id: 8, name: '人际关系权重', star: false, short: '关系存在权重差异，需模拟AI逻辑理性评估，避免「斗米恩担米仇」陷阱',
+  { id: 'c8', name: '人际关系权重', star: false, short: '关系存在权重差异，需模拟AI逻辑理性评估，避免「斗米恩担米仇」陷阱',
     def: '人际关系管理的核心框架：1）人与人本质平等但关系链条存在不同权重——不能简单以血缘、见面次数或认识时间衡量；2）「斗米恩，担米仇」——人往往高估小恩小惠，忽视长期大恩，陷入情感认知偏差；3）解决方案——就事论事，客观分析关系链条，避免情感偏见。AI可能比人更了解自身利益。',
     analogy: '就像Facebook点赞数据揭示的惊人事实——点赞>10次：算法比同事更了解你；点赞>70次：超过宿舍室友；点赞>150次：超过父母和兄弟姐妹。算法不易受个人感情和偏见影响，能更客观分析数据。人际关系管理也应模拟这种逻辑——定期整理关系网络，识别真正重要的人。',
     example: '《水浒传》武松案例：柴进收留武松一年、担杀人干系保护，但因武松醉酒打人稍显怠慢，未获感激；宋江十几天内提供衣物、陪伴饮酒，被视为知己并终身追随。现代版：母亲独自抚养孩子承担全部学费，父亲仅每年夏季探望送礼物，孩子对母亲无感谢却对父亲感激涕零。',
     counter: '反面案例——不去识别「损友」：将无交集的旧友始终放在核心圈、不敢删除/拉黑弊大于利的人、因维系无效关系而伤害真正重要的人际关系。定期整理：无交集旧友→档案库，损友→删除/拉黑，核心关系→主动投入时间维护。' },
-  { id: 9, name: '行动导向', star: false, short: '从「计划导向」转向「行为导向」，先有行后有知，通过行动获得独特认知',
+  { id: 'c9', name: '行动导向', star: false, short: '从「计划导向」转向「行为导向」，先有行后有知，通过行动获得独特认知',
     def: '从计划导向到行为导向的四大转变原因：1）知识阶层对「知」的过度依赖导致「光说不练」；2）社会高流动性使长期计划需在行动中动态调整；3）领导力的行动属性——曹操「化险为夷」成领袖，郭嘉「算无遗策」成谋臣；4）独特认知源于行动——浑水公司通过实地数人头发现瑞幸问题。杜威经验公式：经验 = 经验到的结果 + 经验的过程。',
     analogy: '就像做菜——看100遍菜谱不如亲手做一次。孔子将人分为三类：先知先觉（圣人）、学而知之（聪明人）、困而知之（普通人，从失败中吸取教训）。行动导向的核心是即使从「困而知之」开始，通过杜威公式积累经验，最终达到「学而知之，安而行之」。',
     example: '浑水公司做空瑞幸咖啡：不是依赖财报分析（所有人都在做的事），而是派出调查员到门店数人头、收发票，获得超越常规分析的独特认知。吴军写作经验：依赖一手资料、现场走访，而非复述二手信息。MIT校训「mens et manus」（脑和手）强调动手能力。',
@@ -485,7 +473,7 @@ var concepts = [
 ];
 
 // MKS deep dive (4 star items)
-var mksDeep = [
+const mksDeep = [
   { concept: concepts[0], why: '算法思维是整个框架的元方法论。它告诉我们面对任何复杂问题——职业选择、时间分配、人际关系——的第一步不是找「高级」答案，而是把问题精简到最本质的核心。抓住主要矛盾，用最简单的方法先解决80%的问题，生活就不会太差。没有这个思维底座，其他所有工具都可能在错误的方向上「高效」运转。',
     apply: '面对任何让你焦虑的复杂问题时，先问自己：「这堆问题中最核心的一个是什么？」然后问：「解决这个核心问题，最简单、最符合常规的方法是什么？」砍掉其他噪音，先把这个做好。' },
   { concept: concepts[1], why: '证伪与理性是信息时代的「认知防身术」。在算法推荐、信息茧房、各种「专家」说法相互矛盾的时代，如果没有区分经验与理性、识别证实倾向、理解概率思维的能力，就会被各种精心包装的谬误牵着走。它是批判性思考的起点——没有它，所有其他思维工具都建立在不可靠的认知基础上。',
@@ -496,7 +484,7 @@ var mksDeep = [
     apply: '每周花30分钟做一次「自我审计」：1）本周什么事触发了我的负面情绪？2）这个触发是客观事实还是我的主观解读？3）如果是我最好的朋友遇到同样的事，我会怎么安慰他/她？然后用同样的关怀对待自己。' }
 ];
 
-var boundaryKnowledge = [
+const boundaryKnowledge = [
   { name: '帕金森定律', scene: '识别组织臃肿与低效——无能高管通过雇佣更多无能下属确保自身安全。用于判断公司管理健康度。' },
   { name: '奥古斯丁定律', scene: '理解职场政治——「人与人争斗无赢家，赢的是律师」。警惕职场中从纠纷获利的「律师型」人物。' },
   { name: '幂律分布（普莱斯模型）', scene: '理解社会资源分配——前√N人贡献/获得一半成果。用于合理定位自身期望，避免无意义比较。' },
@@ -514,7 +502,7 @@ var boundaryKnowledge = [
   { name: '费尔普斯《活力》理论', scene: '经济发展两阶段模型——基本需求增量阶段→基本需求存量阶段。用于理解内卷的宏观根源和创造性工作的价值。' }
 ];
 
-var learningStages = [
+const learningStages = [
   { stage: '第一阶段：奠定算法底座', content: '学习「算法思维」和「证伪与理性」。前者教你将任何复杂问题精简到核心——这是人生算法的「CPU」；后者教你区分信息真伪——这是人生算法的「防火墙」。两者构成认知引擎的底层基础。' },
   { stage: '第二阶段：修炼内功心法', content: '学习「自我认知」和「策略博弈」。自我认知让你看清自己的主观世界局限性，学会与自己和解——这是人生算法的「内存管理」；策略博弈让你理解单次vs多次游戏的根本差异——这是人生算法的「决策模块」。' },
   { stage: '第三阶段：构建行动系统', content: '学习「长期主义」和「时间优化」。长期主义教你过滤短期波动、拥抱指数增长——这是人生算法的「长期线程」；时间优化让你从每天24小时中挤出不亚于成功者的2小时——这是人生算法的「资源调度器」。' },
@@ -523,131 +511,131 @@ var learningStages = [
 ];
 
 // ======== MCQ (20 questions, answer distribution {0:5, 1:5, 2:5, 3:5}) ========
-var mcQuestions = [
+const mcQuestions = [
   {
     q: '人生算法中「算法思维」的两步法核心是什么？',
     opts: ['找最核心的问题，从简单方法入手', '找到所有问题，逐一用复杂方法解决', '先制定完美计划，再严格执行', '回避复杂问题，只做简单的事'],
-    "answer": 0,
+    ans: 0,
     concept: '算法思维'
   },
   {
     q: '证明「明朝皇室名字与化学元素重名是巧合而非未卜先知」的关键方法是什么？',
     opts: ['分析两个独立规则如何导致必然重合', '相信这是天意安排', '用占星术验证', '咨询历史学家'],
-    "answer": 0,
+    ans: 0,
     concept: '证伪与理性'
   },
   {
     q: '关于B计划的正确理解是什么？',
     opts: ['B计划是积极争取胜利的对冲策略', 'B计划是接受最坏结果的保底思维', 'B计划越少越好，会削弱A计划决心', 'B计划只适用于军事不适用于生活'],
-    "answer": 0,
+    ans: 0,
     concept: '策略博弈'
   },
   {
     q: '「与自己和解」的核心机制是什么？',
     opts: ['用自我关怀替代自我否定，允许自己哭泣和表达', '彻底忘记痛苦经历', '把责任全部推给外界', '用工作狂状态麻痹自己'],
-    "answer": 0,
+    ans: 0,
     concept: '自我认知'
   },
   {
     q: '科比发现新秀赛季困境的根源是什么？',
     opts: ['腿部力量不足以应对NBA更高强度的赛季', '教练不给他足够的上场时间', '队友不配合他的打法', '运气不好'],
-    "answer": 0,
+    ans: 0,
     concept: '困境破局'
   },
   {
     q: '为什么「半吊子经验」会加剧固执？',
     opts: ['因为经验太少无法形成判断', '因为基于不完整经验总结所谓规律，又受证实倾向强化', '因为经验太丰富导致思维固化', '因为缺乏书本知识'],
-    "answer": 1,
+    ans: 1,
     concept: '证伪与理性'
   },
   {
     q: '帕金森定律中无能高管最常选择哪种生存策略？',
     opts: ['主动辞职让位给更优秀的人', '雇佣多名无能助手确保自身位置安全', '雇佣一名非常能干的助手', '向上级请求培训机会'],
-    "answer": 1,
+    ans: 1,
     concept: '人际关系权重'
   },
   {
     q: '长期主义的「荷叶铺满池塘」隐喻想说明什么？',
     opts: ['池塘越大越好', '指数增长初期极其缓慢，多数人到达临界点前已放弃', '荷叶长得太快需要控制', '每天必须看到明显进步才算成功'],
-    "answer": 1,
+    ans: 1,
     concept: '长期主义'
   },
   {
     q: '时间审计数据显示成功人士与普通人每天的核心差异是多少？',
     opts: ['4小时', '2小时——减少屏幕时间、增加锻炼、更高效工作', '8小时', '几乎没有差异'],
-    "answer": 1,
+    ans: 1,
     concept: '时间优化'
   },
   {
     q: '「斗米恩，担米仇」现象的心理机制是什么？',
     opts: ['人对金钱特别敏感', '人往往高估小恩小惠，忽视长期大恩', '人们天生忘恩负义', '长期帮助必然导致仇恨'],
-    "answer": 1,
+    ans: 1,
     concept: '人际关系权重'
   },
   {
     q: '英国自行车队通过什么方法在奥运会上实现突破？',
     opts: ['花重金引进外国教练', '使用违禁药物', '数百项1%的微小改进（原子习惯）', '完全放弃传统训练方式'],
-    "answer": 2,
+    ans: 2,
     concept: '习惯系统'
   },
   {
     q: '从「计划导向」转向「行动导向」的核心理由是什么？',
     opts: ['计划完全不重要', '制定计划太浪费时间', '独特认知源于行动——浑水公司通过实地数人头发现瑞幸问题', '计划总是无法完成'],
-    "answer": 2,
+    ans: 2,
     concept: '行动导向'
   },
   {
     q: '多次游戏中作弊为什么必然失败？',
     opts: ['因为总会有人举报', '因为作弊技术不够好', '单次作弊被发现即清零所有收益，长期作弊成功概率趋近于零', '因为道德约束'],
-    "answer": 2,
+    ans: 2,
     concept: '策略博弈'
   },
   {
     q: '「一叶障目」在人生算法中指什么？',
     opts: ['视力问题导致的认知缺陷', '知识量太少所以看不远', '人们常因主观的「一片乌云」否定整个美好世界——过度主观成为认知枷锁', '这是一种眼科疾病'],
-    "answer": 2,
+    ans: 2,
     concept: '自我认知'
   },
   {
     q: '吴军分析纽约犯罪率下降时用哪种方法证伪了「堕胎合法化论」？',
     opts: ['相信专家的权威判断', '用情感共鸣来判断', '横向比较（其他城市堕胎同样合法化但犯罪率未同步）+时序分析（时间错位）', '用民意调查结果'],
-    "answer": 2,
+    ans: 2,
     concept: '算法思维'
   },
   {
     q: '习惯养成中「聚焦启动」策略的核心是什么？',
     opts: ['一次养成多个习惯', '找到最强的动机源', '每天设定一个不可达到的高目标', '将注意力放在「开始行动」而非「完成结果」上——如跑步前先换运动服'],
-    "answer": 3,
+    ans: 3,
     concept: '习惯系统'
   },
   {
     q: '莱斯·布朗关于困境的核心观点是什么？',
     opts: ['困境是运气不好的结果', '遇到困境应该立即放弃', '困境只能靠时间来治愈', '困境是留给你以后回过头来看的，不是给你现在看的——Do what is easy and your life will be hard'],
-    "answer": 3,
+    ans: 3,
     concept: '困境破局'
   },
   {
     q: '思科股价案例对长期主义者的核心教训是什么？',
     opts: ['科技股永远值得长期持有', '只要坚持够久就一定赚钱', '低买高卖是唯一策略', '长期主义≠盲目坚持，需判断目标的底层增长逻辑是否可持续'],
-    "answer": 3,
+    ans: 3,
     concept: '长期主义'
   },
   {
     q: '杜威经验公式「经验 = 经验到的结果 + 经验的过程」对行动导向的启示是什么？',
     opts: ['只看结果最重要', '过程完全不重要', '失败的经验没有价值', '成功完成「不会→会」的事情，将实践转化为经验再上升为认知，形成进步循环'],
-    "answer": 3,
+    ans: 3,
     concept: '行动导向'
   },
   {
     q: '美国作家提出的「四个15分钟」策略的核心理念是什么？',
     opts: ['每天必须工作满60分钟', '15分钟是人的注意力极限', '每天只需要工作1小时', '每天投入4个15分钟做有意义小事，一年后产生显著改变——时间的复利效应'],
-    "answer": 3,
+    ans: 3,
     concept: '时间优化'
   }
 ];
 
 // Short answer questions (10)
-var saQuestions = [
+const saQuestions = [
   { q: '请简述算法思维的两步法，并举一个你生活中的应用案例。', ref: '算法思维两步法：1）找最核心的问题——将复杂问题精简成最本质、最简单的问题；2）从简单方法入手——用最符合常规的方法解决被精简后的核心问题。生活中的应用：如减肥——核心问题是热量摄入<消耗，最简单方法是记录每日饮食+每天30分钟步行，而不是纠结于哪种饮食法「最科学」、哪个健身房「最好」。抓住主要矛盾先用简单方法解决80%，再迭代优化。' },
   { q: '请解释「证实倾向」的含义，并说明为什么它会加剧固执。', ref: '证实倾向指人们倾向于记住证实自己观点的案例而忽视证伪的反例。加剧固执的机制：某人声称自己有「规律」，只记住证实的案例（如「每次下雨前我膝盖就疼」记住成功的2次），忽视大量失灵案例（膝盖疼但没下雨的18次）。久而久之形成「我95%灵验」的错误自信。大药厂工程部门会重做研发部门实验，正是为了避免「夸大证实」误区。克服方法：主动搜索反例，用概率思维替代直觉判断。' },
   { q: '请用长期主义的三个核心问题分析一下你当前最重要的目标是否值得长期投入。', ref: '长期主义三问：1）目标是否值得长期投入——这个领域是真实增长还是夕阳产业的「虚假繁荣」？底层逻辑是否可持续？2）回报的性质与规模——是线性增长（每年稳定提升）、指数增长（临界点后爆发）还是对数增长（早期快后期停滞）？3）付出的成本与代价——你愿意放弃哪些短期诱惑？关键洞察：多数人达到临界点前已放弃（荷叶在铺满池塘的前5天仅占3%），长期主义需要的不是毅力而是理解增长规律+享受过程。' },
@@ -660,223 +648,250 @@ var saQuestions = [
   { q: '请用「单次游戏vs多次游戏vs无限游戏」的框架分析为什么诚信在人生中是理性选择。', ref: '单次游戏中作弊可能合算（期望值为正），但人生本质是无限游戏——目标不是最大化有限次数的收益，而是维持游戏长期存在。1）多次游戏中，单次作弊被发现即清零所有收益（如美国大学对作弊学生直接开除）；2）无限游戏中，一旦信誉破产就失去游戏资格——走出校门后每次行为都是「无考官考试」，后果由自己承担；3）纳什均衡启示：双赢需制度保障（重复博弈+严厉惩罚），而诚信降低了交易成本，使人愿意与你反复博弈。NBA的选秀权倾斜和工资帽设计正是防止马太效应破坏游戏的长期性。' }
 ];
 
-// ======== SVG RENDER ========
+// ======== SVG CONCEPT MAP ========
 function renderSVG() {
-  var svg = '<svg width="1398pt" height="240pt" viewBox="0.00 0.00 1397.50 239.50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 235.5)"><title>G</title><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-235.5 1393.5,-235.5 1393.5,4 -4,4"/><g id="clust1" class="cluster"><title>cluster_legend</title><polygon fill="#fffaf2" stroke="#d4a574" stroke-dasharray="5,2" points="719.5,-152.5 719.5,-223.5 1017.5,-223.5 1017.5,-152.5 719.5,-152.5"/><text text-anchor="middle" x="868.5" y="-211.5" font-family="Times,serif" font-size="10.00" fill="#3d2f2f">图例</text></g><g id="node1" class="node"><title>root</title><path fill="#c0392b" stroke="black" stroke-width="2" d="M697.5,-205C697.5,-205 463.5,-205 463.5,-205 457.5,-205 451.5,-199 451.5,-193 451.5,-193 451.5,-164 451.5,-164 451.5,-158 457.5,-152 463.5,-152 463.5,-152 697.5,-152 697.5,-152 703.5,-152 709.5,-158 709.5,-164 709.5,-164 709.5,-193 709.5,-193 709.5,-199 703.5,-205 697.5,-205"/><text text-anchor="middle" x="580.5" y="-189.8" font-family="Noto Sans SC" font-size="14.00" fill="#ffffff">人生算法</text><text text-anchor="middle" x="580.5" y="-174.8" font-family="Noto Sans SC" font-size="14.00" fill="#ffffff">━━━━━━━━━━━</text><text text-anchor="middle" x="580.5" y="-159.8" font-family="Noto Sans SC" font-size="14.00" fill="#ffffff">认知系统 × 行动系统 → 优化人生决策</text></g><g id="node2" class="node"><title>cognition</title><path fill="#d4a574" stroke="black" d="M395.5,-116C395.5,-116 245.5,-116 245.5,-116 239.5,-116 233.5,-110 233.5,-104 233.5,-104 233.5,-92 233.5,-92 233.5,-86 239.5,-80 245.5,-80 245.5,-80 395.5,-80 395.5,-80 401.5,-80 407.5,-86 407.5,-92 407.5,-92 407.5,-104 407.5,-104 407.5,-110 401.5,-116 395.5,-116"/><text text-anchor="middle" x="320.5" y="-101.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">认知引擎（看世界）</text><text text-anchor="middle" x="320.5" y="-89.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">思维模型 · 判断框架 · 自我觉察</text></g><g id="edge1" class="edge"><title>root->cognition</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M495.73,-151.9C460.25,-141.19 419.65,-128.94 386.46,-118.92"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="387.45,-115.56 376.87,-116.02 385.43,-122.26 387.45,-115.56"/></g><g id="node3" class="node"><title>action</title><path fill="#d4a574" stroke="black" d="M1036.5,-116C1036.5,-116 886.5,-116 886.5,-116 880.5,-116 874.5,-110 874.5,-104 874.5,-104 874.5,-92 874.5,-92 874.5,-86 880.5,-80 886.5,-80 886.5,-80 1036.5,-80 1036.5,-80 1042.5,-80 1048.5,-86 1048.5,-92 1048.5,-92 1048.5,-104 1048.5,-104 1048.5,-110 1042.5,-116 1036.5,-116"/><text text-anchor="middle" x="961.5" y="-101.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">行动系统（做事情）</text><text text-anchor="middle" x="961.5" y="-89.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">时间管理 · 习惯设计 · 关系经营</text></g><g id="edge2" class="edge"><title>root->action</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M704.46,-151.96C757.91,-140.95 819.35,-128.29 868.75,-118.11"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="869.7,-121.49 878.79,-116.04 868.29,-114.63 869.7,-121.49"/></g><g id="node4" class="node"><title>falsify</title><path fill="#fffaf2" stroke="#5a3e3e" d="M83,-44C83,-44 12,-44 12,-44 6,-44 0,-38 0,-32 0,-32 0,-12 0,-12 0,-6 6,0 12,0 12,0 83,0 83,0 89,0 95,-6 95,-12 95,-12 95,-32 95,-32 95,-38 89,-44 83,-44"/><text text-anchor="middle" x="47.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">证伪与理性 ★</text><text text-anchor="middle" x="47.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">区分经验与理性</text><text text-anchor="middle" x="47.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">避免认知偏差</text></g><g id="edge3" class="edge"><title>cognition->falsify</title><path fill="none" stroke="#d4a574" d="M241.94,-79.96C203.21,-71.04 155.71,-59.3 105.09,-44.03"/><polygon fill="#d4a574" stroke="#d4a574" points="105.85,-40.61 95.26,-41.04 103.81,-47.3 105.85,-40.61"/></g><g id="node5" class="node"><title>self</title><path fill="#fffaf2" stroke="#5a3e3e" d="M185.5,-44C185.5,-44 125.5,-44 125.5,-44 119.5,-44 113.5,-38 113.5,-32 113.5,-32 113.5,-12 113.5,-12 113.5,-6 119.5,0 125.5,0 125.5,0 185.5,0 185.5,0 191.5,0 197.5,-6 197.5,-12 197.5,-12 197.5,-32 197.5,-32 197.5,-38 191.5,-44 185.5,-44"/><text text-anchor="middle" x="155.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">自我认知 ★</text><text text-anchor="middle" x="155.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">正视主观世界</text><text text-anchor="middle" x="155.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">内省与和解</text></g><g id="edge4" class="edge"><title>cognition->self</title><path fill="none" stroke="#d4a574" d="M282.23,-79.84C259.88,-69.81 231.37,-57.03 207.05,-46.12"/><polygon fill="#d4a574" stroke="#d4a574" points="208.17,-42.79 197.62,-41.89 205.31,-49.17 208.17,-42.79"/></g><g id="node6" class="node"><title>game</title><path fill="#fffaf2" stroke="#5a3e3e" d="M300,-44C300,-44 227,-44 227,-44 221,-44 215,-38 215,-32 215,-32 215,-12 215,-12 215,-6 221,0 227,0 227,0 300,0 300,0 306,0 312,-6 312,-12 312,-12 312,-32 312,-32 312,-38 306,-44 300,-44"/><text text-anchor="middle" x="263.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">策略博弈</text><text text-anchor="middle" x="263.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">单次vs多次游戏</text><text text-anchor="middle" x="263.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">B计划思维</text></g><g id="edge5" class="edge"><title>cognition->game</title><path fill="none" stroke="#d4a574" d="M307.28,-79.84C300.92,-71.58 293.12,-61.45 285.88,-52.05"/><polygon fill="#d4a574" stroke="#d4a574" points="288.58,-49.82 279.7,-44.03 283.03,-54.09 288.58,-49.82"/></g><g id="node7" class="node"><title>subject</title><path fill="#fffaf2" stroke="#8b7355" d="M413,-44C413,-44 342,-44 342,-44 336,-44 330,-38 330,-32 330,-32 330,-12 330,-12 330,-6 336,0 342,0 342,0 413,0 413,0 419,0 425,-6 425,-12 425,-12 425,-32 425,-32 425,-38 419,-44 413,-44"/><text text-anchor="middle" x="377.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">主观世界管理</text><text text-anchor="middle" x="377.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">一叶障目 · 冥想</text><text text-anchor="middle" x="377.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">走出自我剧本</text></g><g id="edge6" class="edge"><title>cognition->subject</title><path fill="none" stroke="#d4a574" d="M333.72,-79.84C340.08,-71.58 347.88,-61.45 355.12,-52.05"/><polygon fill="#d4a574" stroke="#d4a574" points="357.97,-54.09 361.3,-44.03 352.42,-49.82 357.97,-54.09"/></g><g id="node14" class="node"><title>output</title><polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="667.5,-44 443.5,-44 443.5,0 673.5,0 673.5,-38 667.5,-44"/><polyline fill="none" stroke="#c0392b" stroke-width="2" points="667.5,-44 667.5,-38"/><polyline fill="none" stroke="#c0392b" stroke-width="2" points="673.5,-38 667.5,-38"/><text text-anchor="middle" x="558.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">人生决策质量</text><text text-anchor="middle" x="558.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">━━━━━━</text><text text-anchor="middle" x="558.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">职业选择 · 关系经营 · 时间投资 · 困境应对</text></g><g id="edge19" class="edge"><title>cognition->output</title><path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M375.4,-79.93C406.77,-70.18 446.61,-57.79 481.11,-47.06"/><polygon fill="#c0392b" stroke="#c0392b" points="482.18,-50.39 490.69,-44.08 480.1,-43.71 482.18,-50.39"/></g><g id="node8" class="node"><title>longterm</title><path fill="#fffaf2" stroke="#5a3e3e" d="M819.5,-44C819.5,-44 703.5,-44 703.5,-44 697.5,-44 691.5,-38 691.5,-32 691.5,-32 691.5,-12 691.5,-12 691.5,-6 697.5,0 703.5,0 703.5,0 819.5,0 819.5,0 825.5,0 831.5,-6 831.5,-12 831.5,-12 831.5,-32 831.5,-32 831.5,-38 825.5,-44 819.5,-44"/><text text-anchor="middle" x="761.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">长期主义 ★</text><text text-anchor="middle" x="761.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">指数增长 · 拒绝短期诱惑</text><text text-anchor="middle" x="761.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">享受过程</text></g><g id="edge7" class="edge"><title>action->longterm</title><path fill="none" stroke="#d4a574" d="M915.36,-79.93C889.45,-70.34 856.67,-58.21 828.02,-47.61"/><polygon fill="#d4a574" stroke="#d4a574" points="829.07,-44.27 818.48,-44.08 826.64,-50.84 829.07,-44.27"/></g><g id="node9" class="node"><title>time</title><path fill="#fffaf2" stroke="#5a3e3e" d="M935.5,-44C935.5,-44 861.5,-44 861.5,-44 855.5,-44 849.5,-38 849.5,-32 849.5,-32 849.5,-12 849.5,-12 849.5,-6 855.5,0 861.5,0 861.5,0 935.5,0 935.5,0 941.5,0 947.5,-6 947.5,-12 947.5,-12 947.5,-32 947.5,-32 947.5,-38 941.5,-44 935.5,-44"/><text text-anchor="middle" x="898.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">时间优化</text><text text-anchor="middle" x="898.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">时间分配诊断</text><text text-anchor="middle" x="898.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">四个15分钟策略</text></g><g id="edge8" class="edge"><title>action->time</title><path fill="none" stroke="#d4a574" d="M946.89,-79.84C939.79,-71.5 931.06,-61.25 922.99,-51.76"/><polygon fill="#d4a574" stroke="#d4a574" points="925.55,-49.38 916.41,-44.03 920.22,-53.92 925.55,-49.38"/></g><g id="node10" class="node"><title>habit</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1071.5,-44C1071.5,-44 977.5,-44 977.5,-44 971.5,-44 965.5,-38 965.5,-32 965.5,-32 965.5,-12 965.5,-12 965.5,-6 971.5,0 977.5,0 977.5,0 1071.5,0 1071.5,0 1077.5,0 1083.5,-6 1083.5,-12 1083.5,-12 1083.5,-32 1083.5,-32 1083.5,-38 1077.5,-44 1071.5,-44"/><text text-anchor="middle" x="1024.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">习惯系统</text><text text-anchor="middle" x="1024.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">原子习惯 · 环境塑造</text><text text-anchor="middle" x="1024.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">替代疗法 · 聚焦启动</text></g><g id="edge9" class="edge"><title>action->habit</title><path fill="none" stroke="#d4a574" d="M976.11,-79.84C983.21,-71.5 991.94,-61.25 1000.01,-51.76"/><polygon fill="#d4a574" stroke="#d4a574" points="1002.78,-53.92 1006.59,-44.03 997.45,-49.38 1002.78,-53.92"/></g><g id="node11" class="node"><title>crisis</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1173.5,-44C1173.5,-44 1113.5,-44 1113.5,-44 1107.5,-44 1101.5,-38 1101.5,-32 1101.5,-32 1101.5,-12 1101.5,-12 1101.5,-6 1107.5,0 1113.5,0 1113.5,0 1173.5,0 1173.5,0 1179.5,0 1185.5,-6 1185.5,-12 1185.5,-12 1185.5,-32 1185.5,-32 1185.5,-38 1179.5,-44 1173.5,-44"/><text text-anchor="middle" x="1143.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">困境破局</text><text text-anchor="middle" x="1143.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">三步排查法</text><text text-anchor="middle" x="1143.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">能力准备模型</text></g><g id="edge10" class="edge"><title>action->crisis</title><path fill="none" stroke="#d4a574" d="M1003.71,-80C1027.29,-70.49 1057.42,-58.3 1092.08,-44.16"/><polygon fill="#d4a574" stroke="#d4a574" points="1093.55,-47.34 1101.48,-40.32 1090.9,-40.86 1093.55,-47.34"/></g><g id="node12" class="node"><title>relation</title><path fill="#fffaf2" stroke="#8b7355" d="M1275.5,-44C1275.5,-44 1215.5,-44 1215.5,-44 1209.5,-44 1203.5,-38 1203.5,-32 1203.5,-32 1203.5,-12 1203.5,-12 1203.5,-6 1209.5,0 1215.5,0 1215.5,0 1275.5,0 1275.5,0 1281.5,0 1287.5,-6 1287.5,-12 1287.5,-12 1287.5,-32 1287.5,-32 1287.5,-38 1281.5,-44 1275.5,-44"/><text text-anchor="middle" x="1245.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">人际关系权重</text><text text-anchor="middle" x="1245.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">斗米恩担米仇</text><text text-anchor="middle" x="1245.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">理性评估关系</text></g><g id="edge11" class="edge"><title>action->relation</title><path fill="none" stroke="#d4a574" d="M1048.73,-80.76C1090.38,-72.15 1140.94,-60.47 1193.85,-43.99"/><polygon fill="#d4a574" stroke="#d4a574" points="1194.92,-47.32 1203.4,-40.97 1192.81,-40.65 1194.92,-47.32"/></g><g id="node13" class="node"><title>action_ori</title><path fill="#fffaf2" stroke="#8b7355" d="M1377.5,-44C1377.5,-44 1317.5,-44 1317.5,-44 1311.5,-44 1305.5,-38 1305.5,-32 1305.5,-32 1305.5,-12 1305.5,-12 1305.5,-6 1311.5,0 1317.5,0 1317.5,0 1377.5,0 1377.5,0 1383.5,0 1389.5,-6 1389.5,-12 1389.5,-12 1389.5,-32 1389.5,-32 1389.5,-38 1383.5,-44 1377.5,-44"/><text text-anchor="middle" x="1347.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">行动导向</text><text text-anchor="middle" x="1347.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">从行到知</text><text text-anchor="middle" x="1347.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">杜威经验公式</text></g><g id="edge12" class="edge"><title>action->action_ori</title><path fill="none" stroke="#d4a574" d="M1048.76,-88.85C1114.68,-81.39 1207.23,-68.14 1295.8,-43.89"/><polygon fill="#d4a574" stroke="#d4a574" points="1296.77,-47.25 1305.47,-41.19 1294.89,-40.51 1296.77,-47.25"/></g><g id="edge20" class="edge"><title>action->output</title><path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M874.06,-80.94C818.13,-70.67 744.73,-57.2 682.8,-45.82"/><polygon fill="#c0392b" stroke="#c0392b" points="683.43,-42.38 672.96,-44.02 682.16,-49.27 683.43,-42.38"/></g><g id="edge13" class="edge"><title>falsify->self</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M95.17,-22C97.78,-22 100.4,-22 103.01,-22"/><polygon fill="#8b7355" stroke="#8b7355" points="103.08,-25.5 113.08,-22 103.08,-18.5 103.08,-25.5"/></g><g id="edge15" class="edge"><title>self->crisis</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M181.05,-44.2C190.85,-51.33 202.55,-58.33 214.5,-62 260.65,-76.17 1037.29,-75.99 1083.5,-62 1092.39,-59.31 1101.16,-54.82 1109.14,-49.8"/><polygon fill="#8b7355" stroke="#8b7355" points="1111.12,-52.69 1117.46,-44.2 1107.21,-46.88 1111.12,-52.69"/></g><g id="edge14" class="edge"><title>game->longterm</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M292.13,-44.02C303.19,-51.23 316.34,-58.32 329.5,-62 403.13,-82.57 598.79,-78.18 673.5,-62 686.83,-59.11 700.57,-54.03 713.11,-48.43"/><polygon fill="#8b7355" stroke="#8b7355" points="714.86,-51.48 722.44,-44.08 711.9,-45.13 714.86,-51.48"/></g><g id="edge16" class="edge"><title>subject->self</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M348.87,-44.02C337.81,-51.23 324.66,-58.32 311.5,-62 269.98,-73.6 255.71,-74.65 214.5,-62 205.82,-59.33 197.27,-54.91 189.48,-49.96"/><polygon fill="#8b7355" stroke="#8b7355" points="191.29,-46.95 181.05,-44.2 187.34,-52.73 191.29,-46.95"/></g><g id="edge18" class="edge"><title>time->longterm</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M849.37,-22C846.88,-22 844.38,-22 841.88,-22"/><polygon fill="#8b7355" stroke="#8b7355" points="841.61,-18.5 831.61,-22 841.61,-25.5 841.61,-18.5"/></g><g id="edge17" class="edge"><title>habit->longterm</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M990.64,-44.05C977.68,-51.26 962.43,-58.35 947.5,-62 905.19,-72.33 892.07,-71.22 849.5,-62 836.17,-59.11 822.43,-54.03 809.89,-48.43"/><polygon fill="#8b7355" stroke="#8b7355" points="811.1,-45.13 800.56,-44.08 808.14,-51.48 811.1,-45.13"/></g></g></svg>';
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1398 240"><defs><marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker><marker id="arrGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#d4a574"/></marker><marker id="arrBrown" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b7355"/></marker><filter id="shadow"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.15"/></filter></defs><rect width="1398" height="240" fill="#fdf6ec" rx="8"/><rect x="475" y="8" width="450" height="48" rx="8" fill="#c0392b" filter="url(#shadow)"/><text x="700" y="28" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">人生算法</text><text x="700" y="46" text-anchor="middle" fill="#fdd" font-size="11">认知系统 × 行动系统 → 优化人生决策</text><line x1="550" y1="56" x2="300" y2="98" stroke="#c0392b" stroke-width="2" marker-end="url(#arrRed)"/><line x1="850" y1="56" x2="1100" y2="98" stroke="#c0392b" stroke-width="2" marker-end="url(#arrRed)"/><rect x="170" y="98" width="230" height="36" rx="8" fill="#d4a574" filter="url(#shadow)"/><text x="285" y="115" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">认知引擎（看世界）</text><text x="285" y="129" text-anchor="middle" fill="#fef9f4" font-size="9">思维模型 · 判断框架 · 自我觉察</text><rect x="1000" y="98" width="230" height="36" rx="8" fill="#d4a574" filter="url(#shadow)"/><text x="1115" y="115" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">行动系统（做事情）</text><text x="1115" y="129" text-anchor="middle" fill="#fef9f4" font-size="9">时间管理 · 习惯设计 · 关系经营</text><line x1="200" y1="134" x2="80" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="285" y1="134" x2="200" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="370" y1="134" x2="450" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><rect x="10" y="180" width="140" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="80" y="197" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="600">证伪与理性 ★</text><text x="80" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">区分经验与理性</text><rect x="160" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="220" y="197" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="600">自我认知 ★</text><text x="220" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">主观世界管理</text><rect x="300" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="360" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">策略博弈</text><text x="360" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">单次vs多次游戏</text><line x1="1025" y1="134" x2="920" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="1115" y1="134" x2="1030" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><line x1="1200" y1="134" x2="1130" y2="180" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrGold)"/><rect x="810" y="180" width="130" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="875" y="197" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="600">长期主义 ★</text><text x="875" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">指数增长·临界点</text><rect x="950" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="1010" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">时间优化</text><text x="1010" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">四个15分钟策略</text><rect x="1080" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="1140" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">习惯系统</text><text x="1140" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">原子习惯·聚焦启动</text><rect x="1210" y="180" width="120" height="42" rx="6" fill="#fffaf2" stroke="#5a3e3e" filter="url(#shadow)"/><text x="1270" y="197" text-anchor="middle" fill="#5a3e3e" font-size="10" font-weight="600">困境破局</text><text x="1270" y="213" text-anchor="middle" fill="#6b5b5b" font-size="8">程序排查法</text><path d="M300,201 Q480,190 810,201" fill="none" stroke="#8b7355" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrBrown)"/><text x="555" y="195" text-anchor="middle" fill="#8b7355" font-size="8">认知驱动行动</text><path d="M870,222 Q750,240 250,222" fill="none" stroke="#8b7355" stroke-width="0.8" stroke-dasharray="5,3" marker-end="url(#arrBrown)"/><text x="560" y="238" text-anchor="middle" fill="#8b7355" font-size="8">行动结果反馈修正认知</text></svg>';
   document.getElementById('svgContainer').innerHTML = svg;
 }
 
 // ======== INIT TABS ========
-var currentTab = 0;
-document.querySelectorAll('#tabBar button').forEach(function(btn) {
+let currentTab = 0;
+document.querySelectorAll('#tabBar button').forEach(btn => {
   btn.addEventListener('click', function() {
-    var tabIdx = parseInt(this.dataset.tab);
+    const tabIdx = parseInt(this.dataset.tab);
     switchTab(tabIdx);
   });
 });
 
 function switchTab(idx) {
   currentTab = idx;
-  document.querySelectorAll('#tabBar button').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
-  document.querySelectorAll('#tabContents .tab-content').forEach(function(tc, i) { tc.classList.toggle('active', i === idx); });
+  document.querySelectorAll('#tabBar button').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('#tabContents .tab-content').forEach((tc, i) => tc.classList.toggle('active', i === idx));
   if (idx === 4) refreshReview();
   if (idx === 3) resetExam();
 }
 
 // ======== TAB 0: DASHBOARD ========
 function renderDashboard() {
-  // Concept grid
-  var html = '';
-  concepts.forEach(function(c, i) {
-    var starClass = c.star ? ' star' : '';
-    var starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
-    html += '<div class="concept-card' + starClass + '" onclick="switchTab(1);flipToCard(' + i + ')">'
-      + '<span class="num">' + (i+1) + '</span><strong>' + c.name + '</strong>' + starBadge
-      + '<p style="font-size:12px;color:var(--text-light);margin-top:6px;">' + c.short + '</p></div>';
+  let html = '';
+  concepts.forEach((c, i) => {
+    const starClass = c.star ? ' star' : '';
+    const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
+    html += '<div class="concept-card' + starClass + '" onclick="switchTab(1);setCard(' + i + ')"><span class="num">' + (i+1) + '</span><strong>' + c.name + '</strong>' + starBadge + '<p style="font-size:12px;color:var(--text-light);margin-top:6px;">' + c.short + '</p></div>';
   });
   document.getElementById('conceptGrid').innerHTML = html;
 
-  // MKS grid
-  var mksHtml = '';
+  let mksHtml = '';
   mksDeep.forEach(function(m) {
-    mksHtml += '<div class="card" style="border-left:4px solid var(--accent);">'
-      + '<h3>★ ' + m.concept.name + '</h3>'
-      + '<p style="font-size:13px;color:var(--text-light);">' + m.why + '</p>'
-      + '<p style="font-size:13px;"><strong>如何应用：</strong>' + m.apply + '</p></div>';
+    mksHtml += '<div class="card" style="border-left:4px solid var(--accent);"><h3>★ ' + m.concept.name + '</h3><p style="font-size:13px;color:var(--text-light);">' + m.why + '</p><p style="font-size:13px;"><strong>如何应用：</strong>' + m.apply + '</p></div>';
   });
   document.getElementById('mksGrid').innerHTML = mksHtml;
 
-  // Boundary table
-  var bhtml = '<tr><th>知识点</th><th>使用场景</th></tr>';
+  let bhtml = '<tr><th>知识点</th><th>使用场景</th></tr>';
   boundaryKnowledge.forEach(function(b) {
     bhtml += '<tr><td><strong>' + b.name + '</strong></td><td>' + b.scene + '</td></tr>';
   });
   document.getElementById('boundaryTable').innerHTML = bhtml;
 
-  // Learning path
-  var lhtml = '';
-  learningStages.forEach(function(s, i) {
-    lhtml += '<div style="margin-bottom:14px;padding:12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);">'
-      + '<strong style="color:var(--accent);font-size:15px;">' + s.stage + '</strong>'
-      + '<p style="font-size:13px;color:var(--text-light);margin-top:4px;">' + s.content + '</p></div>';
+  let lhtml = '';
+  learningStages.forEach(function(s) {
+    lhtml += '<div style="margin-bottom:14px;padding:12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);"><strong style="color:var(--accent);font-size:15px;">' + s.stage + '</strong><p style="font-size:13px;color:var(--text-light);margin-top:4px;">' + s.content + '</p></div>';
   });
   document.getElementById('learningPath').innerHTML = lhtml;
 
-  // SVG
   renderSVG();
-  // Progress
   updateProgress();
 }
 
 // ======== PROGRESS ========
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e) { return {}; }
+let learnedCards = JSON.parse(localStorage.getItem('mks_rensheng_algo_learned')||'[]');
+let answeredMCQ = JSON.parse(localStorage.getItem('mks_rensheng_algo_answeredMCQ')||'{}');
+let answeredSAQ = JSON.parse(localStorage.getItem('mks_rensheng_algo_answeredSAQ')||'{}');
+let errorMCQ = JSON.parse(localStorage.getItem('mks_rensheng_algo_errorMCQ')||'[]');
+
+function save(){
+  localStorage.setItem('mks_rensheng_algo_learned',JSON.stringify(learnedCards));
+  localStorage.setItem('mks_rensheng_algo_answeredMCQ',JSON.stringify(answeredMCQ));
+  localStorage.setItem('mks_rensheng_algo_answeredSAQ',JSON.stringify(answeredSAQ));
+  localStorage.setItem('mks_rensheng_algo_errorMCQ',JSON.stringify(errorMCQ));
 }
-function saveProgress(p) { localStorage.setItem(LS_KEY, JSON.stringify(p)); }
+
+function getProgress() {
+  return { learnedCards: learnedCards, answeredMCQ: answeredMCQ, answeredSAQ: answeredSAQ, errorMCQ: errorMCQ };
+}
+function saveProgress(p) {
+  learnedCards = p.learnedCards || [];
+  answeredMCQ = p.answeredMCQ || {};
+  answeredSAQ = p.answeredSAQ || {};
+  errorMCQ = p.errorMCQ || [];
+  save();
+}
 
 function updateProgress() {
-  var p = getProgress();
-  var learnedCards = p.learnedCards || [];
-  var answeredMCQ = p.answeredMCQ || {};
-  var answeredSAQ = p.answeredSAQ || {};
-
+  const mcDone = Object.keys(answeredMCQ).length;
+  const saDone = Object.keys(answeredSAQ).length;
+  const totalDone = mcDone + saDone;
   document.getElementById('cardProgress').textContent = learnedCards.length + '/10';
   document.getElementById('cardBar').style.width = (learnedCards.length * 10) + '%';
-  var mcDone = Object.keys(answeredMCQ).length;
-  var saDone = Object.keys(answeredSAQ).length;
-  var totalDone = mcDone + saDone;
+  document.getElementById('cardProgressBar2').style.width = (learnedCards.length * 10) + '%';
+  document.getElementById('cardLearned').textContent = learnedCards.length;
   document.getElementById('quizProgress').textContent = totalDone + '/30';
   document.getElementById('quizBar').style.width = ((totalDone / 30) * 100) + '%';
-
-  if (typeof currentCardIdx !== 'undefined') {
-    updateLearnedBtn();
-  }
 }
 
 // ======== TAB 1: FLIP CARDS ========
-var currentCardIdx = 0;
-var cardFlipped = false;
+let currentCardIdx = 0;
+let cardFlipped = false;
 
-function toggleFlip() {
-  cardFlipped = !cardFlipped;
-  document.getElementById('flipCard').classList.toggle('flipped', cardFlipped);
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（生活场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ======== TAB 2: RANDOM QUIZ PRACTICE ========
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [].concat(mcQuestions).sort(function(){return Math.random()-0.5});
+  const essayShuffled = [].concat(saQuestions).sort(function(){return Math.random()-0.5});
+  currentQuestions = shuffled.slice(0,10).concat(essayShuffled.slice(0,3));
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
 }
 
-function renderCard() {
-  var icons = ['🧠', '🔍', '🌱', '🧩', '♟️', '⏰', '🔄', '🛠️', '🤝', '🏃'];
-  var icon = icons[currentCardIdx % icons.length];
-  var c = concepts[currentCardIdx];
-  document.getElementById('flipFront').innerHTML =
-    '<div class="concept-icon">' + icon + '</div>'
-    + '<div class="concept-name">' + c.name + '</div>'
-    + (c.star ? '<div class="star-badge-front">★ 核心概念</div>' : '')
-    + '<div class="hint">点击翻转</div>';
-  document.getElementById('flipBack').innerHTML =
-    '<h3 style="color:var(--accent);margin-bottom:8px;">' + c.name + '</h3>'
-    + '<div style="font-size:13px;">'
-    + '<p><strong>定义：</strong>' + c.def + '</p>'
-    + '<p style="margin-top:8px;"><strong>类比（生活场景）：</strong>' + c.analogy + '</p>'
-    + '<p style="margin-top:8px;"><strong>示例：</strong>' + c.example + '</p>'
-    + '<p style="margin-top:8px;"><strong>反例：</strong>' + c.counter + '</p>'
-    + '</div>';
-  document.getElementById('cardIndex').textContent = (currentCardIdx+1) + '/10';
-  updateLearnedBtn();
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(function(){
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuizPractice();
+    }
+  },1000);
 }
 
-function flipToCard(idx) {
-  currentCardIdx = idx;
-  cardFlipped = false;
-  document.getElementById('flipCard').classList.remove('flipped');
-  renderCard();
-  switchTab(1);
+function updateQuizTimerDisplay(elemId){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
 }
 
-function prevCard() {
-  currentCardIdx = (currentCardIdx - 1 + concepts.length) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipCard').classList.remove('flipped');
-  renderCard();
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach(function(q,i){
+    if(q.opts){
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+      q.opts.forEach(function(o,j){
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    }else{
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
 }
 
-function nextCard() {
-  currentCardIdx = (currentCardIdx + 1) % concepts.length;
-  cardFlipped = false;
-  document.getElementById('flipCard').classList.remove('flipped');
-  renderCard();
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const isCorrect = optIdx === q.ans;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach(function(el,j){
+    el.classList.add(j===q.ans?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。正确答案是 '+q.opts[q.ans])+' | 概念：'+q.concept;
+  const correctCount = Object.values(userAnswers).filter(function(v,i){return currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].ans}).length;
+  const totalChoice = currentQuestions.filter(function(q){return q.opts}).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
 }
 
-function updateLearnedBtn() {
-  var p = getProgress();
-  var learnedCards = p.learnedCards || [];
-  var btn = document.getElementById('learnedBtn');
-  if (learnedCards.indexOf(currentCardIdx) >= 0) {
-    btn.textContent = '✓ 已学习';
-    btn.classList.add('learned');
-  } else {
-    btn.textContent = '✓ 标记已学习';
-    btn.classList.remove('learned');
-  }
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter(function(v,i){return currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].ans}).length;
+  const totalChoice = currentQuestions.filter(function(q){return q.opts}).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
 }
 
-function toggleLearned() {
-  var p = getProgress();
-  if (!p.learnedCards) p.learnedCards = [];
-  var idx = p.learnedCards.indexOf(currentCardIdx);
-  if (idx >= 0) {
-    p.learnedCards.splice(idx, 1);
-  } else {
-    p.learnedCards.push(currentCardIdx);
-  }
-  saveProgress(p);
-  updateLearnedBtn();
-  updateProgress();
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
 }
 
-// ======== TAB 2: MCQ + SAQ ========
+// ======== TAB 2: STATIC MCQ + SAQ (hidden) ========
 function renderMCQ() {
-  var html = '';
-  var p = getProgress();
-  var answered = p.answeredMCQ || {};
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredMCQ || {};
   mcQuestions.forEach(function(q, i) {
-    html += '<div class="quiz-question" id="mcq' + i + '">'
-      + '<div class="q-text">' + (i+1) + '. ' + q.q + '</div>';
+    html += '<div class="quiz-question" id="mcq'+i+'"><div class="q-text">'+(i+1)+'. '+q.q+'</div>';
     q.opts.forEach(function(opt, j) {
-      var isAnswered = answered[i] !== undefined;
-      var cls = 'q-option';
+      const isAnswered = answered[i] !== undefined;
+      let cls = 'option';
       if (isAnswered) {
-        if (j === q["answer"]) cls += ' correct';
+        if (j === q.ans) cls += ' correct';
         else if (j === answered[i]) cls += ' wrong';
       }
-      html += '<div class="' + cls + '" onclick="answerMCQ(' + i + ', ' + j + ')" id="mcq' + i + 'o' + j + '">'
-        + 'ABCD'[j] + '. ' + opt
-        + (isAnswered && j === q["answer"] ? ' ✓' : '')
-        + (isAnswered && j === answered[i] && j !== q["answer"] ? ' ✗' : '')
-        + '</div>';
+      html += '<div class="'+cls+'" onclick="answerMCQ('+i+', '+j+')" id="mcq'+i+'o'+j+'">'+'ABCD'[j]+'. '+opt+(isAnswered && j === q.ans ? ' ✓' : '')+(isAnswered && j === answered[i] && j !== q.ans ? ' ✗' : '')+'</div>';
     });
-    html += '<p class="q-feedback">关联概念：' + q.concept + '</p>';
-    html += '</div>';
+    html += '<p style="font-size:11px;color:var(--text-light);margin-top:2px;">关联概念：'+q.concept+'</p></div>';
   });
   document.getElementById('mcqContainer').innerHTML = html;
 }
 
 function answerMCQ(qIdx, optIdx) {
-  var p = getProgress();
+  const p = getProgress();
   if (!p.answeredMCQ) p.answeredMCQ = {};
   if (p.answeredMCQ[qIdx] !== undefined) return;
   p.answeredMCQ[qIdx] = optIdx;
-
-  if (optIdx !== mcQuestions[qIdx]["answer"]) {
+  if (optIdx !== mcQuestions[qIdx].ans) {
     if (!p.errorMCQ) p.errorMCQ = [];
-    if (p.errorMCQ.indexOf(qIdx) < 0) p.errorMCQ.push(qIdx);
+    if (!p.errorMCQ.includes(qIdx)) p.errorMCQ.push(qIdx);
   }
-
   saveProgress(p);
   renderMCQ();
   updateProgress();
 }
 
 function resetMCQ() {
-  var p = getProgress();
+  const p = getProgress();
   p.answeredMCQ = {};
   p.errorMCQ = [];
   saveProgress(p);
@@ -885,18 +900,15 @@ function resetMCQ() {
 }
 
 function renderSAQ() {
-  var html = '';
-  var p = getProgress();
-  var answered = p.answeredSAQ || {};
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredSAQ || {};
   saQuestions.forEach(function(q, i) {
-    html += '<div class="quiz-question" id="saq' + i + '">'
-      + '<div class="q-text">' + (i+1) + '. ' + q.q + '</div>';
+    html += '<div class="quiz-question" id="saq'+i+'"><div class="q-text">'+(i+1)+'. '+q.q+'</div>';
     if (!answered[i]) {
-      html += '<textarea id="saqInput' + i + '" style="width:100%;min-height:60px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>'
-        + '<button class="btn btn-outline" style="margin-top:6px;" onclick="checkSAQ(' + i + ')">查看参考答案</button>';
+      html += '<textarea id="saqInput'+i+'" style="width:100%;min-height:60px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea><button class="btn btn-outline" style="margin-top:6px;" onclick="checkSAQ('+i+')">查看参考答案</button>';
     } else {
-      html += '<p style="font-size:12px;color:var(--text-light);margin:6px 0;"><strong>你的回答：</strong>' + answered[i] + '</p>'
-        + '<p style="font-size:12px;color:#27ae60;"><strong>参考答案：</strong>' + q.ref + '</p>';
+      html += '<p style="font-size:12px;color:var(--text-light);margin:6px 0;"><strong>你的回答：</strong>'+answered[i]+'</p><p style="font-size:12px;color:#27ae60;"><strong>参考答案：</strong>'+q.ref+'</p>';
     }
     html += '</div>';
   });
@@ -904,9 +916,9 @@ function renderSAQ() {
 }
 
 function checkSAQ(i) {
-  var input = document.getElementById('saqInput' + i);
+  const input = document.getElementById('saqInput' + i);
   if (!input || !input.value.trim()) return;
-  var p = getProgress();
+  const p = getProgress();
   if (!p.answeredSAQ) p.answeredSAQ = {};
   p.answeredSAQ[i] = input.value.trim();
   saveProgress(p);
@@ -915,7 +927,7 @@ function checkSAQ(i) {
 }
 
 function resetSAQ() {
-  var p = getProgress();
+  const p = getProgress();
   p.answeredSAQ = {};
   saveProgress(p);
   renderSAQ();
@@ -923,9 +935,9 @@ function resetSAQ() {
 }
 
 // ======== TAB 3: EXAM MODE ========
-var examTimerId = null;
-var examSeconds = 900;
-var examQuestions = [];
+let examTimerId = null;
+let examSeconds = 900;
+let examQuestions = [];
 
 function resetExam() {
   document.getElementById('examSetup').style.display = 'block';
@@ -941,23 +953,22 @@ function startExam() {
   document.getElementById('examResult').style.display = 'none';
   document.getElementById('examResult').innerHTML = '';
 
-  var mcIndices = shuffleArray(Array.from({length: 20}, function(_, i) { return i; })).slice(0, 7);
-  var saIndices = shuffleArray(Array.from({length: 10}, function(_, i) { return i; })).slice(0, 3);
+  const mcIndices = shuffleArray([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]).slice(0, 7);
+  const saIndices = shuffleArray([0,1,2,3,4,5,6,7,8,9]).slice(0, 3);
   examQuestions = { mc: mcIndices, sa: saIndices };
 
-  var html = '<h3>选择题（7道）</h3>';
+  let html = '<h3>选择题（7道）</h3>';
   mcIndices.forEach(function(idx, i) {
-    var q = mcQuestions[idx];
-    html += '<div class="quiz-question"><div class="q-text">' + (i+1) + '. ' + q.q + '</div>';
+    const q = mcQuestions[idx];
+    html += '<div class="quiz-question"><div class="q-text">'+(i+1)+'. '+q.q+'</div>';
     q.opts.forEach(function(opt, j) {
-      html += '<div class="q-option" onclick="selectExamMC(' + i + ', ' + j + ')" id="examMc' + i + 'o' + j + '">' + 'ABCD'[j] + '. ' + opt + '</div>';
+      html += '<div class="option" onclick="selectExamMC('+i+', '+j+')" id="examMc'+i+'o'+j+'">'+'ABCD'[j]+'. '+opt+'</div>';
     });
     html += '</div>';
   });
   html += '<h3>简答题（3道）</h3>';
   saIndices.forEach(function(idx, i) {
-    html += '<div class="quiz-question"><div class="q-text">' + (i+1) + '. ' + saQuestions[idx].q + '</div>'
-      + '<textarea id="examSaInput' + i + '" style="width:100%;min-height:50px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea></div>';
+    html += '<div class="quiz-question"><div class="q-text">'+(i+1)+'. '+saQuestions[idx].q+'</div><textarea id="examSaInput'+i+'" style="width:100%;min-height:50px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea></div>';
   });
   document.getElementById('examContent').innerHTML = html;
 
@@ -971,18 +982,18 @@ function startExam() {
 }
 
 function updateExamTimer() {
-  var m = Math.floor(examSeconds / 60);
-  var s = examSeconds % 60;
-  var el = document.getElementById('examTimer');
-  el.textContent = m + ':' + String(s).padStart(2, '0');
+  const m = Math.floor(examSeconds / 60);
+  const s = examSeconds % 60;
+  const el = document.getElementById('examTimer');
+  el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
   el.classList.toggle('warning', examSeconds < 60);
 }
 
-var examMCAnswers = {};
+let examMCAnswers = {};
 function selectExamMC(qIdx, optIdx) {
   examMCAnswers[qIdx] = optIdx;
-  for (var j = 0; j < 4; j++) {
-    document.getElementById('examMc' + qIdx + 'o' + j).classList.toggle('selected', j === optIdx);
+  for (let j = 0; j < 4; j++) {
+    document.getElementById('examMc'+qIdx+'o'+j).classList.toggle('selected', j === optIdx);
   }
 }
 
@@ -991,119 +1002,93 @@ function submitExam() {
   document.getElementById('examArea').style.display = 'none';
   document.getElementById('examResult').style.display = 'block';
 
-  var score = 0;
-  var mcResult = '';
+  let score = 0;
+  let mcResult = '';
   examQuestions.mc.forEach(function(qIdx, i) {
-    var q = mcQuestions[qIdx];
-    var userAns = examMCAnswers[i];
-    var correct = userAns === q["answer"];
+    const q = mcQuestions[qIdx];
+    const userAns = examMCAnswers[i];
+    const correct = userAns === q.ans;
     if (correct) score++;
-    mcResult += '<div style="margin-bottom:8px;"><strong>' + (i+1) + '. ' + q.q + '</strong><br>'
-      + '<span style="color:' + (correct ? '#27ae60' : '#e74c3c') + '">你的答案：' + (userAns !== undefined ? 'ABCD'[userAns] : '未作答') + ' | 正确答案：' + 'ABCD'[q["answer"]] + '</span><br>'
-      + (!correct ? '<span style="font-size:12px;color:var(--text-light);">解析：' + q.opts[q["answer"]] + '</span>' : '')
-      + '</div>';
+    mcResult += '<div style="margin-bottom:8px;"><strong>'+(i+1)+'. '+q.q+'</strong><br><span style="color:'+(correct ? '#27ae60' : '#e74c3c')+'">你的答案：'+(userAns !== undefined ? 'ABCD'[userAns] : '未作答')+' | 正确答案：'+'ABCD'[q.ans]+'</span><br>'+(!correct ? '<span style="font-size:12px;color:var(--text-light);">解析：'+q.opts[q.ans]+'</span>' : '')+'</div>';
   });
 
-  var saResult = '';
+  let saResult = '';
   examQuestions.sa.forEach(function(idx, i) {
-    var q = saQuestions[idx];
-    var userAns = document.getElementById('examSaInput' + i) ? (document.getElementById('examSaInput' + i).value || '未作答') : '未作答';
-    saResult += '<div style="margin-bottom:8px;"><strong>' + (i+1) + '. ' + q.q + '</strong><br>'
-      + '<span style="font-size:12px;color:var(--text-light);">你的回答：' + userAns.substring(0, 100) + '...</span><br>'
-      + '<span style="font-size:12px;color:#27ae60;">参考答案：' + q.ref.substring(0, 150) + '...</span></div>';
+    const q = saQuestions[idx];
+    const userAns = (document.getElementById('examSaInput'+i) ? document.getElementById('examSaInput'+i).value : '') || '未作答';
+    saResult += '<div style="margin-bottom:8px;"><strong>'+(i+1)+'. '+q.q+'</strong><br><span style="font-size:12px;color:var(--text-light);">你的回答：'+userAns.substring(0, 100)+'...</span><br><span style="font-size:12px;color:#27ae60;">参考答案：'+q.ref.substring(0, 150)+'...</span></div>';
   });
 
-  var totalMC = examQuestions.mc.length;
-  var elapsed = 900 - examSeconds;
-  var elapsedM = Math.floor(elapsed / 60);
-  var elapsedS = elapsed % 60;
+  const totalMC = examQuestions.mc.length;
+  const elapsed = 900 - examSeconds;
+  const elapsedM = Math.floor(elapsed / 60);
+  const elapsedS = elapsed % 60;
 
-  var conceptErrors = {};
+  const conceptErrors = {};
   examQuestions.mc.forEach(function(qIdx, i) {
-    if (examMCAnswers[i] !== mcQuestions[qIdx]["answer"]) {
-      var cName = mcQuestions[qIdx].concept;
+    if (examMCAnswers[i] !== mcQuestions[qIdx].ans) {
+      const cName = mcQuestions[qIdx].concept;
       conceptErrors[cName] = (conceptErrors[cName] || 0) + 1;
     }
   });
 
-  var weakHtml = '';
-  for (var cname in conceptErrors) {
+  let weakHtml = '';
+  for (const cname in conceptErrors) {
     if (conceptErrors.hasOwnProperty(cname)) {
-      weakHtml += '<span style="display:inline-block;margin:4px;padding:4px 10px;background:#fdedec;border-radius:12px;font-size:12px;">' + cname + ' (错' + conceptErrors[cname] + '次)</span>';
+      weakHtml += '<span style="display:inline-block;margin:4px;padding:4px 10px;background:#fdedec;border-radius:12px;font-size:12px;">'+cname+' (错'+conceptErrors[cname]+'次)</span>';
     }
   }
 
-  document.getElementById('examResult').innerHTML =
-    '<h2>考试成绩</h2>'
-    + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;">'
-    + '<div class="stat-box"><div class="num">' + score + '/' + totalMC + '</div><div class="lbl">选择题得分</div></div>'
-    + '<div class="stat-box"><div class="num">' + Math.round(score/totalMC*100) + '%</div><div class="lbl">正确率</div></div>'
-    + '<div class="stat-box"><div class="num">' + elapsedM + '分' + elapsedS + '秒</div><div class="lbl">用时</div></div>'
-    + '</div>'
-    + '<h3>选择题解析</h3>' + mcResult
-    + '<h3>简答题参考</h3>' + saResult
-    + '<h3>薄弱概念</h3>' + (weakHtml || '<p>全部答对，暂无薄弱概念</p>')
-    + '<button class="btn btn-primary" onclick="resetExam();switchTab(3);" style="margin-top:14px;">重新考试</button>';
+  document.getElementById('examResult').innerHTML = '<h2>考试成绩</h2><div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;"><div class="stat-box"><div class="num">'+score+'/'+totalMC+'</div><div class="lbl">选择题得分</div></div><div class="stat-box"><div class="num">'+Math.round(score/totalMC*100)+'%</div><div class="lbl">正确率</div></div><div class="stat-box"><div class="num">'+elapsedM+'分'+elapsedS+'秒</div><div class="lbl">用时</div></div></div><h3>选择题解析</h3>'+mcResult+'<h3>简答题参考</h3>'+saResult+'<h3>薄弱概念</h3>'+(weakHtml || '<p>全部答对，暂无薄弱概念</p>')+'<button class="btn btn-primary" onclick="resetExam();switchTab(3);" style="margin-top:14px;">重新考试</button>';
 }
 
 // ======== TAB 4: REVIEW MODE ========
 function refreshReview() {
-  var p = getProgress();
-  var answeredMCQ = p.answeredMCQ || {};
-  var answeredSAQ = p.answeredSAQ || {};
-  var errorMCQ = p.errorMCQ || [];
-  var learnedCards = p.learnedCards || [];
+  const p = getProgress();
+  const answered = p.answeredMCQ || {};
+  const answeredS = p.answeredSAQ || {};
+  const errors = p.errorMCQ || [];
+  const learnedCardsArr = p.learnedCards || [];
 
-  var totalAnswered = Object.keys(answeredMCQ).length + Object.keys(answeredSAQ).length;
-  var mcCorrect = Object.keys(answeredMCQ).length - errorMCQ.length;
-  var mcRate = Object.keys(answeredMCQ).length > 0 ? Math.round(mcCorrect / Object.keys(answeredMCQ).length * 100) : 0;
+  const totalAnswered = Object.keys(answered).length + Object.keys(answeredS).length;
+  const mcCorrect = Object.keys(answered).length - errors.length;
+  const mcRate = Object.keys(answered).length > 0 ? Math.round(mcCorrect / Object.keys(answered).length * 100) : 0;
 
-  document.getElementById('statsArea').innerHTML =
-    '<div style="display:flex;flex-wrap:wrap;gap:8px;">'
-    + '<div class="stat-box"><div class="num">' + totalAnswered + '</div><div class="lbl">总答题数</div></div>'
-    + '<div class="stat-box"><div class="num">' + mcRate + '%</div><div class="lbl">选择正确率</div></div>'
-    + '<div class="stat-box"><div class="num">' + learnedCards.length + '</div><div class="lbl">已学概念</div></div>'
-    + '<div class="stat-box"><div class="num">' + errorMCQ.length + '</div><div class="lbl">错题数</div></div>'
-    + '</div>';
+  document.getElementById('statsArea').innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;"><div class="stat-box"><div class="num">'+totalAnswered+'</div><div class="lbl">总答题数</div></div><div class="stat-box"><div class="num">'+mcRate+'%</div><div class="lbl">选择正确率</div></div><div class="stat-box"><div class="num">'+learnedCardsArr.length+'</div><div class="lbl">已学概念</div></div><div class="stat-box"><div class="num">'+errors.length+'</div><div class="lbl">错题数</div></div></div>';
 
-  if (errorMCQ.length === 0) {
+  if (errors.length === 0) {
     document.getElementById('errorBook').innerHTML = '<p style="color:#27ae60;">暂无错题，继续保持！</p>';
   } else {
-    var ehtml = '<p style="margin-bottom:8px;font-size:13px;color:var(--text-light);">点击错题可重新作答（清除该题记录）</p>';
-    errorMCQ.forEach(function(qIdx) {
-      var q = mcQuestions[qIdx];
-      var userAns = answeredMCQ[qIdx];
-      ehtml += '<div style="padding:8px;margin:6px 0;background:#fef9f4;border-radius:6px;border-left:3px solid #e74c3c;cursor:pointer;" onclick="retryMCQ(' + qIdx + ')">'
-        + '<strong>' + (qIdx+1) + '. ' + q.q + '</strong><br>'
-        + '<span style="color:#e74c3c;">你的答案：' + 'ABCD'[userAns] + '</span> | '
-        + '<span style="color:#27ae60;">正确：' + 'ABCD'[q["answer"]] + '</span> — ' + q.opts[q["answer"]]
-        + '<br><span style="font-size:11px;color:var(--text-light);">概念：' + q.concept + '</span></div>';
+    let ehtml = '<p style="margin-bottom:8px;font-size:13px;color:var(--text-light);">点击错题可重新作答（清除该题记录）</p>';
+    errors.forEach(function(qIdx) {
+      const q = mcQuestions[qIdx];
+      const userAns = answered[qIdx];
+      ehtml += '<div style="padding:8px;margin:6px 0;background:#fef9f4;border-radius:6px;border-left:3px solid #e74c3c;cursor:pointer;" onclick="retryMCQ('+qIdx+')"><strong>'+(qIdx+1)+'. '+q.q+'</strong><br><span style="color:#e74c3c;">你的答案：'+'ABCD'[userAns]+'</span> | <span style="color:#27ae60;">正确：'+'ABCD'[q.ans]+'</span> — '+q.opts[q.ans]+'<br><span style="font-size:11px;color:var(--text-light);">概念：'+q.concept+'</span></div>';
     });
     document.getElementById('errorBook').innerHTML = ehtml;
   }
 
-  var conceptErrors = {};
-  errorMCQ.forEach(function(qIdx) {
-    var cn = mcQuestions[qIdx].concept;
+  const conceptErrors = {};
+  errors.forEach(function(qIdx) {
+    const cn = mcQuestions[qIdx].concept;
     conceptErrors[cn] = (conceptErrors[cn] || 0) + 1;
   });
-  var sorted = Object.entries(conceptErrors).sort(function(a, b) { return b[1] - a[1]; });
+  const sorted = Object.entries(conceptErrors).sort(function(a, b) { return b[1] - a[1]; });
   if (sorted.length === 0) {
     document.getElementById('weakPoints').innerHTML = '<p>暂无薄弱概念数据。</p>';
   } else {
-    var whtml = '';
+    let whtml = '';
     sorted.forEach(function(item) {
-      var cn = item[0];
-      var cnt = item[1];
-      whtml += '<div style="margin-bottom:10px;"><strong>' + cn + '</strong> — 错误' + cnt + '次'
-        + '<div class="progress-bar"><div class="fill" style="width:' + Math.max(10, 100-cnt*20) + '%;background:#e74c3c;"></div></div></div>';
+      const cn = item[0];
+      const cnt = item[1];
+      whtml += '<div style="margin-bottom:10px;"><strong>'+cn+'</strong> — 错误'+cnt+'次<div class="progress-bar"><div class="fill" style="width:'+Math.max(10, 100-cnt*20)+'%;background:#e74c3c;"></div></div></div>';
     });
     document.getElementById('weakPoints').innerHTML = whtml;
   }
 }
 
 function retryMCQ(qIdx) {
-  var p = getProgress();
+  const p = getProgress();
   delete p.answeredMCQ[qIdx];
   p.errorMCQ = (p.errorMCQ || []).filter(function(e) { return e !== qIdx; });
   saveProgress(p);
@@ -1113,7 +1098,7 @@ function retryMCQ(qIdx) {
 
 // ======== TAB 5: MIND MAP ========
 function renderMindTree() {
-  var treeData = [
+  const treeData = [
     { name: '人生算法', children: [
       { name: '认知引擎（看世界）', children: [
         { name: '算法思维 ★', children: [
@@ -1176,16 +1161,16 @@ function renderMindTree() {
     ]}
   ];
 
-  function renderNodes(nodes, depth) {
-    var html = '<ul>';
+  function renderTree(nodes) {
+    let html = '<ul>';
     nodes.forEach(function(n) {
-      var hasChildren = n.children && n.children.length > 0;
+      const hasChildren = n.children && n.children.length > 0;
       html += '<li>';
       if (hasChildren) {
-        html += '<span class="node" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'show\')">' + n.name + '</span>';
-        html += '<div class="tree-children">' + renderNodes(n.children, depth+1) + '</div>';
+        html += '<span class="node-header" onclick="toggleMindmap(this, this.nextElementSibling)">'+n.name+'</span>';
+        html += '<div class="node-children">'+renderTree(n.children)+'</div>';
       } else {
-        html += '<span style="color:var(--text-light);">' + n.name + '</span>';
+        html += '<span class="leaf">'+n.name+'</span>';
       }
       html += '</li>';
     });
@@ -1193,12 +1178,12 @@ function renderMindTree() {
     return html;
   }
 
-  document.getElementById('mindTree').innerHTML = renderNodes(treeData, 0);
+  document.getElementById('mindTree').innerHTML = renderTree(treeData);
 }
 
 // ======== TAB 6: SOCRATIC ========
 function renderSocratic() {
-  var questions = [
+  const questions = [
     {
       concept: '算法思维',
       qs: [
@@ -1224,13 +1209,11 @@ function renderSocratic() {
     }
   ];
 
-  var html = '';
+  let html = '';
   questions.forEach(function(group) {
-    html += '<h3 style="margin-top:16px;">' + group.concept + '</h3>';
+    html += '<h3 style="margin-top:16px;">'+group.concept+'</h3>';
     group.qs.forEach(function(item) {
-      html += '<div class="socratic-q">'
-        + '<div class="question" onclick="this.nextElementSibling.classList.toggle(\'open\')">Q: ' + item.q + '</div>'
-        + '<div class="answer">A: ' + item.a + '</div></div>';
+      html += '<div class="socratic-q"><div class="question" onclick="this.nextElementSibling.classList.toggle(\'open\')">Q: '+item.q+'</div><div class="answer">A: '+item.a+'</div></div>';
     });
   });
   document.getElementById('socraticArea').innerHTML = html;
@@ -1238,34 +1221,12 @@ function renderSocratic() {
 
 // ======== TAB 7: CASE STUDY ========
 function renderCaseStudy() {
-  document.getElementById('caseStudy').innerHTML =
-    '<h3 style="color:var(--accent);">K2登山灾难与博弈论的人生启示</h3>'
-    + '<p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">2008年8月1日，乔戈里峰（K2）发生登山史上最严重的灾难之一：8支国际登山队中11人罹难，其中7人在成功登顶后遇难。用MKS四维框架拆解这场悲剧的决策链。</p>'
-
-    + '<div class="card" style="border-left:4px solid var(--accent);">'
-    + '<h3>算法思维</h3>'
-    + '<p>核心问题：K2攀登的核心矛盾是什么？不是「要不要登顶」，而是「如何在天黑前安全返回」。灾难链的起点：夏尔巴人安装安全绳索时绳索不足（细节失误），导致登山队出发时间延迟至天亮。但更深层的核心问题是——多支队伍将K2视为「一次性游戏」，追求单次登顶的荣誉，忽视了登山本质上是「无限游戏」：目标是活下来，下次还能登。如果以无限游戏思维出发，绳索不足就应该全队折返——瑞典登山家斯特朗正是因此放弃登顶。</p></div>'
-
-    + '<div class="card" style="border-left:4px solid #d4a574;">'
-    + '<h3>证伪与理性</h3>'
-    + '<p>部分队员「明知可能无法在天黑前返回，仍坚持冲顶」——这是典型的「证实倾向」陷阱：只看到「登顶成功」的荣耀画面，而系统性低估了「天黑+无绳索+极端天气」的组合风险。K2的死亡率是29人/100人次（珠峰仅4人），这个统计数据就是概率思维的基础——但每个登山者都认为自己会是「幸运的那个」。登山家斯特朗的评价一针见血：「事故源于缺乏经验者的天真」——天真即缺乏对反例的认知。</p></div>'
-
-    + '<div class="card" style="border-left:4px solid #8b7355;">'
-    + '<h3>长期主义</h3>'
-    + '<p>K2攀登本质上是多次游戏——真正的登山家追求的是「活着回来，讲好故事，下次再来」。但很多队员将其视为单次游戏——「这次必须登顶，可能是这辈子唯一的机会」。这种单次游戏心态导致：1）忽视绳索不足的危险信号；2）在「瓶颈」地段（80度陡坡）明知天黑风险仍强行推进；3）低估解安全扣、搬运伤者等细节的连锁后果。长期主义视角：斯特朗两次挑战K2均因风险放弃——他的判断标准不是「这次能不能登顶」，而是「以当前条件硬冲是否会影响未来的登山生涯」。</p></div>'
-
-    + '<div class="card" style="border-left:4px solid #2c3e50;">'
-    + '<h3>自我认知</h3>'
-    + '<p>登山者的「主人心态」vs「奴隶心态」：真正强大的登山者（如斯特朗）有准确的自我认知——知道自己的能力边界，不因同伴压力或外界期待而超越安全线。而部分遇难者陷入了「主观世界陷阱」——将自己的「必须登顶」剧本强加于客观环境之上，忽视了山脉「不会因你的意志改变」的客观事实。夏尔巴人谚语说得最好：「登顶不是征服山，而是山脉在等你」——这句话的本质是自我认知的极致体现：承认自然的不可控性，放下自我的执念。</p></div>'
-
-    + '<div class="card" style="background:#fef9f4;border-left:4px solid #27ae60;">'
-    + '<h3>结论</h3>'
-    + '<p>通过MKS四维分析可见：K2灾难不是「运气不好」，而是多人在多个决策节点上系统性地违背了人生算法原则——单次游戏思维替代无限游戏思维、证实倾向压制概率判断、短期荣誉压倒长期生存、主观执念遮蔽客观风险。登山如此，职业选择、投资决策、人际关系亦然——每个节点上的微小偏差，经过连锁反应，就是人生轨迹的巨大差异。</p></div>';
+  document.getElementById('caseStudy').innerHTML = '<h3 style="color:var(--accent);">K2登山灾难与博弈论的人生启示</h3><p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">2008年8月1日，乔戈里峰（K2）发生登山史上最严重的灾难之一：8支国际登山队中11人罹难，其中7人在成功登顶后遇难。用MKS四维框架拆解这场悲剧的决策链。</p><div class="card" style="border-left:4px solid var(--accent);"><h3>算法思维</h3><p>核心问题：K2攀登的核心矛盾是什么？不是「要不要登顶」，而是「如何在天黑前安全返回」。灾难链的起点：夏尔巴人安装安全绳索时绳索不足（细节失误），导致登山队出发时间延迟至天亮。但更深层的核心问题是——多支队伍将K2视为「一次性游戏」，追求单次登顶的荣誉，忽视了登山本质上是「无限游戏」：目标是活下来，下次还能登。如果以无限游戏思维出发，绳索不足就应该全队折返——瑞典登山家斯特朗正是因此放弃登顶。</p></div><div class="card" style="border-left:4px solid #d4a574;"><h3>证伪与理性</h3><p>部分队员「明知可能无法在天黑前返回，仍坚持冲顶」——这是典型的「证实倾向」陷阱：只看到「登顶成功」的荣耀画面，而系统性低估了「天黑+无绳索+极端天气」的组合风险。K2的死亡率是29人/100人次（珠峰仅4人），这个统计数据就是概率思维的基础——但每个登山者都认为自己会是「幸运的那个」。登山家斯特朗的评价一针见血：「事故源于缺乏经验者的天真」——天真即缺乏对反例的认知。</p></div><div class="card" style="border-left:4px solid #8b7355;"><h3>长期主义</h3><p>K2攀登本质上是多次游戏——真正的登山家追求的是「活着回来，讲好故事，下次再来」。但很多队员将其视为单次游戏——「这次必须登顶，可能是这辈子唯一的机会」。这种单次游戏心态导致：1）忽视绳索不足的危险信号；2）在「瓶颈」地段（80度陡坡）明知天黑风险仍强行推进；3）低估解安全扣、搬运伤者等细节的连锁后果。长期主义视角：斯特朗两次挑战K2均因风险放弃——他的判断标准不是「这次能不能登顶」，而是「以当前条件硬冲是否会影响未来的登山生涯」。</p></div><div class="card" style="border-left:4px solid #2c3e50;"><h3>自我认知</h3><p>登山者的「主人心态」vs「奴隶心态」：真正强大的登山者（如斯特朗）有准确的自我认知——知道自己的能力边界，不因同伴压力或外界期待而超越安全线。而部分遇难者陷入了「主观世界陷阱」——将自己的「必须登顶」剧本强加于客观环境之上，忽视了山脉「不会因你的意志改变」的客观事实。夏尔巴人谚语说得最好：「登顶不是征服山，而是山脉在等你」——这句话的本质是自我认知的极致体现：承认自然的不可控性，放下自我的执念。</p></div><div class="card" style="background:#fef9f4;border-left:4px solid #27ae60;"><h3>结论</h3><p>通过MKS四维分析可见：K2灾难不是「运气不好」，而是多人在多个决策节点上系统性地违背了人生算法原则——单次游戏思维替代无限游戏思维、证实倾向压制概率判断、短期荣誉压倒长期生存、主观执念遮蔽客观风险。登山如此，职业选择、投资决策、人际关系亦然——每个节点上的微小偏差，经过连锁反应，就是人生轨迹的巨大差异。</p></div>';
 }
 
 // ======== TAB 8: DECISION GAME ========
 function renderDecisionGame() {
-  var scenarios = [
+  const scenarios = [
     {
       title: '【第1轮】你是一名大厂程序员，年薪80万但35岁危机逼近。三个选择：A）留守大厂求稳等晋升；B）跳槽去AI创业公司（降薪30%但给期权）；C）全职读MBA转型管理。',
       options: [
@@ -1277,7 +1238,7 @@ function renderDecisionGame() {
     {
       title: '【第2轮】你和一位同事关系紧张——他在会上多次公开否定你的方案，但在领导面前表现得合作。你怎么办？',
       options: [
-        { label: 'A. 正面回击——下次会上直接反驳他的每个观点', feedback: '策略博弈分析：这会将单次冲突升级为长期对抗（零和博弈），双输概率高。奥古斯丁定律十：「人与人争斗无赢家，赢的是律师」——警惕从中获利的第三方。回击会消耗你的精力、破坏团队氛围、降低你的专业形象。', correct: false },
+        { label: 'A. 正面回击——下次会上直接反驳他的每个观点', feedback: '策略博弈分析：这会将单次冲突升级为长期对抗（零和博弈），双输概率高。奥古斯丁定律：「人与人争斗无赢家，赢的是律师」——警惕从中获利的第三方。回击会消耗你的精力、破坏团队氛围、降低你的专业形象。', correct: false },
         { label: 'B. 私下沟通+记录客观事实——就事论事，不升级冲突', feedback: 'MKS分析：最佳选择。人际关系权重视角：要客观评估这段关系的权重——这个同事在你的核心关系网络中吗？如果不是，维持表面礼貌即可（「非必要不深交」）。如果是（直接影响你的工作），就需要主动管理。就事论事原则：不揭短、不人身攻击；用「利益对等性」判断——他是否愿意与你对等合作？坚定态度+直视目光+明确边界。同时做好记录（程序排查的文档化），为可能的后续行动留证据。', correct: true },
         { label: 'C. 申请调组/离职——与其内耗不如离开', feedback: '困境破局分析：这是「闪逃心理」的温和版——遇轻微困境就改弦更张。程序排查法第一步应该是「检查具体做法」——你是否尝试了正面沟通？是否明确表达了边界？是否寻找了同盟军？如果这些都没做就直接调组，你可能在每个团队都会遇到类似问题。只有在尝试了所有步骤后，确认这个环境确实「系统性的有毒」，离开才是理性选择。', correct: false }
       ]
@@ -1292,13 +1253,13 @@ function renderDecisionGame() {
     }
   ];
 
-  var html = '';
+  let html = '';
   scenarios.forEach(function(s, si) {
-    html += '<div class="card" style="border-left:4px solid var(--accent);"><h3>' + s.title + '</h3>';
+    html += '<div class="card" style="border-left:4px solid var(--accent);"><h3>'+s.title+'</h3>';
     s.options.forEach(function(opt, oi) {
-      html += '<div class="decision-option" id="dec' + si + 'o' + oi + '" onclick="selectDecision(' + si + ', ' + oi + ')">' + opt.label + '</div>';
+      html += '<div class="decision-option" id="dec'+si+'o'+oi+'" onclick="selectDecision('+si+', '+oi+')">'+opt.label+'</div>';
     });
-    html += '<div class="decision-feedback" id="decFeedback' + si + '"><p style="font-size:13px;"></p></div></div>';
+    html += '<div class="decision-feedback" id="decFeedback'+si+'"><p style="font-size:13px;"></p></div></div>';
   });
   document.getElementById('decisionGame').innerHTML = html;
 
@@ -1306,28 +1267,39 @@ function renderDecisionGame() {
 }
 
 function selectDecision(si, oi) {
-  var data = window._decisionData[si];
-  var feedbackDiv = document.getElementById('decFeedback' + si);
-  var fbContent = data.options[oi].feedback;
+  const data = window._decisionData[si];
+  const feedbackDiv = document.getElementById('decFeedback' + si);
+  const fbContent = data.options[oi].feedback;
 
-  for (var j = 0; j < data.options.length; j++) {
-    var optEl = document.getElementById('dec' + si + 'o' + j);
+  for (let j = 0; j < data.options.length; j++) {
+    const optEl = document.getElementById('dec' + si + 'o' + j);
     optEl.style.borderColor = 'var(--border)';
     optEl.style.background = '';
   }
   document.getElementById('dec' + si + 'o' + oi).style.borderColor = 'var(--accent)';
   document.getElementById('dec' + si + 'o' + oi).style.background = '#fef5f0';
 
-  feedbackDiv.style.display = 'block';
-  feedbackDiv.querySelector('p').textContent = fbContent;
+  if (fbContent) {
+    feedbackDiv.style.display = 'block';
+    feedbackDiv.querySelector('p').textContent = fbContent;
+  } else {
+    feedbackDiv.style.display = 'block';
+    feedbackDiv.querySelector('p').textContent = '这不是最优选择。请换一个选项思考——提示：回顾核心概念中的算法思维和长期主义。';
+  }
+}
+
+// ======== MINDMAP TOGGLE (global) ========
+function toggleMindmap(headerEl, childrenEl) {
+  headerEl.classList.toggle('open');
+  childrenEl.classList.toggle('open');
 }
 
 // ======== UTILS ========
 function shuffleArray(arr) {
-  var a = arr.slice();
-  for (var i = a.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var tmp = a[i];
+  const a = [].concat(arr);
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = a[i];
     a[i] = a[j];
     a[j] = tmp;
   }
@@ -1337,7 +1309,6 @@ function shuffleArray(arr) {
 // ======== INIT ========
 function init() {
   renderDashboard();
-  renderCard();
   renderMCQ();
   renderSAQ();
   renderMindTree();
