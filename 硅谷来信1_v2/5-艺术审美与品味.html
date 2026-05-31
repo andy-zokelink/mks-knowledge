@@ -493,19 +493,27 @@ function renderSVG(){
 
 // ========== TAB 1: Cards ==========
 function renderCard(){
-  const c = cardsData[currentCard];
+  const c = concepts[currentCard];
   const isLearned = learned.has(c.id);
   document.getElementById('flipFront').innerHTML = `<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name || c.front}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${isLearned?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
   document.getElementById('flipBack').innerHTML = c.back;
   document.getElementById('flipInner').classList.remove('flipped');
-  document.getElementById('cardIndex').textContent = (currentCard+1)+' / '+cardsData.length;
+  document.getElementById('cardIndex').textContent = (currentCard+1)+' / '+concepts.length;
   const lb = document.getElementById('markLearnedBtn');
   if(isLearned){ lb.textContent='✓ 已学习'; lb.classList.add('learned'); }
   else{ lb.textContent='✓ 标记已学习'; lb.classList.remove('learned'); }
 }
+function prevCard(){if(currentCard>0){currentCard--;renderCard()}}
+function nextCard(){if(currentCard<concepts.length-1){currentCard++;renderCard()}}
+function markLearned(){
+  const id=concepts[currentCard].id;
+  if(learned.has(id)){learned.delete(id)}else{learned.add(id)}
+  saveState();updateProgress();renderCard();
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped')});
 // ========== PROGRESS ==========
 function updateProgress(){
-  const n=learned.size, t=cardsData.length;
+  const n=learned.size, t=concepts.length;
   document.getElementById('progLabel').textContent=n+' / '+t;
   document.getElementById('progBar').style.width=(n/t*100)+'%';
 }

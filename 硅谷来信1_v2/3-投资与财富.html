@@ -11,7 +11,7 @@
   --accent: #c0392b;
   --accent2: #d4a76a;
   --text: #3d2f2f;
-  --text2: #6b5a5a;
+  --text-light: #6b5a5a; --text2: #6b5a5a;
   --border: #e8d5c0;
   --success: #2d7d46;
   --warn: #b8860b;
@@ -73,22 +73,14 @@ header .home-link:hover{background:var(--accent2);color:#fff}
 .boundary-table tr:nth-child(even){background:rgba(212,167,106,0.08)}
 
 /* Flip Cards */
-.flip-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto}
-.flip-card{position:relative;width:100%;height:320px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
-.flip-card.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-shadow:var(--shadow)}
-.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700;text-align:center}
-.flip-back{background:var(--card);border:2px solid var(--accent);transform:rotateY(180deg);text-align:left;justify-content:flex-start;overflow-y:auto;font-size:0.9rem;line-height:1.6}
-.flip-back h4{color:var(--accent);margin:6px 0 2px;font-size:0.95rem}
-.flip-back .tag{display:inline-block;font-size:0.7rem;padding:1px 8px;border-radius:10px;margin:2px 2px;color:#fff}
-.tag-def{background:#2d7d46}.tag-analogy{background:#b8860b}.tag-example{background:#6b5a5a}.tag-counter{background:var(--accent)}
-
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
 .flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
-.flip-nav button{padding:8px 18px;border:1px solid var(--border);background:var(--card);border-radius:20px;cursor:pointer;font-size:0.9rem;color:var(--text);transition:all .2s}
-.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.flip-nav .counter{font-size:0.9rem;color:var(--text2)}
-.flip-nav .learned-btn{background:var(--success);color:#fff;border-color:var(--success)}
-.flip-nav .learned-btn.learned{background:var(--card);color:var(--success)}
+.flip-nav .btn{min-width:80px}
 
 /* Quiz */
 .quiz-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin:14px 0;box-shadow:var(--shadow)}
@@ -233,24 +225,17 @@ header .home-link:hover{background:var(--accent2);color:#fff}
 
 <!-- TAB 2: Knowledge Cards -->
 <section class="tab-content" id="tab2">
-  <div class="card" style="text-align:center">
-    <p style="color:var(--text2)">点击卡片翻转查看四维度解析（定义·类比·示例·反例）</p>
-  </div>
-  <div class="flip-container">
-    <div class="flip-card" id="flipCard" onclick="flipCard()">
-      <div class="flip-front" id="flipFront"></div>
-      <div class="flip-back" id="flipBack"></div>
-    </div>
-  </div>
-  <div class="flip-nav">
-    <button onclick="prevCard()">◀ 上一张</button>
-  <button class="flip-btn" onclick="flipCard()">🔄 翻转</button>
-  <span class="counter" id="flipCounter">1 / 10</span>
-    <button onclick="nextCard()">下一张 ▶</button>
-  </div>
-  <div class="flip-nav">
-    <button class="learned-btn" id="learnedBtn" onclick="markLearned()">✔ 标记「已学习」</button>
-  </div>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </section>
 
 <!-- TAB 3: Question Bank -->
@@ -310,92 +295,19 @@ header .home-link:hover{background:var(--accent2);color:#fff}
 // ===== DATA =====
 
 const concepts = [
-  {name:'认知偏差',brief:'框架效应·沉没成本·证实偏见·情感偏见',icon:'🧠',mks:true},
-  {name:'价值投资',brief:'能力圈·安全边际·长期持有·现金流至上',icon:'💎',mks:true},
-  {name:'风险控制',brief:'夏普比率·资产配置·止损纪律·不杠杆',icon:'🛡️',mks:true},
-  {name:'复利思维',brief:'长期主义·时间价值·指数增长·代际传承',icon:'📈',mks:true},
-  {name:'财报分析',brief:'现金流·应收账款·关联交易·审计意见',icon:'📊'},
-  {name:'行为经济学',brief:'损失厌恶·框架效应·心理账户·过度自信',icon:'🔬'},
-  {name:'防骗机制',brief:'庞氏骗局·对敲识别·尽职调查·常识检验',icon:'🔍'},
-  {name:'资产配置',brief:'股债比例·再平衡·年龄策略·现金流匹配',icon:'⚖️'},
-  {name:'财富传承',brief:'价值观传递·配偶选择·家族文化·时间复利',icon:'🏛️'},
-  {name:'市场规律',brief:'市场永远是对的·不可预测·经济周期·均值回归',icon:'🌊'}
+  {id:'c1',name:'认知偏差',def:'人类在决策时系统性偏离理性的心理模式，由进化形成的思维"快捷方式"导致。',analogy:'好比相机的自动模式——大部分时候够用，但遇到逆光/夜景等复杂场景就会拍出错误曝光的照片。投资就是"复杂场景"，自动模式不够用。',example:'卡尼曼实验：600人瘟疫，方案A"保住200人"vs方案B"1/3概率保住所有人"，80%选A。换个说法"400人会死"vs"1/3概率无人死"，80%选B——同一问题，表述不同，选择相反。',counter:'理工科教授觉得自己很理性，但在网络争论中同样情绪化——学历不保证理性。'},
+  {id:'c2',name:'框架效应',def:'同一信息的不同表述方式（收益/损失框架）会显著改变决策偏好。',analogy:'"99%无脂肪"比"含1%脂肪"更好卖——本质上完全相同，但前者触发"收益感"，后者触发"损失感"。',example:'洪灾报道"粮食减产一成"vs"粮食抢救回九成"，后者显然更正面——同一事实，换框如换刀。',counter:'理性决策应该关注绝对数值和数学期望，而非表述方式。'},
+  {id:'c3',name:'沉没成本谬误',def:'因已投入不可收回的成本（时间/金钱/感情）而继续坚持错误决策。',analogy:'买了难吃的菜硬着头皮吃完——"已经花了钱"不应成为"继续受罪"的理由。',example:'协和式飞机：英法政府明知无法盈利仍持续填补资金漏洞——因为"已经投了那么多"。',counter:'正确的决策只看未来收益与成本，过去的投入与当前决策无关。'},
+  {id:'c4',name:'价值投资',def:'以低于内在价值的价格购买优质资产，长期持有等待价值回归与增长。',analogy:'买房子看地段和建筑质量，而不是听中介说"明天要涨价"——买股票就是买公司的一部分所有权。',example:'巴菲特2016年大举增持苹果：不是因为iPhone刚出来时最性感，而是等苹果证明了"现金奶牛"属性——稳定分红+持续回购+利润增长。',counter:'追涨杀跌的技术派——看K线图买卖，不知道公司做什么，本质上是在赌别人的出价。'},
+  {id:'c5',name:'能力圈',def:'只在自己真正理解的领域内做决策，对圈外之事说"不"。',analogy:'医生不会因为看到律师赚钱多就去打官司——知道自己懂什么比知道自己不懂什么更难。',example:'段永平拒绝自建广告公司：虽然每年投数亿广告费，但"不懂广告行业"。逻辑检验：如果自建广告公司划算，可口可乐应该拥有全球最大广告公司。',counter:'万达联合百度腾讯投200亿做电商（腾百万），两年后无声解散——都是顶级公司，但不在能力圈内。'},
+  {id:'c6',name:'复利思维',def:'财富增长的核心不是"抓住时机"而是"持续在场"，时间是指数增长的引擎。',analogy:'滚雪球——需要的是足够长的坡道（时间）和足够湿的雪（收益率），而非频繁换赛道。',example:'华盛顿就职时（1789年）投资100美元于美国股市，到2017年价值约20亿美元——230年，年均约8%。',counter:'追求"每年翻倍"的短线交易者——一年翻倍容易，十年不亏极难。中国股市波动幅度是收益的6倍。'},
+  {id:'c7',name:'资产配置',def:'将资金分配到不同资产类别（股票/债券/现金），通过比例控制风险而非单押。',analogy:'饮食均衡——不是找"最有营养的一道菜"顿顿吃，而是主食+蛋白质+蔬菜合理搭配。',example:'年轻长期投资者：80%指数基金+15%国库券+5%现金。每年再平衡一次：股市大涨后卖出部分股票补债券，大跌时反向操作——实践"别人贪婪时恐惧"。',counter:'全仓押注单一股票或贷款买房——短期可能暴富，但一次黑天鹅就归零（安然从90美元到1美元仅一周）。'},
+  {id:'c8',name:'庞氏骗局识别',def:'依赖新投资者资金支付旧投资者"收益"，无真实价值创造，终将崩溃。',analogy:'击鼓传花——音乐停时拿着花的人买单。关键不是花多好看，而是自己能否在音乐停前传出去。',example:'乐视：持续借新还旧，无法偿还债务。三大特征：奢华人脉+依赖新投资者+账面利润与现金流脱节。对比特斯拉：创造不可替代价值+创始人投入70%个人财产。',counter:'健康企业：具备自我造血能力，达到一定阶段后无需依赖新投资，利润来自经营而非资本运作。'},
+  {id:'c9',name:'市场有效性',def:'市场价格已反映所有已知信息。对普通人而言，试图"打败市场"是徒劳的。',analogy:'天气预报说70%概率下雨——你可以带伞或不带，结果下雨/不下雨都不能否定预报的合理性。市场预测类似：不是预测结果，而是管理概率。',example:'仅5%散户表现超过指数，60%散户亏损。巴菲特的遗产安排：要求后代投资标普500指数基金，而非"继续我的方法"——因为他知道投资能力不可遗传。',counter:'"我能在崩盘前逃顶"——过度自信：70%-80%的人认为自己比平均水平聪明。'},
+  {id:'c10',name:'金钱观',def:'钱是对资源所有权与使用权的量化度量——花出去才是自己的，挣效率比省更重要。',analogy:'钱是选票——你花的每一分钱都在为想要的世界投票。闲置的选票等于放弃了投票权。',example:'马尔科姆·麦克莱恩（集装箱发明者）：巅峰时美国首富之一，因石油投资失败破产负债十几亿。钱花不光（不吸毒不赌博前提下），但可以迅速投资/投机投光。',counter:'省吃俭用买大房子，10年不换车用宜家简易家具——钱本应提升生活品质，却带来了麻烦。'}
 ];
 
-const mksConcepts = concepts.filter(c=>c.mks);
-
-const flipCards = [
-  {
-    front:'认知偏差',
-    def:'人类在决策时系统性偏离理性的心理模式，由进化形成的思维"快捷方式"导致',
-    analogy:'好比相机的自动模式——大部分时候够用，但遇到逆光/夜景等复杂场景就会拍出错误曝光的照片。投资就是"复杂场景"，自动模式不够用',
-    example:'卡尼曼实验：600人瘟疫，方案A"保住200人"vs方案B"1/3概率保住所有人"，80%选A。换个说法"400人会死"vs"1/3概率无人死"，80%选B——同一问题，表述不同，选择相反',
-    counter:'理工科教授觉得自己很理性，但在网络争论中同样情绪化——学历不保证理性'
-  },
-  {
-    front:'框架效应',
-    def:'同一信息的不同表述方式（收益/损失框架）会显著改变决策偏好',
-    analogy:'"99%无脂肪"比"含1%脂肪"更好卖——本质上完全相同，但前者触发"收益感"，后者触发"损失感"',
-    example:'洪灾报道"粮食减产一成"vs"粮食抢救回九成"，后者显然更正面——同一事实，换框如换刀',
-    counter:'理性决策应该关注绝对数值和数学期望，而非表述方式'
-  },
-  {
-    front:'沉没成本谬误',
-    def:'因已投入不可收回的成本（时间/金钱/感情）而继续坚持错误决策',
-    analogy:'买了难吃的菜硬着头皮吃完——"已经花了钱"不应成为"继续受罪"的理由',
-    example:'协和式飞机：英法政府明知无法盈利仍持续填补资金漏洞——因为"已经投了那么多"',
-    counter:'正确的决策只看未来收益与成本，过去的投入与当前决策无关'
-  },
-  {
-    front:'价值投资',
-    def:'以低于内在价值的价格购买优质资产，长期持有等待价值回归与增长',
-    analogy:'买房子看地段和建筑质量，而不是听中介说"明天要涨价"——买股票就是买公司的一部分所有权',
-    example:'巴菲特2016年大举增持苹果：不是因为iPhone刚出来时最性感，而是等苹果证明了"现金奶牛"属性——稳定分红+持续回购+利润增长',
-    counter:'追涨杀跌的技术派——看K线图买卖，不知道公司做什么，本质上是在赌别人的出价'
-  },
-  {
-    front:'能力圈',
-    def:'只在自己真正理解的领域内做决策，对圈外之事说"不"',
-    analogy:'医生不会因为看到律师赚钱多就去打官司——知道自己懂什么比知道自己不懂什么更难',
-    example:'段永平拒绝自建广告公司：虽然每年投数亿广告费，但"不懂广告行业"。逻辑检验：如果自建广告公司划算，可口可乐应该拥有全球最大广告公司',
-    counter:'万达联合百度腾讯投200亿做电商（腾百万），两年后无声解散——都是顶级公司，但不在能力圈内'
-  },
-  {
-    front:'复利思维',
-    def:'财富增长的核心不是"抓住时机"而是"持续在场"，时间是指数增长的引擎',
-    analogy:'滚雪球——需要的是足够长的坡道（时间）和足够湿的雪（收益率），而非频繁换赛道',
-    example:'华盛顿就职时（1789年）投资100美元于美国股市，到2017年价值约20亿美元——230年，年均约8%',
-    counter:'追求"每年翻倍"的短线交易者——一年翻倍容易，十年不亏极难。中国股市波动幅度是收益的6倍'
-  },
-  {
-    front:'资产配置',
-    def:'将资金分配到不同资产类别（股票/债券/现金），通过比例控制风险而非单押',
-    analogy:'饮食均衡——不是找"最有营养的一道菜"顿顿吃，而是主食+蛋白质+蔬菜合理搭配',
-    example:'年轻长期投资者：80%指数基金+15%国库券+5%现金。每年再平衡一次：股市大涨后卖出部分股票补债券，大跌时反向操作——实践"别人贪婪时恐惧"',
-    counter:'全仓押注单一股票或贷款买房——短期可能暴富，但一次黑天鹅就归零（安然从90美元到1美元仅一周）'
-  },
-  {
-    front:'庞氏骗局识别',
-    def:'依赖新投资者资金支付旧投资者"收益"，无真实价值创造，终将崩溃',
-    analogy:'击鼓传花——音乐停时拿着花的人买单。关键不是花多好看，而是自己能否在音乐停前传出去',
-    example:'乐视：持续借新还旧，无法偿还债务。三大特征：奢华人脉+依赖新投资者+账面利润与现金流脱节。对比特斯拉：创造不可替代价值+创始人投入70%个人财产',
-    counter:'健康企业：具备自我造血能力，达到一定阶段后无需依赖新投资，利润来自经营而非资本运作'
-  },
-  {
-    front:'市场有效性',
-    def:'市场价格已反映所有已知信息。对普通人而言，试图"打败市场"是徒劳的',
-    analogy:'天气预报说70%概率下雨——你可以带伞或不带，结果下雨/不下雨都不能否定预报的合理性。市场预测类似：不是预测结果，而是管理概率',
-    example:'仅5%散户表现超过指数，60%散户亏损。巴菲特的遗产安排：要求后代投资标普500指数基金，而非"继续我的方法"——因为他知道投资能力不可遗传',
-    counter:'"我能在崩盘前逃顶"——过度自信：70%-80%的人认为自己比平均水平聪明'
-  },
-  {
-    front:'金钱观',
-    def:'钱是对资源所有权与使用权的量化度量——花出去才是自己的，挣效率比省更重要',
-    analogy:'钱是选票——你花的每一分钱都在为想要的世界投票。闲置的选票等于放弃了投票权',
-    example:'马尔科姆·麦克莱恩（集装箱发明者）：巅峰时美国首富之一，因石油投资失败破产负债十几亿。钱花不光（不吸毒不赌博前提下），但可以迅速投资/投机投光',
-    counter:'省吃俭用买大房子，10年不换车用宜家简易家具——钱本应提升生活品质，却带来了麻烦'
-  }
-];
+const mksCoreIds = ['c1','c4','c6','c8'];
 
 // Multiple choice: 20 questions, correct answer indices evenly distributed
 // idx 0: 1,5,9,13,17 (5 questions)
@@ -609,7 +521,7 @@ const boundaryKnowledge = [
 // ===== CORE LOGIC =====
 
 let currentTab = 0;
-let currentCard = 0;
+let currentCardIdx = 0;
 let cardFlipped = false;
 let learnedCards = JSON.parse(localStorage.getItem('wj_wealth_learned')||'[]');
 let mcAnswers = JSON.parse(localStorage.getItem('wj_wealth_mc')||'{}');
@@ -651,22 +563,25 @@ function switchTab(i){
 // ===== TAB 1: DASHBOARD =====
 function renderDashboard(){
   // Concept grid
+  var icons=['🧠','🪟','⏰','💎','🎯','📈','⚖️','🔍','🌊','💰'];
   var grid=document.getElementById('conceptGrid');
-  concepts.forEach(function(c){
+  concepts.forEach(function(c,i){
     var div=document.createElement('div');
     div.className='concept-card';
-    div.innerHTML='<div class="icon">'+c.icon+'</div><div class="name">'+c.name+'</div><div class="brief">'+c.brief+'</div>';
-    div.onclick=function(){switchTab(1);setTimeout(function(){goToCard(concepts.indexOf(c))},100)};
+    div.innerHTML='<div class="icon">'+(icons[i]||'📌')+'</div><div class="name">'+c.name+'</div><div class="brief">'+c.def.slice(0,60)+'...</div>';
+    div.onclick=function(){switchTab(1);setTimeout(function(){setCard(i)},100)};
     grid.appendChild(div);
   });
 
   // MKS grid
   var mg=document.getElementById('mksGrid');
-  mksConcepts.forEach(function(c){
+  mksCoreIds.forEach(function(id){
+    var c=concepts.find(function(x){return x.id===id});
+    var i=concepts.indexOf(c);
     var div=document.createElement('div');
     div.className='concept-card mks-core';
-    div.innerHTML='<div class="icon">'+c.icon+'</div><div class="name">★ '+c.name+'</div><div class="brief">'+c.brief+'</div>';
-    div.onclick=function(){switchTab(1);setTimeout(function(){goToCard(concepts.indexOf(c))},100)};
+    div.innerHTML='<div class="icon">'+(icons[i]||'📌')+'</div><div class="name">★ '+c.name+'</div><div class="brief">'+c.def.slice(0,80)+'...</div>';
+    div.onclick=function(){switchTab(1);setTimeout(function(){setCard(i)},100)};
     mg.appendChild(div);
   });
 
@@ -944,57 +859,32 @@ function updateProgress(){
   document.getElementById('conceptBar').style.width=cPct+'%';
   document.getElementById('quizBar').style.width=qPct+'%';
   document.getElementById('totalBar').style.width=tPct+'%';
+  document.getElementById('cardProgress').style.width=cPct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
 }
 
 // ===== TAB 2: FLIP CARDS =====
-function goToCard(i){
-  currentCard=i;
+function setCard(idx){
+  currentCardIdx=idx;
   cardFlipped=false;
-  renderCard();
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
+setCard(0);
 
-function renderCard(){
-  var c=flipCards[currentCard];
-  document.getElementById('flipFront').textContent=c.front;
-  var back='<h4><span class="tag tag-def">定义</span></h4><p>'+c.def+'</p>';
-  back+='<h4><span class="tag tag-analogy">类比</span></h4><p>'+c.analogy+'</p>';
-  back+='<h4><span class="tag tag-example">示例</span></h4><p>'+c.example+'</p>';
-  back+='<h4><span class="tag tag-counter">反例</span></h4><p>'+c.counter+'</p>';
-  document.getElementById('flipBack').innerHTML=back;
-  document.getElementById('flipCounter').textContent=(currentCard+1)+' / '+flipCards.length;
-  var card=document.getElementById('flipCard');
-  card.classList.toggle('flipped',cardFlipped);
-  var lb=document.getElementById('learnedBtn');
-  var isLearned=learnedCards.indexOf(currentCard)>=0;
-  lb.textContent=isLearned?'✔ 已学习':'✔ 标记「已学习」';
-  lb.classList.toggle('learned',isLearned);
-}
-
-function flipCard(){
-  cardFlipped=!cardFlipped;
-  document.getElementById('flipCard').classList.toggle('flipped',cardFlipped);
-}
-
-function prevCard(){
-  currentCard=(currentCard-1+flipCards.length)%flipCards.length;
-  cardFlipped=false;
-  renderCard();
-}
-
-function nextCard(){
-  currentCard=(currentCard+1)%flipCards.length;
-  cardFlipped=false;
-  renderCard();
-}
-
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
 function markLearned(){
-  var idx=learnedCards.indexOf(currentCard);
-  if(idx>=0){learnedCards.splice(idx,1);toast('已取消学习标记')}
-  else{learnedCards.push(currentCard);toast('已标记为已学习 ✓')}
-  save('learned',learnedCards);
-  renderCard();
-  updateProgress();
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  if(!learnedCards.includes(id)){toast('已取消学习标记')}else{toast('已标记为已学习 ✓')}
+  save('learned',learnedCards);updateProgress();setCard(currentCardIdx);
 }
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 
 // ===== TAB 3: QUESTION BANK =====
 function renderQuestionBank(){
@@ -1564,7 +1454,6 @@ function decide(roundIdx,choiceIdx){
 function init(){
   initTabs();
   renderDashboard();
-  renderCard();
   renderQuestionBank();
   renderSocratic();
   renderCaseStudy();
