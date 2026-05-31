@@ -265,11 +265,13 @@
     <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
   </div>
   <div id="quizContainer"></div>
+  <div id="staticQuiz" style="display:block">
   <div class="section">
     <div class="section-title"><span class="ico">📝</span> 选择题（20题）</div>
     <div id="mcQuiz"></div>
     <div class="section-title" style="margin-top:32px"><span class="ico">✍️</span> 简答题（10题）</div>
     <div id="saQuiz"></div>
+  </div>
   </div>
 </div>
 
@@ -757,6 +759,7 @@ function startQuiz(){
   userAnswers = {};
   quizTimeLeft = 900;
   document.getElementById('quizScore').textContent = '';
+  document.getElementById('staticQuiz').style.display = 'none';
   renderQuizPractice();
   startQuizTimer('quizTimer');
 }
@@ -840,6 +843,7 @@ function resetQuiz(){
   document.getElementById('quizContainer').innerHTML = '';
   document.getElementById('quizScore').textContent = '';
   document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
 }
 
 // ========== TAB 2: Quiz ==========

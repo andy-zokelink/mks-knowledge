@@ -244,6 +244,7 @@ h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin
   <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
 </div>
 <div id="quizContainer"></div>
+<div id="staticQuiz" style="display:block">
 <div class="card"><h3>选择题（共20题）</h3>
 <p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p>
 <div id="choiceQuiz"></div>
@@ -251,6 +252,7 @@ h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin
 <div class="card"><h3>简答题（共10题）</h3>
 <p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p>
 <div id="shortQuiz"></div>
+</div>
 </div>
 </div>
 
@@ -642,6 +644,7 @@ function startQuiz(){
   userAnswers = {};
   quizTimeLeft = 900;
   document.getElementById('quizScore').textContent = '';
+  document.getElementById('staticQuiz').style.display = 'none';
   renderQuizPractice();
   startQuizTimer('quizTimer');
 }
@@ -738,6 +741,7 @@ function resetQuiz(){
   document.getElementById('quizContainer').innerHTML = '';
   document.getElementById('quizScore').textContent = '';
   document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
 }
 
 // ===== TAB 2: QUIZ =====

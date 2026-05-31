@@ -321,6 +321,7 @@ th { color: var(--accent); font-weight: 600; }
   <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
 </div>
 <div id="quizContainer"></div>
+<div id="staticQuiz" style="display:block">
 <div class="card">
   <h2>选择题（20道）</h2>
   <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。</p>
@@ -332,6 +333,7 @@ th { color: var(--accent); font-weight: 600; }
   <p style="color:var(--text-light);font-size:13px;">输入你的回答后点击"查看参考答案"对比。</p>
   <div id="saqContainer"></div>
   <button class="btn btn-primary" onclick="resetSAQ()">重做简答题</button>
+</div>
 </div>
 </div>
 
@@ -861,6 +863,7 @@ function startQuiz(){
   userAnswers = {};
   quizTimeLeft = 900;
   document.getElementById('quizScore').textContent = '';
+  document.getElementById('staticQuiz').style.display = 'none';
   renderQuizPractice();
   startQuizTimer('quizTimer');
 }
@@ -945,6 +948,7 @@ function resetQuiz(){
   document.getElementById('quizContainer').innerHTML = '';
   document.getElementById('quizScore').textContent = '';
   document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
 }
 
 // ======== TAB 2: MCQ + SAQ ========
