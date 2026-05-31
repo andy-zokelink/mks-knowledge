@@ -205,6 +205,19 @@ th { color: var(--accent); font-weight: 600; }
   .card { padding: 14px; }
   .tab-bar button { padding: 6px 8px; font-size: 11px; }
 }
+/* Quiz practice system */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:var(--light);border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--light)}
 </style>
 </head>
 <body>
@@ -302,6 +315,14 @@ th { color: var(--accent); font-weight: 600; }
 
 <!-- ==================== TAB 2: 题库系统 ==================== -->
 <div class="tab-content" data-tab="2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--sub)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
 <div class="card">
   <h2>选择题（20道）</h2>
   <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。正确选项索引0-3随机均匀分布。</p>
@@ -883,6 +904,104 @@ function markLearned(){
   save();updateProgress();setCard(currentCardIdx);
 }
 document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ======== TAB 2: RANDOM QUIZ PRACTICE ========
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...saQuestions].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuizPractice();
+    }
+  },1000);
+}
+
+function updateQuizTimerDisplay(elemId){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    if(q.type===undefined || q.opts){
+      html += `<div class="quiz-card" id="qcard${i}">
+        <div class="q-num">选择题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>`;
+      q.opts.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        const dis = userAnswers[i]!==undefined ? 'disabled' : '';
+        html += `<div class="option${sel}" onclick="selectQuizChoice(${i},${j})" id="opt${i}_${j}">${'ABCD'[j]}. ${o}</div>`;
+      });
+      html += `<div id="fb${i}"></div></div>`;
+    }else{
+      html += `<div class="quiz-card">
+        <div class="q-num">简答题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="essay-area" id="essay${i}" placeholder="输入你的回答...">${userAnswers[i]||''}</textarea>
+      </div>`;
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const isCorrect = optIdx === q.ans;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===q.ans?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' '+q.explain;
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.opts).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.opts).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+}
 
 // ======== TAB 2: MCQ + SAQ ========
 function renderMCQ() {
