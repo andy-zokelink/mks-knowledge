@@ -3,1023 +3,1537 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>财富与投资 · 最小知识集</title>
+<title>财富与投资 — 最小知识集</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#e74c3c;
-  --text:#3d2f2f;--text2:#6b5757;--border:#e8d5c4;--gold:#d4a853;
-  --green:#27ae60;--blue:#2980b9;--purple:#8e44ad;--tag-bg:#fef0e0;
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent2: #d4a574;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --radius: 10px;
+  --success: #27ae60;
 }
-body{
-  font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
-  background:var(--bg);color:var(--text);line-height:1.75;
-  min-height:100vh;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; min-height: 100vh;
 }
-.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-/* Header */
-.header{
-  text-align:center;padding:clamp(20px,4vw,40px) 0 clamp(12px,3vw,24px);
-  border-bottom:2px solid var(--border);margin-bottom:clamp(12px,2vw,20px);
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
 }
-.header h1{font-size:clamp(1.3rem,3.5vw,1.8rem);color:var(--accent);font-weight:700}
-.header .sub{font-size:clamp(.85rem,2vw,1rem);color:var(--text2);margin-top:4px}
-.header .home-link{display:inline-block;margin-top:8px;font-size:.85rem;color:var(--blue);text-decoration:none;border:1px solid var(--blue);padding:4px 14px;border-radius:16px;transition:all .2s}
-.header .home-link:hover{background:var(--blue);color:#fff}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+
+/* Container */
+.container { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
 
 /* Tab bar */
-.tab-bar{
-  position:sticky;top:0;z-index:100;background:var(--bg);
-  display:flex;flex-wrap:wrap;gap:4px;padding:8px 0 12px;
-  border-bottom:1px solid var(--border);margin-bottom:16px;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;
+.tab-bar {
+  position: sticky; top: 52px; z-index: 99;
+  background: var(--card); border-bottom: 2px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 2px; padding: 0 8px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
-.tab-btn{
-  flex-shrink:0;padding:6px 13px;border:1px solid var(--border);
-  border-radius:18px;background:var(--card);color:var(--text2);
-  font-size:clamp(.78rem,1.8vw,.9rem);cursor:pointer;transition:all .2s;
-  white-space:nowrap;user-select:none;
+.tab-bar button {
+  flex-shrink: 0; padding: 8px 12px; border: none; background: none;
+  cursor: pointer; font-size: clamp(11px, 1.8vw, 13px); color: var(--text-light);
+  font-family: inherit; border-bottom: 3px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
 }
-.tab-btn:hover{border-color:var(--accent);color:var(--accent)}
-.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-bar button:hover { color: var(--accent); }
+.tab-bar button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 
 /* Tab content */
-.tab-content{display:none;animation:fadeIn .35s ease}
-.tab-content.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.tab-content { display: none; padding-top: 20px; animation: fadeIn 0.35s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Cards */
-.card{
-  background:var(--card);border:1px solid var(--border);border-radius:10px;
-  padding:clamp(14px,3vw,20px);margin-bottom:clamp(10px,2vw,16px);
-  box-shadow:0 1px 4px rgba(0,0,0,.04);
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px;
+  border: 1px solid var(--border);
 }
-.card h2{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--accent);margin-bottom:8px}
-.card h3{font-size:clamp(.9rem,2vw,1rem);color:var(--text);margin:10px 0 6px}
-.card p,.card li{font-size:clamp(.82rem,1.8vw,.92rem);color:var(--text);margin-bottom:4px}
-
-/* MKS badge */
-.mks-badge{
-  display:inline-block;background:var(--accent);color:#fff;
-  font-size:.72rem;padding:1px 8px;border-radius:10px;margin-left:6px;
-  font-weight:600;vertical-align:middle;
-}
-/* Progress bar */
-.progress-wrap{margin:8px 0 14px}
-.progress-label{display:flex;justify-content:space-between;font-size:.82rem;color:var(--text2);margin-bottom:3px}
-.progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .5s ease}
+.card h2 { color: var(--accent); font-size: 18px; margin-bottom: 12px; }
+.card h3 { color: #5a3e3e; font-size: 15px; margin: 10px 0 6px; }
 
 /* Grid */
-.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:12px 0}
-.concept-card{
-  background:var(--card);border:1px solid var(--border);border-radius:8px;
-  padding:14px;text-align:center;cursor:pointer;transition:all .25s;
-  position:relative;overflow:hidden;
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+
+/* Concept card */
+.concept-card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px; border-left: 4px solid var(--accent2);
+  cursor: pointer; transition: transform 0.2s;
 }
-.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.concept-card.core{border-color:var(--accent);border-width:2px}
-.concept-card .icon-name{font-size:1.8rem;margin-bottom:4px}
-.concept-card .name{font-weight:700;font-size:.92rem;color:var(--text)}
-.concept-card .brief{font-size:.78rem;color:var(--text2);margin-top:2px}
-.concept-card .mks-star{position:absolute;top:6px;right:8px;color:var(--accent);font-size:.85rem}
+.concept-card:hover { transform: translateY(-2px); }
+.concept-card.star { border-left-color: var(--accent); }
+.concept-card .num {
+  display: inline-block; width: 26px; height: 26px; line-height: 26px;
+  text-align: center; background: var(--accent2); color: #fff;
+  border-radius: 50%; font-size: 13px; margin-right: 6px;
+}
+.concept-card.star .num { background: var(--accent); }
+.concept-card .star-badge {
+  display: inline-block; background: var(--accent); color: #fff;
+  font-size: 11px; padding: 1px 6px; border-radius: 8px; margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* Progress bar */
+.progress-wrap { margin: 10px 0; }
+.progress-wrap .label { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+.progress-bar {
+  height: 10px; background: var(--border); border-radius: 5px; overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent));
+  border-radius: 5px; transition: width 0.5s ease;
+}
 
 /* SVG container */
-.svg-wrap{overflow-x:auto;margin:12px 0;padding:8px 0;-webkit-overflow-scrolling:touch}
-.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+.svg-wrap { overflow-x: auto; margin: 10px 0; }
+.svg-wrap svg { min-width: 700px; display: block; margin: 0 auto; }
 
 /* Flip card */
-.flip-container{perspective:1000px;width:100%;max-width:600px;margin:0 auto 20px}
-.flip-inner{position:relative;width:100%;min-height:420px;transition:transform .5s;transform-style:preserve-3d}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
 .flip-inner.flipped{transform:rotateY(180deg)}
-.flip-front,.flip-back{
-  position:absolute;width:100%;min-height:420px;backface-visibility:hidden;
-  border-radius:12px;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:28px 24px;text-align:center;
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Question styling */
+.quiz-question { margin-bottom: 20px; }
+.quiz-question .q-text { font-weight: 600; margin-bottom: 10px; }
+.quiz-question .option {
+  padding: 8px 14px; margin: 4px 0; border-radius: 6px;
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+  background: var(--card);
 }
-.flip-front{background:var(--card);border:2px solid var(--border);z-index:2}
-.flip-front .concept-name{font-size:1.3rem;font-weight:700;color:var(--accent)}
-.flip-front .hint{font-size:.82rem;color:var(--text2);margin-top:8px}
-.flip-back{
-  background:var(--card);border:2px solid var(--accent);transform:rotateY(180deg);
-  text-align:left;justify-content:flex-start;overflow-y:auto;
+.quiz-question .option:hover { border-color: var(--accent2); background: #fef9f4; }
+.quiz-question .option.selected { border-color: var(--accent); background: #fef5f0; }
+.quiz-question .option.correct { border-color: #27ae60; background: #eafaf1; }
+.quiz-question .option.wrong { border-color: #e74c3c; background: #fdedec; }
+
+/* Timer */
+.timer {
+  font-size: 24px; font-weight: 700; color: var(--accent);
+  text-align: center; padding: 8px;
 }
-.flip-back h4{color:var(--accent);margin:6px 0 2px;font-size:.9rem}
-.flip-back p{font-size:.82rem;color:var(--text2);margin-bottom:4px}
+.timer.warning { animation: pulse 0.5s infinite alternate; }
+@keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
 
-.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;position:relative;z-index:10;margin-top:16px;margin-bottom:12px}
-.flip-nav button{
-  padding:8px 18px;border:1px solid var(--border);border-radius:20px;
-  background:var(--card);color:var(--text);cursor:pointer;font-size:.85rem;transition:all .2s;
-}
-.flip-nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-.flip-counter{font-size:.85rem;color:var(--text2)}
-
-/* Quiz — use quiz-card NOT card */
-.quiz-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
-.quiz-card.correct{border-color:var(--green);background:#f0faf4}
-.quiz-card.wrong{border-color:var(--accent);background:#fef5f5}
-.quiz-q{font-weight:700;font-size:.92rem;margin-bottom:10px}
-.q-option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .15s}
-.q-option:hover{background:#fef5f0}
-.q-option.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
-.q-option.correct-ans{background:var(--green);color:#fff;border-color:var(--green)}
-.q-feedback{font-size:.83rem;margin-top:8px;padding:8px 12px;border-radius:6px}
-.q-feedback.right{background:#e8f8ef;color:var(--green)}
-.q-feedback.wrong-fb{background:#fef0f0;color:var(--accent)}
-
-/* Exam */
-.timer{font-size:1.4rem;font-weight:700;color:var(--accent);text-align:center;padding:12px}
-.timer.warning{animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.exam-result{text-align:center;padding:20px}
-.exam-result .score{font-size:2.4rem;font-weight:700;color:var(--accent)}
-.exam-result .grade{font-size:1.1rem;margin:6px 0;color:var(--text2)}
-
-/* Mindmap */
-.mindmap-tree{font-size:.85rem;padding-left:8px}
-.mindmap-node{margin:3px 0}
-.mindmap-toggle{cursor:pointer;user-select:none;color:var(--accent);font-weight:700}
-.mindmap-toggle::before{content:'\25b8 ';display:inline-block;transition:transform .2s;font-size:.75rem}
-.mindmap-toggle.open::before{transform:rotate(90deg)}
-.tree-children{display:none;padding-left:20px;border-left:2px solid var(--border);margin-left:8px}
-.tree-children.show,.tree-children.open{display:block}
-.mindmap-leaf{color:var(--text2);padding:2px 0}
+/* Tree / Mindmap */
+.tree { font-size: 14px; }
+.tree ul { list-style: none; padding-left: 20px; }
+.tree li { position: relative; padding: 4px 0; }
+.tree .node-header { cursor: pointer; font-weight: 600; color: var(--accent); }
+.tree .node-header::before { content: "▸ "; font-size: 10px; }
+.tree .node-header.open::before { content: "▾ "; }
+.tree .node-children { display: none; }
+.tree .node-children.open { display: block; }
+.tree .leaf { color: var(--text-light); font-size: 13px; padding: 2px 0; }
 
 /* Socratic */
-.socratic-item{margin-bottom:10px}
-.socratic-q{
-  background:var(--card);border:1px solid var(--border);border-radius:8px;
-  padding:10px 14px;cursor:pointer;font-size:.88rem;font-weight:600;
-  display:flex;justify-content:space-between;align-items:center;transition:all .2s;
+.socratic-q { margin-bottom: 12px; }
+.socratic-q .question {
+  padding: 10px 14px; background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: pointer; font-weight: 600;
+  transition: background 0.2s;
 }
-.socratic-q:hover{border-color:var(--accent)}
-.socratic-q.open{border-color:var(--accent);border-radius:8px 8px 0 0}
-.socratic-a{
-  display:none;background:var(--tag-bg);border:1px solid var(--border);
-  border-top:none;border-radius:0 0 8px 8px;padding:12px 14px;font-size:.83rem;
+.socratic-q .question:hover { background: #fef9f4; }
+.socratic-q .answer { display: none; padding: 10px 14px; color: var(--text-light); }
+.socratic-q .answer.open { display: block; }
+
+/* Decision */
+.decision-option {
+  padding: 12px 16px; margin: 6px 0; border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
 }
-.socratic-a.open{display:block}
+.decision-option:hover { border-color: var(--accent2); }
+.decision-feedback { display: none; padding: 14px; margin-top: 8px; background: #fef9f4; border-radius: var(--radius); }
 
-/* Decision sim */
-.sim-scenario{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
-.sim-scenario h3{color:var(--accent);margin-bottom:8px}
-.sim-choices{display:flex;flex-direction:column;gap:8px;margin:10px 0}
-.sim-choice{
-  padding:10px 14px;border:1px solid var(--border);border-radius:8px;
-  cursor:pointer;font-size:.85rem;transition:all .15s
+/* Table */
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--accent); font-weight: 600; }
+
+/* Buttons */
+.btn {
+  display: inline-block; padding: 10px 20px; border-radius: 22px;
+  border: none; cursor: pointer; font-family: inherit; font-size: 14px;
+  transition: all 0.2s;
 }
-.sim-choice:hover{background:var(--tag-bg);border-color:var(--accent)}
-.sim-choice.chosen{border-color:var(--accent);background:var(--tag-bg)}
-.sim-feedback{font-size:.85rem;padding:12px;border-radius:8px;margin-top:8px;display:none}
-.sim-feedback.show{display:block}
-.sim-feedback.good{background:#e8f8ef;border:1px solid var(--green)}
-.sim-feedback.mid{background:#fef9e7;border:1px solid var(--gold)}
-.sim-feedback.bad{background:#fef0f0;border:1px solid var(--accent)}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+.btn-success { background: var(--success); color: #fff; }
 
-/* Stat table */
-.stat-table{width:100%;border-collapse:collapse;font-size:.83rem;margin:8px 0}
-.stat-table th,.stat-table td{padding:8px 10px;border:1px solid var(--border);text-align:left}
-.stat-table th{background:var(--tag-bg);font-weight:600;color:var(--accent)}
-.stat-table tr:nth-child(even){background:var(--card)}
-
-/* Boundary table */
-.boundary-table{width:100%;border-collapse:collapse;font-size:.82rem}
-.boundary-table td{padding:6px 10px;border:1px solid var(--border)}
-.boundary-table td:first-child{font-weight:600;color:var(--accent);white-space:nowrap}
-
-/* Button */
-.btn{
-  display:inline-block;padding:8px 20px;border-radius:20px;border:none;
-  background:var(--accent);color:#fff;font-size:.88rem;cursor:pointer;
-  transition:all .2s;text-align:center;
+/* Stats */
+.stat-box {
+  display: inline-block; padding: 14px 20px; background: var(--card);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  text-align: center; margin: 6px; min-width: 100px;
 }
-.btn:hover{background:var(--accent2);transform:translateY(-1px)}
-.btn-outline{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
-.btn-outline:hover{background:var(--accent);color:#fff}
-.btn-sm{padding:5px 14px;font-size:.78rem}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.stat-box .num { font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-box .lbl { font-size: 12px; color: var(--text-light); }
 
-/* Tags */
-.tag{display:inline-block;background:var(--tag-bg);color:var(--accent);font-size:.75rem;padding:2px 8px;border-radius:10px;margin:2px}
+/* Tag / badge */
+.tag { display: inline-block; background: #fef0e0; color: var(--accent); font-size: 11px; padding: 2px 8px; border-radius: 10px; margin: 2px; }
 
-/* Footer */
-.footer{text-align:center;padding:30px 0 20px;font-size:.78rem;color:var(--text2);border-top:1px solid var(--border);margin-top:30px}
+/* Quiz practice system */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fef9f4;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--card)}
 
-/* Mobile */
-@media(max-width:600px){
-  .concept-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
-  .flip-inner,.flip-front,.flip-back{min-height:320px}
-  .tab-btn{padding:5px 10px;font-size:.75rem}
+/* Responsive */
+@media (max-width: 600px) {
+  .container { padding: 0 8px 40px; }
+  .card { padding: 14px; }
+  .tab-bar button { padding: 6px 8px; font-size: 11px; }
 }
 </style>
 </head>
 <body>
-<div class="container">
 
-<header class="header">
+<!-- Top bar -->
+<div class="top-bar">
   <h1>财富与投资 · 最小知识集</h1>
-  <p class="sub">从财务规划到资产配置，从通胀应对到数据资产 —— 硅谷来信3财富引擎模块 · 37篇笔记精华</p>
-  <a href="index.html" class="home-link">← 返回知识主板</a>
-</header>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
 
-<nav class="tab-bar" id="tabBar">
-  <button class="tab-btn active" data-tab="0">知识总览</button>
-  <button class="tab-btn" data-tab="1">知识卡片</button>
-  <button class="tab-btn" data-tab="2">题库系统</button>
-  <button class="tab-btn" data-tab="3">考试模式</button>
-  <button class="tab-btn" data-tab="4">复习模式</button>
-  <button class="tab-btn" data-tab="5">思维导图</button>
-  <button class="tab-btn" data-tab="6">深度追问</button>
-  <button class="tab-btn" data-tab="7">案例分析</button>
-  <button class="tab-btn" data-tab="8">实战决策</button>
-</nav>
+<!-- Tab bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="active" data-tab="0">知识集总览</button>
+  <button data-tab="1">知识卡片</button>
+  <button data-tab="2">题库系统</button>
+  <button data-tab="3">考试模式</button>
+  <button data-tab="4">复习模式</button>
+  <button data-tab="5">思维导图</button>
+  <button data-tab="6">深度追问</button>
+  <button data-tab="7">案例分析</button>
+  <button data-tab="8">实战决策</button>
+</div>
 
-<!-- ========== TAB 0: 知识总览 ========== -->
-<section class="tab-content active" data-tab="0">
-  <div class="card">
-    <h2>核心目标</h2>
-    <p style="font-size:1.05rem;font-weight:600;color:var(--accent)">
-      理解财富增长的底层逻辑 —— 资产配置决定财富下限，认知能力决定财富上限，在不确定性中构建个人财富增长的系统框架。
-    </p>
-    <div class="progress-wrap">
-      <div class="progress-label"><span>学习进度</span><span id="progressPct">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-    </div>
+<div class="container" id="tabContents">
+
+<!-- ==================== TAB 0: 知识集总览 ==================== -->
+<div class="tab-content active" data-tab="0">
+
+<div class="card">
+  <h2>核心目标</h2>
+  <p style="font-size:16px;">理解<strong>财富增长的底层逻辑</strong>——资产配置决定财富下限，认知能力决定财富上限，在不确定性中构建个人财富增长的系统框架。</p>
+</div>
+
+<div class="card">
+  <h2>10个核心概念</h2>
+  <div class="grid3" id="conceptGrid"></div>
+</div>
+
+<div class="card">
+  <h2>★ 最小知识集（骨架中的骨架）</h2>
+  <div class="grid2" id="mksGrid"></div>
+</div>
+
+<div class="card">
+  <h2>学习进度</h2>
+  <div class="progress-wrap">
+    <div class="label">概念卡片学习：<span id="cardProgress">0/10</span></div>
+    <div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
   </div>
-
-  <div class="card">
-    <h2>10 大核心概念</h2>
-    <div class="concept-grid" id="conceptGrid"></div>
+  <div class="progress-wrap">
+    <div class="label">题库完成：<span id="quizProgress">0/30</span></div>
+    <div class="progress-bar"><div class="fill" id="quizBar" style="width:0%"></div></div>
   </div>
+</div>
 
-  <div class="card">
-    <h2>概念关系图 <span style="font-size:.78rem;color:var(--text2)">（可左右滑动）</span></h2>
-    <div class="svg-wrap" id="svgContainer"></div>
-    <p style="font-size:.78rem;color:var(--text2);text-align:center;margin-top:8px">
-      图例：<span style="color:#c0392b">━</span> 核心驱动 &nbsp;
-      <span style="color:#d4a574">━</span> 资产派生 &nbsp;
-      <span style="color:#8b7355">┅</span> 交叉赋能
-    </p>
-  </div>
+<div class="card">
+  <h2>概念关系图</h2>
+  <div class="svg-wrap" id="svgContainer"></div>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;">
+    <span style="color:#c0392b;">━━ 核心驱动</span> &nbsp;
+    <span style="color:#d4a574;">━━ 资产派生</span> &nbsp;
+    <span style="color:#8b7355;">━━ 交叉赋能</span>
+  </p>
+</div>
 
-  <div class="card">
-    <h2>★ 最小知识集核心（4 个必须深刻理解）</h2>
-    <div class="concept-grid" id="mksCoreGrid"></div>
+<div class="card">
+  <h2>边界知识表（15条）</h2>
+  <div style="overflow-x:auto;">
+  <table id="boundaryTable"></table>
   </div>
+</div>
 
-  <div class="card">
-    <h2>边界知识表</h2>
-    <table class="boundary-table"><tbody id="boundaryTable"></tbody></table>
-  </div>
+<div class="card">
+  <h2>学习路径（5阶段）</h2>
+  <div id="learningPath"></div>
+</div>
+</div>
 
-  <div class="card">
-    <h2>学习路径（5 阶段）</h2>
-    <ol style="padding-left:20px;font-size:.88rem;line-height:2">
-      <li><strong>先学风险管理与止损思维</strong> — 掌握财富保底的底层逻辑，理解"厄运链"为何要斩断，这是所有投资决策的第一课</li>
-      <li><strong>再学资产与债务的本质区别</strong> — 重新定义"拥有"与"负债"，建立财务规划的思考框架，理解"旅行箱理论"</li>
-      <li><strong>然后深入四种财富路径</strong> — 对照自身条件选择合适的致富赛道，理解每种路径的代价与回报</li>
-      <li><strong>接着学通胀应对与投资工具</strong> — 从现金、黄金、指数基金到房产，建立多元化资产配置能力</li>
-      <li><strong>最后补充数据资产与虚拟经济</strong> — 把握未来财富趋势，理解信息替代能量的必然性</li>
-    </ol>
-  </div>
-</section>
+<!-- ==================== TAB 1: 知识卡片 ==================== -->
+<div class="tab-content" data-tab="1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="fill" id="cardProgressBar" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
 
-<!-- ========== TAB 1: 知识卡片 ========== -->
-<section class="tab-content" data-tab="1">
-  <div class="flip-container" id="flipCard">
-    <div class="flip-inner" id="flipInner">
-      <div class="flip-front"><div class="concept-name" id="flipName"></div><div class="hint">点击卡片翻转查看详情</div></div>
-      <div class="flip-back" id="flipBack"></div>
-    </div>
-  </div>
-  <div class="flip-nav">
-    <button id="flipPrev">◀ 上一个</button>
-    <span class="flip-counter" id="flipCounter">1 / 10</span>
-    <button id="flipToggle">翻转卡片</button>
-    <button id="flipLearned">✓ 标记已学</button>
-    <button id="flipNext">下一个 ▶</button>
-  </div>
-</section>
+<!-- ==================== TAB 2: 题库系统 ==================== -->
+<div class="tab-content" data-tab="2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card">
+  <h2>选择题（20道）</h2>
+  <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。正确选项索引0-3随机均匀分布。</p>
+  <div id="mcqContainer"></div>
+  <button class="btn btn-primary" onclick="resetMCQ()">重做选择题</button>
+</div>
+<div class="card">
+  <h2>简答题（10道）</h2>
+  <p style="color:var(--text-light);font-size:13px;">输入你的回答后点击"查看参考答案"对比。</p>
+  <div id="saqContainer"></div>
+  <button class="btn btn-primary" onclick="resetSAQ()">重做简答题</button>
+</div>
+</div>
+</div>
 
-<!-- ========== TAB 2: 题库系统 ========== -->
-<section class="tab-content" data-tab="2">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-    <h2 style="margin:0">选择题练习（20题）</h2>
-    <button class="btn btn-sm btn-outline" id="quizReset">重置全部</button>
-  </div>
-  <div id="quizList"></div>
-</section>
+<!-- ==================== TAB 3: 考试模式 ==================== -->
+<div class="tab-content" data-tab="3">
+<div class="card" id="examSetup">
+  <h2>模拟考试</h2>
+  <p>从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+  <button class="btn btn-primary" onclick="startExam()">开始考试</button>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;">提交后显示分数、错题解析、薄弱概念</p>
+</div>
+<div class="card" id="examArea" style="display:none;">
+  <div class="timer" id="examTimer">15:00</div>
+  <div id="examContent"></div>
+  <button class="btn btn-primary" onclick="submitExam()" style="margin-top:12px;">提交答卷</button>
+</div>
+<div class="card" id="examResult" style="display:none;"></div>
+</div>
 
-<!-- ========== TAB 3: 考试模式 ========== -->
-<section class="tab-content" data-tab="3">
-  <div class="card" style="text-align:center">
-    <h2>模拟考试</h2>
-    <p style="font-size:.9rem;color:var(--text2)">从题库随机抽取 7 道选择题 + 3 道简答题，限时 15 分钟</p>
-    <div class="timer" id="examTimer">15:00</div>
-    <button class="btn" id="examStart">开始考试</button>
-    <div id="examContent"></div>
-    <div id="examResult" class="exam-result" style="display:none"></div>
-  </div>
-</section>
-
-<!-- ========== TAB 4: 复习模式 ========== -->
-<section class="tab-content" data-tab="4">
+<!-- ==================== TAB 4: 复习模式 ==================== -->
+<div class="tab-content" data-tab="4">
+<div class="card">
   <h2>学习统计</h2>
-  <div id="statsPanel"></div>
+  <div id="statsArea"></div>
+</div>
+<div class="card">
+  <h2>错题本</h2>
+  <div id="errorBook"></div>
+</div>
+<div class="card">
+  <h2>概念薄弱点分析</h2>
+  <div id="weakPoints"></div>
+</div>
+</div>
 
-  <h2 style="margin-top:20px">错题本</h2>
-  <div id="wrongBook"><p style="color:var(--text2)">暂无错题记录。去题库练习吧！</p></div>
+<!-- ==================== TAB 5: 思维导图 ==================== -->
+<div class="tab-content" data-tab="5">
+<div class="card">
+  <h2>财富与投资 · 思维导图</h2>
+  <p style="color:var(--text-light);font-size:13px;">可折叠/展开的层级树形结构。点击节点展开子级。</p>
+  <div class="tree" id="mindTree"></div>
+</div>
+</div>
 
-  <h2 style="margin-top:20px">概念薄弱点</h2>
-  <div id="weakConcepts"></div>
-  <div style="margin-top:16px">
-    <button class="btn btn-outline btn-sm" onclick="resetReview()">重置全部进度</button>
-  </div>
-</section>
+<!-- ==================== TAB 6: 深度追问 ==================== -->
+<div class="tab-content" data-tab="6">
+<div class="card">
+  <h2>苏格拉底式追问</h2>
+  <p style="color:var(--text-light);font-size:13px;">对每个核心概念逐层追问，点击问题展开答案。</p>
+  <div id="socraticArea"><!-- inline HTML rendered by JS --></div>
+</div>
+</div>
 
-<!-- ========== TAB 5: 思维导图 ========== -->
-<section class="tab-content" data-tab="5">
-  <div class="card">
-    <h2>知识体系思维导图</h2>
-    <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">点击 ▸ 展开/折叠节点</p>
-    <div class="mindmap-tree" id="mindmap"></div>
-  </div>
-</section>
+<!-- ==================== TAB 7: 案例分析 ==================== -->
+<div class="tab-content" data-tab="7">
+<div class="card">
+  <h2>案例1：NBA球星财富蒸发 —— MKS四维度拆解</h2>
+  <p style="color:var(--text-light);font-size:13px;">从资产/债务区分到止损意识——为什么60%的NBA球员退役5年内破产？</p>
+  <table>
+    <tr><th>维度</th><th>分析</th></tr>
+    <tr><td><strong>核心概念</strong></td><td>资产vs债务：豪车、供养亲友都是"伪装成资产的债务"；风险管理：缺乏对非预期波动的认知和预案</td></tr>
+    <tr><td><strong>关键决策</strong></td><td>缺乏止损意识：沃克在2008年金融危机前投资140处房产，成为"接盘侠"——没有切断厄运链反而加杠杆</td></tr>
+    <tr><td><strong>制度力量</strong></td><td>社会成熟度不足：体育特长生文化课缺失、社交圈单一，退役后缺乏"风险分担池"支持系统</td></tr>
+    <tr><td><strong>长期主义</strong></td><td>乔丹的反例：只投资熟悉的领域，耐心持有——财富增长需要匹配驾驭财富的能力（德不配财，财富即诅咒）</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--text-light);margin-top:10px;">
+    <strong>MKS启示：</strong>NBA破产案例串联了资产债务区分、止损思维、风险管理三大核心概念——财富的威胁往往不是"赚太少"而是"守不住"。
+  </p>
+</div>
 
-<!-- ========== TAB 6: 深度追问 ========== -->
-<section class="tab-content" data-tab="6">
-  <div class="card"><h2>苏格拉底式追问</h2><p style="font-size:.82rem;color:var(--text2)">点击问题展开思考</p></div>
-  <div id="socraticList"></div>
-</section>
+<div class="card" style="margin-top:16px">
+  <h2>案例2：西蒙-埃利希世纪赌局 —— 资源稀缺性的再思考</h2>
+  <p style="color:var(--text-light);font-size:13px;">1980-1990十年间五种金属全部降价——技术进步如何颠覆稀缺性假设？</p>
+  <table>
+    <tr><th>维度</th><th>分析</th></tr>
+    <tr><td><strong>核心概念</strong></td><td>技术进步的资源替代效应：当资源变贵时，替代材料被发明（塑料替代金属、新能源替代石油）</td></tr>
+    <tr><td><strong>关键决策</strong></td><td>埃利希的失败不在数据，而在思维框架——线性外推忽略了人类创造力的指数效应</td></tr>
+    <tr><td><strong>制度力量</strong></td><td>市场定价机制：价格上涨→激励创新→替代品出现→价格回落，这是一套自修复系统</td></tr>
+    <tr><td><strong>长期主义</strong></td><td>西蒙的"终极资源"理论：人类的创造力和适应力才是真正的终极资源，而非埋在地下的矿产</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--text-light);margin-top:10px;">
+    <strong>MKS启示：</strong>赌局结果验证了"信息替代能量"的底层逻辑——正如虚拟经济正在替代实体经济的GDP占比。
+  </p>
+</div>
+</div>
 
-<!-- ========== TAB 7: 案例分析 ========== -->
-<section class="tab-content" data-tab="7">
-  <div class="card">
-    <h2>案例1：NBA球星财富蒸发 —— MKS四维度拆解</h2>
-    <table class="stat-table">
-      <tr><th>维度</th><th>分析</th></tr>
-      <tr><td><strong>核心概念</strong></td><td>资产vs债务：豪车、供养亲友都是"伪装成资产的债务"；风险管理：60%NBA球员退役5年内破产，源于缺乏风险认知</td></tr>
-      <tr><td><strong>关键决策</strong></td><td>缺乏止损意识：沃克在2008年金融危机前投资140处房产，成为"接盘侠"——没有切断厄运链反而加杠杆</td></tr>
-      <tr><td><strong>制度力量</strong></td><td>社会成熟度不足：体育特长生文化课缺失、社交圈单一，退役后缺乏"风险分担池"支持系统</td></tr>
-      <tr><td><strong>长期主义</strong></td><td>乔丹的反例：只投资熟悉的领域，耐心持有——财富增长需要匹配驾驭财富的能力（德不配财，财富即诅咒）</td></tr>
-    </table>
-    <p style="font-size:.83rem;color:var(--text2);margin-top:10px">
-      <strong>MKS启示：</strong>NBA破产案例串联了资产债务区分、止损思维、风险管理三大核心概念——财富的威胁往往不是"赚太少"而是"守不住"。
-    </p>
-  </div>
+<!-- ==================== TAB 8: 实战决策 ==================== -->
+<div class="tab-content" data-tab="8">
+<div class="card">
+  <h2>财富决策模拟（3轮）</h2>
+  <p style="color:var(--text-light);font-size:13px;">每轮面临一个真实决策场景，选择后显示MKS分析反馈。</p>
+  <div id="decisionGame"><!-- inline HTML rendered by JS --></div>
+</div>
+</div>
 
-  <div class="card" style="margin-top:16px">
-    <h2>案例2：西蒙-埃利希世纪赌局 —— 资源稀缺性的再思考</h2>
-    <table class="stat-table">
-      <tr><th>维度</th><th>分析</th></tr>
-      <tr><td><strong>核心概念</strong></td><td>技术进步的资源替代效应：当资源变贵时，替代材料被发明（塑料替代金属、新能源替代石油）</td></tr>
-      <tr><td><strong>关键决策</strong></td><td>埃利希的失败不在数据，而在思维框架——线性外推忽略了人类创造力的指数效应</td></tr>
-      <tr><td><strong>制度力量</strong></td><td>市场定价机制：价格上涨→激励创新→替代品出现→价格回落，这是一套自修复系统</td></tr>
-      <tr><td><strong>长期主义</strong></td><td>西蒙的"终极资源"理论：人类的创造力和适应力才是真正的终极资源，而非埋在地下的矿产</td></tr>
-    </table>
-    <p style="font-size:.83rem;color:var(--text2);margin-top:10px">
-      <strong>MKS启示：</strong>赌局结果（五种金属全部降价）验证了"信息替代能量"的底层逻辑——正如虚拟经济正在替代实体经济的GDP占比。
-    </p>
-  </div>
-</section>
-
-<!-- ========== TAB 8: 实战决策 ========== -->
-<section class="tab-content" data-tab="8">
-  <div class="card"><h2>财富决策模拟（3轮）</h2><p style="font-size:.82rem;color:var(--text2)">每个场景做出选择，查看MKS分析反馈</p></div>
-  <div id="simScenarios"></div>
-</section>
-
-<footer class="footer">
-  基于吴军·硅谷来信3「财富与投资」37篇笔记 · 最小知识集 · 生成于 2026-05-30
-</footer>
-
-</div><!-- .container -->
+</div><!-- /container -->
 
 <script>
-// ==================== GLOBAL STATE (define at top to avoid TDZ) ====================
-var STORAGE_KEY = 'mks_wealth_invest_slgx3';
-function loadState(){
-  try{
-    var raw=localStorage.getItem(STORAGE_KEY);
-    return raw?JSON.parse(raw):{learned:{},quizDone:{},wrongList:[],examHistory:[],simProgress:0};
-  }catch(e){return{learned:{},quizDone:{},wrongList:[],examHistory:[],simProgress:0};}
+// ======== DATA ========
+
+const concepts = [
+  { id:'c1', name: "风险管理", star: true, short: "识别非预期波动，用3σ法则量化承受能力，构建风险分担池",
+    def: "风险是超出意料的波动且伤害程度因人而异。核心量化工具：3σ法则（承受3倍标准差波动），定性策略：充分认知+预案+底线思维。主动风险不等于被动风险。",
+    analogy: "如同开车——正常路况的颠簸不是风险（正常波动），突然出现的深坑才是（非预期波动）。老司机系安全带、买保险、保持车距就是风险管理。",
+    example: "香港启德机场（世界最危险机场之一）因安排经验丰富飞行员+提高警惕，几乎无严重事故。李开复用两台独立服务器将死机概率从10%降至1%。",
+    counter: "五倍杠杆全仓炒股跌20%——主动选择的结果导致不可逆损失，这不是"运气不好"而是风险管理的失败。" },
+  { id:'c2', name: "止损思维", star: true, short: "接受局部损失避免更大灾难，斩断厄运链，不做"堤内损失堤外补"",
+    def: "止损的本质是接受已发生的损失，避免为补救小错而引发更大连锁灾难。核心认知：厄运会被错误应对方式放大。应用场景：投资、时间管理、人际关系。",
+    analogy: "如同拔牙——蛀牙初期处理很简单，拖延不治会导致感染扩散，最终需要根管治疗甚至拔掉多颗牙。止损就是"第一次牙痛就去看牙医"。",
+    example: "淮海战役国民党为救44军→赔上5个兵团→失去长江以北。时间管理：银行排队超时果断放弃，避免连锁延误（超市排队、交通拥堵）。",
+    counter: "伯奇尔香肠事件——为晾香肠开窗→引海鸥→扔鞋驱鸟→吹风机短路→禁入酒店17年。每一步都可用止损中止。" },
+  { id:'c3', name: "资产vs债务", star: true, short: "资产是能产生回报的东西，债务是持续消耗你资源的东西——同一物品可因使用方式而转化",
+    def: "清崎框架的深化：资产=拥有并消耗后能获得更高回报；债务=持续产生持有成本（金钱/空间/时间/注意力）而无实质回报。关键：同一样东西可因使用方式而在资产与债务之间转化。",
+    analogy: "如同旅行箱——资产是你想装进去的好东西，债务是塞满箱子的垃圾。箱子塞满了（无冗余），新机会来了也装不下（微软高管因房贷错失谷歌早期机会）。",
+    example: "房产：首付合理+房价上涨=资产；房价下跌30%+贷款150万>市值140万=债务。技能：钢琴（掌握音乐基础=资产）vs 冷门乐器（仅为考级=债务）。",
+    counter: "奥迪车闲置=每年1000美元维修+1500美元保险的债务。学了却不知用途的"技能"、需大量时间维护的游戏账号——都是伪装成资产的债务。" },
+  { id:'c4', name: "财务自由本质", star: true, short: "财务自由是手段而非目的，核心是安全感和做喜欢的事的自由，不是"花不完的钱"",
+    def: "财务自由不等于提前退休。真正获得财务自由的人不会完全停止工作（如巴菲特）。核心本质：安全感（经济冗余度）+个人自由（找到热爱的事业并做到行业领先）。",
+    analogy: "如同游泳——不是因为有了游泳池才会游泳，而是因为会游泳才能在任何一个泳池享受。财务自由的本质是"会游泳"，而非"拥有最大的泳池"。",
+    example: "吴军在清华任教时的状态：收入有限但因热爱工作而获得工作自主权。冯仑："欲望无成本"——财富永远无法满足无限欲望。",
+    counter: "2000年互联网泡沫中，部分人资产缩水80-90%，财务自由周期不足两年——消费升级（本田换宝马、经济舱升商务舱）导致财富快速消耗。" },
+  { id:'c5', name: "四种财富路径", star: false, short: "优质工作+投资(20%) / 企业爬梯子(31%) / 高级专业人才(19%) / 梦想家(28%)",
+    def: "基于美国百万富翁统计的四条可行致富路径。每条路径有不同的代价、风险和速度。核心共性：都需要努力、耐心和持续学习能力。",
+    analogy: "如同登山有四条路线——南坡缓但长（优质工作+投资），北坡陡但快（梦想家创业），索道稳但要排队（企业爬梯子），直升机贵但高效（高级专业人才）。选哪条取决于你的装备和体能。",
+    example: "优质工作+投资：年存20%收入+长期投资→50岁平均350万美元。梦想家：成功者40岁前平均740万美元，但需每周工作61小时以上，平均12年。",
+    counter: "普通散户试图通过短线交易暴富——不属于四条路径中的任何一条，本质是赌博而非财富积累。" },
+  { id:'c6', name: "通胀应对", star: false, short: "中产受通胀冲击最大，知识与能力是终极抗通胀资源，房产和股票优于现金黄金",
+    def: "通胀通过刺激消费、财富再分配、稀释债务等机制推动经济，但不同阶层受影响差异显著。富人通过投资资产对冲，中产积蓄最易被稀释。",
+    analogy: "如同跑步机——通胀让跑步机加速，站着不动（持有现金）就会摔下去，跟得上速度（收入增长>通胀）就能保持位置，跑得更快（资产增值>通胀）就能前进。",
+    example: "土耳其通胀40%/年，工资按通胀率调整的劳动者生活稳定，靠存款"吃老本"者难以维持。有房且锁定贷款利息的中产反而受益（房贷实际价值随通胀减少）。",
+    counter: "抢购物资、囤积黄金——黄金2011-2020年仅涨2.5%，同期美股（含股息）涨90%。明朝末年"金贱米贵"证明黄金在极端情况下无法兑换必需品。" },
+  { id:'c7', name: "指数基金定投", star: false, short: "长期+稳定市场是前提，短期无法保证正回报。懂而不用是因为过度自信",
+    def: "指数基金长期盈利的两大前提：足够长投资周期+稳定增长的市场与法律保障。美国股市因十年周期稳定增长成为典型案例，日本因20年停滞回报不佳。",
+    analogy: "如同种树——你种下一片树林（买指数基金），前三年看不到什么变化，十年后成荫。但如果频繁挖出来看根长得怎么样（频繁交易），树就死了。",
+    example: "美国市场：长期定投标普500指数基金的投资者多数跑赢主动型基金。巴菲特与对冲基金的十年赌约：标普500指数基金完胜。",
+    counter: "1929年大萧条前投资道琼斯指数，需至1960年代回本（30年）。日本1990年泡沫后20年经济停滞，指数基金同样亏损——"稳定增长的市场"是前提。" },
+  { id:'c8', name: "数据资产化", star: false, short: "数据是未来最大资产类别，但需解决所有权(法律)和复制(技术)两大障碍",
+    def: "数据资产化的两大障碍：所有权不清晰（法权层面）+复制成本近乎为零（技术层面）。解决方案：GDPR/CCPA明确所有权，区块链实现"不可复制"的数字内容。",
+    analogy: "如同银行存款——你的数据就像存进银行的现金。银行（平台）帮你保管但不拥有所有权，你获得"利息"（授权收益），银行赚"利差"（服务费），第三方"贷款"需付使用费。",
+    example: "罕见病基因数据被罗氏制药以200多万英镑收购。医疗数据通过区块链授权：医生查病例支付10-15美元/次，疑难杂症患者年授权收入可达1-2万美元。",
+    counter: "中国数据量最大但资产价值有限——类似软件市场"用户多但规模小"的困境。Facebook出售8700万用户数据给剑桥分析，FTC罚款50亿美元。" },
+  { id:'c9', name: "虚拟经济趋势", star: false, short: "信息替代能量是不可逆的底层规律，虚拟经济占比将持续上升，实体经济重要性降低",
+    def: "经济发展的两大历史趋势：原材料成本占比持续下降+虚拟产品与服务占比上升。底层逻辑：信息替代能量——以更低的信息传递成本换取更低的时间和能量成本。",
+    analogy: "如同从写信到发微信——写信需要纸、笔、邮票、邮递员（能量密集），微信只需电和数据（信息密集）。前者成本高、速度慢，后者几乎免费且即时。",
+    example: "非典(2003)催生电商：刘强东被迫线上卖货后发现效率优势，关闭所有零售店。通用电气+波音+强生+宝洁利润总和未必比得上谷歌一家。",
+    counter: "转型失败者：JC PENNEY、J CREW永久关门。高端百货Lord & Taylor 2020年破产。米其林餐厅依赖线下体验，转型难度大。" },
+  { id:'c10', name: "创业成功要素", star: false, short: "全能性(任何岗位可顶上)+生存力(养活团队)+诚信度。投资本质是投人",
+    def: "创业成功的三大标准：全能性（能将自己压榨到极致）、生存力（有能力养活团队）、诚信度（做人基本要求）。核心资格：养活团队的能力而非被团队养活。",
+    analogy: "如同荒野求生——大公司是设施齐全的营地，创业是自己生火打猎。你必须同时是猎人、厨师、哨兵和医生，直到团队壮大到可以分工。",
+    example: "Grail公司：创始人胡贝尔（谷歌前VP），融资至80亿美元被收购，3年300%回报。谷歌创业初期，佩奇、布林亲自攒机器拉网线，仅在无法分身时扩招。",
+    counter: "部分创业者融到资金后立即扩充团队、当甩手掌柜，最终必然失败。名校毕业生入职华为一个月写万言书谈战略→任正非批示"建议辞退"。" }
+];
+
+// MKS deep dive (4 star items)
+const mksDeep = [
+  { concept: concepts[0], why: "理解风险的本质（非预期波动×个体承受力）是财富保底的基石。不懂3σ法则，就无法量化自己能承受多少波动，更无法区分"正常波动"和"真正的风险"。",
+    apply: "做任何投资决策前，先算清楚自己最大可承受损失（3σ范围），然后在这个范围内构建资产配置。" },
+  { concept: concepts[1], why: "止损思维贯穿所有财富决策——不仅用在投资中割肉斩仓，更用于时间管理、人际关系、职业选择。厄运链之所以致命，不是因为第一块多米诺骨牌，而是因为后面的连锁反应。",
+    apply: "遇到"要不要坚持"的困惑时，用J曲线框架判断：下行是暂时的（改革初期）还是结构性的（基本面恶化）？后者必须止损。" },
+  { concept: concepts[2], why: "重新定义资产与债务，是建立正确财富观的第一步。大多数人以为自己拥有的"资产"——闲置的汽车、冷门技能、过多房产——实际上都是持续消耗资源的债务。",
+    apply: "每年审视自己的"拥有物清单"，对每项问三个问题：它产生回报吗？持有成本是多少？没有它我会失去什么机会？" },
+  { concept: concepts[3], why: "财务自由的本质不是"花不完的钱"而是"找到热爱且擅长的事"。这个认知转换极其关键——前者是永远无法到达的彼岸（欲望无上限），后者是当下可以开始的路。",
+    apply: "与其计算"FIRE需要多少本金"，不如问自己：如果不需要为钱工作，我会做什么？然后从现在开始每天花一小时做那件事。" }
+];
+
+const boundaryKnowledge = [
+  { name: "企业主人翁心态的两大标准", scene: "利益平衡能力+工作定位认知，与"关心无关业务"有本质区别" },
+  { name: "华为正反案例（万言书vs千里奔华为）", scene: "理解"以主人自居"与真正主人翁精神的区别" },
+  { name: "盖蒂家族财富诅咒", scene: "德不配财的经典案例：一代60亿美元→三代缩水至20亿" },
+  { name: "罗宾汉证券(Robinhood)盈利模式", scene: "零手续费券商如何通过赚价差"割韭菜"" },
+  { name: "辛普森悖论与伯克森悖论", scene: "数学思维在投资判断中的应用——数据背后的真相" },
+  { name: "人口结构与抚养比趋势", scene: "全球经济长期判断的底层逻辑：中国抚养比从2.4:1降至2:1" },
+  { name: "深度工作与职业选择", scene: "纽波特理论：激情源于擅长，深度工作10-20倍于普通状态" },
+  { name: "时间管理的四种方法", scene: "做减法+止损+B计划+减少碎片时间，系统性提升时间价值" },
+  { name: "全球经济体三大梯队", scene: "中/美第一梯队，印/越/墨第二梯队，欧/日/韩第三梯队" },
+  { name: "GDPR与CCPA数据法规", scene: "欧盟(2018)和加州(2020)的数据保护条例，数据所有权归用户" },
+  { name: "免费产品的代价", scene: "社交困境：如果产品免费，你就是产品——多巴胺驱动的成瘾机制" },
+  { name: "J曲线与滞后效应", scene: "改革初期必先下行，坚持正确方向越过拐点后进入持续上升" },
+  { name: "西蒙《终极资源》理论", scene: "人类创造力是终极资源，技术进步不断创造替代方案" },
+  { name: "企业画饼识别策略", scene: "区分弱势领导(无能力)vs有能力不兑现型(需绑定其利益)" },
+  { name: "借贷消费的利率陷阱", scene: "借呗日息0.045%=年化20%，美国工资日贷半月息2%=年化60%" }
+];
+
+const learningStages = [
+  { stage: "第一阶段：先学风险管理与止损思维", content: "掌握财富保底的底层逻辑，理解"厄运链"为何要斩断，学会用3σ法则量化自己的风险承受能力。这是所有投资决策的第一课——先学会不输，再学怎么赢。" },
+  { stage: "第二阶段：再学资产与债务的本质区别", content: "重新定义"拥有"与"负债"，建立财务规划的思考框架。理解"旅行箱理论"——透支消费让人失去调整空间，而财务冗余是机会的入场券。" },
+  { stage: "第三步：然后深入四种财富路径", content: "对照自身条件选择合适的致富赛道。每种路径有明确的代价与回报：优质工作+投资最稳但慢，梦想家最快但代价最大，企业爬梯子和高级专业人才居中。" },
+  { stage: "第四阶段：接着学通胀应对与投资工具", content: "从现金、黄金、指数基金到房产，建立多元化资产配置能力。核心认知：知识与能力才是对抗通胀的终极资源，而非任何单一资产类别。" },
+  { stage: "第五阶段：最后补充数据资产与虚拟经济", content: "把握未来财富趋势，理解信息替代能量的必然性。数据资产化和虚拟经济不是"遥远的未来"，而是正在发生的进行时——尽早建立认知框架。" }
+];
+
+// ======== MCQ (20 questions, answers evenly distributed: {0:5,1:5,2:5,3:5}) ========
+const mcQuestions = [
+  {
+    q: "美国百万富翁中占比最高的财富积累路径是？",
+    opts: ["优质工作+合理投资(约20%)", "企业爬梯子(约31%)", "高级专业人才(约19%)", "梦想家创业(约28%)"],
+    ans: 1,
+    concept: "四种财富路径"
+  },
+  {
+    q: "吴军认为，财务自由的核心本质是什么？",
+    opts: ["拥有花不完的钱", "40岁前退休", "拥有被动收入超过支出", "安全感与个人自由"],
+    ans: 3,
+    concept: "财务自由本质"
+  },
+  {
+    q: "根据吴军观点，"现金为王"在什么市场环境下会失效？",
+    opts: ["全球流动性泛滥时", "经济衰退时", "股市暴跌时", "利率上升时"],
+    ans: 0,
+    concept: "通胀应对"
+  },
+  {
+    q: "NBA球员退役后破产的最主要原因是什么？",
+    opts: ["工资收入太低", "奢侈消费+投资不善+社会成熟度不足", "税收太高", "经纪人侵吞资产"],
+    ans: 1,
+    concept: "风险管理"
+  },
+  {
+    q: "深度工作的效率可达普通工作状态的多少倍？",
+    opts: ["10-20倍", "2-3倍", "50倍", "5倍"],
+    ans: 0,
+    concept: "创业成功要素"
+  },
+  {
+    q: "西蒙-埃利希世纪赌局的结果是什么？",
+    opts: ["五种金属价格全部上涨", "五种金属价格全部下跌", "三种上涨两种下跌", "赌局被取消"],
+    ans: 1,
+    concept: "虚拟经济趋势"
+  },
+  {
+    q: "数据资产化的技术解决方案主要依赖什么？",
+    opts: ["云计算", "大数据分析", "人工智能", "区块链"],
+    ans: 3,
+    concept: "数据资产化"
+  },
+  {
+    q: "吴军的"旅行箱理论"主要用来说明什么？",
+    opts: ["旅行要轻装上阵", "消费要精打细算", "物质追求没有止境", "透支消费让人失去调整空间"],
+    ans: 3,
+    concept: "资产vs债务"
+  },
+  {
+    q: "贷款买房成为"资产"而非"债务"需要满足的核心条件是？",
+    opts: ["房产升值率超过其他投资回报", "房价绝对值足够高", "贷款年限足够长", "月供不超过收入30%"],
+    ans: 0,
+    concept: "资产vs债务"
+  },
+  {
+    q: "创业成功最关键的基础能力是什么？",
+    opts: ["写出漂亮的商业计划书", "找到顶级投资人", "拥有名校学历", "养活团队的能力"],
+    ans: 3,
+    concept: "创业成功要素"
+  },
+  {
+    q: "通胀背景下，哪个群体受到的冲击最大？",
+    opts: ["富人(持有大量投资资产)", "中产阶级(积蓄被稀释，缺乏对冲工具)", "低收入者(几乎没有存款)", "政府(债务实际价值下降)"],
+    ans: 1,
+    concept: "通胀应对"
+  },
+  {
+    q: "虚拟经济替代实体经济的底层逻辑是什么？",
+    opts: ["政府政策引导", "消费者偏好变化", "信息替代能量", "资本逐利性"],
+    ans: 2,
+    concept: "虚拟经济趋势"
+  },
+  {
+    q: "3σ风险法则建议投资者承受多大程度的波动能力？",
+    opts: ["1倍标准差", "3倍标准差", "1.5倍标准差", "5倍标准差"],
+    ans: 1,
+    concept: "风险管理"
+  },
+  {
+    q: "吴军认为投资的本质是什么？",
+    opts: ["选对行业", "选对时机", "投人", "选对商业模式"],
+    ans: 2,
+    concept: "创业成功要素"
+  },
+  {
+    q: "实现财务自由最关键的步骤是什么？",
+    opts: ["积累到1000万本金", "投资年化收益超过15%", "找到喜欢的事并做到行业领先", "购买足够多的房产"],
+    ans: 2,
+    concept: "财务自由本质"
+  },
+  {
+    q: "指数基金定投能稳定盈利的前提条件不包括什么？",
+    opts: ["短期高频交易", "足够长的投资周期", "稳定增长的市场与法律保障", "坚持不频繁操作"],
+    ans: 0,
+    concept: "指数基金定投"
+  },
+  {
+    q: "数据成为资产面临的最大障碍是什么？",
+    opts: ["所有权不清晰且可无限复制", "存储成本太高", "缺乏分析工具", "用户不愿意分享"],
+    ans: 0,
+    concept: "数据资产化"
+  },
+  {
+    q: ""挑金子"与"滤沙子"的根本区别是什么？",
+    opts: ["前者更快", "前者更准", "主动选择高价值目标vs被动排除低价值项", "前者更省力"],
+    ans: 2,
+    concept: "财务自由本质"
+  },
+  {
+    q: "伯克森悖论的核心洞见是什么？",
+    opts: ["数据越多越准确", "统计方法不可靠", "大数据消除了不确定性", "样本选择偏差导致相关性错觉"],
+    ans: 3,
+    concept: "通胀应对"
+  },
+  {
+    q: "吴军认为对抗通胀的终极资源是什么？",
+    opts: ["黄金和贵金属", "一线城市房产", "知识与能力", "标普500指数基金"],
+    ans: 2,
+    concept: "通胀应对"
+  }
+];
+
+// Short answer questions (10)
+const saQuestions = [
+  { q: "用一句话解释止损的核心含义，并举一个生活中的例子。", ref: "止损是接受已发生的局部损失，避免为补救小错而引发更大连锁灾难。生活例子：银行排队超时果断放弃改为次日办理，避免连锁延误（超市排队、交通拥堵等厄运链）。" },
+  { q: "为什么说"资产"和"债务"是动态的？同一物品如何从资产变成债务？", ref: "因为定义取决于使用方式、持有成本和市场变化。房产：房价上涨+保有成本低=资产；房价下跌30%+贷款150万>市值140万=债务。关键判断标准：能否产生比持有成本更高的回报。" },
+  { q: "通货膨胀对富人、中产、低收入者各自的影响有何不同？为什么中产最脆弱？", ref: "富人通过投资资产（非现金）参与社会再生产，资产价格随通胀增长。低收入者现金少、工资随经济发展"水涨船高"。中产积蓄最易被稀释且缺乏足够资产配置能力对冲通胀。" },
+  { q: "数据要成为真正的资产需要解决哪两个核心问题？区块链如何解决技术问题？", ref: "法权层面：所有权不清晰（GDPR/CCPA明确数据归用户）。技术层面：数据可无限复制缺乏稀缺性。区块链创造"不可复制"的数字内容，用户掌握使用授权，第三方需单独申请并可能付费。" },
+  { q: "西蒙-埃利希赌局的结果说明了什么根本性的经济学原理？", ref: "技术进步的资源替代效应：当某种资源变贵时，市场激励推动替代材料/技术的发明（塑料替代金属、新能源替代石油）。人类创造力才是"终极资源"，价格机制是一套自修复系统。" },
+  { q: "四种财富路径分别是什么？各自的核心代价和适合人群？", ref: "优质工作+投资（20%年储蓄+长期耐心）；企业爬梯子（大量时间经营人际关系+选对公司）；高级专业人才（长期专业训练+持续进步）；梦想家创业（每周61小时+全家牺牲+高风险）。" },
+  { q: "为什么"财务自由不等于提前退休"？真正获得财务自由的人如何对待工作？", ref: "因财务自由的核心是安全感与自由而非"不工作"。巴菲特财务自由后仍每天工作——他热爱工作且擅长。退休的欲望往往源于不喜欢当前工作，而非真正想什么都不做。" },
+  { q: "3σ法则在风险管理中如何应用？给出一个投资和一个非投资的例子。", ref: "投资：美股年波动率约17%→需承受50%（3×17%）跌幅的能力，在此范围内不恐慌。非投资：考试分数波动±20分（1σ）→报考需预留60分（3σ）安全边际，避免正常波动导致落榜。" },
+  { q: "虚拟经济"信息替代能量"的底层逻辑是什么？举一个日常生活案例。", ref: "以更低的信息传递成本换取更低的时间和能量成本。案例：线上购物vs线下购物——线上用搜索（信息）替代开车去商场（能量），节省了汽油、时间、停车费等能量密集成本。" },
+  { q: "什么样的人创业能成功？总结三个必要条件并各举一个例子。", ref: "全能性（任何岗位空缺可顶上，如谷歌早期佩奇布林亲自攒机器）；生存力（养活团队的能力，如Grail创始人胡贝尔擅长融资）；诚信度（基本要求）。三者缺一不可。" }
+];
+
+// ======== SVG CONCEPT MAP ========
+function renderSVG() {
+  const svg = `<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
+    <marker id="arrGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#d4a574"/></marker>
+    <marker id="arrBrown" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b7355"/></marker>
+    <filter id="shadow"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+  </defs>
+
+  <!-- Root -->
+  <ellipse cx="450" cy="40" rx="160" ry="28" fill="#c0392b" filter="url(#shadow)"/>
+  <text x="450" y="36" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">财富增长的底层逻辑</text>
+  <text x="450" y="52" text-anchor="middle" fill="#fdd" font-size="10">资产配置决定下限 · 认知能力决定上限</text>
+
+  <!-- Tier 1: Four pillars -->
+  <line x1="310" y1="67" x2="160" y2="115" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <line x1="450" y1="67" x2="450" y2="115" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <line x1="590" y1="67" x2="740" y2="115" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <line x1="350" y1="67" x2="350" y2="115" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+
+  <!-- Income Engine -->
+  <rect x="30" y="115" width="200" height="44" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="130" y="135" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">收入引擎</text>
+  <text x="130" y="151" text-anchor="middle" fill="#fef9f4" font-size="10">四种财富路径 · 创业要素</text>
+
+  <!-- Asset Allocation -->
+  <rect x="260" y="115" width="200" height="44" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="360" y="135" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">资产配置</text>
+  <text x="360" y="151" text-anchor="middle" fill="#fef9f4" font-size="10">资产vs债务 · 投资工具</text>
+
+  <!-- Risk Control -->
+  <rect x="490" y="115" width="200" height="44" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="590" y="135" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">风险管控</text>
+  <text x="590" y="151" text-anchor="middle" fill="#fef9f4" font-size="10">风险管理 · 止损 · 通胀</text>
+
+  <!-- Future Assets -->
+  <rect x="720" y="115" width="170" height="44" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="805" y="135" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">未来资产</text>
+  <text x="805" y="151" text-anchor="middle" fill="#fef9f4" font-size="10">数据 · 虚拟经济 · 自由</text>
+
+  <!-- Tier 2: Detail nodes under Income -->
+  <line x1="70" y1="159" x2="50" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="130" y1="159" x2="130" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="190" y1="159" x2="210" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+
+  <rect x="5" y="215" width="115" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="62" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">优质工作+投资</text>
+  <text x="62" y="248" text-anchor="middle" fill="#d4a574" font-size="9">年存20%·长期谨慎</text>
+
+  <rect x="75" y="215" width="110" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="130" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">企业爬梯子</text>
+  <text x="130" y="248" text-anchor="middle" fill="#d4a574" font-size="9">股票·分红积累</text>
+
+  <rect x="150" y="215" width="120" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="210" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">梦想家创业</text>
+  <text x="210" y="248" text-anchor="middle" fill="#d4a574" font-size="9">每周61h+·12年</text>
+
+  <!-- Tier 2: Under Asset -->
+  <line x1="310" y1="159" x2="290" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="360" y1="159" x2="360" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="410" y1="159" x2="430" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+
+  <rect x="240" y="215" width="115" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="297" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">资产≠拥有物</text>
+  <text x="297" y="248" text-anchor="middle" fill="#d4a574" font-size="9">产生回报才是资产</text>
+
+  <rect x="308" y="215" width="105" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="360" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">指数基金定投</text>
+  <text x="360" y="248" text-anchor="middle" fill="#d4a574" font-size="9">长期+稳定市场</text>
+
+  <rect x="378" y="215" width="120" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="438" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">现金/黄金局限</text>
+  <text x="438" y="248" text-anchor="middle" fill="#d4a574" font-size="9">通胀下持有即贬值</text>
+
+  <!-- Tier 2: Under Risk -->
+  <line x1="540" y1="159" x2="520" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="590" y1="159" x2="590" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="640" y1="159" x2="660" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+
+  <rect x="470" y="215" width="115" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="527" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">风险本质</text>
+  <text x="527" y="248" text-anchor="middle" fill="#d4a574" font-size="9">非预期波动×承受力</text>
+
+  <rect x="538" y="215" width="105" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="590" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">止损:斩断厄运链</text>
+  <text x="590" y="248" text-anchor="middle" fill="#d4a574" font-size="9">接受局部损失</text>
+
+  <rect x="608" y="215" width="120" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="668" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">通胀应对</text>
+  <text x="668" y="248" text-anchor="middle" fill="#d4a574" font-size="9">知识是终极资源</text>
+
+  <!-- Tier 2: Under Future -->
+  <line x1="760" y1="159" x2="740" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="805" y1="159" x2="805" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+  <line x1="850" y1="159" x2="870" y2="215" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrBrown)"/>
+
+  <rect x="698" y="215" width="108" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="752" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">数据资产化</text>
+  <text x="752" y="248" text-anchor="middle" fill="#d4a574" font-size="9">所有权+区块链</text>
+
+  <rect x="758" y="215" width="110" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="813" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">虚拟经济趋势</text>
+  <text x="813" y="248" text-anchor="middle" fill="#d4a574" font-size="9">信息替代能量</text>
+
+  <rect x="825" y="215" width="80" height="40" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="865" y="234" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">财务自由</text>
+  <text x="865" y="248" text-anchor="middle" fill="#d4a574" font-size="9">安全感+自由</text>
+
+  <!-- Tier 3: Bottom layer - Core concepts -->
+  <line x1="62" y1="255" x2="60" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="130" y1="255" x2="120" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="297" y1="255" x2="280" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="360" y1="255" x2="360" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="527" y1="255" x2="510" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="590" y1="255" x2="590" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="752" y1="255" x2="740" y2="320" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrRed)"/>
+
+  <!-- ★ MKS Core -->
+  <rect x="10" y="320" width="130" height="36" rx="8" fill="#c0392b" filter="url(#shadow)"/>
+  <text x="75" y="342" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">★ 风险管理</text>
+
+  <rect x="80" y="320" width="130" height="36" rx="8" fill="#c0392b" filter="url(#shadow)"/>
+  <text x="145" y="342" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">★ 资产vs债务</text>
+
+  <rect x="240" y="320" width="130" height="36" rx="8" fill="#c0392b" filter="url(#shadow)"/>
+  <text x="305" y="342" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">★ 止损思维</text>
+
+  <rect x="470" y="320" width="130" height="36" rx="8" fill="#c0392b" filter="url(#shadow)"/>
+  <text x="535" y="342" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">★ 财务自由本质</text>
+
+  <!-- Cross-connections -->
+  <path d="M145,356 Q200,390 305,356" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="220" y="385" text-anchor="middle" fill="#d4a574" font-size="8">资产分辨→止损决策</text>
+
+  <path d="M305,356 Q380,390 535,356" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="420" y="385" text-anchor="middle" fill="#d4a574" font-size="8">止损→财务安全感</text>
+
+  <!-- Feedback loop -->
+  <path d="M865,283 Q865,420 450,420 Q35,420 35,356" fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrRed)"/>
+  <text x="450" y="415" text-anchor="middle" fill="#c0392b" font-size="10" font-style="italic">反馈循环：市场验证认知 → 认知升级 → 更好的决策</text>
+</svg>`;
+  document.getElementById('svgContainer').innerHTML = svg;
 }
-function saveState(s){localStorage.setItem(STORAGE_KEY,JSON.stringify(s))}
-var state=loadState();
 
-function shuffleArr(arr){var a=[].concat(arr);for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-
-// ==================== DATA: 10 Core Concepts ====================
-var concepts = [
-  {id:'risk_mgmt',name:'风险管理',icon:'\u{1F6E1}\u{FE0F}',brief:'识别非预期波动，用3σ法则量化承受能力，构建风险分担池',core:true,
-   def:'风险是超出意料的波动且伤害程度因人而异。核心量化工具：3σ法则（承受3倍标准差波动），定性策略：充分认知+预案+底线思维。主动风险≠被动风险。',
-   analogy:'如同开车——正常路况的颠簸不是风险（正常波动），突然出现的深坑才是（非预期波动）。老司机系安全带、买保险、保持车距就是风险管理。',
-   example:'香港启德机场（世界最危险机场之一）因安排经验丰富飞行员+提高警惕，几乎无严重事故。李开复用两台独立服务器将死机概率从10%降至1%。',
-   counter:'五倍杠杆全仓炒股跌20%——主动选择的结果导致不可逆损失，这不是"运气不好"而是风险管理的失败。'},
-  {id:'stoploss',name:'止损思维',icon:'✂️',brief:'接受局部损失避免更大灾难，斩断厄运链，不做"堤内损失堤外补"',core:true,
-   def:'止损的本质是接受已发生的损失，避免为补救小错而引发更大连锁灾难。核心认知：厄运会被错误应对方式放大。应用场景：投资、时间管理、人际关系。',
-   analogy:'如同拔牙——蛀牙初期处理很简单，拖延不治会导致感染扩散，最终需要根管治疗甚至拔掉多颗牙。止损就是"第一次牙痛就去看牙医"。',
-   example:'淮海战役国民党为救44军→赔上5个兵团→失去长江以北。时间管理：银行排队超时果断放弃，避免连锁延误（超市排队、交通拥堵）。',
-   counter:'伯奇尔香肠事件——为晾香肠开窗→引海鸥→扔鞋驱鸟→吹风机短路→禁入酒店17年。每一步都可用止损中止。'},
-  {id:'asset_debt',name:'资产vs债务',icon:'\u{1F4B0}',brief:'资产是能产生回报的东西，债务是持续消耗你资源的东西——同一物品可因使用方式而转化',core:true,
-   def:'清崎框架的深化：资产=拥有并消耗后能获得更高回报；债务=持续产生持有成本（金钱/空间/时间/注意力）而无实质回报。关键：同一样东西可因使用方式而在资产与债务之间转化。',
-   analogy:'如同旅行箱——资产是你想装进去的好东西，债务是塞满箱子的垃圾。箱子塞满了（无冗余），新机会来了也装不下（微软高管因房贷错失谷歌早期机会）。',
-   example:'房产：首付合理+房价上涨=资产；房价下跌30%+贷款150万>市值140万=债务。技能：钢琴（掌握音乐基础=资产）vs 冷门乐器（仅为考级=债务）。',
-   counter:'奥迪车闲置=每年1000美元维修+1500美元保险的债务。学了却不知用途的"技能"、需大量时间维护的游戏账号——都是伪装成资产的债务。'},
-  {id:'freedom',name:'财务自由本质',icon:'\u{1F54A}️',brief:'财务自由是手段而非目的，核心是安全感和做喜欢的事的自由，不是"花不完的钱"',core:true,
-   def:'财务自由≠提前退休。真正获得财务自由的人不会完全停止工作（如巴菲特）。核心本质：安全感（经济冗余度）+个人自由（找到热爱的事业并做到行业领先）。',
-   analogy:'如同游泳——不是因为有了游泳池才会游泳，而是因为会游泳才能在任何一个泳池享受。财务自由的本质是"会游泳"，而非"拥有最大的泳池"。',
-   example:'吴军在清华任教时的状态：收入有限但因热爱工作而获得工作自主权。冯仑："欲望无成本"——财富永远无法满足无限欲望。',
-   counter:'2000年互联网泡沫中，部分人资产缩水80-90%，财务自由周期不足两年——消费升级（本田换宝马、经济舱升商务舱）导致财富快速消耗。'},
-  {id:'four_paths',name:'四种财富路径',icon:'\u{1F9ED}',brief:'优质工作+投资(20%) / 企业爬梯子(31%) / 高级专业人才(19%) / 梦想家(28%)',core:false,
-   def:'基于美国百万富翁统计的四条可行致富路径。每条路径有不同的代价、风险和速度。核心共性：都需要努力、耐心和持续学习能力。',
-   analogy:'如同登山有四条路线——南坡缓但长（优质工作+投资），北坡陡但快（梦想家创业），索道稳但要排队（企业爬梯子），直升机贵但高效（高级专业人才）。选哪条取决于你的装备和体能。',
-   example:'优质工作+投资：年存20%收入+长期投资→50岁平均350万美元。梦想家：成功者40岁前平均740万美元，但需每周工作61小时以上，平均12年。',
-   counter:'普通散户试图通过短线交易暴富——不属于四条路径中的任何一条，本质是赌博而非财富积累。'},
-  {id:'inflation',name:'通胀应对',icon:'\u{1F4C8}',brief:'中产受通胀冲击最大，知识与能力是终极抗通胀资源，房产和股票优于现金黄金',core:false,
-   def:'通胀通过刺激消费、财富再分配、稀释债务等机制推动经济，但不同阶层受影响差异显著。富人通过投资资产对冲，中产积蓄最易被稀释。',
-   analogy:'如同跑步机——通胀让跑步机加速，站着不动（持有现金）就会摔下去，跟得上速度（收入增长>通胀）就能保持位置，跑得更快（资产增值>通胀）就能前进。',
-   example:'土耳其通胀40%/年，工资按通胀率调整的劳动者生活稳定，靠存款"吃老本"者难以维持。有房且锁定贷款利息的中产反而受益（房贷实际价值随通胀减少）。',
-   counter:'抢购物资、囤积黄金——黄金2011-2020年仅涨2.5%，同期美股（含股息）涨90%。明朝末年"金贱米贵"证明黄金在极端情况下无法兑换必需品。'},
-  {id:'index_fund',name:'指数基金定投',icon:'\u{1F4CA}',brief:'长期+稳定市场是前提，短期无法保证正回报。懂而不用是因为过度自信',core:false,
-   def:'指数基金长期盈利的两大前提：足够长投资周期+稳定增长的市场与法律保障。美国股市因十年周期稳定增长成为典型案例，日本因20年停滞回报不佳。',
-   analogy:'如同种树——你种下一片树林（买指数基金），前三年看不到什么变化，十年后成荫。但如果频繁挖出来看根长得怎么样（频繁交易），树就死了。',
-   example:'美国市场：长期定投标普500指数基金的投资者多数跑赢主动型基金。巴菲特与对冲基金的十年赌约：标普500指数基金完胜。',
-   counter:'1929年大萧条前投资道琼斯指数，需至1960年代回本（30年）。日本1990年泡沫后20年经济停滞，指数基金同样亏损——"稳定增长的市场"是前提。'},
-  {id:'data_asset',name:'数据资产化',icon:'\u{1F4BE}',brief:'数据是未来最大资产类别，但需解决所有权(法律)和复制(技术)两大障碍',core:false,
-   def:'数据资产化的两大障碍：所有权不清晰（法权层面）+复制成本近乎为零（技术层面）。解决方案：GDPR/CCPA明确所有权，区块链实现"不可复制"的数字内容。',
-   analogy:'如同银行存款——你的数据就像存进银行的现金。银行（平台）帮你保管但不拥有所有权，你获得"利息"（授权收益），银行赚"利差"（服务费），第三方"贷款"需付使用费。',
-   example:'罕见病基因数据被罗氏制药以200多万英镑收购。医疗数据通过区块链授权：医生查病例支付10-15美元/次，疑难杂症患者年授权收入可达1-2万美元。',
-   counter:'中国数据量最大但资产价值有限——类似软件市场"用户多但规模小"的困境。Facebook出售8700万用户数据给剑桥分析，FTC罚款50亿美元。'},
-  {id:'virtual_economy',name:'虚拟经济趋势',icon:'\u{1F310}',brief:'信息替代能量是不可逆的底层规律，虚拟经济占比将持续上升，实体经济重要性降低',core:false,
-   def:'经济发展的两大历史趋势：原材料成本占比持续下降+虚拟产品与服务占比上升。底层逻辑：信息替代能量——以更低的信息传递成本换取更低的时间和能量成本。',
-   analogy:'如同从写信到发微信——写信需要纸、笔、邮票、邮递员（能量密集），微信只需电和数据（信息密集）。前者成本高、速度慢，后者几乎免费且即时。',
-   example:'非典(2003)催生电商：刘强东被迫线上卖货后发现效率优势，关闭所有零售店。通用电气+波音+强生+宝洁利润总和未必比得上谷歌一家。',
-   counter:'转型失败者：JC PENNEY、J CREW永久关门。高端百货Lord & Taylor 2020年破产。米其林餐厅依赖线下体验，转型难度大。'},
-  {id:'entrepreneurship',name:'创业成功要素',icon:'\u{1F680}',brief:'全能性(任何岗位可顶上)+生存力(养活团队)+诚信度。投资本质是投人',core:false,
-   def:'创业成功的三大标准：全能性（能将自己压榨到极致）、生存力（有能力养活团队）、诚信度（做人基本要求）。核心资格：养活团队的能力而非被团队养活。',
-   analogy:'如同荒野求生——大公司是设施齐全的营地，创业是自己生火打猎。你必须同时是猎人、厨师、哨兵和医生，直到团队壮大到可以分工。',
-   example:'Grail公司：创始人胡贝尔（谷歌前VP），融资至80亿美元被收购，3年300%回报。谷歌创业初期，佩奇、布林亲自攒机器拉网线，仅在无法分身时扩招。',
-   counter:'部分创业者融到资金后立即扩充团队、当甩手掌柜，最终必然失败。名校毕业生入职华为一个月写万言书谈战略→任正非批示"建议辞退"。'}
-];
-
-var mksCore = concepts.filter(function(c){return c.core;});
-
-// ==================== DATA: Boundary Knowledge (15 items) ====================
-var boundary = [
-  {item:'企业主人翁心态的两大标准',scene:'利益平衡能力+工作定位认知，与"关心无关业务"有本质区别'},
-  {item:'华为正反案例（万言书vs千里奔华为）',scene:'理解"以主人自居"与真正主人翁精神的区别'},
-  {item:'盖蒂家族财富诅咒',scene:'德不配财的经典案例：一代60亿美元→三代缩水至20亿'},
-  {item:'罗宾汉证券(Robinhood)盈利模式',scene:'零手续费券商如何通过赚价差"割韭菜"'},
-  {item:'辛普森悖论与伯克森悖论',scene:'数学思维在投资判断中的应用——数据背后的真相'},
-  {item:'人口结构与抚养比趋势',scene:'全球经济长期判断的底层逻辑：中国抚养比从2.4:1降至2:1'},
-  {item:'深度工作与职业选择',scene:'纽波特理论：激情源于擅长，深度工作10-20倍于普通状态'},
-  {item:'时间管理的四种方法',scene:'做减法+止损+B计划+减少碎片时间，系统性提升时间价值'},
-  {item:'全球经济体三大梯队',scene:'中/美第一梯队，印/越/墨第二梯队，欧/日/韩第三梯队'},
-  {item:'GDPR与CCPA数据法规',scene:'欧盟(2018)和加州(2020)的数据保护条例，数据所有权归用户'},
-  {item:'免费产品的代价',scene:'社交困境：如果产品免费，你就是产品——多巴胺驱动的成瘾机制'},
-  {item:'J曲线与滞后效应',scene:'改革初期必先下行，坚持正确方向越过拐点后进入持续上升'},
-  {item:'西蒙《终极资源》理论',scene:'人类创造力是终极资源，技术进步不断创造替代方案'},
-  {item:'企业画饼识别策略',scene:'区分弱势领导(无能力)vs有能力不兑现型(需绑定其利益)'},
-  {item:'借贷消费的利率陷阱',scene:'借呗日息0.045%=年化20%，美国工资日贷半月息2%=年化60%'}
-];
-
-// ==================== DATA: SVG (Graphviz dot rendered) ====================
-function renderSVG(){
-  document.getElementById('svgContainer').innerHTML='<svg width="2242pt" height="260pt" viewBox="0.00 0.00 2242.00 260.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 256)"><title>G</title><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-256 2238,-256 2238,4 -4,4"/><g id="node1" class="node"><title>root</title><path fill="#c0392b" stroke="black" stroke-width="2" d="M1199,-252C1199,-252 1100,-252 1100,-252 1094,-252 1088,-246 1088,-240 1088,-240 1088,-228 1088,-228 1088,-222 1094,-216 1100,-216 1100,-216 1199,-216 1199,-216 1205,-216 1211,-222 1211,-228 1211,-228 1211,-240 1211,-240 1211,-246 1205,-252 1199,-252"/><text text-anchor="middle" x="1149.5" y="-237.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">财富增长的底层逻辑</text><text text-anchor="middle" x="1149.5" y="-225.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">资产配置 × 能力构建</text></g><g id="node2" class="node"><title>l1_income</title><path fill="#d4a574" stroke="black" d="M442.5,-180C442.5,-180 326.5,-180 326.5,-180 320.5,-180 314.5,-174 314.5,-168 314.5,-168 314.5,-156 314.5,-156 314.5,-150 320.5,-144 326.5,-144 326.5,-144 442.5,-144 442.5,-144 448.5,-144 454.5,-150 454.5,-156 454.5,-156 454.5,-168 454.5,-168 454.5,-174 448.5,-180 442.5,-180"/><text text-anchor="middle" x="384.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">收入引擎</text><text text-anchor="middle" x="384.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">四种财富路径 · 创业要素</text></g><g id="edge1" class="edge"><title>root->l1_income</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1087.87,-227.36C950.31,-214.77 618.31,-184.39 464.81,-170.35"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="464.79,-166.83 454.52,-169.41 464.16,-173.8 464.79,-166.83"/></g><g id="node3" class="node"><title>l1_asset</title><path fill="#d4a574" stroke="black" d="M1003,-180C1003,-180 896,-180 896,-180 890,-180 884,-174 884,-168 884,-168 884,-156 884,-156 884,-150 890,-144 896,-144 896,-144 1003,-144 1003,-144 1009,-144 1015,-150 1015,-156 1015,-156 1015,-168 1015,-168 1015,-174 1009,-180 1003,-180"/><text text-anchor="middle" x="949.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">资产配置</text><text text-anchor="middle" x="949.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">资产vs债务 · 投资工具</text></g><g id="edge2" class="edge"><title>root->l1_asset</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1100.83,-215.97C1072.89,-206.19 1037.6,-193.84 1008.14,-183.52"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1008.98,-180.11 998.39,-180.11 1006.67,-186.72 1008.98,-180.11"/></g><g id="node4" class="node"><title>l1_risk</title><path fill="#d4a574" stroke="black" d="M1402,-180C1402,-180 1297,-180 1297,-180 1291,-180 1285,-174 1285,-168 1285,-168 1285,-156 1285,-156 1285,-150 1291,-144 1297,-144 1297,-144 1402,-144 1402,-144 1408,-144 1414,-150 1414,-156 1414,-156 1414,-168 1414,-168 1414,-174 1408,-180 1402,-180"/><text text-anchor="middle" x="1349.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">风险管控</text><text text-anchor="middle" x="1349.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">风险管理 · 止损 · 通胀</text></g><g id="edge3" class="edge"><title>root->l1_risk</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1198.17,-215.97C1226.11,-206.19 1261.4,-193.84 1290.86,-183.52"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1292.33,-186.72 1300.61,-180.11 1290.02,-180.11 1292.33,-186.72"/></g><g id="node5" class="node"><title>l1_future</title><path fill="#d4a574" stroke="black" d="M1983.5,-180C1983.5,-180 1855.5,-180 1855.5,-180 1849.5,-180 1843.5,-174 1843.5,-168 1843.5,-168 1843.5,-156 1843.5,-156 1843.5,-150 1849.5,-144 1855.5,-144 1855.5,-144 1983.5,-144 1983.5,-144 1989.5,-144 1995.5,-150 1995.5,-156 1995.5,-156 1995.5,-168 1995.5,-168 1995.5,-174 1989.5,-180 1983.5,-180"/><text text-anchor="middle" x="1919.5" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">未来资产</text><text text-anchor="middle" x="1919.5" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">数据资产 · 虚拟经济 · 自由</text></g><g id="edge4" class="edge"><title>root->l1_future</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1211.21,-227.39C1347.92,-214.96 1676.58,-185.08 1833.41,-170.83"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1833.84,-174.3 1843.49,-169.91 1833.21,-167.33 1833.84,-174.3"/></g><g id="node6" class="node"><title>l2_paths</title><path fill="#fffaf2" stroke="#5a3e3e" d="M139,-108C139,-108 70,-108 70,-108 64,-108 58,-102 58,-96 58,-96 58,-84 58,-84 58,-78 64,-72 70,-72 70,-72 139,-72 139,-72 145,-72 151,-78 151,-84 151,-84 151,-96 151,-96 151,-102 145,-108 139,-108"/><text text-anchor="middle" x="104.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">优质工作+投资</text><text text-anchor="middle" x="104.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">中产稳健路径</text></g><g id="edge5" class="edge"><title>l1_income->l2_paths</title><path fill="none" stroke="#d4a574" d="M314.35,-145.58C272.47,-136.11 218.06,-123.31 161.1,-108.08"/><polygon fill="#d4a574" stroke="#d4a574" points="161.75,-104.63 151.19,-105.41 159.93,-111.39 161.75,-104.63"/></g><g id="node7" class="node"><title>l2_career</title><path fill="#fffaf2" stroke="#5a3e3e" d="M245.5,-108C245.5,-108 181.5,-108 181.5,-108 175.5,-108 169.5,-102 169.5,-96 169.5,-96 169.5,-84 169.5,-84 169.5,-78 175.5,-72 181.5,-72 181.5,-72 245.5,-72 245.5,-72 251.5,-72 257.5,-78 257.5,-84 257.5,-84 257.5,-96 257.5,-96 257.5,-102 251.5,-108 245.5,-108"/><text text-anchor="middle" x="213.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">企业爬梯子</text><text text-anchor="middle" x="213.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">股票·分红积累</text></g><g id="edge6" class="edge"><title>l1_income->l2_career</title><path fill="none" stroke="#d4a574" d="M342.67,-143.88C319.08,-134.22 289.44,-122.09 264.5,-111.88"/><polygon fill="#d4a574" stroke="#d4a574" points="265.78,-108.62 255.2,-108.07 263.12,-115.1 265.78,-108.62"/></g><g id="node8" class="node"><title>l2_pro</title><path fill="#fffaf2" stroke="#5a3e3e" d="M367,-108C367,-108 288,-108 288,-108 282,-108 276,-102 276,-96 276,-96 276,-84 276,-84 276,-78 282,-72 288,-72 288,-72 367,-72 367,-72 373,-72 379,-78 379,-84 379,-84 379,-96 379,-96 379,-102 373,-108 367,-108"/><text text-anchor="middle" x="327.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">高级专业人才</text><text text-anchor="middle" x="327.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">医生·律师·工程师</text></g><g id="edge7" class="edge"><title>l1_income->l2_pro</title><path fill="none" stroke="#d4a574" d="M370.41,-143.7C363.58,-135.3 355.24,-125.07 347.74,-115.86"/><polygon fill="#d4a574" stroke="#d4a574" points="350.46,-113.65 341.43,-108.1 345.03,-118.07 350.46,-113.65"/></g><g id="node9" class="node"><title>l2_dreamer</title><path fill="#fffaf2" stroke="#5a3e3e" d="M473.5,-108C473.5,-108 409.5,-108 409.5,-108 403.5,-108 397.5,-102 397.5,-96 397.5,-96 397.5,-84 397.5,-84 397.5,-78 403.5,-72 409.5,-72 409.5,-72 473.5,-72 473.5,-72 479.5,-72 485.5,-78 485.5,-84 485.5,-84 485.5,-96 485.5,-96 485.5,-102 479.5,-108 473.5,-108"/><text text-anchor="middle" x="441.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">梦想家创业</text><text text-anchor="middle" x="441.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">高风险·高回报</text></g><g id="edge8" class="edge"><title>l1_income->l2_dreamer</title><path fill="none" stroke="#d4a574" d="M398.59,-143.7C405.42,-135.3 413.76,-125.07 421.26,-115.86"/><polygon fill="#d4a574" stroke="#d4a574" points="423.97,-118.07 427.57,-108.1 418.54,-113.65 423.97,-118.07"/></g><g id="node10" class="node"><title>l2_startup</title><path fill="#fffaf2" stroke="#5a3e3e" d="M601.5,-108C601.5,-108 515.5,-108 515.5,-108 509.5,-108 503.5,-102 503.5,-96 503.5,-96 503.5,-84 503.5,-84 503.5,-78 509.5,-72 515.5,-72 515.5,-72 601.5,-72 601.5,-72 607.5,-72 613.5,-78 613.5,-84 613.5,-84 613.5,-96 613.5,-96 613.5,-102 607.5,-108 601.5,-108"/><text text-anchor="middle" x="558.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">创业核心能力</text><text text-anchor="middle" x="558.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">养活团队·极致投入</text></g><g id="edge9" class="edge"><title>l1_income->l2_startup</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M427.07,-143.88C451.06,-134.22 481.23,-122.09 506.6,-111.88"/><polygon fill="#8b7355" stroke="#8b7355" points="508.1,-115.05 516.07,-108.07 505.49,-108.55 508.1,-115.05"/></g><g id="node11" class="node"><title>l2_asset_debt</title><path fill="#fffaf2" stroke="#5a3e3e" d="M737.5,-108C737.5,-108 643.5,-108 643.5,-108 637.5,-108 631.5,-102 631.5,-96 631.5,-96 631.5,-84 631.5,-84 631.5,-78 637.5,-72 643.5,-72 643.5,-72 737.5,-72 737.5,-72 743.5,-72 749.5,-78 749.5,-84 749.5,-84 749.5,-96 749.5,-96 749.5,-102 743.5,-108 737.5,-108"/><text text-anchor="middle" x="690.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">资产≠拥有物</text><text text-anchor="middle" x="690.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">能产生回报才是资产</text></g><g id="edge10" class="edge"><title>l1_asset->l2_asset_debt</title><path fill="none" stroke="#d4a574" d="M886.47,-143.97C848.1,-133.59 799.04,-120.33 759.61,-109.68"/><polygon fill="#d4a574" stroke="#d4a574" points="760.37,-106.26 749.8,-107.03 758.54,-113.02 760.37,-106.26"/></g><g id="node12" class="node"><title>l2_index</title><path fill="#fffaf2" stroke="#5a3e3e" d="M865.5,-108C865.5,-108 779.5,-108 779.5,-108 773.5,-108 767.5,-102 767.5,-96 767.5,-96 767.5,-84 767.5,-84 767.5,-78 773.5,-72 779.5,-72 779.5,-72 865.5,-72 865.5,-72 871.5,-72 877.5,-78 877.5,-84 877.5,-84 877.5,-96 877.5,-96 877.5,-102 871.5,-108 865.5,-108"/><text text-anchor="middle" x="822.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">指数基金定投</text><text text-anchor="middle" x="822.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">长期·稳定市场前提</text></g><g id="edge11" class="edge"><title>l1_asset->l2_index</title><path fill="none" stroke="#d4a574" d="M918.43,-143.88C901.67,-134.64 880.79,-123.13 862.8,-113.21"/><polygon fill="#d4a574" stroke="#d4a574" points="864.13,-109.95 853.69,-108.19 860.76,-116.08 864.13,-109.95"/></g><g id="node13" class="node"><title>l2_cash</title><path fill="#fffaf2" stroke="#5a3e3e" d="M991,-108C991,-108 908,-108 908,-108 902,-108 896,-102 896,-96 896,-96 896,-84 896,-84 896,-78 902,-72 908,-72 908,-72 991,-72 991,-72 997,-72 1003,-78 1003,-84 1003,-84 1003,-96 1003,-96 1003,-102 997,-108 991,-108"/><text text-anchor="middle" x="949.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">现金非王</text><text text-anchor="middle" x="949.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">通胀下持有即贬值</text></g><g id="edge12" class="edge"><title>l1_asset->l2_cash</title><path fill="none" stroke="#d4a574" d="M949.5,-143.7C949.5,-135.98 949.5,-126.71 949.5,-118.11"/><polygon fill="#d4a574" stroke="#d4a574" points="953,-118.1 949.5,-108.1 946,-118.1 953,-118.1"/></g><g id="node14" class="node"><title>l2_gold</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1116,-108C1116,-108 1033,-108 1033,-108 1027,-108 1021,-102 1021,-96 1021,-96 1021,-84 1021,-84 1021,-78 1027,-72 1033,-72 1033,-72 1116,-72 1116,-72 1122,-72 1128,-78 1128,-84 1128,-84 1128,-96 1128,-96 1128,-102 1122,-108 1116,-108"/><text text-anchor="middle" x="1074.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">黄金非好投资</text><text text-anchor="middle" x="1074.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">长期回报低于股市</text></g><g id="edge13" class="edge"><title>l1_asset->l2_gold</title><path fill="none" stroke="#d4a574" d="M980.08,-143.88C996.57,-134.64 1017.12,-123.13 1034.84,-113.21"/><polygon fill="#d4a574" stroke="#d4a574" points="1036.79,-116.13 1043.8,-108.19 1033.37,-110.02 1036.79,-116.13"/></g><g id="node15" class="node"><title>l2_risk_def</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1263,-108C1263,-108 1158,-108 1158,-108 1152,-108 1146,-102 1146,-96 1146,-96 1146,-84 1146,-84 1146,-78 1152,-72 1158,-72 1158,-72 1263,-72 1263,-72 1269,-72 1275,-78 1275,-84 1275,-84 1275,-96 1275,-96 1275,-102 1269,-108 1263,-108"/><text text-anchor="middle" x="1210.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">风险本质</text><text text-anchor="middle" x="1210.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">超出意料的非预期波动</text></g><g id="edge14" class="edge"><title>l1_risk->l2_risk_def</title><path fill="none" stroke="#d4a574" d="M1315.5,-143.88C1296.9,-134.51 1273.67,-122.81 1253.79,-112.8"/><polygon fill="#d4a574" stroke="#d4a574" points="1255.14,-109.56 1244.63,-108.19 1251.99,-115.81 1255.14,-109.56"/></g><g id="node16" class="node"><title>l2_3sigma</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1394,-108C1394,-108 1305,-108 1305,-108 1299,-108 1293,-102 1293,-96 1293,-96 1293,-84 1293,-84 1293,-78 1299,-72 1305,-72 1305,-72 1394,-72 1394,-72 1400,-72 1406,-78 1406,-84 1406,-84 1406,-96 1406,-96 1406,-102 1400,-108 1394,-108"/><text text-anchor="middle" x="1349.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">3σ法则</text><text text-anchor="middle" x="1349.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">承受3倍标准差波动</text></g><g id="edge15" class="edge"><title>l1_risk->l2_3sigma</title><path fill="none" stroke="#d4a574" d="M1349.5,-143.7C1349.5,-135.98 1349.5,-126.71 1349.5,-118.11"/><polygon fill="#d4a574" stroke="#d4a574" points="1353,-118.1 1349.5,-108.1 1346,-118.1 1353,-118.1"/></g><g id="node17" class="node"><title>l2_stoploss</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1541,-108C1541,-108 1436,-108 1436,-108 1430,-108 1424,-102 1424,-96 1424,-96 1424,-84 1424,-84 1424,-78 1430,-72 1436,-72 1436,-72 1541,-72 1541,-72 1547,-72 1553,-78 1553,-84 1553,-84 1553,-96 1553,-96 1553,-102 1547,-108 1541,-108"/><text text-anchor="middle" x="1488.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">止损:斩断厄运链</text><text text-anchor="middle" x="1488.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">接受局部损失避免灾难</text></g><g id="edge16" class="edge"><title>l1_risk->l2_stoploss</title><path fill="none" stroke="#d4a574" d="M1383.5,-143.88C1402.1,-134.51 1425.33,-122.81 1445.21,-112.8"/><polygon fill="#d4a574" stroke="#d4a574" points="1447.01,-115.81 1454.37,-108.19 1443.86,-109.56 1447.01,-115.81"/></g><g id="node18" class="node"><title>l2_inflation</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1688,-108C1688,-108 1583,-108 1583,-108 1577,-108 1571,-102 1571,-96 1571,-96 1571,-84 1571,-84 1571,-78 1577,-72 1583,-72 1583,-72 1688,-72 1688,-72 1694,-72 1700,-78 1700,-84 1700,-84 1700,-96 1700,-96 1700,-102 1694,-108 1688,-108"/><text text-anchor="middle" x="1635.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">通胀应对</text><text text-anchor="middle" x="1635.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">知识与能力是终极资源</text></g><g id="edge17" class="edge"><title>l1_risk->l2_inflation</title><path fill="none" stroke="#d4a574" d="M1414.04,-145.2C1457.63,-134.53 1515.31,-120.42 1560.88,-109.26"/><polygon fill="#d4a574" stroke="#d4a574" points="1561.82,-112.64 1570.7,-106.86 1560.15,-105.84 1561.82,-112.64"/></g><g id="node19" class="node"><title>l2_data</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1828.5,-108C1828.5,-108 1730.5,-108 1730.5,-108 1724.5,-108 1718.5,-102 1718.5,-96 1718.5,-96 1718.5,-84 1718.5,-84 1718.5,-78 1724.5,-72 1730.5,-72 1730.5,-72 1828.5,-72 1828.5,-72 1834.5,-72 1840.5,-78 1840.5,-84 1840.5,-84 1840.5,-96 1840.5,-96 1840.5,-102 1834.5,-108 1828.5,-108"/><text text-anchor="middle" x="1779.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">数据资产化</text><text text-anchor="middle" x="1779.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">所有权·区块链·GDPR</text></g><g id="edge18" class="edge"><title>l1_future->l2_data</title><path fill="none" stroke="#d4a574" d="M1885.25,-143.88C1866.44,-134.47 1842.92,-122.71 1822.83,-112.67"/><polygon fill="#d4a574" stroke="#d4a574" points="1824.39,-109.53 1813.88,-108.19 1821.26,-115.79 1824.39,-109.53"/></g><g id="node20" class="node"><title>l2_virtual</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1968.5,-108C1968.5,-108 1870.5,-108 1870.5,-108 1864.5,-108 1858.5,-102 1858.5,-96 1858.5,-96 1858.5,-84 1858.5,-84 1858.5,-78 1864.5,-72 1870.5,-72 1870.5,-72 1968.5,-72 1968.5,-72 1974.5,-72 1980.5,-78 1980.5,-84 1980.5,-84 1980.5,-96 1980.5,-96 1980.5,-102 1974.5,-108 1968.5,-108"/><text text-anchor="middle" x="1919.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">虚拟经济趋势</text><text text-anchor="middle" x="1919.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">信息替代能量·不可逆</text></g><g id="edge19" class="edge"><title>l1_future->l2_virtual</title><path fill="none" stroke="#d4a574" d="M1919.5,-143.7C1919.5,-135.98 1919.5,-126.71 1919.5,-118.11"/><polygon fill="#d4a574" stroke="#d4a574" points="1923,-118.1 1919.5,-108.1 1916,-118.1 1923,-118.1"/></g><g id="node21" class="node"><title>l2_freedom</title><path fill="#fffaf2" stroke="#5a3e3e" d="M2096.5,-108C2096.5,-108 2010.5,-108 2010.5,-108 2004.5,-108 1998.5,-102 1998.5,-96 1998.5,-96 1998.5,-84 1998.5,-84 1998.5,-78 2004.5,-72 2010.5,-72 2010.5,-72 2096.5,-72 2096.5,-72 2102.5,-72 2108.5,-78 2108.5,-84 2108.5,-84 2108.5,-96 2108.5,-96 2108.5,-102 2102.5,-108 2096.5,-108"/><text text-anchor="middle" x="2053.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">财务自由本质</text><text text-anchor="middle" x="2053.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">安全感·做喜欢的事</text></g><g id="edge20" class="edge"><title>l1_future->l2_freedom</title><path fill="none" stroke="#d4a574" d="M1952.28,-143.88C1970.13,-134.55 1992.4,-122.92 2011.5,-112.94"/><polygon fill="#d4a574" stroke="#d4a574" points="2013.35,-115.92 2020.59,-108.19 2010.11,-109.72 2013.35,-115.92"/></g><g id="node22" class="node"><title>l2_focus</title><path fill="#fffaf2" stroke="#5a3e3e" d="M2222,-108C2222,-108 2139,-108 2139,-108 2133,-108 2127,-102 2127,-96 2127,-96 2127,-84 2127,-84 2127,-78 2133,-72 2139,-72 2139,-72 2222,-72 2222,-72 2228,-72 2234,-78 2234,-84 2234,-84 2234,-96 2234,-96 2234,-102 2228,-108 2222,-108"/><text text-anchor="middle" x="2180.5" y="-93.2" font-family="Noto Sans SC" font-size="11.00">关注点塑造人生</text><text text-anchor="middle" x="2180.5" y="-81.2" font-family="Noto Sans SC" font-size="11.00">挑金子而非滤沙子</text></g><g id="edge21" class="edge"><title>l1_future->l2_focus</title><path fill="none" stroke="#d4a574" d="M1983.27,-143.97C2019.73,-134.22 2066.57,-121.68 2117.08,-108.11"/><polygon fill="#d4a574" stroke="#d4a574" points="2118.14,-111.45 2126.89,-105.48 2116.32,-104.69 2118.14,-111.45"/></g><g id="edge22" class="edge"><title>l2_pro->l2_risk_def</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M355.24,-108.13C367.64,-115.19 382.76,-122.43 397.5,-126 476.44,-145.11 1049.01,-142.68 1128.5,-126 1141.96,-123.18 1155.91,-118.01 1168.4,-112.45"/><polygon fill="#8b7355" stroke="#8b7355" points="1170.04,-115.54 1177.64,-108.15 1167.09,-109.19 1170.04,-115.54"/></g><g id="edge23" class="edge"><title>l2_stoploss->l2_focus</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M1521.79,-108.16C1536.56,-115.22 1554.43,-122.46 1571.5,-126 1629.92,-138.12 2050.43,-139.71 2108.5,-126 2120.18,-123.24 2132.12,-118.29 2142.84,-112.92"/><polygon fill="#8b7355" stroke="#8b7355" points="2144.69,-115.9 2151.9,-108.13 2141.42,-109.7 2144.69,-115.9"/></g><g id="edge24" class="edge"><title>l2_data->l2_asset_debt</title><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M1747.91,-108.15C1733.87,-115.21 1716.85,-122.45 1700.5,-126 1599.19,-147.99 868.7,-148.49 767.5,-126 754.88,-123.2 741.89,-118.1 730.25,-112.6"/><polygon fill="#8b7355" stroke="#8b7355" points="731.75,-109.44 721.24,-108.14 728.65,-115.72 731.75,-109.44"/></g><g id="node23" class="node"><title>legend</title><path fill="#fdf6ec" stroke="transparent" d="M197,-36C197,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 197,0 197,0 203,0 209,-6 209,-12 209,-12 209,-24 209,-24 209,-30 203,-36 197,-36"/><text text-anchor="start" x="14.5" y="-16.2" font-family="Noto Sans SC" font-weight="bold" font-size="11.00" fill="#c0392b">━</text><text text-anchor="start" x="21.5" y="-16.2" font-family="Noto Sans SC" font-size="11.00"> 核心驱动</text><text text-anchor="start" x="77.5" y="-16.2" font-family="Noto Sans SC" font-weight="bold" font-size="11.00" fill="#d4a574">━</text><text text-anchor="start" x="84.5" y="-16.2" font-family="Noto Sans SC" font-size="11.00"> 资产派生</text><text text-anchor="start" x="140.5" y="-16.2" font-family="Noto Sans SC" font-weight="bold" font-size="11.00" fill="#8b7355">┅</text><text text-anchor="start" x="147.5" y="-16.2" font-family="Noto Sans SC" font-size="11.00"> 交叉赋能</text></g></g></svg>';
-}
-
-// ==================== DATA: Quiz (20 MCQs, answer distribution {0:5,1:5,2:5,3:5}) ====================
-var quizData = [
-  {q:'美国百万富翁中占比最高的财富积累路径是？',opts:['优质工作+合理投资(约20%)','企业爬梯子(约31%)','高级专业人才(约19%)','梦想家创业(约28%)'],"answer":1,exp:'企业爬梯子占比最高(31%)，财富来源主要是公司股票收益或合伙人利润分红，而非工资。'},
-  {q:'吴军认为，财务自由的核心本质是什么？',opts:['拥有花不完的钱','40岁前退休','拥有被动收入超过支出','安全感与个人自由'],"answer":3,exp:'财务自由≠提前退休。核心是安全感(经济冗余)和个人自由(找到热爱的事业并做到行业领先)。巴菲特已财务自由但仍每天工作。'},
-  {q:'根据吴军观点，"现金为王"在什么市场环境下会失效？',opts:['全球流动性泛滥时','经济衰退时','股市暴跌时','利率上升时'],"answer":0,exp:'各国央行大量注入资金(美国3万亿/欧元区3万亿/中国10万亿)导致现金面临通胀贬值，2020年2月抛股持现者至10月损失15%。'},
-  {q:'NBA球员退役后破产的最主要原因是什么？',opts:['工资收入太低','奢侈消费+投资不善+社会成熟度不足','税收太高','经纪人侵吞资产'],"answer":1,exp:'60%的NBA球员退役5年内破产。原因：童年贫困导致暴富后挥霍、投资于不熟悉的领域(区块链/房地产)、文化课缺失导致社会经验不足。'},
-  {q:'深度工作的效率可达普通工作状态的多少倍？',opts:['10-20倍','2-3倍','50倍','5倍'],"answer":0,exp:'深度工作是沉浸忘我的状态，效率可达普通状态的10-20倍。如写书时状态好1小时2000字，差时1小时仅100字。'},
-  {q:'西蒙-埃利希世纪赌局的结果是什么？',opts:['五种金属价格全部上涨','五种金属价格全部下跌','三种上涨两种下跌','赌局被取消'],"answer":1,exp:'1980-1990十年间五种金属(铜铬镍锡钨)剔除通胀后全部下跌。1980年1000美元投资→1990年价值不到424美元。证明技术进步不断创造资源替代方案。'},
-  {q:'数据资产化的技术解决方案主要依赖什么？',opts:['云计算','大数据分析','人工智能','区块链'],"answer":3,exp:'区块链是目前唯一能在数字世界创造"不可复制内容"的技术(施密特2014年观点)。它让数据像实体资产一样具有排他性，用户可掌握使用授权。'},
-  {q:'吴军的"旅行箱理论"主要用来说明什么？',opts:['旅行要轻装上阵','消费要精打细算','物质追求没有止境','透支消费让人失去调整空间'],"answer":3,exp:'透支生活如同塞满的旅行箱——无调整空间，新增需求需反复腾挪。微软高管因房贷错失谷歌早期机会的案例正是这个道理。'},
-  {q:'贷款买房成为"资产"而非"债务"需要满足的核心条件是？',opts:['房产升值率超过其他投资回报','房价绝对值足够高','贷款年限足够长','月供不超过收入30%'],"answer":0,exp:'核心判断条件(至少满足2项)：房产升值率>其他投资回报、售租比较低、保有成本低。如果房价下跌30%+贷款>市值，房产就是债务。'},
-  {q:'创业成功最关键的基础能力是什么？',opts:['写出漂亮的商业计划书','找到顶级投资人','拥有名校学历','养活团队的能力'],"answer":3,exp:'核心资格：养活团队的能力(而非被团队养活)。具体表现为产生销售额(传统行业)或获得投资人认可(互联网企业)。第一笔钱是创业前提。'},
-  {q:'通胀背景下，哪个群体受到的冲击最大？',opts:['富人(持有大量投资资产)','中产阶级(积蓄被稀释，缺乏对冲工具)','低收入者(几乎没有存款)','政府(债务实际价值下降)'],"answer":1,exp:'富人通过投资资产参与社会再生产，低收入者现金少工资随经济增长"水涨船高"，中产积蓄最易被稀释且缺乏资产配置能力。'},
-  {q:'虚拟经济替代实体经济的底层逻辑是什么？',opts:['政府政策引导','消费者偏好变化','信息替代能量','资本逐利性'],"answer":2,exp:'电商以更高的信息传递成本换取更低的时间和能量成本——这是信息社会发展的底层规律。美国购物出行能耗占商品价格10-20%，电商消除这部分损耗。'},
-  {q:'3σ风险法则建议投资者承受多大程度的波动能力？',opts:['1倍标准差','3倍标准差','1.5倍标准差','5倍标准差'],"answer":1,exp:'高斯分布中99.7%的随机结果在3个标准差范围内。美股年波动率约17%→需承受50%(3×17%)跌幅的能力。考试分数波动±20分→报考需预留60分安全边际。'},
-  {q:'吴军认为投资的本质是什么？',opts:['选对行业','选对时机','投人','选对商业模式'],"answer":2,exp:'"投资本质是投人"——对创始人的信任是决策关键，投资技巧即判断人的技巧。Grail投资的核心逻辑就是信任创始人胡贝尔。'},
-  {q:'实现财务自由最关键的步骤是什么？',opts:['积累到1000万本金','投资年化收益超过15%','找到喜欢的事并做到行业领先','购买足够多的房产'],"answer":2,exp:'"与其指望挣更多钱获得自由，不如找到喜欢的事并比同行做得好"。吴军在清华任教时收入有限但因热爱工作而获得自主权。'},
-  {q:'指数基金定投能稳定盈利的前提条件不包括什么？',opts:['短期高频交易','足够长的投资周期','稳定增长的市场与法律保障','坚持不频繁操作'],"answer":0,exp:'两个前提：足够长投资周期+稳定增长市场。短期(如3年)无法保证正回报，日本因20年停滞回报不佳。频繁操作正是散户跑输大盘的原因。'},
-  {q:'数据成为资产面临的最大障碍是什么？',opts:['所有权不清晰且可无限复制','存储成本太高','缺乏分析工具','用户不愿意分享'],"answer":0,exp:'两大障碍：法权层面的所有权不清晰(名义归属用户但平台实际控制)，技术层面的复制成本为零(缺乏稀缺性)。95%创业者选200万现金而非等值数据。'},
-  {q:'"挑金子"与"滤沙子"的根本区别是什么？',opts:['前者更快','前者更准','主动选择高价值目标vs被动排除低价值项','前者更省力'],"answer":2,exp:'挑金子=主动选择：直接识别高价值个体(如专业摄影师精选少量作品)。滤沙子=被动筛选：试图排除所有低价值项(如业余摄影师删除少量差片保留大部分普通照片)。'},
-  {q:'伯克森悖论的核心洞见是什么？',opts:['数据越多越准确','统计方法不可靠','大数据消除了不确定性','样本选择偏差导致相关性错觉'],"answer":3,exp:'在住院病房只看到单一疾病患者(忽略了轻症双病患者)，错误得出"患一种大病就不会患另一种"的结论。创业中忽略"不辛苦且失败"的4万人导致"不辛苦成功率100%"的错觉。'},
-  {q:'吴军认为对抗通胀的终极资源是什么？',opts:['黄金和贵金属','一线城市房产','知识与能力','标普500指数基金'],"answer":2,exp:'黄金2011-2020仅涨2.5%(同期美股涨90%)，房产受老龄化制约。"知识与能力是对抗通胀的终极资源"——个人财富创造速度跑赢通胀才是根本。'}
-];
-
-// Verify answer distribution
-var answerDist = {0:0,1:0,2:0,3:0};
-quizData.forEach(function(q){answerDist[q.answer]++;});
-
-// Short answer questions
-var shortAnswerData = [
-  {q:'用一句话解释止损的核心含义，并举一个生活中的例子。',
-   ref:'止损是接受已发生的局部损失，避免为补救小错而引发更大连锁灾难。生活例子：银行排队超时果断放弃改为次日办理，避免连锁延误(超市排队、交通拥堵等厄运链)。'},
-  {q:'为什么说"资产"和"债务"是动态的？同一物品如何从资产变成债务？',
-   ref:'因为定义取决于使用方式、持有成本和市场变化。房产：房价上涨+保有成本低=资产；房价下跌30%+贷款150万>市值140万=债务。关键判断标准：能否产生比持有成本更高的回报。'},
-  {q:'通货膨胀对富人、中产、低收入者各自的影响有何不同？为什么中产最脆弱？',
-   ref:'富人通过投资资产(非现金)参与社会再生产，资产价格随通胀增长。低收入者现金少、工资随经济发展"水涨船高"。中产积蓄最易被稀释且缺乏足够资产配置能力对冲通胀。'},
-  {q:'数据要成为真正的资产需要解决哪两个核心问题？区块链如何解决技术问题？',
-   ref:'法权层面：所有权不清晰(GDPR/CCPA明确数据归用户)。技术层面：数据可无限复制缺乏稀缺性。区块链创造"不可复制"的数字内容，用户掌握使用授权，第三方需单独申请并可能付费。'},
-  {q:'西蒙-埃利希赌局的结果说明了什么根本性的经济学原理？',
-   ref:'技术进步的资源替代效应：当某种资源变贵时，市场激励推动替代材料/技术的发明(塑料替代金属、新能源替代石油)。人类创造力才是"终极资源"，价格机制是一套自修复系统。'},
-  {q:'四种财富路径分别是什么？各自的核心代价和适合人群？',
-   ref:'优质工作+投资(20%年储蓄+长期耐心)；企业爬梯子(大量时间经营人际关系+选对公司)；高级专业人才(长期专业训练+持续进步)；梦想家创业(每周61小时+全家牺牲+高风险)。'},
-  {q:'为什么"财务自由≠提前退休"？真正获得财务自由的人如何对待工作？',
-   ref:'因财务自由的核心是安全感与自由而非"不工作"。巴菲特财务自由后仍每天工作——他热愛工作且擅长。退休的欲望往往源于不喜欢当前工作，而非真正想什么都不做。'},
-  {q:'3σ法则在风险管理中如何应用？给出一个投资和一个非投资的例子。',
-   ref:'投资：美股年波动率约17%→需承受50%(3×17%)跌幅的能力，在此范围内不恐慌。非投资：考试分数波动±20分(1σ)→报考需预留60分(3σ)安全边际，避免正常波动导致落榜。'},
-  {q:'虚拟经济"信息替代能量"的底层逻辑是什么？举一个日常生活案例。',
-   ref:'以更低的信息传递成本换取更低的时间和能量成本。案例：线上购物vs线下购物——线上用搜索(信息)替代开车去商场(能量)，节省了汽油、时间、停车费等能量密集成本。'},
-  {q:'什么样的人创业能成功？总结三个必要条件并各举一个例子。',
-   ref:'全能性(任何岗位空缺可顶上，如谷歌早期佩奇布林亲自攒机器)；生存力(养活团队的能力，如Grail创始人胡贝尔擅长融资)；诚信度(基本要求)。三者缺一不可。'}
-];
-
-// ==================== TABS ====================
-document.querySelectorAll('.tab-btn').forEach(function(btn){
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-    document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
-    btn.classList.add('active');
-    var t=document.querySelector('.tab-content[data-tab="'+btn.dataset.tab+'"]');
-    if(t)t.classList.add('active');
-    if(btn.dataset.tab==='3')resetExam();
+// ======== INIT TABS ========
+let currentTab = 0;
+document.querySelectorAll('#tabBar button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const tabIdx = parseInt(this.dataset.tab);
+    switchTab(tabIdx);
   });
 });
 
-function switchTab(idx){
-  var btn=document.querySelector('.tab-btn[data-tab="'+idx+'"]');
-  if(btn)btn.click();
+function switchTab(idx) {
+  currentTab = idx;
+  document.querySelectorAll('#tabBar button').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('#tabContents .tab-content').forEach((tc, i) => tc.classList.toggle('active', i === idx));
+  if (idx === 4) refreshReview();
+  if (idx === 3) resetExam();
 }
 
-// ==================== PROGRESS ====================
-function updateProgress(){
-  var total=concepts.length;
-  var done=concepts.filter(function(c){return state.learned[c.id];}).length;
-  var pct=total?Math.round(done/total*100):0;
-  document.getElementById('progressPct').textContent=pct+'%';
-  document.getElementById('progressFill').style.width=pct+'%';
-}
+// ======== TAB 0: DASHBOARD ========
+function renderDashboard() {
+  // Concept grid
+  let html = '';
+  concepts.forEach((c, i) => {
+    const starClass = c.star ? ' star' : '';
+    const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
+    html += `<div class="concept-card${starClass}" onclick="switchTab(1);setCard(${i})">
+      <span class="num">${i+1}</span><strong>${c.name}</strong>${starBadge}
+      <p style="font-size:12px;color:var(--text-light);margin-top:6px;">${c.short}</p>
+    </div>`;
+  });
+  document.getElementById('conceptGrid').innerHTML = html;
 
-// ==================== TAB 0: DASHBOARD ====================
-function renderDashboard(){
-  var grid=document.getElementById('conceptGrid');
-  grid.innerHTML=concepts.map(function(c){
-    return '<div class="concept-card'+(c.core?' core':'')+'" onclick="switchTab(1);flipToConcept(\''+c.id+'\')">'+
-      (c.core?'<span class="mks-star">★</span>':'')+
-      '<div class="icon-name">'+c.icon+'</div>'+
-      '<div class="name">'+c.name+'</div>'+
-      '<div class="brief">'+c.brief+'</div>'+
-      (state.learned[c.id]?'<span class="mks-badge">已学</span>':'')+
-    '</div>';
-  }).join('');
+  // MKS grid
+  document.getElementById('mksGrid').innerHTML = '';
+  mksDeep.forEach((m) => {
+    document.getElementById('mksGrid').innerHTML += `<div class="card" style="border-left:4px solid var(--accent);">
+      <h3>★ ${m.concept.name}</h3>
+      <p style="font-size:13px;color:var(--text-light);">${m.why}</p>
+      <p style="font-size:13px;"><strong>如何应用：</strong>${m.apply}</p>
+    </div>`;
+  });
 
-  document.getElementById('mksCoreGrid').innerHTML=mksCore.map(function(c){
-    return '<div class="concept-card core" onclick="switchTab(1);flipToConcept(\''+c.id+'\')">'+
-      '<span class="mks-star">★</span>'+
-      '<div class="icon-name">'+c.icon+'</div>'+
-      '<div class="name">'+c.name+'</div>'+
-      '<div class="brief">'+c.brief+'</div>'+
-    '</div>';
-  }).join('');
+  // Boundary table
+  let bhtml = '<tr><th>知识点</th><th>使用场景</th></tr>';
+  boundaryKnowledge.forEach(b => {
+    bhtml += `<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td></tr>`;
+  });
+  document.getElementById('boundaryTable').innerHTML = bhtml;
 
-  document.getElementById('boundaryTable').innerHTML=boundary.map(function(b,i){
-    return '<tr><td>'+(i+1)+'. '+b.item+'</td><td>'+b.scene+'</td></tr>';
-  }).join('');
+  // Learning path
+  let lhtml = '';
+  learningStages.forEach((s) => {
+    lhtml += `<div style="margin-bottom:14px;padding:12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);">
+      <strong style="color:var(--accent);font-size:15px;">${s.stage}</strong>
+      <p style="font-size:13px;color:var(--text-light);margin-top:4px;">${s.content}</p>
+    </div>`;
+  });
+  document.getElementById('learningPath').innerHTML = lhtml;
 
+  // SVG
   renderSVG();
+  // Progress
   updateProgress();
 }
 
-// ==================== TAB 1: FLIP CARDS ====================
-var currentFlipIdx=0;
-function flipToConcept(id){
-  var idx=concepts.findIndex(function(c){return c.id===id;});
-  if(idx>=0){currentFlipIdx=idx;renderFlipCard();}
+// ======== PROGRESS ========
+let learnedCards = JSON.parse(localStorage.getItem('mks_wealth_invest_learned')||'[]');
+let answeredMCQ = JSON.parse(localStorage.getItem('mks_wealth_invest_answeredMCQ')||'{}');
+let answeredSAQ = JSON.parse(localStorage.getItem('mks_wealth_invest_answeredSAQ')||'{}');
+let errorMCQ = JSON.parse(localStorage.getItem('mks_wealth_invest_errorMCQ')||'[]');
+
+function save(){
+  localStorage.setItem('mks_wealth_invest_learned',JSON.stringify(learnedCards));
+  localStorage.setItem('mks_wealth_invest_answeredMCQ',JSON.stringify(answeredMCQ));
+  localStorage.setItem('mks_wealth_invest_answeredSAQ',JSON.stringify(answeredSAQ));
+  localStorage.setItem('mks_wealth_invest_errorMCQ',JSON.stringify(errorMCQ));
 }
-function renderFlipCard(){
-  var c=concepts[currentFlipIdx];
-  document.getElementById('flipName').textContent=c.icon+' '+c.name;
-  document.getElementById('flipBack').innerHTML=
-    '<h4>定义</h4><p>'+c.def+'</p>'+
-    '<h4>类比</h4><p>'+c.analogy+'</p>'+
-    '<h4>正面示例</h4><p>'+c.example+'</p>'+
-    '<h4>反面示例</h4><p>'+c.counter+'</p>';
-  document.getElementById('flipCounter').textContent=(currentFlipIdx+1)+' / '+concepts.length;
+
+function getProgress() {
+  return {
+    learnedCards: learnedCards,
+    answeredMCQ: answeredMCQ,
+    answeredSAQ: answeredSAQ,
+    errorMCQ: errorMCQ
+  };
+}
+function saveProgress(p) {
+  learnedCards = p.learnedCards || [];
+  answeredMCQ = p.answeredMCQ || {};
+  answeredSAQ = p.answeredSAQ || {};
+  errorMCQ = p.errorMCQ || [];
+  save();
+}
+
+function updateProgress() {
+  const mcDone = Object.keys(answeredMCQ).length;
+  const saDone = Object.keys(answeredSAQ).length;
+  const totalDone = mcDone + saDone;
+  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
+  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
+  document.getElementById('quizProgress').textContent = `${totalDone}/30`;
+  document.getElementById('quizBar').style.width = `${(totalDone / 30) * 100}%`;
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+  document.getElementById('cardProgressBar').style.width = `${learnedCards.length * 10}%`;
+}
+
+// ======== TAB 1: FLIP CARDS ========
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">正面示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反面示例：</strong>${c.counter}</div>`;
   document.getElementById('flipInner').classList.remove('flipped');
-  document.getElementById('flipLearned').textContent=state.learned[c.id]?'✓ 已学':'✓ 标记已学';
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
-document.getElementById('flipPrev').addEventListener('click',function(){
-  currentFlipIdx=(currentFlipIdx-1+concepts.length)%concepts.length;renderFlipCard();
-});
-document.getElementById('flipNext').addEventListener('click',function(){
-  currentFlipIdx=(currentFlipIdx+1)%concepts.length;renderFlipCard();
-});
-document.getElementById('flipToggle').addEventListener('click',function(){
-  document.getElementById('flipInner').classList.toggle('flipped');
-});
-document.getElementById('flipInner').addEventListener('click',function(){
-  document.getElementById('flipInner').classList.toggle('flipped');
-});
-document.getElementById('flipLearned').addEventListener('click',function(){
-  var c=concepts[currentFlipIdx];
-  state.learned[c.id]=!state.learned[c.id];
-  saveState(state);
-  renderFlipCard();
-  renderDashboard();
-});
+setCard(0);
 
-// ==================== TAB 2: QUIZ ====================
-function renderQuiz(){
-  var container=document.getElementById('quizList');
-  container.innerHTML=quizData.map(function(q,i){
-    var done=state.quizDone[i];
-    var html='<div class="quiz-card'+(done?(done.correct?' correct':' wrong'):'')+'" id="quizCard'+i+'">';
-    html+='<div class="quiz-q">'+(i+1)+'. '+q.q+'</div>';
-    q.opts.forEach(function(opt,j){
-      var cls='q-option';
-      if(done){
-        if(j===q.answer)cls+=' correct-ans';
-        else if(j===done.chosen&&!done.correct)cls+=' wrong';
-      }
-      html+='<div class="'+cls+'" onclick="answerQuiz('+i+','+j+')">'+'ABCD'[j]+'. '+opt+'</div>';
-    });
-    if(done){
-      html+='<div class="q-feedback '+(done.correct?'right':'wrong-fb')+'">'+(done.correct?'✓ 正确！':'✗ 错误。')+' '+q.exp+'</div>';
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ======== TAB 2: RANDOM QUIZ PRACTICE ========
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...saQuestions].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuizPractice();
     }
-    html+='</div>';
-    return html;
-  }).join('');
-}
-
-function answerQuiz(qIdx,chosen){
-  if(state.quizDone[qIdx])return;
-  var q=quizData[qIdx];
-  var correct=chosen===q.answer;
-  state.quizDone[qIdx]={chosen:chosen,correct:correct};
-  if(!correct)state.wrongList.push({type:'mc',idx:qIdx,q:q.q,chosen:q.opts[chosen],correctAns:q.opts[q.answer],exp:q.exp,time:Date.now()});
-  saveState(state);
-  renderQuiz();
-  updateProgress();
-}
-document.getElementById('quizReset').addEventListener('click',function(){
-  state.quizDone={};state.wrongList=[];saveState(state);renderQuiz();renderReview();
-});
-
-// ==================== TAB 3: EXAM ====================
-var examInterval=null,examSeconds=0,examQuestions=[],examActive=false;
-function resetExam(){
-  clearInterval(examInterval);examActive=false;examSeconds=0;
-  document.getElementById('examTimer').textContent='15:00';
-  document.getElementById('examTimer').classList.remove('warning');
-  document.getElementById('examContent').innerHTML='';
-  document.getElementById('examResult').style.display='none';
-  document.getElementById('examStart').style.display='';
-}
-document.getElementById('examStart').addEventListener('click',startExam);
-
-function startExam(){
-  var mcIndices=shuffleArr(Array.from({length:quizData.length},function(_,i){return i;})).slice(0,7);
-  var saIndices=shuffleArr(Array.from({length:shortAnswerData.length},function(_,i){return i;})).slice(0,3);
-  examQuestions=[].concat(
-    mcIndices.map(function(i){var q=quizData[i];return {type:'mc',idx:i,q:q.q,opts:q.opts,answer:q.answer,exp:q.exp};}),
-    saIndices.map(function(i){var q=shortAnswerData[i];return {type:'sa',idx:i,q:q.q,ref:q.ref};})
-  );
-  examQuestions=shuffleArr(examQuestions);
-  examSeconds=15*60;examActive=true;
-  document.getElementById('examStart').style.display='none';
-  document.getElementById('examResult').style.display='none';
-  renderExamContent();
-  examInterval=setInterval(function(){
-    examSeconds--;
-    var m=Math.floor(examSeconds/60),s=examSeconds%60;
-    document.getElementById('examTimer').textContent=m+':'+String(s).padStart(2,'0');
-    if(examSeconds<=120)document.getElementById('examTimer').classList.add('warning');
-    if(examSeconds<=0){submitExam();}
   },1000);
 }
 
-function renderExamContent(){
-  var container=document.getElementById('examContent');
-  container.innerHTML=examQuestions.map(function(q,i){
-    var h='<div class="quiz-card" id="examQ'+i+'"><div class="quiz-q">'+(i+1)+'. '+q.q+'</div>';
-    if(q.type==='mc'){
-      q.opts.forEach(function(opt,j){
-        h+='<div class="q-option" onclick="selectExamOpt('+i+','+j+')" id="examOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+opt+'</div>';
+function updateQuizTimerDisplay(elemId){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    if(q.opts){
+      // isChoice check via q.opts
+      html += `<div class="quiz-card" id="qcard${i}">
+        <div class="q-num">选择题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>`;
+      q.opts.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += `<div class="option${sel}" onclick="selectQuizChoice(${i},${j})" id="opt${i}_${j}">${'ABCD'[j]}. ${o}</div>`;
       });
+      html += `<div id="fb${i}"></div></div>`;
     }else{
-      h+='<textarea id="examSA'+i+'" style="width:100%;min-height:80px;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:.85rem;font-family:inherit" placeholder="请输入你的答案..."></textarea>';
+      html += `<div class="quiz-card">
+        <div class="q-num">简答题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="essay-area" id="essay${i}" placeholder="输入你的回答...">${userAnswers[i]||''}</textarea>
+      </div>`;
     }
-    h+='</div>';
-    return h;
-  }).join('');
-  container.innerHTML+='<button class="btn" onclick="submitExam()" style="margin-top:12px">提交试卷</button>';
-}
-
-var examAnswers={};
-function selectExamOpt(qIdx,optIdx){
-  if(!examActive)return;
-  examAnswers[qIdx]=optIdx;
-  examQuestions[qIdx].opts.forEach(function(_,j){
-    var el=document.getElementById('examOpt'+qIdx+'_'+j);
-    if(el)el.classList.toggle('selected',j===optIdx);
   });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
 }
 
-function submitExam(){
-  clearInterval(examInterval);examActive=false;
-  var mcCorrect=0,mcTotal=0;
-  var results=[];
-  examQuestions.forEach(function(q,i){
-    if(q.type==='mc'){
-      mcTotal++;
-      var chosen=examAnswers[i];
-      var correct=chosen===q.answer;
-      if(correct)mcCorrect++;
-      results.push({q:q.q,correct:correct,chosen:chosen!==undefined?q.opts[chosen]:'未作答',correctAns:q.opts[q.answer],exp:q.exp});
-      if(!correct&&chosen!==undefined){
-        state.wrongList.push({type:'mc',idx:q.idx,q:q.q,chosen:q.opts[chosen],correctAns:q.opts[q.answer],exp:q.exp,time:Date.now()});
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const isCorrect = optIdx === q.ans;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===q.ans?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' 关联概念：'+q.concept;
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.opts).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].ans).length;
+  const totalChoice = currentQuestions.filter(q=>q.opts).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  // resetQuiz does NOT re-show anything
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+}
+
+// ======== TAB 2: STATIC MCQ + SAQ ========
+function renderMCQ() {
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredMCQ || {};
+  mcQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question" id="mcq${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt, j) => {
+      const isAnswered = answered[i] !== undefined;
+      let cls = 'option';
+      if (isAnswered) {
+        if (j === q.ans) cls += ' correct';
+        else if (j === answered[i]) cls += ' wrong';
       }
-    }
-  });
-  var score=mcCorrect,total=mcTotal;
-  saveState(state);
-
-  var pct=Math.round(score/total*100);
-  var grade='',suggestion='';
-  if(pct>=85){grade='优秀';suggestion='概念掌握扎实，继续保持！';}
-  else if(pct>=60){grade='良好';suggestion='建议复习错题对应的核心概念。';}
-  else{grade='需加强';suggestion='建议回到知识卡片模式系统学习。';}
-
-  var weakConcepts=results.filter(function(r){return !r.correct;}).map(function(r){return r.q;}).slice(0,3).join('、');
-
-  document.getElementById('examContent').innerHTML='';
-  document.getElementById('examResult').style.display='block';
-  document.getElementById('examResult').innerHTML=
-    '<div class="score">'+score+' / '+total+'</div>'+
-    '<div class="grade">评级：'+grade+'（正确率 '+pct+'%）</div>'+
-    '<p style="font-size:.88rem;color:var(--text2);margin:8px 0">'+suggestion+'</p>'+
-    (weakConcepts?'<p style="font-size:.83rem;color:var(--accent)">薄弱概念：'+weakConcepts+'</p>':'')+
-    '<p style="font-size:.78rem;color:var(--text2)">简答题请对照参考答案自行评估（答对要点即得分）</p>'+
-    '<button class="btn btn-outline btn-sm" onclick="switchTab(4)">查看错题</button>'+
-    '<h3 style="margin-top:16px">题目解析</h3>'+
-    results.map(function(r,i){return '<div style="text-align:left;font-size:.83rem;padding:6px 0;border-bottom:1px solid var(--border)">'+(i+1)+'. '+r.q+'<br><span style="color:'+(r.correct?'var(--green)':'var(--accent)')+'">'+(r.correct?'✓':'✗')+' 正确答案：'+r.correctAns+'</span>'+(r.correct?'':'<br><span style="color:var(--text2)">'+r.exp+'</span>')+'</div>';}).join('')+
-    '<button class="btn" style="margin-top:12px" onclick="resetExam()">重新考试</button>';
-  state.examHistory.push({score:score,total:total,pct:pct,date:Date.now()});
-  saveState(state);
-}
-
-// ==================== TAB 4: REVIEW ====================
-function renderReview(){
-  var wb=document.getElementById('wrongBook');
-  if(state.wrongList.length===0){
-    wb.innerHTML='<p style="color:var(--text2)">暂无错题记录。去题库练习吧！</p>';
-  }else{
-    wb.innerHTML='<button class="btn btn-sm btn-outline" style="margin-bottom:10px" onclick="state.wrongList=[];saveState(state);renderReview();renderQuiz();">清空错题本</button>'+state.wrongList.map(function(w,i){
-      return '<div class="quiz-card" style="font-size:.83rem"><strong>'+(i+1)+'. '+w.q+'</strong><br>你的答案：<span style="color:var(--accent)">'+w.chosen+'</span><br>正确答案：<span style="color:var(--green)">'+w.correctAns+'</span><br><span style="color:var(--text2)">'+(w.exp||'')+'</span></div>';
-    }).join('');
-  }
-
-  var sp=document.getElementById('statsPanel');
-  var totalMC=Object.keys(state.quizDone).length;
-  var correctMC=Object.values(state.quizDone).filter(function(d){return d.correct;}).length;
-  var accuracy=totalMC?Math.round(correctMC/totalMC*100):0;
-  var days=state.examHistory.length;
-  sp.innerHTML=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">'+
-      '<div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">'+totalMC+'</div><div style="font-size:.78rem;color:var(--text2)">总做题数</div></div>'+
-      '<div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">'+accuracy+'%</div><div style="font-size:.78rem;color:var(--text2)">正确率</div></div>'+
-      '<div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">'+state.wrongList.length+'</div><div style="font-size:.78rem;color:var(--text2)">错题数</div></div>'+
-      '<div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">'+days+'</div><div style="font-size:.78rem;color:var(--text2)">考试次数</div></div>'+
-      '<div class="card" style="text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--accent)">'+concepts.filter(function(c){return state.learned[c.id];}).length+'/'+concepts.length+'</div><div style="font-size:.78rem;color:var(--text2)">已学概念</div></div>'+
-    '</div>';
-
-  var wc=document.getElementById('weakConcepts');
-  var errorTopics={};
-  state.wrongList.forEach(function(w){
-    var topic=w.q.split('？')[0].split('的是')[0].slice(0,15);
-    errorTopics[topic]=(errorTopics[topic]||0)+1;
-  });
-  var sorted=Object.entries(errorTopics).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
-  if(sorted.length===0){
-    wc.innerHTML='<p style="color:var(--text2)">暂无薄弱概念数据，多做几道题试试。</p>';
-  }else{
-    wc.innerHTML=sorted.map(function(e){return '<div class="card" style="border-left:4px solid var(--accent);padding:10px 14px;margin:6px 0"><strong>'+e[0]+'</strong> — 错误'+e[1]+'次</div>';}).join('');
-  }
-}
-
-function resetReview(){
-  if(confirm('确定要重置所有学习进度、错题和考试记录吗？此操作不可恢复。')){
-    state={learned:{},quizDone:{},wrongList:[],examHistory:[],simProgress:0};
-    saveState(state);
-    renderReview();
-    renderQuiz();
-    renderDashboard();
-  }
-}
-
-// ==================== TAB 5: MINDMAP ====================
-function renderMindmap(){
-  document.getElementById('mindmap').innerHTML=buildTree([
-    {label:'财富增长的底层逻辑',children:[
-      {label:'收入引擎',children:[
-        {label:'优质工作+投资：年存20%收入，长期谨慎投资'},
-        {label:'企业爬梯子：选对公司，经营人际关系，股票收益'},
-        {label:'高级专业人才：医生/律师/工程师，不可替代性'},
-        {label:'梦想家创业：每周61h+，平均12年，740万美元'},
-      ]},
-      {label:'资产配置',children:[
-        {label:'资产≠拥有物：能产生回报才是资产'},
-        {label:'债务的本质：持续消耗金钱/空间/时间/注意力'},
-        {label:'指数基金定投：长期+稳定市场是前提'},
-        {label:'现金非王：通胀下持有即贬值'},
-        {label:'黄金非好投资：长期回报低于股市'},
-        {label:'买房决策：升值率>贷款利率、售租比低、保有成本低'},
-      ]},
-      {label:'风险管控',children:[
-        {label:'风险定义：超出意料的波动×个体承受力'},
-        {label:'3σ法则：承受3倍标准差波动'},
-        {label:'止损思维：接受局部损失，斩断厄运链'},
-        {label:'通胀应对：中产最脆弱，知识能力是终极资源'},
-        {label:'风险分担池：找对人+持续贡献+10人左右'},
-        {label:'B计划与冗余：旅行箱理论——留出调整空间'},
-      ]},
-      {label:'未来资产',children:[
-        {label:'数据资产化：所有权(GDPR)+技术(区块链)'},
-        {label:'数据银行模型：用户=存款人，平台=银行'},
-        {label:'虚拟经济趋势：信息替代能量，不可逆'},
-        {label:'财务自由本质：安全感+做喜欢的事'},
-        {label:'关注点塑造人生：挑金子而非滤沙子'},
-        {label:'深度工作：效率10-20倍，激情源于擅长'},
-      ]},
-    ]}
-  ]);
-}
-
-function buildTree(nodes){
-  return nodes.map(function(n){
-    var hasChildren=n.children&&n.children.length>0;
-    var id='mm_'+Math.random().toString(36).slice(2,8);
-    if(hasChildren){
-      return '<div class="mindmap-node">'+
-        '<span class="mindmap-toggle" onclick="toggleMindmap(\''+id+'\')" id="'+id+'_tgl">'+n.label+'</span>'+
-        '<div class="tree-children" id="'+id+'">'+buildTree(n.children)+'</div>'+
-      '</div>';
-    }
-    return '<div class="mindmap-node"><span class="mindmap-leaf">· '+n.label+'</span></div>';
-  }).join('');
-}
-
-function toggleMindmap(id){
-  var children=document.getElementById(id);
-  var toggle=document.getElementById(id+'_tgl');
-  children.classList.toggle('show');
-  toggle.classList.toggle('open');
-}
-
-// ==================== TAB 6: SOCRATIC ====================
-function renderSocratic(){
-  var questions=[
-    {q:'如果指数基金定投这么简单有效，为什么大多数人仍然不这么做？',layers:[
-      '第一层：过度自信偏差——散户普遍认为自己能跑赢大盘。低门槛的股票交易让人产生\'我很聪明\'的错觉，尤其是在牛市中。',
-      '第二层：人性对\'慢富\'的抗拒——指数基金年化7-10%的回报太慢，而人类大脑的奖励系统更渴望即时反馈。罗宾汉证券的\'游戏化\'设计正是利用了这一点。',
-      '第三层：认知的多层嵌套——理解指数基金的逻辑(第一层)容易，但克服\'懂而不用\'的知行鸿沟(第二层)极难。更底层的问题是：大多数人并不真正相信长期主义，他们的时间偏好被消费主义和社会比较劫持了。'
-    ]},
-    {q:'如果\'现金为王\'在流动性泛滥时失效，为什么还会有人持有大量现金？',layers:[
-      '第一层：进化惯性——人类面对不确定性时的随大流心理源于远古本能。当群体恐慌时，持有现金是本能反应，如同羚羊跟随群体逃跑。',
-      '第二层：经验陷阱——2008年金融危机中巴菲特凭借现金成功抄底，这个单一经验被过度泛化。柏拉图的洞穴寓言：一种经验只是真相的局部投影。',
-      '第三层：能力边界——持有现金虽然贬值，但不需要任何认知能力。而配置股票、房产、债券需要持续学习和判断。对大多数人来说，现金不是最优选择，但是最省力的选择——这是认知上的\'止损\'。'
-    ]},
-    {q:'数据资产化的逻辑听起来很好，为什么现实中进展缓慢？',layers:[
-      '第一层：利益格局——平台公司(谷歌/Facebook/腾讯)是当前数据免费使用模式的最大受益者。任何改变都会遭遇巨大阻力。',
-      '第二层：技术基础设施——区块链的效率仍然太低。比特币交易成本20美元(信用卡3美分)，Dfinity虽然提升到1秒但尚未大规模应用。在效率和隐私之间找到平衡点极其困难。',
-      '第三层：社会共识缺失——数据资产化需要全社会就\'数据的价值\'和\'所有权的边界\'达成共识，这本质上是一个政治和法律问题而非技术问题。中国软件市场因版权保护不足导致\'软件不值钱\'的教训提醒我们：没有制度保障的价值认知，最终会沦为泡沫。'
-    ]},
-    {q:'财务自由如果真的不是\'花不完的钱\'，那我们到底在追求什么？',layers:[
-      '第一层：我们追求的是安全感和选择权——不必因为一次修车就打乱预算，不必因为怕老板而不敢请假。这些是财务安全感，而非财富本身。',
-      '第二层：更深一层，我们追求的是\'不必做自己讨厌的事\'的自由。但纽波特的研究表明：激情来源于擅长，而非先有激情再擅长。所以真正的自由不是\'什么都不做\'，而是\'做自己擅长且热爱的事\'。',
-      '第三层：最底层是存在主义问题——当财务自由被定义为\'花不完的钱\'时，它变成了一个永远无法到达的彼岸(因为欲望无上限)。而当它被定义为\'找到热爱并持续做下去\'时，它就在当下。吴军说得好：与其指望挣更多钱获得自由，不如找到喜欢的事并比同行做得好。'
-    ]},
-    {q:'止损听起来有道理，但实际操作中怎么区分\'该坚持\'和\'该放弃\'？',layers:[
-      '第一层：看基本面是否改变。J曲线的下行段是暂时的、可预期的；厄运链的下行是结构性的、不可逆的。公司从行业第2跌至第5、新CEO战略摇摆=基本面恶化→该止损。',
-      '第二层：看是否触及底线。风险三级划分：一级(生命安全)、二级(生活保障)、三级(心理阈值)。当决策触及一级或二级底线时，不应止损而应全力应对；仅触及三级时可考虑止损。',
-      '第三层：没有万能公式，但有判断框架。J曲线告诉我们正确的方向会有短期下行；止损告诉我们错误的方向越坚持越惨。区分的核心在于：你是否有足够的认知深度来判断拐点在哪里？这又回到了那个根本问题——知识储备和认知深度。'
-    ]}
-  ];
-  document.getElementById('socraticList').innerHTML=questions.map(function(sq,i){
-    return '<div class="socratic-item">'+
-      '<div class="socratic-q" onclick="toggleSocratic('+i+')" id="sq_q_'+i+'">'+
-        '<span>'+(i+1)+'. '+sq.q+'</span><span style="font-size:.75rem;color:var(--text2)">▶</span>'+
-      '</div>'+
-      sq.layers.map(function(a,j){return '<div class="socratic-a" id="sq_a_'+i+'_'+j+'"><strong>'+a+'</strong></div>';}).join('')+
-    '</div>';
-  }).join('');
-}
-function toggleSocratic(idx){
-  var layers=document.querySelectorAll('[id^="sq_a_'+idx+'_"]');
-  var qEl=document.getElementById('sq_q_'+idx);
-  var isOpen=layers[0].classList.contains('open');
-  layers.forEach(function(l){l.classList.toggle('open',!isOpen);});
-  qEl.classList.toggle('open',!isOpen);
-}
-
-// ==================== TAB 8: DECISION SIM ====================
-function renderSim(){
-  var scenarios=[
-    {
-      title:'第1轮：投资决策——面对三种资产',
-      desc:'你手头有50万闲置资金。A选项：买入标普500指数基金，长期持有。B选项：买入一只你研究了一周的科技股，你认为它有10倍潜力。C选项：把钱放在活期存款中，等待更好的投资机会。你会怎么选？',
-      choices:[
-        {label:'A. 买入指数基金，长期持有',feedback:'好选择(MKS视角)：①符合\'优质工作+投资\'路径的核心纪律——年存20%+长期投资；②承认自己不是专业投资者，遵循\'散户跑不赢大盘\'的统计事实；③巴菲特十年赌约证明标普500完胜对冲基金。',level:'good'},
-        {label:'B. 买入科技股，博取高回报',feedback:'高危选择(MKS视角)：①\'研究一周\'的科技股——半吊子的经验比一无所知更危险(刚会开车的人最喜欢闯红灯)；②伯克森悖论提醒：你看到的\'10倍潜力\'可能只是忽略了那4万个失败的创业公司；③如果你不是该行业的深度从业者，你的\'研究\'大概率是噪音。',level:'bad'},
-        {label:'C. 持有现金，等待机会',feedback:'中等选择(MKS视角)：①\'现金为王\'在正常时期有其合理性，但全球流动性泛滥的环境下意味着每年被通胀侵蚀2-3%；②\'等待更好机会\'的问题是：你怎么知道什么时候是\'更好\'？巴菲特也说不要试图择时；③如果这不是你的紧急备用金，持有现金的机会成本很高。',level:'mid'},
-      ]
-    },
-    {
-      title:'第2轮：负债决策——贷款买房的判断',
-      desc:'你看中一套300万的房子，手头有90万首付(30%)，月供约1.2万。你的家庭月收入3万。但你刚得知公司在考虑裁员，你的岗位有一定风险。同时，你的朋友说"现在不买以后更贵"。你怎么办？',
-      choices:[
-        {label:'A. 立即购买，锁定当前价格',feedback:'高风险选择(MKS视角)：①旅行箱理论：月供1.2万占收入40%，一旦失业将塞满你的\'生活旅行箱\'，丧失调整空间；②微软高管案例：因房贷错失谷歌早期机会——房子的机会成本不仅是月供，更是你的职业选择自由；③"现在不买以后更贵"是营销话术，资产价格不是永远上涨的。',level:'bad'},
-        {label:'B. 再等一年，先确认职业安全',feedback:'好选择(MKS视角)：①风险管理优先于资产配置——先保证二级底线(生活保障)不被动摇；②住房是消费也是投资，但在裁员风险下维持流动性(租房+投资)更安全；③止损思维的正面应用：主动放弃\'可能错过的机会\'，换取职业和财务的确定性。',level:'good'},
-        {label:'C. 和父母借钱凑齐首付50%',feedback:'差选择(MKS视角)：①掏空三个家庭积蓄=把养老钱变成债务(第175封信的警示)；②高杠杆叠加职业不确定性=双重风险叠加；③负债买房的前提是\'稳定收入+房价上涨预期+保有成本低\'，你的情况三条都不满足。',level:'bad'},
-      ]
-    },
-    {
-      title:'第3轮：职业选择——两种财富路径',
-      desc:'你现在有两个offer：A公司是一家稳定的上市公司，年薪40万，每年涨幅3-5%，有股票期权。B公司是B轮创业公司，年薪25万+2%股权，创始人有过一次成功退出经验。你会怎么选？',
-      choices:[
-        {label:'A. 选上市公司，走\'企业爬梯子\'路径',feedback:'稳健选择(MKS视角)：①符合占比最高的财富路径(31%)，通过股票期权和晋升积累财富；②风险承受能力取决于你的年龄和家庭状况——如果有房贷和子女教育压力，这是更合理的决策；③但要意识到：传统大企业的晋升空间在收窄，需要主动经营人际关系和时机。',level:'mid'},
-        {label:'B. 选创业公司，博取股权回报',feedback:'好选择但需条件(MKS视角)：①创始人有过成功退出——这是最重要的信号(投资本质是投人)；②2%股权如果公司做到10亿估值就是2000万，远超稳定工作20年的收入；③前提条件：你能承受每周61小时+的工作强度，且家庭支持(梦想家路径的核心代价)。如果这些条件满足，这是理性选择。',level:'good'},
-        {label:'C. 两份工作都拒绝，自己创业',feedback:'最差选择(MKS视角)：①库班的警示：学生创业失败的首要原因是准备不足——你以为要解决100个问题，实际是1000个；②创业的核心资格是养活团队的能力，刚毕业通常不具备；③两个offer都已证明你的能力被认可，先积累行业经验和人际网络，再考虑创业才是J曲线的正确路径。',level:'bad'},
-      ]
-    }
-  ];
-  document.getElementById('simScenarios').innerHTML=scenarios.map(function(sc,si){
-    return '<div class="sim-scenario" id="sim'+si+'">'+
-      '<h3>'+sc.title+'</h3>'+
-      '<p style="font-size:.85rem">'+sc.desc+'</p>'+
-      '<div class="sim-choices">'+
-        sc.choices.map(function(ch,ci){return '<div class="sim-choice" onclick="chooseSim('+si+','+ci+')" id="simChoice'+si+'_'+ci+'">'+ch.label+'</div>';}).join('')+
-      '</div>'+
-      '<div class="sim-feedback" id="simFB'+si+'"></div>'+
-    '</div>';
-  }).join('');
-}
-
-function chooseSim(si,ci){
-  var feedbacks=[
-    [
-      '好选择(MKS视角)：①符合\'优质工作+投资\'路径的核心纪律——年存20%+长期投资；②承认自己不是专业投资者，遵循\'散户跑不赢大盘\'的统计事实；③巴菲特十年赌约证明标普500完胜对冲基金。',
-      '高危选择(MKS视角)：①\'研究一周\'的科技股——半吊子的经验比一无所知更危险(刚会开车的人最喜欢闯红灯)；②伯克森悖论提醒：你看到的\'10倍潜力\'可能只是忽略了那4万个失败的创业公司；③如果你不是该行业的深度从业者，你的\'研究\'大概率是噪音。',
-      '中等选择(MKS视角)：①\'现金为王\'在正常时期有其合理性，但全球流动性泛滥的环境下意味着每年被通胀侵蚀2-3%；②\'等待更好机会\'的问题是：你怎么知道什么时候是\'更好\'？巴菲特也说不要试图择时；③如果这不是你的紧急备用金，持有现金的机会成本很高。'
-    ],
-    [
-      '高风险选择(MKS视角)：①旅行箱理论：月供1.2万占收入40%，一旦失业将塞满你的\'生活旅行箱\'，丧失调整空间；②微软高管案例：因房贷错失谷歌早期机会——房子的机会成本不仅是月供，更是你的职业选择自由；③"现在不买以后更贵"是营销话术，资产价格不是永远上涨的。',
-      '好选择(MKS视角)：①风险管理优先于资产配置——先保证二级底线(生活保障)不被动摇；②住房是消费也是投资，但在裁员风险下维持流动性(租房+投资)更安全；③止损思维的正面应用：主动放弃\'可能错过的机会\'，换取职业和财务的确定性。',
-      '差选择(MKS视角)：①掏空三个家庭积蓄=把养老钱变成债务(第175封信的警示)；②高杠杆叠加职业不确定性=双重风险叠加；③负债买房的前提是\'稳定收入+房价上涨预期+保有成本低\'，你的情况三条都不满足。'
-    ],
-    [
-      '稳健选择(MKS视角)：①符合占比最高的财富路径(31%)，通过股票期权和晋升积累财富；②风险承受能力取决于你的年龄和家庭状况——如果有房贷和子女教育压力，这是更合理的决策；③但要意识到：传统大企业的晋升空间在收窄，需要主动经营人际关系和时机。',
-      '好选择但需条件(MKS视角)：①创始人有过成功退出——这是最重要的信号(投资本质是投人)；②2%股权如果公司做到10亿估值就是2000万，远超稳定工作20年的收入；③前提条件：你能承受每周61小时+的工作强度，且家庭支持(梦想家路径的核心代价)。如果这些条件满足，这是理性选择。',
-      '最差选择(MKS视角)：①库班的警示：学生创业失败的首要原因是准备不足——你以为要解决100个问题，实际是1000个；②创业的核心资格是养活团队的能力，刚毕业通常不具备；③两个offer都已证明你的能力被认可，先积累行业经验和人际网络，再考虑创业才是J曲线的正确路径。'
-    ]
-  ];
-  var levels=[['good','bad','mid'],['bad','good','bad'],['mid','good','bad']];
-  var fb=document.getElementById('simFB'+si);
-  fb.textContent=feedbacks[si][ci];
-  fb.className='sim-feedback show '+(levels[si][ci]==='good'?'good':levels[si][ci]==='mid'?'mid':'bad');
-
-  document.querySelectorAll('#sim'+si+' .sim-choice').forEach(function(el){el.classList.remove('chosen');});
-  document.getElementById('simChoice'+si+'_'+ci).classList.add('chosen');
-  state.simProgress=Math.max(state.simProgress,si+1);
-  saveState(state);
-}
-
-// ==================== INIT ====================
-function init(){
-  renderDashboard();
-  renderFlipCard();
-  renderQuiz();
-  resetExam();
-  renderReview();
-  renderMindmap();
-  setTimeout(function(){
-    document.querySelectorAll('.mindmap-toggle').forEach(function(el,i){
-      if(i<4)el.click();
+      html += `<div class="${cls}" onclick="answerMCQ(${i}, ${j})" id="mcq${i}o${j}">
+        ${'ABCD'[j]}. ${opt}
+        ${isAnswered && j === q.ans ? ' ✓' : ''}
+        ${isAnswered && j === answered[i] && j !== q.ans ? ' ✗' : ''}
+      </div>`;
     });
-  },100);
-  renderSocratic();
-  renderSim();
+    html += `<p style="font-size:11px;color:var(--text-light);margin-top:2px;">关联概念：${q.concept}</p>`;
+    html += `</div>`;
+  });
+  document.getElementById('mcqContainer').innerHTML = html;
 }
+
+function answerMCQ(qIdx, optIdx) {
+  const p = getProgress();
+  if (!p.answeredMCQ) p.answeredMCQ = {};
+  if (p.answeredMCQ[qIdx] !== undefined) return;
+  p.answeredMCQ[qIdx] = optIdx;
+
+  if (optIdx !== mcQuestions[qIdx].ans) {
+    if (!p.errorMCQ) p.errorMCQ = [];
+    if (!p.errorMCQ.includes(qIdx)) p.errorMCQ.push(qIdx);
+  }
+
+  saveProgress(p);
+  renderMCQ();
+  updateProgress();
+}
+
+function resetMCQ() {
+  const p = getProgress();
+  p.answeredMCQ = {};
+  p.errorMCQ = [];
+  saveProgress(p);
+  renderMCQ();
+  updateProgress();
+}
+
+function renderSAQ() {
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredSAQ || {};
+  saQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question" id="saq${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    if (!answered[i]) {
+      html += `<textarea id="saqInput${i}" style="width:100%;min-height:60px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>
+      <button class="btn btn-outline" style="margin-top:6px;" onclick="checkSAQ(${i})">查看参考答案</button>`;
+    } else {
+      html += `<p style="font-size:12px;color:var(--text-light);margin:6px 0;"><strong>你的回答：</strong>${answered[i]}</p>
+      <p style="font-size:12px;color:#27ae60;"><strong>参考答案：</strong>${q.ref}</p>`;
+    }
+    html += `</div>`;
+  });
+  document.getElementById('saqContainer').innerHTML = html;
+}
+
+function checkSAQ(i) {
+  const input = document.getElementById('saqInput' + i);
+  if (!input || !input.value.trim()) return;
+  const p = getProgress();
+  if (!p.answeredSAQ) p.answeredSAQ = {};
+  p.answeredSAQ[i] = input.value.trim();
+  saveProgress(p);
+  renderSAQ();
+  updateProgress();
+}
+
+function resetSAQ() {
+  const p = getProgress();
+  p.answeredSAQ = {};
+  saveProgress(p);
+  renderSAQ();
+  updateProgress();
+}
+
+// ======== TAB 3: EXAM MODE ========
+let examTimerId = null;
+let examSeconds = 900;
+let examQuestions = [];
+
+function resetExam() {
+  document.getElementById('examSetup').style.display = 'block';
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('examResult').style.display = 'none';
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  examSeconds = 900;
+}
+
+function startExam() {
+  document.getElementById('examSetup').style.display = 'none';
+  document.getElementById('examArea').style.display = 'block';
+  document.getElementById('examResult').style.display = 'none';
+  document.getElementById('examResult').innerHTML = '';
+
+  const mcIndices = shuffleArray([...Array(20).keys()]).slice(0, 7);
+  const saIndices = shuffleArray([...Array(10).keys()]).slice(0, 3);
+  examQuestions = { mc: mcIndices, sa: saIndices };
+
+  let html = '<h3>选择题（7道）</h3>';
+  mcIndices.forEach((idx, i) => {
+    const q = mcQuestions[idx];
+    html += `<div class="quiz-question">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt, j) => {
+      html += `<div class="option" onclick="selectExamMC(${i}, ${j})" id="examMc${i}o${j}">${'ABCD'[j]}. ${opt}</div>`;
+    });
+    html += `</div>`;
+  });
+  html += '<h3>简答题（3道）</h3>';
+  saIndices.forEach((idx, i) => {
+    html += `<div class="quiz-question">
+      <div class="q-text">${i+1}. ${saQuestions[idx].q}</div>
+      <textarea id="examSaInput${i}" style="width:100%;min-height:50px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>
+    </div>`;
+  });
+  document.getElementById('examContent').innerHTML = html;
+
+  examSeconds = 900;
+  updateExamTimer();
+  examTimerId = setInterval(() => {
+    examSeconds--;
+    updateExamTimer();
+    if (examSeconds <= 0) { submitExam(); }
+  }, 1000);
+}
+
+function updateExamTimer() {
+  const m = Math.floor(examSeconds / 60);
+  const s = examSeconds % 60;
+  const el = document.getElementById('examTimer');
+  el.textContent = `${m}:${String(s).padStart(2, '0')}`;
+  el.classList.toggle('warning', examSeconds < 60);
+}
+
+let examMCAnswers = {};
+function selectExamMC(qIdx, optIdx) {
+  examMCAnswers[qIdx] = optIdx;
+  for (let j = 0; j < 4; j++) {
+    document.getElementById(`examMc${qIdx}o${j}`).classList.toggle('selected', j === optIdx);
+  }
+}
+
+function submitExam() {
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('examResult').style.display = 'block';
+
+  let score = 0;
+  let mcResult = '';
+  examQuestions.mc.forEach((qIdx, i) => {
+    const q = mcQuestions[qIdx];
+    const userAns = examMCAnswers[i];
+    const correct = userAns === q.ans;
+    if (correct) score++;
+    mcResult += `<div style="margin-bottom:8px;">
+      <strong>${i+1}. ${q.q}</strong><br>
+      <span style="color:${correct ? '#27ae60' : '#e74c3c'}">你的答案：${userAns !== undefined ? 'ABCD'[userAns] : '未作答'} | 正确答案：${'ABCD'[q.ans]}</span><br>
+      ${!correct ? `<span style="font-size:12px;color:var(--text-light);">解析：${q.opts[q.ans]}</span>` : ''}
+    </div>`;
+  });
+
+  let saResult = '';
+  examQuestions.sa.forEach((idx, i) => {
+    const q = saQuestions[idx];
+    const userAns = document.getElementById(`examSaInput${i}`)?.value || '未作答';
+    saResult += `<div style="margin-bottom:8px;">
+      <strong>${i+1}. ${q.q}</strong><br>
+      <span style="font-size:12px;color:var(--text-light);">你的回答：${userAns.substring(0, 100)}...</span><br>
+      <span style="font-size:12px;color:#27ae60;">参考答案：${q.ref.substring(0, 150)}...</span>
+    </div>`;
+  });
+
+  const totalMC = examQuestions.mc.length;
+  const elapsed = 900 - examSeconds;
+  const elapsedM = Math.floor(elapsed / 60);
+  const elapsedS = elapsed % 60;
+
+  const conceptErrors = {};
+  examQuestions.mc.forEach((qIdx, i) => {
+    if (examMCAnswers[i] !== mcQuestions[qIdx].ans) {
+      const cName = mcQuestions[qIdx].concept;
+      conceptErrors[cName] = (conceptErrors[cName] || 0) + 1;
+    }
+  });
+
+  let weakHtml = '';
+  for (const [cname, cnt] of Object.entries(conceptErrors)) {
+    weakHtml += `<span style="display:inline-block;margin:4px;padding:4px 10px;background:#fdedec;border-radius:12px;font-size:12px;">${cname} (错${cnt}次)</span>`;
+  }
+
+  document.getElementById('examResult').innerHTML = `
+    <h2>考试成绩</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;">
+      <div class="stat-box"><div class="num">${score}/${totalMC}</div><div class="lbl">选择题得分</div></div>
+      <div class="stat-box"><div class="num">${Math.round(score/totalMC*100)}%</div><div class="lbl">正确率</div></div>
+      <div class="stat-box"><div class="num">${elapsedM}分${elapsedS}秒</div><div class="lbl">用时</div></div>
+    </div>
+    <h3>选择题解析</h3>${mcResult}
+    <h3>简答题参考</h3>${saResult}
+    <h3>薄弱概念</h3>${weakHtml || '<p>全部答对，暂无薄弱概念</p>'}
+    <button class="btn btn-primary" onclick="resetExam();switchTab(3);" style="margin-top:14px;">重新考试</button>
+  `;
+}
+
+// ======== TAB 4: REVIEW MODE ========
+function refreshReview() {
+  const p = getProgress();
+  const ansMcq = p.answeredMCQ || {};
+  const ansSaq = p.answeredSAQ || {};
+  const errMcq = p.errorMCQ || [];
+  const lc = p.learnedCards || [];
+
+  const totalAnswered = Object.keys(ansMcq).length + Object.keys(ansSaq).length;
+  const mcCorrect = Object.keys(ansMcq).length - errMcq.length;
+  const mcRate = Object.keys(ansMcq).length > 0 ? Math.round(mcCorrect / Object.keys(ansMcq).length * 100) : 0;
+
+  document.getElementById('statsArea').innerHTML = `
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <div class="stat-box"><div class="num">${totalAnswered}</div><div class="lbl">总答题数</div></div>
+      <div class="stat-box"><div class="num">${mcRate}%</div><div class="lbl">选择正确率</div></div>
+      <div class="stat-box"><div class="num">${lc.length}</div><div class="lbl">已学概念</div></div>
+      <div class="stat-box"><div class="num">${errMcq.length}</div><div class="lbl">错题数</div></div>
+    </div>
+  `;
+
+  if (errMcq.length === 0) {
+    document.getElementById('errorBook').innerHTML = '<p style="color:#27ae60;">暂无错题，继续保持！</p>';
+  } else {
+    let ehtml = '<p style="margin-bottom:8px;font-size:13px;color:var(--text-light);">点击错题可重新作答（清除该题记录）</p>';
+    errMcq.forEach(qIdx => {
+      const q = mcQuestions[qIdx];
+      const userAns = ansMcq[qIdx];
+      ehtml += `<div style="padding:8px;margin:6px 0;background:#fef9f4;border-radius:6px;border-left:3px solid #e74c3c;cursor:pointer;" onclick="retryMCQ(${qIdx})">
+        <strong>${qIdx+1}. ${q.q}</strong><br>
+        <span style="color:#e74c3c;">你的答案：${'ABCD'[userAns]}</span> |
+        <span style="color:#27ae60;">正确：${'ABCD'[q.ans]}</span> — ${q.opts[q.ans]}
+        <br><span style="font-size:11px;color:var(--text-light);">概念：${q.concept}</span>
+      </div>`;
+    });
+    document.getElementById('errorBook').innerHTML = ehtml;
+  }
+
+  const conceptErrors = {};
+  errMcq.forEach(qIdx => {
+    const cn = mcQuestions[qIdx].concept;
+    conceptErrors[cn] = (conceptErrors[cn] || 0) + 1;
+  });
+  const sorted = Object.entries(conceptErrors).sort((a, b) => b[1] - a[1]);
+  if (sorted.length === 0) {
+    document.getElementById('weakPoints').innerHTML = '<p>暂无薄弱概念数据。</p>';
+  } else {
+    let whtml = '';
+    sorted.forEach(([cn, cnt]) => {
+      whtml += `<div style="margin-bottom:10px;">
+        <strong>${cn}</strong> — 错误${cnt}次
+        <div class="progress-bar"><div class="fill" style="width:${Math.max(10, 100-cnt*20)}%;background:#e74c3c;"></div></div>
+      </div>`;
+    });
+    document.getElementById('weakPoints').innerHTML = whtml;
+  }
+}
+
+function retryMCQ(qIdx) {
+  const p = getProgress();
+  delete p.answeredMCQ[qIdx];
+  p.errorMCQ = (p.errorMCQ || []).filter(e => e !== qIdx);
+  saveProgress(p);
+  refreshReview();
+  updateProgress();
+}
+
+// ======== TAB 5: MIND MAP ========
+function renderMindTree() {
+  const treeData = [
+    { name: "财富增长的底层逻辑", children: [
+      { name: "收入引擎", children: [
+        { name: "优质工作+投资：年存20%收入，长期谨慎投资" },
+        { name: "企业爬梯子：选对公司，经营人际关系，股票收益" },
+        { name: "高级专业人才：医生/律师/工程师，不可替代性" },
+        { name: "梦想家创业：每周61h+，平均12年，740万美元" }
+      ]},
+      { name: "资产配置", children: [
+        { name: "资产不等于拥有物：能产生回报才是资产" },
+        { name: "债务的本质：持续消耗金钱/空间/时间/注意力" },
+        { name: "指数基金定投：长期+稳定市场是前提" },
+        { name: "现金非王：通胀下持有即贬值" },
+        { name: "黄金非好投资：长期回报远低于股市" },
+        { name: "买房决策：升值率>贷款利率、售租比低、保有成本低" }
+      ]},
+      { name: "风险管控", children: [
+        { name: "风险定义：超出意料的波动 × 个体承受力" },
+        { name: "3σ法则：承受3倍标准差波动" },
+        { name: "止损思维：接受局部损失，斩断厄运链" },
+        { name: "通胀应对：中产最脆弱，知识能力是终极资源" },
+        { name: "风险分担池：找对人+持续贡献+10人左右" },
+        { name: "B计划与冗余：旅行箱理论——留出调整空间" }
+      ]},
+      { name: "未来资产", children: [
+        { name: "数据资产化：所有权(GDPR)+技术(区块链)" },
+        { name: "数据银行模型：用户=存款人，平台=银行" },
+        { name: "虚拟经济趋势：信息替代能量，不可逆" },
+        { name: "财务自由本质：安全感+做喜欢的事" },
+        { name: "关注点塑造人生：挑金子而非滤沙子" },
+        { name: "深度工作：效率10-20倍，激情源于擅长" }
+      ]}
+    ]}
+  ];
+
+  function renderTree(nodes, depth) {
+    let html = '<ul>';
+    nodes.forEach(n => {
+      const hasChildren = n.children && n.children.length > 0;
+      html += '<li>';
+      if (hasChildren) {
+        html += `<span class="node-header" onclick="toggleMindmap(this,this.nextElementSibling)">${n.name}</span>`;
+        html += `<div class="node-children">${renderTree(n.children, depth+1)}</div>`;
+      } else {
+        html += `<span class="leaf">${n.name}</span>`;
+      }
+      html += '</li>';
+    });
+    html += '</ul>';
+    return html;
+  }
+
+  document.getElementById('mindTree').innerHTML = renderTree(treeData, 0);
+}
+
+function toggleMindmap(nodeEl, childrenEl) {
+  nodeEl.classList.toggle('open');
+  if (childrenEl && childrenEl.classList.contains('node-children')) {
+    childrenEl.classList.toggle('open');
+  }
+}
+
+// ======== TAB 6: SOCRATIC ========
+function renderSocratic() {
+  const questions = [
+    {
+      concept: "风险管理",
+      qs: [
+        { q: "如果风险管理的核心是'预期非预期波动'，那历史上最大的风险事件（如2008年金融危机）为什么没有人预见到？", a: "因为真正的黑天鹅不是'没人预见到'，而是'有人预见到了但被系统性忽略'。2008年前，很多人看到了次贷泡沫——Michael Burry做空了CDO——但整个金融系统的激励机制让人选择忽视预警。风险管理的难点不在计算，而在克服'这次不一样'的侥幸心理和执行止损的勇气。" },
+        { q: "3σ法则给了具体数字（3倍标准差），但生活中怎么操作？", a: "把3σ翻译成'极限情景测试'：如果你的投资下跌50%（美股3σ波动），你会睡不着觉吗？如果会，说明仓位太重。同样的逻辑用于职业——如果你的行业裁员30%，你还能找到同等薪酬的工作吗？如果不能，说明你需要B计划。3σ不是让你精确计算标准差，而是让你养成'做最坏打算'的思维习惯。" }
+      ]
+    },
+    {
+      concept: "资产vs债务",
+      qs: [
+        { q: "如果房贷让你成为'房奴'，为什么有房的人普遍比租房的人感觉更富有？", a: "这是'持有错觉'——你拥有的东西在心理账户里被标记为'资产'，即使它在财务上是债务。房子给你住（消费价值），但它持续消耗现金流（月供/维修/物业）。当房价上涨时它是资产，当房价下跌或你无法变现时（刚需自住），它就是一项高成本的消费品。真正的判断标准不是'我有没有房'，而是'这个房子让我的净资产增加还是减少'。" },
+        { q: "学习一项技能的'资产'和'债务'怎么判断？", a: "问三个问题：（1）这项技能能否产生收入（直接或间接）？（2）维持它需要多少时间/精力成本？（3）不学它的机会成本是什么？钢琴——能培养音乐素养（长期资产），但考级钢琴——只为升学加分、考完即弃（短期债务）。编程——能产生职业收入的资产，但'学所有编程语言'——消耗大量时间却无深度（债务）。" }
+      ]
+    },
+    {
+      concept: "止损思维",
+      qs: [
+        { q: "止损听起来有道理，但实际操作中怎么区分'该坚持'和'该放弃'？", a: "看基本面是否改变。J曲线的下行段是暂时的、可预期的；厄运链的下行是结构性的、不可逆的。公司从行业第2跌至第5、新CEO战略摇摆=基本面恶化→该止损。看是否触及底线：当决策触及一级（生命安全）或二级（生活保障）底线时，不应止损而应全力应对；仅触及三级（心理阈值）时可考虑止损。" },
+        { q: "如果止损这么重要，为什么人类大脑进化出了'沉没成本谬误'？", a: "因为在远古环境中，资源极度稀缺，'坚持就是胜利'的基因更容易存活。一个原始人放弃打猎可能饿死，但一个投资者不止损会破产。进化给了我们'坚持'的默认程序，但现代社会需要我们有意识地覆盖它——这就是为什么止损需要'学习'而不是'直觉'。真正的高手不是没有直觉，而是训练出了一套反直觉的决策框架。" }
+      ]
+    },
+    {
+      concept: "财务自由本质",
+      qs: [
+        { q: "财务自由如果真的不是'花不完的钱'，那我们到底在追求什么？", a: "第一层：我们追求的是安全感和选择权——不必因为一次修车就打乱预算，不必因为怕老板而不敢请假。第二层：追求'不必做自己讨厌的事'的自由。但纽波特的研究表明：激情来源于擅长，而非先有激情再擅长。第三层：当财务自由被定义为'花不完的钱'时，它变成了一个永远无法到达的彼岸（因为欲望无上限）。而当它被定义为'找到热爱并持续做下去'时，它就在当下。" }
+      ]
+    }
+  ];
+
+  let html = '';
+  questions.forEach((group) => {
+    html += `<h3 style="margin-top:16px;">${group.concept}</h3>`;
+    group.qs.forEach((item) => {
+      html += `<div class="socratic-q">
+        <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: ${item.q}</div>
+        <div class="answer">A: ${item.a}</div>
+      </div>`;
+    });
+  });
+  document.getElementById('socraticArea').innerHTML = html;
+}
+
+// ======== TAB 8: DECISION GAME ========
+function renderDecisionGame() {
+  const scenarios = [
+    {
+      title: "【第1轮】投资决策——面对三种资产",
+      desc: "你手头有50万闲置资金。A选项：买入标普500指数基金，长期持有。B选项：买入一只你研究了一周的科技股，你认为它有10倍潜力。C选项：把钱放在活期存款中，等待更好的投资机会。你会怎么选？",
+      options: [
+        { label: "A. 买入指数基金，长期持有", feedback: "MKS分析：这是'四种财富路径'中'优质工作+投资'路径的核心纪律——年存20%+长期投资。你承认自己不是专业投资者，遵循'散户跑不赢大盘'的统计事实。巴菲特十年赌约证明标普500完胜对冲基金。", correct: true },
+        { label: "B. 买入科技股，博取高回报", feedback: "MKS分析：高危选择。'研究一周'的科技股——半吊子的经验比一无所知更危险（刚会开车的人最喜欢闯红灯）。伯克森悖论提醒：你看到的'10倍潜力'可能只是忽略了那4万个失败的创业公司。如果你不是该行业的深度从业者，你的'研究'大概率是噪音。", correct: false },
+        { label: "C. 持有现金，等待机会", feedback: "MKS分析：中等选择。'现金为王'在正常时期有其合理性，但全球流动性泛滥的环境下意味着每年被通胀侵蚀2-3%。'等待更好机会'的问题是：你怎么知道什么时候是'更好'？巴菲特也说不要试图择时。如果这不是你的紧急备用金，持有现金的机会成本很高。", correct: false }
+      ]
+    },
+    {
+      title: "【第2轮】负债决策——贷款买房的判断",
+      desc: "你看中一套300万的房子，手头有90万首付(30%)，月供约1.2万。你的家庭月收入3万。但你刚得知公司在考虑裁员，你的岗位有一定风险。同时，你的朋友说'现在不买以后更贵'。你怎么办？",
+      options: [
+        { label: "A. 立即购买，锁定当前价格", feedback: "MKS分析：高风险选择。旅行箱理论：月供1.2万占收入40%，一旦失业将塞满你的'生活旅行箱'，丧失调整空间。微软高管案例：因房贷错失谷歌早期机会——房子的机会成本不仅是月供，更是你的职业选择自由。", correct: false },
+        { label: "B. 再等一年，先确认职业安全", feedback: "MKS分析：这是正确选择。风险管理优先于资产配置——先保证二级底线（生活保障）不被动摇。住房是消费也是投资，但在裁员风险下维持流动性（租房+投资）更安全。止损思维的正面应用：主动放弃'可能错过的机会'，换取职业和财务的确定性。", correct: true },
+        { label: "C. 和父母借钱凑齐首付50%", feedback: "MKS分析：最差选择。掏空三个家庭积蓄=把养老钱变成债务。高杠杆叠加职业不确定性=双重风险叠加。负债买房的前提是'稳定收入+房价上涨预期+保有成本低'，你的情况三条都不满足。", correct: false }
+      ]
+    },
+    {
+      title: "【第3轮】职业选择——两种财富路径",
+      desc: "你现在有两个offer：A公司是一家稳定的上市公司，年薪40万，每年涨幅3-5%，有股票期权。B公司是B轮创业公司，年薪25万+2%股权，创始人有过一次成功退出经验。你会怎么选？",
+      options: [
+        { label: "A. 选上市公司，走'企业爬梯子'路径", feedback: "MKS分析：稳健选择。符合占比最高的财富路径（31%），通过股票期权和晋升积累财富。风险承受能力取决于你的年龄和家庭状况——如果有房贷和子女教育压力，这是更合理的决策。但要意识到：传统大企业的晋升空间在收窄，需要主动经营人际关系和时机。", correct: false },
+        { label: "B. 选创业公司，博取股权回报", feedback: "MKS分析：好选择但需条件。创始人有过成功退出——这是最重要的信号（投资本质是投人）。2%股权如果公司做到10亿估值就是2000万，远超稳定工作20年的收入。前提条件：你能承受每周61小时+的工作强度，且家庭支持（梦想家路径的核心代价）。如果这些条件满足，这是理性选择。", correct: true },
+        { label: "C. 两份工作都拒绝，自己创业", feedback: "MKS分析：最差选择。库班的警示：学生创业失败的首要原因是准备不足——你以为要解决100个问题，实际是1000个。创业的核心资格是养活团队的能力，刚毕业的你还未拥有这个能力。先积累行业经验和人际网络，再考虑创业才是J曲线的正确路径。", correct: false }
+      ]
+    }
+  ];
+
+  let html = '';
+  scenarios.forEach((s, si) => {
+    html += `<div class="card" style="border-left:4px solid var(--accent);">
+      <h3>${s.title}</h3>
+      <p style="font-size:14px;color:var(--text-light);margin-bottom:8px;">${s.desc}</p>`;
+    s.options.forEach((opt, oi) => {
+      html += `<div class="decision-option" id="dec${si}o${oi}" onclick="selectDecision(${si}, ${oi})">${opt.label}</div>`;
+    });
+    html += `<div class="decision-feedback" id="decFeedback${si}">
+      <p style="font-size:13px;"></p>
+    </div></div>`;
+  });
+  document.getElementById('decisionGame').innerHTML = html;
+
+  window._decisionData = scenarios;
+}
+
+function selectDecision(si, oi) {
+  const data = window._decisionData[si];
+  const feedbackDiv = document.getElementById('decFeedback' + si);
+  const fbContent = data.options[oi].feedback;
+
+  for (let j = 0; j < data.options.length; j++) {
+    const optEl = document.getElementById('dec' + si + 'o' + j);
+    optEl.style.borderColor = 'var(--border)';
+    optEl.style.background = '';
+  }
+  document.getElementById('dec' + si + 'o' + oi).style.borderColor = 'var(--accent)';
+  document.getElementById('dec' + si + 'o' + oi).style.background = '#fef5f0';
+
+  if (fbContent) {
+    feedbackDiv.style.display = 'block';
+    feedbackDiv.querySelector('p').textContent = fbContent;
+  } else {
+    feedbackDiv.style.display = 'block';
+    feedbackDiv.querySelector('p').textContent = '这不是最优选择。请换一个选项思考——提示：回顾核心概念中的风险管理与资产配置原则。';
+  }
+}
+
+// ======== UTILS ========
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ======== INIT ========
+function init() {
+  renderDashboard();
+  renderMCQ();
+  renderSAQ();
+  renderMindTree();
+  renderSocratic();
+  renderDecisionGame();
+  updateProgress();
+}
+
 init();
 </script>
+
 </body>
 </html>
