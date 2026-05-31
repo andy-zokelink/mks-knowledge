@@ -149,6 +149,17 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 .tbl th{background:var(--accent);color:#fff;font-weight:600}
 .tbl tr:nth-child(even){background:#fef9f4}
 
+/* mindmap */
+.mindmap { padding: 0; }
+.mindmap .node { margin-left: 20px; }
+.mindmap .node-header { cursor: pointer; padding: 6px 0; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.mindmap .node-header::before { content: "▸"; display: inline-block; transition: transform 0.2s; font-size: 0.7rem; }
+.mindmap .node-header.open::before { transform: rotate(90deg); }
+.mindmap .node-children { display: none; margin-left: 16px; border-left: 2px solid var(--border); padding-left: 10px; }
+.mindmap .node-children.open { display: block; }
+.mindmap .leaf { padding: 3px 0; font-size: 0.88rem; color: var(--text); }
+
+
 @media(max-width:640px){
 .tab-bar{gap:2px;padding:6px 2px}
 .tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
@@ -323,7 +334,60 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <!-- ======== TAB 6: 思维导图 ======== -->
 <div class="tab-content" id="tab-5">
-<div class="card"><h2>计算机思维 · 层级知识树</h2><div id="mindMap"></div></div>
+<div class="card"><h2>计算机思维 · 层级知识树</h2></div>
+<div class="card mindmap">
+
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">🌐 计算机思维（核心方法论体系）</div>
+<div class="node-children open">
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">🔄 思维方式层</div>
+<div class="node-children open">
+<div class="leaf">递归思维 — 自顶向下、终止条件、堆栈实现</div>
+<div class="leaf">分治策略 — 拆解→解决→合并、MapReduce范式</div>
+<div class="leaf">等价性问题 — 未知→已知映射、一通百通</div>
+<div class="leaf">量级思维 — 芝麻vs西瓜、大数世界方法论</div>
+<div class="leaf">信息论思维 — 信息消除不确定性、信息>算法</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">⚙️ 工具方法层</div>
+<div class="node-children open">
+<div class="leaf">数据结构 — 数组/链表/树/堆栈/哈希表</div>
+<div class="leaf">算法 — 排序(快速/归并/锦标赛)/查找(二分/哈希)/动态规划</div>
+<div class="leaf">复杂度分析 — 大O符号、量级比较、NP问题</div>
+<div class="leaf">索引技术 — 编号→索引→查找、全文索引</div>
+<div class="leaf">随机化 — 哈希冲突解决、加密、区块链</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">🔧 工程实践层</div>
+<div class="node-children open">
+<div class="leaf">阿姆达尔法则 — 瓶颈识别、动态优化、全局平衡</div>
+<div class="leaf">工程vs科学 — 量级突破vs细节优化、边界内做事</div>
+<div class="leaf">粗调+精调 — 大步定位+小步精准、MVP策略</div>
+<div class="leaf">时空权衡 — 空间换时间(哈希/缓存)、成本性价比</div>
+<div class="leaf">规模效应 — 小数据方法≠大数据方法、分布式系统</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">🎯 现实应用层</div>
+<div class="node-children open">
+<div class="leaf">个人决策 — 成就公式、倒推工作法、职业量级</div>
+<div class="leaf">组织管理 — 递归授权、分治分工、顶层设计</div>
+<div class="leaf">商业战略 — 避免阿姆达尔陷阱、边缘创新、生态联盟</div>
+<div class="leaf">产品设计 — 边界内整体优化、不做基础研究、苹果vs微软</div>
+<div class="leaf">投资思维 — 数据壁垒>技术壁垒、量级决定回报、复利效应</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- ======== TAB 7: 苏格拉底问答 ======== -->
@@ -333,7 +397,32 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <!-- ======== TAB 8: 案例分析 ======== -->
 <div class="tab-content" id="tab-7">
-<div class="card"><h2>案例：AlphaGo 如何赢下李世石 — MKS 四维度拆解</h2><div id="caseStudy"></div></div>
+<div class="card"><h2>案例：AlphaGo 如何赢下李世石 — MKS 四维度拆解</h2>
+
+<div class="case-section">
+<h4>📋 背景</h4>
+<p>2016年3月，AlphaGo以4:1战胜世界围棋冠军李世石。这不仅是围棋的里程碑，更是计算机思维从「模拟人类」到「超越人类」的范式转变。</p>
+</div>
+<div class="case-section">
+<h4>🧩【核心概念】AlphaGo涉及的计算思维</h4>
+<p>① <strong>等价性问题</strong>：围棋被抽象为「给定棋盘状态，选择胜率最高的落子」——一个数学优化问题，而非直觉艺术。</p>
+<p>② <strong>分治策略</strong>：蒙特卡洛树搜索将棋局分解为无数模拟对局，每局独立计算出胜率，最后合并决策。</p>
+<p>③ <strong>强化学习</strong>（递归+反馈）：通过自我对弈产生海量数据，胜率变化作为反馈信号——这是「边做边学」的计算实现。</p>
+<p>④ <strong>粗调+精调</strong>：策略网络（粗调，快速筛选候选落子）→ 价值网络（精调，精确评估局面胜率）→ 蒙特卡洛搜索（进一步精调验证）。</p>
+</div>
+<div class="case-section">
+<h4>📖【概念关系】如何协同作用</h4>
+<p>等价性思维将围棋转化为数学问题 → 分治策略将棋盘拆解为局部搜索 → 递归+强化学习让程序在自我对弈中不断提升 → 粗调+精调分层筛选出最优落子。这四层环环相扣，缺少任何一环都无法达到超越人类的水平。</p>
+</div>
+<div class="case-section">
+<h4>★【MKS最简核心】一个公式总结</h4>
+<p style="font-size:1.1rem;text-align:center;padding:12px;background:var(--light);border-radius:8px"><strong>AlphaGo = 等价抽象(围棋→数学优化) + 分治(蒙特卡洛树) + 递归反馈(强化学习) + 粗调精调(双网络)</strong></p>
+</div>
+<div class="case-section">
+<h4>🌐【边界知识】知道但不需深究</h4>
+<p>蒙特卡洛树搜索的具体实现、卷积神经网络架构细节、TPU硬件加速方案、DeepMind团队的分布式训练系统。</p>
+</div>
+</div>
 </div>
 
 <!-- ======== TAB 9: 实战决策 ======== -->
@@ -909,6 +998,15 @@ let userAnswers = {};
 let quizTimeLeft = 900;
 let quizTimerInterval = null;
 
+
+function toggleMindmap(el) {
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if (children && children.classList.contains('node-children')) {
+    children.classList.toggle('open');
+  }
+}
+
 function startQuiz(){
   const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);
   const essayShuffled = [...saQuestions].sort(()=>Math.random()-0.5);
@@ -1139,55 +1237,7 @@ document.getElementById('statsGrid').innerHTML = `
 }
 
 // ======== TAB 5: MIND MAP ========
-function renderMindMap(){
-let mm = document.getElementById('mindMap');
-mm.innerHTML = `
-<div class="tree-node">
-<span class="tree-toggle open" onclick="toggleTree(this)">🌐 计算机思维（核心方法论体系）</span>
-<div class="tree-children show">
-<div class="tree-node">
-<span class="tree-toggle open" onclick="toggleTree(this)">🔄 思维方式层</span>
-<div class="tree-children show">
-<div class="tree-node"><span>递归思维 — 自顶向下、终止条件、堆栈实现</span></div>
-<div class="tree-node"><span>分治策略 — 拆解→解决→合并、MapReduce范式</span></div>
-<div class="tree-node"><span>等价性问题 — 未知→已知映射、一通百通</span></div>
-<div class="tree-node"><span>量级思维 — 芝麻vs西瓜、大数世界方法论</span></div>
-<div class="tree-node"><span>信息论思维 — 信息消除不确定性、信息>算法</span></div>
-</div>
-</div>
-<div class="tree-node">
-<span class="tree-toggle open" onclick="toggleTree(this)">⚙️ 工具方法层</span>
-<div class="tree-children show">
-<div class="tree-node"><span>数据结构 — 数组/链表/树/堆栈/哈希表</span></div>
-<div class="tree-node"><span>算法 — 排序(快速/归并/锦标赛)/查找(二分/哈希)/动态规划</span></div>
-<div class="tree-node"><span>复杂度分析 — 大O符号、量级比较、NP问题</span></div>
-<div class="tree-node"><span>索引技术 — 编号→索引→查找、全文索引</span></div>
-<div class="tree-node"><span>随机化 — 哈希冲突解决、加密、区块链</span></div>
-</div>
-</div>
-<div class="tree-node">
-<span class="tree-toggle open" onclick="toggleTree(this)">🔧 工程实践层</span>
-<div class="tree-children show">
-<div class="tree-node"><span>阿姆达尔法则 — 瓶颈识别、动态优化、全局平衡</span></div>
-<div class="tree-node"><span>工程vs科学 — 量级突破vs细节优化、边界内做事</span></div>
-<div class="tree-node"><span>粗调+精调 — 大步定位+小步精准、MVP策略</span></div>
-<div class="tree-node"><span>时空权衡 — 空间换时间(哈希/缓存)、成本性价比</span></div>
-<div class="tree-node"><span>规模效应 — 小数据方法≠大数据方法、分布式系统</span></div>
-</div>
-</div>
-<div class="tree-node">
-<span class="tree-toggle open" onclick="toggleTree(this)">🎯 现实应用层</span>
-<div class="tree-children show">
-<div class="tree-node"><span>个人决策 — 成就公式、倒推工作法、职业量级</span></div>
-<div class="tree-node"><span>组织管理 — 递归授权、分治分工、顶层设计</span></div>
-<div class="tree-node"><span>商业战略 — 避免阿姆达尔陷阱、边缘创新、生态联盟</span></div>
-<div class="tree-node"><span>产品设计 — 边界内整体优化、不做基础研究、苹果vs微软</span></div>
-<div class="tree-node"><span>投资思维 — 数据壁垒>技术壁垒、量级决定回报、复利效应</span></div>
-</div>
-</div>
-</div>
-</div>`;
-}
+function renderMindMap(){} // no-op, inline HTML
 
 function toggleTree(el){
 el.classList.toggle('open');
@@ -1239,32 +1289,7 @@ ${item.qs.map((qa,i)=>`
 }
 
 // ======== TAB 7: CASE STUDY ========
-function renderCaseStudy(){
-document.getElementById('caseStudy').innerHTML = `
-<div class="case-section">
-<h4>📋 背景</h4>
-<p>2016年3月，AlphaGo以4:1战胜世界围棋冠军李世石。这不仅是围棋的里程碑，更是计算机思维从「模拟人类」到「超越人类」的范式转变。</p>
-</div>
-<div class="case-section">
-<h4>🧩【核心概念】AlphaGo涉及的计算思维</h4>
-<p>① <strong>等价性问题</strong>：围棋被抽象为「给定棋盘状态，选择胜率最高的落子」——一个数学优化问题，而非直觉艺术。</p>
-<p>② <strong>分治策略</strong>：蒙特卡洛树搜索将棋局分解为无数模拟对局，每局独立计算出胜率，最后合并决策。</p>
-<p>③ <strong>强化学习</strong>（递归+反馈）：通过自我对弈产生海量数据，胜率变化作为反馈信号——这是「边做边学」的计算实现。</p>
-<p>④ <strong>粗调+精调</strong>：策略网络（粗调，快速筛选候选落子）→ 价值网络（精调，精确评估局面胜率）→ 蒙特卡洛搜索（进一步精调验证）。</p>
-</div>
-<div class="case-section">
-<h4>📖【概念关系】如何协同作用</h4>
-<p>等价性思维将围棋转化为数学问题 → 分治策略将棋盘拆解为局部搜索 → 递归+强化学习让程序在自我对弈中不断提升 → 粗调+精调分层筛选出最优落子。这四层环环相扣，缺少任何一环都无法达到超越人类的水平。</p>
-</div>
-<div class="case-section">
-<h4>★【MKS最简核心】一个公式总结</h4>
-<p style="font-size:1.1rem;text-align:center;padding:12px;background:var(--light);border-radius:8px"><strong>AlphaGo = 等价抽象(围棋→数学优化) + 分治(蒙特卡洛树) + 递归反馈(强化学习) + 粗调精调(双网络)</strong></p>
-</div>
-<div class="case-section">
-<h4>🌐【边界知识】知道但不需深究</h4>
-<p>蒙特卡洛树搜索的具体实现、卷积神经网络架构细节、TPU硬件加速方案、DeepMind团队的分布式训练系统。</p>
-</div>`;
-}
+function renderCaseStudy(){} // no-op, inline HTML
 
 // ======== TAB 8: DECISION SIM ========
 let decisionRound = 0;

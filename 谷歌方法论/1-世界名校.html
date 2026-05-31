@@ -150,6 +150,17 @@ h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
 .tbl th{background:var(--accent);color:#fff;font-weight:600}
 .tbl tr:nth-child(even){background:#fef9f4}
 
+/* mindmap */
+.mindmap { padding: 0; }
+.mindmap .node { margin-left: 20px; }
+.mindmap .node-header { cursor: pointer; padding: 6px 0; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.mindmap .node-header::before { content: "▸"; display: inline-block; transition: transform 0.2s; font-size: 0.7rem; }
+.mindmap .node-header.open::before { transform: rotate(90deg); }
+.mindmap .node-children { display: none; margin-left: 16px; border-left: 2px solid var(--border); padding-left: 10px; }
+.mindmap .node-children.open { display: block; }
+.mindmap .leaf { padding: 3px 0; font-size: 0.88rem; color: var(--text); }
+
+
 @media(max-width:640px){
 .tab-bar{gap:2px;padding:6px 2px}
 .tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
@@ -305,7 +316,131 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <!-- ========== TAB 5: 思维导图 ========== -->
 <section class="tab-content" id="tab5">
-<div class="card tree-wrap" id="treeContainer"></div>
+<div class="card"><h2>可折叠思维导图</h2></div>
+<div class="card mindmap">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">世界名校 · 知识全景</div>
+<div class="node-children open">
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">一、大学起源（中世纪欧洲）</div>
+<div class="node-children open">
+<div class="leaf">• 1088年博洛尼亚大学 → 世界第一所现代大学</div>
+<div class="leaf">• 1158年《学术特权法令》→ 四大特权确立学术自由</div>
+<div class="leaf">• 1167年牛津诞生 → 英法关系恶化，巴黎学者迁英</div>
+<div class="leaf">• 1209年剑桥诞生 → 牛津师生与市民冲突后迁出</div>
+<div class="leaf">• 核心条件：物质基础 + 精神优先 + 宗教虔诚</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">二、两条核心教育路线</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">纽曼通识教育（牛津剑桥路线）</div>
+<div class="node-children open">
+<div class="leaf">• 《大学的理念》：传播"大行之道"</div>
+<div class="leaf">• 培养完整个体：判断力、美德、视野</div>
+<div class="leaf">• 学生共同体 > 课堂教学</div>
+<div class="leaf">• 学院制：独立小型社会单元</div>
+<div class="leaf">• 导师制：学术+人格全面负责</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">洪堡专才教育（德国路线）</div>
+<div class="node-children open">
+<div class="leaf">• 三大原则：研究教学合一 / 知识总和 / 专业精深</div>
+<div class="leaf">• 5年学制，后2年专注精深知识</div>
+<div class="leaf">• 通过苏联影响中国1952年理工分校</div>
+<div class="leaf">• 优势：实用高效 / 劣势：知识面窄</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">三、美国高等教育转型（19世纪末）</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">吉尔曼：约翰·霍普金斯大学</div>
+<div class="node-children open">
+<div class="leaf">• 美国第一所研究生院</div>
+<div class="leaf">• 本科素质教育 + 博士研究教育分轨</div>
+<div class="leaf">• 五大原则：通识基础/方法自由/研究能力/长期视角/服务社会</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">艾略特：哈佛现代化（40年任期）</div>
+<div class="node-children open">
+<div class="leaf">• 引入科学研究（哈佛历史上首次）</div>
+<div class="leaf">• "以教为主"→"以学为主"</div>
+<div class="leaf">• 案例教学、选修课、讨论班、实验</div>
+<div class="leaf">• 医学院改革：16周速成→本科+多年培训</div>
+</div>
+<div class="leaf">• 吉尔曼-怀特(康奈尔)-乔丹(斯坦福)：三代教育改革谱系</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">四、名校特色图谱</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">常青藤联盟（8所）</div>
+<div class="node-children open">
+<div class="leaf">• 大藤(HYP): 哈佛(标杆)/耶鲁(文科领袖)/普林斯顿(本科第一)</div>
+<div class="leaf">• 哥大: 城市校园/核心课程/自由精神</div>
+<div class="leaf">• 宾大: 最务实/沃顿商学院/富兰克林遗产</div>
+<div class="leaf">• 达特茅斯: 保留"学院"名/本科为核心/野外生存</div>
+<div class="leaf">• 康奈尔/布朗</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">理工双壁</div>
+<div class="node-children open">
+<div class="leaf">• MIT: 70%看成绩/1/3毕业生成为高管/A率仅20-30%</div>
+<div class="leaf">• Caltech: 只培养天才/诺奖密度全球第一/JPL实验室</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">法国精英大学校</div>
+<div class="node-children open">
+<div class="leaf">• 巴黎高师: 10个菲尔兹奖/录取率3%</div>
+<div class="leaf">• 综合理工: 法国500强半数CEO</div>
+<div class="leaf">• 巴黎政治学院: 8位总统中6位毕业于此</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">德国：从辉煌到警示</div>
+<div class="node-children open">
+<div class="leaf">• 19世纪世界高等教育样板</div>
+<div class="leaf">• 衰落三因：经费不足/过度公平/体制僵化</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">五、反思与个人实践</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">通识教育四学科价值</div>
+<div class="node-children open">
+<div class="leaf">• 语文：阅读理解+表达能力(一切学科的基础工具)</div>
+<div class="leaf">• 数学：逻辑推理(公理→定理)+量化思维</div>
+<div class="leaf">• 历史：时空全局思维+客观公允认知</div>
+<div class="leaf">• 科学：可叠加进步+科学方法+科学素养</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">大学五大补充训练</div>
+<div class="node-children open">
+<div class="leaf">• ①看透钱：财富是媒介，精英看影响力</div>
+<div class="leaf">• ②领导力：服从→合作→当助手</div>
+<div class="leaf">• ③边界认知：防御/围棋/缓存思维</div>
+<div class="leaf">• ④健全人格：恋爱+社交+同理心</div>
+<div class="leaf">• ⑤信仰树立：驱动长期行动的精神内核</div>
+</div>
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">中美教育关键差异</div>
+<div class="node-children open">
+<div class="leaf">• 中国：课程多/考试导向/专业早定/标准答案</div>
+<div class="leaf">• 美国：课程少而深/多元考核/通识教育/独立思考</div>
+<div class="leaf">• 体育：中国"运动员=头脑简单"vs美国"运动塑造人格"</div>
+<div class="leaf">• 选择：取决于未来生活规划，非一概而论</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
 </section>
 
 <!-- ========== TAB 6: 苏格拉底追问 ========== -->
@@ -315,7 +450,46 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <!-- ========== TAB 7: 案例分析 ========== -->
 <section class="tab-content" id="tab7">
-<div id="caseContainer"></div>
+
+<div class="card">
+<h2>案例分析：吉尔曼创办约翰·霍普金斯大学</h2>
+<p style="color:var(--text2);margin-bottom:16px">用MKS四维度拆解美国第一所研究型大学的诞生</p>
+
+<div class="card" style="border-left:4px solid var(--accent)">
+<h3>问题识别</h3>
+<p style="font-size:.85rem">19世纪中后期美国高等教育陷入困境：哈佛200年历史但质量堪忧，课程脱离实际（死记硬背拉丁文），医学院16周即可毕业。富裕家庭送子女去欧洲留学。美国工业正在崛起（1890年GDP超英国），但高等教育无法提供人才支撑。</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>核心概念运用</h3>
+<p style="font-size:.85rem">
+<strong>① 大学本质：</strong>吉尔曼回归大学本源——为探索知识而建，非为谋生。<br>
+<strong>② 学术自由：</strong>约翰·霍普金斯遗嘱要求"不受教会和国家干预"，保障学术独立。<br>
+<strong>③ 融合创新：</strong>不是简单复制德国或英国模式，而是"德国研究+英国通识+美国实用主义"的三合一。<br>
+<strong>④ 制度突破：</strong>建立美国第一所研究生院，实现本科(素质教育)与博士(研究教育)分轨。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #3a6ea5">
+<h3>解决方案与成果</h3>
+<p style="font-size:.85rem">
+<strong>资金：</strong>约翰·霍普金斯700万美元遗赠（相当于当时哈佛17.5年总收入）作为启动基金。<br>
+<strong>人才：</strong>因欧洲人才难引进，集中培养有潜力的青年学者，十年后他们成为美国各大学骨干。<br>
+<strong>成果：</strong>建校仅20年（至1896年），全美60所主要大学中每所至少有3名霍普金斯毕业生担任教授。威斯康星大学19名、哥伦比亚大学13名。<br>
+<strong>谱系：</strong>吉尔曼→怀特(康奈尔创校校长)→乔丹(斯坦福创校校长)，形成教育改革传承。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #6b8e23">
+<h3>MKS启示</h3>
+<p style="font-size:.85rem">
+1. <strong>资金是必要条件但不是充分条件：</strong>同样的钱可以建宫殿，但吉尔曼选择建实验室。<br>
+2. <strong>灵魂人物不可替代：</strong>没有吉尔曼，霍普金斯遗产可能变成另一所平庸的教会学校。<br>
+3. <strong>制度创新 > 技术模仿：</strong>美国没有照搬欧洲，而是创造性地设计了本科+博士分轨制。<br>
+4. <strong>长期主义：</strong>"大学不是一天建成的"——吉尔曼用20年才看到成果。
+</p>
+</div>
+</div>
 </section>
 
 <!-- ========== TAB 8: 实战决策 ========== -->
@@ -973,110 +1147,7 @@ weakEl.innerHTML = sorted.map(([t,n])=>`
 }
 
 // ============ TAB 5: TREE ============
-function renderTree(){
-const tree = document.getElementById('treeContainer');
-tree.innerHTML = `
-<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">一、大学起源（中世纪欧洲）</div>
-<div class="tree-node">
-<div class="tree-leaf">• 1088年博洛尼亚大学 → 世界第一所现代大学</div>
-<div class="tree-leaf">• 1158年《学术特权法令》→ 四大特权确立学术自由</div>
-<div class="tree-leaf">• 1167年牛津诞生 → 英法关系恶化，巴黎学者迁英</div>
-<div class="tree-leaf">• 1209年剑桥诞生 → 牛津师生与市民冲突后迁出</div>
-<div class="tree-leaf">• 核心条件：物质基础 + 精神优先 + 宗教虔诚</div>
-</div>
-
-<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">二、两条核心教育路线</div>
-<div class="tree-node">
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">纽曼通识教育（牛津剑桥路线）</div>
-<div class="tree-node">
-<div class="tree-leaf">• 《大学的理念》：传播"大行之道"</div>
-<div class="tree-leaf">• 培养完整个体：判断力、美德、视野</div>
-<div class="tree-leaf">• 学生共同体 > 课堂教学</div>
-<div class="tree-leaf">• 学院制：独立小型社会单元</div>
-<div class="tree-leaf">• 导师制：学术+人格全面负责</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">洪堡专才教育（德国路线）</div>
-<div class="tree-node">
-<div class="tree-leaf">• 三大原则：研究教学合一 / 知识总和 / 专业精深</div>
-<div class="tree-leaf">• 5年学制，后2年专注精深知识</div>
-<div class="tree-leaf">• 通过苏联影响中国1952年理工分校</div>
-<div class="tree-leaf">• 优势：实用高效 / 劣势：知识面窄</div>
-</div>
-</div>
-
-<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">三、美国高等教育转型（19世纪末）</div>
-<div class="tree-node">
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">吉尔曼：约翰·霍普金斯大学</div>
-<div class="tree-node">
-<div class="tree-leaf">• 美国第一所研究生院</div>
-<div class="tree-leaf">• 本科素质教育 + 博士研究教育分轨</div>
-<div class="tree-leaf">• 五大原则：通识基础/方法自由/研究能力/长期视角/服务社会</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">艾略特：哈佛现代化（40年任期）</div>
-<div class="tree-node">
-<div class="tree-leaf">• 引入科学研究（哈佛历史上首次）</div>
-<div class="tree-leaf">• "以教为主"→"以学为主"</div>
-<div class="tree-leaf">• 案例教学、选修课、讨论班、实验</div>
-<div class="tree-leaf">• 医学院改革：16周速成→本科+多年培训</div>
-</div>
-<div class="tree-leaf">• 吉尔曼-怀特(康奈尔)-乔丹(斯坦福)：三代教育改革谱系</div>
-</div>
-
-<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">四、名校特色图谱</div>
-<div class="tree-node">
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">常青藤联盟（8所）</div>
-<div class="tree-node">
-<div class="tree-leaf">• 大藤(HYP): 哈佛(标杆)/耶鲁(文科领袖)/普林斯顿(本科第一)</div>
-<div class="tree-leaf">• 哥大: 城市校园/核心课程/自由精神</div>
-<div class="tree-leaf">• 宾大: 最务实/沃顿商学院/富兰克林遗产</div>
-<div class="tree-leaf">• 达特茅斯: 保留"学院"名/本科为核心/野外生存</div>
-<div class="tree-leaf">• 康奈尔/布朗</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">理工双壁</div>
-<div class="tree-node">
-<div class="tree-leaf">• MIT: 70%看成绩/1/3毕业生成为高管/A率仅20-30%</div>
-<div class="tree-leaf">• Caltech: 只培养天才/诺奖密度全球第一/JPL实验室</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">法国精英大学校</div>
-<div class="tree-node">
-<div class="tree-leaf">• 巴黎高师: 10个菲尔兹奖/录取率3%</div>
-<div class="tree-leaf">• 综合理工: 法国500强半数CEO</div>
-<div class="tree-leaf">• 巴黎政治学院: 8位总统中6位毕业于此</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">德国：从辉煌到警示</div>
-<div class="tree-node">
-<div class="tree-leaf">• 19世纪世界高等教育样板</div>
-<div class="tree-leaf">• 衰落三因：经费不足/过度公平/体制僵化</div>
-</div>
-</div>
-
-<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">五、反思与个人实践</div>
-<div class="tree-node">
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">通识教育四学科价值</div>
-<div class="tree-node">
-<div class="tree-leaf">• 语文：阅读理解+表达能力(一切学科的基础工具)</div>
-<div class="tree-leaf">• 数学：逻辑推理(公理→定理)+量化思维</div>
-<div class="tree-leaf">• 历史：时空全局思维+客观公允认知</div>
-<div class="tree-leaf">• 科学：可叠加进步+科学方法+科学素养</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">大学五大补充训练</div>
-<div class="tree-node">
-<div class="tree-leaf">• ①看透钱：财富是媒介，精英看影响力</div>
-<div class="tree-leaf">• ②领导力：服从→合作→当助手</div>
-<div class="tree-leaf">• ③边界认知：防御/围棋/缓存思维</div>
-<div class="tree-leaf">• ④健全人格：恋爱+社交+同理心</div>
-<div class="tree-leaf">• ⑤信仰树立：驱动长期行动的精神内核</div>
-</div>
-<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('hidden')">中美教育关键差异</div>
-<div class="tree-node">
-<div class="tree-leaf">• 中国：课程多/考试导向/专业早定/标准答案</div>
-<div class="tree-leaf">• 美国：课程少而深/多元考核/通识教育/独立思考</div>
-<div class="tree-leaf">• 体育：中国"运动员=头脑简单"vs美国"运动塑造人格"</div>
-<div class="tree-leaf">• 选择：取决于未来生活规划，非一概而论</div>
-</div>
-</div>
-`;
-}
+function renderTree(){} // no-op, inline HTML
 
 // ============ TAB 6: SOCRATIC ============
 function renderSocratic(){
@@ -1099,48 +1170,7 @@ document.getElementById('socraticContainer').innerHTML = items.map((item,i)=>`
 }
 
 // ============ TAB 7: CASE STUDY ============
-function renderCase(){
-document.getElementById('caseContainer').innerHTML = `
-<div class="card">
-<h2>案例分析：吉尔曼创办约翰·霍普金斯大学</h2>
-<p style="color:var(--text2);margin-bottom:16px">用MKS四维度拆解美国第一所研究型大学的诞生</p>
-
-<div class="card" style="border-left:4px solid var(--accent)">
-<h3>问题识别</h3>
-<p style="font-size:.85rem">19世纪中后期美国高等教育陷入困境：哈佛200年历史但质量堪忧，课程脱离实际（死记硬背拉丁文），医学院16周即可毕业。富裕家庭送子女去欧洲留学。美国工业正在崛起（1890年GDP超英国），但高等教育无法提供人才支撑。</p>
-</div>
-
-<div class="card" style="border-left:4px solid var(--gold)">
-<h3>核心概念运用</h3>
-<p style="font-size:.85rem">
-<strong>① 大学本质：</strong>吉尔曼回归大学本源——为探索知识而建，非为谋生。<br>
-<strong>② 学术自由：</strong>约翰·霍普金斯遗嘱要求"不受教会和国家干预"，保障学术独立。<br>
-<strong>③ 融合创新：</strong>不是简单复制德国或英国模式，而是"德国研究+英国通识+美国实用主义"的三合一。<br>
-<strong>④ 制度突破：</strong>建立美国第一所研究生院，实现本科(素质教育)与博士(研究教育)分轨。
-</p>
-</div>
-
-<div class="card" style="border-left:4px solid #3a6ea5">
-<h3>解决方案与成果</h3>
-<p style="font-size:.85rem">
-<strong>资金：</strong>约翰·霍普金斯700万美元遗赠（相当于当时哈佛17.5年总收入）作为启动基金。<br>
-<strong>人才：</strong>因欧洲人才难引进，集中培养有潜力的青年学者，十年后他们成为美国各大学骨干。<br>
-<strong>成果：</strong>建校仅20年（至1896年），全美60所主要大学中每所至少有3名霍普金斯毕业生担任教授。威斯康星大学19名、哥伦比亚大学13名。<br>
-<strong>谱系：</strong>吉尔曼→怀特(康奈尔创校校长)→乔丹(斯坦福创校校长)，形成教育改革传承。
-</p>
-</div>
-
-<div class="card" style="border-left:4px solid #6b8e23">
-<h3>MKS启示</h3>
-<p style="font-size:.85rem">
-1. <strong>资金是必要条件但不是充分条件：</strong>同样的钱可以建宫殿，但吉尔曼选择建实验室。<br>
-2. <strong>灵魂人物不可替代：</strong>没有吉尔曼，霍普金斯遗产可能变成另一所平庸的教会学校。<br>
-3. <strong>制度创新 > 技术模仿：</strong>美国没有照搬欧洲，而是创造性地设计了本科+博士分轨制。<br>
-4. <strong>长期主义：</strong>"大学不是一天建成的"——吉尔曼用20年才看到成果。
-</p>
-</div>
-</div>`;
-}
+function renderCase(){} // no-op, inline HTML
 
 // ============ TAB 8: DECISION ============
 function renderDecision(){
@@ -1244,6 +1274,15 @@ mcqAnswers = {}; saqRevealed = {};
 renderMCQ(); renderSAQ(); updateProgress(); renderStats();
 alert('已重置全部进度。');
 }
+}
+
+
+function toggleMindmap(el) {
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if (children && children.classList.contains('node-children')) {
+    children.classList.toggle('open');
+  }
 }
 
 function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}

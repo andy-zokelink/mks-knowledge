@@ -166,6 +166,17 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 .stat-card .num { font-size:28px; font-weight:bold; color:var(--accent); }
 .stat-card .label { font-size:13px; color:var(--sub); margin-top:4px; }
 
+/* mindmap */
+.mindmap { padding: 0; }
+.mindmap .node { margin-left: 20px; }
+.mindmap .node-header { cursor: pointer; padding: 6px 0; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.mindmap .node-header::before { content: "▸"; display: inline-block; transition: transform 0.2s; font-size: 0.7rem; }
+.mindmap .node-header.open::before { transform: rotate(90deg); }
+.mindmap .node-children { display: none; margin-left: 16px; border-left: 2px solid var(--border); padding-left: 10px; }
+.mindmap .node-children.open { display: block; }
+.mindmap .leaf { padding: 3px 0; font-size: 0.88rem; color: var(--text); }
+
+
 @media(max-width:600px) {
   .tab-btn { font-size:12px; padding:6px 10px; }
   .card-grid { grid-template-columns:1fr 1fr; }
@@ -343,13 +354,109 @@ header .meta { display:flex; justify-content:center; gap:24px; margin-top:12px; 
 </div>
 
 <!-- Tab 5: 思维导图 -->
-<div class="tab-content" id="tab5"><div id="mindmap"></div></div>
+<!-- Tab 5: 思维导图 -->
+<div class="tab-content" id="tab5">
+<div class="card"><h2 class="section-title" style="border:none;margin-top:0;">人生算法 · 思维导图</h2></div>
+<div class="card mindmap">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">人生算法</div>
+<div class="node-children open">
+
+<div class="card"><h2 class="section-title" style="border:none;margin-top:0;">人生算法 · 思维导图</h2>
+<div class="tree">
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">人生决策（根）</div>
+<div class="node-children">
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">认知框架</div>
+<div class="node-children">
+        <div class="leaf">悲观主义根源：过分自信反差 / 坏消息放大 / 信息论新奇偏好</div>
+        <div class="leaf">乐观主义：以正合以奇胜 / Yes,and增量思维</div>
+        <div class="leaf">渐变与突变：长期剧变必然，短期渐变为主</div>
+        <div class="leaf">幸存者偏误：成功者经验提供高概率答案，失败者教训有局限性</div>
+      
+    </li>
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">行动方法论</div>
+<div class="node-children">
+        <div class="leaf">上帝喜欢笨人：超额准备 / 结硬寨打呆仗 / 承认能力边界</div>
+        <div class="leaf">以正合以奇胜：正=常规能力(首要) / 奇=机动资源(辅助)</div>
+        <div class="leaf">实力与机会：实力派获胜是大概率 / 弯道超车是陷阱</div>
+        <div class="leaf">变与不变：长期剧变必然 / 短期渐变为主 / 积累效应</div>
+      
+    </li>
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">价值创造</div>
+<div class="node-children">
+        <div class="leaf">超越免费：重构稀缺性 / 五维度（时效性/个性化/可用性/可靠性/数据黏性）</div>
+        <div class="leaf">稀缺性本质：大多数人做不到的能力 / 非轻易被替代的技能</div>
+        <div class="leaf">差异化误区：为不同而不同=无效 / 真正差异化=做得更好</div>
+      
+    </li>
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">处世原则</div>
+<div class="node-children">
+        <div class="leaf">众利勿为众争勿往：物极必反 / 差异化竞争 / 警惕群体共识</div>
+        <div class="leaf">分享利益：利益共享=组织合力 / 主动添加合作者</div>
+        <div class="leaf">独立决断：征求关键意见后自行决策 / 接受决策瑕疵</div>
+        <div class="leaf">谋事在人成事在天：见识比才干重要 / 尽人事听天命</div>
+        <div class="leaf">勿因人之短护己之短：个人责任独立化 / 不跨维度比较</div>
+        <div class="leaf">勿以小恶忘大善：全局观 / 不因小失大</div>
+      
+    </li>
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">人际关系</div>
+<div class="node-children">
+        <div class="leaf">合作型朋友：事前明确利益分配 / 避免跨维度合作</div>
+        <div class="leaf">依靠型朋友：平等对待 / 避免地位差异导致失衡</div>
+        <div class="leaf">婚姻：婚前协议理性应对风险 / 丑话说在前面</div>
+        <div class="leaf">诚敬信法则：公开透明诉求 / 尊重上级 / 100%执行任务</div>
+        <div class="leaf">共有信息vs大众信息：主动转化降低沟通成本</div>
+      
+    </li>
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">职业成长</div>
+<div class="node-children">
+        <div class="leaf">五级工程师：独立解决问题→带团队→做产品→创造产品→开创产业</div>
+        <div class="leaf">能力增长判定：成长型企业看排名/稳定型企业看提升幅度</div>
+        <div class="leaf">决策者思维：为自己完成任务 / 思路开阔 / 寻找导师</div>
+        <div class="leaf">做减法：聚焦目标拒绝线性收益事务 / 长远叠加效应</div>
+      
+    </li>
+    <div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">人生意义</div>
+<div class="node-children">
+        <div class="leaf">人生五件事：婚恋/喜欢的事/回馈/信仰/遗产</div>
+        <div class="leaf">叛逆与成长：少年维特/麦田守望者/备胎逆袭——时间是唯一解药</div>
+        <div class="leaf">幸福本质：自然属性(安全传承)+社会属性(认可尊重)的动态平衡</div>
+        <div class="leaf">消除妄念：摒弃战争浪漫化/商战颠覆幻想/知识是和平年代核心竞争力</div>
+      
+    </li>
+  
+</li></div></div>
+</div>
+</div>
+</div>
+</div>
 
 <!-- Tab 6: 苏格拉底 -->
 <div class="tab-content" id="tab6"><div id="socratic"></div></div>
 
 <!-- Tab 7: 案例分析 -->
-<div class="tab-content" id="tab7"><div id="caseStudy"></div></div>
+<!-- Tab 7: 案例分析 -->
+<div class="tab-content" id="tab7">
+
+<div class="card"><h3>案例分析：威灵顿 vs 拿破仑 — 滑铁卢战役的「笨人哲学」拆解</h3>
+  <p style="color:var(--sub);margin-bottom:16px;">用MKS四维度拆解这场改变欧洲历史的战役，验证「上帝喜欢笨人」的核心逻辑</p>
+  <table class="case-table">
+    <tr><th>维度</th><th>威尔顿（笨人）</th><th>拿破仑（天才）</th><th>启示</th></tr>
+    <tr><td><strong>认知框架</strong></td><td>承认无拿破仑式天赋，依靠系统化准备</td><td>高度自信于军事天赋和战场临机应变能力</td><td>准确自我认知是决策质量的前提</td></tr>
+    <tr><td><strong>行动方法</strong></td><td>事无巨细的准备——以横制纵层层设防，目标仅为「守住阵地等盟军」</td><td>依赖战术天才和军队士气，启用平庸的格鲁西追击普军</td><td>超额准备弥补天赋差距；不做超越能力边界的事</td></tr>
+    <tr><td><strong>价值判断</strong></td><td>保守防御的价值 > 气势如虹的胜利的价值（后者风险更高）</td><td>追求决定性胜利的荣誉和战略价值</td><td>在能力边界内定义成功标准，不追求「人间奇迹」</td></tr>
+    <tr><td><strong>处世原则</strong></td><td>从荷兰战败中吸取教训——战前组织混乱是致命伤，从此坚持系统化流程</td><td>对过往胜绩的路径依赖，未因应新形势调整</td><td>从失败中提炼原则并坚持执行，比依赖过往成功更可靠</td></tr>
+  </table>
+  <p style="margin-top:16px;font-size:14px;line-height:1.7;"><strong>MKS结论：</strong>天才拿破仑一生指挥60+战役胜绩超过亚历山大、汉尼拔和凯撒总和，却在最关键一战输给「笨人」威灵顿。这不是偶然——<strong>长期来看，系统化的笨办法比依赖天赋的聪明办法有更高的概率正确性</strong>。滑铁卢战役决定性的因素（法军人才缺失、天气限制炮兵、威灵顿的超额准备）全部指向一个结论：在复杂系统中，减少可避免的错误（笨办法的优势）比增加亮点操作（天才的优势）更能决定最终结果。</p></div>
+</div>
 
 <!-- Tab 8: 决策模拟 -->
 <div class="tab-content" id="tab8"><div id="simGame"></div></div>
@@ -553,7 +660,7 @@ document.getElementById('flipInner').addEventListener('click', function() {
 
 // ── SVG DIAGRAM ──
 function renderSVG() {
-  const svg = `<svg width="1518pt" height="206pt"
+  const svg = `<svg width="100%" height="auto"
  viewBox="0.00 0.00 1517.50 205.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 201.74)">
 <title>G</title>
@@ -1020,6 +1127,15 @@ let currentQuestions = [];
 let quizTimeLeft = 900;
 let quizTimerInterval = null;
 
+
+function toggleMindmap(el) {
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if (children && children.classList.contains('node-children')) {
+    children.classList.toggle('open');
+  }
+}
+
 function startQuiz(){
   userAnswers = {};
   const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);
@@ -1149,73 +1265,7 @@ function renderReview() {
 }
 
 // ── MINDMAP ──
-function renderMindmap() {
-  document.getElementById('mindmap').innerHTML = `
-<div class="card"><h2 class="section-title" style="border:none;margin-top:0;">人生算法 · 思维导图</h2>
-<div class="tree"><ul>
-<li><span class="node" onclick="toggleNode(this)">人生决策（根）</span>
-  <ul class="children">
-    <li><span class="node" onclick="toggleNode(this)">认知框架</span>
-      <ul class="children">
-        <li>悲观主义根源：过分自信反差 / 坏消息放大 / 信息论新奇偏好</li>
-        <li>乐观主义：以正合以奇胜 / Yes,and增量思维</li>
-        <li>渐变与突变：长期剧变必然，短期渐变为主</li>
-        <li>幸存者偏误：成功者经验提供高概率答案，失败者教训有局限性</li>
-      </ul>
-    </li>
-    <li><span class="node" onclick="toggleNode(this)">行动方法论</span>
-      <ul class="children">
-        <li>上帝喜欢笨人：超额准备 / 结硬寨打呆仗 / 承认能力边界</li>
-        <li>以正合以奇胜：正=常规能力(首要) / 奇=机动资源(辅助)</li>
-        <li>实力与机会：实力派获胜是大概率 / 弯道超车是陷阱</li>
-        <li>变与不变：长期剧变必然 / 短期渐变为主 / 积累效应</li>
-      </ul>
-    </li>
-    <li><span class="node" onclick="toggleNode(this)">价值创造</span>
-      <ul class="children">
-        <li>超越免费：重构稀缺性 / 五维度（时效性/个性化/可用性/可靠性/数据黏性）</li>
-        <li>稀缺性本质：大多数人做不到的能力 / 非轻易被替代的技能</li>
-        <li>差异化误区：为不同而不同=无效 / 真正差异化=做得更好</li>
-      </ul>
-    </li>
-    <li><span class="node" onclick="toggleNode(this)">处世原则</span>
-      <ul class="children">
-        <li>众利勿为众争勿往：物极必反 / 差异化竞争 / 警惕群体共识</li>
-        <li>分享利益：利益共享=组织合力 / 主动添加合作者</li>
-        <li>独立决断：征求关键意见后自行决策 / 接受决策瑕疵</li>
-        <li>谋事在人成事在天：见识比才干重要 / 尽人事听天命</li>
-        <li>勿因人之短护己之短：个人责任独立化 / 不跨维度比较</li>
-        <li>勿以小恶忘大善：全局观 / 不因小失大</li>
-      </ul>
-    </li>
-    <li><span class="node" onclick="toggleNode(this)">人际关系</span>
-      <ul class="children">
-        <li>合作型朋友：事前明确利益分配 / 避免跨维度合作</li>
-        <li>依靠型朋友：平等对待 / 避免地位差异导致失衡</li>
-        <li>婚姻：婚前协议理性应对风险 / 丑话说在前面</li>
-        <li>诚敬信法则：公开透明诉求 / 尊重上级 / 100%执行任务</li>
-        <li>共有信息vs大众信息：主动转化降低沟通成本</li>
-      </ul>
-    </li>
-    <li><span class="node" onclick="toggleNode(this)">职业成长</span>
-      <ul class="children">
-        <li>五级工程师：独立解决问题→带团队→做产品→创造产品→开创产业</li>
-        <li>能力增长判定：成长型企业看排名/稳定型企业看提升幅度</li>
-        <li>决策者思维：为自己完成任务 / 思路开阔 / 寻找导师</li>
-        <li>做减法：聚焦目标拒绝线性收益事务 / 长远叠加效应</li>
-      </ul>
-    </li>
-    <li><span class="node" onclick="toggleNode(this)">人生意义</span>
-      <ul class="children">
-        <li>人生五件事：婚恋/喜欢的事/回馈/信仰/遗产</li>
-        <li>叛逆与成长：少年维特/麦田守望者/备胎逆袭——时间是唯一解药</li>
-        <li>幸福本质：自然属性(安全传承)+社会属性(认可尊重)的动态平衡</li>
-        <li>消除妄念：摒弃战争浪漫化/商战颠覆幻想/知识是和平年代核心竞争力</li>
-      </ul>
-    </li>
-  </ul>
-</li></ul></div></div>`;
-}
+function renderMindmap(){} // no-op, inline HTML
 
 function toggleNode(el) {
   el.classList.toggle('open');
@@ -1243,19 +1293,7 @@ function renderSocratic() {
 }
 
 // ── CASE STUDY ──
-function renderCaseStudy() {
-  document.getElementById('caseStudy').innerHTML = `
-<div class="card"><h3>案例分析：威灵顿 vs 拿破仑 — 滑铁卢战役的「笨人哲学」拆解</h3>
-  <p style="color:var(--sub);margin-bottom:16px;">用MKS四维度拆解这场改变欧洲历史的战役，验证「上帝喜欢笨人」的核心逻辑</p>
-  <table class="case-table">
-    <tr><th>维度</th><th>威尔顿（笨人）</th><th>拿破仑（天才）</th><th>启示</th></tr>
-    <tr><td><strong>认知框架</strong></td><td>承认无拿破仑式天赋，依靠系统化准备</td><td>高度自信于军事天赋和战场临机应变能力</td><td>准确自我认知是决策质量的前提</td></tr>
-    <tr><td><strong>行动方法</strong></td><td>事无巨细的准备——以横制纵层层设防，目标仅为「守住阵地等盟军」</td><td>依赖战术天才和军队士气，启用平庸的格鲁西追击普军</td><td>超额准备弥补天赋差距；不做超越能力边界的事</td></tr>
-    <tr><td><strong>价值判断</strong></td><td>保守防御的价值 > 气势如虹的胜利的价值（后者风险更高）</td><td>追求决定性胜利的荣誉和战略价值</td><td>在能力边界内定义成功标准，不追求「人间奇迹」</td></tr>
-    <tr><td><strong>处世原则</strong></td><td>从荷兰战败中吸取教训——战前组织混乱是致命伤，从此坚持系统化流程</td><td>对过往胜绩的路径依赖，未因应新形势调整</td><td>从失败中提炼原则并坚持执行，比依赖过往成功更可靠</td></tr>
-  </table>
-  <p style="margin-top:16px;font-size:14px;line-height:1.7;"><strong>MKS结论：</strong>天才拿破仑一生指挥60+战役胜绩超过亚历山大、汉尼拔和凯撒总和，却在最关键一战输给「笨人」威灵顿。这不是偶然——<strong>长期来看，系统化的笨办法比依赖天赋的聪明办法有更高的概率正确性</strong>。滑铁卢战役决定性的因素（法军人才缺失、天气限制炮兵、威灵顿的超额准备）全部指向一个结论：在复杂系统中，减少可避免的错误（笨办法的优势）比增加亮点操作（天才的优势）更能决定最终结果。</p></div>`;
-}
+function renderCaseStudy(){} // no-op, inline HTML
 
 // ── DECISION SIM ──
 function renderSimGame() {

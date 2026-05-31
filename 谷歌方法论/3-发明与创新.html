@@ -108,6 +108,17 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 .modal-overlay.show{display:flex}
 .modal{background:var(--card);border-radius:14px;padding:28px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
 .modal h3{color:var(--accent);margin-bottom:14px}
+/* mindmap */
+.mindmap { padding: 0; }
+.mindmap .node { margin-left: 20px; }
+.mindmap .node-header { cursor: pointer; padding: 6px 0; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.mindmap .node-header::before { content: "▸"; display: inline-block; transition: transform 0.2s; font-size: 0.7rem; }
+.mindmap .node-header.open::before { transform: rotate(90deg); }
+.mindmap .node-children { display: none; margin-left: 16px; border-left: 2px solid var(--border); padding-left: 10px; }
+.mindmap .node-children.open { display: block; }
+.mindmap .leaf { padding: 3px 0; font-size: 0.88rem; color: var(--text); }
+
+
 @media(max-width:640px){
 .flip-nav{flex-wrap:wrap}
 .stage-arrow{display:none}
@@ -277,9 +288,139 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 
 <!-- TAB 5: 思维导图 -->
 <div class="tab-panel" id="panel5">
-<div class="card">
-<h3>发明与创新 · 思维导图</h3>
-<div id="mindmap" class="tree"></div>
+<div class="card"><h2>可折叠思维导图</h2></div>
+<div class="card mindmap">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">发明与创新</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">一、发明的基本逻辑</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">从发现到发明：0→N全过程</div>
+<div class="node-children open">
+<div class="leaf">发现=识别现象</div><div class="leaf">发明=转化为可用产品</div><div class="leaf">商业化=实现社会价值</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">系统性方法 > 偶然发现</div>
+<div class="node-children open">
+<div class="leaf">结构化流程设计</div><div class="leaf">详细实验记录</div><div class="leaf">可叠加知识传承</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">科学方法 > 工匠经验</div>
+<div class="node-children open">
+<div class="leaf">定量分析+控制实验</div><div class="leaf">同行验证+可复现性</div><div class="leaf">双盲测试排除偏见</div></div>
+</div>
+</div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">二、飞行发明史</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">凯利爵士：升力与推力分离理论</div>
+<div class="node-children open">
+<div class="leaf">1849年首次载人滑翔</div><div class="leaf">论文《论空中航行》成为经典</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">李林塔尔：2000+次滑翔实验</div>
+<div class="node-children open">
+<div class="leaf">留下宝贵实验数据</div><div class="leaf">未解决动力和控制问题</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">莱特兄弟：实现可控动力飞行</div>
+<div class="node-children open">
+<div class="leaf">风洞测试200+翼形</div><div class="leaf">修正升力计算错误(60%)</div><div class="leaf">机翼操作杆:从模仿到创新</div></div>
+</div>
+<div class="leaf">超音速突破：回到原点重新设计</div><div class="leaf">航空业瓶颈：间接时间抵消速度收益</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">三、集成电路与半导体</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">仙童八叛徒：硅谷诞生</div>
+<div class="node-children open">
+<div class="leaf">硅晶体管替代锗</div><div class="leaf">平面工艺实现规模化</div><div class="leaf">诺伊斯发明集成电路</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">张忠谋与台积电</div>
+<div class="node-children open">
+<div class="leaf">设计与制造分离模式</div><div class="leaf">全球60%芯片制造份额</div><div class="leaf">16字方针+极致运营</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">产业启示</div>
+<div class="node-children open">
+<div class="leaf">功能封装降低门槛</div><div class="leaf">继承是颠覆的基础</div><div class="leaf">精准融资决定成败</div></div>
+</div>
+</div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">四、药物发明史</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">阿司匹林：2300年从柳树皮到药品</div>
+<div class="node-children open">
+<div class="leaf">希波克拉底→斯通→格哈特→霍夫曼</div><div class="leaf">安全性优先(一期)→有效性验证(二/三期)</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">海洛因：从"英雄"到禁药</div>
+<div class="node-children open">
+<div class="leaf">与阿司匹林仅隔11天</div><div class="leaf">初衷善意但结果灾难性</div><div class="leaf">问题转移的恶性循环</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">DDT：认知的三次转折</div>
+<div class="node-children open">
+<div class="leaf">神药(拯救5亿人)→毒药(环境危害)→有限回归(2006)</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">链霉素：发明权之争</div>
+<div class="node-children open">
+<div class="leaf">瓦克斯曼多次错过机会</div><div class="leaf">沙茨分离低毒性菌株</div><div class="leaf">诺奖单独授予瓦克斯曼</div></div>
+</div>
+</div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">五、瓷器全球化</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">中国原创：多条件偶然叠加</div>
+<div class="node-children open">
+<div class="leaf">高岭土+1300℃高温+上釉技术</div><div class="leaf">古埃及/美索不达米亚缺原料</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">日本崛起：从仿制到创新</div>
+<div class="node-children open">
+<div class="leaf">朝鲜工匠技术传入</div><div class="leaf">赤绘瓷器改变欧洲品味</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">欧洲再发明：科学方法超越</div>
+<div class="node-children open">
+<div class="leaf">麦森3万次密码记录实验</div><div class="leaf">法国珐琅+英国骨质瓷</div><div class="leaf">50年超越中国千年积累</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">青花瓷：多元文化融合典范</div>
+<div class="node-children open">
+<div class="leaf">蒙古白+伊斯兰蓝+汉纹饰+欧洲审美</div></div>
+</div>
+</div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">六、马斯克与航天</div>
+<div class="node-children open">
+<div class="leaf">四轮轮盘赌：Roadster→Model S→产业链→Model 3</div><div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">SpaceX：三流技术、一流公关？</div>
+<div class="node-children open">
+<div class="leaf">发动机性能落后中俄</div><div class="leaf">27台捆绑的可靠性争议</div></div>
+</div>
+<div class="leaf">登月vs登火星：太平洋vs长江差距</div><div class="leaf">美苏航天竞赛：冯·布劳恩 vs 科罗廖夫</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">七、创新方法论总结</div>
+<div class="node-children open">
+<div class="leaf">最后发明家：量变→质变的完成者</div><div class="leaf">双刃剑效应：认知随时间检验</div><div class="leaf">跨领域迁移：从自行车到飞机控制</div><div class="leaf">技术协同：等待"风云汇聚"的时机</div><div class="leaf">可叠加进步：知识复利的核心驱动力</div></div>
+</div>
+</div>
+
+</div>
 </div>
 </div>
 
@@ -294,9 +435,30 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.75rem;border
 
 <!-- TAB 7: 案例分析 -->
 <div class="tab-panel" id="panel7">
-<div class="card">
-<h3>案例：集成电路发明 —— MKS 四维度拆解</h3>
-<div id="caseStudy"></div>
+<div class="card"><h3>案例：集成电路发明 — MKS 四维度拆解</h3>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.85rem">
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">核心概念</h4>
+<p><strong>集成电路 = 电路功能的封装</strong></p>
+<p>类比算法开源：一次性解决"如何连接晶体管"的问题，让下游工程师可专注于"用电路做什么"而非"怎么搭电路"。</p>
+</div>
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">系统性方法</h4>
+<p><strong>继承→改进→颠覆的三步路径</strong></p>
+<p>诺伊斯继承肖克利的晶体管技术→赫尔尼用平面工艺改进制造方式→诺伊斯在此基础上完成集成电路的颠覆性发明。</p>
+</div>
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">从偶然到必然</h4>
+<p><strong>精准融资是关键转折</strong></p>
+<p>"八叛徒"联系30家传统企业失败→找到菲尔柴尔德家族（IBM最大股东）一举成功。对接"理解技术前景的人"vs"只看财务报表的人"结果天差地别。</p>
+</div>
+<div class="card" style="padding:14px">
+<h4 style="color:var(--accent);font-size:.9rem">可叠加进步</h4>
+<p><strong>仙童→英特尔→硅谷生态</strong></p>
+<p>仙童虽衰落，但其衍生企业（英特尔、AMD等）奠定了硅谷基础。每一个"叛徒"的出走都是一次知识的扩散和叠加。这正是可叠加进步的典型体现。</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -921,57 +1083,7 @@ document.getElementById('studyStats').innerHTML=`
 <div class="stat-item"><div class="val">${days}</div><div class="lbl">学习天数</div></div>`;
 }
 
-function renderMindmap(){
-const tree={
-n:'发明与创新',c:[
-{n:'一、发明的基本逻辑',c:[
-{n:'从发现到发明：0→N全过程',c:[{n:'发现=识别现象'},{n:'发明=转化为可用产品'},{n:'商业化=实现社会价值'}]},
-{n:'系统性方法 > 偶然发现',c:[{n:'结构化流程设计'},{n:'详细实验记录'},{n:'可叠加知识传承'}]},
-{n:'科学方法 > 工匠经验',c:[{n:'定量分析+控制实验'},{n:'同行验证+可复现性'},{n:'双盲测试排除偏见'}]}
-]},
-{n:'二、飞行发明史',c:[
-{n:'凯利爵士：升力与推力分离理论',c:[{n:'1849年首次载人滑翔'},{n:'论文《论空中航行》成为经典'}]},
-{n:'李林塔尔：2000+次滑翔实验',c:[{n:'留下宝贵实验数据'},{n:'未解决动力和控制问题'}]},
-{n:'莱特兄弟：实现可控动力飞行',c:[{n:'风洞测试200+翼形'},{n:'修正升力计算错误(60%)'},{n:'机翼操作杆:从模仿到创新'}]},
-{n:'超音速突破：回到原点重新设计'},{n:'航空业瓶颈：间接时间抵消速度收益'}
-]},
-{n:'三、集成电路与半导体',c:[
-{n:'仙童八叛徒：硅谷诞生',c:[{n:'硅晶体管替代锗'},{n:'平面工艺实现规模化'},{n:'诺伊斯发明集成电路'}]},
-{n:'张忠谋与台积电',c:[{n:'设计与制造分离模式'},{n:'全球60%芯片制造份额'},{n:'16字方针+极致运营'}]},
-{n:'产业启示',c:[{n:'功能封装降低门槛'},{n:'继承是颠覆的基础'},{n:'精准融资决定成败'}]}
-]},
-{n:'四、药物发明史',c:[
-{n:'阿司匹林：2300年从柳树皮到药品',c:[{n:'希波克拉底→斯通→格哈特→霍夫曼'},{n:'安全性优先(一期)→有效性验证(二/三期)'}]},
-{n:'海洛因：从"英雄"到禁药',c:[{n:'与阿司匹林仅隔11天'},{n:'初衷善意但结果灾难性'},{n:'问题转移的恶性循环'}]},
-{n:'DDT：认知的三次转折',c:[{n:'神药(拯救5亿人)→毒药(环境危害)→有限回归(2006)'}]},
-{n:'链霉素：发明权之争',c:[{n:'瓦克斯曼多次错过机会'},{n:'沙茨分离低毒性菌株'},{n:'诺奖单独授予瓦克斯曼'}]}
-]},
-{n:'五、瓷器全球化',c:[
-{n:'中国原创：多条件偶然叠加',c:[{n:'高岭土+1300℃高温+上釉技术'},{n:'古埃及/美索不达米亚缺原料'}]},
-{n:'日本崛起：从仿制到创新',c:[{n:'朝鲜工匠技术传入'},{n:'赤绘瓷器改变欧洲品味'}]},
-{n:'欧洲再发明：科学方法超越',c:[{n:'麦森3万次密码记录实验'},{n:'法国珐琅+英国骨质瓷'},{n:'50年超越中国千年积累'}]},
-{n:'青花瓷：多元文化融合典范',c:[{n:'蒙古白+伊斯兰蓝+汉纹饰+欧洲审美'}]}
-]},
-{n:'六、马斯克与航天',c:[
-{n:'四轮轮盘赌：Roadster→Model S→产业链→Model 3'},
-{n:'SpaceX：三流技术、一流公关？',c:[{n:'发动机性能落后中俄'},{n:'27台捆绑的可靠性争议'}]},
-{n:'登月vs登火星：太平洋vs长江差距'},
-{n:'美苏航天竞赛：冯·布劳恩 vs 科罗廖夫'}
-]},
-{n:'七、创新方法论总结',c:[
-{n:'最后发明家：量变→质变的完成者'},
-{n:'双刃剑效应：认知随时间检验'},
-{n:'跨领域迁移：从自行车到飞机控制'},
-{n:'技术协同：等待"风云汇聚"的时机'},
-{n:'可叠加进步：知识复利的核心驱动力'}
-]}
-]};
-
-function buildTree(node,level){
-let h=`<li><span class="toggle${node.c?' open':''}" onclick="toggleTree(this)">${node.c?'':''}</span>${node.n}`;
-if(node.c){
-h+=`<ul class="children open">${node.c.map(c=>buildTree(c,level+1)).join('')}</ul>`;
-}
+function renderMindmap(){} // no-op, inline HTML
 h+='</li>';
 return h;
 }
@@ -1012,31 +1124,7 @@ h+=`</div>`;
 document.getElementById('socraticQuestions').innerHTML=h;
 }
 
-function renderCase(){
-document.getElementById('caseStudy').innerHTML=`
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.85rem">
-<div class="card" style="padding:14px">
-<h4 style="color:var(--accent);font-size:.9rem">核心概念</h4>
-<p><strong>集成电路 = 电路功能的封装</strong></p>
-<p>类比算法开源：一次性解决"如何连接晶体管"的问题，让下游工程师可专注于"用电路做什么"而非"怎么搭电路"。</p>
-</div>
-<div class="card" style="padding:14px">
-<h4 style="color:var(--accent);font-size:.9rem">系统性方法</h4>
-<p><strong>继承→改进→颠覆的三步路径</strong></p>
-<p>诺伊斯继承肖克利的晶体管技术→赫尔尼用平面工艺改进制造方式→诺伊斯在此基础上完成集成电路的颠覆性发明。</p>
-</div>
-<div class="card" style="padding:14px">
-<h4 style="color:var(--accent);font-size:.9rem">从偶然到必然</h4>
-<p><strong>精准融资是关键转折</strong></p>
-<p>"八叛徒"联系30家传统企业失败→找到菲尔柴尔德家族（IBM最大股东）一举成功。对接"理解技术前景的人"vs"只看财务报表的人"结果天差地别。</p>
-</div>
-<div class="card" style="padding:14px">
-<h4 style="color:var(--accent);font-size:.9rem">可叠加进步</h4>
-<p><strong>仙童→英特尔→硅谷生态</strong></p>
-<p>仙童虽衰落，但其衍生企业（英特尔、AMD等）奠定了硅谷基础。每一个"叛徒"的出走都是一次知识的扩散和叠加。这正是可叠加进步的典型体现。</p>
-</div>
-</div>`;
-}
+function renderCase(){} // no-op, inline HTML
 
 function renderDecision(){
 if(decisionRound>=3){
@@ -1139,6 +1227,15 @@ let currentQuestions = [];
 let userAnswers = {};
 let quizTimeLeft = 900;
 let quizTimerInterval = null;
+
+
+function toggleMindmap(el) {
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if (children && children.classList.contains('node-children')) {
+    children.classList.toggle('open');
+  }
+}
 
 function startQuiz(){
   const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);

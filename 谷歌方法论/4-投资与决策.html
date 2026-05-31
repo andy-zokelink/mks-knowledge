@@ -210,6 +210,17 @@ body{
 .footer{text-align:center;padding:30px 0 20px;font-size:.78rem;color:var(--text2);border-top:1px solid var(--border);margin-top:30px}
 
 /* Mobile */
+/* mindmap */
+.mindmap { padding: 0; }
+.mindmap .node { margin-left: 20px; }
+.mindmap .node-header { cursor: pointer; padding: 6px 0; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.mindmap .node-header::before { content: "▸"; display: inline-block; transition: transform 0.2s; font-size: 0.7rem; }
+.mindmap .node-header.open::before { transform: rotate(90deg); }
+.mindmap .node-children { display: none; margin-left: 16px; border-left: 2px solid var(--border); padding-left: 10px; }
+.mindmap .node-children.open { display: block; }
+.mindmap .leaf { padding: 3px 0; font-size: 0.88rem; color: var(--text); }
+
+
 @media(max-width:600px){
   .concept-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
   .flip-inner,.flip-front,.flip-back{min-height:340px}
@@ -361,11 +372,40 @@ body{
 
 <!-- ========== TAB 5: 思维导图 ========== -->
 <section class="tab-content" data-tab="5">
-  <div class="card">
-    <h2>知识体系思维导图</h2>
-    <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">点击 ▸ 展开/折叠节点</p>
-    <div class="mindmap-tree" id="mindmap"></div>
-  </div>
+<div class="card"><h2>知识体系思维导图</h2></div>
+<div class="card mindmap">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">资本与决策的核心驱动</div>
+<div class="node-children open">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">风险投资体系</div>
+<div class="node-children open">
+<div class="leaf">起源：仙童半导体（1957）→ 硅谷八叛徒</div><div class="leaf">基金结构：LP/GP、7+3年、2%+20%</div><div class="leaf">投资阶段：天使轮→A轮→B轮→退出</div><div class="leaf">退出方式：上市（1%）/ 并购（20%）/ 破产（80%）</div><div class="leaf">顶级机构：KPCB、红杉资本、YC</div><div class="leaf">中国现状：95%基金亏损、伪VC泛滥</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">投资大师哲学</div>
+<div class="node-children open">
+<div class="leaf">约翰·杜尔：投人、影响力、潜行阶段、生态网络</div><div class="leaf">彼得·林奇：PEG指标、须鲸式投资、鸡尾酒会理论</div><div class="leaf">比尔·米勒：最大价值、估值体系多样性、连续15年跑赢</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">货币与金融</div>
+<div class="node-children open">
+<div class="leaf">货币起源：记账工具说 vs 金属货币说</div><div class="leaf">金本位→布雷顿森林体系→信用货币</div><div class="leaf">央行平衡表：扩表（印钱）/缩表（回收货币）</div><div class="leaf">M0/M1/M2：基础货币到广义货币的派生</div><div class="leaf">虚拟货币：比特币的局限（成本、速度、波动）</div><div class="leaf">区块链：生产关系、AI+IoT+区块链=超级智能</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">公司管理</div>
+<div class="node-children open">
+<div class="leaf">德鲁克定律：贡献 > 成就</div><div class="leaf">奥格威定律：雇用更强的人</div><div class="leaf">矩阵式管理：双重汇报、动态项目团队</div><div class="leaf">攻城与守城：创新研发 vs 维持现有</div><div class="leaf">练兵与带兵：培养体系 vs 指挥执行</div></div>
+</div>
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">决策思维</div>
+<div class="node-children open">
+<div class="leaf">J曲线：改革先下行后上升，坚持一致性</div><div class="leaf">止损：斩断厄运链，接受局部损失</div><div class="leaf">滞后效应：冬至→1月最冷，效果有时间延迟</div><div class="leaf">制度 vs 个人：系统方法优于依赖天才</div><div class="leaf">核心竞争力：整合力 > 自有技术</div><div class="leaf">国际化：四位一体（资源/文化/需求/规范）</div></div>
+</div>
+</div>
+
+</div>
+</div>
 </section>
 
 <!-- ========== TAB 6: 深度追问 ========== -->
@@ -1173,48 +1213,7 @@ function resetReview(){
 }
 
 // ==================== TAB 5: MINDMAP ====================
-function renderMindmap(){
-  document.getElementById('mindmap').innerHTML=buildTree([
-    {label:'资本与决策的核心驱动',children:[
-      {label:'风险投资体系',children:[
-        {label:'起源：仙童半导体（1957）→ 硅谷八叛徒'},
-        {label:'基金结构：LP/GP、7+3年、2%+20%'},
-        {label:'投资阶段：天使轮→A轮→B轮→退出'},
-        {label:'退出方式：上市（1%）/ 并购（20%）/ 破产（80%）'},
-        {label:'顶级机构：KPCB、红杉资本、YC'},
-        {label:'中国现状：95%基金亏损、伪VC泛滥'},
-      ]},
-      {label:'投资大师哲学',children:[
-        {label:'约翰·杜尔：投人、影响力、潜行阶段、生态网络'},
-        {label:'彼得·林奇：PEG指标、须鲸式投资、鸡尾酒会理论'},
-        {label:'比尔·米勒：最大价值、估值体系多样性、连续15年跑赢'},
-      ]},
-      {label:'货币与金融',children:[
-        {label:'货币起源：记账工具说 vs 金属货币说'},
-        {label:'金本位→布雷顿森林体系→信用货币'},
-        {label:'央行平衡表：扩表（印钱）/缩表（回收货币）'},
-        {label:'M0/M1/M2：基础货币到广义货币的派生'},
-        {label:'虚拟货币：比特币的局限（成本、速度、波动）'},
-        {label:'区块链：生产关系、AI+IoT+区块链=超级智能'},
-      ]},
-      {label:'公司管理',children:[
-        {label:'德鲁克定律：贡献 > 成就'},
-        {label:'奥格威定律：雇用更强的人'},
-        {label:'矩阵式管理：双重汇报、动态项目团队'},
-        {label:'攻城与守城：创新研发 vs 维持现有'},
-        {label:'练兵与带兵：培养体系 vs 指挥执行'},
-      ]},
-      {label:'决策思维',children:[
-        {label:'J曲线：改革先下行后上升，坚持一致性'},
-        {label:'止损：斩断厄运链，接受局部损失'},
-        {label:'滞后效应：冬至→1月最冷，效果有时间延迟'},
-        {label:'制度 vs 个人：系统方法优于依赖天才'},
-        {label:'核心竞争力：整合力 > 自有技术'},
-        {label:'国际化：四位一体（资源/文化/需求/规范）'},
-      ]},
-    ]}
-  ]);
-}
+function renderMindmap(){} // no-op, inline HTML
 
 function buildTree(nodes,depth=0){
   return nodes.map(n=>{
