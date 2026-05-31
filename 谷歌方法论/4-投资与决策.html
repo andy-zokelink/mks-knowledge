@@ -877,6 +877,7 @@ function save() {
 let currentCardIdx = 0;
 let cardFlipped = false;
 
+function renderFlipCard(){} // no-op, rendered inline via setCard
 function flipToConcept(id){
   const idx=concepts.findIndex(c=>c.id===id);
   if(idx>=0){currentCardIdx=idx;setCard(idx);}
@@ -1229,11 +1230,19 @@ function buildTree(nodes,depth=0){
   }).join('');
 }
 
-function toggleMindmap(id){
-  const children=document.getElementById(id);
-  const toggle=document.getElementById(id+'_tgl');
-  children.classList.toggle('open');
-  toggle.classList.toggle('open');
+function toggleMindmap(el){
+  if(typeof el==='string'){
+    const children=document.getElementById(el);
+    const toggle=document.getElementById(el+'_tgl');
+    if(children)children.classList.toggle('open');
+    if(toggle)toggle.classList.toggle('open');
+    return;
+  }
+  el.classList.toggle('open');
+  var children=el.nextElementSibling;
+  if(children&&children.classList.contains('node-children')){
+    children.classList.toggle('open');
+  }
 }
 
 // ==================== TAB 6: SOCRATIC ====================
