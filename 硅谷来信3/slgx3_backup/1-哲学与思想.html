@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>哲学与思想 — 最小知识集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
+--text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--gold:#b8860b;
+--shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
+}
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+
+header{text-align:center;padding:clamp(24px,5vh,48px) 0 clamp(16px,3vh,32px)}
+header h1{font-size:clamp(1.5rem,3.5vw,2rem);color:var(--accent);margin-bottom:8px}
+header .sub{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2)}
+header .home-link{display:inline-block;margin-top:12px;padding:6px 20px;border:2px solid var(--accent);border-radius:20px;color:var(--accent);text-decoration:none;font-size:.88rem;transition:all .25s}
+header .home-link:hover{background:var(--accent);color:#fff}
+
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
+.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
+.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff}
+
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+h2{font-size:clamp(1.2rem,2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent2)}
+h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
+
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s}
+.concept-card:hover{transform:translateY(-2px)}
+.concept-card.mks{border-left-color:var(--gold);position:relative}
+.concept-card.mks::after{content:'\2605';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
+.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-core{background:#fde8e8;color:var(--accent)}
+.badge-mks{background:#fef3cd;color:var(--gold)}
+.badge-boundary{background:#e8f0fe;color:#3a6ea5}
+
+.progress-wrap{margin:16px 0}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
+.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+/* Flip Card */
+.flip-container{perspective:1000px;width:100%;max-width:500px;margin:20px auto}
+.flip-inner{position:relative;width:100%;min-height:420px;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;box-shadow:var(--shadow)}
+.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff;font-size:1.3rem;font-weight:700}
+.flip-back{background:var(--card);color:var(--text);transform:rotateY(180deg);font-size:.85rem;line-height:1.6;align-items:flex-start;text-align:left;overflow-y:auto}
+.flip-back .dim-label{font-weight:700;color:var(--accent);font-size:.8rem}
+.flip-nav{display:flex;justify-content:center;gap:16px;margin-top:12px}
+.flip-nav button{padding:8px 20px;border-radius:20px;border:2px solid var(--accent);background:var(--card);color:var(--accent);cursor:pointer;font-size:.85rem;transition:all .2s}
+.flip-nav button:hover{background:var(--accent);color:#fff}
+.flip-nav button.learned{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+
+/* Quiz */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-card .q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
+.q-mc{background:#fde8e8;color:var(--accent)}
+.q-sa{background:#e8f0fe;color:#3a6ea5}
+.quiz-card .q-text{font-weight:700;margin-bottom:12px}
+.quiz-card .q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border);font-size:.85rem}
+.quiz-card .q-option:hover{border-color:var(--accent2);background:#fef9f4}
+.quiz-card .q-option.selected{border-color:var(--accent);background:#fde8e8}
+.quiz-card .q-option.correct{border-color:#4caf50;background:#e8f5e9}
+.quiz-card .q-option.wrong{border-color:var(--accent);background:#ffebee}
+.quiz-card .q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
+.quiz-card .q-feedback.show{display:block}
+.quiz-card .q-feedback.right{background:#e8f5e9;color:#2e7d32}
+.quiz-card .q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
+.quiz-card .sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
+.quiz-card .sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
+.quiz-card .sa-reveal.show{display:block}
+
+/* Tree */
+.tree-wrap{font-size:.88rem;line-height:1.8}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-toggle{cursor:pointer;color:var(--accent);font-weight:700;user-select:none}
+.tree-toggle::before{content:'\25B8 ';display:inline-block;transition:transform .2s}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-leaf{color:var(--text2)}
+
+/* Socratic */
+.socratic-item{margin-bottom:12px}
+.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700;transition:all .2s}
+.socratic-q:hover{border-color:var(--accent2)}
+.socratic-q::before{content:'\2753 '}
+.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
+
+/* Decision */
+.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
+.decision-round .d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
+.decision-round .d-option:hover{border-color:var(--accent2);background:#fef9f4}
+.decision-round .d-option.chosen{border-color:var(--accent);background:#fde8e8}
+.decision-round .d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
+.decision-round .d-result.show{display:block}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.tbl th,.tbl td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+.tbl th{background:var(--accent);color:#fff;font-weight:600}
+.tbl tr:nth-child(even){background:#fef9f4}
+
+@media(max-width:640px){
+.tab-bar{gap:2px;padding:6px 2px}
+.tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
+.flip-inner{min-height:320px}
+.flip-front{font-size:1.1rem}
+}
+
+.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
+.timer.warning{animation:pulse .5s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.5}}
+
+.btn{padding:10px 24px;border-radius:20px;border:2px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+.btn:hover{background:#a93226;border-color:#a93226}
+.btn-outline{background:transparent;color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
+
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>哲学与思想</h1>
+<div class="sub">最小知识集 · 硅谷来信3「哲学与思想」专题 · 42篇笔记提炼</div>
+<div class="sub" style="font-size:.78rem;margin-top:4px">核心驱动：理性追问 ↔ 人生智慧 —— 哲学如何照亮生活</div>
+<a href="index.html" class="home-link">← 返回知识主板</a>
+</header>
+
+<nav class="tab-bar" id="tabBar">
+<button class="tab-btn active" onclick="switchTab(0)">知识集总览</button>
+<button class="tab-btn" onclick="switchTab(1)">知识卡片</button>
+<button class="tab-btn" onclick="switchTab(2)">题库系统</button>
+<button class="tab-btn" onclick="switchTab(3)">考试模式</button>
+<button class="tab-btn" onclick="switchTab(4)">复习模式</button>
+<button class="tab-btn" onclick="switchTab(5)">思维导图</button>
+<button class="tab-btn" onclick="switchTab(6)">深度追问</button>
+<button class="tab-btn" onclick="switchTab(7)">案例分析</button>
+<button class="tab-btn" onclick="switchTab(8)">实战决策</button>
+</nav>
+
+<!-- TAB 0: 知识总览 -->
+<section class="tab-content active" id="tab0">
+<div class="card">
+<h2>核心目标</h2>
+<p style="font-size:1.05rem">对话尼采、亚里士多德、维特根斯坦等哲学大家，掌握<strong>理性思维框架、价值判断体系与人生智慧内核</strong>，在知识-智慧-能力三维转化中，形成独立的思想判断力与决策方法论。</p>
+</div>
+
+<h2>10个核心概念</h2>
+<div class="grid2" id="conceptGrid"></div>
+
+<h2>概念关系图</h2>
+<div class="svg-wrap" id="svgContainer"></div>
+<div class="legend">
+<span><span class="dot" style="background:#c0392b"></span> 核心驱动关系</span>
+<span><span class="dot" style="background:#d4a574"></span> 方法论/派生关系</span>
+<span><span class="dot" style="background:#8b7355"></span> 实践应用路径</span>
+<span><span class="dot" style="background:#b8860b"></span> 跨分支对话</span>
+</div>
+
+<h2>★ 4个MKS核心骨架</h2>
+<div class="grid2" id="mksGrid"></div>
+
+<h2>边界知识表</h2>
+<div style="overflow-x:auto">
+<table class="tbl" id="boundaryTable"><thead><tr><th>知识点</th><th>使用场景</th><th>只需知道</th></tr></thead><tbody></tbody></table>
+</div>
+
+<h2>学习路径（5阶段）</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin:16px 0" id="learningPath"></div>
+
+<h2>学习进度</h2>
+<div class="progress-wrap">
+<div class="progress-bar"><div class="progress-fill" id="overallProgress" style="width:0%"></div></div>
+<div class="progress-label" id="progressLabel">已学习 0/10 个概念</div>
+</div>
+</section>
+
+<!-- TAB 1: 知识卡片 -->
+<section class="tab-content" id="tab1">
+<div class="card" style="text-align:center">
+<div class="flip-container" id="flipCard">
+<div class="flip-inner" id="flipInner" onclick="this.classList.toggle('flipped')">
+<div class="flip-front" id="flipFront">科学证伪</div>
+<div class="flip-back" id="flipBack"></div>
+</div>
+</div>
+<div class="flip-nav">
+<button onclick="flipPrev()">◀ 上一个</button>
+<button onclick="document.getElementById('flipInner').classList.toggle('flipped')">翻转卡片</button>
+<button onclick="markLearned()" id="learnedBtn">✓ 已学习</button>
+<button onclick="flipNext()">下一个 ▶</button>
+</div>
+<p style="font-size:.78rem;color:var(--text2)">点击卡片翻转 | <span id="flipProgress">1/10</span></p>
+</div>
+</section>
+
+<!-- TAB 2: 题库系统 -->
+<section class="tab-content" id="tab2">
+<div class="card">
+<h2>选择题（20道）<span class="badge badge-core" style="margin-left:8px">即时判分</span></h2>
+<div id="mcqContainer"></div>
+<h2 style="margin-top:24px">简答题（10道）<span class="badge badge-boundary" style="margin-left:8px">点击查看要点</span></h2>
+<div id="saqContainer"></div>
+</div>
+</section>
+
+<!-- TAB 3: 考试模式 -->
+<section class="tab-content" id="tab3">
+<div class="card">
+<div style="text-align:center;padding:20px">
+<h2>模拟考试</h2>
+<p style="color:var(--text2)">从题库随机抽取 7道选择 + 3道简答 | 限时15分钟</p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn" onclick="startExam()" id="examStartBtn">开始考试</button>
+<div id="examArea"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+</section>
+
+<!-- TAB 4: 复习中心 -->
+<section class="tab-content" id="tab4">
+<h2>学习统计</h2>
+<div class="stat-grid" id="statsGrid"></div>
+
+<h2 style="margin-top:20px">错题本</h2>
+<div id="errorBook"></div>
+<p style="font-size:.82rem;color:var(--text2)" id="emptyError">暂无错题，继续保持！</p>
+
+<h2 style="margin-top:20px">概念薄弱点</h2>
+<div id="weakConcepts"></div>
+<div style="margin-top:16px">
+<button class="btn btn-outline btn-sm" onclick="resetProgress()">重置全部进度</button>
+</div>
+</section>
+
+<!-- TAB 5: 思维导图 -->
+<section class="tab-content" id="tab5">
+<div class="card tree-wrap" id="treeContainer"></div>
+</section>
+
+<!-- TAB 6: 苏格拉底追问 -->
+<section class="tab-content" id="tab6">
+<div id="socraticContainer"></div>
+</section>
+
+<!-- TAB 7: 案例分析 -->
+<section class="tab-content" id="tab7">
+<div id="caseContainer"></div>
+</section>
+
+<!-- TAB 8: 实战决策 -->
+<section class="tab-content" id="tab8">
+<div id="decisionContainer"></div>
+</section>
+
+</div><!-- container -->
+
+<script>
+// ============ GLOBAL STATE ============
+const LS_KEY = 'mks_philosophy_v1';
+let LS = {};
+try { LS = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) { LS = {}; }
+function saveLS() { localStorage.setItem(LS_KEY, JSON.stringify(LS)); }
+
+// ============ DATA ============
+const concepts = [
+{id:0, name:'科学证伪', desc:'知识分三类：科学（可证伪）、数学（逻辑自洽）、宗教/神秘主义（不可证伪）。科学是方法而非固定结论——一万次证实不如一次证伪推动认知升级。水沸腾温度的迭代（气压→溶质→加热方式）完美演示了这一过程。', mks:true},
+{id:1, name:'知识→智慧→能力', desc:'知识是"术"(具体方法/技能)，智慧是"道"(底层规律/认知)。元智慧将知识转化为生产力，软能力(交往力/洞察力/分辨力/职场力/行动力)将智慧转化为成果。智慧发现机会，能力实现目标，知识是基础支撑。', mks:true},
+{id:2, name:'理性四维度', desc:'韦伯提出完整理性：①判断力(利益权衡)②价值理性(道德/信仰导向)③情感理性(遵从内心真实情感)④传统理性(约定俗成)。四维度组合才形成完整理性，单一维度(如唯利是图)导致非理性行为。', mks:true},
+{id:3, name:'主人道德vs奴隶道德', desc:'尼采区分两种道德：主人道德以"好与坏"为基础，核心是高贵、坚强、勇敢、自我肯定、追求卓越；奴隶道德以"善与恶"为基础，表现为犬儒主义、逆来顺受、怨恨报复。关键：不取决于社会地位，而是行为心态。', mks:true},
+{id:4, name:'语言图像与语言游戏', desc:'维特根斯坦后期哲学：语言有两种功能——"语言图像"描述现实(如几何命名)，"语言游戏"创造行动(如工头说"砌整齐"引发施工)。传统哲学家混淆二者导致无解矛盾。"太初有为"——行动先于语言。', mks:false},
+{id:5, name:'逻辑谬误辨识', desc:'四种常见谬误：①假两难(非黑即白)②诉诸暴力(威胁关联)③诉诸怜悯(情感绑架)④片面辩护(特例豁免)。核心原则：前提合理、论证符合逻辑、结论经得起检验，而非支持者数量或权威背书。', mks:false},
+{id:6, name:'四因说分析框架', desc:'亚里士多德的解释工具：质料因(构成材质)、形式因(本质定位)、动力因(实现手段)、目的因(核心目标)。四因共同作用才能成事，单一原因不足成事。可用于创业诊断、职业规划、教育个性化。', mks:false},
+{id:7, name:'斯多葛理性主义', desc:'奥勒留《沉思录》核心：理性是人性延伸，本性即遵循自然规律。核心主张"以出世的态度做入世的事情"——淡泊名利但埋头苦干。死亡是自然运转，应坦然接受。斯多葛逻辑链：自然→本性→理性→法律→秩序。', mks:false},
+{id:8, name:'自由与自发秩序', desc:'哈耶克区分两种秩序：自发秩序(渐进试错、有机生长)优于人为设计秩序(教条主义、乌托邦)。自由=不被强制+不强制他人。法律平等与现实平等不可兼得，保护私有财产是保护自由的一部分。', mks:false},
+{id:9, name:'怀疑主义方法论', desc:'塞克斯图斯的怀疑主义本质是逻辑审视工具，反对"自我意识形态化"。三大认知缺陷：①选择性接受维护假设②单一归因谬误③无序原因解释有序事件。怀疑是基于逻辑的理性能力，非无端猜疑。', mks:false}
+];
+
+const boundaryKnowledge = [
+{name:'奥古斯丁三位一体',scene:'理解基督教神学与古希腊哲学融合的关键节点'},
+{name:'苏格拉底灵魂不朽',scene:'东西方生死观对比——苏格拉底(灵魂解脱)vs庄子(回归自然)'},
+{name:'伊壁鸠鲁快乐二元论',scene:'动态快乐(满足欲望)vs静态快乐(持久满足)，真正幸福需静态快乐'},
+{name:'弗洛姆创造性人格',scene:'四种缺陷性格(接受型/剥削型/囤积型/交易型)→创造性人格改善路径'},
+{name:'阿德勒人格四分法',scene:'统治型/依赖型/回避型/社会利益型，人格可通过主动干预改变'},
+{name:'莱布尼茨充分性推理',scene:'有条件真理需所有必要条件构成充分条件，哥德尔不完备定理揭示其局限'},
+{name:'斯宾诺莎内在性上帝',scene:'上帝=自然规律总集，内在性(Immanence)vs超越性(Transcendence)'},
+{name:'六度分隔理论局限',scene:'对称性/传递性/面子有限性导致理论失效，苹果谷歌的面子量化管理'},
+{name:'价值投资实践困境',scene:'理论正确但多数践行者难跑赢大盘，巴菲特成功靠非理论因素(风控/深度研究)'},
+{name:'斜杠青年幸存者偏差',scene:'多重身份是成功后的结果而非初始目标，牛顿/里根的案例说明'},
+{name:'情商戈尔曼七维度',scene:'自知/情绪自控/同理心/适应力/不沉溺/表达力/专注，同理心是情商核心'},
+{name:'拉姆斯菲尔德风险分类',scene:'已知的已知/已知的未知/未知的未知，通识教育是转化未知的关键工具'},
+{name:'洗脑三大战术',scene:'趁虚而入(制造焦虑)/精神打击(摧毁自尊)/从众压力(群体思维)，需构建信息防火墙'},
+{name:'豫让典故与职场关系',scene:'"众人遇我，我故众人报之；国士遇我，我故国士报之"——双向对待原则'},
+{name:'"多快好省"的矛盾',scene:'多与快、好与省不可兼得，标榜者要么牺牲质量要么虚假宣传'},
+];
+
+const learningPath = [
+{phase:1,title:'认知基础',desc:'科学证伪→知识分类→逻辑思维(三段论/谬误辨识/因果关系)'},
+{phase:2,title:'价值构建',desc:'韦伯理性四维→尼采主人道德→斯多葛理性主义→人文主义核心价值观'},
+{phase:3,title:'语言与行动',desc:'维特根斯坦语言哲学→"太初有为"行动优先→语言边界=认知边界'},
+{phase:4,title:'自由与秩序',desc:'哈耶克自发秩序→斯宾诺莎内在性上帝→法律平等vs现实平等'},
+{phase:5,title:'综合实践',desc:'四因说分析→怀疑主义→情商实践→风险认知→超越自卑→创造性人格'},
+];
+
+const flipCards = [
+{front:'科学证伪',back:'<span class="dim-label">定义</span>科学知识的根本特征是可证伪性——通过改变条件发现结论局限性，推动认知升级。<br><span class="dim-label">类比</span>如同软件测试——找Bug不是证明程序错，而是发现"在什么条件下程序会出错"。<br><span class="dim-label">示例</span>水沸腾：100℃沸腾→被气压证伪→被溶质证伪→被加热方式(微波炉)证伪。<br><span class="dim-label">反例</span>"股市早晚要跌"——时间范围模糊，无法设计证伪条件，属于不可证伪命题。'},
+{front:'知识→智慧→能力',back:'<span class="dim-label">定义</span>知识是"术"(技能工具)，智慧是"道"(底层规律)，能力是转化桥梁。元智慧+软能力构成核心竞争力。<br><span class="dim-label">类比</span>如同开车：知识=交通规则手册，智慧=判断何时变道/让行，能力=实际操作方向盘。<br><span class="dim-label">示例</span>巴菲特：投资知识人人可学，但他的财富观与风险控制智慧使其成为独一无二的投资者。<br><span class="dim-label">反例</span>"学了一肚子知识却过不好这一生"——只有知识没有智慧，如同只有地图没有方向感。'},
+{front:'理性四维度',back:'<span class="dim-label">定义</span>韦伯提出完整理性=判断力+价值理性+情感理性+传统理性，四维度缺一不可。<br><span class="dim-label">类比</span>如同汽车四轮——缺一轮仍可勉强行驶，但迟早翻车。单一利益驱动尤其危险。<br><span class="dim-label">示例</span>曾国藩通过"敬"的自省方法培养价值理性，在利益诱惑前保持道德自律。<br><span class="dim-label">反例</span>"少奋斗20年"婚恋观——仅有判断力(利益计算)而缺乏情感理性，最终并不幸福。'},
+{front:'主人道德vs奴隶道德',back:'<span class="dim-label">定义</span>主人道德以"好/坏"为基础(主动定义)，追求卓越与自我超越；奴隶道德以"善/恶"为基础(被动反应)，表现为怨恨与投机。<br><span class="dim-label">类比</span>如同开源贡献者vs代码抄袭者：前者创造价值并公开，后者利用漏洞谋私利。<br><span class="dim-label">示例</span>按孩子特点培养(主人)vs盲从"鸡娃"潮流(奴隶)；坦荡合作(主人)vs笃信厚黑学(奴隶)。<br><span class="dim-label">反例</span>独断专行的国王可能受奴隶道德支配，底层贫民也可拥有主人道德——取决于心态而非地位。'},
+{front:'语言图像vs语言游戏',back:'<span class="dim-label">定义</span>维特根斯坦：语言图像描述现实(陈述性)，语言游戏创造行动(施为性)。混淆二者是哲学问题的根源。<br><span class="dim-label">类比</span>如同"菜单"(语言图像，描述菜品)vs"点菜"(语言游戏，触发做菜行为)。对着菜单争论味道无意义。<br><span class="dim-label">示例</span>工头说"把房子砌整齐"→工人开始砌墙(语言游戏)；几何学命名点线面(语言图像)。<br><span class="dim-label">反例</span>情侣争论"爱的定义"——爱是语言游戏(行动)，不是语言图像(描述)，空谈定义停止相爱。'},
+{front:'逻辑谬误辨识',back:'<span class="dim-label">定义</span>①假两难：非黑即白(如"不做大做强=做小做弱")②诉诸暴力：威胁强制关联(如"不好好学习=要饭")③诉诸怜悯：情感绑架(如"不想我毕不了业=让我及格")④片面辩护：特例豁免(如"规则适用所有人除了我")。<br><span class="dim-label">类比</span>如同编程中的Bug——逻辑谬误是思维代码中的语法错误，导致推理输出不可靠。<br><span class="dim-label">示例</span>企业规模：全球市值前6公司中5家员工<20万，"小而强"是真实存在的中间状态。<br><span class="dim-label">反例</span>将"不支持我这个决定"等同于"不再是朋友"——典型的假两难谬误。'},
+{front:'四因说分析框架',back:'<span class="dim-label">定义</span>质料因(构成材质/内在)←→形式因(本质定位/外在)；动力因(实现手段)←→目的因(核心目标)。四因共同作用才是成功的充分条件。<br><span class="dim-label">类比</span>如同做菜：质料=食材，形式=菜系定位，动力=烹饪技术，目的=宴客还是果腹。<br><span class="dim-label">示例</span>瓦特+博尔顿蒸汽机公司：质料(技术+管理+执行互补)、形式(工业设备公司)、动力(专利+制造)、目的(服务工业革命)。<br><span class="dim-label">反例</span>三个设计师创业：质料因同质化(无人懂财务/销售)，必然失败。'},
+{front:'斯多葛理性主义',back:'<span class="dim-label">定义</span>奥勒留主张：理性是人性延伸，遵循本性即遵循自然规律。"以出世的态度做入世的事情"——淡泊名利但履行社会责任。<br><span class="dim-label">类比</span>如同开源社区维护者——不计较个人名利，但每天认真写代码、回Issue、做Code Review。<br><span class="dim-label">示例</span>奥勒留在位19年，多数时间在边疆军营度过，夜以继日处理政务，死于外地——真正的"入世"。<br><span class="dim-label">反例</span>"躺平"——消极避世不等于出世，斯多葛强调的是积极行动+内心淡泊。'},
+{front:'自由与自发秩序',back:'<span class="dim-label">定义</span>哈耶克：自由=不被强制+不强制他人。自发秩序(渐进试错)优于人为设计(乌托邦)。发展先于平等，法律平等≠结果平等。<br><span class="dim-label">类比</span>如同开源生态vs闭源垄断——自发秩序如同Linux社区自然演化，人为设计如同计划经济。<br><span class="dim-label">示例</span>中国改革开放避免平均主义，通过发展实现经济增长，印证哈耶克"发展消除贫困"主张。<br><span class="dim-label">反例</span>北欧福利社会主义——高税收高福利，追求结果平等但牺牲了部分法律平等和个人自由。'},
+{front:'怀疑主义方法论',back:'<span class="dim-label">定义</span>塞克斯图斯：怀疑是基于逻辑的理性审视能力，反对"自我意识形态化"——将普通现象上升为教条。<br><span class="dim-label">类比</span>如同Code Review——不是否定代码价值，而是通过逻辑检查发现自相矛盾和潜在问题。<br><span class="dim-label">示例</span>盖茨退学成功：完整因果链(家境→教育→特长→哈佛→伙伴→IBM)，抽单环=谬误。<br><span class="dim-label">反例</span>"怀疑一切"——无理由的怀疑本身也是教条主义，怀疑主义反对的正是这种态度。'},
+];
+
+// MCQ: 20 questions, answers distributed {0:5, 1:5, 2:5, 3:5}
+const mcQuestions = [
+// -- Position 0: 5 questions --
+{q:'科学知识的根本特征是什么？',opts:['可证伪性——结论可通过改变条件被检验和修正','逻辑自洽性——从公理推导出必然结论','权威背书——顶级科学家的一致认可','实用性——在实践中能产生预期效果'],"answer":0,exp:'科学知识的根本特征是可证伪性。数学知识不可证伪(逻辑自洽)，宗教知识不可证伪(无法检验)。科学是方法而非固定结论。'},
+{q:'维特根斯坦认为传统哲学问题的根本根源是什么？',opts:['混淆了"语言图像"与"语言游戏"的界限','缺乏严密的数学化逻辑推理','过度依赖宗教神学体系','忽视了东方哲学的思想资源'],"answer":0,exp:'维特根斯坦后期哲学认为，哲学家混淆了"语言图像"(描述现实)和"语言游戏"(创造行动)，将生活形式的语言误当作描述现实的语言讨论，导致无解的哲学矛盾。'},
+{q:'斯多葛哲学的核心逻辑链是什么？',opts:['自然→本性→理性→法律→秩序','感知→记忆→内省→直觉→行动','怀疑→审视→验证→确信→知识','无知→学习→理解→掌握→创新'],"answer":0,exp:'斯多葛逻辑链：自然带来本性，本性带来理性，理性带来法律，法律带来秩序。这是从芝诺到西塞罗、再到罗马法一脉相承的核心思想。'},
+{q:'尼采"上帝死了"命题中"上帝"的哲学含义是什么？',opts:['传统权威、既定信仰、道德规范和社会习惯的总和','基督教《圣经》中描述的耶和华上帝','人类理性能力的终极极限','自然界不可知的终极奥秘'],"answer":0,exp:'尼采的"上帝"不是宗教意义上的神，而是传统权威、信仰、道德规范和社会习惯的总和。工业文明发展导致这些传统价值失效。与鲁迅《狂人日记》揭示旧价值崩溃异曲同工。'},
+{q:'吴军提出"生命中不重要的事"不包括哪项？',opts:['阅读和学习新知识','服装购物和高档餐饮','社交媒体和新闻资讯','太在意别人对自己的看法'],"answer":0,exp:'九类不重要之事：服装购物/高档餐饮/八卦/社交媒体/新闻资讯/太在意别人看法/过度思考/挑牌子/对明天的担心。阅读学习恰恰是重要的自我投资。'},
+// -- Position 1: 5 questions --
+{q:'塞克斯图斯怀疑主义的本质是什么？',opts:['怀疑一切权威和常识的无政府主义','逻辑审视工具，反对"自我意识形态化"','科学研究中的假设检验方法论','对一切宗教信仰的彻底否定'],"answer":1,exp:'怀疑主义本质是逻辑审视工具——通过理性思维找出结论中的自相矛盾，反对将普通现象上升为教条。同时反对无理由怀疑(因本身也是教条主义)。'},
+{q:'吴军从个人词典中删除"赛道"一词的根本原因是什么？',opts:['赛道一词已过时，不再适用于现代投资','"赌赛道"策略违背逻辑——赌不可靠、违背控制论、被实践证明失败','赛道一词在中文中有负面含义','赛道与作者"价值投资"理念冲突'],"answer":1,exp:'三大原因：①"赌"的逻辑不可靠(作者从未靠赌挣钱)；②违背控制论——多人挤赛道推高估值降低回报；③与成功实践矛盾(孙正义和作者本人都不赌赛道)。'},
+{q:'莱布尼茨充分性推理原则的核心内容是什么？',opts:['所有知识都可通过纯粹理性推理获得','任何有条件真理的所有必要条件总和构成充分条件','上帝的存在是逻辑推理的必然结论','数学公理体系是唯一可靠的真理来源'],"answer":1,exp:'核心：任何有条件真理，其所有必要条件的总和构成充分条件。该原则为追溯因果链提供了方法，但被哥德尔不完备定理揭示其自证困境。'},
+{q:'亚里士多德四因说不包括哪一项？',opts:['质料因(构成事物的材质)','效率因(投入产出比)','形式因(决定本质属性的外在形式)','目的因(事物追求的目标)'],"answer":1,exp:'四因说：质料因(材质)、形式因(本质定位)、动力因(手段/流程)、目的因(核心目标)。"效率因"不是四因之一，正确答案为B。'},
+{q:'伊壁鸠鲁认为真正的幸福需依赖哪种快乐？',opts:['动态快乐——满足即时需求的过程(如渴时饮水)','静态快乐——持久的内心满足感(如想到每天能吃饱)','感官快乐——美食、美酒等物质享受','社会快乐——他人的认可和赞美'],"answer":1,exp:'伊壁鸠鲁区分动态快乐(满足欲望的过程，暂时性)和静态快乐(持久的内心满足，稳定性)。真正幸福需依赖静态快乐。"愉悦的生活不能通过一连串的喝彩和狂欢来取得，而是需要通过清醒的思维来获得。"'},
+// -- Position 2: 5 questions --
+{q:'韦伯提出理性包含几个维度？',opts:['2个——工具理性和价值理性','3个——理论理性、实践理性、审美理性','4个——判断力、价值理性、情感理性、传统理性','5个——在四维基础上增加交往理性'],"answer":2,exp:'韦伯提出理性四维度：①判断力(利益权衡)②价值理性(道德/信仰导向)③情感理性(内心真实情感驱动)④传统理性(约定俗成)。四维度组合形成完整理性能力。'},
+{q:'哈耶克自由理论的核心定义是什么？',opts:['想做什么就做什么的绝对自由','政府完全不干预经济的自由放任','他人不强制我们的行为，同时我们也不能强制他人的行为','拥有尽可能多的选择机会和物质资源'],"answer":2,exp:'哈耶克定义：自由是"他人不强制我们的行为"，同时"我们也不能强制他人的行为"。自由不等于选择数量或资源多少——宫廷官员虽有资源但须对国王唯命是从，其自由不及自主决定行为的农民。'},
+{q:'弗洛姆提出的四种非生产性性格缺陷不包括哪一项？',opts:['接受型——被动依赖外界提供一切','剥削型——通过强力或操纵手段获取资源','逃避型——因恐惧失败而拒绝参与挑战','囤积型——过度固守过去，恐惧失去与变化'],"answer":2,exp:'弗洛姆四种缺陷：接受型(被动依赖)、剥削型(巧取豪夺)、囤积型(固守过去)、交易型(利益至上)。"逃避型"是阿德勒的人格分类，不是弗洛姆的。'},
+{q:'奥勒留《沉思录》中"本性"的独特含义是什么？',opts:['人类原始的欲望和本能冲动','社会习俗和文化传统的规范','理性是人性的延伸，遵循自然规律而行','基因决定的不可改变的行为倾向'],"answer":2,exp:'斯多葛哲学中"本性"≠天然激情与欲望，而是"理性是人性的延伸"。"为发生的事情烦恼就是使我们自己脱离本性"——本性与理性统一，与天道一致。'},
+{q:'亚里士多德四因说中形式因和质料因各自属于哪个分析维度？',opts:['质料因=目的维度，形式因=手段维度','质料因=外在维度，形式因=内在维度','质料因=内在维度(材质)，形式因=外在维度(定位)','两者都属于手段维度，目的因独立'],"answer":2,exp:'四因说两个分析维度：内在-外在维度(质料因=内在材质+形式因=外在定位)；目的-手段维度(目的因=目标+动力因=手段)。四因缺一不可，共同构成成功的充分条件。'},
+// -- Position 3: 5 questions --
+{q:'尼采"主人道德"的核心价值观基础是什么？',opts:['善与恶——基于对压迫者的怨恨反应','对与错——基于逻辑推理的客观判断','利与害——基于功利主义的计算','好与坏——基于主动的自我肯定和追求卓越'],"answer":3,exp:'主人道德以"好与坏"为基础(主动定义)，追求高贵、坚强、勇敢、自我肯定、卓越。奴隶道德以"善与恶"为基础(被动反应)，表现为犬儒主义、逆来顺受、怨恨报复。关键：不取决于社会地位，而取决于行为心态。'},
+{q:'拉姆斯菲尔德风险分类中，最危险且最难防范的风险类型是什么？',opts:['已知的已知——已掌握的知识和确定的风险','已知的未知——知道存在但不了解的领域','意识不到已知——逻辑矛盾的认知状态','未知的未知——完全未察觉的知识盲区'],"answer":3,exp:'最危险是"未知的未知"——完全未察觉的盲区，因无防范机制可能导致灭顶之灾。转化路径：无知→通识教育缩小盲区；信息受限→拓展可靠信息源；手段缺失→发展检测技术。'},
+{q:'阿德勒认为心理最健康、最具适应性的性格类型是什么？',opts:['统治型——支配欲强，通过控制他人获得满足','依赖型——缺乏主动性，习惯依赖他人安排','回避型——恐惧失败，以"不感兴趣"为借口拒绝参与','社会利益型——合作导向，热心肠、善交往、为他人考虑'],"answer":3,exp:'阿德勒四分法：统治型(支配欲强)、依赖型(缺乏主动性)、回避型(恐惧失败)、社会利益型(合作导向)。社会利益型心理最健康，形成于被理解与尊重的和谐家庭环境，是人格改变的理想目标。'},
+{q:'以下哪项正确描述了斯宾诺莎的"上帝"与传统宗教上帝的差异？',opts:['斯宾诺莎否认任何形式的上帝存在','传统上帝是可通过理性完全认知的','两者没有实质差异，只是术语不同','斯宾诺莎的上帝内在于世界，是自然规律的总集，可通过理性认知'],"answer":3,exp:'斯宾诺莎主张"内在性"(Immanence)：上帝=自然界一切事物和自然规律的总集，渗透于物质与精神世界。传统上帝是"超越性"(Transcendence)的——存在于世界之外，凡人无法理解。爱因斯坦等科学家的"上帝"信仰更接近斯宾诺莎式。'},
+{q:'吴军建议如何对待"强词夺理的自圆其说"(如末日预言家在预言失败后继续辩解)？',opts:['据理力争，用逻辑驳倒对方','完全忽视，不与这类人产生任何交集','赞同对方以维持表面和谐','保持距离观察，仅在对方行为损害自身利益时采取行动'],"answer":3,exp:'三大建议：①避免直接争辩(参考奥勒留——保持距离观察)②维护自身利益——仅在对方行为损害你时采取行动③接受认知差异——不同生活环境造就不同认知体系，改变他人几乎不可能。'},
+];
+
+// SA questions
+const saQuestions = [
+{q:'简述科学证伪方法的核心价值及其与数学知识、宗教知识的根本区别。',hint:'科学知识可证伪(通过改变条件发现局限性，推动迭代)，数学知识基于公理逻辑推导(不可证伪但逻辑自洽)，宗教知识基于信仰(不可证伪也不可证实)。证伪一次即可推动结论优化，这是科学进步的核心机制。'},
+{q:'对比韦伯理性四维度中"判断力"与"价值理性"的核心差异，并各举一例。',hint:'判断力=利益权衡(如高考目标设定需评估自身实力vs理想)；价值理性=道德/信仰导向(如曾国藩通过"敬"的自省克制私欲)。前者计算得失，后者超越得失。'},
+{q:'尼采"上帝死了"的哲学含义是什么？它与鲁迅《狂人日记》有何相似之处？',hint:'"上帝"=传统权威/信仰/道德规范的总和。工业文明发展导致传统价值失效。与鲁迅相似：均通过"狂人"形象揭示社会深层危机(旧儒释道崩溃vs基督教价值崩塌)。'},
+{q:'维特根斯坦"太初有为"的核心主张是什么？对个人行动有何启示？',hint:'行动先于语言——并非所有事物都存在"本质"可以言说。启示：做事出发点应是"人的存在本身和价值"，而非对本质的徒劳追寻。理解知识的标志是"能否运用"而非"能否背诵"。'},
+{q:'亚里士多德四因说如何应用于个人职业规划？请用四因框架分析。',hint:'质料因=自身能力/资源是否匹配目标职业；形式因=定位(专家vs管理者vs创业者)；动力因=实现路径(学历/经验/人脉)；目的因=核心诉求(金钱/影响力/兴趣)。需四因共同满足。'},
+{q:'哈耶克如何论证"法律平等"与"现实平等"不可兼得？举例说明。',hint:'追求现实平等需制定歧视性条款(如按人口比例分配高校名额)，这会破坏法律平等。正当补偿(如清北为贫困地区保留少数名额)≠改变系统规则实现平均。两者是零和博弈。'},
+{q:'斯多葛哲学"以出世态度做入世事情"的核心内涵是什么？',hint:'出世=淡泊财富地位等物质追求，看淡痛苦快乐等情感波动；入世=履行社会义务，为大众谋幸福，埋头苦干。典型：奥勒留身为皇帝却简朴生活、夜以继日工作；谢安隐居山林却出山指挥淝水之战。'},
+{q:'弗洛姆"创造性人格"与四种缺陷性格的本质区别是什么？',hint:'创造性人格=做人做事有建设性(对社会有益)；四种缺陷=接受型(被动依赖)、剥削型(巧取豪夺)、囤积型(固守过去)、交易型(利益至上)。本质区别：建设性vs自我消耗/对外破坏。'},
+{q:'吴军为什么说"通识教育是将未知的未知转化为已知的未知的关键工具"？',hint:'通识教育提供跨学科常识，让个人意识到自身知识盲区的存在(意识到未知)。无知是未知未知的第一根源，通识教育直接缩小无知范围。一旦"知道不知道什么"，就可以针对性学习。'},
+{q:'阿德勒认为自卑感与优越感如何共同驱动个人发展？健康自卑与自卑情结的区别是什么？',hint:'自卑感驱使人摆脱现状，优越感驱使人追求更高目标，二者构成发展的基本动力。健康自卑=正常心理反应(促进努力)，自卑情结=因持续挫折逃避问题、限制活动范围(成为障碍)。关键在补偿方向是否正确。'},
+];
+
+// ============ RENDER FUNCTIONS ============
+function renderConceptGrid(){
+document.getElementById('conceptGrid').innerHTML = concepts.map(c=>`
+<div class="concept-card${c.mks?' mks':''}">
+<h4>${c.name}</h4>
+<p>${c.desc}</p>
+</div>`).join('');
+}
+
+function renderMKSGrid(){
+document.getElementById('mksGrid').innerHTML = concepts.filter(c=>c.mks).map(c=>`
+<div class="concept-card mks">
+<h4>${c.name}</h4>
+<p>${c.desc}</p>
+<span class="badge badge-mks">骨架概念</span>
+</div>`).join('');
+}
+
+function renderBoundaryTable(){
+document.querySelector('#boundaryTable tbody').innerHTML = boundaryKnowledge.map(b=>`
+<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td><td>知道存在即可，不需要精通</td></tr>
+`).join('');
+}
+
+function renderLearningPath(){
+document.getElementById('learningPath').innerHTML = learningPath.map((l,i)=>`
+<div class="card" style="flex:1;min-width:140px;text-align:center;border-top:3px solid var(--accent)">
+<div style="font-weight:700;color:var(--accent);margin-bottom:4px">阶段${l.phase}: ${l.title}</div>
+<div style="font-size:.78rem;color:var(--text2)">${l.desc}</div>
+</div>`).join('');
+}
+
+function renderSVG(){
+var s='<svg width="1953pt" height="272pt" viewBox="0.00 0.00 1952.50 272.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 268)"><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-268 1948.5,-268 1948.5,4 -4,4"/><g id="node1" class="node"><title>root</title><path fill="#c0392b" stroke="black" stroke-width="2" d="M1036,-264C1036,-264 937,-264 937,-264 931,-264 925,-258 925,-252 925,-252 925,-240 925,-240 925,-234 931,-228 937,-228 937,-228 1036,-228 1036,-228 1042,-228 1048,-234 1048,-240 1048,-240 1048,-252 1048,-252 1048,-258 1042,-264 1036,-264"/><text text-anchor="middle" x="986.5" y="-249.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">理性追问 × 人生智慧</text><text text-anchor="middle" x="986.5" y="-237.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">哲学如何照亮生活</text></g>';
+s+='<g id="node2" class="node"><title>t1_cognition</title><path fill="#d4a574" stroke="black" d="M1615.5,-191C1615.5,-191 1521.5,-191 1521.5,-191 1515.5,-191 1509.5,-185 1509.5,-179 1509.5,-179 1509.5,-167 1509.5,-167 1509.5,-161 1515.5,-155 1521.5,-155 1521.5,-155 1615.5,-155 1615.5,-155 1621.5,-155 1627.5,-161 1627.5,-167 1627.5,-167 1627.5,-179 1627.5,-179 1627.5,-185 1621.5,-191 1615.5,-191"/><text text-anchor="middle" x="1568.5" y="-176.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">科学认知论</text><text text-anchor="middle" x="1568.5" y="-164.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">证伪·逻辑·因果·怀疑</text></g>';
+s+='<g id="node3" class="node"><title>t1_value</title><path fill="#d4a574" stroke="black" d="M485.5,-191C485.5,-191 361.5,-191 361.5,-191 355.5,-191 349.5,-185 349.5,-179 349.5,-179 349.5,-167 349.5,-167 349.5,-161 355.5,-155 361.5,-155 361.5,-155 485.5,-155 485.5,-155 491.5,-155 497.5,-161 497.5,-167 497.5,-167 497.5,-179 497.5,-179 497.5,-185 491.5,-191 485.5,-191"/><text text-anchor="middle" x="423.5" y="-176.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">价值伦理学</text><text text-anchor="middle" x="423.5" y="-164.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">主人道德·斯多葛·人文主义</text></g>';
+s+='<g id="node4" class="node"><title>t1_language</title><path fill="#d4a574" stroke="black" d="M988.5,-191C988.5,-191 890.5,-191 890.5,-191 884.5,-191 878.5,-185 878.5,-179 878.5,-179 878.5,-167 878.5,-167 878.5,-161 884.5,-155 890.5,-155 890.5,-155 988.5,-155 988.5,-155 994.5,-155 1000.5,-161 1000.5,-167 1000.5,-167 1000.5,-179 1000.5,-179 1000.5,-185 994.5,-191 988.5,-191"/><text text-anchor="middle" x="939.5" y="-176.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">语言与思维</text><text text-anchor="middle" x="939.5" y="-164.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">维特根斯坦·语言游戏</text></g>';
+s+='<g id="node5" class="node"><title>t1_liberty</title><path fill="#d4a574" stroke="black" d="M1156,-191C1156,-191 1055,-191 1055,-191 1049,-191 1043,-185 1043,-179 1043,-179 1043,-167 1043,-167 1043,-161 1049,-155 1055,-155 1055,-155 1156,-155 1156,-155 1162,-155 1168,-161 1168,-167 1168,-167 1168,-179 1168,-179 1168,-185 1162,-191 1156,-191"/><text text-anchor="middle" x="1105.5" y="-176.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">自由与秩序</text><text text-anchor="middle" x="1105.5" y="-164.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">哈耶克·自发秩序·法治</text></g>';
+// Edges and remaining nodes
+s+='<g id="edge1" class="edge"><title>root->t1_cognition</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1048.23,-237.47C1157.56,-224.13 1384.48,-196.45 1499.08,-182.47"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1499.64,-185.93 1509.14,-181.24 1498.79,-178.98 1499.64,-185.93"/></g>';
+s+='<g id="edge2" class="edge"><title>root->t1_value</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M924.91,-237.23C823.68,-224.47 621.98,-199.03 507.65,-184.61"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="507.91,-181.12 497.55,-183.34 507.03,-188.06 507.91,-181.12"/></g>';
+s+='<g id="edge3" class="edge"><title>root->t1_language</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M975.12,-227.81C969.52,-219.35 962.66,-208.98 956.45,-199.61"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="959.21,-197.44 950.77,-191.03 953.37,-201.3 959.21,-197.44"/></g>';
+s+='<g id="edge4" class="edge"><title>root->t1_liberty</title><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1015,-227.99C1030.93,-218.49 1050.97,-206.54 1068.14,-196.29"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1070.02,-199.24 1076.82,-191.11 1066.44,-193.23 1070.02,-199.24"/></g>';
+// Tier 2 nodes: 科学认知论 → t2 nodes
+s+='<g id="node6" class="node"><title>t2_falsify</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1464,-109C1464,-109 1381,-109 1381,-109 1375,-109 1369,-103 1369,-97 1369,-97 1369,-85 1369,-85 1369,-79 1375,-73 1381,-73 1381,-73 1464,-73 1464,-73 1470,-73 1476,-79 1476,-85 1476,-85 1476,-97 1476,-97 1476,-103 1470,-109 1464,-109"/><text text-anchor="middle" x="1422.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">证伪主义</text><text text-anchor="middle" x="1422.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">知识的可检验边界</text></g>';
+s+='<g id="node7" class="node"><title>t2_logic</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1630.5,-109C1630.5,-109 1506.5,-109 1506.5,-109 1500.5,-109 1494.5,-103 1494.5,-97 1494.5,-97 1494.5,-85 1494.5,-85 1494.5,-79 1500.5,-73 1506.5,-73 1506.5,-73 1630.5,-73 1630.5,-73 1636.5,-73 1642.5,-79 1642.5,-85 1642.5,-85 1642.5,-97 1642.5,-97 1642.5,-103 1636.5,-109 1630.5,-109"/><text text-anchor="middle" x="1568.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">逻辑谬误辨识</text><text text-anchor="middle" x="1568.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">假两难·诉诸暴力·诉诸权威</text></g>';
+s+='<g id="node8" class="node"><title>t2_cause</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1770.5,-109C1770.5,-109 1672.5,-109 1672.5,-109 1666.5,-109 1660.5,-103 1660.5,-97 1660.5,-97 1660.5,-85 1660.5,-85 1660.5,-79 1666.5,-73 1672.5,-73 1672.5,-73 1770.5,-73 1770.5,-73 1776.5,-73 1782.5,-79 1782.5,-85 1782.5,-85 1782.5,-97 1782.5,-97 1782.5,-103 1776.5,-109 1770.5,-109"/><text text-anchor="middle" x="1721.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">因果关系分析</text><text text-anchor="middle" x="1721.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">概率方法·充分性推理</text></g>';
+s+='<g id="node9" class="node"><title>t2_skeptic</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1932.5,-109C1932.5,-109 1812.5,-109 1812.5,-109 1806.5,-109 1800.5,-103 1800.5,-97 1800.5,-97 1800.5,-85 1800.5,-85 1800.5,-79 1806.5,-73 1812.5,-73 1812.5,-73 1932.5,-73 1932.5,-73 1938.5,-73 1944.5,-79 1944.5,-85 1944.5,-85 1944.5,-97 1944.5,-97 1944.5,-103 1938.5,-109 1932.5,-109"/><text text-anchor="middle" x="1872.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">怀疑主义</text><text text-anchor="middle" x="1872.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">塞克斯图斯·反意识形态化</text></g>';
+// Tier 2: value ethics
+s+='<g id="node10" class="node"><title>t2_nietzsche</title><path fill="#fffaf2" stroke="#5a3e3e" d="M491,-109C491,-109 356,-109 356,-109 350,-109 344,-103 344,-97 344,-97 344,-85 344,-85 344,-79 350,-73 356,-73 356,-73 491,-73 491,-73 497,-73 503,-79 503,-85 503,-85 503,-97 503,-97 503,-103 497,-109 491,-109"/><text text-anchor="middle" x="423.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">尼采超人哲学</text><text text-anchor="middle" x="423.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">主人道德·上帝死了·重估价值</text></g>';
+s+='<g id="node11" class="node"><title>t2_stoic</title><path fill="#fffaf2" stroke="#5a3e3e" d="M313.5,-109C313.5,-109 189.5,-109 189.5,-109 183.5,-109 177.5,-103 177.5,-97 177.5,-97 177.5,-85 177.5,-85 177.5,-79 183.5,-73 189.5,-73 189.5,-73 313.5,-73 313.5,-73 319.5,-73 325.5,-79 325.5,-85 325.5,-85 325.5,-97 325.5,-97 325.5,-103 319.5,-109 313.5,-109"/><text text-anchor="middle" x="251.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">斯多葛哲学</text><text text-anchor="middle" x="251.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">奥勒留·理性本性·出世入世</text></g>';
+s+='<g id="node12" class="node"><title>t2_humanism</title><path fill="#fffaf2" stroke="#5a3e3e" d="M147,-109C147,-109 12,-109 12,-109 6,-109 0,-103 0,-97 0,-97 0,-85 0,-85 0,-79 6,-73 12,-73 12,-73 147,-73 147,-73 153,-73 159,-79 159,-85 159,-85 159,-97 159,-97 159,-103 153,-109 147,-109"/><text text-anchor="middle" x="79.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">人文主义</text><text text-anchor="middle" x="79.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">个体尊严·理性宽容·东西融合</text></g>';
+s+='<g id="node13" class="node"><title>t2_rational</title><path fill="#fffaf2" stroke="#5a3e3e" d="M638,-109C638,-109 533,-109 533,-109 527,-109 521,-103 521,-97 521,-97 521,-85 521,-85 521,-79 527,-73 533,-73 533,-73 638,-73 638,-73 644,-73 650,-79 650,-85 650,-85 650,-97 650,-97 650,-103 644,-109 638,-109"/><text text-anchor="middle" x="585.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">韦伯理性四维</text><text text-anchor="middle" x="585.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">判断力·价值·情感·传统</text></g>';
+// Tier 2: language
+s+='<g id="node14" class="node"><title>t2_witt</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1007,-109C1007,-109 872,-109 872,-109 866,-109 860,-103 860,-97 860,-97 860,-85 860,-85 860,-79 866,-73 872,-73 872,-73 1007,-73 1007,-73 1013,-73 1019,-79 1019,-85 1019,-85 1019,-97 1019,-97 1019,-103 1013,-109 1007,-109"/><text text-anchor="middle" x="939.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">维特根斯坦语言哲学</text><text text-anchor="middle" x="939.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">语言图像·语言游戏·太初有为</text></g>';
+s+='<g id="node15" class="node"><title>t2_aristotle</title><path fill="#fffaf2" stroke="#5a3e3e" d="M830,-109C830,-109 717,-109 717,-109 711,-109 705,-103 705,-97 705,-97 705,-85 705,-85 705,-79 711,-73 717,-73 717,-73 830,-73 830,-73 836,-73 842,-79 842,-85 842,-85 842,-97 842,-97 842,-103 836,-109 830,-109"/><text text-anchor="middle" x="773.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">亚里士多德逻辑学</text><text text-anchor="middle" x="773.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">三段论·四因说·经验主义</text></g>';
+// Tier 2: liberty
+s+='<g id="node16" class="node"><title>t2_hayek</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1339,-109C1339,-109 1204,-109 1204,-109 1198,-109 1192,-103 1192,-97 1192,-97 1192,-85 1192,-85 1192,-79 1198,-73 1204,-73 1204,-73 1339,-73 1339,-73 1345,-73 1351,-79 1351,-85 1351,-85 1351,-97 1351,-97 1351,-103 1345,-109 1339,-109"/><text text-anchor="middle" x="1271.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">哈耶克自由论</text><text text-anchor="middle" x="1271.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">自发秩序·法律平等·私有财产</text></g>';
+s+='<g id="node17" class="node"><title>t2_spinoza</title><path fill="#fffaf2" stroke="#5a3e3e" d="M1162,-109C1162,-109 1049,-109 1049,-109 1043,-109 1037,-103 1037,-97 1037,-97 1037,-85 1037,-85 1037,-79 1043,-73 1049,-73 1049,-73 1162,-73 1162,-73 1168,-73 1174,-79 1174,-85 1174,-85 1174,-97 1174,-97 1174,-103 1168,-109 1162,-109"/><text text-anchor="middle" x="1105.5" y="-94.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">斯宾诺莎理性上帝</text><text text-anchor="middle" x="1105.5" y="-82.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">内在性·自然规律·一元论</text></g>';
+// Application layer
+s+='<g id="node18" class="node"><title>t3_know</title><polygon fill="#fffaf2" stroke="#8b7355" points="953.5,-36 857.5,-36 857.5,0 959.5,0 959.5,-30 953.5,-36"/><polyline fill="none" stroke="#8b7355" points="953.5,-36 953.5,-30"/><polyline fill="none" stroke="#8b7355" points="959.5,-30 953.5,-30"/><text text-anchor="middle" x="908.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">知识→智慧→能力</text><text text-anchor="middle" x="908.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">三维转化模型</text></g>';
+s+='<g id="node19" class="node"><title>t3_risk</title><polygon fill="#fffaf2" stroke="#8b7355" points="1784.5,-36 1652.5,-36 1652.5,0 1790.5,0 1790.5,-30 1784.5,-36"/><polyline fill="none" stroke="#8b7355" points="1784.5,-36 1784.5,-30"/><polyline fill="none" stroke="#8b7355" points="1790.5,-30 1784.5,-30"/><text text-anchor="middle" x="1721.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">风险认知管理</text><text text-anchor="middle" x="1721.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">已知未知→未知未知转化</text></g>';
+s+='<g id="node20" class="node"><title>t3_eq</title><polygon fill="#fffaf2" stroke="#8b7355" points="297,-36 200,-36 200,0 303,0 303,-30 297,-36"/><polyline fill="none" stroke="#8b7355" points="297,-36 297,-30"/><polyline fill="none" stroke="#8b7355" points="303,-30 297,-30"/><text text-anchor="middle" x="251.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">情商实践</text><text text-anchor="middle" x="251.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">同理心·自知·专注</text></g>';
+s+='<g id="node21" class="node"><title>t3_adler</title><polygon fill="#fffaf2" stroke="#8b7355" points="478.5,-36 362.5,-36 362.5,0 484.5,0 484.5,-30 478.5,-36"/><polyline fill="none" stroke="#8b7355" points="478.5,-36 478.5,-30"/><polyline fill="none" stroke="#8b7355" points="484.5,-30 478.5,-30"/><text text-anchor="middle" x="423.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">超越自卑</text><text text-anchor="middle" x="423.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">补偿机制·社会利益型</text></g>';
+s+='<g id="node22" class="node"><title>t3_fromm</title><polygon fill="#fffaf2" stroke="#8b7355" points="137,-36 16,-36 16,0 143,0 143,-30 137,-36"/><polyline fill="none" stroke="#8b7355" points="137,-36 137,-30"/><polyline fill="none" stroke="#8b7355" points="143,-30 137,-30"/><text text-anchor="middle" x="79.5" y="-21.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">创造性人格</text><text text-anchor="middle" x="79.5" y="-9.2" font-family="Noto Sans SC" font-size="11.00" fill="#3d2f2f">弗洛姆四缺陷→建设性</text></g>';
+s+='</g></svg>';
+document.getElementById('svgContainer').innerHTML = s;
+}
+
+// ============ FLIP CARDS ============
+var flipIdx = 0;
+var learnedCards = LS.learnedCards || [];
+function renderFlipCard(){
+var c = flipCards[flipIdx];
+document.getElementById('flipFront').textContent = c.front;
+document.getElementById('flipBack').innerHTML = c.back;
+document.getElementById('flipProgress').textContent = (flipIdx+1)+'/'+flipCards.length;
+if(learnedCards.indexOf(flipIdx)>=0){
+document.getElementById('learnedBtn').classList.add('learned');
+document.getElementById('learnedBtn').textContent = '✓ 已学习';
+} else {
+document.getElementById('learnedBtn').classList.remove('learned');
+document.getElementById('learnedBtn').textContent = '✓ 已学习';
+}
+}
+function flipPrev(){ flipIdx = (flipIdx-1+flipCards.length)%flipCards.length; resetFlip(); renderFlipCard(); }
+function flipNext(){ flipIdx = (flipIdx+1)%flipCards.length; resetFlip(); renderFlipCard(); }
+function resetFlip(){ document.getElementById('flipInner').classList.remove('flipped'); }
+function markLearned(){
+if(learnedCards.indexOf(flipIdx)<0) learnedCards.push(flipIdx);
+else learnedCards = learnedCards.filter(function(i){return i!==flipIdx;});
+LS.learnedCards = learnedCards; saveLS();
+renderFlipCard(); updateProgress();
+}
+
+// ============ MCQ & SAQ ============
+var mcqAnswered = LS.mcqAnswered || {};
+var saqAnswered = LS.saqAnswered || {};
+function renderMCQ(){
+var h='';
+mcQuestions.forEach(function(q,i){
+h+='<div class="quiz-card" id="mcq'+i+'"><span class="q-tag q-mc">选择题 #'+(i+1)+'</span><div class="q-text">'+q.q+'</div>';
+q.opts.forEach(function(o,j){
+h+='<div class="q-option" onclick="selectMC('+i+','+j+',this)" id="mcq'+i+'o'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+});
+h+='<div class="q-feedback" id="mcq'+i+'fb"></div></div>';
+});
+document.getElementById('mcqContainer').innerHTML = h;
+// Restore answered
+Object.keys(mcqAnswered).forEach(function(k){
+var a = mcqAnswered[k];
+var q = mcQuestions[k];
+var fb = document.getElementById('mcq'+k+'fb');
+fb.className = 'q-feedback show '+(a==q["answer"]?'right':'wrong-msg');
+fb.textContent = q.exp;
+var opts = document.querySelectorAll('#mcq'+k+' .q-option');
+opts.forEach(function(o,oi){
+o.style.pointerEvents = 'none';
+if(oi==q["answer"]) o.classList.add('correct');
+if(oi==a && a!=q["answer"]) o.classList.add('wrong');
+});
+});
+}
+function selectMC(qi,oi,el){
+if(mcqAnswered[qi]!==undefined) return;
+mcqAnswered[qi] = oi;
+var q = mcQuestions[qi];
+var fb = document.getElementById('mcq'+qi+'fb');
+fb.className = 'q-feedback show '+(oi==q["answer"]?'right':'wrong-msg');
+fb.textContent = q.exp;
+var opts = document.querySelectorAll('#mcq'+qi+' .q-option');
+opts.forEach(function(o,i){
+o.style.pointerEvents = 'none';
+if(i==q["answer"]) o.classList.add('correct');
+if(i==oi && oi!=q["answer"]) o.classList.add('wrong');
+});
+LS.mcqAnswered = mcqAnswered;
+// Track errors
+if(oi!=q["answer"]){
+if(!LS.errors) LS.errors = [];
+if(LS.errors.indexOf(qi)<0) LS.errors.push(qi);
+}
+saveLS(); updateProgress();
+}
+function renderSAQ(){
+var h='';
+saQuestions.forEach(function(q,i){
+h+='<div class="quiz-card"><span class="q-tag q-sa">简答题 #'+(i+1)+'</span><div class="q-text">'+q.q+'</div>';
+h+='<textarea class="sa-input" id="saq'+i+'" placeholder="输入你的答案...">'+(saqAnswered[i]||'')+'</textarea>';
+h+='<button class="btn btn-outline btn-sm" onclick="checkSA('+i+')" style="margin-top:6px">对比参考答案</button>';
+h+='<div class="sa-reveal" id="saq'+i+'r">'+q.hint+'</div></div>';
+});
+document.getElementById('saqContainer').innerHTML = h;
+}
+function checkSA(i){
+document.getElementById('saq'+i+'r').classList.toggle('show');
+saqAnswered[i] = document.getElementById('saq'+i).value;
+LS.saqAnswered = saqAnswered; saveLS(); updateProgress();
+}
+
+// ============ EXAM ============
+var examTimerId = null;
+var examTimeLeft = 900;
+var examData = [];
+function startExam(){
+// Pick 7 MC + 3 SA randomly
+var mcIdx = [];
+while(mcIdx.length<7){ var r=Math.floor(Math.random()*mcQuestions.length); if(mcIdx.indexOf(r)<0) mcIdx.push(r); }
+var saIdx = [];
+while(saIdx.length<3){ var r=Math.floor(Math.random()*saQuestions.length); if(saIdx.indexOf(r)<0) saIdx.push(r); }
+examData = {mc:mcIdx, sa:saIdx, answers:{}, startTime:Date.now()};
+examTimeLeft = 900;
+document.getElementById('examStartBtn').style.display = 'none';
+document.getElementById('examResult').style.display = 'none';
+var area = document.getElementById('examArea');
+var h = '';
+mcIdx.forEach(function(qi,i){
+var q = mcQuestions[qi];
+h+='<div class="quiz-card"><span class="q-tag q-mc">选择 #'+(i+1)+'</span><div class="q-text">'+q.q+'</div>';
+q.opts.forEach(function(o,j){
+h+='<div class="q-option" onclick="examSelectMC('+qi+','+j+',this)" id="exmco'+qi+'o'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+});
+h+='</div>';
+});
+saIdx.forEach(function(qi,i){
+h+='<div class="quiz-card"><span class="q-tag q-sa">简答 #'+(i+1)+'</span><div class="q-text">'+saQuestions[qi].q+'</div>';
+h+='<textarea class="sa-input" id="exsa'+qi+'" placeholder="输入你的答案..."></textarea></div>';
+});
+h+='<button class="btn" onclick="submitExam()" style="margin-top:16px">提交答卷</button>';
+area.innerHTML = h;
+updateExamTimer();
+examTimerId = setInterval(function(){
+examTimeLeft--;
+updateExamTimer();
+if(examTimeLeft<=0){ submitExam(); }
+},1000);
+}
+function updateExamTimer(){
+var m = Math.floor(examTimeLeft/60);
+var s = examTimeLeft%60;
+var el = document.getElementById('examTimer');
+el.textContent = m+':'+(s<10?'0':'')+s;
+if(examTimeLeft<120) el.classList.add('warning');
+else el.classList.remove('warning');
+}
+function examSelectMC(qi,oi,el){
+examData.answers['mc_'+qi] = oi;
+var opts = document.querySelectorAll('#exmco'+qi+'o0,#exmco'+qi+'o1,#exmco'+qi+'o2,#exmco'+qi+'o3');
+opts.forEach(function(o){ o.classList.remove('selected'); });
+el.classList.add('selected');
+}
+function submitExam(){
+clearInterval(examTimerId);
+var score = 0, total = 7, results = [];
+examData.mc.forEach(function(qi){
+var a = examData.answers['mc_'+qi];
+var q = mcQuestions[qi];
+if(a === q["answer"]) score++;
+results.push({q:q.q, correct:a===q["answer"], exp:q.exp, userAns:a!==undefined?'ABCD'[a]:'未作答', correctAns:'ABCD'[q["answer"]]});
+});
+// Grade SA (lenient: just check if answered)
+examData.sa.forEach(function(qi){
+var a = document.getElementById('exsa'+qi);
+if(a && a.value.trim().length > 10) score += 1;
+});
+var totalSA = 3;
+var res = document.getElementById('examResult');
+res.style.display = 'block';
+var pct = Math.round(score/(total+totalSA)*100);
+var level = pct>=80?'优秀':pct>=60?'良好':pct>=40?'及格':'需加强';
+res.innerHTML = '<h2 style="text-align:center;color:var(--accent)">考试得分: '+score+'/'+(total+totalSA)+' ('+pct+'%)</h2>';
+res.innerHTML += '<p style="text-align:center;font-size:1.1rem">评级: <strong>'+level+'</strong></p>';
+res.innerHTML += '<h3 style="margin-top:16px">选择题详情</h3>';
+results.forEach(function(r,i){
+res.innerHTML += '<div class="quiz-card"><div class="q-text">'+(i+1)+'. '+r.q+'</div>';
+res.innerHTML += '<p style="font-size:.82rem">你的答案: <span style="color:'+(r.correct?'#2e7d32':'var(--accent)')+'">'+r.userAns+'</span> | 正确答案: <span style="color:#2e7d32">'+r.correctAns+'</span></p>';
+if(!r.correct) res.innerHTML += '<p style="font-size:.8rem;color:var(--text2)">'+r.exp+'</p>';
+res.innerHTML += '</div>';
+});
+// Store exam record
+if(!LS.examHistory) LS.examHistory = [];
+LS.examHistory.push({score:score,total:total+totalSA,date:new Date().toLocaleDateString()});
+saveLS();
+}
+
+// ============ REVIEW ============
+function renderStats(){
+var learned = (learnedCards||[]).length;
+var mcqDone = Object.keys(mcqAnswered||{}).length;
+var saqDone = Object.keys(saqAnswered||{}).filter(function(k){return saqAnswered[k]&&saqAnswered[k].trim().length>0;}).length;
+var errors = (LS.errors||[]).length;
+var exams = (LS.examHistory||[]).length;
+document.getElementById('statsGrid').innerHTML = [
+{num:learned+'/10',lbl:'已学概念'},
+{num:mcqDone+'/20',lbl:'选择题完成'},
+{num:saqDone+'/10',lbl:'简答题完成'},
+{num:errors,lbl:'错题数量'},
+{num:exams,lbl:'考试次数'}
+].map(function(s){return '<div class="stat-card"><div class="num">'+s.num+'</div><div class="lbl">'+s.lbl+'</div></div>';}).join('');
+
+// Error book
+var errHtml = '';
+if(LS.errors && LS.errors.length>0){
+LS.errors.forEach(function(qi){
+var q = mcQuestions[qi];
+errHtml += '<div class="quiz-card"><span class="q-tag q-mc">错题 #'+(qi+1)+'</span><div class="q-text">'+q.q+'</div>';
+errHtml += '<p style="font-size:.82rem;color:#2e7d32">正确答案: '+'ABCD'[q["answer"]]+'. '+q.opts[q["answer"]]+'</p>';
+errHtml += '<p style="font-size:.8rem;color:var(--text2)">'+q.exp+'</p>';
+errHtml += '<button class="btn btn-sm btn-outline" onclick="retryError('+qi+')">重做此题</button></div>';
+});
+document.getElementById('errorBook').innerHTML = errHtml;
+document.getElementById('emptyError').style.display = 'none';
+} else {
+document.getElementById('errorBook').innerHTML = '';
+document.getElementById('emptyError').style.display = 'block';
+}
+
+// Weak concepts
+var weakHtml = '<p style="color:var(--text2);font-size:.85rem">基于错题分析，以下概念需要加强：</p>';
+var weakSet = {};
+if(LS.errors){
+LS.errors.forEach(function(qi){
+var q = mcQuestions[qi];
+// Map to concept based on question index
+var cIdx = Math.floor(qi/2);
+if(cIdx<concepts.length) weakSet[cIdx] = (weakSet[cIdx]||0)+1;
+});
+}
+var weakKeys = Object.keys(weakSet);
+if(weakKeys.length>0){
+weakKeys.forEach(function(k){
+weakHtml += '<div class="concept-card"><h4>'+concepts[k].name+'</h4><p>错题数: '+weakSet[k]+' | '+concepts[k].desc.substring(0,80)+'...</p></div>';
+});
+} else {
+weakHtml += '<p style="color:var(--text2);font-size:.85rem">暂无薄弱概念，继续保持！</p>';
+}
+document.getElementById('weakConcepts').innerHTML = weakHtml;
+}
+function retryError(qi){
+// Remove from errors and allow re-answer
+LS.errors = (LS.errors||[]).filter(function(e){return e!==qi;});
+delete mcqAnswered[qi];
+LS.mcqAnswered = mcqAnswered;
+saveLS();
+renderMCQ(); renderStats(); updateProgress();
+switchTab(2);
+}
+function resetProgress(){
+if(confirm('确定要重置全部学习进度吗？此操作不可恢复。')){
+LS = {}; learnedCards = []; mcqAnswered = {}; saqAnswered = {};
+saveLS(); updateProgress();
+renderMCQ(); renderSAQ(); renderStats();
+renderFlipCard();
+switchTab(0);
+}
+}
+
+// ============ MINDMAP ============
+function renderMindmap(){
+document.getElementById('treeContainer').innerHTML = `
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleTree(this)">哲学与思想——最小知识集</div>
+<div class="tree-children show">
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleTree(this)">一、科学认知论</div>
+<div class="tree-children">
+<div class="tree-node"><div class="tree-leaf">1.1 证伪主义——知识的可检验边界</div></div>
+<div class="tree-node"><div class="tree-leaf">1.2 知识三分法——科学/数学/宗教</div></div>
+<div class="tree-node"><div class="tree-leaf">1.3 因果关系分析——概率方法与充分性推理</div></div>
+<div class="tree-node"><div class="tree-leaf">1.4 逻辑谬误——假两难/诉诸暴力/诉诸怜悯/片面辩护</div></div>
+<div class="tree-node"><div class="tree-leaf">1.5 怀疑主义——反意识形态化的逻辑工具</div></div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleTree(this)">二、价值伦理学</div>
+<div class="tree-children">
+<div class="tree-node"><div class="tree-leaf">2.1 韦伯理性四维度——判断力/价值/情感/传统</div></div>
+<div class="tree-node"><div class="tree-leaf">2.2 尼采超人哲学——主人道德/上帝死了/重估价值</div></div>
+<div class="tree-node"><div class="tree-leaf">2.3 斯多葛哲学——理性本性/出世入世/自然法</div></div>
+<div class="tree-node"><div class="tree-leaf">2.4 人文主义——个体尊严/理性宽容/身心统一</div></div>
+<div class="tree-node"><div class="tree-leaf">2.5 伊壁鸠鲁——动态快乐vs静态快乐</div></div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleTree(this)">三、语言与思维</div>
+<div class="tree-children">
+<div class="tree-node"><div class="tree-leaf">3.1 维特根斯坦——语言图像vs语言游戏</div></div>
+<div class="tree-node"><div class="tree-leaf">3.2 太初有为——行动先于语言</div></div>
+<div class="tree-node"><div class="tree-leaf">3.3 亚里士多德逻辑学——三段论与有效论证</div></div>
+<div class="tree-node"><div class="tree-leaf">3.4 四因说——质料/形式/动力/目的</div></div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleTree(this)">四、自由与秩序</div>
+<div class="tree-children">
+<div class="tree-node"><div class="tree-leaf">4.1 哈耶克——自发秩序/法律平等/私有财产</div></div>
+<div class="tree-node"><div class="tree-leaf">4.2 斯宾诺莎——内在性上帝/自然规律/一元论</div></div>
+<div class="tree-node"><div class="tree-leaf">4.3 莱布尼茨——充分性推理/哥德尔局限</div></div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleTree(this)">五、实践应用层</div>
+<div class="tree-children">
+<div class="tree-node"><div class="tree-leaf">5.1 知识→智慧→能力三维转化</div></div>
+<div class="tree-node"><div class="tree-leaf">5.2 风险认知——未知未知→已知未知</div></div>
+<div class="tree-node"><div class="tree-leaf">5.3 情商实践——同理心/自知/专注</div></div>
+<div class="tree-node"><div class="tree-leaf">5.4 超越自卑——补偿机制/社会利益型</div></div>
+<div class="tree-node"><div class="tree-leaf">5.5 创造性人格——弗洛姆四缺陷→建设性</div></div>
+</div>
+</div>
+</div>
+</div>`;
+}
+function toggleTree(el){
+el.classList.toggle('open');
+var children = el.nextElementSibling;
+if(children && children.classList.contains('tree-children')){
+children.classList.toggle('show');
+}
+}
+
+// ============ SOCRATIC ============
+function renderSocratic(){
+var items = [
+{q:'为什么"知识就是力量"却不足以过好这一生？',a:'培根的名言只说了知识的力量，但未触及智慧的维度。知识是"术"(技能)，智慧是"道"(规律)。一个人可能精通投资理论(知识)，但缺乏风险控制与财富观(智慧)，依然会在市场中迷失。元智慧的作用是将知识转化为在未知世界中的生产力。追问：你拥有的知识中，哪些停留在了"知道"层面，哪些真正转化为了"智慧"？'},
+{q:'尼采说"上帝死了"，那我们靠什么活下去？',a:'尼采的"上帝"不是宗教意义上的神，而是传统权威、信仰和道德规范的总和。当这些失效后，尼采提出三条路：①意识到真相(传统价值是人为构建的)②重估一切价值(打破对绝对对错的执念)③积极的虚无主义(自己赋予生活意义)。核心是培养"主人道德"——不依赖外部权威，从自身出发定义什么是有价值的生活。你再追问一层：你现在追求的"成功"标准，是主人道德还是奴隶道德？'},
+{q:'维特根斯坦为什么说"语言的极限就是世界的极限"？',a:'语言是思维的媒介。如果某个想法无法用语言清晰表达，它就无法被他人理解，甚至无法被自己清晰思考。这不像"心里明白说不出来"——真正"心里明白"的东西一定能说出来。维特根斯坦区分了"可说的"(可用语言描述的)和"不可说的"(只能"显示"的)，后者包括伦理、美学、宗教体验。行动层面：与其争论"爱是什么"，不如去爱；与其讨论"正义的定义"，不如做正义的事。追问：你最近一次"说不清楚但感受到了"是什么？'},
+{q:'亚里士多德四因说：为什么单一原因不足以解释成功？',a:'成功至少需要四因同时满足：质料因(你有什么资源/能力)、形式因(你定位成什么角色)、动力因(你用什么方法/路径)、目的因(你的终极目标是什么)。多数人只关注动力因(怎么做的)，忽略了自己是否适合(质料因)以及到底想要什么(目的因)。三个设计师合伙创业——质料因同质化(都只会设计)，即使动力因再强也难成功。追问：用四因说审视你当前最重要的一个目标，哪一因最薄弱？'},
+{q:'斯多葛哲学"出世态度入世事"在今天如何实践？',a:'核心公式：淡泊名利(出世)+埋头苦干(入世)。不是"躺平"——奥勒留身为皇帝夜以继日工作到死在军营；也不是"内卷"——他同时看淡财富、地位和他人评价。现代实践：认真工作创造价值(入世)，但不让职级、KPI、同事评价定义你的自我价值(出世)。追问：你最近因为什么事情焦虑？这件事在你的"力量范围之内"还是"之外"？'},
+{q:'哈耶克为什么反对"结果平等"？',a:'哈耶克认为法律平等(人人受同样规则约束)和现实平等(人人得到同样结果)不可兼得。追求结果平等需要制定歧视性法律(如按种族/地区比例分配资源)。发展不均衡是进步的本质——新知识/机会先在小范围诞生，再向多数人传递。但这不意味着不帮助弱势群体：基于博爱的补偿(如为贫困地区保留少数名额)≠改变系统规则实现平均。追问：你支持"机会平等"还是"结果平等"？二者在什么情况下冲突？'}
+];
+document.getElementById('socraticContainer').innerHTML = items.map(function(item,i){
+return '<div class="socratic-item"><div class="socratic-q" onclick="this.nextElementSibling.classList.toggle(\'show\');this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'block\'?\'none\':\'block\'">'+(i+1)+'. '+item.q+'</div><div class="socratic-a" style="display:none">'+item.a+'</div></div>';
+}).join('');
+}
+
+// ============ CASE ANALYSIS ============
+function renderCases(){
+var cases = [
+{title:'案例一：水沸腾——证伪如何推动认知升级',content:'<p><strong>场景：</strong>我们从小学习"水烧到100摄氏度就会沸腾"。</p><p><strong>MKS四维拆解：</strong></p><p><strong>①核心概念：</strong>证伪主义——科学知识的本质是可被检验和修正，而非永恒真理。一万次证实不如一次证伪。</p><p><strong>②知识框架：</strong>初始结论→被气压条件证伪→修正(一个大气压下)→被溶质证伪→进一步修正→被加热方式(微波炉无对流)证伪→继续修正。</p><p><strong>③类比迁移：</strong>如同软件开发的迭代流程——用户反馈(证伪)驱动版本更新，而非一次性完美交付。</p><p><strong>④应用边界：</strong>证伪仅适用于科学知识。数学(逻辑自洽)和宗教/神秘主义(不可检验)不适用证伪方法。</p>'},
+{title:'案例二：巴菲特——知识-智慧-能力的三维协同',content:'<p><strong>场景：</strong>巴菲特是20世纪最成功的投资者，但大量追随者学习其投资知识却难以复制其成功。</p><p><strong>MKS四维拆解：</strong></p><p><strong>①核心概念：</strong>知识(术)、智慧(道)、能力(转化桥梁)三者缺一不可。智慧发现机会，能力实现目标，知识是基础。</p><p><strong>②知识框架：</strong>巴菲特的投资知识(价值投资理论)人人都可学习，但他的智慧(财富观/风险意识/长期主义)和能力(近乎苛刻的风控/深度研究/主动参与管理)才是不可复制的核心。</p><p><strong>③类比迁移：</strong>如同学习编程——学会语法(知识)≠能写出好代码(能力)≠能设计系统架构(智慧)。</p><p><strong>④应用边界：</strong>智慧需要"悟"而非单纯学习。股市实践中亲身体验亏损与贪婪，才能将知识转化为智慧。</p>'},
+{title:'案例三：尼采与鲁迅——"上帝死了"与"狂人日记"',content:'<p><strong>场景：</strong>尼采《快乐的科学》(1882)与鲁迅《狂人日记》(1918)都以"狂人"视角揭示社会深层危机。</p><p><strong>MKS四维拆解：</strong></p><p><strong>①核心概念：</strong>传统价值体系崩塌后，人类如何重建精神家园？尼采的"上帝"=传统权威/信仰/道德规范的总和。</p><p><strong>②知识框架：</strong>尼采→工业文明导致基督教价值观失效(西方)；鲁迅→五四前夕儒释道与宗法制度崩溃(中国)。两者面临相同困境：旧神已死，新神未生。</p><p><strong>③类比迁移：</strong>如同今天AI时代——传统职业路径失效，人们面临"重新定义自己价值"的挑战。</p><p><strong>④应用边界：</strong>尼采的解决方案(主人道德/超人哲学)强调个体主动创造，鲁迅更关注社会批判和民族觉醒。不同文化语境需要不同的重建策略。</p>'}
+];
+document.getElementById('caseContainer').innerHTML = cases.map(function(c){
+return '<div class="card"><h3>'+c.title+'</h3>'+c.content+'</div>';
+}).join('');
+}
+
+// ============ DECISION SIM ============
+var decisionState = {round:0,choices:[]};
+function renderDecision(){
+var rounds = [
+{scenario:'【第一轮】你是一名30岁的程序员，技术扎实但晋升缓慢。公司提供两个选择：A)转管理岗，带5人团队；B)深耕技术，成为架构师；C)辞职创业，开发自己的产品。你的核心优势是逻辑思维强但社交偏内向。你如何选择？',
+opts:[
+{text:'A. 转管理岗——拓宽职业路径，提升综合能力',result:'<p><strong>MKS分析：</strong></p><p>质料因：社交偏内向→管理岗的沟通协调可能消耗你大量心理能量(质料因不匹配)。形式因：管理者vs技术专家的定位不同。目的因：你真正想要的是影响力还是职级？</p><p><strong>建议：</strong>如果社交让你疲惫而非充电，管理可能是消耗而非成长。内向者也可以成为优秀管理者，但需要找到适合自己的管理风格(如一对一深度沟通而非大型会议)。</p>'},
+{text:'B. 深耕技术——发挥优势，成为不可替代的专家',result:'<p><strong>MKS分析：</strong></p><p>质料因：逻辑思维强→与架构师角色高度匹配。形式因：专家定位明确。动力因：技术深耕有清晰的成长路径。目的因：追求技术深度和行业影响力。</p><p><strong>建议：</strong>斯多葛哲学提醒——做你本性(优势)所要求的事情。不是每个人都必须走管理路线。技术专家在市场中的稀缺性和议价能力同样很高。</p>'},
+{text:'C. 辞职创业——追求自主和更大的可能性',result:'<p><strong>MKS分析：</strong></p><p>质料因：技术能力扎实但创业需要营销/融资/管理等多元能力(单一质料因)。形式因：创业者vs雇员的角色转换巨大。风险认知：创业属于"未知的未知"风险——你无法预见所有挑战。</p><p><strong>建议：</strong>埃里森模式——先在IT领域赚到钱(养活自己)，用业余时间探索创业方向，而非一步到位。哈耶克会问：你的创业是自发秩序(验证过的需求)还是人为设计(凭想象的方案)？</p>'}
+]},
+{scenario:'【第二轮】你发现公司一位同事经常在周报中夸大自己的贡献，甚至将你的工作成果据为己有。你掌握了明确证据。你会：',
+opts:[
+{text:'A. 直接向老板汇报，要求公正处理',result:'<p><strong>MKS分析：</strong></p><p>判断力：考虑老板的反应——老板可能视你为"制造麻烦的人"而非"解决问题的人"。诉诸权威谬误警示——老板不一定能公正处理。</p><p><strong>建议：</strong>带上"解决方案"而非仅有"投诉"。例如：建议周报流程改革(明确每个人的贡献领域)，而非单纯指控同事。斯多葛哲学：专注于你能控制的(保护自己的贡献记录)，接纳你不能控制的(他人行为)。</p>'},
+{text:'B. 先与那位同事私下沟通，给对方改正机会',result:'<p><strong>MKS分析：</strong></p><p>情商实践：展现同理心(理解对方可能出于职业焦虑)，同时保护自身边界。亚里士多德伦理学：论迹不论心——关注行为而非动机。</p><p><strong>建议：</strong>实施处罚案例告诉我们：私下沟通是"给台阶"，但如果对方继续，则需升级处理以保护群体利益。保留证据是关键——万一沟通无效，你已有完整的记录链。</p>'},
+{text:'C. 做好自己的事，相信老板最终会看到真相',result:'<p><strong>MKS分析：</strong></p><p>逻辑谬误：这是"诉诸怜悯"的自我版本——用"相信最终公平"替代主动行动。现实中，信息不对称往往让沉默者吃亏。</p><p><strong>建议：</strong>尼采主人道德要求主动而非被动。你可以通过更可视化地记录自己的贡献(如定期发送项目进展邮件)来建立"贡献档案"，而非寄望于老板的"最终发现"。</p>'}
+]},
+{scenario:'【第三轮】你有一个创业想法，做了市场调研发现需求存在，但父母强烈反对，认为风险太大，希望你继续稳定的工作。你的积蓄可以支撑18个月不开工资。如何决策？',
+opts:[
+{text:'A. 听父母的话，放弃创业，继续稳定工作',result:'<p><strong>MKS分析：</strong></p><p>埃里森案例警示：活在别人的梦里(父母的期望)而非自己的梦里。但父母的担忧也有合理性——哈耶克的风险观：你需要区分"已知的未知"(行业竞争/资金消耗)和"未知的未知"(政策变化/黑天鹅)。</p><p><strong>建议：</strong>四因说自查——质料因(你具备创业所需的多元能力吗?)、目的因(你要的是自由还是财富?)、动力因(18个月够验证MVP吗?)、形式因(你是创业者还是更适合做副业?)。</p>'},
+{text:'B. 用业余时间做MVP验证，有初步成果后再全职投入',result:'<p><strong>MKS分析：</strong></p><p>风险认知最佳实践：将"未知的未知"(辞职后能否成功)转化为"已知的未知"(用MVP数据判断产品市场匹配)。莱布尼茨充分性推理：积累足够的必要条件(用户反馈/收入数据)再做跳转决策。</p><p><strong>建议：</strong>这是最理性的路径。埃里森也是先通过IT赚钱再追求航海梦想。不赌赛道，而是基于验证过的需求做决策。维特根斯坦会说：不要空谈创业想法，用行动(MVP)来"显示"其可行性。</p>'},
+{text:'C. 立即辞职全身心投入，不给自己留退路',result:'<p><strong>MKS分析：</strong></p><p>"不给自己留退路"听起来很热血，但逻辑谬误警示：这是假两难——将"立即全身心投入"和"不投入"对立，忽视了渐进验证的中间路径。</p><p><strong>建议：</strong>吴军删除"多快好省"——好产品需要时间，不能既要快又要好。18个月看似充裕，但创业现实往往是Plan B时间×2。先验证核心假设(用户会付费吗?)再跳转，是尊重现实而非缺乏勇气。</p>'}
+]}
+];
+var h = '';
+rounds.forEach(function(r,i){
+h += '<div class="decision-round"><div class="scenario">'+r.scenario+'</div>';
+r.opts.forEach(function(o,j){
+h += '<div class="d-option" onclick="chooseDecision('+i+','+j+',this)" id="dec'+i+'o'+j+'">'+o.text+'</div>';
+});
+h += '<div class="d-result" id="dec'+i+'r">'+r.opts[0].result+'</div>';
+h += '</div>';
+});
+document.getElementById('decisionContainer').innerHTML = h;
+}
+function chooseDecision(ri,oi,el){
+var opts = document.querySelectorAll('#dec'+ri+'o0,#dec'+ri+'o1,#dec'+ri+'o2');
+opts.forEach(function(o){ o.classList.remove('chosen'); });
+el.classList.add('chosen');
+var result = document.getElementById('dec'+ri+'r');
+var rounds = [
+[{result:'...'},{result:'...'},{result:'...'}],
+[{result:'...'},{result:'...'},{result:'...'}],
+[{result:'...'},{result:'...'},{result:'...'}]
+];
+// Use embedded text from options
+var texts = el.parentElement.querySelector('.d-result');
+var parentCard = el.closest('.decision-round');
+var allOpts = parentCard.querySelectorAll('.d-option');
+var allResults = parentCard.querySelector('.d-result');
+// Get the correct result text
+var scenarioTexts = [
+['<p><strong>MKS分析：</strong></p><p>质料因：社交偏内向→管理岗的沟通协调可能消耗你大量心理能量(质料因不匹配)。形式因：管理者vs技术专家的定位不同。目的因：你真正想要的是影响力还是职级？</p><p><strong>建议：</strong>如果社交让你疲惫而非充电，管理可能是消耗而非成长。内向者也可以成为优秀管理者，但需要找到适合自己的管理风格(如一对一深度沟通而非大型会议)。</p>',
+'<p><strong>MKS分析：</strong></p><p>质料因：逻辑思维强→与架构师角色高度匹配。形式因：专家定位明确。动力因：技术深耕有清晰的成长路径。目的因：追求技术深度和行业影响力。</p><p><strong>建议：</strong>斯多葛哲学提醒——做你本性(优势)所要求的事情。不是每个人都必须走管理路线。技术专家在市场中的稀缺性和议价能力同样很高。</p>',
+'<p><strong>MKS分析：</strong></p><p>质料因：技术能力扎实但创业需要营销/融资/管理等多元能力(单一质料因)。形式因：创业者vs雇员的角色转换巨大。风险认知：创业属于"未知的未知"风险——你无法预见所有挑战。</p><p><strong>建议：</strong>埃里森模式——先在IT领域赚到钱(养活自己)，用业余时间探索创业方向，而非一步到位。</p>'],
+['<p><strong>MKS分析：</strong></p><p>判断力：考虑老板的反应——老板可能视你为"制造麻烦的人"而非"解决问题的人"。诉诸权威谬误警示——老板不一定能公正处理。</p><p><strong>建议：</strong>带上"解决方案"而非仅有"投诉"。斯多葛哲学：专注于你能控制的(保护自己的贡献记录)，接纳你不能控制的(他人行为)。</p>',
+'<p><strong>MKS分析：</strong></p><p>情商实践：展现同理心(理解对方可能出于职业焦虑)，同时保护自身边界。亚里士多德伦理学：论迹不论心——关注行为而非动机。</p><p><strong>建议：</strong>私下沟通是"给台阶"，但如果对方继续，则需升级处理以保护群体利益。保留证据是关键。</p>',
+'<p><strong>MKS分析：</strong></p><p>逻辑谬误：这是"诉诸怜悯"的自我版本——用"相信最终公平"替代主动行动。现实中，信息不对称往往让沉默者吃亏。</p><p><strong>建议：</strong>尼采主人道德要求主动而非被动。通过更可视化地记录自己的贡献来建立"贡献档案"。</p>'],
+['<p><strong>MKS分析：</strong></p><p>埃里森案例警示：活在别人的梦里而非自己的梦里。但父母的担忧也有合理性——哈耶克的风险观：区分"已知的未知"和"未知的未知"。</p><p><strong>建议：</strong>四因说自查——质料因(多元能力?)、目的因(自由还是财富?)、动力因(18个月够验证MVP?)、形式因(创业者还是副业?)。</p>',
+'<p><strong>MKS分析：</strong></p><p>风险认知最佳实践：将"未知的未知"转化为"已知的未知"(用MVP数据判断产品市场匹配)。莱布尼茨充分性推理：积累足够的必要条件再做跳转决策。</p><p><strong>建议：</strong>这是最理性的路径。埃里森也是先通过IT赚钱再追求航海梦想。不赌赛道，基于验证过的需求做决策。</p>',
+'<p><strong>MKS分析：</strong></p><p>"不给自己留退路"听起来很热血，但逻辑谬误警示：这是假两难——将"立即全身心投入"和"不投入"对立，忽视了渐进验证的中间路径。</p><p><strong>建议：</strong>吴军删除"多快好省"——好产品需要时间。先验证核心假设(用户会付费吗?)再跳转，是尊重现实而非缺乏勇气。</p>']
+];
+allResults.innerHTML = scenarioTexts[ri][oi];
+allResults.classList.add('show');
+}
+
+// ============ PROGRESS ============
+function updateProgress(){
+var total = concepts.length;
+var learned = (learnedCards||[]).length;
+var mcqDone = Object.keys(mcqAnswered||{}).length;
+var saqDone = Object.keys(saqAnswered||{}).filter(function(k){return saqAnswered[k]&&saqAnswered[k].trim().length>0;}).length;
+var pct = Math.round((learned+mcqDone*0.5+saqDone*0.3)/(total+20*0.5+10*0.3)*100);
+document.getElementById('overallProgress').style.width = Math.min(pct,100)+'%';
+document.getElementById('progressLabel').textContent = '已学习 '+learned+'/'+total+' 个概念 | 选择题 '+mcqDone+'/20 | 简答题 '+saqDone+'/10';
+}
+
+// ============ TAB SWITCH ============
+function switchTab(n){
+document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
+document.querySelectorAll('.tab-content').forEach(function(t,i){t.classList.toggle('active',i===n);});
+if(n===4) renderStats();
+window.scrollTo(0,0);
+}
+
+// ============ INIT ============
+renderConceptGrid();
+renderMKSGrid();
+renderBoundaryTable();
+renderLearningPath();
+renderSVG();
+renderFlipCard();
+renderMCQ();
+renderSAQ();
+renderMindmap();
+renderSocratic();
+renderCases();
+renderDecision();
+updateProgress();
+
+// Restore learned state
+if(LS.learnedCards) learnedCards = LS.learnedCards;
+if(LS.mcqAnswered) mcqAnswered = LS.mcqAnswered;
+if(LS.saqAnswered) saqAnswered = LS.saqAnswered;
+renderFlipCard();
+renderMCQ();
+
+</script>
+</body>
+</html>

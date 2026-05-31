@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育与成长 — 最小知识集 | 硅谷来信³</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --text: #3d2f2f;
+  --sub: #5a3e3e;
+  --border: #d4a574;
+  --leaf: #8b7355;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; padding-top: 56px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Navigation */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--card); border-bottom: 2px solid var(--accent);
+  padding: 0 16px; display: flex; align-items: center; height: 52px;
+}
+.navbar .home-link { font-size: 1.1em; font-weight: 700; color: var(--accent); margin-right: 16px; white-space: nowrap; }
+.nav-tabs { display: flex; overflow-x: auto; gap: 0; flex: 1; }
+.tab-btn {
+  padding: 10px 14px; border: none; background: transparent;
+  cursor: pointer; font-size: 0.88em; color: var(--text);
+  white-space: nowrap; border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.tab-btn:hover, .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.hamburger { display: none; background: none; border: none; font-size: 1.5em; color: var(--accent); cursor: pointer; }
+
+/* Main container */
+.main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Section titles */
+.section-title {
+  font-size: clamp(1.3em, 3vw, 1.8em); color: var(--accent);
+  border-left: 4px solid var(--accent); padding-left: 12px;
+  margin: 24px 0 16px;
+}
+.subsection-title {
+  font-size: clamp(1.1em, 2.5vw, 1.35em); color: var(--sub);
+  margin: 20px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--border);
+}
+
+/* Dashboard */
+.dashboard-header { text-align: center; margin-bottom: 24px; }
+.dashboard-header h1 { color: var(--accent); font-size: clamp(1.5em, 4vw, 2em); }
+.dashboard-header .subtitle { color: var(--sub); font-size: 1.05em; margin: 8px 0; }
+
+.progress-bar-wrap { background: #e8d5c4; border-radius: 12px; height: 16px; margin: 16px 0; overflow: hidden; }
+.progress-bar-fill { background: var(--accent); height: 100%; border-radius: 12px; transition: width 0.5s; width: 0%; }
+.progress-text { font-size: 0.85em; color: var(--sub); text-align: center; }
+
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+.concept-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+}
+.concept-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.concept-card.star { border-color: var(--accent); border-width: 2px; }
+.concept-card .c-name { font-weight: 700; color: var(--accent); font-size: 1.05em; }
+.concept-card .c-desc { font-size: 0.85em; color: var(--sub); margin-top: 6px; }
+.concept-card .c-star { color: #e8a838; font-size: 1.2em; }
+
+.svg-container { margin: 20px 0; overflow-x: auto; background: var(--card); border-radius: 10px; padding: 12px; text-align: center; }
+.svg-container svg { max-width: 100%; height: auto; }
+
+.boundary-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+.boundary-table th { background: var(--accent); color: #fff; padding: 10px; text-align: left; }
+.boundary-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.boundary-table tr:nth-child(even) { background: var(--card); }
+
+.learning-path { counter-reset: step; list-style: none; }
+.learning-path li { counter-increment: step; padding: 12px 16px 12px 48px; position: relative; margin: 8px 0; background: var(--card); border-radius: 8px; border-left: 3px solid var(--accent); }
+.learning-path li::before { content: counter(step); position: absolute; left: 12px; top: 12px; width: 24px; height: 24px; background: var(--accent); color: #fff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 0.8em; font-weight: 700; }
+
+/* Knowledge Cards — 3D Flip */
+.flip-container { perspective: 1000px; margin: 16px auto; max-width: 500px; }
+.flip-inner {
+  position: relative; width: 100%; min-height: 420px;
+  transition: transform 0.6s; transform-style: preserve-3d;
+}
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute; width: 100%; min-height: 420px;
+  backface-visibility: hidden; border-radius: 14px;
+  padding: 28px 24px; display: flex; flex-direction: column;
+}
+.flip-front { background: var(--card); border: 2px solid var(--accent); align-items: center; justify-content: center; }
+.flip-front h3 { color: var(--accent); font-size: 1.5em; text-align: center; }
+.flip-front .front-sub { color: var(--sub); margin-top: 8px; }
+.flip-back {
+  background: var(--card); border: 2px solid var(--border);
+  transform: rotateY(180deg); overflow-y: auto;
+}
+.flip-back h4 { color: var(--accent); margin: 8px 0 4px; font-size: 1em; }
+.flip-back p { font-size: 0.9em; color: var(--text); margin-bottom: 12px; }
+
+.card-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 16px 0; }
+.card-nav button {
+  background: var(--accent); color: #fff; border: none;
+  padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1em;
+  min-width: 44px; min-height: 44px;
+}
+.card-nav button:hover { opacity: 0.9; }
+.card-nav button.secondary { background: var(--border); }
+.card-nav .card-counter { color: var(--sub); font-size: 0.9em; }
+
+/* Quiz */
+.quiz-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px; margin: 12px 0;
+}
+.quiz-card .q-question { font-weight: 700; font-size: 1.05em; color: var(--text); margin-bottom: 14px; }
+.quiz-card .q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-option {
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; transition: all 0.2s; background: var(--bg);
+  font-size: 0.92em;
+}
+.q-option:hover { border-color: var(--accent); background: #fef3e2; }
+.q-option.selected { border-color: var(--accent); background: #fde8d0; }
+.q-option.correct { border-color: #27ae60; background: #eafaf1; }
+.q-option.wrong { border-color: #e74c3c; background: #fdedec; }
+.q-feedback { margin-top: 10px; padding: 10px; border-radius: 8px; font-size: 0.9em; display: none; }
+.q-feedback.show { display: block; }
+.q-feedback.correct { background: #eafaf1; color: #27ae60; }
+.q-feedback.wrong { background: #fdedec; color: #e74c3c; }
+
+.quiz-controls { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; justify-content: center; }
+.quiz-controls button {
+  background: var(--accent); color: #fff; border: none;
+  padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.95em;
+}
+.quiz-controls button:hover { opacity: 0.9; }
+.quiz-timer { font-size: 1.1em; font-weight: 700; color: var(--accent); text-align: center; margin: 8px 0; }
+
+/* Mind Map */
+.tree { margin: 16px 0; }
+.tree-node { margin: 4px 0; }
+.tree-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  background: var(--card); border: 1px solid var(--border);
+  font-size: 0.95em; transition: all 0.2s;
+}
+.tree-label:hover { border-color: var(--accent); }
+.tree-label.root { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tree-label.tier1 { background: var(--border); color: #fff; }
+.tree-toggle { font-size: 0.75em; transition: transform 0.3s; display: inline-block; }
+.tree-toggle.open { transform: rotate(90deg); }
+.tree-children { display: none; margin-left: 24px; padding-left: 12px; border-left: 2px solid var(--border); }
+.tree-children.show, .tree-children.open { display: block; }
+
+/* Exam */
+.exam-header { text-align: center; margin: 16px 0; }
+.exam-timer { font-size: 1.3em; font-weight: 700; color: var(--accent); }
+.exam-result { background: var(--card); border-radius: 12px; padding: 24px; text-align: center; }
+.exam-score { font-size: 2em; font-weight: 700; color: var(--accent); }
+
+/* Review */
+.review-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 16px 0; }
+.stat-card { background: var(--card); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+.stat-card .s-val { font-size: 1.8em; font-weight: 700; color: var(--accent); }
+.stat-card .s-label { font-size: 0.85em; color: var(--sub); }
+
+/* Socratic Q&A */
+.socratic-item { margin: 12px 0; background: var(--card); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+.socratic-q {
+  padding: 14px 18px; font-weight: 600; font-size: 1em;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  color: var(--text); transition: background 0.2s;
+}
+.socratic-q:hover { background: #fef3e2; }
+.socratic-q .arrow { transition: transform 0.3s; color: var(--accent); }
+.socratic-q.open .arrow { transform: rotate(180deg); }
+.socratic-a { display: none; padding: 0 18px 16px; font-size: 0.92em; color: var(--sub); line-height: 1.8; }
+.socratic-a.show { display: block; }
+.socratic-depth { margin-left: 20px; padding: 10px 14px; background: var(--bg); border-radius: 8px; margin-top: 8px; }
+
+/* Case Studies */
+.case-card { background: var(--card); border-radius: 12px; padding: 20px; margin: 14px 0; border-left: 3px solid var(--accent); }
+.case-card h4 { color: var(--accent); margin-bottom: 10px; }
+.case-dims { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.case-dim { background: var(--bg); padding: 10px 14px; border-radius: 8px; }
+.case-dim .dim-label { font-weight: 700; color: var(--accent); font-size: 0.85em; }
+
+/* Decision Sim */
+.decision-round { background: var(--card); border-radius: 12px; padding: 20px; margin: 14px 0; border: 1px solid var(--border); }
+.decision-round h4 { color: var(--accent); }
+.decision-options { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.decision-opt {
+  padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; background: var(--bg); transition: all 0.2s;
+}
+.decision-opt:hover { border-color: var(--accent); background: #fef3e2; }
+.decision-opt.chosen { border-color: var(--accent); background: #fde8d0; }
+.decision-feedback { display: none; margin-top: 12px; padding: 14px; background: var(--bg); border-radius: 8px; font-size: 0.92em; }
+.decision-feedback.show { display: block; }
+
+/* Wrong book */
+.wrong-item { background: var(--card); border-radius: 10px; padding: 16px; margin: 10px 0; border: 1px solid var(--border); }
+.wrong-item .retry-btn { background: var(--accent); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85em; margin-top: 8px; }
+
+/* Buttons */
+.btn { display: inline-block; padding: 10px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.95em; font-weight: 600; transition: opacity 0.2s; }
+.btn:hover { opacity: 0.9; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-secondary { background: var(--border); color: #fff; }
+.btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .nav-tabs { display: none; flex-direction: column; position: absolute; top: 52px; left: 0; right: 0; background: var(--card); border-bottom: 2px solid var(--accent); }
+  .nav-tabs.show { display: flex; }
+  .hamburger { display: block; }
+  .concept-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .case-dims { grid-template-columns: 1fr; }
+  .flip-inner, .flip-front, .flip-back { min-height: 240px; }
+  .section-title { font-size: 1.2em; }
+  .tab-btn { font-size: 0.82em; padding: 8px 10px; }
+}
+@media (max-width: 480px) {
+  body { padding-top: 48px; }
+  .navbar { height: 46px; padding: 0 10px; }
+  .navbar .home-link { font-size: 0.95em; }
+  .main { padding: 12px 10px; }
+  .concept-grid { grid-template-columns: repeat(2, 1fr); }
+  .quiz-card { padding: 14px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href='index.html' class="home-link">← 返回知识主板</a>
+  <div class="nav-tabs" id="navTabs">
+    <button class="tab-btn active" data-tab="0">📊 总览</button>
+    <button class="tab-btn" data-tab="1">🃏 知识卡片</button>
+    <button class="tab-btn" data-tab="2">🌳 思维导图</button>
+    <button class="tab-btn" data-tab="3">📝 题库</button>
+    <button class="tab-btn" data-tab="4">📋 考试</button>
+    <button class="tab-btn" data-tab="5">📖 复习</button>
+    <button class="tab-btn" data-tab="6">❓ 追问</button>
+    <button class="tab-btn" data-tab="7">🔍 案例</button>
+    <button class="tab-btn" data-tab="8">🎯 决策</button>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="菜单">☰</button>
+</nav>
+
+<main class="main">
+
+<!-- ==================== TAB 0: Overview ==================== -->
+<section class="tab-panel active" data-panel="0">
+  <div class="dashboard-header">
+    <h1>教育与成长 — 最小知识集</h1>
+    <p class="subtitle">硅谷来信³ · 教育底层模块 — 从卢梭到杜威，从皮亚杰到终身教育，探寻教育本质与认知成长的底层逻辑</p>
+    <p style="color: var(--sub); font-size: 0.9em;">共 37 篇笔记 · 10 个核心概念 · 4 个 MKS 核心</p>
+  </div>
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <p class="progress-text" id="progressText">学习进度: 0 / 10</p>
+
+  <h3 class="section-title">核心目标</h3>
+  <p style="font-size:1.05em;margin:8px 0 16px;">理解教育的本质——从自然成长到终身发展，掌握认知发展的底层规律，建立科学的教育价值观，指导自我成长与下一代培养。</p>
+
+  <h3 class="section-title">10 个核心概念</h3>
+  <div class="concept-grid" id="conceptGrid"></div>
+
+  <h3 class="section-title">概念关系图</h3>
+  <div class="svg-container" id="svgContainer"></div>
+  <p style="font-size:0.82em;color:var(--leaf);text-align:center;">▲ 虚线箭头表示历史继承/跨域关联关系</p>
+
+  <h3 class="section-title">边界性知识（15条 — 知其存在即可）</h3>
+  <table class="boundary-table">
+    <thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+    <tbody>
+      <tr><td>罗森塔尔效应</td><td>教育心理学实验设计理解</td></tr>
+      <tr><td>PISA作业时间国际对比</td><td>教育政策讨论</td></tr>
+      <tr><td>美国APM（助理产品经理）计划</td><td>人才培养机制设计</td></tr>
+      <tr><td>四健会（4H Club）</td><td>乡村/基层教育实践</td></tr>
+      <tr><td>AltSchool实验</td><td>教育科技创业分析</td></tr>
+      <tr><td>优惠券收集问题（数学）</td><td>承诺升级陷阱的数学解释</td></tr>
+      <tr><td>哈佛2012年作弊丑闻</td><td>学术诚信案例</td></tr>
+      <tr><td>李森科事件</td><td>科学造假的社会危害</td></tr>
+      <tr><td>MIT抽象化教学法</td><td>高等教育理念对比</td></tr>
+      <tr><td>美国终身教职四关考核</td><td>学术职业规划</td></tr>
+      <tr><td>佩雷尔曼庞加莱猜想</td><td>关键路径研究案例</td></tr>
+      <tr><td>丁肇中转型实验物理</td><td>扬长避短职业选择</td></tr>
+      <tr><td>《包氏父子》（张天翼）</td><td>教育小说、富养警示</td></tr>
+      <tr><td>蒙特梭利教育法</td><td>自然教育现代实践</td></tr>
+      <tr><td>中国教育部教育惩戒规则</td><td>赫尔巴特思想当代政策呼应</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-title">学习路径（5 阶段）</h3>
+  <ol class="learning-path">
+    <li><strong>奠基：自然教育哲学</strong> — 先读卢梭《爱弥儿》+ 杜威《民主与教育》，理解"教育为什么存在"</li>
+    <li><strong>科学化：认知发展规律</strong> — 学习皮亚杰四阶段理论 + 赫尔巴特科学教育学，建立"如何教"的框架</li>
+    <li><strong>拓展：智力与知识观</strong> — 掌握加德纳多元智力 + 斯宾塞知识分层，回答"教什么"</li>
+    <li><strong>升级：终身教育体系</strong> — 学习朗格朗终身教育 + 自我驱动方法论，构建个人学习系统</li>
+    <li><strong>实践：应用与反思</strong> — 用MKS框架分析教育现实问题（教育公平、鸡娃现象、在线教育等）</li>
+  </ol>
+</section>
+
+<!-- ==================== TAB 1: Knowledge Cards ==================== -->
+<section class="tab-panel" data-panel="1">
+  <h3 class="section-title">知识卡片 · 翻转学习</h3>
+  <p style="text-align:center;color:var(--sub);">点击「翻转」查看四维解析，左右箭头切换卡片</p>
+  <div class="flip-container">
+    <div class="flip-inner" id="flipCard">
+      <div class="flip-front" id="flipFront"><h3 id="fcName"></h3><p class="front-sub" id="fcSub"></p></div>
+      <div class="flip-back" id="flipBack"></div>
+    </div>
+  </div>
+  <div class="card-nav">
+    <button onclick="prevCard()" title="上一张">◀</button>
+    <button onclick="toggleFlip()" title="翻转卡片">🔄 翻转</button>
+    <button id="markLearnedBtn" class="secondary" onclick="markLearned()">✓ 已学习</button>
+    <button onclick="nextCard()" title="下一张">▶</button>
+  </div>
+  <p class="card-counter" id="cardCounter"></p>
+</section>
+
+<!-- ==================== TAB 2: Mind Map ==================== -->
+<section class="tab-panel" data-panel="2">
+  <h3 class="section-title">思维导图 · 层级结构</h3>
+  <p style="color:var(--sub);font-size:0.9em;">点击节点展开/折叠子树</p>
+  <div class="tree" id="mindmapTree"></div>
+</section>
+
+<!-- ==================== TAB 3: Quiz ==================== -->
+<section class="tab-panel" data-panel="3">
+  <h3 class="section-title">题库系统 · 20道选择题</h3>
+  <p style="color:var(--sub);font-size:0.9em;margin-bottom:16px;">点击选项即时判分，错题自动收集到错题本</p>
+  <div class="quiz-controls">
+    <button onclick="shuffleQuiz()">🔀 随机抽题</button>
+    <button onclick="resetQuiz()">🔄 重置</button>
+  </div>
+  <div id="quizContainer"></div>
+  <div class="quiz-controls" style="margin-top:20px;">
+    <button onclick="showQuizSummary()">📊 查看成绩</button>
+  </div>
+  <div id="quizSummary" style="display:none;margin-top:16px;"></div>
+</section>
+
+<!-- ==================== TAB 4: Exam ==================== -->
+<section class="tab-panel" data-panel="4">
+  <h3 class="section-title">考试模式</h3>
+  <p style="text-align:center;color:var(--sub);">从题库随机抽取10题（7选+3简答），限时15分钟</p>
+  <div class="exam-header">
+    <p class="exam-timer" id="examTimer">剩余: 15:00</p>
+    <button class="btn btn-primary" id="examStartBtn" onclick="startExam()">开始考试</button>
+    <button class="btn btn-secondary" id="examSubmitBtn" onclick="submitExam()" style="display:none;">提交答卷</button>
+  </div>
+  <div id="examContainer"></div>
+  <div id="examResult" class="exam-result" style="display:none;"></div>
+</section>
+
+<!-- ==================== TAB 5: Review ==================== -->
+<section class="tab-panel" data-panel="5">
+  <h3 class="section-title">复习模式 · 错题本与统计</h3>
+  <div class="review-stats" id="reviewStats"></div>
+  <h4 class="subsection-title">错题本</h4>
+  <div id="wrongBook"></div>
+  <h4 class="subsection-title">概念薄弱点</h4>
+  <div id="weakConcepts"></div>
+</section>
+
+<!-- ==================== TAB 6: Socratic Q&A ==================== -->
+<section class="tab-panel" data-panel="6">
+  <h3 class="section-title">深度追问 · 苏格拉底问答</h3>
+  <p style="color:var(--sub);font-size:0.9em;margin-bottom:16px;">每个核心概念2-3层追问，点击展开，直到想通</p>
+  <div id="socraticList"></div>
+</section>
+
+<!-- ==================== TAB 7: Case Studies ==================== -->
+<section class="tab-panel" data-panel="7">
+  <h3 class="section-title">案例分析 · MKS 四维度拆解</h3>
+  <div id="caseStudies"></div>
+</section>
+
+<!-- ==================== TAB 8: Decision Sim ==================== -->
+<section class="tab-panel" data-panel="8">
+  <h3 class="section-title">实战决策 · 3轮模拟</h3>
+  <p style="color:var(--sub);font-size:0.9em;margin-bottom:16px;">每轮3个选项+反馈+MKS分析，点击选项查看结果</p>
+  <div id="decisionSim"></div>
+</section>
+
+</main>
+
+<script>
+// ===== GLOBAL STATE =====
+var LS_KEY = 'mks_edu_growth';
+var LS = loadLS();
+var currentCardIdx = 0;
+var currentQuizSet = [];
+var quizState = {};
+var examActive = false;
+var examTimerId = null;
+var examTimeLeft = 900;
+var examQuestions = [];
+var examAnswers = {};
+
+function loadLS() {
+  try {
+    var d = localStorage.getItem('mks_edu_growth');
+    return d ? JSON.parse(d) : { learned: {}, wrong: [], quizDone: 0, quizCorrect: 0, examHistory: [] };
+  } catch(e) { return { learned: {}, wrong: [], quizDone: 0, quizCorrect: 0, examHistory: [] }; }
+}
+function saveLS() { try { localStorage.setItem(LS_KEY, JSON.stringify(LS)); } catch(e) {} }
+
+// ===== DATA =====
+var concepts = [
+  { id: 'c1', name: '自然教育', desc: '卢梭"遵循自然"——教育以天性为基准，人为教育必须适应自然的教育', star: true },
+  { id: 'c2', name: '认知发展阶段', desc: '皮亚杰四阶段理论：感知运动→前操作→具体运算→抽象运算，教育必须匹配认知水平', star: true },
+  { id: 'c3', name: '教育即成长', desc: '杜威核心命题——教育是持续生长的过程，学校是教育的结果而非原因', star: true },
+  { id: 'c4', name: '终身教育', desc: '朗格朗1970年系统提出：现代人因知识增速、人口竞争、科技冲击等五大原因必须终身学习', star: true },
+  { id: 'c5', name: '多元智力', desc: '加德纳零点项目——智力由语言、抽象思维、形象思维三种基本智力组合，如三原色调色', star: false },
+  { id: 'c6', name: '知识价值分层', desc: '斯宾塞"比较价值"——保暖型vs炫耀型知识，五层优先级从直接自我保全到文化娱乐', star: false },
+  { id: 'c7', name: '科学教育学', desc: '赫尔巴特——德育优先、合理处罚、区分必要性与可能性知识、训育塑造性格', star: false },
+  { id: 'c8', name: '教师培养标准', desc: '第斯多惠——热爱真理、检验真理能力、科研能力是好老师的三大遴选标准', star: false },
+  { id: 'c9', name: '教育公平与兼容', desc: '教育必须与社会环境兼容，呼吁社会分工平等而非绝对的教育资源均等', star: false },
+  { id: 'c10', name: '自我驱动学习', desc: '20小时入门法则+关键路径选题——内在动机决定学习深度，外部约束有积极意义', star: false }
+];
+
+var cardDetails = [
+  { name: '自然教育', sub: '卢梭《爱弥儿》', def: '教育应当遵循自然的秩序和节奏，人为的教育必须以自然的教育为基准。', analogy: '像园丁培育植物——顺应植物天性，而非强行扭曲。不同季节做不同的事，春天播种而非冬天催芽。', example: '蒙特梭利教育法让幼儿自由选择学习材料；12岁前不强行教授抽象几何，而是通过直观感受建立认知基础。', counter: '反例：两岁背唐诗——婴儿处于感知运动阶段，需要的是触摸不同物体、听不同声音，而非符号记忆。' },
+  { name: '认知发展阶段', sub: '皮亚杰发生认识论', def: '儿童认知能力按年龄分四阶段逐步发展，每个阶段有特定的思维方式，教育内容必须与阶段匹配。', analogy: '像盖楼——必须先打好地基（感知运动），再建墙体（前操作），然后是框架（具体运算），最后才是装修（抽象运算）。三楼没盖好不能直接跳到五楼。', example: '7岁儿童通过分蛋糕理解守恒概念；12岁青少年通过钟摆实验学习控制变量法。', counter: '反例：小学一年级教方程式——7岁儿童处于具体运算阶段，缺乏抽象逻辑思维，强行灌输只会造成挫败感。' },
+  { name: '教育即成长', sub: '杜威《民主与教育》', def: '教育不是为未来生活做准备，教育本身就是生活的过程。成长是生活的特征，教育的本质是持续生长。', analogy: '像一棵树的生长——不是某一天突然长成参天大树，而是每一天都在默默扩展根系和枝叶。树干上的每一圈年轮都是成长的印记。', example: '让孩子参与家务劳动——不是"为将来当家做准备"，而是在当下的实践中学习责任与合作。制止超市占便宜的老人，是保护儿童当下的成长环境。', counter: '反例：对孩子说"等你长大了就懂了"——这等于放弃了当下的教育机会。成长是连续的，无法跳跃式完成。' },
+  { name: '终身教育', sub: '朗格朗《终身教育引论》', def: '现代人因知识增速、人口竞争、科技冲击、全球化挑战、生活方式转变五大原因，必须将学习延续至生命终点。', analogy: '像手机系统更新——出厂时的系统（学校教育）很快过时，必须持续下载安全补丁（新知），否则将被病毒和兼容性问题困扰。', example: '45岁工程师学习AI技术转行——通过自我驱动学习+小组协作+边做边学，成功切换到新赛道。', counter: '反例：大学毕业后不再学习——二十年后知识结构完全过时，面对行业变化只能被动应付，甚至被淘汰。' },
+  { name: '多元智力', sub: '加德纳《智能的结构》', def: '智力不是单一维度的，而是由语言、抽象思维、形象思维三种基本智力组合而成，七种表现维度的不同配比形成个体独特优势。', analogy: '像三原色——红绿蓝三种基色按不同比例混合，可以生成数百万种颜色。每个人都有自己独特的"智力颜色配方"。', example: '数学强但语言弱的学生不必模仿文科生的路径——可以强化逻辑+空间智能组合，在工程、设计领域发挥独特优势。', counter: '反例：认为"数学好就是聪明"——这等于把红色定义为唯一"美"的颜色，完全忽略了蓝绿及其他所有色调的价值。' },
+  { name: '知识价值分层', sub: '斯宾塞比较价值论', def: '知识可分为保暖型（实际功能）和炫耀型（彰显身份），人生有限，应优先学习具有高比较价值的知识。', analogy: '像衣橱管理——先确保有保暖的基本衣物（谋生技能），再根据场合添置正装（进阶能力），最后才是配饰（文化娱乐）。不能只有花边而没有布料。', example: '编程作为谋生技能属于"直接自我保全知识"，优先级最高；钢琴作为文化娱乐知识，应在基础学业扎实后再发展。', counter: '反例：孩子基础课不及格却每周上5种兴趣班——这是把"花边"置于"布料"之前，本末倒置。' },
+  { name: '科学教育学', sub: '赫尔巴特《普通教育学》', def: '教育是一门科学——需要教育者掌握心理学，通过观察发现孩子特长，合理使用管理与处罚，德育优先于知识传授。', analogy: '像驾驶培训——教练不仅教操作（知识），更必须教交规和安全意识（德育）。学员犯错时需要即时纠正（处罚），否则上路就是祸害。', example: '作弊必须处罚——不是因为丢分，而是维护公平，让所有学生明白行为边界。赫尔巴特"训育"的六维度性格塑造直接决定命运走向。', counter: '反例：盲目鼓吹"只能夸不能罚"——孩子没有先天意志，需要外部规范引导。校园欺凌若不处罚，就是对受害者的二次伤害。' },
+  { name: '教师培养标准', sub: '第斯多惠《德国教师教育指南》', def: '好老师的核心标准是热爱真理、具备检验真理的能力、坚持科研。教育的品质上限取决于教师的品质上限。', analogy: '像灯塔守护者——不仅要点亮灯（传授知识），还必须确保灯光方向正确（检验真理），并不断改进灯塔技术（科研）。错误方向的灯光比黑暗更危险。', example: '第斯多惠的三条遴选标准至今有效：清除为待遇从教者、要求开放心态与反思验证能力、教师必须参与科研以掌握真理检验方法。', counter: '反例：教师照本宣科十年不变——缺乏科研实践的教师，只能传授二手知识，无法培养学生的批判性思维和创新能力。' },
+  { name: '教育公平与兼容', sub: '杜波依斯+吴军', def: '绝对的教育平等不可能实现，更可行的路径是社会分工平等+教育模式与社会环境兼容。教育对象是人本身，而非分数和学位。', analogy: '像服装定制——每个人身材不同（学生差异），场合不同（社会环境），不可能所有人都穿同一件衣服。关键是衣服合身且适合场合。', example: '中国式中小学教育不适合美国学生——朱贲兰的实验证明，不同社会环境下"好教育"的定义不同。四健会通过非学业素质培养弥补城乡教育差距。', counter: '反例：盲目要求所有学校条件一致——忽略了教育的筛选功能和差异化发展需求，也忽略了公平就业环境才是更根本的问题。' },
+  { name: '自我驱动学习', sub: '20h入门+关键路径', def: '快速上手新技能只需20小时，但前提是明确目标、找专业老师、分解步骤、边做边学。主动学习者将在低竞争环境中获得巨大优势。', analogy: '像学游泳——先在浅水区掌握呼吸和基本动作（20小时入门），然后直接跳入深水区实践（边做边学），而非在岸上把游泳理论背一年再下水。', example: '吴军学数据库——仅几十小时基础学习后直接参与企业项目，在实践中快速掌握。1979年清华教师快速学习传热学，成为中国太阳能研究先驱。', counter: '反例：一直"准备"永远不开始——追求完美主义导致决策瘫痪。考试取消后不再学习的人，十年后与主动学习者的差距将从0分化到100。' }
+];
+
+var mcqData = [
+  { q: '卢梭《爱弥儿》的核心教育原则是什么？', opts: ['遵循自然，教育以天性为基准', '超前学习，抢占先发优势', '严格纪律，树立家长权威', '快乐至上，避免任何压力'], "answer": 0 },
+  { q: '皮亚杰认为0-2岁婴儿处于哪个认知阶段？', opts: ['感知运动阶段', '前操作阶段', '具体运算阶段', '抽象运算阶段'], "answer": 0 },
+  { q: '斯宾塞认为人生的核心目标是什么？', opts: ['过上善的、好的生活', '积累最多的财富', '获得最高学位', '实现个人名声'], "answer": 0 },
+  { q: '杜威思维训练五步法的第一步是什么？', opts: ['从经验出发', '收集所有资料', '形成概念', '验证结论'], "answer": 0 },
+  { q: '"四健会"中四个H分别代表哪四个方面？', opts: ['健全头脑、心胸、双手、身体', '高效、诚实、和谐、健康', '历史、人文、健康、希望', '荣誉、谦逊、合作、健康'], "answer": 0 },
+  { q: '赫尔巴特教育思想中，什么应优先于知识传授？', opts: ['体育', '德育', '美育', '智育'], "answer": 1 },
+  { q: '加德纳的多元智力理论源于哪个哈佛大学研究项目？', opts: ['哈佛零点项目(Project Zero)', '曼哈顿计划', '人类基因组计划', '蓝色大脑项目'], "answer": 1 },
+  { q: '皮亚杰认为7-12岁儿童处于哪个认知阶段？', opts: ['感知运动阶段', '具体运算阶段', '前操作阶段', '抽象运算阶段'], "answer": 1 },
+  { q: '第斯多惠要求好老师具备哪项核心能力？', opts: ['优秀的演讲能力', '检验真理的能力', '高超的管理技巧', '丰富的学科知识'], "answer": 1 },
+  { q: '朗格朗提出终身学习的实践方法共有几种？', opts: ['两种', '四种', '三种', '五种'], "answer": 1 },
+  { q: '卢梭将教育分为哪三种类型？', opts: ['家庭教育、学校教育、社会教育', '基础教育、高等教育、职业教育', '自然的教育、事物的教育、人为的教育', '德育、智育、体育'], "answer": 2 },
+  { q: '杜威认为成长空间的两个衡量维度是什么？', opts: ['知识和技能', '广度和深度', '容量和潜力', '智商和情商'], "answer": 2 },
+  { q: '《异类》与《广度》的核心分歧在于？', opts: ['天赋与努力之争', '先天与后天之争', '专才(一万小时)与通才(跨领域)之争', '理论与应用之争'], "answer": 2 },
+  { q: '斯宾塞以衣服为喻，将知识分为哪两类？', opts: ['理论知识和实践知识', '硬知识和软知识', '保暖型知识和炫耀型知识', '显性知识和隐性知识'], "answer": 2 },
+  { q: '罗森塔尔效应的真实驱动因素是什么？', opts: ['自信心的提升', '教师高期望的暗示', '资源倾斜（非公平竞争）', '学生天赋被激发'], "answer": 2 },
+  { q: '朗格朗认为现代人必须终身学习的原因共有几方面？', opts: ['三个方面', '四个方面', '六个方面', '五个方面'], "answer": 3 },
+  { q: '皮亚杰认为12岁以上青少年处于哪个认知阶段？', opts: ['具体运算阶段', '前操作阶段', '感知运动阶段', '抽象运算阶段'], "answer": 3 },
+  { q: '吴军总结的个人成长三大陷阱是什么？', opts: ['懒惰、骄傲、嫉妒', '拖延、恐惧、犹豫', '自满、短视、依赖', '单一化思维、沉没成本、承诺升级'], "answer": 3 },
+  { q: 'AltSchool教育实验失败的核心原因是什么？', opts: ['教师能力不足', '学生不适应', '技术平台不成熟', '改革方向偏离美国教育核心矛盾（公立学校质量）'], "answer": 3 },
+  { q: '第斯多惠与洪堡教育理念的长期弊端是什么？', opts: ['教师待遇过高', '学生负担过重', '教育投入不足', '开创性研究与通才培养不足'], "answer": 3 }
+];
+
+// Verify answer distribution
+(function() {
+  var dist = {};
+  mcqData.forEach(function(q) { dist[q.answer] = (dist[q.answer] || 0) + 1; });
+  console.log('MCQ answer distribution:', JSON.stringify(dist));
+})();
+
+var socraticData = [
+  { concept: '自然教育（卢梭）', layers: [
+    { q: '为什么说"人为的教育必须适应自然的教育"？', a: '因为自然的教育（孩子的天性禀赋和发育节奏）是人力无法改变的。就像一个园丁不能命令种子更快发芽，只能提供合适的土壤、阳光和水。人为的教育如果违背自然规律——比如要求2岁的孩子学会分享逻辑——不仅无效，还会损害孩子的自然发展。' },
+    { q: '那是不是意味着家长完全不需要干预？放任自流就可以？', a: '不是。卢梭反对的是"违背自然的干预"，而不是"所有干预"。他特别强调劳动教育的重要性——"劳动是社会人不可豁免的责任"。正确的干预是：在合适的年龄提供合适的引导，比如12岁前通过直观体验学习，12岁后再系统学习抽象知识。关键区别在于：干预的出发点是"顺应发展节奏"还是"强加成人意志"。' },
+    { q: '这套理论对于成年人还有意义吗？', a: '非常有意义。《爱弥儿》不仅适用于儿童教育。卢梭提出三大教育者——他人（老师/家长）、孩子自己、大自然——这一框架对成人同样适用。成年人的"自我教育"相当于把"他人教育"内化，同时承认自己的局限（大自然的部分），在能力边界内最大化成长。' }
+  ]},
+  { concept: '认知发展阶段（皮亚杰）', layers: [
+    { q: '为什么7岁前的孩子"听不懂道理"？是不是笨？', a: '绝对不是笨。皮亚杰通过"假山实验"证明：7岁前孩子处于前操作阶段，以自我为中心思考，无法从他人视角理解事物。这不是智力问题，而是大脑发育的客观规律——就像婴儿不会走路不是"懒"，而是神经系统尚未发育成熟。' },
+    { q: '既然有这些阶段限制，"提前教育"为什么反而有害？', a: '因为提前教育的代价是挤占了当前阶段真正需要的认知发展时间。比如0-2岁孩子需要的是通过触摸、观察建立对物理世界的基本感知，如果拿去背唐诗，感知运动阶段的"地基"就没打好。皮亚杰的发现恰恰为"什么时候教什么"提供了科学依据。' },
+    { q: '词汇量的关键期为什么在7-12岁？', a: '因为具体运算阶段的孩子已经具备了归纳推理能力，能通过观察实物（如动物园的动物）和阅读绘本有效扩大词汇量。这个时期的词汇增速直接决定终身词汇量储备，而词汇量又决定了知识获取的范围和深度——这是一个认知的"复利效应"。' }
+  ]},
+  { concept: '教育即成长（杜威）', layers: [
+    { q: '"教育即成长"和我们常说的"教育是为未来做准备"有什么本质不同？', a: '根本区别在于时间焦点。"为未来准备"隐含了一个假设——当下的学习是手段，未来才是目的。杜威反对这种割裂，他认为成长本身就是目的。一个孩子学习数学，不是因为"将来考大学需要"，而是因为理解数量关系本身就是成长的一部分。当下过得充实而有意义的成长，自然导向好的未来。' },
+    { q: '杜威说"习惯一旦养成，相关领域的可塑性基本消失"——这是不是太绝对了？', a: '杜威说的"可塑性消失"指的是神经系统层面的路径依赖——就像一条小路被反复走成了高速公路，再想走另一条路需要巨大的能量。这是神经科学后来证实的。但他并非说人不能改变，而是说改变的成本极高。所以培养好习惯比纠正坏习惯重要得多，这也是"培养好习惯比多学知识点更重要"的深层原因。' },
+    { q: '终身教育和终身成长是什么关系？', a: '终身教育是方法论，终身成长是目的论。杜威说"生长是生活的特征，无生长则生活停止"，这是目的层面的判断。朗格朗的终身教育是实现这一目的的具体方法体系。二者的关系就像"健康"和"锻炼"——健康是目标，锻炼是手段。' }
+  ]},
+  { concept: '知识价值分层（斯宾塞）', layers: [
+    { q: '"保暖型知识"和"炫耀型知识"的划分会不会太功利了？', a: '斯宾塞不是否定炫耀型知识的存在价值，而是强调优先级。人生有限——"吾生也有涯，而知也无涯"——必须做取舍。他的框架帮助我们避免"花边有了但布料没有"的尴尬。一个连基本谋生能力都没有的人去学高尔夫，就像在冬天先买花边衬衫而不是棉袄。但如果棉袄已经足够，添几件花边衬衫完全合理。' },
+    { q: '为什么当代教育最欠缺的是"为人父母知识"和"社会公民知识"？', a: '因为现代学校体系主要传授的是"直接/间接自我保全知识"（谋生技能），但对如何抚养下一代、如何做一个合格公民几乎没有系统教学。这在传统社会由家族和社区代际传递，但在现代社会出现断裂。导致的结果是：人们在职场很专业，但做父母、做公民时只能凭直觉或模仿。' }
+  ]}
+];
+
+// ===== INIT =====
+function init() {
+  renderConceptGrid();
+  renderSVG();
+  renderCard(0);
+  renderMindmap();
+  renderQuiz();
+  renderSocratic();
+  renderCases();
+  renderDecision();
+  updateProgress();
+  updateReview();
+}
+
+// ===== Concept Grid =====
+function renderConceptGrid() {
+  var grid = document.getElementById('conceptGrid');
+  var html = '';
+  concepts.forEach(function(c) {
+    html += '<div class="concept-card' + (c.star ? ' star' : '') + '" onclick="jumpToCard(\'' + c.id + '\')">';
+    html += '<div class="c-name">' + (c.star ? '<span class="c-star">★</span> ' : '') + c.name + '</div>';
+    html += '<div class="c-desc">' + c.desc + '</div>';
+    html += '</div>';
+  });
+  grid.innerHTML = html;
+}
+
+function jumpToCard(id) {
+  var idx = concepts.findIndex(function(c) { return c.id === id; });
+  if (idx >= 0) { currentCardIdx = idx; renderCard(idx); switchTab(1); }
+}
+
+// ===== SVG =====
+function renderSVG() {
+  document.getElementById('svgContainer').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1373 294"><g transform="scale(1 1) rotate(0) translate(4 290)"><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-290 1368.5,-290 1368.5,4 -4,4"/><g class="cluster"><path fill="#fffaf2" stroke="#d4a574" stroke-dasharray="5,2" d="M708,-208C708,-208 949,-208 949,-208 955,-208 961,-214 961,-220 961,-220 961,-266 961,-266 961,-272 955,-278 949,-278 949,-278 708,-278 708,-278 702,-278 696,-272 696,-266 696,-266 696,-220 696,-220 696,-214 702,-208 708,-208"/><text text-anchor="middle" x="828.5" y="-266.8" font-family="Times,serif" font-size="9.00" fill="#3d2f2f">图例说明</text></g><g class="node"><path fill="#c0392b" stroke="black" stroke-width="2" d="M674.5,-252C674.5,-252 519.5,-252 519.5,-252 513.5,-252 507.5,-246 507.5,-240 507.5,-240 507.5,-228 507.5,-228 507.5,-222 513.5,-216 519.5,-216 519.5,-216 674.5,-216 674.5,-216 680.5,-216 686.5,-222 686.5,-228 686.5,-228 686.5,-240 686.5,-240 686.5,-246 680.5,-252 674.5,-252"/><text text-anchor="middle" x="597" y="-231.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">教育本质：自然成长 → 终身发展</text></g><g class="node"><path fill="#d4a574" stroke="black" d="M306,-180C306,-180 212,-180 212,-180 206,-180 200,-174 200,-168 200,-168 200,-156 200,-156 200,-150 206,-144 212,-144 212,-144 306,-144 306,-144 312,-144 318,-150 318,-156 318,-156 318,-168 318,-168 318,-174 312,-180 306,-180"/><text text-anchor="middle" x="259" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">自然教育传统</text><text text-anchor="middle" x="259" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">遵循天性与发展阶段</text></g><g class="node"><path fill="#d4a574" stroke="black" d="M644,-180C644,-180 550,-180 550,-180 544,-180 538,-174 538,-168 538,-168 538,-156 538,-156 538,-150 544,-144 550,-144 550,-144 644,-144 644,-144 650,-144 656,-150 656,-156 656,-156 656,-168 656,-168 656,-174 650,-180 644,-180"/><text text-anchor="middle" x="597" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">科学教育传统</text><text text-anchor="middle" x="597" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">知识分层与系统教学</text></g><g class="node"><path fill="#d4a574" stroke="black" d="M1050,-180C1050,-180 956,-180 956,-180 950,-180 944,-174 944,-168 944,-168 944,-156 944,-156 944,-150 950,-144 956,-144 956,-144 1050,-144 1050,-144 1056,-144 1062,-150 1062,-156 1062,-156 1062,-168 1062,-168 1062,-174 1056,-180 1050,-180"/><text text-anchor="middle" x="1003" y="-165.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">现代教育综合</text><text text-anchor="middle" x="1003" y="-153.2" font-family="Noto Sans SC" font-size="11.00" fill="#fff">多元智力与终身学习</text></g><g class="edge"><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M514.75,-215.97C457.54,-204.12 382.13,-188.5 328.04,-177.3"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="328.7,-173.86 318.2,-175.26 327.28,-180.72 328.7,-173.86"/></g><g class="edge"><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M597,-215.7C597,-207.98 597,-198.71 597,-190.11"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="600.5,-190.1 597,-180.1 593.5,-190.1 600.5,-190.1"/></g><g class="edge"><path fill="none" stroke="#c0392b" stroke-width="1.5" d="M657.57,-215.96C668.96,-213.07 680.8,-210.28 692,-208 774.42,-191.25 870.36,-178.35 933.64,-170.74"/><polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="934.39,-174.18 943.9,-169.52 933.56,-167.23 934.39,-174.18"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M110,-108C110,-108 12,-108 12,-108 6,-108 0,-102 0,-96 0,-96 0,-84 0,-84 0,-78 6,-72 12,-72 12,-72 110,-72 110,-72 116,-72 122,-78 122,-84 122,-84 122,-96 122,-96 122,-102 116,-108 110,-108"/><text text-anchor="middle" x="61" y="-93.2" font-family="Noto Sans SC" font-size="11.00">卢梭《爱弥儿》</text><text text-anchor="middle" x="61" y="-81.2" font-family="Noto Sans SC" font-size="11.00">自然为基准·年龄分段</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M210.82,-143.97C183.15,-134.19 148.22,-121.84 119.05,-111.52"/><polygon fill="#d4a574" stroke="#d4a574" points="119.99,-108.14 109.4,-108.11 117.66,-114.74 119.99,-108.14"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M238,-108C238,-108 152,-108 152,-108 146,-108 140,-102 140,-96 140,-96 140,-84 140,-84 140,-78 146,-72 152,-72 152,-72 238,-72 238,-72 244,-72 250,-78 250,-84 250,-84 250,-96 250,-96 250,-102 244,-108 238,-108"/><text text-anchor="middle" x="195" y="-93.2" font-family="Noto Sans SC" font-size="11.00">皮亚杰认知发展</text><text text-anchor="middle" x="195" y="-81.2" font-family="Noto Sans SC" font-size="11.00">四阶段·发生认识论</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M243.18,-143.7C235.43,-135.22 225.96,-124.86 217.48,-115.58"/><polygon fill="#d4a574" stroke="#d4a574" points="219.97,-113.12 210.64,-108.1 214.8,-117.85 219.97,-113.12"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M366,-108C366,-108 280,-108 280,-108 274,-108 268,-102 268,-96 268,-96 268,-84 268,-84 268,-78 274,-72 280,-72 280,-72 366,-72 366,-72 372,-72 378,-78 378,-84 378,-84 378,-96 378,-96 378,-102 372,-108 366,-108"/><text text-anchor="middle" x="323" y="-93.2" font-family="Noto Sans SC" font-size="11.00">杜威教育即成长</text><text text-anchor="middle" x="323" y="-81.2" font-family="Noto Sans SC" font-size="11.00">思维五步·终身成长</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M274.82,-143.7C282.57,-135.22 292.04,-124.86 300.52,-115.58"/><polygon fill="#d4a574" stroke="#d4a574" points="303.2,-117.85 307.36,-108.1 298.03,-113.12 303.2,-117.85"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M507.5,-108C507.5,-108 408.5,-108 408.5,-108 402.5,-108 396.5,-102 396.5,-96 396.5,-96 396.5,-84 396.5,-84 396.5,-78 402.5,-72 408.5,-72 408.5,-72 507.5,-72 507.5,-72 513.5,-72 519.5,-78 519.5,-84 519.5,-84 519.5,-96 519.5,-96 519.5,-102 513.5,-108 507.5,-108"/><text text-anchor="middle" x="458" y="-93.2" font-family="Noto Sans SC" font-size="11.00">斯宾塞知识分层</text><text text-anchor="middle" x="458" y="-81.2" font-family="Noto Sans SC" font-size="11.00">比较价值·保暖vs炫耀</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M563,-143.88C544.4,-134.51 521.17,-122.81 501.29,-112.8"/><polygon fill="#d4a574" stroke="#d4a574" points="502.64,-109.56 492.13,-108.19 499.49,-115.81 502.64,-109.56"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M644,-108C644,-108 550,-108 550,-108 544,-108 538,-102 538,-96 538,-96 538,-84 538,-84 538,-78 544,-72 550,-72 550,-72 644,-72 644,-72 650,-72 656,-78 656,-84 656,-84 656,-96 656,-96 656,-102 650,-108 644,-108"/><text text-anchor="middle" x="597" y="-93.2" font-family="Noto Sans SC" font-size="11.00">赫尔巴特科学教育学</text><text text-anchor="middle" x="597" y="-81.2" font-family="Noto Sans SC" font-size="11.00">训育·德育优先·管理</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M597,-143.7C597,-135.98 597,-126.71 597,-118.11"/><polygon fill="#d4a574" stroke="#d4a574" points="600.5,-118.1 597,-108.1 593.5,-118.1 600.5,-118.1"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M772,-108C772,-108 686,-108 686,-108 680,-108 674,-102 674,-96 674,-96 674,-84 674,-84 674,-78 680,-72 686,-72 686,-72 772,-72 772,-72 778,-72 784,-78 784,-84 784,-84 784,-96 784,-96 784,-102 778,-108 772,-108"/><text text-anchor="middle" x="729" y="-93.2" font-family="Noto Sans SC" font-size="11.00">第斯多惠教师培养</text><text text-anchor="middle" x="729" y="-81.2" font-family="Noto Sans SC" font-size="11.00">热爱真理·检验真理</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M629.29,-143.88C646.87,-134.55 668.81,-122.92 687.63,-112.94"/><polygon fill="#d4a574" stroke="#d4a574" points="689.39,-115.97 696.59,-108.19 686.11,-109.78 689.39,-115.97"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M912,-108C912,-108 814,-108 814,-108 808,-108 802,-102 802,-96 802,-96 802,-84 802,-84 802,-78 808,-72 814,-72 814,-72 912,-72 912,-72 918,-72 924,-78 924,-84 924,-84 924,-96 924,-96 924,-102 918,-108 912,-108"/><text text-anchor="middle" x="863" y="-93.2" font-family="Noto Sans SC" font-size="11.00">加德纳多元智力</text><text text-anchor="middle" x="863" y="-81.2" font-family="Noto Sans SC" font-size="11.00">七维智力·三原色模型</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M968.75,-143.88C949.94,-134.47 926.42,-122.71 906.33,-112.67"/><polygon fill="#d4a574" stroke="#d4a574" points="907.89,-109.53 897.38,-108.19 904.76,-115.79 907.89,-109.53"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M1052,-108C1052,-108 954,-108 954,-108 948,-108 942,-102 942,-96 942,-96 942,-84 942,-84 942,-78 948,-72 954,-72 954,-72 1052,-72 1052,-72 1058,-72 1064,-78 1064,-84 1064,-84 1064,-96 1064,-96 1064,-102 1058,-108 1052,-108"/><text text-anchor="middle" x="1003" y="-93.2" font-family="Noto Sans SC" font-size="11.00">朗格朗终身教育</text><text text-anchor="middle" x="1003" y="-81.2" font-family="Noto Sans SC" font-size="11.00">五大驱动力·四大方法</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M1003,-143.7C1003,-135.98 1003,-126.71 1003,-118.11"/><polygon fill="#d4a574" stroke="#d4a574" points="1006.5,-118.1 1003,-108.1 999.5,-118.1 1006.5,-118.1"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M1203.5,-108C1203.5,-108 1094.5,-108 1094.5,-108 1088.5,-108 1082.5,-102 1082.5,-96 1082.5,-96 1082.5,-84 1082.5,-84 1082.5,-78 1088.5,-72 1094.5,-72 1094.5,-72 1203.5,-72 1203.5,-72 1209.5,-72 1215.5,-78 1215.5,-84 1215.5,-84 1215.5,-96 1215.5,-96 1215.5,-102 1209.5,-108 1203.5,-108"/><text text-anchor="middle" x="1149" y="-93.2" font-family="Noto Sans SC" font-size="11.00">教育公平与兼容</text><text text-anchor="middle" x="1149" y="-81.2" font-family="Noto Sans SC" font-size="11.00">社会分工平等·环境匹配</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M1038.72,-143.88C1058.5,-134.39 1083.27,-122.51 1104.33,-112.42"/><polygon fill="#d4a574" stroke="#d4a574" points="1105.9,-115.55 1113.4,-108.07 1102.87,-109.24 1105.9,-115.55"/></g><g class="node"><path fill="#fffaf2" stroke="#5a3e3e" d="M1352.5,-108C1352.5,-108 1245.5,-108 1245.5,-108 1239.5,-108 1233.5,-102 1233.5,-96 1233.5,-96 1233.5,-84 1233.5,-84 1233.5,-78 1239.5,-72 1245.5,-72 1245.5,-72 1352.5,-72 1352.5,-72 1358.5,-72 1364.5,-78 1364.5,-84 1364.5,-84 1364.5,-96 1364.5,-96 1364.5,-102 1358.5,-108 1352.5,-108"/><text text-anchor="middle" x="1299" y="-93.2" font-family="Noto Sans SC" font-size="11.00">自我驱动学习</text><text text-anchor="middle" x="1299" y="-81.2" font-family="Noto Sans SC" font-size="11.00">20h入门·关键路径选择</text></g><g class="edge"><path fill="none" stroke="#d4a574" d="M1062.19,-147C1108.61,-136.02 1173.53,-120.67 1223.66,-108.82"/><polygon fill="#d4a574" stroke="#d4a574" points="1224.55,-112.2 1233.48,-106.49 1222.94,-105.39 1224.55,-112.2"/></g><g class="edge"><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M122.24,-90C124.72,-90 127.2,-90 129.68,-90"/><polygon fill="#8b7355" stroke="#8b7355" points="129.86,-93.5 139.86,-90 129.86,-86.5 129.86,-93.5"/></g><g class="node"><polygon fill="#fdf6ec" stroke="#8b7355" points="108.5,-36 7.5,-36 7.5,0 114.5,0 114.5,-30 108.5,-36"/><polyline fill="none" stroke="#8b7355" points="108.5,-36 108.5,-30"/><polyline fill="none" stroke="#8b7355" points="114.5,-30 108.5,-30"/><text text-anchor="middle" x="61" y="-21.2" font-family="Noto Sans SC" font-size="11.00">把孩子当孩子</text><text text-anchor="middle" x="61" y="-9.2" font-family="Noto Sans SC" font-size="11.00">尊重认知发展规律</text></g><g class="edge"><path fill="none" stroke="#8b7355" d="M61,-71.7C61,-63.98 61,-54.71 61,-46.11"/><polygon fill="#8b7355" stroke="#8b7355" points="64.5,-46.1 61,-36.1 57.5,-46.1 64.5,-46.1"/></g><g class="edge"><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M224.03,-108.14C236.97,-115.2 252.72,-122.44 268,-126 323.84,-139.02 727.97,-138.16 784,-126 796.9,-123.2 810.22,-118.1 822.16,-112.61"/><polygon fill="#8b7355" stroke="#8b7355" points="823.92,-115.64 831.41,-108.15 820.88,-109.34 823.92,-115.64"/></g><g class="edge"><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M352.03,-108.14C364.97,-115.2 380.72,-122.44 396,-126 453.13,-139.32 866.67,-138.45 924,-126 936.9,-123.2 950.22,-118.1 962.16,-112.61"/><polygon fill="#8b7355" stroke="#8b7355" points="963.92,-115.64 971.41,-108.15 960.88,-109.34 963.92,-115.64"/></g><g class="node"><polygon fill="#fdf6ec" stroke="#8b7355" points="391,-36 249,-36 249,0 397,0 397,-30 391,-36"/><polyline fill="none" stroke="#8b7355" points="391,-36 391,-30"/><polyline fill="none" stroke="#8b7355" points="397,-30 391,-30"/><text text-anchor="middle" x="323" y="-21.2" font-family="Noto Sans SC" font-size="11.00">成长三大陷阱</text><text text-anchor="middle" x="323" y="-9.2" font-family="Noto Sans SC" font-size="11.00">单一化·沉没成本·承诺升级</text></g><g class="edge"><path fill="none" stroke="#8b7355" d="M323,-71.7C323,-63.98 323,-54.71 323,-46.11"/><polygon fill="#8b7355" stroke="#8b7355" points="326.5,-46.1 323,-36.1 319.5,-46.1 326.5,-46.1"/></g><g class="edge"><path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M490.01,-108.15C504.24,-115.21 521.47,-122.45 538,-126 652.29,-150.53 949.45,-149.26 1064,-126 1078.03,-123.15 1092.61,-117.91 1105.66,-112.29"/><polygon fill="#8b7355" stroke="#8b7355" points="1107.17,-115.45 1114.86,-108.16 1104.31,-109.06 1107.17,-115.45"/></g><g class="node"><polygon fill="#fdf6ec" stroke="#8b7355" points="646,-36 542,-36 542,0 652,0 652,-30 646,-36"/><polyline fill="none" stroke="#8b7355" points="646,-36 646,-30"/><polyline fill="none" stroke="#8b7355" points="652,-30 646,-30"/><text text-anchor="middle" x="597" y="-21.2" font-family="Noto Sans SC" font-size="11.00">作弊本质</text><text text-anchor="middle" x="597" y="-9.2" font-family="Noto Sans SC" font-size="11.00">自我欺骗·长期损害</text></g><g class="edge"><path fill="none" stroke="#8b7355" d="M597,-71.7C597,-63.98 597,-54.71 597,-46.11"/><polygon fill="#8b7355" stroke="#8b7355" points="600.5,-46.1 597,-36.1 593.5,-46.1 600.5,-46.1"/></g><g class="node"><polygon fill="#fdf6ec" stroke="#8b7355" points="1352,-36 1240,-36 1240,0 1358,0 1358,-30 1352,-36"/><polyline fill="none" stroke="#8b7355" points="1352,-36 1352,-30"/><polyline fill="none" stroke="#8b7355" points="1358,-30 1352,-30"/><text text-anchor="middle" x="1299" y="-21.2" font-family="Noto Sans SC" font-size="11.00">考试价值</text><text text-anchor="middle" x="1299" y="-9.2" font-family="Noto Sans SC" font-size="11.00">外部约束的积极意义</text></g><g class="edge"><path fill="none" stroke="#8b7355" d="M1299,-71.7C1299,-63.98 1299,-54.71 1299,-46.11"/><polygon fill="#8b7355" stroke="#8b7355" points="1302.5,-46.1 1299,-36.1 1295.5,-46.1 1302.5,-46.1"/></g><g class="node"><path fill="#c0392b" stroke="transparent" d="M941,-252C941,-252 899,-252 899,-252 893,-252 887,-246 887,-240 887,-240 887,-228 887,-228 887,-222 893,-216 899,-216 899,-216 941,-216 941,-216 947,-216 953,-222 953,-228 953,-228 953,-240 953,-240 953,-246 947,-252 941,-252"/><text text-anchor="middle" x="920" y="-232.1" font-family="Noto Sans SC" font-size="8.00" fill="#fff">核心驱动关系</text></g><g class="node"><path fill="#d4a574" stroke="transparent" d="M856.5,-252C856.5,-252 803.5,-252 803.5,-252 797.5,-252 791.5,-246 791.5,-240 791.5,-240 791.5,-228 791.5,-228 791.5,-222 797.5,-216 803.5,-216 803.5,-216 856.5,-216 856.5,-216 862.5,-216 868.5,-222 868.5,-228 868.5,-228 868.5,-240 868.5,-240 868.5,-246 862.5,-252 856.5,-252"/><text text-anchor="middle" x="830" y="-232.1" font-family="Noto Sans SC" font-size="8.00" fill="#fff">方法论/派生关系</text></g><g class="node"><path fill="#8b7355" stroke="transparent" d="M761.5,-252C761.5,-252 716.5,-252 716.5,-252 710.5,-252 704.5,-246 704.5,-240 704.5,-240 704.5,-228 704.5,-228 704.5,-222 710.5,-216 716.5,-216 716.5,-216 761.5,-216 761.5,-216 767.5,-216 773.5,-222 773.5,-228 773.5,-228 773.5,-240 773.5,-240 773.5,-246 767.5,-252 761.5,-252"/><text text-anchor="middle" x="739" y="-232.1" font-family="Noto Sans SC" font-size="8.00" fill="#fff">历史继承/关联</text></g></g></svg>';
+}
+
+// ===== Knowledge Cards =====
+function renderCard(idx) {
+  var d = cardDetails[idx];
+  document.getElementById('fcName').textContent = d.name;
+  document.getElementById('fcSub').textContent = d.sub;
+  document.getElementById('flipBack').innerHTML = '<h4>📖 定义</h4><p>' + d.def + '</p><h4>🔮 类比</h4><p>' + d.analogy + '</p><h4>✅ 示例</h4><p>' + d.example + '</p><h4>❌ 反例</h4><p>' + d.counter + '</p>';
+  document.getElementById('flipCard').classList.remove('flipped');
+  document.getElementById('cardCounter').textContent = (idx + 1) + ' / ' + cardDetails.length;
+  updateMarkBtn();
+}
+
+function prevCard() { currentCardIdx = (currentCardIdx - 1 + cardDetails.length) % cardDetails.length; renderCard(currentCardIdx); }
+function nextCard() { currentCardIdx = (currentCardIdx + 1) % cardDetails.length; renderCard(currentCardIdx); }
+function toggleFlip() { document.getElementById('flipCard').classList.toggle('flipped'); }
+function markLearned() {
+  var id = concepts[currentCardIdx].id;
+  LS.learned[id] = !LS.learned[id];
+  saveLS(); updateMarkBtn(); updateProgress();
+}
+function updateMarkBtn() {
+  var btn = document.getElementById('markLearnedBtn');
+  var id = concepts[currentCardIdx].id;
+  btn.textContent = LS.learned[id] ? '✓ 已学习' : '✓ 已学习';
+  btn.style.opacity = LS.learned[id] ? '1' : '0.5';
+}
+function updateProgress() {
+  var learned = Object.keys(LS.learned).filter(function(k) { return LS.learned[k]; }).length;
+  var pct = Math.round(learned / concepts.length * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = '学习进度: ' + learned + ' / ' + concepts.length + ' (' + pct + '%)';
+}
+
+// ===== Mind Map =====
+function renderMindmap() {
+  var tree = document.getElementById('mindmapTree');
+  tree.innerHTML = buildTreeNode(
+    '教育本质：从自然成长到终身发展', 'root', true, [
+      buildTreeNode('自然教育传统（遵循天性与发展阶段）', 't1', true, [
+        buildTreeNode('卢梭《爱弥儿》——自然为基准，年龄分段教育，12岁前直观感受/12岁后抽象学问', 'leaf', false),
+        buildTreeNode('皮亚杰认知发展——四阶段：感知运动(0-2)→前操作(2-7)→具体运算(7-12)→抽象运算(12+)', 'leaf', false),
+        buildTreeNode('杜威教育即成长——容量与潜力维度，思维训练五步法，习惯决定可塑性', 'leaf', false)
+      ]),
+      buildTreeNode('科学教育传统（知识分层与系统教学）', 't1', true, [
+        buildTreeNode('斯宾塞知识价值论——保暖型vs炫耀型知识，五层优先级，比较价值决定学习顺序', 'leaf', false),
+        buildTreeNode('赫尔巴特科学教育学——德育优先于知识传授，训育塑造性格六维度，合理处罚必要', 'leaf', false),
+        buildTreeNode('第斯多惠教师培养——热爱真理+检验真理能力+科研能力，三大遴选标准', 'leaf', false)
+      ]),
+      buildTreeNode('现代教育综合（多元智力与终身学习）', 't1', true, [
+        buildTreeNode('加德纳多元智力——七维智力表现，三原色模型（语言/抽象思维/形象思维），因材施教', 'leaf', false),
+        buildTreeNode('朗格朗终身教育——五大驱动力（知识增速/人口竞争/科技冲击/全球化/生活方式），四大实践方法', 'leaf', false),
+        buildTreeNode('教育公平与兼容——社会分工平等，教育必须与社会环境兼容，教育的对象是"人"本身', 'leaf', false),
+        buildTreeNode('自我驱动学习——20小时入门法则，关键路径选题，内在动机决定学习深度', 'leaf', false)
+      ]),
+      buildTreeNode('实践应用层', 't1', true, [
+        buildTreeNode('把孩子当孩子——尊重认知发展规律，避免成人思维投射', 'leaf', false),
+        buildTreeNode('成长三大陷阱——单一化思维/沉没成本/承诺升级，理性决策是关键', 'leaf', false),
+        buildTreeNode('作弊的本质——自我欺骗，长期损害远大于短期利益', 'leaf', false),
+        buildTreeNode('考试的价值——外部约束有积极意义，完全取消反而加大差距', 'leaf', false)
+      ])
+    ]
+  );
+}
+
+function buildTreeNode(label, type, expanded, children) {
+  var hasChildren = children && children.length > 0;
+  var cls = type === 'root' ? 'root' : (type === 't1' ? 'tier1' : '');
+  var html = '<div class="tree-node"><span class="tree-label ' + cls + '" onclick="toggleTreeNode(this)">';
+  if (hasChildren) html += '<span class="tree-toggle' + (expanded ? ' open' : '') + '">▶</span>';
+  html += label + '</span>';
+  if (hasChildren) {
+    html += '<div class="tree-children' + (expanded ? ' show' : '') + '">';
+    children.forEach(function(c) { html += c; });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function toggleTreeNode(el) {
+  var toggle = el.querySelector('.tree-toggle');
+  if (toggle) toggle.classList.toggle('open');
+  var children = el.parentElement.querySelector('.tree-children');
+  if (children) children.classList.toggle('show');
+}
+
+// ===== Quiz =====
+function renderQuiz() {
+  var container = document.getElementById('quizContainer');
+  currentQuizSet = mcqData.slice();
+  var html = '';
+  currentQuizSet.forEach(function(q, i) {
+    html += '<div class="quiz-card" id="qcard-' + i + '"><div class="q-question">' + (i + 1) + '. ' + q.q + '</div>';
+    html += '<div class="q-options">';
+    var labels = ['A', 'B', 'C', 'D'];
+    q.opts.forEach(function(opt, j) {
+      html += '<div class="q-option" data-q="' + i + '" data-o="' + j + '" onclick="selectOption(this)">' + labels[j] + '. ' + opt + '</div>';
+    });
+    html += '</div><div class="q-feedback" id="qfb-' + i + '"></div></div>';
+  });
+  container.innerHTML = html;
+  quizState = {};
+}
+
+function selectOption(el) {
+  var qi = parseInt(el.getAttribute('data-q'));
+  var oi = parseInt(el.getAttribute('data-o'));
+  if (quizState[qi] !== undefined) return;
+  quizState[qi] = { chosen: oi, correct: currentQuizSet[qi].answer };
+  var correct = oi === currentQuizSet[qi].answer;
+  LS.quizDone++;
+  if (correct) LS.quizCorrect++;
+  if (!correct) {
+    LS.wrong.push({ q: currentQuizSet[qi].q, opts: currentQuizSet[qi].opts, "answer": currentQuizSet[qi].answer, chosen: oi, time: Date.now() });
+  }
+  saveLS();
+
+  var opts = el.parentElement.querySelectorAll('.q-option');
+  opts.forEach(function(o, j) {
+    if (j === currentQuizSet[qi].answer) o.classList.add('correct');
+    else if (j === oi && !correct) o.classList.add('wrong');
+    o.style.pointerEvents = 'none';
+  });
+  el.classList.add('selected');
+
+  var fb = document.getElementById('qfb-' + qi);
+  fb.textContent = correct ? '✅ 正确！' : '❌ 错误！正确答案是 ' + ['A','B','C','D'][currentQuizSet[qi].answer] + '. ' + currentQuizSet[qi].opts[currentQuizSet[qi].answer];
+  fb.className = 'q-feedback show ' + (correct ? 'correct' : 'wrong');
+}
+
+function shuffleQuiz() {
+  currentQuizSet = mcqData.slice().sort(function() { return Math.random() - 0.5; });
+  var container = document.getElementById('quizContainer');
+  var html = '';
+  currentQuizSet.forEach(function(q, i) {
+    html += '<div class="quiz-card" id="qcard-' + i + '"><div class="q-question">' + (i + 1) + '. ' + q.q + '</div><div class="q-options">';
+    var labels = ['A', 'B', 'C', 'D'];
+    q.opts.forEach(function(opt, j) {
+      html += '<div class="q-option" data-q="' + i + '" data-o="' + j + '" onclick="selectOption(this)">' + labels[j] + '. ' + opt + '</div>';
+    });
+    html += '</div><div class="q-feedback" id="qfb-' + i + '"></div></div>';
+  });
+  container.innerHTML = html;
+  quizState = {};
+}
+
+function resetQuiz() { LS.quizDone = 0; LS.quizCorrect = 0; LS.wrong = []; saveLS(); currentQuizSet = mcqData.slice(); renderQuiz(); document.getElementById('quizSummary').style.display = 'none'; updateReview(); }
+
+function showQuizSummary() {
+  var done = Object.keys(quizState).length;
+  var correct = 0;
+  Object.values(quizState).forEach(function(s) { if (s.chosen === s.correct) correct++; });
+  var sum = document.getElementById('quizSummary');
+  sum.style.display = 'block';
+  sum.innerHTML = '<div class="quiz-card" style="text-align:center;"><h4>本轮成绩</h4><p>已完成: ' + done + ' / 20</p><p>正确: ' + correct + ' / ' + done + ' (' + (done ? Math.round(correct / done * 100) : 0) + '%)</p></div>';
+}
+
+// ===== Exam =====
+function startExam() {
+  examActive = true;
+  examTimeLeft = 900;
+  var shuffled = mcqData.slice().sort(function() { return Math.random() - 0.5; });
+  examQuestions = shuffled.slice(0, 7);
+  examAnswers = {};
+
+  document.getElementById('examStartBtn').style.display = 'none';
+  document.getElementById('examSubmitBtn').style.display = 'inline-block';
+  updateExamTimer();
+
+  var html = '<h4 class="subsection-title">选择题（7题）</h4>';
+  examQuestions.forEach(function(q, i) {
+    html += '<div class="quiz-card"><div class="q-question">' + (i + 1) + '. ' + q.q + '</div><div class="q-options">';
+    var labels = ['A', 'B', 'C', 'D'];
+    q.opts.forEach(function(opt, j) {
+      html += '<div class="q-option" data-exam="' + i + '" data-o="' + j + '" onclick="selectExamOption(this)">' + labels[j] + '. ' + opt + '</div>';
+    });
+    html += '</div></div>';
+  });
+  html += '<h4 class="subsection-title">简答题（3题）</h4>';
+  html += '<div class="quiz-card"><p>1. 请简述卢梭"自然教育"的核心原则及其对当代家长的启示。</p><textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;" id="sa1"></textarea></div>';
+  html += '<div class="quiz-card"><p>2. 皮亚杰的认知发展阶段理论对"提前教育"提出了怎样的批评？请结合具体阶段说明。</p><textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;" id="sa2"></textarea></div>';
+  html += '<div class="quiz-card"><p>3. 杜威"教育即成长"与朗格朗"终身教育"之间有何内在联系？</p><textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;" id="sa3"></textarea></div>';
+  document.getElementById('examContainer').innerHTML = html;
+  document.getElementById('examResult').style.display = 'none';
+
+  examTimerId = setInterval(function() {
+    examTimeLeft--;
+    updateExamTimer();
+    if (examTimeLeft <= 0) submitExam();
+  }, 1000);
+}
+
+function updateExamTimer() {
+  var m = Math.floor(examTimeLeft / 60);
+  var s = examTimeLeft % 60;
+  document.getElementById('examTimer').textContent = '剩余: ' + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function selectExamOption(el) {
+  var qi = parseInt(el.getAttribute('data-exam'));
+  var oi = parseInt(el.getAttribute('data-o'));
+  examAnswers[qi] = oi;
+  var opts = el.parentElement.querySelectorAll('.q-option');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function submitExam() {
+  clearInterval(examTimerId);
+  examActive = false;
+  var score = 0;
+  examQuestions.forEach(function(q, i) {
+    if (examAnswers[i] === q.answer) score++;
+  });
+  LS.examHistory.push({ date: Date.now(), score: score, total: 7 });
+  saveLS();
+
+  var html = '<h4>考试结果</h4><div class="exam-score">' + score + ' / 7</div>';
+  html += '<p>选择题得分: ' + score + ' / 7 (' + Math.round(score / 7 * 100) + '%)</p>';
+  html += '<p style="margin-top:10px;">简答题请自行对照以下要点：</p>';
+  html += '<p style="font-size:0.85em;color:var(--sub);">1. 核心原则：遵循自然，人为教育必须适应自然教育。启示：不超前灌输，尊重发育节奏，培养学习方法而非追求知识量。</p>';
+  html += '<p style="font-size:0.85em;color:var(--sub);">2. 提前教育的问题：每个阶段有特定认知能力上限，0-2岁需感知世界而非背诗，7岁前缺乏逻辑理解能力，12岁前缺乏演绎推理能力。超阶段灌输是"摧残而非教育"。</p>';
+  html += '<p style="font-size:0.85em;color:var(--sub);">3. 内在联系：杜威提供目的论（成长是生活的特征），朗格朗提供方法论（五大驱动力+四大方法）。终身教育是实现终身成长的具体路径，二者构成目的与手段的统一。</p>';
+  if (score < 4) html += '<p style="color:#e74c3c;margin-top:12px;">⚠️ 薄弱概念提示：自然教育、认知发展阶段、教育即成长、终身教育——建议回到知识卡片和追问模块深入学习。</p>';
+
+  document.getElementById('examResult').innerHTML = html;
+  document.getElementById('examResult').style.display = 'block';
+  document.getElementById('examSubmitBtn').style.display = 'none';
+  document.getElementById('examStartBtn').style.display = 'inline-block';
+  document.getElementById('examStartBtn').textContent = '重新考试';
+  updateReview();
+}
+
+// ===== Review =====
+function updateReview() {
+  var stats = document.getElementById('reviewStats');
+  stats.innerHTML = '<div class="stat-card"><div class="s-val">' + Object.keys(LS.learned).filter(function(k) { return LS.learned[k]; }).length + '</div><div class="s-label">已学概念</div></div>';
+  stats.innerHTML += '<div class="stat-card"><div class="s-val">' + LS.quizDone + '</div><div class="s-label">总答题数</div></div>';
+  stats.innerHTML += '<div class="stat-card"><div class="s-val">' + (LS.quizDone ? Math.round(LS.quizCorrect / LS.quizDone * 100) : 0) + '%</div><div class="s-label">正确率</div></div>';
+  stats.innerHTML += '<div class="stat-card"><div class="s-val">' + LS.wrong.length + '</div><div class="s-label">错题数</div></div>';
+
+  var wb = document.getElementById('wrongBook');
+  if (LS.wrong.length === 0) {
+    wb.innerHTML = '<p style="color:var(--sub);padding:16px;">暂无错题，继续加油！</p>';
+  } else {
+    var wh = '<div style="max-height:400px;overflow-y:auto;">';
+    LS.wrong.slice().reverse().forEach(function(w, i) {
+      wh += '<div class="wrong-item"><p><strong>题目:</strong> ' + w.q + '</p>';
+      wh += '<p style="color:#e74c3c;">你的答案: ' + ['A','B','C','D'][w.chosen] + '. ' + w.opts[w.chosen] + '</p>';
+      wh += '<p style="color:#27ae60;">正确答案: ' + ['A','B','C','D'][w.answer] + '. ' + w.opts[w.answer] + '</p>';
+      wh += '<button class="retry-btn" onclick="retryWrong(' + i + ')">重做此题</button></div>';
+    });
+    wh += '</div>';
+    wb.innerHTML = wh;
+  }
+
+  var wc = document.getElementById('weakConcepts');
+  var conceptMap = {
+    '自然教育': 0, '认知发展阶段': 1, '教育即成长': 2, '终身教育': 3,
+    '多元智力': 4, '知识价值分层': 5, '科学教育学': 6, '教师培养标准': 7,
+    '教育公平与兼容': 8, '自我驱动学习': 9
+  };
+  var wrongConcepts = {};
+  LS.wrong.forEach(function(w) {
+    var qText = w.q;
+    Object.keys(conceptMap).forEach(function(cn) {
+      if (qText.indexOf(cn) >= 0 || qText.indexOf(cn.substring(0, 2)) >= 0) {
+        wrongConcepts[cn] = (wrongConcepts[cn] || 0) + 1;
+      }
+    });
+  });
+  if (Object.keys(wrongConcepts).length === 0) {
+    wc.innerHTML = '<p style="color:var(--sub);padding:16px;">暂无薄弱概念数据</p>';
+  } else {
+    var sorted = Object.entries(wrongConcepts).sort(function(a, b) { return b[1] - a[1]; });
+    wc.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;">' + sorted.map(function(e) {
+      return '<span style="background:#fdedec;color:#e74c3c;padding:6px 12px;border-radius:16px;font-size:0.9em;">' + e[0] + ' (' + e[1] + '题)</span>';
+    }).join('') + '</div>';
+  }
+}
+
+function retryWrong(idx) {
+  switchTab(3);
+  var w = LS.wrong[LS.wrong.length - 1 - idx];
+  var qi = mcqData.findIndex(function(q) { return q.q === w.q; });
+  if (qi >= 0) {
+    currentQuizSet = mcqData.slice();
+    renderQuiz();
+    setTimeout(function() {
+      var target = document.getElementById('qcard-' + qi);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+}
+
+// ===== Socratic Q&A =====
+function renderSocratic() {
+  var container = document.getElementById('socraticList');
+  var html = '';
+  socraticData.forEach(function(item) {
+    html += '<h4 class="subsection-title">' + item.concept + '</h4>';
+    item.layers.forEach(function(layer, li) {
+      html += '<div class="socratic-item"><div class="socratic-q" onclick="toggleSocratic(this)">';
+      html += '<span>🔹 ' + layer.q + '</span><span class="arrow">▼</span></div>';
+      html += '<div class="socratic-a"><p>' + layer.a + '</p></div></div>';
+    });
+  });
+  container.innerHTML = html;
+}
+
+function toggleSocratic(el) {
+  el.classList.toggle('open');
+  var a = el.nextElementSibling;
+  if (a) a.classList.toggle('show');
+}
+
+// ===== Case Studies =====
+function renderCases() {
+  var container = document.getElementById('caseStudies');
+  var html = '';
+
+  html += '<div class="case-card"><h4>案例1: 朱贲兰的中国式教育实验</h4>';
+  html += '<p>美籍华裔妈妈将儿子送入中国公立小学，试图培养双语能力和纪律性。结果：文化冲突导致实验失败。</p>';
+  html += '<div class="case-dims"><div class="case-dim"><span class="dim-label">核心概念</span><br>教育公平与兼容——教育必须与社会环境兼容</div>';
+  html += '<div class="case-dim"><span class="dim-label">类比</span><br>如移植植物——同一物种在不同土壤中的生长结果截然不同</div>';
+  html += '<div class="case-dim"><span class="dim-label">示例</span><br>美国孩子在中国获高分，但思维方式和表达习惯与美国社会脱节</div>';
+  html += '<div class="case-dim"><span class="dim-label">反例</span><br>四健会——贴合美国乡村环境的非学业素质培养，成功弥补城乡差距</div></div></div>';
+
+  html += '<div class="case-card"><h4>案例2: AltSchool的崛起与陨落</h4>';
+  html += '<p>谷歌前员工创办的极致个性化学校，融资1.76亿美元，却因偏离美国教育核心矛盾（公立学校质量不足）而关闭。</p>';
+  html += '<div class="case-dims"><div class="case-dim"><span class="dim-label">核心概念</span><br>教育改革的精准性——必须直击核心矛盾</div>';
+  html += '<div class="case-dim"><span class="dim-label">类比</span><br>如治水——堵不如疏，但疏错了河道比不治更危险</div>';
+  html += '<div class="case-dim"><span class="dim-label">示例</span><br>KIPP计划针对底层学生，强调纪律和应试，贴合目标群体实际需求</div>';
+  html += '<div class="case-dim"><span class="dim-label">反例</span><br>极致个性化导致人均培养成本达百万美元，无法规模化推广</div></div></div>';
+
+  html += '<div class="case-card"><h4>案例3: 哈佛大学2012年作弊丑闻</h4>';
+  html += '<p>"国会简介"开卷考试中，279名学生中125名因答案相似被调查，大部分被勒令退学。</p>';
+  html += '<div class="case-dims"><div class="case-dim"><span class="dim-label">核心概念</span><br>作弊的本质是自我欺骗，长期损害远大于短期利益</div>';
+  html += '<div class="case-dim"><span class="dim-label">类比</span><br>如登珠峰乘直升机——到了山顶但活不过半小时</div>';
+  html += '<div class="case-dim"><span class="dim-label">示例</span><br>开卷考试更接近真实世界——人生更多是"没有监考的考试"</div>';
+  html += '<div class="case-dim"><span class="dim-label">反例</span><br>莉泽·迈特纳正视核裂变数据差异，发现质能转化，推动原子能时代</div></div></div>';
+
+  container.innerHTML = html;
+}
+
+// ===== Decision Sim =====
+function renderDecision() {
+  var container = document.getElementById('decisionSim');
+  var rounds = [
+    {
+      scenario: '你的孩子（8岁）数学成绩中等，同学家长都在报奥数班。你是否也给孩子报奥数？',
+      options: [
+        { text: '立即报奥数班，不能输在起跑线上', feedback: '⚠️ 注意"单一化思维陷阱"！奥数成绩不等于数学能力，更不等于未来成功。皮亚杰告诉我们，8岁儿童处于具体运算阶段，抽象逻辑思维能力有限。关键是解释逻辑原理而非题海战术。而且斯宾塞提醒：奥数属于"炫耀型知识"，优先确保基础通识知识达标。', mks: '皮亚杰认知阶段 + 斯宾塞知识分层 + 自然教育' },
+        { text: '先了解孩子的兴趣和困难点，根据实际情况决定', feedback: '✅ 明智的选择！这符合赫尔巴特"通过观察发现孩子特长"的原则，也体现了卢梭"把孩子当孩子"的教育理念。家长需要的是"判断力"而非"跟风力"。先诊断问题（是兴趣问题还是方法问题），再对症下药。', mks: '赫尔巴特观察法 + 卢梭自然教育 + 教育即成长' },
+        { text: '不报任何辅导班，让孩子自由发展', feedback: '⚠️ 需谨慎。卢梭反对"放任自流"等同于"自由发展不等于放纵"。8岁是具体运算阶段的关键期，需要适当的引导和逻辑训练。完全放手可能错失词汇积累和归纳推理能力的培养黄金期。建议提供资源但不强求成果。', mks: '卢梭自由≠放纵 + 皮亚杰关键期 + 杜威成长引导' }
+      ]
+    },
+    {
+      scenario: '你是一名35岁的程序员，AI编程工具让你的工作效率提升了3倍，但也让你担心自己的职业前景。你该如何应对？',
+      options: [
+        { text: '加班加点写更多代码，证明自己的价值不可替代', feedback: '⚠️ 朗格朗会提醒你：死守单一职业技能将面临"产业被替代"的风险。量变无法应对质变。关键不是写更多代码，而是升级你的知识框架——从"写代码的人"变成"解决复杂问题的人"。', mks: '朗格朗终身教育 + 广度vs深度辩证 + 关键路径选择' },
+        { text: '利用AI工具节省的时间学习新领域知识，拓展能力边界', feedback: '✅ 这正是朗格朗"终身学习"的实践！自我驱动+边做边学。利用AI作为杠杆，将时间投入到系统架构设计、产品思维、团队管理等AI难以替代的领域。加德纳会告诉你：你的"智力三原色"组合可以通过调整配比形成新的竞争优势。', mks: '朗格朗四大方法 + 加德纳多元智力 + 20h入门法则' },
+        { text: '转行到完全不同的行业，从头开始', feedback: '⚠️ 激进但有风险。斯宾塞的"比较价值"原则提醒你：你已在编程领域积累了大量"保暖型知识"（直接自我保全能力）。完全放弃意味着沉没成本巨大。更好的策略是：在当前基础上做"相邻领域扩展"——如AI产品经理、技术咨询等。', mks: '斯宾塞知识分层 + 沉没成本陷阱 + 广度深度平衡' }
+      ]
+    },
+    {
+      scenario: '你发现孩子的学校采用"快乐教育"，几乎没有作业和考试。作为家长，你该怎么办？',
+      options: [
+        { text: '太好了，让孩子享受快乐童年，不要任何压力', feedback: '⚠️ 吴军在"如果没有了考试"中通过三个真实案例证明：完全取消考试后，自觉性仅少数人能维持，十年后差距从0分化到100。考试虽有负担，但能避免群体掉队。关键是找到"适度压力和快乐学习"的平衡点。', mks: '考试价值 + 罗森塔尔效应局限 + 自我驱动学习' },
+        { text: '向学校投诉，要求增加作业量和考试频率', feedback: '⚠️ 矫枉过正。杜威和卢梭都警告过：把"未来幸福"作为枷锁剥夺当下快乐是错误的。过量作业可能挤占同理心培养、词汇积累、世界认知等关键发展。参考斯宾塞的优先级：确保基础学业达标即可，不必追求"考第一"。', mks: '杜威教育即成长 + 卢梭"把孩子当孩子" + 斯宾塞知识分层' },
+        { text: '在学校教育之外，为孩子提供适度的学习引导和真实世界的探索机会', feedback: '✅ 最佳实践！这实现了卢梭"三种教育的平衡"——自然的教育（尊重天性）+ 事物的教育（真实世界探索）+ 适度的人为教育（家长引导）。赫尔巴特会补充：通过观察发现孩子的特长方向，把好奇心转化为求知动力。', mks: '卢梭三种教育平衡 + 赫尔巴特观察法 + 杜威经验学习' }
+      ]
+    }
+  ];
+
+  var html = '';
+  rounds.forEach(function(r, ri) {
+    html += '<div class="decision-round" id="dround-' + ri + '"><h4>第' + (ri + 1) + '轮: ' + r.scenario + '</h4><div class="decision-options">';
+    r.options.forEach(function(opt, oi) {
+      html += '<div class="decision-opt" data-round="' + ri + '" data-opt="' + oi + '" onclick="chooseDecision(this)">' + ['A','B','C'][oi] + '. ' + opt.text + '</div>';
+    });
+    html += '</div><div class="decision-feedback" id="dfb-' + ri + '"></div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function chooseDecision(el) {
+  var ri = parseInt(el.getAttribute('data-round'));
+  var oi = parseInt(el.getAttribute('data-opt'));
+  var rounds = [
+    { options: [
+      { text: '', feedback: '⚠️ 注意"单一化思维陷阱"！奥数成绩不等于数学能力，更不等于未来成功。皮亚杰告诉我们，8岁儿童处于具体运算阶段，抽象逻辑思维能力有限。关键是解释逻辑原理而非题海战术。而且斯宾塞提醒：奥数属于"炫耀型知识"，优先确保基础通识知识达标。', mks: '皮亚杰认知阶段 + 斯宾塞知识分层 + 自然教育' },
+      { text: '', feedback: '✅ 明智的选择！这符合赫尔巴特"通过观察发现孩子特长"的原则，也体现了卢梭"把孩子当孩子"的教育理念。家长需要的是"判断力"而非"跟风力"。先诊断问题（是兴趣问题还是方法问题），再对症下药。', mks: '赫尔巴特观察法 + 卢梭自然教育 + 教育即成长' },
+      { text: '', feedback: '⚠️ 需谨慎。卢梭反对"放任自流"等同于"自由发展不等于放纵"。8岁是具体运算阶段的关键期，需要适当的引导和逻辑训练。完全放手可能错失词汇积累和归纳推理能力的培养黄金期。建议提供资源但不强求成果。', mks: '卢梭自由≠放纵 + 皮亚杰关键期 + 杜威成长引导' }
+    ]},
+    { options: [
+      { text: '', feedback: '⚠️ 朗格朗会提醒你：死守单一职业技能将面临"产业被替代"的风险。量变无法应对质变。关键不是写更多代码，而是升级你的知识框架——从"写代码的人"变成"解决复杂问题的人"。', mks: '朗格朗终身教育 + 广度vs深度辩证 + 关键路径选择' },
+      { text: '', feedback: '✅ 这正是朗格朗"终身学习"的实践！自我驱动+边做边学。利用AI作为杠杆，将时间投入到系统架构设计、产品思维、团队管理等AI难以替代的领域。加德纳会告诉你：你的"智力三原色"组合可以通过调整配比形成新的竞争优势。', mks: '朗格朗四大方法 + 加德纳多元智力 + 20h入门法则' },
+      { text: '', feedback: '⚠️ 激进但有风险。斯宾塞的"比较价值"原则提醒你：你已在编程领域积累了大量"保暖型知识"（直接自我保全能力）。完全放弃意味着沉没成本巨大。更好的策略是：在当前基础上做"相邻领域扩展"——如AI产品经理、技术咨询等。', mks: '斯宾塞知识分层 + 沉没成本陷阱 + 广度深度平衡' }
+    ]},
+    { options: [
+      { text: '', feedback: '⚠️ 吴军在"如果没有了考试"中通过三个真实案例证明：完全取消考试后，自觉性仅少数人能维持，十年后差距从0分化到100。考试虽有负担，但能避免群体掉队。关键是找到"适度压力和快乐学习"的平衡点。', mks: '考试价值 + 罗森塔尔效应局限 + 自我驱动学习' },
+      { text: '', feedback: '⚠️ 矫枉过正。杜威和卢梭都警告过：把"未来幸福"作为枷锁剥夺当下快乐是错误的。过量作业可能挤占同理心培养、词汇积累、世界认知等关键发展。参考斯宾塞的优先级：确保基础学业达标即可，不必追求"考第一"。', mks: '杜威教育即成长 + 卢梭"把孩子当孩子" + 斯宾塞知识分层' },
+      { text: '', feedback: '✅ 最佳实践！这实现了卢梭"三种教育的平衡"——自然的教育（尊重天性）+ 事物的教育（真实世界探索）+ 适度的人为教育（家长引导）。赫尔巴特会补充：通过观察发现孩子的特长方向，把好奇心转化为求知动力。', mks: '卢梭三种教育平衡 + 赫尔巴特观察法 + 杜威经验学习' }
+    ]}
+  ];
+
+  var fb = document.getElementById('dfb-' + ri);
+  var data = rounds[ri].options[oi];
+  fb.innerHTML = '<p style="margin-bottom:8px;">' + data.feedback + '</p><p style="font-size:0.82em;color:var(--accent);">📚 MKS 概念关联: ' + data.mks + '</p>';
+  fb.className = 'decision-feedback show';
+
+  var opts = el.parentElement.querySelectorAll('.decision-opt');
+  opts.forEach(function(o) { o.classList.remove('chosen'); o.style.pointerEvents = 'none'; });
+  el.classList.add('chosen');
+}
+
+// ===== Navigation =====
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelector('.tab-btn[data-tab="' + idx + '"]').classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  var panel = document.querySelector('.tab-panel[data-panel="' + idx + '"]');
+  if (panel) panel.classList.add('active');
+  if (idx === 5) updateReview();
+  if (window.innerWidth < 960) document.getElementById('navTabs').classList.remove('show');
+}
+
+document.querySelectorAll('.tab-btn').forEach(function(b) {
+  b.addEventListener('click', function() { switchTab(parseInt(this.getAttribute('data-tab'))); });
+});
+
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('navTabs').classList.toggle('show');
+});
+
+// ===== Init =====
+init();
+</script>
+</body>
+</html>
