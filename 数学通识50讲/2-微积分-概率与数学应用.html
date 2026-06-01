@@ -9,140 +9,116 @@
   --bg: #fdf6ec;
   --card: #fffaf2;
   --accent: #c0392b;
-  --accent2: #d4a574;
+  --accent-light: #e74c3c;
   --text: #3d2f2f;
-  --text2: #6b5555;
+  --text-light: #6b5a5a;
   --border: #e8d5c4;
   --gold: #b8860b;
   --success: #27ae60;
   --warning: #e67e22;
-  --shadow: 0 2px 12px rgba(60,30,20,.08);
-  --radius: 12px;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:clamp(14px,1.2vw,17px);line-height:1.7;color:var(--text);background:var(--bg);min-height:100vh}
-.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px) 40px}
-header{text-align:center;padding:clamp(16px,3vw,24px) 0 8px}
-header h1{font-size:clamp(1.5rem,3.5vw,2rem);color:var(--accent);margin-bottom:8px}
-header .sub{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2)}
-.home-link{display:inline-block;font-size:.88rem;color:var(--accent);border:2px solid var(--accent);border-radius:20px;padding:6px 20px;text-decoration:none;margin-top:10px;transition:all .2s}
-.home-link:hover{background:var(--accent);color:#fff}
-.tab-bar{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
-.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;border:1px solid transparent;transition:all .2s}
-.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
-.tab-btn.active{background:var(--accent);color:#fff}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+.top-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);color:#fdf6ec;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap;color:#fdf6ec}
+.top-bar .home-link{color:#d4a574;font-size:13px;border:1px solid #d4a574;padding:3px 10px;border-radius:14px;white-space:nowrap;transition:all .2s;text-decoration:none}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f}
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
 .tab-panel{display:none;animation:fadeIn .35s ease}
 .tab-panel.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
-.card h3{color:var(--accent);font-size:clamp(1rem,2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
 .grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s}
-.concept-card:hover{transform:translateY(-2px)}
-.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
-.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
-.concept-card.mks{border-left-color:var(--gold);position:relative}
-.concept-card.mks::after{content:'\2605';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
-.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
-.progress-wrap{margin:16px 0}
-.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
-.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
-.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px;text-align:center}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
 .flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
 .flip-inner.flipped{transform:rotateY(180deg)}
 .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
-.flip-front{background:linear-gradient(135deg,var(--accent),#a93226);color:#fff}
+.flip-front{background:var(--card)}
 .flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
 .flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
 .flip-nav .btn{min-width:80px}
-.btn{display:inline-block;padding:10px 24px;border-radius:20px;border:2px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
-.btn:hover{background:#a93226;border-color:#a93226}
-.btn-outline{background:transparent;color:var(--accent)}
-.btn-outline:hover{background:var(--accent);color:#fff}
-.btn-sm{padding:6px 14px;font-size:.78rem}
-.btn-success{background:var(--success);border-color:var(--success)}
-.btn-success:hover{background:#219a52;border-color:#219a52}
-.btn-warning{background:var(--warning);border-color:var(--warning)}
-button:disabled{opacity:.5;cursor:not-allowed}
-.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
-.q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
-.q-mc{background:#fde8e8;color:var(--accent)}
-.q-sa{background:#e8f0fe;color:#3a6ea5}
-.q-text{font-weight:700;margin-bottom:12px}
-.q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);font-size:.85rem;transition:all .2s}
-.q-option:hover{border-color:var(--accent2);background:#fef9f4}
-.q-option.selected{border-color:var(--accent);background:#fde8e8}
-.q-option.correct{border-color:#4caf50;background:#e8f5e9}
-.q-option.wrong{border-color:var(--accent);background:#ffebee}
-.q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
-.q-feedback.show{display:block}
-.q-feedback.right{background:#e8f5e9;color:#2e7d32}
-.q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
-.sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
-.sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
-.sa-reveal.show{display:block}
-.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
-.timer.warning{animation:pulse .5s infinite alternate}
-@keyframes pulse{from{opacity:1}to{opacity:.5}}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
-.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
 .tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
 .tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
-.tree-toggle::before{content:"\25B8";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle::before{content:"▸";display:inline-block;transition:transform .2s;font-size:.7rem}
 .tree-toggle.open::before{transform:rotate(90deg)}
 .tree-children{display:none}
 .tree-children.show,.tree-children.open{display:block}
-.tree-leaf{padding:3px 0;color:var(--text2);font-size:.9rem}
-.socratic-item{margin-bottom:12px}
-.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700}
-.socratic-q:hover{border-color:var(--accent2)}
-.socratic-q::before{content:'❓ '}
-.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
 .socratic-a.open{display:block}
-.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
-.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
-.d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
-.d-option:hover{border-color:var(--accent2);background:#fef9f4}
-.d-option.chosen{border-color:var(--accent);background:#fde8e8}
-.d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
-.d-result.show{display:block}
-.case-item{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--gold);margin-bottom:14px}
-.case-item h4{color:var(--accent);margin-bottom:8px}
-.case-dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px}
-.case-dim{padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem}
-.case-dim strong{color:var(--accent);display:block;margin-bottom:4px}
-.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
-.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
 .boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
 .boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
 .boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
 .boundary-table tr:nth-child(even){background:#fef9f2}
-.path-steps{display:flex;flex-direction:column;gap:10px}
-.path-step{display:flex;align-items:center;gap:12px}
-.path-step .num{background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:.85rem}
-@media(max-width:640px){
-  .tab-bar{gap:2px;padding:6px 2px}
-  .tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{max-width:100%;height:auto;min-width:700px;display:block;margin:0 auto}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
+@media(max-width:600px){
   .grid-2{grid-template-columns:1fr}
-  .grid-3{grid-template-columns:1fr}
-  .flip-front,.flip-back{position:absolute}
+  .tab-bar{flex-wrap:nowrap}
 }
 </style>
 </head>
 <body>
+<div class="top-bar">
+  <h1>动态透镜与不确定性罗盘 · 最小知识集</h1>
+  <a class="home-link" href="index.html">← 知识主板</a>
+</div>
 <div class="container">
-
-<header>
-  <a href="index.html" class="home-link">← 返回知识主板</a>
-  <h1>吴军·数学通识50讲 — 微积分、概率与数学应用</h1>
-  <div class="sub">最小知识集 · 21篇笔记提炼 | 把握动态变化规律与不确定性世界——微积分思维、概率统计与数学的跨学科力量</div>
-</header>
-
-<!-- Tab Bar -->
+<p class="subtitle">吴军·数学通识50讲 · 微积分、概率与数学应用专题 · 21篇笔记提炼</p>
+<p class="subtitle" style="font-size:.82rem;margin-top:0">核心张力：确定性工具（微积分）↔ 不确定性罗盘（概率论）——用数学理解动态变化与随机世界</p>
 <div class="tab-bar" id="tabBar">
   <button class="tab-btn active" data-tab="0">知识集总览</button>
   <button class="tab-btn" data-tab="1">知识卡片</button>
@@ -153,29 +129,33 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <button class="tab-btn" data-tab="6">深度追问</button>
   <button class="tab-btn" data-tab="7">案例分析</button>
   <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
 
-
-<!-- ===== Tab 0: 知识集总览 ===== -->
+<!-- ====== TAB 0: 知识集总览 ====== -->
 <div class="tab-panel active" id="panel0">
 
 <div class="card">
 <h3>核心目标</h3>
-<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">
-微积分与概率论是数学从"确定性世界"迈向"不确定性和动态变化"的两大里程碑。<strong>微积分</strong>提供理解变化速率与累积效应的"动态透镜"，让我们能从微观趋势推演宏观结果；<strong>概率统计</strong>则是对抗随机性的"不确定性罗盘"，赋予我们在信息不完备时做出理性决策的能力。二者共同构成了现代科技、金融、AI和科学研究的数学基础设施。
-</p>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">掌握<strong>动态变化的数学语言（微积分）</strong>与<strong>不确定性的量化工具（概率论）</strong>，理解数学如何从公理出发构建严密体系，如何跨界重塑自然科学、管理学、历史学乃至个人决策——用确定性思维分析变化趋势，用概率思维应对随机世界。</p>
 </div>
 
-<h3 style="color:var(--accent);margin:16px 0 10px">核心概念（12个）</h3>
-<div class="grid-3" id="conceptGrid"></div>
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
 
 <h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
 <div class="grid-2" id="mksCoreGrid"></div>
 
 <div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
 <h3>概念关系图</h3>
-<div class="svg-wrap" id="svgContainer"></div>
-<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text2);margin-top:8px;justify-content:center">
-  <span style="color:var(--accent)">━━ 核心驱动力</span><span style="color:var(--accent2)">━━ 方法论关联</span><span style="color:#8b7355">--- 内部关联</span><span style="color:#8b7355">··· 实例锚定</span>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span>━━ 核心驱动</span><span style="color:var(--accent)">━━ 方法论</span><span style="color:var(--gold)">━━ 应用</span><span style="color:var(--success)">━━ 交叉影响</span>
 </div>
 </div>
 
@@ -185,21 +165,21 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <table class="boundary-table">
 <thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
 <tbody>
-<tr><td>千禧年七大难题（霍奇猜想、BSD等细节）</td><td>理解数学前沿研究方向时引用</td></tr>
-<tr><td>希尔伯特23问题完整列表</td><td>数学史发展脉络讨论</td></tr>
-<tr><td>黎曼猜想的具体表述与素数分布公式</td><td>加密技术原理深度讨论</td></tr>
-<tr><td>杨-米尔斯方程的数学形式</td><td>量子场论与数学物理交叉领域</td></tr>
-<tr><td>纳维-斯托克斯方程的精确解条件</td><td>流体力学数学建模</td></tr>
-<tr><td>傅里叶变换的完整推导过程</td><td>信号处理与热传导分析</td></tr>
-<tr><td>哥德尔不完备定理的严格证明</td><td>数学哲学与逻辑学讨论</td></tr>
-<tr><td>柯尔莫哥洛夫公理体系的完整推导链</td><td>高等概率论学习</td></tr>
-<tr><td>魏尔斯特拉斯处处连续不可导函数的构造</td><td>实分析/数学反例教学</td></tr>
-<tr><td>四色定理的计算机穷举证明细节</td><td>计算数学与排中律应用案例</td></tr>
-<tr><td>马尔可夫随机过程的数学定义</td><td>机器学习与自然语言处理</td></tr>
-<tr><td>齐普夫定律在经济学中的推广</td><td>财富分布与长尾理论</td></tr>
-<tr><td>线性规划的完整求解方法（单纯形法等）</td><td>运筹学与资源配置优化</td></tr>
-<tr><td>椭圆曲线加密的群论基础</td><td>比特币与密码学深度理解</td></tr>
-<tr><td>牛顿《流数法与无穷级数》原文框架</td><td>微积分史学术研究</td></tr>
+<tr><td>千禧年七大数学难题具体内容</td><td>理解数学前沿挑战时引用</td></tr>
+<tr><td>希尔伯特23问题与千禧年难题的对应</td><td>数学史讲座中的背景知识</td></tr>
+<tr><td>佩雷尔曼证明庞加莱猜想的详细过程</td><td>讨论数学家精神时举例</td></tr>
+<tr><td>霍奇猜想的精确数学表述</td><td>非专业人士只需知道存在</td></tr>
+<tr><td>黎曼ζ函数的解析延拓性质</td><td>加密技术讨论中的背景</td></tr>
+<tr><td>杨-米尔斯方程的具体形式</td><td>量子场论背景知识</td></tr>
+<tr><td>纳维-斯托克斯方程的数学结构</td><td>流体力学与数学交叉</td></tr>
+<tr><td>椭圆曲线在比特币中的具体实现</td><td>区块链技术深层原理</td></tr>
+<tr><td>柯西和魏尔斯特拉斯的极限严格定义</td><td>微积分基础理论溯源</td></tr>
+<tr><td>勒贝格积分的测度论基础</td><td>高等概率论的理论工具</td></tr>
+<tr><td>哥德尔不完备定理的证明思路</td><td>数学哲学讨论</td></tr>
+<tr><td>四色定理的计算机证明细节</td><td>排中律应用案例</td></tr>
+<tr><td>马尔可夫随机过程的数学定义</td><td>AI与机器学习理论基础</td></tr>
+<tr><td>冯·诺依曼的博弈论原始论文</td><td>博弈论历史溯源</td></tr>
+<tr><td>黄金分割在自然界中的分布案例</td><td>跨学科趣味知识</td></tr>
 </tbody>
 </table>
 </div>
@@ -207,740 +187,624 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <div class="card">
 <h3>学习路径（5阶段推荐顺序）</h3>
-<div class="path-steps">
-<div class="path-step"><span class="num">1</span><div><strong>建立微积分直觉：</strong>先学「导数与微分」→「积分与累积」，用速度/距离、增长/利润等生活案例建立"变化率"和"累积效应"的身体直觉，不陷入符号推导。</div></div>
-<div class="path-step"><span class="num">2</span><div><strong>理解随机性基础：</strong>学「伯努利试验」→「高斯分布」→「泊松分布」，掌握"大数定律""方差/标准差""三σ原则"等核心工具，打破对随机性的直觉谬误。</div></div>
-<div class="path-step"><span class="num">3</span><div><strong>掌握逆概率思维：</strong>学「条件概率与贝叶斯」→「古德-图灵估计」，这是AI时代最重要的思维方式——从结果反推原因、在数据稀疏时防范黑天鹅。</div></div>
-<div class="path-step"><span class="num">4</span><div><strong>学习决策与策略：</strong>学「博弈论与纳什均衡」→「梯度优化」，将数学思维迁移到商业决策、资源分配、人生策略等现实场景。</div></div>
-<div class="path-step"><span class="num">5</span><div><strong>升华数学素养：</strong>学「公理化方法」→「逻辑学四大律」→「希尔伯特演讲」，理解数学作为人类理性巅峰的精神价值，培养严密思维习惯。</div></div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立框架：</strong>先学「微分思维」+「积分思维」，理解微积分作为动态变化分析工具的核心思想</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>深化不确定性：</strong>依次学习概率论基础→随机分布(伯努利/泊松/高斯)→贝叶斯推理，建立概率思维框架</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>掌握数学元思维：</strong>学习公理化体系、连续性与可导性，理解数学从公理到定理的严密逻辑</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>应用与跨界：</strong>博弈论、统计学与大数据、数学跨学科应用（逻辑/哲学/管理/历史）</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>实践内化：</strong>用微积分思维分析企业增长曲线，用贝叶斯推理做决策更新，用博弈论分析竞争策略</div></div>
 </div>
-</div>
-
-<div class="card">
-<h3>学习进度</h3>
-<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
-<p class="progress-label" id="progressText">尚未开始学习</p>
 </div>
 </div>
 
-<!-- ===== Tab 1: 知识卡片 ===== -->
+<!-- ====== TAB 1: 知识卡片 ====== -->
 <div class="tab-panel" id="panel1">
 <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
 <div class="flip-nav">
   <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
-  <span style="font-size:.85rem;color:var(--text2)" id="cardIndex">1 / 12</span>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
   <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
 </div>
 <div style="text-align:center;margin:8px 0">
   <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
 </div>
 <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
-<p style="text-align:center;font-size:.78rem;color:var(--text2)">已学习 <span id="cardLearned">0</span> / 12 个概念</p>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
-<!-- ===== Tab 2: 题库系统 ===== -->
+<!-- ====== TAB 2: 题库系统 ====== -->
 <div class="tab-panel" id="panel2">
-<div style="text-align:center;padding:20px">
-  <button class="btn" onclick="startQuiz()" style="margin:0 8px">🎲 随机抽题练习</button>
-  <button class="btn btn-outline" onclick="resetQuiz()" style="margin:0 8px">↩ 重置</button>
+<div class="card">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn btn-primary" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
 </div>
 <div id="quizContainer"></div>
-<div id="staticQuiz" style="display:none"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card"><h3>选择题（共15题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p>
+<div id="choiceQuiz"></div>
+</div>
+<div class="card"><h3>简答题（共8题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p>
+<div id="shortQuiz"></div>
+</div>
+</div>
+</div>
 </div>
 
-<!-- ===== Tab 3: 考试模式 ===== -->
+<!-- ====== TAB 3: 考试模式 ====== -->
 <div class="tab-panel" id="panel3">
-<div style="text-align:center;padding:20px">
-  <div class="timer" id="examTimer">15:00</div>
-  <button class="btn" onclick="startExam()" id="startExamBtn">📝 开始考试</button>
-  <button class="btn btn-outline" onclick="submitExam()" id="submitExamBtn" style="display:none">✅ 提交试卷</button>
-</div>
-<div id="examContainer"></div>
-<div id="examResult" style="display:none">
-  <div class="card">
-    <h3>📊 考试成绩</h3>
-    <div class="stat-grid">
-      <div class="stat-card"><div class="num" id="examScore">-</div><div class="lbl">总分</div></div>
-      <div class="stat-card"><div class="num" id="examCorrect">-</div><div class="lbl">正确数</div></div>
-      <div class="stat-card"><div class="num" id="examTotal">-</div><div class="lbl">总题数</div></div>
-      <div class="stat-card"><div class="num" id="examWeak">-</div><div class="lbl">薄弱概念</div></div>
-    </div>
-  </div>
-  <div id="examReview"></div>
+<div class="card" style="text-align:center">
+<h3>考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
 </div>
 </div>
 
-<!-- ===== Tab 4: 复习模式 ===== -->
+<!-- ====== TAB 4: 复习模式 ====== -->
 <div class="tab-panel" id="panel4">
-<div class="card">
-<h3>📖 错题本</h3>
-<p style="color:var(--text2);font-size:.85rem">你的历史错题将在这里积累，可随时重做</p>
-<div id="errorBook"></div>
-</div>
-<div class="card">
-<h3>📊 学习统计</h3>
-<div class="stat-grid">
-  <div class="stat-card"><div class="num" id="statConcepts">0</div><div class="lbl">已学概念</div></div>
-  <div class="stat-card"><div class="num" id="statQuizDone">0</div><div class="lbl">做过题目</div></div>
-  <div class="stat-card"><div class="num" id="statQuizCorrect">0</div><div class="lbl">正确率</div></div>
-  <div class="stat-card"><div class="num" id="statExams">0</div><div class="lbl">完成考试</div></div>
-</div>
-</div>
-<div style="text-align:center;margin-top:12px">
-  <button class="btn btn-warning btn-sm" onclick="clearStats()">🔄 重置学习记录</button>
-</div>
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
 </div>
 
-
-<!-- ===== Tab 5: 思维导图（内联HTML，禁止JS动态生成） ===== -->
+<!-- ====== TAB 5: 思维导图 ====== -->
 <div class="tab-panel" id="panel5">
-<h3 style="color:var(--accent);margin-bottom:16px">🧠 微积分、概率与数学应用 — 思维导图</h3>
+<div class="card">
+<h3>微积分、概率与数学应用 · 思维导图</h3>
+<div style="font-size:.88rem;line-height:1.8">
+
+<div style="margin-left:0;border-left:none;padding-left:0">
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">一、微积分体系：动态变化的数学语言</div>
+<div class="tree-children open">
+
 <div class="tree-node">
-  <div class="tree-toggle open" onclick="toggleMindmap(this)">🌐 动态透镜与不确定性罗盘</div>
-  <div class="tree-children show">
-    <div class="tree-node">
-      <div class="tree-toggle open" onclick="toggleMindmap(this)">📈 微积分思维——把握动态变化规律</div>
-      <div class="tree-children show">
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">① 导数与微分——瞬时变化率的量化</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 定义：Δt→0时，S(t)切线斜率 = 瞬时速度</div>
-            <div class="tree-leaf">• 本质：对函数变化快慢的精确量化度量</div>
-            <div class="tree-leaf">• 应用：经济增长率（导数）比总量更受关注</div>
-            <div class="tree-leaf">• 人物：牛顿（力学视角）vs 莱布尼茨（哲学视角）</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">② 积分——微观到宏观的累积效应</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 定义：微分的逆运算，无限细分+累加求和</div>
-            <div class="tree-leaf">• 几何意义：速度曲线下的面积 = 行驶距离</div>
-            <div class="tree-leaf">• 滞后效应：积分结果滞后于瞬时变化</div>
-            <div class="tree-leaf">• 飞轮效应：加速度→速度→距离（逐级积分，逐级滞后）</div>
-            <div class="tree-leaf">• 努力→能力→成绩→赏识 = 多级积分链条</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">③ 梯度优化——多变量系统的最优方向</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 定义：多变量函数对各变量微分的向量</div>
-            <div class="tree-leaf">• 物理含义：函数变化的最陡方向</div>
-            <div class="tree-leaf">• 决策启示：优先增加当前值最小的维度（补短板）</div>
-            <div class="tree-leaf">• 长方体优化：LWH → 优先加最短边 → 最终趋近立方体</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">④ 连续性与奇点——可预测性的数学度量</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 可导=连续+光滑；连续≠可导（魏尔斯特拉斯反例）</div>
-            <div class="tree-leaf">• 奇点：函数不连续或存在跳跃点</div>
-            <div class="tree-leaf">• 商业启示：业绩曲线光滑的企业可预测性强</div>
-            <div class="tree-leaf">• 案例：王老吉(2008)、特斯拉Model 3 — 不可导导致危机</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tree-node">
-      <div class="tree-toggle open" onclick="toggleMindmap(this)">🎲 概率统计——应对不确定世界</div>
-      <div class="tree-children show">
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">① 伯努利试验——随机性的数学基础</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 定义：两种结果、独立重复、概率p固定</div>
-            <div class="tree-leaf">• 二项式分布：N小→离散，N大→趋近期望值N×p</div>
-            <div class="tree-leaf">• 关键认知：10次抛硬币恰好5次正面的概率仅~1/4</div>
-            <div class="tree-leaf">• 1%事件需260次试验才能确保成功（非直觉的100次）</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">② 高斯分布——大概率事件的统计规律</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 钟形曲线：由μ（均值）和σ（标准差）定义</div>
-            <div class="tree-leaf">• 三σ原则：68%-95%-99.7%（2σ为科学实验常用标准）</div>
-            <div class="tree-leaf">• 投资启示：标普500年化回报7-8%，但σ=16%（风险巨大）</div>
-            <div class="tree-leaf">• σ越小→分布越瘦高→判断越有信心</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">③ 泊松分布——小概率事件的建模工具</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 公式：P(X=k) = e^(-λ) λ^k / k!，λ=n×p</div>
-            <div class="tree-leaf">• 核心规律：池子越大，随机性误差越小</div>
-            <div class="tree-leaf">• 保险原理：大池子+冗余15% → 98%赔付概率</div>
-            <div class="tree-leaf">• 电话线路：冗余50%可使占线概率降至5%以下</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">④ 条件概率与贝叶斯——逆向推理框架</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• P(Y|X) ≠ P(Y)：条件改变可颠覆概率判断</div>
-            <div class="tree-leaf">• 贝叶斯公式：P(X|Y) = P(Y|X)P(X)/P(Y)</div>
-            <div class="tree-leaf">• 核心思想：通过条件与结果互换，绕道解决难题</div>
-            <div class="tree-leaf">• 应用：机器翻译 → 最大P(中文|英文)的优化问题</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">⑤ 古德-图灵估计——黑天鹅防范策略</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 问题：数据稀疏导致零概率误判</div>
-            <div class="tree-leaf">• 原理：高频词概率"打折"分配给低频词</div>
-            <div class="tree-leaf">• 理论基础：齐普夫定律（词频×排位≈常数）</div>
-            <div class="tree-leaf">• 配合：插值法（条件概率+非条件概率加权）</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tree-node">
-      <div class="tree-toggle open" onclick="toggleMindmap(this)">🔗 数学跨学科力量——工具与方法论的迁移</div>
-      <div class="tree-children show">
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">① 公理化方法——数学严密性的根基</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 柯尔莫哥洛夫三大公理：概率∈[0,1]、全空间=1、互斥加法</div>
-            <div class="tree-leaf">• 概率论从"经验工具"→"严格数学分支"</div>
-            <div class="tree-leaf">• 公理→定理→推论：企业管理的几何学模型</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">② 博弈论——多方策略的最优解</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 零和博弈：最小值中取最大值（鞍点策略）</div>
-            <div class="tree-leaf">• 纳什均衡：囚徒困境 → 个体理性导致集体非理性</div>
-            <div class="tree-leaf">• 智猪博弈：小企业搭便车策略的数学依据</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">③ 黄金分割/优选法——化繁为简的实践智慧</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 华罗庚优选法：0.618黄金分割点迭代</div>
-            <div class="tree-leaf">• 5次试验将范围缩小至9%，初中文化即可掌握</div>
-            <div class="tree-leaf">• 跨领域应用：摄影构图、资产配置、决策时间管理</div>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div class="tree-toggle" onclick="toggleMindmap(this)">④ 逻辑学四大律——思维严密性的基石</div>
-          <div class="tree-children">
-            <div class="tree-leaf">• 同一律A=A：苹果就是苹果（禁止偷换概念）</div>
-            <div class="tree-leaf">• 矛盾律：不能既是A又不是A（同一时刻/方面）</div>
-            <div class="tree-leaf">• 排中律：是/非明确，无中间状态（四色定理证明）</div>
-            <div class="tree-leaf">• 充分条件律：有果必有因（数学推理基础）</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.1 导数与微分：从宏观到微观</div>
+<div class="tree-children">
+<div class="tree-leaf">• 导数本质：函数变化快慢的精确度量（瞬时速度=位移的导数）</div>
+<div class="tree-leaf">• 牛顿突破：无限逼近法，Δt→0时切线斜率=瞬时速度</div>
+<div class="tree-leaf">• 梯度概念：多变量函数的最陡方向（如圆柱体体积优化）</div>
+<div class="tree-leaf">• 微分应用：从宏观趋势把握微观变化，找最优改进方向</div>
 </div>
 </div>
 
-<!-- ===== Tab 6: 深度追问（苏格拉底问答，内联HTML） ===== -->
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.2 积分：从微观到宏观的累积</div>
+<div class="tree-children">
+<div class="tree-leaf">• 积分本质：微分的逆运算，将无穷小量累加求总量</div>
+<div class="tree-leaf">• 几何意义：速度曲线下的面积=行驶距离</div>
+<div class="tree-leaf">• 滞后效应：积分结果滞后于瞬间变化，趋势难逆转</div>
+<div class="tree-leaf">• 飞轮效应：加速度→速度→距离，每级积分都存在滞后</div>
+<div class="tree-leaf">• J曲线：指数增长前期缓慢，后期加速（积分的滞后性）</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.3 连续性与可导性：光滑曲线的价值</div>
+<div class="tree-children">
+<div class="tree-leaf">• 可导条件：曲线连续且光滑（无尖尖点）</div>
+<div class="tree-leaf">• 魏尔斯特拉斯反例：存在处处连续但处处不可导的函数</div>
+<div class="tree-leaf">• 商业应用：可导=可预测，奇点=风险（王老吉/特斯拉案例）</div>
+<div class="tree-leaf">• 投资启示：巴菲特偏好业绩曲线光滑的股票</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.4 微积分发明权之争</div>
+<div class="tree-children">
+<div class="tree-leaf">• 牛顿：从力学出发（速度/加速度/动量），符号繁复</div>
+<div class="tree-leaf">• 莱布尼茨：从哲学逻辑出发（无穷小量dx/dy），符号简洁</div>
+<div class="tree-leaf">• 启示：同一工具可从不同视角发明，视角互补</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div style="margin-left:0;border-left:none;padding-left:0;margin-top:12px">
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">二、概率统计体系：不确定性的量化工具</div>
+<div class="tree-children open">
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">2.1 概率论基础</div>
+<div class="tree-children">
+<div class="tree-leaf">• 起源：1654年帕斯卡与费马通信，解决赌徒问题</div>
+<div class="tree-leaf">• 拉普拉斯古典定义：概率=有利单位事件数/总单位事件数</div>
+<div class="tree-leaf">• 柯尔莫哥洛夫公理化(1933)：三大公理奠定严格基础</div>
+<div class="tree-leaf">• 大数定理：试验次数→∞时，频率趋近于概率</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">2.2 三大随机分布</div>
+<div class="tree-children">
+<div class="tree-leaf">• 伯努利试验：两种结果独立重复，N越大结果越集中</div>
+<div class="tree-leaf">• 泊松分布：小概率事件大量试验，λ=np为平均次数</div>
+<div class="tree-leaf">• 高斯分布：大概率事件的钟形曲线，μ均值/σ标准差</div>
+<div class="tree-leaf">• 三σ原则：68%-95%-99.7%置信区间</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">2.3 贝叶斯推理</div>
+<div class="tree-children">
+<div class="tree-leaf">• 条件概率P(Y|X)：条件改变可颠覆概率判断</div>
+<div class="tree-leaf">• 贝叶斯公式：P(X|Y)=P(Y|X)P(X)/P(Y)，条件与结果互换</div>
+<div class="tree-leaf">• 机器翻译应用：遍历中文X，选择使P(X|Y)最大的翻译</div>
+<div class="tree-leaf">• 古德-图灵估计：为未出现事件分配概率，防黑天鹅</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">2.4 统计学与大数据</div>
+<div class="tree-children">
+<div class="tree-leaf">• 五步法：设立目标→设计实验→统计分析→提出新假说→应用</div>
+<div class="tree-leaf">• 三大陷阱：变量关联偏差/数据稀疏性/因果倒置</div>
+<div class="tree-leaf">• 霍桑效应：被观察者因知晓被观察而改变行为</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div style="margin-left:0;border-left:none;padding-left:0;margin-top:12px">
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">三、博弈论与最优策略</div>
+<div class="tree-children open">
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">3.1 零和博弈：鞍点理论</div>
+<div class="tree-children">
+<div class="tree-leaf">• 核心策略：最小值中的最大值（minimax）</div>
+<div class="tree-leaf">• 假设：策略透明+完全理性</div>
+<div class="tree-leaf">• 应用：下行风险优先，在对方制造的最糟局面中选相对最好</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">3.2 非零和博弈：纳什均衡</div>
+<div class="tree-children">
+<div class="tree-leaf">• 囚徒困境：个体理性导致集体非最优（双输均衡）</div>
+<div class="tree-leaf">• 双赢五大障碍：信任衰减/阴谋破坏/道德限制/乌合之众/零和伪装</div>
+<div class="tree-leaf">• 智猪博弈：小企业搭便车策略的数学基础</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div style="margin-left:0;border-left:none;padding-left:0;margin-top:12px">
+<div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">四、数学的跨学科力量</div>
+<div class="tree-children open">
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.1 数学与逻辑学：四大定律</div>
+<div class="tree-children">
+<div class="tree-leaf">• 同一律A=A · 矛盾律¬(A∧¬A) · 排中律(A∨¬A) · 充分条件律</div>
+<div class="tree-leaf">• 反证法基础：矛盾律；二分逻辑：排中律</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.2 数学与哲学：知识体系的一头一尾</div>
+<div class="tree-children">
+<div class="tree-leaf">• 笛卡尔：理性认知论（《谈谈方法》），数学逻辑超越物理测量</div>
+<div class="tree-leaf">• 莱布尼茨：相对因果时空观+离散世界观</div>
+<div class="tree-leaf">• 知识金字塔：数学（底层）→自然科学（中间）→哲学（顶层统摄）</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.3 数学与管理学</div>
+<div class="tree-children">
+<div class="tree-leaf">• 运筹学：图论+线性代数优化系统效率</div>
+<div class="tree-leaf">• 关键路径分析(CPM)：总耗时取决于最长工序链</div>
+<div class="tree-leaf">• 公理-定理-推论：愿景→价值观→文化三公理→制度定理→流程推论</div>
+</div>
+</div>
+
+<div class="tree-node">
+<div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.4 华罗庚优选法</div>
+<div class="tree-children">
+<div class="tree-leaf">• 0.618黄金分割法：化复杂最优化为简单试验</div>
+<div class="tree-leaf">• 5次试验可将范围缩至9%，6次缩至6%以下</div>
+<div class="tree-leaf">• 大师智慧：将复杂理论转化为可执行工具</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ====== TAB 6: 深度追问（苏格拉底问答） ====== -->
 <div class="tab-panel" id="panel6">
-<h3 style="color:var(--accent);margin-bottom:16px">❓ 对每个核心概念的深度追问</h3>
+<div class="card">
+<h3>深度追问：苏格拉底式问答</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p>
 
-<div class="socratic-item">
-  <div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">导数真的能精确描述"瞬时"吗？"瞬时"意味着时间为零，那速度还存在吗？</div>
-  <div class="socratic-a">
-    <p><strong>第1层：</strong>这正是微积分的精妙之处。牛顿和莱布尼茨用<strong>极限</strong>概念解决了这个悖论——我们不计算Δt=0时的速度，而是计算Δt<strong>趋近于零</strong>时速度的极限值。这避开了"除以零"的数学陷阱，同时给出了精确的瞬时速度。</p>
-    <p style="margin-top:8px"><strong>追问：</strong>那极限到底是什么？是实际达到的值还是无限逼近的值？</p>
-    <p style="margin-top:4px"><strong>第2层：</strong>极限是"无限逼近但未必达到"的值。魏尔斯特拉斯用ε-δ语言给出了严格定义：对于任意小的ε>0，总能找到δ>0，使得当|t-t₀|<δ时，|速度-极限值|<ε。这套"无论多接近都能更接近"的定义，彻底消除了数学中的直觉依赖，是分析学的基石。</p>
-    <p style="margin-top:8px"><strong>终极追问：</strong>这跟现实世界有什么关系？</p>
-    <p style="margin-top:4px"><strong>第3层：</strong>极限思维让我们能<strong>用静态工具描述动态世界</strong>。警察测速仪测量的是极短时间内的平均速度，但当这个时间短到毫秒级别时，它<strong>近似</strong>等于瞬时速度。整个现代物理学、工程学、经济学中的连续模型，都建立在这个"无限逼近=精确描述"的跳板上。</p>
-  </div>
-</div>
+<!-- Q1: 微分 -->
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问1：导数为什么能比平均值更精确地描述变化？</span></div>
+<div class="socratic-a"><strong>第一层：</strong>平均值抹平了过程中的所有波动——从北京到上海开车，全程平均速度100km/h，但中途可能飙到150km/h，也可能堵车停住。导数告诉你每一个瞬间的速度，警察测速抓超速用的就是瞬时速度。这就是<strong>从宏观模糊到微观精确</strong>的跃迁。</div>
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问2：微分的&#8220;无限逼近&#8221;思想在其他领域有什么对应？</span></div>
+<div class="socratic-a"><strong>第二层：</strong>任何需要&#8220;在极限处找答案&#8221;的场景都可以用到。比如：管理上的持续改善（Kaizen）——每天改进一点点，累积效果巨大；投资上的边际分析——不是看总回报，而是看下一块钱投向哪里的回报最高。这就是<strong>梯度思维</strong>：优先投资&#8220;当前收益最大的方向&#8221;。</div>
 
-<div class="socratic-item">
-  <div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">滞后效应告诉我们"努力不一定立刻有回报"，那是不是意味着我们应该放弃短期反馈？</div>
-  <div class="socratic-a">
-    <p><strong>第1层：</strong>不不不，这正是理解滞后效应的<strong>最大误区</strong>。滞后效应不是说短期反馈不存在，而是说<strong>短期反馈的幅度</strong>远小于长期积累。就像飞轮：你推了1秒，速度从0变到1，但转动的圈数只有0.5圈——你<strong>看到了速度变化</strong>（一级积分），却不容易看到距离变化（二级积分）。</p>
-    <p style="margin-top:8px"><strong>追问：</strong>那具体怎么操作？如何在知道滞后的前提下保持动力？</p>
-    <p style="margin-top:4px"><strong>第2层：</strong>关键是<strong>建立多级反馈机制</strong>。努力的第一级反馈是"你今天学了什么"（即时可见）；第二级反馈是"能力是否提升"（周期检查）；第三级才是"成绩/收入是否增长"（长期等待）。最聪明的人会在第一级建立密集反馈——每天记录学习笔记，每周复盘能力变化，每月审视长期趋势。这些中间反馈就像积分曲线上的采样点，让你在"飞轮还没转起来"的阶段也能看到进度。</p>
-  </div>
-</div>
+<!-- Q2: 积分 -->
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问3：为什么努力不能立刻看到回报？积分给了什么解释？</span></div>
+<div class="socratic-a"><strong>第一层：</strong>因为结果是积分的累积量，存在滞后效应。努力是加速度（力），能力是速度（加速度的一次积分），成绩是距离（加速度的二次积分）。加速度变化立刻反映在力上（零滞后），但距离的变化需要时间累积。所以&#8220;今天努力明天成功&#8221;是违反数学规律的妄想。</div>
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问4：既然结果有滞后，如何判断自己是否走在正确的路上？</span></div>
+<div class="socratic-a"><strong>第二层：</strong>观察领先指标而非滞后指标。如果你在学习一门技能，不要等到升职加薪（滞后指标）才确认，要看你是否理解了之前不理解的概念（领先指标）。这就像不盯着总利润（积分），而是盯着利润增长率（导数）。<strong>管理的艺术在于找到正确的领先指标。</strong></div>
 
-<div class="socratic-item">
-  <div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">概率是对"不确定性"的度量，但"概率本身"是客观存在的还是人类虚构的？</div>
-  <div class="socratic-a">
-    <p><strong>第1层：</strong>这是概率哲学中最核心的问题。拉普拉斯的古典定义认为概率是客观的——骰子六面等可能，正面概率1/6。但这里存在<strong>循环定义</strong>：用"等可能"定义概率，却未定义"等可能"。</p>
-    <p style="margin-top:8px"><strong>追问：</strong>那柯尔莫哥洛夫怎么解决的？</p>
-    <p style="margin-top:4px"><strong>第2层：</strong>柯尔莫哥洛夫做了一件很聪明的事：<strong>他不定义概率是什么</strong>，而是定义概率<strong>必须遵守什么规则</strong>。三大公理（概率∈[0,1]、全空间=1、互斥加法）就像几何公理一样，不告诉你"点是什么"，只告诉你"点与线的关系"。这个转向让概率论从哲学争论中解放出来：无论你相信频率学派还是贝叶斯学派，只要你接受这三条公理，所有定理都对你也成立。</p>
-    <p style="margin-top:8px"><strong>终极追问：</strong>那现实中我们到底应该怎么看待概率？</p>
-    <p style="margin-top:4px"><strong>第3层：</strong>实用主义角度：概率是<strong>信息不完备下的决策工具</strong>。它不告诉你"真实概率是多少"，而是告诉你"基于现有信息，你应该如何下注"。天气预报说"明天下雨概率70%"——这不是说100个明天中有70个会下雨，而是说"在类似的气象条件下，历史上下雨的比例是70%"。带伞的决策不依赖于概率的"真实性"，而依赖于它帮助你在不确定性中做出更好的选择。</p>
-  </div>
-</div>
+<!-- Q3: 概率 -->
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问5：如果概率只是&#8220;长期频率&#8221;，那单次决策中概率有什么用？</span></div>
+<div class="socratic-a"><strong>第一层：</strong>单次决策中概率告诉你的不是&#8220;会发生什么&#8221;，而是&#8220;你的决策质量如何&#8221;。打牌时，你基于胜率最高的策略出牌，单局可能输，但长期必然赢。这就是为什么赌场不怕你赢——它只要微弱的概率优势（52% vs 48%），靠大量重复就能稳赚。<strong>概率思维的价值不是预知单次结果，而是把决策质量与结果质量分开评判。</strong></div>
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问6：贝叶斯推理最颠覆直觉的地方在哪里？</span></div>
+<div class="socratic-a"><strong>第二层：</strong>它告诉我们：<strong>信念应该是可以更新的概率值，而非二元的真/假判断。</strong>你相信&#8220;这个股票会涨&#8221;——这不是一个绝对判断，而应该是一个概率（比如70%）。当新信息出现（季报不及预期），你不是&#8220;推翻信念&#8221;，而是&#8220;更新概率&#8221;（70%→40%）。这是科学与教条的根本区别：科学用新证据更新信念，教条固守旧信念拒绝更新。</div>
 
-<div class="socratic-item">
-  <div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">贝叶斯公式说P(X|Y) = P(Y|X)P(X)/P(Y)，这个公式为什么被称作"改变世界的公式"？</div>
-  <div class="socratic-a">
-    <p><strong>第1层：</strong>因为它实现了<strong>因果逆转</strong>。P(Y|X)是"因→果"（吸烟→肺癌概率），容易统计；P(X|Y)是"果→因"（肺癌→吸烟概率），极难直接计算。贝叶斯公式告诉我们可以用容易计算的东西推出难计算的东西。</p>
-    <p style="margin-top:8px"><strong>追问：</strong>这跟AI有什么关系？</p>
-    <p style="margin-top:4px"><strong>第2层：</strong>AI的核心任务就是从"果"（观测数据）推"因"（隐藏状态）。机器翻译：给定英文句子Y（果），找最可能的中文翻译X（因）。语音识别：给定声波Y（果），找最可能的文字X（因）。垃圾邮件过滤：给定邮件内容Y（果），判断是否是垃圾邮件X（因）。所有这些"模式识别"问题，本质上都是贝叶斯推理。甚至AlphaGo下棋时的"胜率评估"，也是贝叶斯更新的过程。</p>
-    <p style="margin-top:8px"><strong>终极追问：</strong>那这个公式对我个人有什么用？</p>
-    <p style="margin-top:4px"><strong>第3层：</strong>贝叶斯思维是<strong>理性更新的通用框架</strong>。你有一个初始信念P(X)（先验），观察到新证据后，更新为P(X|Y)（后验）。这意味着：①你永远不可能100%确定任何事；②每当新证据出现，你都应该<strong>调整你的信念</strong>；③调整的幅度取决于证据的强度（P(Y|X)/P(Y)）。在职场上：你对某个同事能力的初始评估是P(X)，每次合作获得新信息后更新P(X|Y)。在投资上：你对某股票价值的初始判断是P(X)，每季度财报出来后更新P(X|Y)。这就是"贝叶斯式成长"。</p>
-  </div>
-</div>
+<!-- Q4: 博弈论 -->
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问7：为什么&#8220;双赢&#8221;在现实中如此罕见？</span></div>
+<div class="socratic-a"><strong>第一层：</strong>因为非零和博弈要达成双赢需要<strong>信任与合作</strong>，而合作面临五大结构性障碍：重复博弈中的背叛诱惑（一报还一报）、阴谋策略的破坏性（秘密外交）、损人不利己的非理性、群体内部利益不一致、以及&#8220;伪双赢&#8221;（实为更大范围的零和）。囚徒困境的数学告诉我们：没有信任机制，理性个体必然走向集体次优。</div>
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问8：智猪博弈给商业世界的终极启示是什么？</span></div>
+<div class="socratic-a"><strong>第二层：</strong>如果小企业无论如何都会搭便车，那么大企业必须<strong>主动承担创新的固定成本</strong>——因为你不做，大家都没有。同时，社会必须保护知识产权，否则小企业连&#8220;大猪按按钮后的食物&#8221;都抢不到，整个生态系统会萎缩。这就是为什么专利制度不是保护垄断，而是<strong>保护创新的最小激励单元</strong>。</div>
 
-<div class="socratic-item">
-  <div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">纳什均衡说双方都不愿单方面改变策略，但囚徒困境的结果是双输(-5,-5)，这不就是理性的失败吗？</div>
-  <div class="socratic-a">
-    <p><strong>第1层：</strong>你精准地捕捉到了纳什均衡的核心悖论：<strong>个体理性可以导致集体非理性</strong>。每个囚徒单独看，认罪都是最优选择（不管对方认不认罪，我认罪都比抵赖少判5年）。但两人都做最优选择的结果，比两人都抵赖（各判1年）差了4年。这就是"看不见的手"的反面——个体最优不自动等于集体最优。</p>
-    <p style="margin-top:8px"><strong>追问：</strong>那怎么跳出这个陷阱？</p>
-    <p style="margin-top:4px"><strong>第2层：</strong>三种方式：①<strong>改变博弈结构</strong>（引入惩罚/奖励改变收益矩阵）；②<strong>从单次博弈变为重复博弈</strong>（长期关系中的"以牙还牙"策略可以自发产生合作）；③<strong>建立信任机制</strong>（沟通、承诺、第三方担保）。冷战核军备竞赛就是囚徒困境的现实版——美苏通过"重复博弈+沟通渠道（热线）+相互确保摧毁的威慑"实现了从纳什均衡(-5,-5)向合作均衡(-1,-1)的移动。</p>
-    <p style="margin-top:8px"><strong>终极追问：</strong>那为什么现实中还是这么多冲突？</p>
-    <p style="margin-top:4px"><strong>第3层：</strong>因为五个因素阻挠双赢：①重复博弈中的信任衰减（一次背叛毁所有）；②阴谋策略（幕后交易破坏信任）；③人性下限（有人愿意损失1只为了让对方损失10）；④群体内部利益冲突（乌合之众难以达成一致）；⑤伪装的零和博弈（有些"双赢"本质是转嫁成本给第三方）。认识到这些，你才不会天真地以为"沟通就能解决一切"——有时候，改变博弈规则比说服对方更重要。</p>
-  </div>
+<!-- Q5: 公理化 -->
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问9：为什么数学&#8220;止于公理&#8221;而科学&#8220;无限深化&#8221;？</span></div>
+<div class="socratic-a"><strong>第一层：</strong>数学的公理是不可再深挖的起点——比如几何学的平行公理，你只需要接受它，然后推导一切。但物理学没有终极公理——从分子到原子到夸克到希格斯玻色子，每一次&#8220;到底了&#8221;都是下一次深挖的起点。<strong>数学提供确定性框架，科学在框架内无限探索。</strong></div>
+<div class="socratic-q" onclick="var a=this.nextElementSibling;a.classList.toggle('open')"><span class="q-text">追问10：个人如何建立自己的&#8220;公理-定理-推论&#8221;体系？</span></div>
+<div class="socratic-a"><strong>第二层：</strong>首先明确你的核心公理（不可妥协的原则），比如&#8220;不损害他人利益&#8221;、&#8220;持续学习&#8221;。然后推导定理（行为准则），比如&#8220;公开承诺的目标更容易坚持&#8221;。最后形成推论（日常习惯），比如&#8220;每周写一篇学习笔记&#8221;。当面对道德困境时，回归公理而非在推论层面纠结——这就像管理学中&#8220;公理设定差异导致企业基因不同&#8221;。</div>
+
 </div>
 </div>
 
-<!-- ===== Tab 7: 案例分析（内联HTML） ===== -->
+<!-- ====== TAB 7: 案例分析 ====== -->
 <div class="tab-panel" id="panel7">
-<h3 style="color:var(--accent);margin-bottom:16px">🔍 用MKS四维度拆解真实案例</h3>
+<div class="card">
+<h3>案例分析：用MKS四维度拆解&#8220;特斯拉Model 3产能地狱&#8221;</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:16px">2017年特斯拉推出廉价车型Model 3后订单暴涨，但因产能无法匹配需求，引发退订潮和股价波动。用微积分与概率思维拆解这一经典案例。</p>
 
-<div class="case-item">
-<h4>🚗 案例一：特斯拉Model 3产能地狱（2017-2018）</h4>
-<p style="color:var(--text2);font-size:.85rem;margin-bottom:10px">2017年推出廉价车型Model 3后，订单暴涨至50万辆，但工厂产能无法匹配，导致长达一年的"产能地狱"，客户大规模退订，股价剧烈波动。</p>
-<div class="case-dims">
-  <div class="case-dim"><strong>① 连续性与奇点：</strong>订单曲线出现"奇点"——从平稳增长跳跃至指数爆发。这个不可导点意味着历史数据完全无法预测未来，所有产能规划瞬间过时。</div>
-  <div class="case-dim"><strong>② 积分与滞后：</strong>产能（相当于速度）的提升需要时间积分积累：建厂→招工→培训→爬坡，每一步都是积分。即使马斯克睡在工厂，物理极限也无法被意志力突破。</div>
-  <div class="case-dim"><strong>③ 泊松分布视角：</strong>将每一环节的<strong>故障</strong>视为小概率事件，但生产环节极多，故障的泊松累积效应导致整体良率远低于预期。</div>
-  <div class="case-dim"><strong>④ 梯度优化策略：</strong>马斯克最终的做法是计算"瓶颈梯度"——找到对总产出影响最大的<strong>单一瓶颈</strong>（电池模组装配），全力攻克。这是梯度下降思想：找到最陡的改进方向，集中资源突破。</div>
-</div>
+<div class="card" style="border-left:4px solid var(--accent)">
+<h3>① 问题识别（微分视角）</h3>
+<p style="font-size:.85rem">Model 3发布后，需求曲线出现<strong>不可导奇点</strong>——订单从平稳增长突然跳跃至暴增。这个&#8220;尖尖点&#8221;意味着未来的不可预测性。从微分角度看，订单函数的导数不连续，企业无法基于历史趋势推测未来产能需求。</p>
 </div>
 
-<div class="case-item">
-<h4>💰 案例二：长期资本管理公司(LTCM)崩溃（1998）</h4>
-<p style="color:var(--text2);font-size:.85rem;margin-bottom:10px">由诺贝尔经济学奖得主Scholes和Merton参与的LTCM基金，用高斯分布模型做风险对冲，1998年俄罗斯债务违约导致其模型完全失效，亏损46亿美元，被美联储牵头救助。</p>
-<div class="case-dims">
-  <div class="case-dim"><strong>① 高斯分布的误用：</strong>LTCM假设市场收益率服从正态分布，但真实金融数据是"肥尾分布"——3σ外的事件发生概率远超高斯模型预测。他们用"99.7%不会发生"的标准来判断风险，但肥尾下"千年一遇"的事件可能每几年就发生一次。</div>
-  <div class="case-dim"><strong>② 古德-图灵视角：</strong>LTCM的问题正是"零概率误判"。他们的历史数据中，俄罗斯违约的概率为零。但古德-图灵告诉我们：没发生过的≠零概率，必须从高频事件的概率中"打折"分配给这些"从未发生"的极端事件。</div>
-  <div class="case-dim"><strong>③ 条件概率陷阱：</strong>LTCM认为各国债券之间的相关性是稳定的（"正常市场条件"下的概率）。但当俄罗斯违约后，<strong>条件改变了</strong>——全球投资者恐慌性抛售所有新兴市场资产，相关性从0.3飙升到0.9。P(巴西违约|俄罗斯违约) ≠ P(巴西违约)。</div>
-  <div class="case-dim"><strong>④ 冗余缺失：</strong>泊松分布告诉我们，要确保99%+安全概率，需要<strong>远超平均值</strong>的冗余。LTCM的杠杆率高达25:1——几乎没有冗余。即使模型正确，正常波动也能轻易击穿这个水平的缓冲。</div>
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>② 核心概念运用</h3>
+<p style="font-size:.85rem">
+<strong>① 连续性与可导性：</strong>健康的增长曲线应该是光滑的——特斯拉的订单曲线出现了尖点（不可导），导致产能规划失效，类似2008年王老吉捐款后需求暴增导致缺货。<br>
+<strong>② 积分滞后效应：</strong>产能扩张是积分的累积过程——即使立刻投资建厂（加速度为正），产能（速度）和交付量（距离）都有显著滞后。马斯克睡工厂也缩短不了物理规律。<br>
+<strong>③ 泊松分布冗余原理：</strong>如果订单的随机波动用泊松分布建模，需要λ+30%的冗余产能来保证交付。特斯拉的&#8220;刚好填满&#8221;策略破产。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #3a6ea5">
+<h3>③ 解决方案与结果</h3>
+<p style="font-size:.85rem">
+<strong>短期措施：</strong>马斯克亲自驻厂，搭建帐篷生产线（临时增加&#8220;冗余&#8221;）。<br>
+<strong>长期调整：</strong>上海超级工厂从建厂到投产仅10个月，分散单一工厂风险。<br>
+<strong>结果：</strong>经过5年（约20个季度）的积分累积，特斯拉产能曲线终于趋于光滑，成为全球市值最高的车企。<br>
+<strong>代价：</strong>5年市值波动、客户流失、品牌损伤——这就是&#8220;不可导点&#8221;的修复成本。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #6b8e23">
+<h3>④ MKS启示</h3>
+<p style="font-size:.85rem">
+1. <strong>光滑增长是竞争力的数学表达：</strong>追求商业模式的&#8220;可导性&#8221;（可预测的收入曲线），比追求爆发式增长更重要。<br>
+2. <strong>产能冗余是应对随机性的保险：</strong>泊松分布告诉我们，λ的容量意味着50%的失败率。<br>
+3. <strong>滞后效应不可逾越：</strong>无论多努力，从投资到产出的积分过程都需要时间——这是物理规律而非管理问题。<br>
+4. <strong>奇点修复成本极高：</strong>一次不可导可能需要数年消化，预防远比修复经济。
+</p>
+</div>
 </div>
 </div>
 
-<div class="case-item">
-<h4>🌍 案例三：AlphaGo与李世石的人机围棋大战（2016）</h4>
-<p style="color:var(--text2);font-size:.85rem;margin-bottom:10px">第四局李世石第78手"神之一挖"，让AlphaGo出现严重误判。这一手在训练数据中出现的概率极低，导致AI从87%胜率骤降至崩溃。</p>
-<div class="case-dims">
-  <div class="case-dim"><strong>① 贝叶斯推断的边界：</strong>AlphaGo的神经网络本质上是P(胜率|当前局面)的贝叶斯估计器。当李世石下出训练数据中"概率接近零"的一手时，模型的条件概率估计失效。</div>
-  <div class="case-dim"><strong>② 古德-图灵估计的必要性：</strong>如果AlphaGo使用了古德-图灵折扣估计，它会给"从未见过"的走法分配一个非零的先验概率，而不会因"数据中未出现"就判定为零概率事件。</div>
-  <div class="case-dim"><strong>③ 梯度更新的极致：</strong>AlphaGo的训练使用了策略梯度（Policy Gradient）——不断计算"胜率对策略参数"的梯度，沿着最陡方向更新。百万局自我对弈 = 百万次梯度下降迭代 = 从随机下棋到超越人类。</div>
-  <div class="case-dim"><strong>④ 人与机器的互补：</strong>李世石的第78手来自人类独有的"创造性直觉"，这种直觉跳出了数据分布。数学工具再强大，<strong>探索/创造</strong>（产生新数据）的能力仍是人类的独特优势——至少在可预见的未来。</div>
-</div>
-</div>
-</div>
-
-<!-- ===== Tab 8: 实战决策（内联HTML） ===== -->
+<!-- ====== TAB 8: 实战决策 ====== -->
 <div class="tab-panel" id="panel8">
-<h3 style="color:var(--accent);margin-bottom:16px">🎯 3轮决策模拟——用数学思维做选择</h3>
+<div class="card">
+<h3>实战决策模拟</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p>
 
-<div class="decision-round" id="dRound1">
-  <div class="scenario">📍 第1轮：创业方向选择</div>
-  <p style="font-size:.9rem;color:var(--text2);margin-bottom:10px">你有两个创业idea：A项目是"明显需求"（做SaaS工具），初期增长快但市场天花板低；B项目是"前沿探索"（做AI应用），初期几乎零增长但具备指数爆发潜力。你只有18个月的资金。选哪个？</p>
-  <div class="d-option" onclick="makeDecision(1,'A')">A. 选SaaS工具，先活下来再说——现实点，钱烧完了什么都没了</div>
-  <div class="d-option" onclick="makeDecision(1,'B')">B. 选AI应用，赌指数增长——平庸的项目做成了也没意思</div>
-  <div class="d-option" onclick="makeDecision(1,'C')">C. 用黄金分割：60%资源做SaaS保底，40%做AI探索——两条腿走路</div>
-  <div class="d-result" id="dResult1"></div>
+<!-- Round 1 -->
+<div class="decision-scenario" id="decision1">
+<h4 style="color:var(--gold);margin-bottom:8px">第1轮：投资决策——如何在不确定性中配置资产？</h4>
+<p style="font-size:.9rem;margin-bottom:10px"><strong>场景：</strong>你有100万闲置资金。市场上有三只基金：A基金历史年化10%但波动极大（σ=25%），B基金年化5%波动小（σ=5%），C基金是新型AI量化基金，历史不足2年但宣称年化20%+。你会怎么配置？</p>
+<div class="decision-options" id="d1Opts">
+<div class="decision-opt" onclick="chooseDecision(1,0)">A. 全部投入A基金——高回报值得高风险，长期持有必胜</div>
+<div class="decision-opt" onclick="chooseDecision(1,1)">B. 60%投A+40%投B——用组合平衡风险与回报，参考高斯分布的风险匹配</div>
+<div class="decision-opt" onclick="chooseDecision(1,2)">C. 大头投C基金——AI是未来，先发优势很重要</div>
+</div>
+<div class="decision-result" id="d1Result"></div>
 </div>
 
-<div class="decision-round" id="dRound2">
-  <div class="scenario">📍 第2轮：投资组合决策</div>
-  <p style="font-size:.9rem;color:var(--text2);margin-bottom:10px">你有100万可投资资金。投资顾问推荐三只基金：X基金历史年化回报20%但σ=35%；Y基金年化回报10%σ=12%；Z基金年化回报6%σ=3%。你怎么配？</p>
-  <div class="d-option" onclick="makeDecision(2,'A')">A. 全投X——回报最高，年轻就该承担高风险</div>
-  <div class="d-option" onclick="makeDecision(2,'B')">B. 全投Z——安全第一，6%也跑赢通胀</div>
-  <div class="d-option" onclick="makeDecision(2,'C')">C. 按回报/风险比配置：X:Y:Z=20%:50%:30%——用高斯分布思维平衡收益与稳定性</div>
-  <div class="d-result" id="dResult2"></div>
+<!-- Round 2 -->
+<div class="decision-scenario" id="decision2">
+<h4 style="color:var(--gold);margin-bottom:8px">第2轮：商业策略——存量市场中的竞争博弈</h4>
+<p style="font-size:.9rem;margin-bottom:10px"><strong>场景：</strong>你是一家SaaS创业公司CEO，市场份额约10%。行业老大（份额50%）刚宣布将推出与你核心功能一样的产品且免费。你的现金流还能撑12个月。你如何应对？</p>
+<div class="decision-options" id="d2Opts">
+<div class="decision-opt" onclick="chooseDecision(2,0)">A. 立即全面降价——不惜烧钱保住客户，用价格战拖垮对手</div>
+<div class="decision-opt" onclick="chooseDecision(2,1)">B. 冷静分析博弈矩阵——寻找差异化赛道（智猪博弈中的&#8220;小猪策略&#8221;），避开正面交锋</div>
+<div class="decision-opt" onclick="chooseDecision(2,2)">C. 寻求被收购——趁估值还在，卖给一个大平台换取安全</div>
+</div>
+<div class="decision-result" id="d2Result"></div>
 </div>
 
-<div class="decision-round" id="dRound3">
-  <div class="scenario">📍 第3轮：职业转折点</div>
-  <p style="font-size:.9rem;color:var(--text2);margin-bottom:10px">你在舒适区待了几年，现在有一个内部转岗机会（去新业务线做负责人）。新岗位失败概率40%，成功则晋升加速3年。同时猎头联系你，有外部offer（稳定+20%薪资）。你的选择？</p>
-  <div class="d-option" onclick="makeDecision(3,'A')">A. 留在原岗位——稳定压倒一切，40%失败率太高了</div>
-  <div class="d-option" onclick="makeDecision(3,'B')">B. 接受外部offer——实打实的20%加薪，不冒内部转岗的险</div>
-  <div class="d-option" onclick="makeDecision(3,'C')">C. 计算期望值+梯度分析：内部转岗成功则晋升加速3年（价值+50%薪资），期望净收益=0.6×1.5+0.4×(-1.0)=0.5，正期望。前提是评估40%这个"概率估计"是否可靠（是条件概率还是无条件概率？）</div>
-  <div class="d-result" id="dResult3"></div>
+<!-- Round 3 -->
+<div class="decision-scenario" id="decision3">
+<h4 style="color:var(--gold);margin-bottom:8px">第3轮：人生决策——要不要从&#8220;线性增长&#8221;切换到&#8220;指数增长&#8221;？</h4>
+<p style="font-size:.9rem;margin-bottom:10px"><strong>场景：</strong>你在大厂工作了8年，年薪80万，晋升梯队在望（线性增长：每年+10%）。现在有个创业机会：前2年零收入，但成功后可能指数级回报（20%概率成功，成功后估值10亿）。你该不该辞职？</p>
+<div class="decision-options" id="d3Opts">
+<div class="decision-opt" onclick="chooseDecision(3,0)">A. 辞职创业——人生苦短，不赌一把永远不知道上限</div>
+<div class="decision-opt" onclick="chooseDecision(3,1)">B. 用贝叶斯更新做决策——先去验证关键假设（客户需求/付费意愿），用2-3个月收集信息后更新创业成功概率，再决定</div>
+<div class="decision-opt" onclick="chooseDecision(3,2)">C. 留在大厂——稳定增长压倒一切，创业成功率太低不值得冒险</div>
+</div>
+<div class="decision-result" id="d3Result"></div>
+</div>
+
 </div>
 </div>
 
-</div> <!-- .container -->
+</div><!-- .container -->
+
 
 <script>
+
 // ===== GLOBAL STATE =====
-const LS_KEY = 'mks_math_topic2';
-let LS = {};
-try { LS = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) { LS = {}; }
-if (!LS.learned) LS.learned = [];
-if (!LS.errors) LS.errors = [];
-if (!LS.examHistory) LS.examHistory = [];
-if (!LS.quizDoneTotal) LS.quizDoneTotal = 0;
-if (!LS.quizCorrectTotal) LS.quizCorrectTotal = 0;
-let learnedCards = LS.learned;
-let errorBook = LS.errors;
-let examHistory = LS.examHistory;
+var LS = 'mks_math2_';
+var learnedCards = JSON.parse(localStorage.getItem(LS+'learned')||'[]');
+var wrongAnswers = JSON.parse(localStorage.getItem(LS+'wrong')||'[]');
+var quizAnswered = JSON.parse(localStorage.getItem(LS+'quizAns')||'[]');
+var shortRevealed = JSON.parse(localStorage.getItem(LS+'shortRev')||'[]');
+function save(){localStorage.setItem(LS+'learned',JSON.stringify(learnedCards));localStorage.setItem(LS+'wrong',JSON.stringify(wrongAnswers));localStorage.setItem(LS+'quizAns',JSON.stringify(quizAnswered));localStorage.setItem(LS+'shortRev',JSON.stringify(shortRevealed));}
 
-function save() {
-  localStorage.setItem(LS_KEY, JSON.stringify({
-    learned: learnedCards, errors: errorBook, examHistory: examHistory,
-    quizDoneTotal: LS.quizDoneTotal, quizCorrectTotal: LS.quizCorrectTotal
-  }));
-}
-
-// ===== CONCEPTS =====
+// ===== CONCEPTS (12) =====
 var concepts = [
-  {id:'c1',name:'导数与微分',def:'对函数变化快慢的精确量化度量。当Δt→0时，位移曲线在t0点的切线斜率定义为瞬时速度v(t0)=dS/dt。',analogy:'就像看车速表——不是看你从A到B的平均速度，而是看此刻指针指向的确切速度。警察测速仪捕捉的就是这个"瞬时"速度。',example:'经济增长率是GDP函数的导数，媒体更关注增长率的变化（二阶导）而非GDP本身。巴菲特偏好业绩曲线"光滑"（可导）的股票。',counter:'导数无法定义在"奇点"上——函数的跳跃点或尖点处导数不存在。阶梯函数的跳跃点、锯齿波的尖峰都不可导。'},
-  {id:'c2',name:'积分与累积',def:'微分的逆运算，通过无限细分后累加求和，实现对动态变化累积效应的精确计算。速度曲线下的面积=行驶距离。',analogy:'就像你的银行卡余额——它不是你某一刻赚了多少钱，而是从出生到现在所有收入-支出积分的结果。你此刻的余额是过去所有"微小变化"的总和。',example:'飞轮效应：加速度→速度（一级积分）→距离（二级积分）。加速度无滞后，速度滞后较小，距离滞后最大。努力的"滞后效应"：努力→能力→成绩→赏识，每级都是积分。',counter:'积分不能告诉你"为什么"变化——它只负责累加。如果原始数据（导数）错了，积分结果也会错。另外，积分滞后意味着趋势一旦形成，逆转需要付出巨大代价。'},
-  {id:'c3',name:'梯度优化',def:'多变量函数对各变量的微分组成的向量，指向函数变化最陡的方向。用于在多变量系统中找到最优改进方向。',analogy:'登山时，你环顾四周找"最陡的上坡方向"——那就是梯度。每走一步重新评估，不断调整方向。',example:'长方体体积优化：V=LWH，梯度=(WH,LH,LW)。最短的边对应最大梯度分量——优先增加最短边（补短板）能让体积增长最快，最终趋近立方体。',counter:'梯度只告诉你"局部"最陡方向——可能只是一个小山坡，而非全局最高峰。优化可能陷入"局部最优"而出不来。现实中的"梯度"也难以精确计算。'},
-  {id:'c4',name:'连续性与奇点',def:'可导函数必须连续且光滑（无尖点）。奇点是函数不连续或不可导的位置。连续≠可导（魏尔斯特拉斯反例）。',analogy:'开车时，平稳加速是可导的（速度曲线光滑），急刹车是"奇点"（加速度突变）。你车上的乘客能感受到奇点——身体猛地前倾。',example:'王老吉2008年亿元捐款后销量暴涨——需求曲线的奇点导致供应链断裂。特斯拉Model 3订单暴涨但产能无法匹配。巴菲特避开"业绩忽上忽下"的股票。',counter:'连续性本身不保证可导——魏尔斯特拉斯构造了处处连续但处处不可导的"病态函数"。现实中过于追求"光滑"也可能导致僵化——有时需要主动制造"创造性破坏"。'},
-  {id:'c5',name:'伯努利试验',def:'仅两种结果（A或B）、每次概率p固定、试验独立重复的随机过程。N次试验中A发生k次的概率服从二项式分布。',analogy:'抛硬币是最经典的伯努利试验。但别被直觉骗了——抛10次硬币恰好5次正面的概率只有约25%。你大脑中的"应该一半一半"是一种认知错觉。',example:'1%成功率的事件：需260次试验（非直觉的100次）才能确保至少成功一次。赌场盈利逻辑：利用大量试验下的微弱概率优势（庄家赢面52% vs 玩家48%），长期必然获利。',counter:'现实中很少存在完美伯努利试验——条件不可能完全相同（天气影响比赛），试验不可能完全独立（股票价格有自相关）。'},
-  {id:'c6',name:'高斯分布（正态分布）',def:'描述大概率事件在大量试验下的统计规律。钟形曲线由均值μ和标准差σ定义。三σ原则：μ±σ覆盖68%，μ±2σ覆盖95%，μ±3σ覆盖99.7%。',analogy:'想象一群成年男性的身高——大多数在170cm附近，极高或极矮的很少。钟形曲线就是这个分布的形状。σ越小，人群身高越集中；σ越大，人群越多样化。',example:'标普500年化回报7-8%，但σ=16%（远超回报率！）。短期回报差异（如两只股票3年回报差5%）远小于个股σ（>16%），可能只是随机波动。',counter:'金融市场的真实分布是"肥尾"——3σ外的事件发生概率远高于高斯模型的预测。2008年金融危机就是一次肥尾事件。不能把高斯分布当作普适真理。'},
-  {id:'c7',name:'泊松分布',def:'描述小概率事件在大量独立试验中的发生规律。P(X=k)=e^(-λ)λ^k/k!，其中λ=n×p。',analogy:'保险公司就像一个巨大的"停车场"——每个客户出险是小概率事件，但当客户足够多(pool足够大)时，总出险数的波动就很小。',example:'100人公司10个车位，成功停车概率仅46%（λ=10时）。2000人投保只需多交15%保费（冗余），理赔概率可达98%。电话线路冗余50%使占线概率<5%。',counter:'泊松分布假设事件独立——但如果你的客户都住在同一地震带上，独立性就不成立。再保险就是为了应对这种"相关性风险"。'},
-  {id:'c8',name:'条件概率与贝叶斯',def:'P(Y|X)：在条件X下Y发生的概率，可能与无条件概率P(Y)相差数量级。贝叶斯公式P(X|Y)=P(Y|X)P(X)/P(Y)实现因果逆转。',analogy:'"中药"这个条件改变了一切——无条件时P(田七)极低，但P(田七|中药)就高很多。就像你在机场遇到同事的概率远低于在公司遇到同事的概率。条件就是"重新洗牌"。',example:'机器翻译：找最优中文X使P(X|英文Y)最大 = 最大化P(英文Y|中文X)×P(中文X)。语音识别、垃圾邮件过滤、AI诊断都是贝叶斯推理。',counter:'贝叶斯公式依赖先验概率P(X)的准确性。如果先验是错的（比如你高估了某个事件的基础概率），即使新证据很强，更新也会偏。垃圾先验=垃圾后验。'},
-  {id:'c9',name:'古德-图灵估计',def:'基于齐普夫定律的概率修正方法：将高频词概率"打折"分配给低频/未出现词，使概率分布更光滑，避免"零概率"误判。',analogy:'就像一个聪明的图书馆——即使某本书从来没被借过，也给它留一个书架位置，因为它有可能某天被需要。而不是因为"从未被借"就把它扔掉。',example:'10亿词语料库分两半，A中存在的词组合在B中可能完全缺失——证明"未出现≠零概率"。LTCM崩溃正是因为他们假设"俄罗斯违约概率=0"。',counter:'古德-图灵估计假设数据服从齐普夫定律——排位×词频≈常数。这个假设在非语言学领域不一定成立。需要配合插值法使用。'},
-  {id:'c10',name:'博弈论与纳什均衡',def:'研究多方策略选择的最优化理论。零和博弈采用"最小值中取最大值"策略；非零和博弈的纳什均衡描述"无人愿单方面改变策略"的稳定态。',analogy:'下围棋时你不能只考虑自己走哪步最好——你必须想"我走A，对手最可能走B，然后我走C..."。博弈论就是把这种"我预判了你的预判"量化为数学模型。',example:'囚徒困境：纳什均衡在(-5,-5)双输，但合作均衡在(-1,-1)双赢。冷战核军备竞赛是现实版囚徒困境。智猪博弈：小猪搭便车是最优策略。',counter:'现实博弈远比模型复杂：信息不完备（你不知道对方的收益矩阵）、非完全理性（人会情绪化决策）、多轮博弈中的信任管理。模型是思考起点，不是终点。'},
-  {id:'c11',name:'公理化方法',def:'将学科建立在少数不证自明的公理之上，从公理推导出所有定理。柯尔莫哥洛夫用三大公理完成了概率论的公理化：概率∈[0,1]、全空间=1、互斥加法。',analogy:'就像下象棋——你先接受"马走日、象走田"这些基本规则（公理），然后所有的战术、策略、棋谱（定理）都从这些规则推导出来。',example:'概率论公理化后，从"经验工具"升级为"严格数学分支"。企业管理公理化：愿景/价值观/文化=公理→制度/定位=定理→流程/习惯=推论。',counter:'公理本身无法被证明（"止于公理"）——它们是人类"约定"的起点。选择不同的公理（如欧氏几何vs非欧几何）会导出完全不同的体系，各有适用范围。'},
-  {id:'c12',name:'黄金分割与优选法',def:'华罗庚推广的实践优化方法：利用0.618黄金分割点迭代，用最少试验次数找到最优解。5次试验将范围缩小至9%。',analogy:'蒸馒头时不确定该放多少碱——第一次试6.18克（0~10克的黄金分割点），太碱了就在0~6.18之间再试3.82克。用折纸代替数学公式，初中文化就能掌握。',example:'摄影构图：主体放在画面0.618处。资产配置：60-65%股市+25%债券+其余组合。决策时间：需比较的决策在0.618时间点行动；需执行的决策在0.382（反黄金分割点）行动。',counter:'优选法适用于单峰函数——如果最优解不止一个（多峰），黄金分割可能收敛到局部最优而非全局最优。但它提供了一个"从粗糙到精确"的优雅框架。'}
+{id:'c1',name:'导数与微分',def:'导数精确量化函数在某一点的瞬间变化率。微分将宏观趋势转化为微观变化度量，梯度指示多变量函数的最陡优化方向。',analogy:'如同车速表——平均速度告诉你全程快慢，瞬时速度告诉你此刻是否超速。警察测速抓超速用的是瞬时速度而非平均速度。',example:'圆柱体体积V=πr²h的梯度(2πrh,πr²)：当h<0.5r时优先增加高度，反之增加半径。长方体优化优先加最短边，最终趋近立方体。',counter:'导数=0不一定是最大值——可能是极小值或拐点（如x³在x=0处）。机器学习中梯度下降常陷入局部最优而非全局最优。'},
+{id:'c2',name:'积分与累积',def:'积分是微分的逆运算，通过将无穷小量累加求总量。积分结果存在滞后效应——加速度→速度(一级积分)→距离(二级积分)，每级滞后递增。',analogy:'如同飞轮——你用力推（加速度），飞轮开始转（速度），但要转很多圈（距离）才能感受到惯性力量。停止用力后飞轮仍然继续转——这就是趋势难逆转。',example:'指数增长企业vs线性增长企业：前13个季度线性增长总利润更高，第14季度后指数增长反超。J曲线揭示：指数增长前期缓慢，后期加速。',counter:'积分滞后意味着"今天努力明天成功"违反数学规律。努力(加速度)→能力(速度)→成绩(距离)→赏识(多级积分)，每级都存在显著滞后。'},
+{id:'c3',name:'连续性与可导性',def:'可导函数曲线必须连续且光滑（无尖尖点）。光滑曲线可预测——导数不会突然跳跃。巴菲特偏好业绩曲线光滑的股票。',analogy:'如同高速公路——连续但突然出现尖弯（不可导点）会导致翻车。王老吉2008年捐款后需求暴增（尖点），供应链断裂，代价惨重。',example:'特斯拉Model 3: 订单暴增形成不可导奇点→产能无法匹配→5年市值波动。企业抗风险能力取决于收入曲线的光滑程度。',counter:'魏尔斯特拉斯构造了处处连续但处处不可导的函数——连续≠可导。现实中"看似稳定"的系统可能隐藏处处不可导的脆弱性。'},
+{id:'c4',name:'微积分发明权',def:'牛顿从力学出发（速度/加速度/动量），莱布尼茨从哲学逻辑出发（无穷小量dx/dy）。两人独立发明但视角互补，历时两个多世纪才完成严格体系构建。',analogy:'如同两个人从不同路径登上同一座山——牛顿走物理栈道（解决运动学问题），莱布尼茨走哲学台阶（概念由简单单元复合而成）。山顶的风景一样，但路径决定了他们看到的沿途风光。',example:'莱布尼茨的dx/dy符号简洁，成为现代微积分标准符号。牛顿的流数法符号繁复已被淘汰。但牛顿优先成稿15年。',counter:'微积分的出现是"水到渠成"——巴罗等前人已有雏形，但真正完成从0到N跨越的是牛顿和莱布尼茨。重大发明往往多源并发。'},
+{id:'c5',name:'概率论基础',def:'概率论起源于1654年帕斯卡与费马的通信。拉普拉斯定义古典概率，柯尔莫哥洛夫1933年用三大公理完成严格公理化：概率∈[0,1]、样本空间概率=1、互斥事件加法法则。',analogy:'如同桥牌——高手背诵牌型分布概率（1-3分布49.74%高于2-2分布40.70%），而非依赖直觉。概率思维让你从"赌"升级为"算"。',example:'庄家在掷骰子游戏中仅52%的微弱胜率，靠大量重复稳赚不赔。大数定理：试验次数→∞时频率趋近概率。',counter:'概率不是"会发生什么"而是"决策质量如何"。单次可能输，但长期坚持高胜率策略必然赢。结果质量≠决策质量。'},
+{id:'c6',name:'伯努利试验',def:'只有两种结果的独立重复试验。N越大结果越集中在期望值N×p附近。标准差相对期望值的占比随N增大而减小。',analogy:'如同抛硬币——抛10次可能有7次正面（误差大），抛1000次几乎必然是450-550次正面（99.7%置信）。规律只在大量重复中显现。',example:'1%成功率的事件需260次试验才能确保成功（非直觉的100次）。赌场靠微弱概率优势（52%vs48%）长期稳赚。',counter:'单次成功率提升比增加试验次数更高效。5%成功率需50次，50%成功率仅需4次。先提升p再考虑N。'},
+{id:'c7',name:'高斯分布',def:'描述大概率事件的钟形曲线，由均值μ（中心位置）和标准差σ（离散程度）定义。三σ原则：μ±σ覆盖68%，μ±2σ覆盖95%，μ±3σ覆盖99.7%。',analogy:'如同考试成绩——均值告诉你班级平均分，标准差告诉你分数有多"散"。σ越小越"瘦高"（大家都差不多），σ越大越"扁平"（两极分化严重）。',example:'标准普尔500年化回报7-8%但σ=16%，风险远超回报率。连续3年跑赢大盘可能只是随机波动（差异<σ而非能力）。',counter:'金融市场非严格高斯分布——存在"肥尾"现象（极端事件概率高于高斯预测）。2008年金融危机就是肥尾事件。'},
+{id:'c8',name:'泊松分布',def:'描述小概率事件在大量独立试验中的发生规律。λ=n×p（平均发生次数），需预留λ+30%冗余应对随机波动。池子越大风险越可控。',analogy:'如同停车场——100人有10个车位(p=10%)，车位刚好填满的概率仅46%而非直觉的90%。需13个车位（30%冗余）才能将成功率提升至85%。',example:'保险公司客户越多越稳定——200人投保风险高，2000人仅需多交15%保费即可将偿付概率提升至98%。再保险是"超级池子"。',counter:'冗余成本与池子规模成反比——大公司单位冗余成本远低于小公司。这也是"大而不倒"的数学基础。'},
+{id:'c9',name:'贝叶斯推理',def:'通过条件与结果互换更新信念：P(X|Y)=P(Y|X)P(X)/P(Y)。核心价值：信念应该是可更新的概率值，而非二元的真/假判断。',analogy:'如同医生诊断——先验概率(该病发病率1%)+新证据(检测阳性,准确率95%)→后验概率(约16%,仍大概率没病)。贝叶斯告诉你不只看检测结果，还要看基础发病率。',example:'机器翻译：将英文Y译为中文X，遍历所有X选择P(X|Y)最大的。谷歌翻译本质是贝叶斯公式的工程实现。',counter:'先验概率的选择对结果影响巨大——不同先验可能导致完全不同结论。科学结论取决于"你从什么先验出发"。'},
+{id:'c10',name:'古德-图灵估计',def:'为未出现事件分配概率，防止黑天鹅。将高频词概率"打折"分配给低频词：出现r次的词调整为(r+1)×N_{r+1}/N_r。',analogy:'如同为"未知的未知"买保险——你不能因为从未见过黑色天鹅就说黑天鹅概率为零。古德-图灵告诉你：没见过的事概率虽小但绝非零。',example:'10亿词语料库分A/B两子集后，A中存在的词组合在B中可能完全缺失——数据稀疏性普遍存在。网络新词首次出现时概率不应为零。',counter:'古德方法需降低高收益项目利润来覆盖风险成本。贾里尼克插值法：组合条件概率(0.7权重)与非条件概率(0.3权重)，更实用。'},
+{id:'c11',name:'博弈论',def:'零和博弈采用最小值中取最大值策略；非零和博弈的纳什均衡常导致双输（囚徒困境）。智猪博弈中小猪搭便车是最优策略。',analogy:'如同下围棋——你不仅要考虑自己最好的走法，还要考虑对手最狠的应对。最小值中取最大值：在对手给你的最糟局面中选相对最好的。',example:'囚徒困境：双方认罪各判5年（双输均衡），双方抵赖各判1年（双赢但需信任）。冷战核军备竞赛是囚徒困境的现实版。',counter:'双赢需克服五大障碍：信任衰减、阴谋破坏、非理性行为、乌合之众效应、伪双赢（实为更大范围零和）。没有信任机制，理性个体必然走向集体次优。'},
+{id:'c12',name:'数学跨学科应用',def:'数学通过公理化方法构建严密体系：欧几里得几何→罗马法→概率公理→企业管理公理。华罗庚优选法用0.618黄金分割将复杂最优化简化为简单试验。',analogy:'如同乐高积木——企业三公理（愿景/价值观/文化）是基础积木，制度定理从公理推导，操作流程是推论。换一套公理就换一个组织基因。',example:'华罗庚优选法：5次试验将范围缩至9%，6次缩至6%以下，初中文化即可掌握。黄金分割用于摄影构图、资产配置(60%股市)、决策时间节点。',counter:'数学公理止于公理（不可再深挖），科学无限深化。数学提供确定性框架，科学在框架内无限探索——数学是"有底的学问"。'}
+];
+var mksCoreIds = ['c1','c5','c9','c11'];
+
+// ===== MCQ: 15 questions, answer distribution {0:4,1:4,2:4,3:3} =====
+var choiceQuestions = [
+{q:'导数的最本质定义是什么？',o:['函数在某一点的瞬时变化率','函数在区间上的平均变化率','函数的最大值与最小值之差','函数的积分值'],answer:0},
+{q:'积分与微分的关系是什么？',o:['两者完全独立','积分是微分的逆运算','微分是积分的逆运算','两者没有数学关系'],answer:1},
+{q:'魏尔斯特拉斯构造的反例证明了什么？',o:['可导一定连续','连续一定可导','存在处处连续但处处不可导的函数','不连续也可导'],answer:2},
+{q:'微积分体系的严格构建历时多久？',o:['牛顿一人20年完成','莱布尼茨一人30年完成','从牛顿到柯西约一个世纪','从牛顿到勒贝格历时两个多世纪'],answer:3},
+{q:'概率论起源于哪两位数学家的通信？',o:['帕斯卡和费马','牛顿和莱布尼茨','高斯和拉普拉斯','欧拉和伯努利'],answer:0},
+{q:'概率论公理化中，样本空间的概率等于？',o:['0','1','0.5','无穷大'],answer:1},
+{q:'伯努利试验中增大N的首要效果是什么？',o:['标准差越来越小','结果越来越离散','结果更集中在期望值附近','概率变为均匀分布'],answer:2},
+{q:'高斯分布μ±3σ范围覆盖约多少概率？',o:['68%','95%','50%','99.7%'],answer:3},
+{q:'泊松分布最适合描述哪类事件？',o:['小概率事件的大量独立试验','大概率事件的少量试验','确定性事件的规律','连续型随机变量的分布'],answer:0},
+{q:'贝叶斯公式的核心思想是什么？',o:['用先验概率替代后验概率','用新证据更新旧信念','用大数据消除不确定性','用随机实验代替概率计算'],answer:1},
+{q:'古德-图灵估计解决的核心问题是什么？',o:['优化高频词权重','提高计算效率','为未出现事件分配非零概率','减少模型参数数量'],answer:2},
+{q:'智猪博弈中，小猪的最优策略是什么？',o:['主动按按钮','等大猪按按钮然后搭便车','与大猪同时按按钮','离开猪圈不参与博弈'],answer:1},
+{q:'华罗庚优选法用多少个试验可将范围缩至9%以下？',o:['5次','3次','10次','20次'],answer:0},
+{q:'统计学中"霍桑效应"的核心含义是什么？',o:['大样本必然消除偏差','统计相关性等于因果关系','被观察者因知晓被观察而改变行为','数据量越大结论越可靠'],answer:2},
+{q:'非零和博弈中，囚徒困境的纳什均衡是什么？',o:['双方抵赖（双赢）','一方认罪一方抵赖','不存在稳定均衡','双方认罪（双输）'],answer:3}
 ];
 
-var mksCoreIds = ['c1','c2','c8','c3'];
+// ===== SAQ: 8 questions =====
+var shortQuestions = [
+{q:'为什么导数能比平均值更精确描述变化？',a:'平均值抹平过程中所有波动。如全程平均速度100km/h，但中途可能飙到150或堵车停住。导数告诉你每一瞬间的速度。从宏观模糊到微观精确的跃迁。'},
+{q:'请用滞后效应解释"为什么努力不能立刻看到回报"。',a:'努力是加速度，能力是速度（一级积分），成绩是距离（二级积分）。加速度立刻反映，但距离的累积需要时间。今天努力明天成功违反数学规律。应观察领先指标（如理解新概念）而非滞后指标（如升职加薪）。'},
+{q:'高斯分布的三σ原则是什么？举例说明应用。',a:'μ±σ约68%，μ±2σ约95%，μ±3σ约99.7%。应用：科学实验通常以95%置信度（2σ）为显著标准；金融中标准普尔σ=16%意味着年回报7-8%的波动远超回报本身。'},
+{q:'泊松分布告诉我们为什么保险公司需要大量客户？',a:'小池子（如200人投保）偿付概率仅50%。大池子（2000人）仅需多交15%保费，偿付概率可达98%。λ=n×p，池子越大随机误差越小。冗余需求与池子规模成反比。'},
+{q:'贝叶斯推理为什么说"信念应该是概率值而非真假判断"？',a:'你相信"股票会涨"应该是70%概率而非绝对判断。当季报不及预期，你不是"推翻"信念而是"更新概率"（70%→40%）。科学与教条的区别：科学用证据更新信念。'},
+{q:'囚徒困境中为什么个体理性导致集体非最优？',a:'双方认罪各判5年（纳什均衡），双方抵赖各判1年（双赢但需信任）。缺乏信任机制时，背叛是占优策略。破解需重复博弈+一报还一报策略。'},
+{q:'华罗庚优选法的核心思想是什么？',a:'将复杂最优化问题（如线性规划高维方程组）简化为"最少试验次数找最优解"。用黄金分割0.618迭代，5次试验范围缩至9%。核心：将复杂理论转化为初中文化即可掌握的工具。'},
+{q:'数学公理化方法对企业管理的启示是什么？',a:'企业三公理：愿景（存在意义）、价值观（与外部关系）、文化（内部规范）。从公理推导制度定理→操作流程推论。公理设定差异导致企业基因不同（如阿里客户优先vs星巴克员工优先）。'}
+];
 
 // ===== TAB SWITCHING =====
-document.querySelectorAll('.tab-btn').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    var idx = this.getAttribute('data-tab');
-    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-    this.classList.add('active');
-    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panel' + idx).classList.add('active');
-    if (idx === '4') renderReviewMode();
-    if (idx === '0') renderDashboard();
-  });
+document.querySelectorAll('.tab-btn').forEach(function(b){
+b.addEventListener('click',function(){
+document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active')});
+document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('active')});
+this.classList.add('active');
+document.getElementById('panel'+this.dataset.tab).classList.add('active');
+if(this.dataset.tab==='4') renderReview();
+});
 });
 
+function switchTab(idx){
+document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+var btn = document.querySelector('.tab-btn[data-tab="'+idx+'"]');
+if(btn) btn.classList.add('active');
+document.getElementById('panel'+idx).classList.add('active');
+if(idx===4) renderReview();
+}
+
+// ===== SVG CONCEPT MAP =====
+function renderSVG(){
+document.getElementById('conceptMap').innerHTML = '<svg width="1712pt" height="188pt" viewBox="0.00 0.00 1711.50 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="scale(1 1) rotate(0) translate(4 184)"><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-184 1707.5,-184 1707.5,4 -4,4"/><g id="root"><path fill="#c0392b" stroke="black" stroke-width="2" d="M913.5,-180C913.5,-180 780.5,-180 780.5,-180 774.5,-180 768.5,-174 768.5,-168 768.5,-168 768.5,-156 768.5,-156 768.5,-150 774.5,-144 780.5,-144 780.5,-144 913.5,-144 913.5,-144 919.5,-144 925.5,-150 925.5,-156 925.5,-156 925.5,-168 925.5,-168 925.5,-174 919.5,-180 913.5,-180"/><text text-anchor="middle" x="847" y="-165.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">微积分与概率思维</text><text text-anchor="middle" x="847" y="-153.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">确定性工具 ↔ 不确定性罗盘</text></g><g id="calc"><path fill="#d4a574" stroke="black" d="M358,-108C358,-108 264,-108 264,-108 258,-108 252,-102 252,-96 252,-96 252,-84 252,-84 252,-78 258,-72 264,-72 264,-72 358,-72 358,-72 364,-72 370,-78 370,-84 370,-84 370,-96 370,-96 370,-102 364,-108 358,-108"/><text text-anchor="middle" x="311" y="-93.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">微积分体系</text><text text-anchor="middle" x="311" y="-81.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">动态变化的数学语言</text></g><g id="prob"><path fill="#d4a574" stroke="black" d="M894,-108C894,-108 800,-108 800,-108 794,-108 788,-102 788,-96 788,-96 788,-84 788,-84 788,-78 794,-72 800,-72 800,-72 894,-72 894,-72 900,-72 906,-78 906,-84 906,-84 906,-96 906,-96 906,-102 900,-108 894,-108"/><text text-anchor="middle" x="847" y="-93.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">概率统计体系</text><text text-anchor="middle" x="847" y="-81.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">不确定性的量化工具</text></g><g id="app"><path fill="#d4a574" stroke="black" d="M1439.5,-108C1439.5,-108 1334.5,-108 1334.5,-108 1328.5,-108 1322.5,-102 1322.5,-96 1322.5,-96 1322.5,-84 1322.5,-84 1322.5,-78 1328.5,-72 1334.5,-72 1334.5,-72 1439.5,-72 1439.5,-72 1445.5,-72 1451.5,-78 1451.5,-84 1451.5,-84 1451.5,-96 1451.5,-96 1451.5,-102 1445.5,-108 1439.5,-108"/><text text-anchor="middle" x="1387" y="-87.2" font-family="Noto Sans SC" font-size="11" fill="#ffffff">数学应用与跨学科力量</text></g><g id="deriv"><path fill="#fffaf2" stroke="#5a3e3e" d="M98,-36C98,-36 12,-36 12,-36 6,-36 0,-30 0,-24 0,-24 0,-12 0,-12 0,-6 6,0 12,0 12,0 98,0 98,0 104,0 110,-6 110,-12 110,-12 110,-24 110,-24 110,-30 104,-36 98,-36"/><text text-anchor="middle" x="55" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">导数与微分</text><text text-anchor="middle" x="55" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">变化快慢·梯度优化</text></g><g id="integral"><path fill="#fffaf2" stroke="#5a3e3e" d="M226,-36C226,-36 140,-36 140,-36 134,-36 128,-30 128,-24 128,-24 128,-12 128,-12 128,-6 134,0 140,0 140,0 226,0 226,0 232,0 238,-6 238,-12 238,-12 238,-24 238,-24 238,-30 232,-36 226,-36"/><text text-anchor="middle" x="183" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">积分与累积</text><text text-anchor="middle" x="183" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">滞后效应·飞轮效应</text></g><g id="smooth"><path fill="#fffaf2" stroke="#5a3e3e" d="M354,-36C354,-36 268,-36 268,-36 262,-36 256,-30 256,-24 256,-24 256,-12 256,-12 256,-6 262,0 268,0 268,0 354,0 354,0 360,0 366,-6 366,-12 366,-12 366,-24 366,-24 366,-30 360,-36 354,-36"/><text text-anchor="middle" x="311" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">连续性与可导性</text><text text-anchor="middle" x="311" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">光滑曲线·预测价值</text></g><g id="invent"><path fill="#fffaf2" stroke="#5a3e3e" d="M465.5,-36C465.5,-36 396.5,-36 396.5,-36 390.5,-36 384.5,-30 384.5,-24 384.5,-24 384.5,-12 384.5,-12 384.5,-6 390.5,0 396.5,0 396.5,0 465.5,0 465.5,0 471.5,0 477.5,-6 477.5,-12 477.5,-12 477.5,-24 477.5,-24 477.5,-30 471.5,-36 465.5,-36"/><text text-anchor="middle" x="431" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">微积分发明权</text><text text-anchor="middle" x="431" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">牛顿↔莱布尼茨</text></g><g id="bernoulli"><path fill="#fffaf2" stroke="#5a3e3e" d="M606,-36C606,-36 508,-36 508,-36 502,-36 496,-30 496,-24 496,-24 496,-12 496,-12 496,-6 502,0 508,0 508,0 606,0 606,0 612,0 618,-6 618,-12 618,-12 618,-24 618,-24 618,-30 612,-36 606,-36"/><text text-anchor="middle" x="557" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">伯努利试验</text><text text-anchor="middle" x="557" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">二项式分布·大数定理</text></g><g id="gauss"><path fill="#fffaf2" stroke="#5a3e3e" d="M745.5,-36C745.5,-36 648.5,-36 648.5,-36 642.5,-36 636.5,-30 636.5,-24 636.5,-24 636.5,-12 636.5,-12 636.5,-6 642.5,0 648.5,0 648.5,0 745.5,0 745.5,0 751.5,0 757.5,-6 757.5,-12 757.5,-12 757.5,-24 757.5,-24 757.5,-30 751.5,-36 745.5,-36"/><text text-anchor="middle" x="697" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">高斯分布</text><text text-anchor="middle" x="697" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">均值·标准差·三σ原则</text></g><g id="poisson"><path fill="#fffaf2" stroke="#5a3e3e" d="M906,-36C906,-36 788,-36 788,-36 782,-36 776,-30 776,-24 776,-24 776,-12 776,-12 776,-6 782,0 788,0 788,0 906,0 906,0 912,0 918,-6 918,-12 918,-12 918,-24 918,-24 918,-30 912,-36 906,-36"/><text text-anchor="middle" x="847" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">泊松分布</text><text text-anchor="middle" x="847" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">小概率×大样本·冗余设计</text></g><g id="bayes"><path fill="#fffaf2" stroke="#5a3e3e" d="M1034,-36C1034,-36 948,-36 948,-36 942,-36 936,-30 936,-24 936,-24 936,-12 936,-12 936,-6 942,0 948,0 948,0 1034,0 1034,0 1040,0 1046,-6 1046,-12 1046,-12 1046,-24 1046,-24 1046,-30 1040,-36 1034,-36"/><text text-anchor="middle" x="991" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">贝叶斯推理</text><text text-anchor="middle" x="991" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">条件概率·信念更新</text></g><g id="goodturing"><path fill="#fffaf2" stroke="#5a3e3e" d="M1174,-36C1174,-36 1076,-36 1076,-36 1070,-36 1064,-30 1064,-24 1064,-24 1064,-12 1064,-12 1064,-6 1070,0 1076,0 1076,0 1174,0 1174,0 1180,0 1186,-6 1186,-12 1186,-12 1186,-24 1186,-24 1186,-30 1180,-36 1174,-36"/><text text-anchor="middle" x="1125" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">古德-图灵估计</text><text text-anchor="middle" x="1125" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">黑天鹅防范·折扣估计</text></g><g id="game"><path fill="#fffaf2" stroke="#5a3e3e" d="M1302,-36C1302,-36 1216,-36 1216,-36 1210,-36 1204,-30 1204,-24 1204,-24 1204,-12 1204,-12 1204,-6 1210,0 1216,0 1216,0 1302,0 1302,0 1308,0 1314,-6 1314,-12 1314,-12 1314,-24 1314,-24 1314,-30 1308,-36 1302,-36"/><text text-anchor="middle" x="1259" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">博弈论</text><text text-anchor="middle" x="1259" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">零和博弈·纳什均衡</text></g><g id="axiom"><path fill="#fffaf2" stroke="#5a3e3e" d="M1430,-36C1430,-36 1344,-36 1344,-36 1338,-36 1332,-30 1332,-24 1332,-24 1332,-12 1332,-12 1332,-6 1338,0 1344,0 1344,0 1430,0 1430,0 1436,0 1442,-6 1442,-12 1442,-12 1442,-24 1442,-24 1442,-30 1436,-36 1430,-36"/><text text-anchor="middle" x="1387" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">公理化体系</text><text text-anchor="middle" x="1387" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">概率公理·三大公理</text></g><g id="golden"><path fill="#fffaf2" stroke="#5a3e3e" d="M1558,-36C1558,-36 1472,-36 1472,-36 1466,-36 1460,-30 1460,-24 1460,-24 1460,-12 1460,-12 1460,-6 1466,0 1472,0 1472,0 1558,0 1558,0 1564,0 1570,-6 1570,-12 1570,-12 1570,-24 1570,-24 1570,-30 1564,-36 1558,-36"/><text text-anchor="middle" x="1515" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">华罗庚优选法</text><text text-anchor="middle" x="1515" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">黄金分割·化繁为简</text></g><g id="millennium"><path fill="#fffaf2" stroke="#5a3e3e" d="M1691.5,-36C1691.5,-36 1600.5,-36 1600.5,-36 1594.5,-36 1588.5,-30 1588.5,-24 1588.5,-24 1588.5,-12 1588.5,-12 1588.5,-6 1594.5,0 1600.5,0 1600.5,0 1691.5,0 1691.5,0 1697.5,0 1703.5,-6 1703.5,-12 1703.5,-12 1703.5,-24 1703.5,-24 1703.5,-30 1697.5,-36 1691.5,-36"/><text text-anchor="middle" x="1646" y="-21.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">千禧难题&希尔伯特</text><text text-anchor="middle" x="1646" y="-9.2" font-family="Noto Sans SC" font-size="11" fill="#3d2f2f">数学前沿·探索精神</text></g></g></svg>';
+}
+renderSVG();
+
 // ===== DASHBOARD =====
-function renderDashboard() {
-  var grid = document.getElementById('conceptGrid');
-  if (grid && grid.children.length === 0) {
-    grid.innerHTML = concepts.map(function(c) {
-      return '<div class="concept-card' + (mksCoreIds.includes(c.id) ? ' mks' : '') + '"><h4>' + c.name + '</h4><p>' + c.def.substring(0, 60) + '...</p></div>';
-    }).join('');
-  }
-  var mksGrid = document.getElementById('mksCoreGrid');
-  if (mksGrid && mksGrid.children.length === 0) {
-    var whyMap = {
-      'c1': '变化率的量化是所有动态分析的基础——没有导数就没有物理学、经济学和AI的梯度优化。',
-      'c2': '累积效应是理解"滞后"的关键——帮你抵御"努力无回报"的认知陷阱，长期主义的数学基础。',
-      'c8': '贝叶斯是应对不确定性的通用框架——是所有AI系统(从翻译到围棋)的核心数学原理，也是个人理性决策的最佳思维模型。',
-      'c3': '梯度优化是多变量决策的数学工具——在资源有限时告诉你先做什么、后做什么，是"动态策略"的量化引擎。'
-    };
-    mksGrid.innerHTML = mksCoreIds.map(function(id) {
-      var c = concepts.find(function(x) { return x.id === id; });
-      if (!c) return '';
-      return '<div class="concept-card mks"><h4>★ ' + c.name + '</h4><p>' + c.def + '</p><p style="margin-top:6px;font-size:.78rem;color:var(--gold)"><strong>为什么是骨架？</strong>' + whyMap[c.id] + '</p></div>';
-    }).join('');
-  }
-  var svgC = document.getElementById('svgContainer');
-  if (svgC && !svgC.innerHTML.trim()) {
-    svgC.innerHTML = '<svg width="1806pt" height="334pt" viewBox="0.00 0.00 1806.00 334.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 330)"> <title>G</title> <polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-330 1802,-330 1802,4 -4,4"/> <g id="clust1" class="cluster"> <title>cluster_legend</title> <polygon fill="#fffaf2" stroke="#e8d5c4" points="963.5,-228 963.5,-318 1468.5,-318 1468.5,-228 963.5,-228"/> <text text-anchor="middle" x="1216" y="-306" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">图例说明</text> </g> <!-- root --> <g id="node1" class="node"> <title>root</title> <path fill="#c0392b" stroke="black" stroke-width="2" d="M941.5,-272C941.5,-272 825.5,-272 825.5,-272 819.5,-272 813.5,-266 813.5,-260 813.5,-260 813.5,-248 813.5,-248 813.5,-242 819.5,-236 825.5,-236 825.5,-236 941.5,-236 941.5,-236 947.5,-236 953.5,-242 953.5,-248 953.5,-248 953.5,-260 953.5,-260 953.5,-266 947.5,-272 941.5,-272"/> <text text-anchor="middle" x="883.5" y="-257.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">微积分与概率思维</text> <text text-anchor="middle" x="883.5" y="-245.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">动态透镜 · 不确定性罗盘</text> </g> <!-- calculus --> <g id="node2" class="node"> <title>calculus</title> <path fill="#d4a574" stroke="black" d="M257,-199C257,-199 174,-199 174,-199 168,-199 162,-193 162,-187 162,-187 162,-175 162,-175 162,-169 168,-163 174,-163 174,-163 257,-163 257,-163 263,-163 269,-169 269,-175 269,-175 269,-187 269,-187 269,-193 263,-199 257,-199"/> <text text-anchor="middle" x="215.5" y="-184.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">微积分思维</text> <text text-anchor="middle" x="215.5" y="-172.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">把握动态变化规律</text> </g> <!-- root&#45;&gt;calculus --> <g id="edge1" class="edge"> <title>root&#45;&gt;calculus</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M813.27,-245.54C682.79,-231.67 404.82,-202.12 279.33,-188.78"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="279.43,-185.28 269.11,-187.7 278.69,-192.24 279.43,-185.28"/> </g> <!-- probability --> <g id="node3" class="node"> <title>probability</title> <path fill="#d4a574" stroke="black" d="M919,-199C919,-199 848,-199 848,-199 842,-199 836,-193 836,-187 836,-187 836,-175 836,-175 836,-169 842,-163 848,-163 848,-163 919,-163 919,-163 925,-163 931,-169 931,-175 931,-175 931,-187 931,-187 931,-193 925,-199 919,-199"/> <text text-anchor="middle" x="883.5" y="-184.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">概率统计</text> <text text-anchor="middle" x="883.5" y="-172.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">应对不确定世界</text> </g> <!-- root&#45;&gt;probability --> <g id="edge2" class="edge"> <title>root&#45;&gt;probability</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M883.5,-235.81C883.5,-227.79 883.5,-218.05 883.5,-209.07"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="887,-209.03 883.5,-199.03 880,-209.03 887,-209.03"/> </g> <!-- application --> <g id="node4" class="node"> <title>application</title> <path fill="#d4a574" stroke="black" d="M1477.5,-199C1477.5,-199 1383.5,-199 1383.5,-199 1377.5,-199 1371.5,-193 1371.5,-187 1371.5,-187 1371.5,-175 1371.5,-175 1371.5,-169 1377.5,-163 1383.5,-163 1383.5,-163 1477.5,-163 1477.5,-163 1483.5,-163 1489.5,-169 1489.5,-175 1489.5,-175 1489.5,-187 1489.5,-187 1489.5,-193 1483.5,-199 1477.5,-199"/> <text text-anchor="middle" x="1430.5" y="-184.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">数学跨学科力量</text> <text text-anchor="middle" x="1430.5" y="-172.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">工具与方法论的迁移</text> </g> <!-- root&#45;&gt;application --> <g id="edge3" class="edge"> <title>root&#45;&gt;application</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M930.09,-235.89C939.71,-232.86 949.85,-230.03 959.5,-228 1100.34,-198.34 1268.98,-187.73 1361.42,-183.99"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1361.64,-187.48 1371.49,-183.6 1361.37,-180.49 1361.64,-187.48"/> </g> <!-- deriv --> <g id="node5" class="node"> <title>deriv</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M95,-117C95,-117 12,-117 12,-117 6,-117 0,-111 0,-105 0,-105 0,-93 0,-93 0,-87 6,-81 12,-81 12,-81 95,-81 95,-81 101,-81 107,-87 107,-93 107,-93 107,-105 107,-105 107,-111 101,-117 95,-117"/> <text text-anchor="middle" x="53.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">导数与微分</text> <text text-anchor="middle" x="53.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">瞬时变化率的量化</text> </g> <!-- calculus&#45;&gt;deriv --> <g id="edge4" class="edge"> <title>calculus&#45;&gt;deriv</title> <path fill="none" stroke="#d4a574" d="M180.75,-162.84C156.3,-150.76 123.39,-134.51 97.17,-121.56"/> <polygon fill="#d4a574" stroke="#d4a574" points="98.71,-118.42 88.2,-117.13 95.61,-124.7 98.71,-118.42"/> </g> <!-- integ --> <g id="node6" class="node"> <title>integ</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M248,-117C248,-117 165,-117 165,-117 159,-117 153,-111 153,-105 153,-105 153,-93 153,-93 153,-87 159,-81 165,-81 165,-81 248,-81 248,-81 254,-81 260,-87 260,-93 260,-93 260,-105 260,-105 260,-111 254,-117 248,-117"/> <text text-anchor="middle" x="206.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">积分</text> <text text-anchor="middle" x="206.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">微观到宏观的累积</text> </g> <!-- calculus&#45;&gt;integ --> <g id="edge5" class="edge"> <title>calculus&#45;&gt;integ</title> <path fill="none" stroke="#d4a574" d="M208.95,-162.8C207.13,-157.21 205.41,-150.92 204.5,-145 203.63,-139.3 203.42,-133.15 203.57,-127.28"/> <polygon fill="#d4a574" stroke="#d4a574" points="207.07,-127.37 204.16,-117.18 200.09,-126.96 207.07,-127.37"/> </g> <!-- grad --> <g id="node7" class="node"> <title>grad</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M376,-117C376,-117 305,-117 305,-117 299,-117 293,-111 293,-105 293,-105 293,-93 293,-93 293,-87 299,-81 305,-81 305,-81 376,-81 376,-81 382,-81 388,-87 388,-93 388,-93 388,-105 388,-105 388,-111 382,-117 376,-117"/> <text text-anchor="middle" x="340.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">梯度优化</text> <text text-anchor="middle" x="340.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">多变量最优方向</text> </g> <!-- calculus&#45;&gt;grad --> <g id="edge6" class="edge"> <title>calculus&#45;&gt;grad</title> <path fill="none" stroke="#d4a574" d="M217.04,-162.62C218.72,-153.32 222.22,-142.3 229.5,-135 237.58,-126.89 260.25,-119.1 283.02,-112.94"/> <polygon fill="#d4a574" stroke="#d4a574" points="283.95,-116.31 292.74,-110.4 282.18,-109.54 283.95,-116.31"/> </g> <!-- cont --> <g id="node8" class="node"> <title>cont</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M512.5,-117C512.5,-117 418.5,-117 418.5,-117 412.5,-117 406.5,-111 406.5,-105 406.5,-105 406.5,-93 406.5,-93 406.5,-87 412.5,-81 418.5,-81 418.5,-81 512.5,-81 512.5,-81 518.5,-81 524.5,-87 524.5,-93 524.5,-93 524.5,-105 524.5,-105 524.5,-111 518.5,-117 512.5,-117"/> <text text-anchor="middle" x="465.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">连续性与奇点</text> <text text-anchor="middle" x="465.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">可预测性的数学度量</text> </g> <!-- calculus&#45;&gt;cont --> <g id="edge7" class="edge"> <title>calculus&#45;&gt;cont</title> <path fill="none" stroke="#d4a574" d="M225.93,-162.64C232.78,-152.85 242.65,-141.34 254.5,-135 307.85,-106.45 331.6,-126.45 395.9,-116.82"/> <polygon fill="#d4a574" stroke="#d4a574" points="396.85,-120.21 406.13,-115.09 395.68,-113.3 396.85,-120.21"/> </g> <!-- bern --> <g id="node9" class="node"> <title>bern</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M638,-117C638,-117 555,-117 555,-117 549,-117 543,-111 543,-105 543,-105 543,-93 543,-93 543,-87 549,-81 555,-81 555,-81 638,-81 638,-81 644,-81 650,-87 650,-93 650,-93 650,-105 650,-105 650,-111 644,-117 638,-117"/> <text text-anchor="middle" x="596.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">伯努利试验</text> <text text-anchor="middle" x="596.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">随机性的数学基础</text> </g> <!-- probability&#45;&gt;bern --> <g id="edge11" class="edge"> <title>probability&#45;&gt;bern</title> <path fill="none" stroke="#d4a574" d="M835.66,-179.03C788.88,-176.61 716.43,-168.88 658.5,-145 645.89,-139.8 633.43,-131.54 623.02,-123.51"/> <polygon fill="#d4a574" stroke="#d4a574" points="625.14,-120.72 615.16,-117.18 620.75,-126.18 625.14,-120.72"/> </g> <!-- bayes --> <g id="node10" class="node"> <title>bayes</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M763,-117C763,-117 680,-117 680,-117 674,-117 668,-111 668,-105 668,-105 668,-93 668,-93 668,-87 674,-81 680,-81 680,-81 763,-81 763,-81 769,-81 775,-87 775,-93 775,-93 775,-105 775,-105 775,-111 769,-117 763,-117"/> <text text-anchor="middle" x="721.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">条件概率与贝叶斯</text> <text text-anchor="middle" x="721.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">逆向推理框架</text> </g> <!-- probability&#45;&gt;bayes --> <g id="edge12" class="edge"> <title>probability&#45;&gt;bayes</title> <path fill="none" stroke="#d4a574" d="M841.93,-162.98C829.16,-157.5 815.14,-151.23 802.5,-145 788.31,-138.01 773.07,-129.76 759.69,-122.24"/> <polygon fill="#d4a574" stroke="#d4a574" points="761.18,-119.06 750.75,-117.17 757.72,-125.15 761.18,-119.06"/> </g> <!-- gauss --> <g id="node11" class="node"> <title>gauss</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M925,-117C925,-117 842,-117 842,-117 836,-117 830,-111 830,-105 830,-105 830,-93 830,-93 830,-87 836,-81 842,-81 842,-81 925,-81 925,-81 931,-81 937,-87 937,-93 937,-93 937,-105 937,-105 937,-111 931,-117 925,-117"/> <text text-anchor="middle" x="883.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">高斯分布</text> <text text-anchor="middle" x="883.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">大概率事件的规律</text> </g> <!-- probability&#45;&gt;gauss --> <g id="edge13" class="edge"> <title>probability&#45;&gt;gauss</title> <path fill="none" stroke="#d4a574" d="M883.5,-162.64C883.5,-152.3 883.5,-138.94 883.5,-127.22"/> <polygon fill="#d4a574" stroke="#d4a574" points="887,-127.05 883.5,-117.05 880,-127.05 887,-127.05"/> </g> <!-- poisson --> <g id="node12" class="node"> <title>poisson</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1038,-117C1038,-117 967,-117 967,-117 961,-117 955,-111 955,-105 955,-105 955,-93 955,-93 955,-87 961,-81 967,-81 967,-81 1038,-81 1038,-81 1044,-81 1050,-87 1050,-93 1050,-93 1050,-105 1050,-105 1050,-111 1044,-117 1038,-117"/> <text text-anchor="middle" x="1002.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">泊松分布</text> <text text-anchor="middle" x="1002.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">小概率事件建模</text> </g> <!-- probability&#45;&gt;poisson --> <g id="edge14" class="edge"> <title>probability&#45;&gt;poisson</title> <path fill="none" stroke="#d4a574" d="M931.2,-172.3C949.76,-167.23 970,-158.84 984.5,-145 989.65,-140.08 993.37,-133.5 996.03,-126.88"/> <polygon fill="#d4a574" stroke="#d4a574" points="999.36,-127.96 999.22,-117.37 992.72,-125.73 999.36,-127.96"/> </g> <!-- good --> <g id="node13" class="node"> <title>good</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1151,-117C1151,-117 1080,-117 1080,-117 1074,-117 1068,-111 1068,-105 1068,-105 1068,-93 1068,-93 1068,-87 1074,-81 1080,-81 1080,-81 1151,-81 1151,-81 1157,-81 1163,-87 1163,-93 1163,-93 1163,-105 1163,-105 1163,-111 1157,-117 1151,-117"/> <text text-anchor="middle" x="1115.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">古德&#45;图灵估计</text> <text text-anchor="middle" x="1115.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">黑天鹅防范策略</text> </g> <!-- probability&#45;&gt;good --> <g id="edge15" class="edge"> <title>probability&#45;&gt;good</title> <path fill="none" stroke="#d4a574" d="M931.17,-166.89C952.78,-160.68 978.57,-152.91 1001.5,-145 1022.68,-137.7 1045.71,-128.79 1065.5,-120.83"/> <polygon fill="#d4a574" stroke="#d4a574" points="1066.98,-124.01 1074.93,-117.02 1064.35,-117.52 1066.98,-124.01"/> </g> <!-- axiom --> <g id="node14" class="node"> <title>axiom</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1298,-117C1298,-117 1193,-117 1193,-117 1187,-117 1181,-111 1181,-105 1181,-105 1181,-93 1181,-93 1181,-87 1187,-81 1193,-81 1193,-81 1298,-81 1298,-81 1304,-81 1310,-87 1310,-93 1310,-93 1310,-105 1310,-105 1310,-111 1304,-117 1298,-117"/> <text text-anchor="middle" x="1245.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">公理化方法</text> <text text-anchor="middle" x="1245.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">概率与数学的严密根基</text> </g> <!-- application&#45;&gt;axiom --> <g id="edge20" class="edge"> <title>application&#45;&gt;axiom</title> <path fill="none" stroke="#d4a574" d="M1390.81,-162.84C1362.65,-150.66 1324.66,-134.23 1294.58,-121.23"/> <polygon fill="#d4a574" stroke="#d4a574" points="1295.69,-117.89 1285.12,-117.13 1292.91,-124.32 1295.69,-117.89"/> </g> <!-- game --> <g id="node15" class="node"> <title>game</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1411,-117C1411,-117 1340,-117 1340,-117 1334,-117 1328,-111 1328,-105 1328,-105 1328,-93 1328,-93 1328,-87 1334,-81 1340,-81 1340,-81 1411,-81 1411,-81 1417,-81 1423,-87 1423,-93 1423,-93 1423,-105 1423,-105 1423,-111 1417,-117 1411,-117"/> <text text-anchor="middle" x="1375.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">博弈论</text> <text text-anchor="middle" x="1375.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">多方策略最优解</text> </g> <!-- application&#45;&gt;game --> <g id="edge21" class="edge"> <title>application&#45;&gt;game</title> <path fill="none" stroke="#d4a574" d="M1416.07,-162.91C1411.56,-157.32 1406.68,-151.01 1402.5,-145 1398.31,-138.97 1394.08,-132.27 1390.25,-125.93"/> <polygon fill="#d4a574" stroke="#d4a574" points="1393.08,-123.84 1384.98,-117.01 1387.05,-127.4 1393.08,-123.84"/> </g> <!-- golden --> <g id="node16" class="node"> <title>golden</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1547.5,-117C1547.5,-117 1453.5,-117 1453.5,-117 1447.5,-117 1441.5,-111 1441.5,-105 1441.5,-105 1441.5,-93 1441.5,-93 1441.5,-87 1447.5,-81 1453.5,-81 1453.5,-81 1547.5,-81 1547.5,-81 1553.5,-81 1559.5,-87 1559.5,-93 1559.5,-93 1559.5,-105 1559.5,-105 1559.5,-111 1553.5,-117 1547.5,-117"/> <text text-anchor="middle" x="1500.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">黄金分割/优选法</text> <text text-anchor="middle" x="1500.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">化繁为简的实践智慧</text> </g> <!-- application&#45;&gt;golden --> <g id="edge22" class="edge"> <title>application&#45;&gt;golden</title> <path fill="none" stroke="#d4a574" d="M1445.69,-162.64C1455.39,-151.56 1468.11,-137.02 1478.86,-124.74"/> <polygon fill="#d4a574" stroke="#d4a574" points="1481.63,-126.88 1485.58,-117.05 1476.36,-122.27 1481.63,-126.88"/> </g> <!-- logic --> <g id="node17" class="node"> <title>logic</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1673,-117C1673,-117 1590,-117 1590,-117 1584,-117 1578,-111 1578,-105 1578,-105 1578,-93 1578,-93 1578,-87 1584,-81 1590,-81 1590,-81 1673,-81 1673,-81 1679,-81 1685,-87 1685,-93 1685,-93 1685,-105 1685,-105 1685,-111 1679,-117 1673,-117"/> <text text-anchor="middle" x="1631.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">逻辑学四大律</text> <text text-anchor="middle" x="1631.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">思维严密性的基石</text> </g> <!-- application&#45;&gt;logic --> <g id="edge23" class="edge"> <title>application&#45;&gt;logic</title> <path fill="none" stroke="#d4a574" d="M1473.62,-162.84C1504.49,-150.55 1546.21,-133.95 1579.02,-120.89"/> <polygon fill="#d4a574" stroke="#d4a574" points="1580.45,-124.08 1588.45,-117.13 1577.87,-117.58 1580.45,-124.08"/> </g> <!-- seven --> <g id="node21" class="node"> <title>seven</title> <polygon fill="#fef5e7" stroke="#8b7355" points="1792,-117 1703,-117 1703,-81 1798,-81 1798,-111 1792,-117"/> <polyline fill="none" stroke="#8b7355" points="1792,-117 1792,-111 "/> <polyline fill="none" stroke="#8b7355" points="1798,-111 1792,-111 "/> <text text-anchor="middle" x="1750.5" y="-102.2" font-family="Noto Sans SC" font-size="11.00">千禧年七大难题</text> <text text-anchor="middle" x="1750.5" y="-90.2" font-family="Noto Sans SC" font-size="11.00">数学的未解之谜</text> </g> <!-- application&#45;&gt;seven --> <g id="edge30" class="edge"> <title>application&#45;&gt;seven</title> <path fill="none" stroke="#8b7355" stroke-dasharray="1,5" d="M1489.74,-166.94C1541.11,-155.37 1617.65,-137.55 1692.79,-117.39"/> <polygon fill="#8b7355" stroke="#8b7355" points="1694.16,-120.65 1702.9,-114.66 1692.33,-113.89 1694.16,-120.65"/> </g> <!-- deriv&#45;&gt;integ --> <g id="edge8" class="edge"> <title>deriv&#45;&gt;integ</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M107.01,-99C118.48,-99 130.7,-99 142.51,-99"/> <polygon fill="#8b7355" stroke="#8b7355" points="142.76,-102.5 152.76,-99 142.76,-95.5 142.76,-102.5"/> <text text-anchor="middle" x="130" y="-104.8" font-family="Noto Sans SC" font-size="9.00">逆运算</text> </g> <!-- deriv&#45;&gt;grad --> <g id="edge9" class="edge"> <title>deriv&#45;&gt;grad</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M107.06,-114.21C162.18,-128.88 244.2,-147.66 275,-139 286.9,-135.65 298.79,-129.47 309.1,-122.96"/> <polygon fill="#8b7355" stroke="#8b7355" points="311.34,-125.67 317.72,-117.21 307.46,-119.85 311.34,-125.67"/> <text text-anchor="middle" x="265.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">推广</text> </g> <!-- deriv&#45;&gt;golden --> <g id="edge24" class="edge"> <title>deriv&#45;&gt;golden</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M107.06,-111.13C119,-113.43 131.63,-115.57 143.5,-117 143.5,-117 1309.69,-117 1431.18,-115.72"/> <polygon fill="#8b7355" stroke="#8b7355" points="1431.4,-119.22 1441.33,-115.52 1431.26,-112.22 1431.4,-119.22"/> <text text-anchor="middle" x="681.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">优化方法</text> </g> <!-- nl --> <g id="node18" class="node"> <title>nl</title> <polygon fill="#fef5e7" stroke="#8b7355" points="95,-40 6,-40 6,-4 101,-4 101,-34 95,-40"/> <polyline fill="none" stroke="#8b7355" points="95,-40 95,-34 "/> <polyline fill="none" stroke="#8b7355" points="101,-34 95,-34 "/> <text text-anchor="middle" x="53.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00">牛顿与莱布尼茨</text> <text text-anchor="middle" x="53.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00">微积分发明者</text> </g> <!-- deriv&#45;&gt;nl --> <g id="edge27" class="edge"> <title>deriv&#45;&gt;nl</title> <path fill="none" stroke="#8b7355" stroke-dasharray="1,5" d="M53.5,-80.98C53.5,-71.94 53.5,-60.6 53.5,-50.35"/> <polygon fill="#8b7355" stroke="#8b7355" points="57,-50.21 53.5,-40.21 50,-50.21 57,-50.21"/> </g> <!-- integ&#45;&gt;cont --> <g id="edge10" class="edge"> <title>integ&#45;&gt;cont</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M245.62,-117.08C266.1,-125.56 291.89,-134.73 316,-139 352.17,-145.4 392.34,-133.56 421.93,-121.13"/> <polygon fill="#8b7355" stroke="#8b7355" points="423.38,-124.31 431.14,-117.1 420.58,-117.9 423.38,-124.31"/> <text text-anchor="middle" x="334.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">滞后效应</text> </g> <!-- bern&#45;&gt;gauss --> <g id="edge16" class="edge"> <title>bern&#45;&gt;gauss</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M636.74,-117.08C657.8,-125.57 684.28,-134.74 709,-139 751.97,-146.41 800.26,-133.68 835.13,-120.67"/> <polygon fill="#8b7355" stroke="#8b7355" points="836.53,-123.88 844.59,-117 834,-117.35 836.53,-123.88"/> <text text-anchor="middle" x="727.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">大数极限</text> </g> <!-- bern&#45;&gt;poisson --> <g id="edge17" class="edge"> <title>bern&#45;&gt;poisson</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M650.04,-115.9C702.41,-130.39 784.5,-147.66 856,-139 885.95,-135.37 918.41,-126.99 945.13,-118.84"/> <polygon fill="#8b7355" stroke="#8b7355" points="946.2,-122.17 954.71,-115.85 944.12,-115.49 946.2,-122.17"/> <text text-anchor="middle" x="831.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">小p大n推广</text> </g> <!-- bayes&#45;&gt;good --> <g id="edge18" class="edge"> <title>bayes&#45;&gt;good</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M774.5,-117.05C818.1,-129.9 881.66,-144.06 938,-139 989.67,-134.36 1004.65,-130.73 1058.26,-117.2"/> <polygon fill="#8b7355" stroke="#8b7355" points="1059.12,-120.59 1067.96,-114.75 1057.41,-113.8 1059.12,-120.59"/> <text text-anchor="middle" x="919.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">概率修正</text> </g> <!-- bayes&#45;&gt;game --> <g id="edge25" class="edge"> <title>bayes&#45;&gt;game</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M775.18,-108.81C789.87,-111.48 805.8,-114.36 820.5,-117 820.5,-117 1244.58,-117 1317.29,-115.59"/> <polygon fill="#8b7355" stroke="#8b7355" points="1317.88,-119.07 1327.74,-115.2 1317.62,-112.08 1317.88,-119.07"/> <text text-anchor="middle" x="963.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">概率策略</text> </g> <!-- gauss&#45;&gt;bayes --> <g id="edge19" class="edge"> <title>gauss&#45;&gt;bayes</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M829.79,-99C815.6,-99 800.14,-99 785.46,-99"/> <polygon fill="#8b7355" stroke="#8b7355" points="785.44,-95.5 775.44,-99 785.44,-102.5 785.44,-95.5"/> <text text-anchor="middle" x="802.5" y="-104.8" font-family="Noto Sans SC" font-size="9.00">先验分布</text> </g> <!-- axiom&#45;&gt;logic --> <g id="edge26" class="edge"> <title>axiom&#45;&gt;logic</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M1303.18,-117C1333.46,-125.52 1371.37,-134.75 1406,-139 1461.89,-145.86 1524.94,-132.89 1570.14,-119.93"/> <polygon fill="#8b7355" stroke="#8b7355" points="1571.19,-123.27 1579.79,-117.09 1569.21,-116.56 1571.19,-123.27"/> <text text-anchor="middle" x="1424.5" y="-137.8" font-family="Noto Sans SC" font-size="9.00">公理基础</text> </g> <!-- hl --> <g id="node19" class="node"> <title>hl</title> <polygon fill="#fef5e7" stroke="#8b7355" points="1281.5,-44 1203.5,-44 1203.5,0 1287.5,0 1287.5,-38 1281.5,-44"/> <polyline fill="none" stroke="#8b7355" points="1281.5,-44 1281.5,-38 "/> <polyline fill="none" stroke="#8b7355" points="1287.5,-38 1281.5,-38 "/> <text text-anchor="middle" x="1245.5" y="-31.2" font-family="Noto Sans SC" font-size="11.00">希尔伯特演讲</text> <text text-anchor="middle" x="1245.5" y="-19.2" font-family="Noto Sans SC" font-size="11.00">我们必须知道</text> <text text-anchor="middle" x="1245.5" y="-7.2" font-family="Noto Sans SC" font-size="11.00">我们必将知道</text> </g> <!-- axiom&#45;&gt;hl --> <g id="edge28" class="edge"> <title>axiom&#45;&gt;hl</title> <path fill="none" stroke="#8b7355" stroke-dasharray="1,5" d="M1245.5,-80.98C1245.5,-73.15 1245.5,-63.61 1245.5,-54.54"/> <polygon fill="#8b7355" stroke="#8b7355" points="1249,-54.24 1245.5,-44.24 1242,-54.24 1249,-54.24"/> </g> <!-- hua --> <g id="node20" class="node"> <title>hua</title> <polygon fill="#fef5e7" stroke="#8b7355" points="1540.5,-40 1454.5,-40 1454.5,-4 1546.5,-4 1546.5,-34 1540.5,-40"/> <polyline fill="none" stroke="#8b7355" points="1540.5,-40 1540.5,-34 "/> <polyline fill="none" stroke="#8b7355" points="1546.5,-34 1540.5,-34 "/> <text text-anchor="middle" x="1500.5" y="-25.2" font-family="Noto Sans SC" font-size="11.00">华罗庚优选法</text> <text text-anchor="middle" x="1500.5" y="-13.2" font-family="Noto Sans SC" font-size="11.00">0.618黄金分割</text> </g> <!-- golden&#45;&gt;hua --> <g id="edge29" class="edge"> <title>golden&#45;&gt;hua</title> <path fill="none" stroke="#8b7355" stroke-dasharray="1,5" d="M1500.5,-80.98C1500.5,-71.94 1500.5,-60.6 1500.5,-50.35"/> <polygon fill="#8b7355" stroke="#8b7355" points="1504,-50.21 1500.5,-40.21 1497,-50.21 1504,-50.21"/> </g> <!-- l1 --> <g id="node22" class="node"> <title>l1</title> <path fill="#c0392b" stroke="black" d="M1448,-272C1448,-272 1399,-272 1399,-272 1393,-272 1387,-266 1387,-260 1387,-260 1387,-248 1387,-248 1387,-242 1393,-236 1399,-236 1399,-236 1448,-236 1448,-236 1454,-236 1460,-242 1460,-248 1460,-248 1460,-260 1460,-260 1460,-266 1454,-272 1448,-272"/> <text text-anchor="middle" x="1423.5" y="-251.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">核心驱动力</text> </g> <!-- l2 --> <g id="node23" class="node"> <title>l2</title> <path fill="#d4a574" stroke="black" d="M1357,-272C1357,-272 1308,-272 1308,-272 1302,-272 1296,-266 1296,-260 1296,-260 1296,-248 1296,-248 1296,-242 1302,-236 1308,-236 1308,-236 1357,-236 1357,-236 1363,-236 1369,-242 1369,-248 1369,-248 1369,-260 1369,-260 1369,-266 1363,-272 1357,-272"/> <text text-anchor="middle" x="1332.5" y="-251.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">方法论支柱</text> </g> <!-- l3 --> <g id="node24" class="node"> <title>l3</title> <path fill="#fffaf2" stroke="#5a3e3e" d="M1265.5,-272C1265.5,-272 1227.5,-272 1227.5,-272 1221.5,-272 1215.5,-266 1215.5,-260 1215.5,-260 1215.5,-248 1215.5,-248 1215.5,-242 1221.5,-236 1227.5,-236 1227.5,-236 1265.5,-236 1265.5,-236 1271.5,-236 1277.5,-242 1277.5,-248 1277.5,-248 1277.5,-260 1277.5,-260 1277.5,-266 1271.5,-272 1265.5,-272"/> <text text-anchor="middle" x="1246.5" y="-251.2" font-family="Noto Sans SC" font-size="11.00">核心概念</text> </g> <!-- l4 --> <g id="node25" class="node"> <title>l4</title> <polygon fill="#fef5e7" stroke="#8b7355" points="1191,-272 1132,-272 1132,-236 1197,-236 1197,-266 1191,-272"/> <polyline fill="none" stroke="#8b7355" points="1191,-272 1191,-266 "/> <polyline fill="none" stroke="#8b7355" points="1197,-266 1191,-266 "/> <text text-anchor="middle" x="1164.5" y="-251.2" font-family="Noto Sans SC" font-size="11.00">人物/事件</text> </g> <!-- l5 --> <g id="node26" class="node"> <title>l5</title> <polygon fill="none" stroke="#8b7355" stroke-dasharray="5,2" points="1113.5,-272 1051.5,-272 1051.5,-236 1113.5,-236 1113.5,-272"/> <text text-anchor="middle" x="1082.5" y="-251.2" font-family="Noto Sans SC" font-size="11.00">内部关联</text> </g> <!-- l6 --> <g id="node27" class="node"> <title>l6</title> <polygon fill="none" stroke="#8b7355" stroke-dasharray="1,5" points="1033.5,-272 971.5,-272 971.5,-236 1033.5,-236 1033.5,-272"/> <text text-anchor="middle" x="1002.5" y="-251.2" font-family="Noto Sans SC" font-size="11.00">实例锚定</text> </g> </g> </svg>';
-  }
-  updateProgress();
+function renderConcepts(){
+var grid=document.getElementById('conceptGrid');
+grid.innerHTML=concepts.map(function(c,i){return '<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><strong>'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,60)+'...</p></div>';}).join('');
+var mks=document.getElementById('mksCoreGrid');
+mks.innerHTML=mksCoreIds.map(function(id){var c=concepts.find(function(x){return x.id===id});return '<div class="concept-card mks-core"><strong>★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,80)+'...</p></div>';}).join('');
 }
+renderConcepts();
 
-// ===== PROGRESS =====
-function updateProgress() {
-  var pct = Math.round(learnedCards.length / concepts.length * 100);
-  document.getElementById('totalProgress').style.width = pct + '%';
-  document.getElementById('progressText').textContent = pct > 0 ? '已掌握 ' + learnedCards.length + ' / ' + concepts.length + ' 个概念 (' + pct + '%)' : '尚未开始学习';
-  var cp = document.getElementById('cardProgress');
-  if (cp) cp.style.width = pct + '%';
-  var cl = document.getElementById('cardLearned');
-  if (cl) cl.textContent = learnedCards.length;
+function updateProgress(){
+var pct=Math.round(learnedCards.length/concepts.length*100);
+var el = document.getElementById('totalProgress'); if(el) el.style.width=pct+'%';
+var pt = document.getElementById('progressText'); if(pt) pt.textContent=pct>0?'学习进度 '+pct+'%（'+learnedCards.length+'/'+concepts.length+'）':'尚未开始学习';
+var cp = document.getElementById('cardProgress'); if(cp) cp.style.width=pct+'%';
+var cl = document.getElementById('cardLearned'); if(cl) cl.textContent=learnedCards.length;
 }
+updateProgress();
 
-// ===== FLIP CARDS =====
-var currentCardIdx = 0;
-var cardFlipped = false;
-
-function setCard(idx) {
-  currentCardIdx = idx; cardFlipped = false;
-  var c = concepts[idx];
-  document.getElementById('flipFront').innerHTML = '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:#fff">' + c.name + '</h3><p style="color:rgba(255,255,255,.8);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>' + (learnedCards.includes(c.id) ? '<span class="tag" style="margin-top:8px;background:rgba(255,255,255,.2);color:#fff">✓ 已学习</span>' : '');
-  document.getElementById('flipBack').innerHTML = '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>' + c.def + '</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>' + c.analogy + '</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>' + c.example + '</div><div><strong style="color:var(--accent)">反例/边界：</strong>' + c.counter + '</div>';
-  document.getElementById('flipInner').classList.remove('flipped');
-  document.getElementById('cardIndex').textContent = (idx + 1) + ' / ' + concepts.length;
-  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+// ===== FLIP CARDS (Gold Standard: 4-历史与文明对话.html) =====
+var currentCardIdx=0, cardFlipped=false;
+function setCard(idx){
+currentCardIdx=idx; cardFlipped=false;
+var c=concepts[idx];
+document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+document.getElementById('flipInner').classList.remove('flipped');
+document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
 }
 setCard(0);
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){var id=concepts[currentCardIdx].id;if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}save();updateProgress();setCard(currentCardIdx);}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
 
-function prevCard() { if (currentCardIdx > 0) setCard(currentCardIdx - 1); }
-function nextCard() { if (currentCardIdx < concepts.length - 1) setCard(currentCardIdx + 1); }
-function markLearned() {
-  var id = concepts[currentCardIdx].id;
-  if (learnedCards.includes(id)) { learnedCards = learnedCards.filter(function(x) { return x !== id; }); }
-  else { learnedCards.push(id); }
-  save(); updateProgress(); setCard(currentCardIdx);
+// ===== QUIZ PRACTICE =====
+var currentQuestions=[], userAnswers={}, quizTimeLeft=900, quizTimerInterval=null;
+function startQuiz(){
+var shuffled=choiceQuestions.slice().sort(function(){return Math.random()-0.5});
+var essayShuffled=shortQuestions.slice().sort(function(){return Math.random()-0.5});
+currentQuestions=shuffled.slice(0,10).concat(essayShuffled.slice(0,3));
+userAnswers={}; quizTimeLeft=900;
+document.getElementById('quizScore').textContent='';
+document.getElementById('quizTimer').style.display='inline';
+renderQuizPractice(); startQuizTimer();
 }
-document.getElementById('flipInner').addEventListener('click', function() { this.classList.toggle('flipped'); cardFlipped = !cardFlipped; });
-
-// ===== MCQ & SA DATA =====
-var mcqBank = [
-  {q:'函数在某点可导的含义是什么？', opts:['函数在该点存在切线且斜率唯一','函数在该点连续','函数在该点有定义','函数在该点的值不为零'], answer:0},
-  {q:'导数在经济学中的典型应用是？', opts:['计算GDP总量','计算经济增长率（GDP增速）','计算通货膨胀率','计算失业率'], answer:1},
-  {q:'积分效应告诉我们"滞后效应"——以下哪个是积分滞后的例子？', opts:['今天学习明天考试满分','健身一周身材立刻变好','每天存钱但余额增长需要时间积累','买入股票立即涨停'], answer:2},
-  {q:'梯度指示的方向是什么？', opts:['函数值最大的方向','函数变化最慢的方向','任意方向','函数变化最陡（最快增长）的方向'], answer:3},
-  {q:'魏尔斯特拉斯的反例推翻了一个普遍误解，这个误解是什么？', opts:['连续函数除个别点外都可导','所有函数都可导','可导函数一定连续','函数一定有最大值'], answer:0},
-  {q:'抛10次公平硬币恰好5次正面的概率约？', opts:['50%','约25%','75%','90%'], answer:1},
-  {q:'1%成功概率的事件要确保至少成功一次约需多少次试验？', opts:['100次','50次','260次','10次'], answer:2},
-  {q:'高斯分布μ±2σ范围包含约多少概率？', opts:['50%','68%','99.7%','95%'], answer:3},
-  {q:'泊松分布的λ等于什么？', opts:['n×p','p/n','n/p','p²'], answer:0},
-  {q:'泊松分布中池子n越大，则？', opts:['成功概率趋近于0','随机性误差越小概率越稳定','随机性误差越大','需要更多冗余'], answer:1},
-  {q:'贝叶斯公式的核心价值是什么？', opts:['计算平均值','证明两事件独立','实现因果逆转从果推因','消除所有不确定性'], answer:2},
-  {q:'古德-图灵估计解决的核心问题是？', opts:['提高计算速度','证明事件概率相同','消除标准差影响','给未出现事件分配非零概率'], answer:3},
-  {q:'纳什均衡描述的状态是？', opts:['任何单方改变策略都不会获益更多','双方都获最大收益','总收益为零','双方必须合作'], answer:0},
-  {q:'华罗庚优选法中0.618是什么？', opts:['圆周率近似值','黄金分割比例','标准差的取值','正态分布均值'], answer:1},
-  {q:'柯尔莫哥洛夫第一条公理是？', opts:['概率必须是整数','所有事件概率相等','任何事件的概率是[0,1]区间内的实数','概率必须大于0.5'], answer:2}
-];
-
-var saBank = [
-  {q:'请用导数思维解释：为什么媒体更关注GDP增长率而非GDP总量？', ref:'GDP增长率是GDP函数的导数——导数反映"变化趋势"而非静态状态。即使GDP总量很高，如果增长率持续下降（导数为负且绝对值增大），意味着经济在减速，这往往比总量本身更值得警惕。类似地，公司收入增长放缓（导数为负）意味着基本面在变差。'},
-  {q:'飞轮效应的本质是"多重积分滞后"——请用你自己的话解释为什么"努力不立刻有回报"在数学上是合理的。', ref:'努力→能力是速度（一级积分），能力→成绩是距离（二级积分），成绩→赏识是更多级的积分。每一级积分都存在累积滞后——加速度无滞后，速度滞后较小，距离滞后最大。所以刚开始努力时，能力的提升已经开始了，但成绩需要更长时间积累才能显现。这不是你的问题，是积分本身的数学性质。'},
-  {q:'为什么保险公司需要"大池子"和"冗余"？用泊松分布解释。', ref:'泊松分布的λ=n×p：池子n越大，随机波动相对于λ的比例越小，赔付概率越稳定。但如果容量恰好=λ，占线/不够的概率约50%。要确保98%+的安全概率，需要额外冗余（如n=2000时多收15%保费）。大池子+适度冗余=将不可控的风险转化为可控的成本。'},
-  {q:'请举例说明贝叶斯公式在日常生活判断中的应用。', ref:'你面试完觉得自己表现不错（先验P(录取)=60%），但一周后没收到通知（新证据）。现在P(录取|一周没通知)应该下调，因为P(一周没通知|拒绝) > P(一周没通知|录取)。贝叶斯思维要求我们不断根据新信息调整信念，而非固守初始判断。'},
-  {q:'区分"连续"和"可导"——为什么一个企业的营收可以连续但不可导？', ref:'当营收曲线存在"尖点"时，函数连续但不可导。尖点意味着增长速度发生突变（如王老吉捐款后需求暴涨，增长率突然上跳）。连续意味着总营收没有断层，但增长率（导数）在尖点处不存在——这会让基于历史趋势的预测完全失效，导致供应链断裂或产能规划错误。'},
-  {q:'智猪博弈中，为什么小猪选择"等待"是理性的？这对商业策略有何启示？', ref:'智猪博弈中：小猪按按钮净收益(-1)，等待净收益(4)。因为按按钮的成本对大猪小猪相同（都是-2磅），但收益分配不均。商业启示：小企业/新进入者最佳策略是"搭便车"——等大企业投入研发/教育市场后，以更低成本跟进。这也解释了为什么知识产权保护对小企业更重要。'},
-  {q:'请解释"最小值中取最大值"策略并给出职场应用场景。', ref:'在零和博弈中，你选择策略时应考虑每个策略的"最坏情况"（对方最优应对下的结果），然后选最坏情况中最好的那个。职场应用：接受有风险的任务时——过早接=失败风险高，过晚接=机会丧失，最佳时机是前人失败后你临危受命成功时（最坏情况的损失可控，最好情况的收益最大）。'},
-  {q:'古德-图灵估计如何帮助我们应对"黑天鹅"事件？', ref:'古德-图灵的核心是：从高频事件中"切出"一小块概率分配给从未观测到的事件。这样即使某事件从未在历史数据中出现，模型也会给它一个非零的先验概率。现实应用：①投资组合中永远保留一小部分给"未知风险"的对冲；②企业战略中永远保留一部分资源应对"从未发生但可能发生"的危机；③个人认知中永远对"我从未见过"保持概率上的谦逊。'}
-];
-
-// ===== QUIZ SYSTEM =====
-function startQuiz() {
-  var container = document.getElementById('quizContainer');
-  var mcq = mcqBank.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 8);
-  var sa = saBank.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 4);
-  var labels = ['A','B','C','D'];
-  var html = '';
-  mcq.forEach(function(q, qi) {
-    html += '<div class="quiz-card" id="qmc' + qi + '"><span class="q-tag q-mc">选择题 #' + (qi + 1) + '</span><div class="q-text">' + q.q + '</div>';
-    q.opts.forEach(function(o, oi) {
-      html += '<div class="q-option" onclick="selectMC(' + qi + ',' + oi + ',' + q.answer + ')">' + labels[oi] + '. ' + o + '</div>';
-    });
-    html += '<div class="q-feedback" id="fb' + qi + '"></div></div>';
-  });
-  sa.forEach(function(q, si) {
-    html += '<div class="quiz-card"><span class="q-tag q-sa">简答题 #' + (si + 1) + '</span><div class="q-text">' + q.q + '</div>';
-    html += '<textarea class="sa-input" placeholder="输入你的答案..." id="sa' + si + '"></textarea>';
-    html += '<button class="btn btn-sm" style="margin-top:6px" onclick="checkSA(' + si + ')">对比参考答案</button>';
-    html += '<div class="sa-reveal" id="sar' + si + '">' + q.ref + '</div></div>';
-  });
-  container.innerHTML = html;
+function startQuizTimer(){quizTimeLeft=900;clearInterval(quizTimerInterval);updateQuizTimerDisplay();
+quizTimerInterval=setInterval(function(){quizTimeLeft--;updateQuizTimerDisplay();if(quizTimeLeft<=0){clearInterval(quizTimerInterval);submitQuizPractice();}},1000);}
+function updateQuizTimerDisplay(){var m=Math.floor(quizTimeLeft/60),s=quizTimeLeft%60;document.getElementById('quizTimer').textContent='⏱ '+m+':'+(s<10?'0':'')+s;}
+function renderQuizPractice(){
+var container=document.getElementById('quizContainer'),html='';
+currentQuestions.forEach(function(q,i){
+var opts=q.o;
+if(opts){html+='<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+opts.forEach(function(o,j){var sel=userAnswers[i]===j?' selected':'';html+='<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';});
+html+='<div id="fb'+i+'"></div></div>';}
+else{html+='<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';}
+});
+html+='<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+container.innerHTML=html;
 }
-
-function selectMC(qi, oi, correct) {
-  var card = document.getElementById('qmc' + qi);
-  if (!card) return;
-  var opts = card.querySelectorAll('.q-option');
-  var fb = document.getElementById('fb' + qi);
-  if (opts[0].classList.contains('correct') || opts[0].classList.contains('wrong')) return;
-  opts.forEach(function(o, i) {
-    o.style.pointerEvents = 'none';
-    if (i === correct) o.classList.add('correct');
-    if (i === oi && i !== correct) o.classList.add('wrong');
-  });
-  if (oi === correct) {
-    fb.className = 'q-feedback show right';
-    fb.textContent = '✅ 正确！';
-    LS.quizCorrectTotal = (LS.quizCorrectTotal || 0) + 1;
-  } else {
-    fb.className = 'q-feedback show wrong-msg';
-    fb.textContent = '❌ 错误。正确答案是 ' + 'ABCD'[correct];
-    var wrongQ = mcqBank.find(function(qq) { return qq.q === card.querySelector('.q-text').textContent; });
-    if (wrongQ && !errorBook.some(function(e) { return e.q === wrongQ.q; })) {
-      errorBook.push({q: wrongQ.q, correct: wrongQ.answer, opts: wrongQ.opts, time: new Date().toISOString()});
-    }
-  }
-  LS.quizDoneTotal = (LS.quizDoneTotal || 0) + 1;
-  save();
+function selectQuizChoice(qIdx,optIdx){
+if(userAnswers[qIdx]!==undefined) return;
+userAnswers[qIdx]=optIdx;
+var q=currentQuestions[qIdx],correctIdx=q.answer;
+var isCorrect=optIdx===correctIdx;
+var allOpts=document.querySelectorAll('#qcard'+qIdx+' .option');
+allOpts.forEach(function(el,j){el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));el.style.pointerEvents='none';});
+var fb=document.getElementById('fb'+qIdx);fb.className='feedback '+(isCorrect?'correct':'wrong');
+fb.textContent=(isCorrect?'✓ 正确！':'✗ 错误。')+' 正确答案：'+'ABCD'[correctIdx];
+var correctCount=Object.values(userAnswers).filter(function(v,i){var qi=currentQuestions[i];if(!qi||!qi.o)return false;return v===qi.answer;}).length;
+var totalChoice=currentQuestions.filter(function(qi){return qi.o;}).length;
+document.getElementById('quizScore').textContent='得分: '+correctCount+'/'+totalChoice;
 }
-
-function checkSA(si) {
-  document.getElementById('sar' + si).classList.toggle('show');
+function submitQuizPractice(){
+var correctCount=Object.values(userAnswers).filter(function(v,i){var qi=currentQuestions[i];if(!qi||!qi.o)return false;return v===qi.answer;}).length;
+var totalChoice=currentQuestions.filter(function(qi){return qi.o;}).length;
+alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+clearInterval(quizTimerInterval);
 }
+function resetQuiz(){currentQuestions=[];userAnswers={};clearInterval(quizTimerInterval);document.getElementById('quizContainer').innerHTML='';document.getElementById('quizScore').textContent='';document.getElementById('quizTimer').style.display='none';}
 
-function resetQuiz() {
-  document.getElementById('quizContainer').innerHTML = '';
+// ===== STATIC QUIZ =====
+function renderChoiceQuiz(){
+var div=document.getElementById('choiceQuiz');
+div.innerHTML=choiceQuestions.map(function(q,i){
+var answered=quizAnswered.includes(i),correct=q.answer;
+var opts=q.o.map(function(o,j){
+var cls='quiz-option';if(answered){if(j===correct)cls+=' correct';else cls+=' wrong';}
+return '<div class="'+cls+'" onclick="'+(answered?'':'answerChoice('+i+','+j+')')+'">'+'ABCD'[j]+'. '+o+(answered&&j===correct?' ✓':'')+'</div>';
+}).join('');
+return '<div style="margin-bottom:14px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+}).join('');
 }
+renderChoiceQuiz();
+function answerChoice(qIdx,choice){if(quizAnswered.includes(qIdx))return;var q=choiceQuestions[qIdx],correct=q.answer;quizAnswered.push(qIdx);if(choice!==correct){wrongAnswers.push({type:'choice',idx:qIdx,question:q.q,userAnswer:q.o[choice],correctAnswer:q.o[correct]});}save();renderChoiceQuiz();}
+function renderShortQuiz(){
+var div=document.getElementById('shortQuiz');
+div.innerHTML=shortQuestions.map(function(q,i){var revealed=shortRevealed.includes(i);return '<div style="margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+(revealed?'<div style="margin-top:6px;padding:10px;background:#fef9f2;border-radius:6px;color:var(--text-light);font-size:.88rem">'+q.a+'</div>':'<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="revealShort('+i+')">查看参考思路</button>')+'</div>';}).join('');
+}
+renderShortQuiz();
+function revealShort(i){if(!shortRevealed.includes(i)){shortRevealed.push(i);save();renderShortQuiz()}}
 
 // ===== EXAM MODE =====
-var examInterval = null;
-var examTime = 900;
+var examInterval=null,examSeconds=0,examActive=false,examQuestions=[],examAnswers=[];
+function startExam(){if(examActive)return;examActive=true;examSeconds=15*60;document.getElementById('startExamBtn').style.display='none';document.getElementById('examResult').style.display='none';var cIdx=[],sIdx=[];while(cIdx.length<7){var r=Math.floor(Math.random()*choiceQuestions.length);if(!cIdx.includes(r))cIdx.push(r)}while(sIdx.length<3){var r=Math.floor(Math.random()*shortQuestions.length);if(!sIdx.includes(r))sIdx.push(r)}examQuestions={choice:cIdx,short:sIdx};examAnswers=new Array(7).fill(-1);renderExam();document.getElementById('examArea').style.display='block';examInterval=setInterval(updateExamTimer,1000);}
+function updateExamTimer(){examSeconds--;var m=Math.floor(examSeconds/60),s=examSeconds%60;document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;if(examSeconds<=0){submitExam()}}
+function renderExam(){
+var div=document.getElementById('examArea'),html='';
+examQuestions.choice.forEach(function(idx,i){var q=choiceQuestions[idx];var opts=q.o.map(function(o,j){return '<div class="quiz-option" onclick="selectExam('+i+','+j+')" id="examOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';}).join('');html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';});
+examQuestions.short.forEach(function(idx,i){html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+8)+'. '+shortQuestions[idx].q+'</strong><p style="color:var(--text-light);font-size:.82rem;margin-top:4px">（简答题，请在心中作答后点击提交查看参考思路）</p></div>';});
+html+='<button class="btn btn-primary" onclick="submitExam()">提交答卷</button>';div.innerHTML=html;
+}
+function selectExam(i,j){examAnswers[i]=j;for(var k=0;k<4;k++){var el=document.getElementById('examOpt'+i+'_'+k);if(el){el.classList.remove('selected');if(k===j)el.classList.add('selected')}}}
+function submitExam(){
+clearInterval(examInterval);examActive=false;document.getElementById('examTimer').textContent='00:00';var score=0,detail='';
+examQuestions.choice.forEach(function(idx,i){var q=choiceQuestions[idx],user=examAnswers[i],correct=q.answer,isCorrect=user===correct;if(isCorrect)score++;else{wrongAnswers.push({type:'exam',idx:idx,question:q.q,userAnswer:user>=0?q.o[user]:'未作答',correctAnswer:q.o[correct]})}detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:'+(isCorrect?'#eafaf1':'#fdecea')+'"><strong>'+(i+1)+'. '+q.q+'</strong><br>你的答案：'+(user>=0?q.o[user]:'未作答')+' '+(isCorrect?'✓':'✗')+'<br>正确答案：'+q.o[correct]+'</div>';});
+examQuestions.short.forEach(function(idx,i){var q=shortQuestions[idx];detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2"><strong>'+(i+8)+'. '+q.q+'</strong><br>'+q.a+'</div>';});
+save();var pct=Math.round(score/7*100);
+document.getElementById('examResult').style.display='block';
+document.getElementById('examResult').innerHTML='<h3 style="color:'+(pct>=70?'var(--success)':'var(--accent)')+'">得分：'+score+'/7（'+pct+'%）</h3>'+detail+'<button class="btn btn-outline" onclick="resetExam()">重新考试</button>';
+document.getElementById('examArea').style.display='none';
+}
+function resetExam(){clearInterval(examInterval);examActive=false;document.getElementById('startExamBtn').style.display='inline-block';document.getElementById('examResult').style.display='none';document.getElementById('examArea').style.display='none';document.getElementById('examTimer').textContent='15:00';}
 
-function startExam() {
-  document.getElementById('examResult').style.display = 'none';
-  document.getElementById('examContainer').innerHTML = '';
-  examTime = 900;
-  document.getElementById('startExamBtn').style.display = 'none';
-  document.getElementById('submitExamBtn').style.display = 'inline-block';
-  var timerEl = document.getElementById('examTimer');
-  timerEl.textContent = '15:00';
-  timerEl.classList.remove('warning');
-  if (examInterval) clearInterval(examInterval);
-  examInterval = setInterval(function() {
-    examTime--;
-    var m = Math.floor(examTime / 60);
-    var s = examTime % 60;
-    timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-    if (examTime < 60) timerEl.classList.add('warning');
-    if (examTime <= 0) { submitExam(); }
-  }, 1000);
-
-  var mcq = mcqBank.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 7);
-  var sa = saBank.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 3);
-  var labels = ['A','B','C','D'];
-  var html = '';
-  mcq.forEach(function(q, qi) {
-    html += '<div class="quiz-card" id="emc' + qi + '" data-correct="' + q.answer + '"><span class="q-tag q-mc">选择题 #' + (qi + 1) + '</span><div class="q-text">' + q.q + '</div>';
-    q.opts.forEach(function(o, oi) {
-      html += '<div class="q-option" onclick="selectExamMC(' + qi + ',' + oi + ')">' + labels[oi] + '. ' + o + '</div>';
-    });
-    html += '</div>';
-  });
-  sa.forEach(function(q, si) {
-    html += '<div class="quiz-card"><span class="q-tag q-sa">简答题 #' + (si + 1) + '</span><div class="q-text">' + q.q + '</div>';
-    html += '<textarea class="sa-input" id="esa' + si + '" placeholder="输入你的答案..."></textarea></div>';
-  });
-  document.getElementById('examContainer').innerHTML = html;
+// ===== REVIEW =====
+function renderReview(){
+var totalQ=quizAnswered.length;
+var correctQ=quizAnswered.length-wrongAnswers.filter(function(w){return w.type==='choice'}).length;
+var pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+var days=Math.max(1,Math.ceil((Date.now()-new Date('2026-06-01').getTime())/86400000));
+document.getElementById('statsGrid').innerHTML='<div class="card stat-item"><div class="stat-value">'+totalQ+'</div><div class="stat-label">总答题数</div></div><div class="card stat-item"><div class="stat-value">'+pct+'%</div><div class="stat-label">正确率</div></div><div class="card stat-item"><div class="stat-value">'+days+'</div><div class="stat-label">学习天数</div></div>';
+var wb=document.getElementById('wrongBook');
+if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--success)">暂无错题，继续保持！</p>';}
+else{wb.innerHTML=wrongAnswers.map(function(w,i){return '<div style="margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0"><strong>'+w.question+'</strong><br><span style="color:var(--accent)">你的答案：'+w.userAnswer+'</span><br><span style="color:var(--success)">正确答案：'+w.correctAnswer+'</span></div>';}).join('');}
+var conceptMap={};
+wrongAnswers.forEach(function(w){var topic=w.question.slice(0,10);conceptMap[topic]=conceptMap[topic]||{topic:topic,count:0,questions:[]};conceptMap[topic].count++;conceptMap[topic].questions.push(w.question);});
+var sorted=Object.values(conceptMap).sort(function(a,b){return b.count-a.count});
+document.getElementById('weakConcepts').innerHTML=sorted.length>0?sorted.map(function(c){return '<div style="margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px"><strong>错'+c.count+'题：</strong>'+c.questions[0].slice(0,40)+'...</div>';}).join(''):'<p style="color:var(--success)">暂无薄弱概念</p>';
 }
 
-function selectExamMC(qi, oi) {
-  var card = document.getElementById('emc' + qi);
-  if (!card) return;
-  var opts = card.querySelectorAll('.q-option');
-  if (opts[0].classList.contains('correct') || opts[0].classList.contains('wrong')) return;
-  var correct = parseInt(card.getAttribute('data-correct'));
-  opts.forEach(function(o, i) {
-    o.style.pointerEvents = 'none';
-    if (i === correct) o.classList.add('correct');
-    if (i === oi && i !== correct) o.classList.add('wrong');
-  });
-  card.setAttribute('data-chosen', oi);
+// ===== DECISION SIMULATION =====
+function chooseDecision(round,optIdx){
+var results={
+1:[
+{result:'全部投入A基金——在σ=25%的高波动下，你的100万可能在一年后变成75万或125万。伯努利试验告诉我们：单次决策中高回报策略的结果更多取决于运气而非策略。高斯分布的16%年化波动意味着仅68%概率你的回报在-18%到+32%之间。高风险≠高回报——可能是高波动。',mks:'单次vs多次：概率思维的价值不在预知单次结果，而在于把决策质量与结果质量分开。如果这个策略你执行100次，平均回报确实是10%——但你的生命资金只够执行一次。'},
+{result:'60%A+40%B的组合策略——A提供期望回报（10%×60%），B提供稳定缓冲（5%×40%），组合σ从25%降至约15%。这利用了两个资产不完全相关（ρ<1）的特性，在保持7.5%回报的同时大幅降低波动——这是高斯分布组合优化的精髓。',mks:'高斯分布应用：投资不是比单一回报率，而是在相同风险下比回报。组合优化=在多维空间找最优帕累托前沿。标准差降低比回报提升更可靠。'},
+{result:'AI量化基金2年历史不足以做统计推断——2年的样本量太小，标准差极大。大数定理告诉我们：少量样本下的"高回报"可能完全是随机波动。而且AI策略常存在过拟合——在历史数据上完美，未来完全不可预测。',mks:'大数定理+连续性与可导性：历史数据太少→统计不可靠；AI量化存在"不可导奇点"——过去规律可能突然失效。先验证再投入——贝叶斯更新比孤注一掷更科学。'}
+],
+2:[
+{result:'全面降价是零和博弈的陷阱——你的现金流仅12个月，对手有50%份额且免费。你用价格战对抗免费——等于拿有限的弹药对抗无限的弹药。囚徒困境中，率先背叛的一方如果资源不足，只会加速自己的灭亡。',mks:'博弈论：在零和博弈中，资源深度决定策略空间。大公司的"免费"策略本质上是在消费你的时间——你要么差异化，要么被耗死。'},
+{result:'智猪博弈的完美应用：你是小猪（10%份额），对手是大猪（50%份额）。大猪宣布免费=按了按钮。小猪的策略是搭便车——寻找大猪免费策略下必然忽视的细分市场（付费意愿高、需求差异化的高端客户）。微软在操作系统免费趋势下的云化转型就是经典案例。',mks:'智猪博弈+微分思维：找到对手策略的"不可导点"——大公司从收费到免费的策略跳跃必然产生服务真空。在这些真空点上建立你的梯度优势。'},
+{result:'收购可能是最优解——但要看时机。现在对手刚宣布免费，估值还在（贝叶斯先验未更新）。一旦12个月后现金流见底，你的谈判筹码归零。但如果现在就能找到差异化路径并在6个月内证明，估值可能翻倍。',mks:'贝叶斯推理：你现在的估值是基于"对手未免费"的先验概率。一旦对手免费的效果被市场验证，你的估值将不可逆下降。决策的本质是：用贝叶斯更新评估"成功差异化"的后验概率是否值得等待。'}
+],
+3:[
+{result:'20%成功概率×10亿估值=2亿期望值。但这是单次博弈——你只有一次人生。伯努利试验告诉我们：20%成功概率意味着你需要5次尝试才有65%的概率至少成功一次。但创业只有一次机会，失败成本（2年零收入+职业中断）远高于理论期望值。',mks:'概率vs现实：单次决策中概率分布不适用——你的结果只有成功或失败，没有"20%成功"。创业不是抛硬币——你无法重复100次来让大数定理生效。'},
+{result:'这是最科学的决策方式。用2-3个月验证3个关键假设：①客户真的愿意付费吗？（访谈30个潜在客户）②你能在2个月内做出MVP吗？（技术可行性）③如果你离开大厂，前同事愿意加入吗？（团队可行性）。验证后更新成功概率：如果3个假设都通过，20%→50%+；如果都失败，20%→5%。然后再用期望值模型做决策。',mks:'贝叶斯推理的完美应用：P(成功)=20%是先验概率。2-3个月验证=收集新证据。P(成功|证据)=后验概率。贝叶斯告诉你：先收集低成本信息再决策，而不是在信息真空时押注。这是科学决策与赌博的本质区别。'},
+{result:'稳定是理性的——但需注意80万年薪+10%年增长是一个线性函数。10年后你的年薪约207万。但如果创业成功（即使概率20%），回报是2000万（10亿×20%×10%股份）。期望值：创业=2000万，打工=前2年0+后8年约1600万=1600万。但期望值不是一切——风险厌恶是合理的。',mks:'积分vs微分：打工是线性增长的积分（稳定累积），创业是指数增长可能性的微分（爆发可能）。没有对错——取决于你对"光滑曲线"和"不可导跳跃"的价值偏好。巴菲特选光滑，马斯克选跳跃。'}
+]
+};
+var r=results[round][optIdx];
+var el=document.getElementById('d'+round+'Result');
+if(!el) return;
+el.style.display='block';
+el.innerHTML='<div style="margin-bottom:6px"><strong>反馈：</strong>'+r.result+'</div><div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>'+r.mks+'</div>';
 }
 
-function submitExam() {
-  if (examInterval) clearInterval(examInterval);
-  document.getElementById('startExamBtn').style.display = 'inline-block';
-  document.getElementById('submitExamBtn').style.display = 'none';
-  document.getElementById('examResult').style.display = 'block';
-  var total = 10;
-  var correct = 0;
-  for (var i = 0; i < 7; i++) {
-    var card = document.getElementById('emc' + i);
-    if (card) {
-      var ans = parseInt(card.getAttribute('data-correct'));
-      var chosen = parseInt(card.getAttribute('data-chosen') || '-1');
-      if (chosen === ans) correct++;
-      else {
-        var qText = card.querySelector('.q-text').textContent;
-        var mcqQ = mcqBank.find(function(q) { return q.q === qText; });
-        if (mcqQ && !errorBook.some(function(e) { return e.q === mcqQ.q; })) {
-          errorBook.push({q: mcqQ.q, correct: mcqQ.answer, opts: mcqQ.opts, time: new Date().toISOString()});
-        }
-      }
-    }
-  }
-  var used = Math.floor((900 - examTime) / 60) + '分' + ((900 - examTime) % 60) + '秒';
-  document.getElementById('examScore').textContent = correct + ' / ' + total;
-  document.getElementById('examCorrect').textContent = correct;
-  document.getElementById('examTotal').textContent = total;
-  var weak = (total - correct) >= 3 ? '较多(' + (total - correct) + '个错误)' : ((total - correct) === 0 ? '无' : '少量(' + (total - correct) + '个错误)');
-  document.getElementById('examWeak').textContent = weak;
-  document.getElementById('examReview').innerHTML = '<div class="card"><h3>用时</h3><p>' + used + '</p><p style="color:var(--text2);font-size:.85rem;margin-top:8px">' + (correct >= 7 ? '✅ 成绩不错！你对核心概念的理解比较扎实。' : '⚠️ 还需要加强学习，建议回看知识卡片中的薄弱概念。') + '</p></div>';
-  examHistory.push({score: correct, total: total, time: new Date().toISOString()});
-  if (examHistory.length > 20) examHistory.shift();
-  save();
-}
-
-// ===== REVIEW MODE =====
-function renderReviewMode() {
-  var eb = document.getElementById('errorBook');
-  if (errorBook.length === 0) {
-    eb.innerHTML = '<p style="color:var(--text2);text-align:center;padding:20px">✨ 暂无错题，继续保持！</p>';
-  } else {
-    var labels = ['A','B','C','D'];
-    eb.innerHTML = errorBook.slice().reverse().slice(0, 20).map(function(e, i) {
-      return '<div class="quiz-card" style="margin-bottom:10px"><span class="q-tag q-mc">错题 #' + (i + 1) + '</span><div class="q-text">' + e.q + '</div><p style="color:var(--success);font-size:.82rem">✅ 正确答案：' + labels[e.correct] + '. ' + e.opts[e.correct] + '</p><button class="btn btn-warning btn-sm" style="margin-top:6px" onclick="retryError(' + i + ')">重新理解</button></div>';
-    }).join('');
-  }
-  document.getElementById('statConcepts').textContent = learnedCards.length;
-  document.getElementById('statQuizDone').textContent = LS.quizDoneTotal || 0;
-  var qc = LS.quizCorrectTotal || 0;
-  var qd = LS.quizDoneTotal || 1;
-  document.getElementById('statQuizCorrect').textContent = Math.round(qc / qd * 100) + '%';
-  document.getElementById('statExams').textContent = examHistory.length;
-}
-
-function retryError(i) {
-  alert('这道题的正确答案在面板中已标注绿色。提示：你可以回到"知识卡片"标签页重新复习相关概念。');
-}
-
-function clearStats() {
-  if (confirm('确定要重置所有学习记录吗？此操作不可撤销。')) {
-    learnedCards = [];
-    errorBook = [];
-    examHistory = [];
-    LS.quizDoneTotal = 0;
-    LS.quizCorrectTotal = 0;
-    save();
-    updateProgress();
-    setCard(0);
-    renderReviewMode();
-    alert('学习记录已重置。');
-  }
-}
-
-// ===== TREE TOGGLE =====
-function toggleMindmap(el) {
-  if (typeof el === 'string') el = document.querySelector(el);
-  if (!el) return;
-  el.classList.toggle('open');
-  var children = el.nextElementSibling;
-  if (children && children.classList.contains('tree-children')) {
-    children.classList.toggle('show');
-    children.classList.toggle('open');
-  }
-}
-
-// ===== DECISION MAKING =====
-function makeDecision(round, choice) {
-  var resultEl = document.getElementById('dResult' + round);
-  var roundEl = document.getElementById('dRound' + round);
-  if (!roundEl) return;
-  roundEl.querySelectorAll('.d-option').forEach(function(o) { o.classList.remove('chosen'); });
-  if (event && event.target) event.target.classList.add('chosen');
-  var feedback = {};
-  if (round === 1) {
-    feedback = {
-      'A': {msg:'<strong>⚠️ MKS分析：</strong>SaaS工具选的是确定性（线性增长），但放弃了指数爆发的可能性。积分思维告诉我们：线性增长曲线下的面积初期大，但长期被指数反超。适合需要短期现金流的情况。',cls:''},
-      'B': {msg:'<strong>⚠️ MKS分析：</strong>纯AI路线是高方差策略——可能大赢也可能大输。如果选这条路，你需要：①确保18个月资金即使全部烧完也不会让你破产（泊松冗余思维）；②在AI领域有信息优势（贝叶斯先验比别人准）。',cls:''},
-      'C': {msg:'<strong>✅ MKS最优解：</strong>黄金分割策略（60:40）是用确定性规则应对不确定性。SaaS部分提供"下限保障"（积分积累的稳定现金流），AI部分保留"上限空间"（指数增长的期权价值）。华罗庚的智慧：把复杂决策简化为可执行的比例分配。',cls:''}
-    };
-  } else if (round === 2) {
-    feedback = {
-      'A': {msg:'<strong>⚠️ MKS分析：</strong>σ=35%意味着在1σ范围内年回报在-15%到55%之间——你可能连续三年亏损。高斯分布告诉我们：仅看回报率不看标准差是自欺欺人。',cls:''},
-      'B': {msg:'<strong>⚠️ MKS分析：</strong>Z基金σ=3%看似安全，但6%名义回报扣除真实通胀后实际回报可能接近零甚至为负。完全的"安全策略"本身就是一种风险——购买力缩水的风险。',cls:''},
-      'C': {msg:'<strong>✅ MKS最优解：</strong>按回报/风险比加权配置，本质是在均值-方差空间中的最优组合。组合σ≈15%，95%置信区间为[-20%,+40%]——可承受的波动换取合理的增长。',cls:''}
-    };
-  } else {
-    feedback = {
-      'A': {msg:'<strong>MKS分析：</strong>留在原岗位规避了40%的可见风险，但忽视了"不行动的隐性成本"。积分思维：固守舒适区的累积效应是能力的缓慢贬值——你今天不成长，5年后曲线下的面积远小于冒险者。',cls:''},
-      'B': {msg:'<strong>MKS分析：</strong>+20%外部offer是确定性的"小赢"，但放弃了内部转岗成功后的+50%期权价值。这是典型的"拿确定的小利放弃不确定的大利"——但如果你评估自己的"单次成功率"p很小，这可能是理性的。关键是你对p的估计是否准确（贝叶斯问题）。',cls:''},
-      'C': {msg:'<strong>✅ MKS最优思路：</strong>期望值计算是正确的第一步（0.6×1.5+0.4×(-1.0)=0.5净正值）。但需要追问：①40%失败率是你自己估计的，还是有客观基准？（贝叶斯先验校准）②失败时的-1.0真的只是回原岗吗，还是可能更糟？（下行风险评估）③这个40%是否与其他因素条件独立？（条件概率陷阱）如果这三个问题都能满意回答，转岗是数学上的最优解。',cls:''}
-    };
-  }
-  resultEl.innerHTML = feedback[choice].msg;
-  resultEl.classList.add('show');
-}
-
-// ===== INIT =====
-renderDashboard();
-updateProgress();
 </script>
-
 </body>
 </html>
