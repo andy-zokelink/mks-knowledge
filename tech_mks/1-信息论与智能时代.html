@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息论与智能时代 · 最小知识集</title>
+<style>
+:root{
+  --bg:#fdf6ec; --card:#fffaf2; --accent:#c0392b; --accent2:#e74c3c;
+  --text:#3d2f2f; --sub:#6b5555; --border:#e8d5c4; --gold:#b8860b;
+  --success:#27ae60; --warn:#e67e22; --light:#faf3e6;
+  --shadow:0 2px 12px rgba(60,30,30,.07); --radius:10px;
+  font-size:clamp(14px,1.6vw,16px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.7}
+.container{max-width:960px;margin:0 auto;padding:12px 16px}
+
+.top-bar{
+  position:sticky; top:0; z-index:100;
+  background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);
+  color:#fdf6ec; padding:10px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:8px;
+}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap}
+.top-bar .home-link{
+  color:#d4a574; font-size:13px; border:1px solid #d4a574;
+  padding:3px 10px; border-radius:14px; white-space:nowrap; transition:all .2s;
+  text-decoration:none;
+}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f;text-decoration:none}
+
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:4px;padding:8px 0;background:var(--bg);border-bottom:2px solid var(--border);margin-bottom:16px}
+.tab-btn{flex:0 0 auto;padding:6px 12px;border:1px solid var(--border);border-radius:18px;background:var(--card);color:var(--text);cursor:pointer;font-size:.82rem;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{background:var(--light);border-color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none;animation:fadeIn .35s}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;border-left:3px solid var(--accent)}
+.card h3{color:var(--accent);margin-bottom:8px;font-size:1.05rem}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+
+.progress-wrap{margin:14px 0}
+.progress-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:5px;transition:width .5s}
+
+.concept-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;text-align:center;transition:transform .2s;cursor:default}
+.concept-card:hover{transform:translateY(-3px)}
+.concept-card h4{color:var(--accent);font-size:.95rem;margin-bottom:4px}
+.concept-card p{color:var(--sub);font-size:.8rem}
+.concept-card.star{border:2px solid var(--gold);background:linear-gradient(135deg,#fffaf2,#fff8e7)}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.badge-star{background:#fff3cd;color:var(--gold)}
+.badge-done{background:#d4edda;color:var(--success)}
+
+.svg-wrap{overflow-x:auto;margin:14px 0;padding:10px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.svg-wrap svg{display:block;min-width:700px;margin:0 auto}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:10px;font-size:.78rem;color:var(--sub)}
+
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+.quiz-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
+.quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+.quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+.quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+.quiz-card .option:hover{background:var(--light);border-color:var(--accent)}
+.quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+.quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+.quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+.quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+.quiz-card .feedback.correct{background:#d4edda;color:#155724}
+.quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+.quiz-timer{text-align:center;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:8px}
+.essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--light)}
+
+.btn{display:inline-block;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:.88rem;transition:all .2s;text-decoration:none}
+.btn:hover{background:var(--accent2)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warn{background:var(--warn);color:#fff}
+
+.tree{font-size:.9rem}
+.tree-node{margin:2px 0}
+.tree-toggle{cursor:pointer;user-select:none;color:var(--accent);font-weight:600}
+.tree-toggle::before{content:'▸ ';display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none;margin-left:20px;border-left:1px dashed var(--border);padding-left:12px}
+.tree-children.open{display:block}
+.tree-leaf{color:var(--sub);padding:2px 0}
+
+.soc-item{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.soc-q{padding:12px 16px;background:var(--light);cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.soc-q:hover{background:#f5e6d3}
+.soc-q::after{content:'+';font-size:1.2rem;color:var(--accent);transition:transform .2s}
+.soc-q.open::after{content:'−'}
+.soc-a{display:none;padding:12px 16px;background:var(--card);font-size:.88rem;color:var(--sub);line-height:1.7}
+.soc-a.open{display:block}
+
+.case-block{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:12px}
+.case-block h4{color:var(--accent);margin-bottom:8px}
+
+.sim-scenario{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
+.sim-scenario h4{color:var(--accent);margin-bottom:8px}
+.sim-choice{display:block;width:100%;text-align:left;padding:10px 16px;margin:4px 0;border:1px solid var(--border);border-radius:8px;background:var(--light);cursor:pointer;transition:all .2s;font-size:.88rem}
+.sim-choice:hover{background:#ffe8e4;border-color:var(--accent)}
+.sim-choice.chosen{border-color:var(--accent);background:#ffe8e4}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.stat-item{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;text-align:center}
+.stat-item .num{font-size:1.8rem;font-weight:700;color:var(--accent)}
+.stat-item .lbl{font-size:.78rem;color:var(--sub)}
+
+.data-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+.data-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+.data-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.data-table tr:nth-child(even){background:var(--light)}
+
+.path-step{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;padding:12px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.path-num{flex:0 0 36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
+.path-info h4{margin-bottom:2px;font-size:.92rem}
+.path-info p{font-size:.8rem;color:var(--sub)}
+
+.mks-star{color:var(--gold);font-size:.9rem}
+
+@media(max-width:600px){
+  .tab-bar{gap:2px}
+  .tab-btn{padding:5px 8px;font-size:.72rem}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+#staticQuiz{display:none}
+#examContainer .quiz-card{border-left:3px solid var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>信息论与智能时代 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<div class="container">
+
+<nav class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="0">知识集总览</button>
+<button class="tab-btn" data-tab="1">知识卡片</button>
+<button class="tab-btn" data-tab="2">题库系统</button>
+<button class="tab-btn" data-tab="3">考试模式</button>
+<button class="tab-btn" data-tab="4">复习模式</button>
+<button class="tab-btn" data-tab="5">思维导图</button>
+<button class="tab-btn" data-tab="6">深度追问</button>
+<button class="tab-btn" data-tab="7">案例分析</button>
+<button class="tab-btn" data-tab="8">实战决策</button>
+</nav>
+
+<!-- ===== TAB 0: 知识集总览 ===== -->
+<div class="tab-content active" data-tab="0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">理解<strong>信息时代的底层操作系统</strong>——信息论是CPU（处理信息的数学基础），GPT/AI是应用层（信息处理的AI化），5G是网络层（信息传输的基础设施）。掌握信息熵、编码、最大熵原理等核心概念，理解ChatGPT的能力边界与本质，洞察5G+IoT引领的万物互联趋势，构建以信息论为底层的科技认知框架。</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid2" id="conceptGrid">
+<div class="concept-card star" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>信息熵 <span class="mks-star">★</span></h4><p>度量不确定性的基本单位，信息论的第一基石</p></div>
+<div class="concept-card star" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>香农定律 <span class="mks-star">★</span></h4><p>信道容量上限与编码效率的数学边界</p></div>
+<div class="concept-card star" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>最大熵原理 <span class="mks-star">★</span></h4><p>已知部分信息时的最优预测策略</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>哈夫曼编码</h4><p>最优前缀编码——高频短码、低频长码</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>奥卡姆剃刀</h4><p>如无必要勿增实体，简单性原则的信息论基础</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>语言模型</h4><p>对语言的数学建模，GPT的底层引擎</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>ChatGPT能力边界</h4><p>能做什么、不能做什么——信息论视角的理性分析</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>5G通信</h4><p>第五代移动通信——IoT时代的基础设施</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>IoT万物互联</h4><p>超级智能世界=AI+IoT，第三代互联网</p></div>
+<div class="concept-card" onclick="document.querySelector('[data-tab=\\'1\\']').click()"><h4>大数据思维</h4><p>四层逻辑框架：百川入海→逆向思维→洞察枝末→相关联系</p></div>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid2" id="mksCoreGrid">
+<div class="concept-card star">
+<h4>★ 信息熵 <span class="badge badge-star">骨架</span></h4>
+<p><strong>为什么是骨架中的骨架：</strong>信息熵是整个信息论的起点——它定义了"信息"本身。没有熵的概念，就没有编码理论、信道容量、最大熵原理。理解熵，就理解了信息时代最底层的逻辑：一切不确定性都可以被度量、被消除。</p>
+</div>
+<div class="concept-card star">
+<h4>★ 香农定律 <span class="badge badge-star">骨架</span></h4>
+<p><strong>为什么是骨架中的骨架：</strong>香农三大定律划定了信息世界的物理边界——你能传多快（第二定律）、能压多小（第一定律）、能纠多少错（第三定律）。这些边界不可逾越，如同光速之于物理。所有通信技术（1G到5G）都在逼近但永远无法超越这些边界。</p>
+</div>
+<div class="concept-card star">
+<h4>★ 最大熵原理 <span class="badge badge-star">骨架</span></h4>
+<p><strong>为什么是骨架中的骨架：</strong>当信息不完全时（现实中的常态），最大熵原理告诉你最理性的做法：满足已知条件，对未知不做主观假设。这是投资分散化、风险最小化、科学决策的底层逻辑。形式和奥卡姆剃刀一样简洁，但应用范围覆盖金融、AI、管理。</p>
+</div>
+<div class="concept-card star">
+<h4>★ 语言模型 <span class="badge badge-star">骨架</span></h4>
+<p><strong>为什么是骨架中的骨架：</strong>ChatGPT不是魔法，是语言模型+大算力的工程产物。理解语言模型的本质（预测下一个词的概率分布），就理解了GPT的能力边界——它能重组已有信息但不能创造新信息。这是从"AI神话"回归理性的钥匙。</p>
+</div>
+</div>
+
+<div class="card" style="margin-top:14px">
+<h3>概念关系图</h3>
+<div class="svg-wrap">
+<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow1"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#3d2f2f" flood-opacity="0.12"/></filter>
+    <marker id="arrowMain" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3d2f2f"/></marker>
+    <marker id="arrowAccent" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
+    <marker id="arrowGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#b8860b"/></marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#27ae60"/></marker>
+  </defs>
+
+  <!-- Background circles -->
+  <ellipse cx="450" cy="310" rx="420" ry="290" fill="#faf3e6" stroke="#e8d5c4" stroke-width="2" stroke-dasharray="6,4" opacity="0.6"/>
+  <ellipse cx="450" cy="310" rx="340" ry="230" fill="none" stroke="#e8d5c4" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.5"/>
+  <ellipse cx="450" cy="310" rx="240" ry="155" fill="none" stroke="#e8d5c4" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.4"/>
+
+  <!-- Layer labels -->
+  <text x="450" y="38" text-anchor="middle" font-size="13" fill="#6b5555" font-weight="600">信息时代底层操作系统</text>
+  <text x="450" y="95" text-anchor="middle" font-size="10" fill="#9a8a8a">应用层：GPT/AI — 信息处理的AI化</text>
+  <text x="450" y="280" text-anchor="middle" font-size="10" fill="#9a8a8a">网络层：5G/IoT — 信息传输的基础设施</text>
+  <text x="450" y="510" text-anchor="middle" font-size="10" fill="#9a8a8a">核心层：信息论 — 处理信息的数学基础（CPU）</text>
+
+  <!-- Top row: GPT/AI application layer nodes -->
+  <rect x="200" y="70" width="120" height="42" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="260" y="96" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="600">语言模型</text>
+
+  <rect x="370" y="65" width="160" height="42" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="450" y="91" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="600">ChatGPT能力边界</text>
+
+  <rect x="580" y="70" width="120" height="42" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="640" y="96" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="600">AI替代分析</text>
+
+  <!-- Middle row: Core concepts -->
+  <rect x="70" y="180" width="120" height="42" rx="8" fill="#fffaf2" stroke="#3d2f2f" stroke-width="1.5" filter="url(#shadow1)"/>
+  <text x="130" y="206" text-anchor="middle" font-size="12" fill="#3d2f2f" font-weight="600">信息熵</text>
+
+  <rect x="230" y="180" width="120" height="42" rx="8" fill="#fffaf2" stroke="#3d2f2f" stroke-width="1.5" filter="url(#shadow1)"/>
+  <text x="290" y="206" text-anchor="middle" font-size="12" fill="#3d2f2f" font-weight="600">香农定律</text>
+
+  <rect x="390" y="175" width="120" height="42" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2.5" filter="url(#shadow1)"/>
+  <text x="450" y="201" text-anchor="middle" font-size="13" fill="#c0392b" font-weight="700">最大熵原理</text>
+
+  <rect x="550" y="180" width="120" height="42" rx="8" fill="#fffaf2" stroke="#3d2f2f" stroke-width="1.5" filter="url(#shadow1)"/>
+  <text x="610" y="206" text-anchor="middle" font-size="12" fill="#3d2f2f" font-weight="600">哈夫曼编码</text>
+
+  <rect x="710" y="180" width="120" height="42" rx="8" fill="#fffaf2" stroke="#3d2f2f" stroke-width="1.5" filter="url(#shadow1)"/>
+  <text x="770" y="206" text-anchor="middle" font-size="12" fill="#3d2f2f" font-weight="600">奥卡姆剃刀</text>
+
+  <!-- Bottom row: 5G/IoT infrastructure nodes -->
+  <rect x="150" y="320" width="120" height="42" rx="8" fill="#fffaf2" stroke="#27ae60" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="210" y="346" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">5G通信标准</text>
+
+  <rect x="330" y="320" width="120" height="42" rx="8" fill="#fffaf2" stroke="#27ae60" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="390" y="346" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">IoT万物互联</text>
+
+  <rect x="510" y="320" width="140" height="42" rx="8" fill="#fffaf2" stroke="#27ae60" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="580" y="346" text-anchor="middle" font-size="12" fill="#27ae60" font-weight="600">通信演进(1G-5G)</text>
+
+  <rect x="690" y="320" width="130" height="42" rx="8" fill="#fffaf2" stroke="#27ae60" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="755" y="346" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="600">更少能量传更多信息</text>
+
+  <!-- Bottom layer: Foundations -->
+  <rect x="180" y="430" width="120" height="42" rx="8" fill="#fff8e7" stroke="#b8860b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="240" y="456" text-anchor="middle" font-size="12" fill="#b8860b" font-weight="600">大数据思维</text>
+
+  <rect x="360" y="430" width="120" height="42" rx="8" fill="#fff8e7" stroke="#b8860b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="420" y="456" text-anchor="middle" font-size="11" fill="#b8860b" font-weight="600">控制论与反馈</text>
+
+  <rect x="540" y="430" width="120" height="42" rx="8" fill="#fff8e7" stroke="#b8860b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="600" y="456" text-anchor="middle" font-size="11" fill="#b8860b" font-weight="600">系统论与负熵</text>
+
+  <rect x="700" y="430" width="120" height="42" rx="8" fill="#fff8e7" stroke="#b8860b" stroke-width="2" filter="url(#shadow1)"/>
+  <text x="760" y="456" text-anchor="middle" font-size="11" fill="#b8860b" font-weight="600">信息等价性</text>
+
+  <!-- Arrows: Core layer upward to App layer -->
+  <line x1="260" y1="112" x2="260" y2="180" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowAccent)"/>
+  <line x1="450" y1="107" x2="450" y2="175" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowAccent)"/>
+  <line x1="640" y1="112" x2="640" y2="180" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowAccent)"/>
+
+  <!-- Arrows: Core layer downward to Network layer -->
+  <line x1="210" y1="222" x2="210" y2="320" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="390" y1="222" x2="390" y2="320" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="580" y1="222" x2="580" y2="320" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="755" y1="222" x2="755" y2="320" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Horizontal connections within layers -->
+  <line x1="320" y1="91" x2="370" y2="86" stroke="#3d2f2f" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="530" y1="86" x2="580" y2="91" stroke="#3d2f2f" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="190" y1="201" x2="230" y2="201" stroke="#3d2f2f" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="350" y1="201" x2="390" y2="196" stroke="#3d2f2f" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="510" y1="196" x2="550" y2="201" stroke="#3d2f2f" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="670" y1="201" x2="710" y2="201" stroke="#3d2f2f" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Foundation upward arrows -->
+  <line x1="240" y1="430" x2="240" y2="222" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrowGold)"/>
+  <line x1="420" y1="430" x2="420" y2="222" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrowGold)"/>
+  <line x1="600" y1="430" x2="600" y2="222" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrowGold)"/>
+  <line x1="760" y1="430" x2="760" y2="222" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrowGold)"/>
+</svg>
+</div>
+<div class="legend">
+  <span>━━ 主线关系</span><span style="color:#c0392b">━━ 应用层支撑</span><span style="color:#27ae60">━━ 网络层支撑</span><span style="color:#b8860b">- - 方法论基础</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（12条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>椭圆曲线加密的数学定义</td><td>讨论区块链/比特币安全性时引用</td></tr>
+<tr><td>SECP256K1协议具体参数</td><td>加密技术选型时查阅</td></tr>
+<tr><td>GDPR与CCPA法案全文</td><td>数据合规法律事务</td></tr>
+<tr><td>卡尔曼滤波的数学推导</td><td>自动控制/导航系统设计</td></tr>
+<tr><td>3GPP标准制定流程</td><td>通信行业标准跟踪</td></tr>
+<tr><td>LDPC码（低密度奇偶检查码）细节</td><td>5G物理层技术研究</td></tr>
+<tr><td>GPT-3/4具体参数规模（1750亿参数等）</td><td>AI模型技术讨论</td></tr>
+<tr><td>Transformer架构自注意力机制公式</td><td>NLP模型开发</td></tr>
+<tr><td>马斯克星链卫星轨道参数</td><td>卫星通信评估</td></tr>
+<tr><td>维纳控制论原版《控制论》著作</td><td>跨学科方法论溯源</td></tr>
+<tr><td>贝塔朗菲《生命问题》系统论原文</td><td>系统科学理论溯源</td></tr>
+<tr><td>费马大定理与椭圆曲线关系（谷山-志村猜想）</td><td>数学史与加密技术交叉</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径</h3>
+<div class="path-step"><div class="path-num">1</div><div class="path-info"><h4>信息论基础（2-3天）</h4><p>信息熵 → 编码理论（哈夫曼编码）→ 香农三大定律 → 最大熵原理与奥卡姆剃刀。建立信息度量的底层直觉。</p></div></div>
+<div class="path-step"><div class="path-num">2</div><div class="path-info"><h4>信息论应用（2天）</h4><p>大数据思维四层框架 → 信息等价性与互信息 → 控制论与反馈 → 系统论与负熵。从理论走向方法论。</p></div></div>
+<div class="path-step"><div class="path-num">3</div><div class="path-info"><h4>5G与通信技术（1-2天）</h4><p>通信演进(1G-5G) → 5G核心技术 → IoT万物互联 → 产业格局。理解信息传输的基础设施。</p></div></div>
+<div class="path-step"><div class="path-num">4</div><div class="path-info"><h4>GPT与AI前沿（2天）</h4><p>语言模型原理 → ChatGPT能力边界 → 固有缺陷 → AI替代分析。理性看待AI革命。</p></div></div>
+<div class="path-step"><div class="path-num">5</div><div class="path-info"><h4>综合应用（持续）</h4><p>用信息论思维分析日常决策、投资、职业选择。核心心法：面对不确定性时，回到最大熵原理。</p></div></div>
+</div>
+
+<div class="card">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--sub)" id="progressText">尚未开始学习</p>
+</div>
+
+</div>
+
+<!-- ===== TAB 1: 知识卡片 ===== -->
+<div class="tab-content" data-tab="1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--sub)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--sub)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- ===== TAB 2: 题库系统 ===== -->
+<div class="tab-content" data-tab="2">
+
+<div id="quizControls" style="text-align:center;margin-bottom:16px">
+  <button class="btn btn-gold" onclick="startQuiz()" style="margin-right:10px">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()">重置</button>
+</div>
+<div id="quizContainer"></div>
+
+<div id="staticQuiz">
+  <h4 style="color:var(--accent);margin:16px 0 10px">选择题（共20题）</h4>
+  <div id="staticMCQ"></div>
+  <h4 style="color:var(--accent);margin:20px 0 10px">简答题（共10题）</h4>
+  <div id="staticSAQ"></div>
+</div>
+
+</div>
+
+<!-- ===== TAB 3: 考试模式 ===== -->
+<div class="tab-content" data-tab="3">
+<div style="text-align:center;margin-bottom:16px">
+  <button class="btn btn-gold" onclick="startExam()">⏱️ 开始考试（20题 · 10分钟）</button>
+  <button class="btn btn-outline btn-sm" onclick="resetExam()" style="margin-left:10px">重置</button>
+</div>
+<div class="quiz-timer" id="examTimer" style="display:none">10:00</div>
+<div id="examContainer"></div>
+<div id="examResult" style="display:none;text-align:center" class="card"></div>
+</div>
+
+<!-- ===== TAB 4: 复习模式 ===== -->
+<div class="tab-content" data-tab="4">
+<div class="card">
+<h3>复习模式</h3>
+<p style="color:var(--sub);margin-bottom:12px">已标记学习的知识点将按遗忘曲线提醒复习。点击下方按钮查看待复习内容。</p>
+<div class="stat-grid" id="reviewStats"></div>
+</div>
+<div id="reviewList"></div>
+</div>
+
+<!-- ===== TAB 5: 思维导图 ===== -->
+<div class="tab-content" data-tab="5">
+<div class="card">
+<h3>信息论与智能时代 · 思维导图</h3>
+<div class="tree" id="mindmapTree">
+
+<div class="tree-node">
+  <div class="tree-toggle open" onclick="toggleMindmap(this)">信息时代的底层操作系统</div>
+  <div class="tree-children open">
+
+    <div class="tree-node">
+      <div class="tree-toggle open" onclick="toggleMindmap(this)">1. 信息论基础（CPU层）</div>
+      <div class="tree-children open">
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">信息熵与度量</div>
+          <div class="tree-children">
+            <div class="tree-leaf">信息熵：不确定性的度量 H(X)=-∑p(x)log p(x)</div>
+            <div class="tree-leaf">条件熵与互信息：信息间的相关性量化</div>
+            <div class="tree-leaf">信息增量：压缩中的保守主义原则</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">香农三大定律</div>
+          <div class="tree-children">
+            <div class="tree-leaf">第一定律（信源编码）：压缩极限=信息熵</div>
+            <div class="tree-leaf">第二定律（信道编码）：传输率≤信道容量C</div>
+            <div class="tree-leaf">第三定律（有噪编码）：有噪信道仍可可靠传输</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">编码理论</div>
+          <div class="tree-children">
+            <div class="tree-leaf">哈夫曼编码：最优前缀编码，高频短码低频长码</div>
+            <div class="tree-leaf">信息等价性：傅里叶变换、增量编码</div>
+            <div class="tree-leaf">冗余与纠错：冗余降低噪音影响</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">决策原则</div>
+          <div class="tree-children">
+            <div class="tree-leaf">最大熵原理：无信息时不作主观假设</div>
+            <div class="tree-leaf">奥卡姆剃刀：如无必要勿增实体</div>
+            <div class="tree-leaf">幸存者偏差：样本选取不具代表性</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="toggleMindmap(this)">2. GPT与AI（应用层）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">语言模型</div>
+          <div class="tree-children">
+            <div class="tree-leaf">本质：对语言的数学模型，预测下一个词的概率</div>
+            <div class="tree-leaf">进化：N-gram → RNN/LSTM → Transformer → GPT</div>
+            <div class="tree-leaf">ChatGPT=语言模型+大算力+RLHF对齐</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">能力边界</div>
+          <div class="tree-children">
+            <div class="tree-leaf">能做：信息重组、文本生成、翻译、摘要</div>
+            <div class="tree-leaf">不能做：创造新信息、真正理解、逻辑推理</div>
+            <div class="tree-leaf">固有缺陷：垃圾输入垃圾输出、幻觉、成本高</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">AI替代分析</div>
+          <div class="tree-children">
+            <div class="tree-leaf">高风险：重复性信息处理、模板化写作</div>
+            <div class="tree-leaf">低风险：创造性工作、需深度理解的任务</div>
+            <div class="tree-leaf">非AI领域：生物医学AI、多任务AI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="toggleMindmap(this)">3. 5G与IoT（网络层）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">通信演进</div>
+          <div class="tree-children">
+            <div class="tree-leaf">1G(摩托罗拉) → 2G(诺基亚) → 3G(高通) → 4G → 5G(华为)</div>
+            <div class="tree-leaf">每代约10年，标准主导权决定制高点</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">5G核心技术</div>
+          <div class="tree-children">
+            <div class="tree-leaf">高密度基站（200-300米/个）、低功耗</div>
+            <div class="tree-leaf">厘米波/毫米波宽频，传输效率提升近百倍</div>
+            <div class="tree-leaf">云计算中心集中处理，减少节点路径</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">IoT产业格局</div>
+          <div class="tree-children">
+            <div class="tree-leaf">超级智能世界=AI+IoT，2030年达8万亿美元</div>
+            <div class="tree-leaf">核心赛道：低功耗芯片、设备制造、场景应用</div>
+            <div class="tree-leaf">卫星通信局限：距离远导致功率衰减、带宽有限</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="toggleMindmap(this)">4. 方法论支柱</div>
+      <div class="tree-children">
+        <div class="tree-leaf">大数据思维四层：百川入海 → 逆向思维 → 洞察枝末 → 相关联系</div>
+        <div class="tree-leaf">控制论：轻预测重反应，基于反馈的动态调整</div>
+        <div class="tree-leaf">系统论：整体大于部分之和，开放系统引入负熵</div>
+        <div class="tree-leaf">信息等价性：用等价信息替代不可得信息</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ===== TAB 6: 深度追问 ===== -->
+<div class="tab-content" data-tab="6">
+<h4 style="color:var(--accent);margin-bottom:14px">苏格拉底式追问 —— 层层深入，直抵本质</h4>
+
+<div class="soc-item">
+  <div class="soc-q" onclick="toggleSoc(this)">Q1: 为什么说信息熵是信息论最底层的概念？</div>
+  <div class="soc-a"><strong>第一层：</strong>信息熵回答了“信息是什么”这个最基本的问题——信息是对不确定性的消除。没有熵的度量，我们无法量化信息。<br><strong>第二层：</strong>香农三大定律全部建立在熵的概念之上：第一定律说压缩不能低于熵，第二定律说传输不能超过信道容量（本质是噪声熵），第三定律说冗余可以对抗噪声熵。<br><strong>第三层：</strong>熵不仅适用于通信——大数据思维中的互信息、最大熵原理、信息增益，全部基于熵的框架。熵是信息世界的“能量”概念，贯穿一切。</div>
+</div>
+
+<div class="soc-item">
+  <div class="soc-q" onclick="toggleSoc(this)">Q2: ChatGPT为什么不能创造新信息？</div>
+  <div class="soc-a"><strong>第一层：</strong>从信息论角度看，ChatGPT是一个语言模型——它预测下一个词的概率分布，本质上是在做“信息重组”而非“信息创造”。<br><strong>第二层：</strong>输出的每一个token都来自训练数据的统计模式。它可以产生训练数据中从未出现过的句子组合，但信息内容（语义）无法超出训练数据的信息总量——这是信息论的基本约束：输出信息≤输入信息+噪声。<br><strong>第三层：</strong>这并不意味着ChatGPT无用——人类的大部分工作也是信息重组而非原创。但理解这一边界，就不会对AI产生不切实际的恐惧或期待。</div>
+</div>
+
+<div class="soc-item">
+  <div class="soc-q" onclick="toggleSoc(this)">Q3: 5G的“更少能量传更多信息”为什么是根本趋势？</div>
+  <div class="soc-a"><strong>第一层：</strong>这是信息论与热力学的交汇——麦克斯韦妖假说证明：获取信息需要消耗能量，信息可以降低热力学熵但需要能量成本。<br><strong>第二层：</strong>技术演进的本质是提升“能量-信息转换效率”。1G到5G，基站距离从公里级降到百米级，发射功率降为4G的1%，但带宽提升近百倍——单位能量传输的信息量指数增长。<br><strong>第三层：</strong>这个原则也解释了为什么卫星通信（星链）不是5G的替代品——卫星距离数百公里，信号衰减万倍，永远无法在能量效率上与地面基站竞争。技术路径选择的核心判断标准就是这条规律。</div>
+</div>
+
+<div class="soc-item">
+  <div class="soc-q" onclick="toggleSoc(this)">Q4: 最大熵原理和奥卡姆剃刀有什么关系？</div>
+  <div class="soc-a"><strong>第一层：</strong>两者都追求“最简”——奥卡姆剃刀说“如无必要勿增实体”，最大熵原理说“对未知不作主观假设”。表面看都是简约原则。<br><strong>第二层：</strong>但角度不同。奥卡姆剃刀是模型选择工具（在多个等价模型中选最简），最大熵原理是预测策略（在信息不完全时做最安全的选择）。前者针对“解释世界”，后者针对“预测未来”。<br><strong>第三层：</strong>信息论统一了两者——奥卡姆剃刀等价于“剔除冗余信息保留最简支撑集”，最大熵原理等价于“不引入额外信息的条件下熵最大化”。两者都在说同一件事：信息使用刚刚好，不多不少。</div>
+</div>
+
+<div class="soc-item">
+  <div class="soc-q" onclick="toggleSoc(this)">Q5: 信息论如何指导个人职业选择？</div>
+  <div class="soc-a"><strong>第一层：</strong>信息论告诉我们“等价信息替代”和“正交信息交叉验证”——选择职业时，不要只看单一维度（如薪资），要寻找正交信息源（成长空间、行业趋势、个人匹配度）做交叉判断。<br><strong>第二层：</strong>最大熵原理直接应用于投资和职业选择：在信息不完全时分散风险，不把鸡蛋放一个篮子。对不确定的未来不做主观投机假设（如“这个行业明年一定火”）。<br><strong>第三层：</strong>系统论说“开放系统引入负熵”——个人成长必须保持开放（行万里路+读万卷书），封闭必然走向无序。控制论说“轻预测重反应”——不要画大饼规划十年后，而是像变色龙一样根据反馈持续调整。</div>
+</div>
+
+</div>
+
+<!-- ===== TAB 7: 案例分析 ===== -->
+<div class="tab-content" data-tab="7">
+<h4 style="color:var(--accent);margin-bottom:14px">经典案例解析 —— 信息论视角下的真实世界</h4>
+
+<div class="case-block">
+<h4>案例1：幸存者偏差——二战战机防护分析</h4>
+<p style="color:var(--sub);line-height:1.7"><strong>背景：</strong>二战期间，盟军分析返回的战机弹痕分布，发现机翼弹痕多、发动机弹痕少。军方准备加强机翼装甲。<br><strong>瓦尔德的分析：</strong>返回的战机是“幸存者”——发动机被击中的飞机没能返航，弹痕数据只反映了“不致命”的中弹部位。应该加强的恰恰是弹痕最少的发动机区域。<br><strong>信息论解读：</strong>这本质上是一个<strong>样本偏差</strong>问题——信息收集的维度不完整（缺少被击落飞机的数据），导致错误推断。信息论教我们的交叉验证法就是用来解决这类问题：多维度的正交信息才能消除单一维度的盲区。</p>
+</div>
+
+<div class="case-block">
+<h4>案例2：华为管理变革——负熵引入的经典实践</h4>
+<p style="color:var(--sub);line-height:1.7"><strong>背景：</strong>1994年华为C&C08交换机技术突破后，面临严重的管理瓶颈。<br><strong>变革措施：</strong>1998年聘请IBM顾问直接担任部门负责人（不是咨询），华为干部担任助手学习，全面改造研发管理体系。<br><strong>信息论（系统论）解读：</strong>封闭系统遵循熵增定律——必然从有序走向无序。华为通过<strong>引入外部负熵</strong>（IBM管理经验=信息熵的负值），逆转了组织熵增。关键不是“咨询”（浅层信息交换），而是“顾问直接操盘+干部实践学习”（深层信息嵌入），确保管理体系真正落地。</p>
+</div>
+
+<div class="case-block">
+<h4>案例3：ChatGPT的“幻觉”——信息论视角的必然性</h4>
+<p style="color:var(--sub);line-height:1.7"><strong>现象：</strong>ChatGPT会自信地编造不存在的事实、引用不存在的论文。OpenAI称之为“幻觉”(hallucination)。<br><strong>信息论解读：</strong>这不是bug，是语言模型的<strong>固有特征</strong>。语言模型的本质是预测下一个token的概率分布——它不是从知识库检索事实，而是在统计上生成“最可能”的下文。当训练数据中对某个问题的信息不足时，模型仍会生成“看起来合理”的内容——这符合最大熵原理：在信息不足时选择概率最高的组合，但不能保证正确。理解这一点，就不会把ChatGPT当搜索引擎或真理机器使用。</p>
+</div>
+
+<div class="case-block">
+<h4>案例4：仙股骗局——信息不对称的经典操纵</h4>
+<p style="color:var(--sub);line-height:1.7"><strong>手法：</strong>向大量人群发送反向预测（一半涨一半跌），10天后自然有1/1024的人收到连续10次正确预测——幸存者偏差筛选出的“幸运儿”。<br><strong>三大操控逻辑：</strong>①低门槛诱导（1万元可买大量股份，认知偏差：低价股易上涨）；②高交易成本（手续费占交易额1/8，中间商赚取）；③易操控（少量资金即可拉动股价）。<br><strong>信息论解读：</strong>核心是利用<strong>信息不对称</strong>（你不知道还有1023人收到了错误预测）和<strong>互信息误判</strong>（将随机概率误认为预测能力）。识别方法：等价信息替代——寻找能验证预测者真实记录的第三方信息源。</p>
+</div>
+
+</div>
+
+<!-- ===== TAB 8: 实战决策 ===== -->
+<div class="tab-content" data-tab="8">
+<h4 style="color:var(--accent);margin-bottom:14px">实战决策模拟 —— 信息论思维下的两难选择</h4>
+
+<div class="sim-scenario">
+<h4>场景1：投资决策——“确定性”还是“可能性”？</h4>
+<p style="color:var(--sub);margin-bottom:12px">你有100万可投资金。A项目：年化5%的稳定收益（几乎无风险）。B项目：AI创业公司早期投资，90%概率血本无归，10%概率获得50倍回报。你如何决策？</p>
+<div class="sim-choice" onclick="simDecide(this,'s1','a')">A. 全部投入A项目，追求确定性收益</div>
+<div class="sim-choice" onclick="simDecide(this,'s1','b')">B. 全部投入B项目，赌一把大的</div>
+<div class="sim-choice" onclick="simDecide(this,'s1','c')">C. 90万A + 10万B，分散配置</div>
+<div class="sim-choice" onclick="simDecide(this,'s1','d')">D. 等更多信息出来再决定</div>
+<div id="s1_result" style="display:none;margin-top:12px;padding:12px;background:#fffdf5;border-radius:8px;border:1px solid var(--gold)"></div>
+</div>
+
+<div class="sim-scenario">
+<h4>场景2：职业选择——大厂稳定还是创业公司冒险？</h4>
+<p style="color:var(--sub);margin-bottom:12px">你收到两个Offer：某大厂（年薪50万，稳定但成长慢）vs AI创业公司（年薪30万+期权，高风险高成长）。如何选择？</p>
+<div class="sim-choice" onclick="simDecide(this,'s2','a')">A. 选大厂，稳定性压倒一切</div>
+<div class="sim-choice" onclick="simDecide(this,'s2','b')">B. 选创业公司，赌行业风口</div>
+<div class="sim-choice" onclick="simDecide(this,'s2','c')">C. 用最大熵原理：对比正交信息（团队背景、赛道天花板、个人成长空间）后决定</div>
+<div class="sim-choice" onclick="simDecide(this,'s2','d')">D. 两个都不选，继续找</div>
+<div id="s2_result" style="display:none;margin-top:12px;padding:12px;background:#fffdf5;border-radius:8px;border:1px solid var(--gold)"></div>
+</div>
+
+<div class="sim-scenario">
+<h4>场景3：信息决策——面对不确定如何判断？</h4>
+<p style="color:var(--sub);margin-bottom:12px">你听说某股票“内幕消息”说下周必涨。你的信息论工具箱里最该用哪个原则？</p>
+<div class="sim-choice" onclick="simDecide(this,'s3','a')">A. 哈夫曼编码：给高频信息更高权重</div>
+<div class="sim-choice" onclick="simDecide(this,'s3','b')">B. 最大熵原理：无可靠信息时不作主观假设，等更多证据</div>
+<div class="sim-choice" onclick="simDecide(this,'s3','c')">C. 香农第二定律：信息传输率不能超过信道容量</div>
+<div class="sim-choice" onclick="simDecide(this,'s3','d')">D. 奥卡姆剃刀：选择最简单的解释——这是个骗局</div>
+<div id="s3_result" style="display:none;margin-top:12px;padding:12px;background:#fffdf5;border-radius:8px;border:1px solid var(--gold)"></div>
+</div>
+
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ===== GLOBAL STATE =====
+var learnedCards = JSON.parse(localStorage.getItem('mks-tech-learned') || '[]');
+var mcqAnswers = JSON.parse(localStorage.getItem('mks-tech-mcq') || '{}');
+var saqAnswers = JSON.parse(localStorage.getItem('mks-tech-saq') || '{}');
+var examHistory = JSON.parse(localStorage.getItem('mks-tech-exam') || '[]');
+
+// ===== CONCEPTS =====
+var concepts = [
+  {id:'c1',name:'信息熵',def:'度量不确定性的基本单位。H(X)=-∑p(x)log₂p(x)，单位是比特。一个事件的信息量等于其不确定性消除的量。',analogy:'如同温度度量分子运动的剧烈程度，信息熵度量信息的不确定程度。不确定性越大，信息熵越高。',example:'抛一枚均匀硬币，信息熵=1比特（两种等可能结果）。抛一颗骰子，信息熵≈2.58比特（六种等可能结果）。信息熵越高，需要越多的比特来描述。',counter:'信息量大≠信息熵高。一段随机噪音的熵很高（完全不可预测），但信息量为零（无意义）。信息熵度量不确定性，不度量\u201C有用性\u201D。'},
+  {id:'c2',name:'香农三大定律',def:'第一定律（信源编码定理）：数据压缩的极限是信息熵。第二定律（信道编码定理）：信息传输率不能超过信道容量C。第三定律（有噪编码定理）：即使在有噪声的信道中，仍可实现可靠传输。',analogy:'如同水管系统——第一定律决定了你能把水压到多小的体积，第二定律决定了水管的最大流量，第三定律告诉我们即使水管有漏洞仍能保证水不漏光。',example:'5G之所以比4G快近百倍，就是因为逼近了香农第二定律在更高频段下的信道容量上限。LDPC编码（5G核心技术）就是香农第三定律的工程实现。',counter:'香农定律给出的是理论上限，不是工程上限。现实中永远达不到理论极限，但可以无限逼近——这就是通信技术每一代进步的空间。'},
+  {id:'c3',name:'最大熵原理',def:'当对随机事件的概率分布进行预测时，应满足全部已知条件，而对未知情况不作任何主观假设。这样建立的模型熵最大，风险最小。',analogy:'掷骰子——如果你知道骰子不均匀但不知道具体怎么偏，最理性的假设是各面概率均等。如果知道5点概率是2/5、2点概率是0，剩下的概率均分给其他4面（各3/20）。',example:'投资：已知未来是电动汽车但不确定哪家胜出→最大熵原理建议分散投资多家，覆盖所有可能性。股票\u201C连续涨三天必跌\u201D是主观假设，违背最大熵原理。',counter:'最大熵原理需要大量计算。21世纪前因计算力限制难以普及。后来被对冲基金（如文艺复兴科技公司）最早用于金融投资，获得显著收益。'},
+  {id:'c4',name:'哈夫曼编码',def:'最优前缀编码算法。核心思想：高频符号用短码，低频符号用长码，使平均编码长度最短。是最优的无损压缩编码之一。',analogy:'如同给常用物品放在触手可及的地方——你每天用的手机放桌上（短码），一年用一次的护照放柜子深处（长码）。整体取用时间最短。',example:'莫尔斯电码：常用字母E用\u201C·\u201D（最短），罕见字母Q用\u201C--·-\u201D（较长）。吴军的风险投资方法：好项目不断加倍投（高频=短决策路径），一般项目远离（低频=长路径）。',counter:'哈夫曼编码假设符号独立出现。对于有前后相关性的数据（如视频中的连续帧），增量编码（只记录变化部分）压缩比远高于哈夫曼编码。'},
+  {id:'c5',name:'奥卡姆剃刀',def:'\u201C如无必要，勿增实体\u201D。在多个具有相同预测准确性的理论中，选择假设最少的那个。信息论等价于：剔除冗余信息，保留最简支撑集。',analogy:'开普勒用椭圆（两个参数）替代托勒密的40-60个本轮均轮——两者都能准确预测行星位置，但开普勒模型假设少得多，因此更接近真理。',example:'巴菲特的价值投资和马尔基尔的定投指数基金都是\u201C基函数\u201D级别的方法——形式极简但解释力极强。相比之下，技术分析的各类指标（MACD、KDJ、布林带……）都是冗余信息。',counter:'简单不等于肤浅。最大熵原理形式也很简单，但需要深刻理解和大量计算才能应用。奥卡姆剃刀选择的是\u201C假设最少\u201D，不是\u201C最容易理解\u201D。'},
+  {id:'c6',name:'语言模型',def:'对自然语言建立的数学模型，核心任务是预测给定上文后下一个词的概率分布P(wₙ|w₁,w₂,...,wₙ₋₁)。ChatGPT是语言模型+大规模预训练+RLHF的产物。',analogy:'语言模型就像一个读过海量文本的\u201C接龙高手\u201D——你给出上文，它能说出最可能的下文是什么。但它不\u201C理解\u201D内容，只是统计上知道什么词经常接着什么词出现。',example:'GPT-3有1750亿参数，用约45TB文本训练。输入\u201C中国的首都是\u201D，模型预测\u201C北京\u201D的概率接近100%。输入更开放的问题，模型从概率分布中采样生成回答。',counter:'语言模型不能\u201C理解\u201D和\u201C推理\u201D。它可能生成语法正确但事实错误的内容（幻觉）。ChatGPT的\u201C智能感\u201D来自海量训练数据中的模式匹配，不是真正的认知。'},
+  {id:'c7',name:'ChatGPT能力边界',def:'ChatGPT擅长信息重组类任务（翻译、摘要、文案生成），不擅长需要真正理解、推理或创造新知识的任务。能力边界由底层语言模型的数学本质决定。',analogy:'ChatGPT是顶级的\u201C文字裁缝\u201D——能把已有的布料（训练数据中的信息）拼接成新衣服（新文本），但发明不了新布料。',example:'能做到：翻译、写工作总结、生成产品描述、回答FAQ。不能做到：证明新数学定理、发现新物理定律、给出从未有人想到的商业策略。',counter:'ChatGPT的\u201C幻觉\u201D（编造事实）不是bug而是特征——语言模型的本质是概率预测，不是知识检索。在信息不足时，它仍会生成\u201C看起来合理\u201D的内容。'},
+  {id:'c8',name:'5G通信技术',def:'第五代移动通信标准。核心特征：高密度基站（200-300米/个）、厘米波/毫米波宽频、发射功率仅为4G的1%、云计算中心化架构。目标是支撑IoT万物互联。',analogy:'4G如同城市主干道（覆盖广但拥堵），5G如同密布的小巷网络（覆盖面小但每个节点速度快、负载轻）——通过提高密度来提升总容量。',example:'5G基站密度比4G高约10倍，但每个基站发射功率降为4G的1%。这符合\u201C以更少能量传输更多信息\u201D的核心趋势。单位能耗的信息传输效率提升近百倍。',counter:'5G的高频信号穿透力弱、覆盖半径短，需要更多基站。这带来了巨大的基础设施建设成本。5G的真正价值不在手机提速，而在支撑IoT设备的海量连接。'},
+  {id:'c9',name:'IoT万物互联',def:'第三代互联网的核心形态。超级智能世界=人工智能+IoT。设备数量比移动时代增加1-1.5个数量级（含智能汽车、传感器、无源设备等），2030年市场规模预计达8万亿美元。',analogy:'第一代互联网是机器连机器（PC时代），第二代是人连人（手机时代），第三代是万物互联——你家的冰箱、汽车、路灯都成为网络节点，像一个巨型蚁群协作系统。',example:'华为智能水表芯片：电压从3V降至1V，能耗降低90%，一节电池可用十年。汽车联网可缩短20-30%通勤时间，摄像头协同可构建城市安防网络。',counter:'IoT面临的核心挑战不是通信速度而是功耗——大多数IoT设备需要电池供电且长期不更换。低功耗芯片是比5G本身更关键的瓶颈。'},
+  {id:'c10',name:'大数据思维',def:'四层逻辑框架：①百川入海（从海量细节中提炼宏观规律）②逆向思维（先假设后验证）③洞察枝末（用宏观对比微观发现异常）④相关联系（通过强相关性推断因果）。',analogy:'传统方法是先假设后验证（像侦探先锁定嫌疑人再找证据），大数据方法是先收集所有指纹再让模式自动浮现（像DNA数据库比对——你不知道凶手是谁，但数据会告诉你谁最匹配）。',example:'美图秀秀修图：基于人脸平均值数据（大数据统计结果）将用户面部向\u201C标准脸\u201D靠拢。Google流感趋势预测：通过搜索关键词预测流感传播——曾比CDC提前两周预警。',counter:'大数据容易发现虚假相关性。\u201C影片A上映时冰淇淋销量高\u201D实为季节因素导致（夏天=大片上映+冰淇淋旺季）。互信息可以量化相关性强度，但替代不了因果判断。'}
+];
+
+// ===== MCQ BANK (20 questions, answers: {0:5,1:5,2:5,3:5}) =====
+var mcqBank = [
+  {q:'信息熵度量的是什么？',opts:['信息的不确定性','信息的有用性','信息的传输速度','信息的存储容量'],"answer":0,exp:'信息熵是度量不确定性的基本单位。一个事件的不确定性越大，信息熵越高。'},
+  {q:'香农第二定律的核心结论是什么？',opts:['信息传输率不能超过信道容量','数据压缩不能低于信息熵','有噪信道无法可靠传输','编码长度与概率成反比'],"answer":0,exp:'香农第二定律（信道编码定理）：信息传输率R永远无法超过信道容量C。这是所有通信技术的理论天花板。'},
+  {q:'最大熵原理在什么情况下使用？',opts:['获得部分确信信息时','完全没有信息时','拥有全部信息时','需要做最快决策时'],"answer":0,exp:'最大熵原理适用于获得部分确信信息而非全部时的预测场景。当对未知情况不做主观假设时，模型熵最大、风险最小。'},
+  {q:'哈夫曼编码的核心策略是什么？',opts:['高频短码，低频长码','所有符号等长编码','低频短码，高频长码','随机分配编码长度'],"answer":0,exp:'哈夫曼编码采用高频符号用短码、低频符号用长码的策略，使平均编码长度达到最短。'},
+  {q:'奥卡姆剃刀法则在信息论中等价于什么？',opts:['剔除冗余信息，保留最简支撑集','增加冗余信息以提高可靠性','使用最复杂的模型以提高精度','对所有信息进行加密'],"answer":0,exp:'奥卡姆剃刀的信息论等价：剔除冗余信息，保留能够消除不确定性的最小有效信息集。'},
+  {q:'ChatGPT的本质是什么？',opts:['一个具有自我意识的AI','一个被神化的语言模型的衍生品','一个通用人工智能(AGI)','一个搜索引擎的替代品'],"answer":1,exp:'吴军判断ChatGPT是一个被神化的语言模型的衍生品，本质仍是语言模型，并非全新物种或AGI。'},
+  {q:'语言模型的核心任务是什么？',opts:['理解人类情感','预测下一个词的概率分布','进行逻辑推理','检索知识库中的答案'],"answer":1,exp:'语言模型的核心任务是预测给定上文后下一个词的条件概率分布P(wₙ|w₁,...,wₙ₋₁)。'},
+  {q:'5G基站与4G基站相比，发射功率有什么变化？',opts:['提高到4G的10倍','降为4G的1%','与4G基本相同','提高到4G的100倍'],"answer":1,exp:'5G基站发射功率仅为4G的1%——因为基站距离从2-3公里缩短到200-300米，不需要大功率覆盖。'},
+  {q:'IoT第三代互联网的核心特征是什么？',opts:['机器与机器联网（PC）','超级智能世界=AI+IoT万物互联','人与人的联网（移动）','计算机与手机的融合'],"answer":1,exp:'第三代互联网的核心是万物互联（IoT）：超级智能世界=人工智能+IoT，设备数量比移动时代增加1-1.5个数量级。'},
+  {q:'控制论的最核心方法论是什么？',opts:['对未来做尽可能确定的预测','轻预测，重反应','忽略反馈专注于目标','用最大资源投入一个方向'],"answer":1,exp:'控制论的核心原则是\u201C轻预测，重反应\u201D——根据环境变化不断进行调整，而非画大饼式的长期规划。'},
+  {q:'大数据思维四层框架的第一层是什么？',opts:['逆向思维（先假设后验证）','相关联系（通过相关性推断因果）','百川入海（从海量细节提炼宏观规律）','洞察枝末（发现异常差异）'],"answer":2,exp:'大数据思维第一层是\u201C百川入海\u201D——从海量细节数据中提炼宏观规律。这改变了传统\u201C先假设后验证\u201D的顺序。'},
+  {q:'麦克斯韦妖假说证明了什么？',opts:['永动机是可能的','封闭系统可以自发熵减','信息可以降低热力学熵但需能量成本','信息可以免费获取'],"answer":2,exp:'麦克斯韦妖需要持续获取分子速度信息（消耗能量），证明信息和能量可以相互转换，总熵守恒——信息熵的降低需要能量代价。'},
+  {q:'ChatGPT的\u201C幻觉\u201D（编造事实）的根本原因是什么？',opts:['训练数据被污染','模型参数不够大','语言模型本质是概率预测而非知识检索','RLHF对齐不够充分'],"answer":2,exp:'\u201C幻觉\u201D的根本原因是语言模型的本质——它预测下一个词的概率，而非从知识库检索事实。在信息不足时仍会生成\u201C最可能\u201D的内容。'},
+  {q:'系统论中\u201C负熵\u201D的作用是什么？',opts:['加速系统的无序化','使封闭系统更加封闭','逆转熵增，实现系统有序化','减少系统与外界的交换'],"answer":2,exp:'负熵通过引入外部能量/信息，逆转封闭系统的熵增趋势，实现有序化。企业聘请外部顾问、个人读万卷书，都是引入负熵。'},
+  {q:'从1G到5G，什么因素决定行业制高点？',opts:['设备销量','用户数量','标准主导权','基站数量'],"answer":2,exp:'每代通信技术的制高点由标准主导权决定：1G摩托罗拉、2G诺基亚、3G高通、4G/5G华为——谁掌握标准，谁占据行业大头。'},
+  {q:'香农第一定律告诉我们压缩的极限是什么？',opts:['可以压缩到0比特','压缩极限等于原始大小的1/2','可以无限压缩','压缩极限等于信息熵'],"answer":3,exp:'香农第一定律（信源编码定理）：无损压缩的极限是信息熵H——你不可能用少于H比特来编码信息而不丢失任何内容。'},
+  {q:'信息等价性的核心判断标准是什么？',opts:['两个信息看起来相似','两个信息在同一时间产生','两个信息来自同一来源','从Y可以确定性推导出X所需信息'],"answer":3,exp:'信息等价性的核心是确定性推导——如果从信息Y可以100%还原出信息X所需的内容，则Y等价于X。区别于仅提供概率关联的相关信息。'},
+  {q:'5G与IoT的关系被类比为什么？',opts:['水与鱼的关系','内与外的关系','上与下的关系','光的波粒二象性'],"answer":3,exp:'吴军将5G与IoT类比为光的波粒二象性——通信视角看是5G（新标准、高速率），计算机视角看是IoT（海量节点、广泛连接）。'},
+  {q:'根据信息论，卫星通信（星链）为什么不能替代5G？',opts:['卫星制造成本太高','卫星信号被大气层阻挡','卫星轨道资源有限','卫星距离远导致信号衰减严重，能量效率低'],"answer":3,exp:'卫星通信距离数百公里，信号强度仅为基站的万分之一，能量效率远低于地面基站，违背\u201C以更少能量传输更多信息\u201D的核心趋势。'},
+  {q:'为什么说\u201C封闭系统必然走向无序\u201D？',opts:['因为外部攻击','因为信息太多无法处理','因为管理者失职','根据热力学第二定律，封闭系统的熵永远增加'],"answer":3,exp:'热力学第二定律：封闭系统的熵永远增加（有序→无序）。这是物理规律，适用于热力学系统、信息系统和组织机构。'}
+];
+
+// ===== SAQ BANK =====
+var saqBank = [
+  {q:'什么是信息熵？为什么说它是信息论的基石？',ref:'信息熵度量不确定性。没有熵就没有编码理论、信道容量、最大熵原理——所有信息论概念都建立在熵之上。'},
+  {q:'香农三大定律分别是什么？',ref:'第一：压缩极限=信息熵。第二：传输率≤信道容量。第三：有噪信道可实现可靠传输。'},
+  {q:'最大熵原理与奥卡姆剃刀有什么异同？',ref:'都追求\u201C最简\u201D。奥卡姆剃刀选最简模型（解释世界），最大熵原理做最安全预测（预测未来）。信息论统一了两者：信息使用刚刚好。'},
+  {q:'语言模型的本质是什么？',ref:'对语言的数学模型，核心任务是预测下一个词的概率分布。ChatGPT=语言模型+大算力+RLHF对齐。'},
+  {q:'ChatGPT的三大固有缺陷是什么？',ref:'①垃圾输入垃圾输出（训练数据质量决定输出质量）②幻觉（编造事实，因为本质是概率预测不是知识检索）③运行成本极高。'},
+  {q:'5G和4G相比，核心技术进步体现在哪些方面？',ref:'基站密度提高10倍（200-300米/个）、发射功率降为1%、带宽提升近百倍、云计算中心化架构。'},
+  {q:'为什么说IoT时代的市场规模将远超移动互联网时代？',ref:'设备数量增加1-1.5个数量级（含智能汽车、传感器等），2030年预计8万亿美元=互联网+通信市场总和。'},
+  {q:'控制论的核心原则\u201C轻预测重反应\u201D如何应用于创业？',ref:'不要画大饼做长期规划，像变色龙一样根据市场反馈持续调整。多数成功企业最终业务与创始人初始想法差异显著。'},
+  {q:'大数据思维四层框架是什么？',ref:'①百川入海（提炼宏观规律）②逆向思维（先假设后验证）③洞察枝末（发现异常差异）④相关联系（通过相关性推断因果）。'},
+  {q:'信息论如何解释\u201C幸存者偏差\u201D？',ref:'样本选取不具代表性（只看到幸存者）。应对方法：多维度正交信息交叉验证，寻找被遗漏的数据源。'}
+];
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var idx = parseInt(this.getAttribute('data-tab'));
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    this.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(function(p){p.classList.remove('active')});
+    var panel = document.querySelector('.tab-content[data-tab="'+idx+'"]');
+    if(panel) panel.classList.add('active');
+    localStorage.setItem('mks-tech-tab', idx);
+    if(idx===4) renderReview();
+  });
+});
+
+// Restore last tab
+(function(){
+  var saved = parseInt(localStorage.getItem('mks-tech-tab') || '0');
+  if(saved>0){
+    var btn = document.querySelector('.tab-btn[data-tab="'+saved+'"]');
+    if(btn) btn.click();
+  }
+})();
+
+// ===== FLIP CARD =====
+var currentCardIdx = 0;
+var cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx = idx;
+  cardFlipped = false;
+  var c = concepts[idx];
+  document.getElementById('flipFront').innerHTML = '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--sub);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="badge badge-done" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML = '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = (idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  var id = concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards = learnedCards.filter(function(x){return x!==id})}
+  else{learnedCards.push(id)}
+  save(); updateProgress(); setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){
+  this.classList.toggle('flipped');
+  cardFlipped = !cardFlipped;
+});
+
+// ===== QUIZ =====
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}
+  return a;
+}
+
+function startQuiz(){
+  document.getElementById('staticQuiz').style.display = 'none';
+  var mcqs = shuffle(mcqBank).slice(0,10);
+  var saqs = shuffle(saqBank).slice(0,3);
+  var html = '<h4 style="color:var(--accent);margin-bottom:10px">选择题（随机10题）</h4>';
+  mcqs.forEach(function(q,i){
+    html += '<div class="quiz-card"><div class="q-num">第'+(i+1)+'题</div><div class="q-text">'+q.q+'</div>';
+    var labels = ['A','B','C','D'];
+    q.opts.forEach(function(o,j){
+      html += '<div class="option" onclick="selectOption(this,'+i+','+j+',\''+(q.answer===j?'correct':'wrong')+'\')" data-idx="'+i+'" data-opt="'+j+'">'+labels[j]+'. '+o+'</div>';
+    });
+    html += '<div class="feedback" id="fb_'+i+'" style="display:none"></div></div>';
+  });
+  html += '<h4 style="color:var(--accent);margin:16px 0 10px">简答题（随机3题）</h4>';
+  saqs.forEach(function(q,i){
+    html += '<div class="quiz-card"><div class="q-num">简答'+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+    html += '<textarea class="essay-area" placeholder="在此作答..." oninput="saveSAQ(\''+i+'\',this.value)"></textarea>';
+    html += '<div class="feedback" style="margin-top:8px"><button class="btn btn-outline btn-sm" onclick="revealSAQ(this,'+i+')">查看参考要点</button>';
+    html += '<div class="feedback" id="saq_fb_'+i+'" style="display:none;margin-top:6px;background:#d4edda;color:#155724;padding:8px 12px;border-radius:6px">'+q.ref+'</div></div></div>';
+  });
+  document.getElementById('quizContainer').innerHTML = html;
+}
+
+function selectOption(el, qi, oi, cls){
+  var card = el.parentElement;
+  card.querySelectorAll('.option').forEach(function(o){o.classList.remove('selected','correct','wrong')});
+  el.classList.add('selected', cls);
+  card.querySelectorAll('.option').forEach(function(o){o.style.pointerEvents='none'});
+  var fb = document.getElementById('fb_'+qi);
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + cls;
+  // Find question in bank and show explanation
+  var qText = card.querySelector('.q-text').textContent;
+  var found = mcqBank.find(function(q){return q.q===qText});
+  if(found){
+    var labels = ['A','B','C','D'];
+    fb.innerHTML = (cls==='correct' ? '✅ 正确！' : '❌ 错误。正确答案是 '+labels[found.answer]) + '<br><small>'+found.exp+'</small>';
+  }
+}
+
+function revealSAQ(btn, i){
+  document.getElementById('saq_fb_'+i).style.display = 'block';
+}
+
+function resetQuiz(){
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('staticQuiz').style.display = 'none';
+}
+
+// ===== EXAM MODE =====
+var examTimer = null;
+var examTimeLeft = 600;
+
+function startExam(){
+  document.getElementById('examResult').style.display = 'none';
+  document.getElementById('examTimer').style.display = 'block';
+  examTimeLeft = 600;
+  updateExamTimer();
+  clearInterval(examTimer);
+  examTimer = setInterval(function(){
+    examTimeLeft--;
+    updateExamTimer();
+    if(examTimeLeft<=0){finishExam()}
+  },1000);
+  var shuffled = shuffle(mcqBank).slice(0,20);
+  var html = '';
+  shuffled.forEach(function(q,i){
+    html += '<div class="quiz-card"><div class="q-num">第'+(i+1)+'题</div><div class="q-text">'+q.q+'</div>';
+    var labels = ['A','B','C','D'];
+    q.opts.forEach(function(o,j){
+      html += '<div class="option" onclick="selectExamOption(this,'+i+','+j+')" data-exam-idx="'+i+'" data-exam-opt="'+j+'">'+labels[j]+'. '+o+'</div>';
+    });
+    html += '</div>';
+  });
+  html += '<div style="text-align:center;margin-top:16px"><button class="btn btn-gold" onclick="finishExam()">✅ 交卷</button></div>';
+  document.getElementById('examContainer').innerHTML = html;
+  window._examQuestions = shuffled;
+  window._examAnswers = {};
+}
+
+function updateExamTimer(){
+  var m = Math.floor(examTimeLeft/60);
+  var s = examTimeLeft%60;
+  document.getElementById('examTimer').textContent = m+':'+(s<10?'0':'')+s;
+}
+
+function selectExamOption(el, qi, oi){
+  var card = el.parentElement;
+  card.querySelectorAll('.option').forEach(function(o){o.classList.remove('selected')});
+  el.classList.add('selected');
+  window._examAnswers[qi] = oi;
+}
+
+function finishExam(){
+  clearInterval(examTimer);
+  document.getElementById('examTimer').style.display = 'none';
+  var correct = 0;
+  window._examQuestions.forEach(function(q,i){
+    if(window._examAnswers[i] === q.answer) correct++;
+  });
+  var score = Math.round(correct/20*100);
+  var grade = score>=90?'🌟 优秀':score>=70?'👍 良好':score>=60?'👌 及格':'📚 需加强';
+  document.getElementById('examResult').style.display = 'block';
+  document.getElementById('examResult').innerHTML = '<h3>'+grade+'</h3><div class="stat-grid"><div class="stat-item"><div class="num">'+score+'</div><div class="lbl">得分</div></div><div class="stat-item"><div class="num">'+correct+'/20</div><div class="lbl">正确</div></div><div class="stat-item"><div class="num">600-'+examTimeLeft+'s</div><div class="lbl">用时</div></div></div>';
+  examHistory.push({date:new Date().toISOString(),score:score,correct:correct});
+  save();
+}
+
+function resetExam(){
+  clearInterval(examTimer);
+  document.getElementById('examContainer').innerHTML = '';
+  document.getElementById('examResult').style.display = 'none';
+  document.getElementById('examTimer').style.display = 'none';
+  window._examAnswers = {};
+}
+
+// ===== REVIEW MODE =====
+function renderReview(){
+  var learned = concepts.filter(function(c){return learnedCards.includes(c.id)});
+  var unlearned = concepts.filter(function(c){return !learnedCards.includes(c.id)});
+  document.getElementById('reviewStats').innerHTML = '<div class="stat-item"><div class="num">'+learned.length+'</div><div class="lbl">已学习</div></div><div class="stat-item"><div class="num">'+unlearned.length+'</div><div class="lbl">待学习</div></div><div class="stat-item"><div class="num">'+Math.round(learned.length/concepts.length*100)+'%</div><div class="lbl">完成率</div></div>';
+  var html = '<h4 style="color:var(--accent);margin:14px 0 10px">待复习知识点</h4>';
+  if(learned.length===0){html += '<p style="color:var(--sub)">还没有标记学习的知识点，去知识卡片标记吧！</p>'}
+  else{
+    learned.forEach(function(c){
+      html += '<div class="card" style="border-left:3px solid var(--success)"><h4>'+c.name+' <span class="badge badge-done">✓ 已学习</span></h4><p style="color:var(--sub);font-size:.88rem">'+c.def.substring(0,120)+'...</p></div>';
+    });
+  }
+  document.getElementById('reviewList').innerHTML = html;
+}
+
+// ===== MINDMAP TOGGLE =====
+function toggleMindmap(el){
+  if(typeof el==='string'){el = document.getElementById(el)}
+  if(!el) return;
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if(children && (children.classList.contains('tree-children') || children.classList.contains('show'))) {
+    children.classList.toggle('open');
+    children.classList.toggle('show');
+  }
+}
+
+// ===== SOCRATIC TOGGLE =====
+function toggleSoc(el){
+  el.classList.toggle('open');
+  var a = el.nextElementSibling;
+  if(a && a.classList.contains('soc-a')) a.classList.toggle('open');
+}
+
+// ===== DECISION SIM =====
+function simDecide(el, scene, choice){
+  var card = el.parentElement;
+  card.querySelectorAll('.sim-choice').forEach(function(c){c.classList.remove('chosen')});
+  el.classList.add('chosen');
+  var result = document.getElementById(scene+'_result');
+  result.style.display = 'block';
+  var feedbacks = {
+    s1:{a:{text:'✅ 保守但稳健。5%复利10年后约163万。信息论视角：如果你对B项目的信息量不足（不知道团队、市场、技术细节），最大熵原理支持分散配置。C选项（90%稳+10%冒险）更符合\u201C不把鸡蛋放一个篮子\u201D的熵最小原则。',best:'c'},
+        b:{text:'⚠️ 高风险。信息论提醒：在没有足够正交信息（团队能力、市场验证、技术壁垒）的情况下All-in，本质是在做主观假设——\u201C它会成功\u201D——这违背最大熵原理。',best:'c'},
+        c:{text:'🌟 最优策略。这正是最大熵原理的典型应用——在信息不完全时分散风险。90%保底满足生存需求，10%探索保留\u201C可能性\u201D。哈夫曼编码也告诉我们：高概率事件给高频资源（大部分资金），低概率事件给低频资源（小部分资金）。',best:'c'},
+        d:{text:'👍 谨慎的选择。控制论说\u201C轻预测重反应\u201D——等一等没问题，但要设置决策deadline。无限制的等待本身就是一种决策（放弃时间价值）。',best:'c'}},
+    s2:{a:{text:'✅ 务实之选。但系统论提醒：封闭系统必然走向无序——大厂的\u201C稳定\u201D也可能成为\u201C停滞\u201D。关键在于这个大厂是否给你持续引入负熵（学习成长）的机会。',best:'c'},
+        b:{text:'⚠️ 冒险之选。信息论建议：用正交信息交叉验证——团队背景如何？赛道天花板多高？期权兑现条件是什么？不要凭\u201C风口感觉\u201D做决定。',best:'c'},
+        c:{text:'🌟 最佳决策框架。这正是信息论的核心思维——收集正交维度的信息（团队、赛道、成长空间）进行交叉验证，相当于用多维信息消除单一维度的不确定性。信息越多（且正交），决策越可靠。',best:'c'},
+        d:{text:'继续找没问题，但要警惕\u201C完美选项\u201D陷阱。奥卡姆剃刀：不要为了寻找最优解而不断增加假设条件。设定3个核心维度，满足2个即可决定。',best:'c'}},
+    s3:{a:{text:'❌ 不适用。哈夫曼编码是关于编码效率的，与信息可信度无关。这是一个\u201C伪信息论应用\u201D——不要把概念生搬硬套。',best:'b'},
+        b:{text:'🌟 正确。\u201C内幕消息\u201D属于未经交叉验证的单维度信息——你不知道来源是否可靠、是否已反映在股价中、是否是庄家散布的假消息。最大熵原理说：对此类信息不做主观假设，等更多正交信息证据出现再行动。',best:'b'},
+        c:{text:'❌ 不适用。香农第二定律是关于物理信道传输率的，与投资决策无关。虽然\u201C信息渠道可能有噪音\u201D这一层可以关联，但不是最直接的答案。',best:'b'},
+        d:{text:'⚠️ 部分正确但过于武断。奥卡姆剃刀说选择最简单的解释，但\u201C这是骗局\u201D本身也是一个需要证据的假设。更严谨的做法是先悬置判断（最大熵），不是直接跳到结论。',best:'b'}}
+  };
+  var fb = feedbacks[scene][choice];
+  result.innerHTML = fb.text + (fb.best===choice ? '' : '<br><small style="color:var(--gold)">👉 推荐选项：'+({c:'C',b:'B'}[fb.best]||fb.best)+'</small>');
+}
+
+// ===== PROGRESS & SAVE =====
+function updateProgress(){
+  var pct = Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('totalProgress').style.width = pct+'%';
+  document.getElementById('progressText').textContent = pct>0 ? '已学习 '+learnedCards.length+'/'+concepts.length+' 个核心概念（'+pct+'%）' : '尚未开始学习';
+  document.getElementById('cardProgress').style.width = pct+'%';
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+}
+
+function save(){
+  localStorage.setItem('mks-tech-learned', JSON.stringify(learnedCards));
+  localStorage.setItem('mks-tech-mcq', JSON.stringify(mcqAnswers));
+  localStorage.setItem('mks-tech-saq', JSON.stringify(saqAnswers));
+  localStorage.setItem('mks-tech-exam', JSON.stringify(examHistory));
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>
