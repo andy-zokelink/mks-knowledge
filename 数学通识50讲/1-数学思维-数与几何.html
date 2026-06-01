@@ -3,143 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数学思维、数与几何 — 最小知识集</title>
+<title>数学思维 · 数与几何 · 最小知识集</title>
 <style>
-/* === CSS Variables & Reset === */
-:root {
-  --bg: #fdf6ec;
-  --card: #fffaf2;
-  --accent: #c0392b;
-  --accent2: #d4a574;
-  --text: #3d2f2f;
-  --text2: #6b5555;
-  --border: #e8d5c0;
-  --gold: #b8860b;
-  --shadow: 0 2px 12px rgba(60,30,20,.08);
-  --radius: 12px;
-}
+:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent-light:#e74c3c;--text:#3d2f2f;--text-light:#6b5a5a;--border:#e8d5c4;--shadow:0 2px 12px rgba(60,20,10,.08);--gold:#b8860b;--success:#27ae60;--warning:#e67e22}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  font-size:clamp(14px,1.2vw,17px);
-  line-height:1.7;
-  color:var(--text);
-  background:var(--bg);
-  padding-top:60px;
-}
-.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
-
-/* === Header === */
-header{
-  text-align:center;padding:clamp(20px,3vw,36px) 0 16px;
-  border-bottom:1px solid var(--border);margin-bottom:16px;
-}
-header h1{font-size:clamp(1.5rem,3.5vw,2rem);color:var(--accent);margin-bottom:8px}
-header .sub{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2);margin-bottom:10px}
-.home-link{
-  display:inline-block;font-size:.88rem;color:var(--accent);
-  border:2px solid var(--accent);border-radius:20px;padding:6px 20px;
-  text-decoration:none;transition:all .2s
-}
-.home-link:hover{background:var(--accent);color:#fff}
-
-/* === Tab Bar === */
-.tab-bar{
-  position:sticky;top:0;z-index:100;
-  display:flex;flex-wrap:wrap;gap:4px;
-  padding:8px clamp(4px,1vw,12px);
-  background:rgba(253,246,236,.95);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--border);justify-content:center;
-}
-.tab-btn{
-  padding:7px 14px;border:none;border-radius:18px;
-  background:var(--card);color:var(--text2);
-  font-size:.8rem;cursor:pointer;border:1px solid transparent;
-  font-family:inherit;
-}
-.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
-.tab-btn.active{background:var(--accent);color:#fff}
-.tab-panel{display:none}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
 .tab-panel.active{display:block}
-
-/* === Hamburger === */
-.hamburger{display:none;position:fixed;top:10px;right:12px;z-index:200;
-  background:var(--accent);color:#fff;border:none;border-radius:8px;
-  padding:8px 12px;font-size:1.2rem;cursor:pointer}
-@media(max-width:640px){
-  .hamburger{display:block}
-  .tab-bar{display:none;flex-direction:column;position:fixed;top:48px;left:0;right:0;z-index:99;padding:8px}
-  .tab-bar.open{display:flex}
-  .tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
-}
-
-/* === Buttons === */
-.btn{
-  padding:10px 24px;border-radius:20px;border:2px solid var(--accent);
-  background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;
-  font-weight:700;transition:all .2s;font-family:inherit
-}
-.btn:hover{background:#a93226;border-color:#a93226}
-.btn-outline{background:transparent;color:var(--accent)}
-.btn-outline:hover{background:var(--accent);color:#fff}
-.btn-sm{padding:6px 14px;font-size:.78rem}
-.btn-success{background:#27ae60;border-color:#27ae60}
-.btn-success:hover{background:#219a52}
-button:disabled{opacity:.5;cursor:not-allowed}
-
-/* === Section titles === */
-.section-title{
-  font-size:clamp(1.1rem,2vw,1.4rem);color:var(--accent);
-  margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--border)
-}
-
-/* === Concept Cards === */
-.concept-card{
-  background:var(--card);border-radius:var(--radius);
-  padding:16px;box-shadow:var(--shadow);
-  border-left:4px solid var(--accent);transition:transform .2s
-}
-.concept-card:hover{transform:translateY(-2px)}
-.concept-card.mks{border-left-color:var(--gold);position:relative}
-.concept-card.mks::after{
-  content:'\2605';position:absolute;top:8px;right:12px;
-  color:var(--gold);font-size:1.2rem
-}
-.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
-.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-@media(max-width:640px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
-
-/* === Progress === */
-.progress-wrap{margin:16px 0}
-.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
-.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
-.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
-
-/* === SVG Wrap === */
-.svg-wrap{overflow-x:auto;margin:16px 0}
-.svg-wrap svg{min-width:700px;max-width:100%}
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0;font-size:.78rem;color:var(--text2)}
-.legend span{display:flex;align-items:center;gap:4px}
-.legend .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
-
-/* === Boundary Table === */
-.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
-.tbl th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left}
-.tbl td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.tbl tr:nth-child(even){background:var(--card)}
-.tbl tr:hover{background:#fef9f4}
-
-/* === Path Steps === */
-.path-steps{display:flex;flex-direction:column;gap:10px;margin:12px 0}
-.path-step{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border-left:4px solid var(--accent2)}
-.path-step .step-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
-.path-step .step-info h4{font-size:.88rem;color:var(--accent);margin-bottom:2px}
-.path-step .step-info p{font-size:.78rem;color:var(--text2)}
-
-/* === Flip Card (MKS standard) === */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-success{background:var(--success);color:#fff}
 .flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
 .flip-inner.flipped{transform:rotateY(180deg)}
@@ -148,986 +40,594 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
 .flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
 .flip-nav .btn{min-width:80px}
-
-/* === Quiz === */
-.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
-.q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
-.q-mc{background:#fde8e8;color:var(--accent)}
-.q-sa{background:#e8f0fe;color:#3a6ea5}
-.q-text{font-weight:700;margin-bottom:12px}
-.q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);font-size:.85rem;transition:all .2s}
-.q-option:hover{border-color:var(--accent2);background:#fef9f4}
-.q-option.selected{border-color:var(--accent);background:#fde8e8}
-.q-option.correct{border-color:#4caf50;background:#e8f5e9}
-.q-option.wrong{border-color:var(--accent);background:#ffebee}
-.q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
-.q-feedback.show{display:block}
-.q-feedback.right{background:#e8f5e9;color:#2e7d32}
-.q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
-.sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
-.sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
-.sa-reveal.show{display:block}
-
-/* === Timer === */
-.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
-.timer.warning{animation:pulse .5s infinite alternate}
-@keyframes pulse{from{opacity:1}to{opacity:.5}}
-
-/* === Stats === */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
-.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
-
-/* === Mindmap Tree === */
-.tree-root{margin:12px 0}
-.tree-node{margin:4px 0}
-.tree-label{cursor:pointer;padding:6px 12px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:inline-block;font-size:.85rem;font-weight:700;transition:all .2s}
-.tree-label:hover{border-color:var(--accent2);color:var(--accent)}
-.tree-label.root-node{background:var(--accent);color:#fff;font-size:.95rem}
-.tree-children{display:none;margin-left:24px;border-left:2px solid var(--accent2);padding-left:12px}
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}.stat-label{font-size:.8rem;color:var(--text-light)}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"\25B8";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
 .tree-children.show,.tree-children.open{display:block}
-.tree-label.mks-node{border-color:var(--gold);background:#fffdf5}
-
-/* === Socratic === */
-.socratic-item{margin-bottom:12px}
-.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700}
-.socratic-q:hover{border-color:var(--accent2)}
-.socratic-q::before{content:'\2753 '}
-.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
-
-/* === Decision === */
-.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
-.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
-.d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
-.d-option:hover{border-color:var(--accent2);background:#fef9f4}
-.d-option.chosen{border-color:var(--accent);background:#fde8e8}
-.d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
-.d-result.show{display:block}
-
-/* === Responsive === */
-@media(max-width:640px){
-  body{padding-top:48px}
-  .tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
-}
-@media(max-width:375px){
-  .flip-card{height:clamp(180px,50vw,240px)}
-}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}.socratic-sub.open{display:block}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+.top-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);color:#fdf6ec;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap}
+.top-bar .home-link{color:#d4a574;font-size:13px;border:1px solid #d4a574;padding:3px 10px;border-radius:14px;white-space:nowrap;transition:all .2s}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f;text-decoration:none}
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}.tab-bar{flex-wrap:nowrap}}
 </style>
 </head>
 <body>
-
-<button class="hamburger" onclick="toggleHamburger()" aria-label="菜单">☰</button>
-
-<header>
-  <h1>吴军·数学通识50讲 — 数学思维、数与几何</h1>
-  <div class="sub">最小知识集 · 34篇笔记提炼 | 从具体数字到抽象工具的认知跃迁——公理化思维、数的扩展与几何的空间法则</div>
-  <a href="index.html" class="home-link">← 返回知识主板</a>
-</header>
-
-<div class="tab-bar" id="tabBar">
-  <button class="tab-btn active" onclick="switchTab(0)">知识集总览</button>
-  <button class="tab-btn" onclick="switchTab(1)">知识卡片</button>
-  <button class="tab-btn" onclick="switchTab(2)">题库系统</button>
-  <button class="tab-btn" onclick="switchTab(3)">考试模式</button>
-  <button class="tab-btn" onclick="switchTab(4)">复习模式</button>
-  <button class="tab-btn" onclick="switchTab(5)">思维导图</button>
-  <button class="tab-btn" onclick="switchTab(6)">深度追问</button>
-  <button class="tab-btn" onclick="switchTab(7)">案例分析</button>
-  <button class="tab-btn" onclick="switchTab(8)">实战决策</button>
-</div>
-
+<div class="top-bar"><h1>数学思维 · 数与几何 · 最小知识集</h1><a class="home-link" href="index.html">知识主板</a></div>
 <div class="container">
-
-<!-- ========== TAB 0: 知识集总览 ========== -->
-<div class="tab-panel active" id="tab0">
-
-  <!-- 1. 核心目标 -->
-  <div class="section-title">🎯 核心目标</div>
-  <p style="font-size:.95rem;padding:12px 16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)">
-    掌握数学的公理化思维方式，理解从具象数字（自然数、有理数）到抽象工具（无理数、虚数、函数、无穷）的认知跃迁路径，
-    建立几何学从经验测量到公理体系、再到多元几何空间的完整空间思维框架。
-  </p>
-
-  <!-- 2. 核心概念 -->
-  <div class="section-title">📚 10个核心概念</div>
-  <div class="grid2" id="conceptGrid"></div>
-
-  <!-- 3. 最小知识集 -->
-  <div class="section-title">★ 最小知识集（4个必须深刻理解）</div>
-  <div class="grid2" id="mksGrid"></div>
-
-  <!-- 4. 概念关系图 -->
-  <div class="section-title">🕸️ 概念关系图</div>
-  <div class="legend">
-    <span><span class="dot" style="background:#c0392b"></span> 根节点（核心驱动力）</span>
-    <span><span class="dot" style="background:#d4a574"></span> 一级分支（三大支柱）</span>
-    <span><span class="dot" style="background:#fffaf2;border:1.5px solid #5a3e3e"></span> 二级概念</span>
-    <span><span class="dot" style="background:#fffaf2;border:1.5px solid #8b7355"></span> 应用工具层</span>
-    <span><span style="border-bottom:2px dashed #c0392b">&nbsp;虚线&nbsp;</span> 反馈/回环关系</span>
-  </div>
-  <div class="svg-wrap" id="svgContainer"></div>
-
-  <!-- 5. 边界知识表 -->
-  <div class="section-title">📋 边界知识表（15条）</div>
-  <div style="overflow-x:auto">
-  <table class="tbl" id="boundaryTable"></table>
-  </div>
-
-  <!-- 6. 学习路径 -->
-  <div class="section-title">🗺️ 学习路径（5阶段）</div>
-  <div class="path-steps">
-    <div class="path-step"><div class="step-num">1</div><div class="step-info"><h4>第一阶段：建立公理化思维</h4><p>学习欧几里得《几何原本》5条公理体系，理解"从公理到定理"的推导逻辑，完成至少3个定理的独立证明（对顶角相等、内错角相等、三角形内角和）。</p></div></div>
-    <div class="path-step"><div class="step-num">2</div><div class="step-info"><h4>第二阶段：数的认知扩展</h4><p>从自然数→有理数→无理数（√2反证法）→虚数（i²=-1）的扩展路径，理解每次扩展背后的逻辑必要性，而非死记定义。</p></div></div>
-    <div class="path-step"><div class="step-num">3</div><div class="step-info"><h4>第三阶段：从静态到动态思维</h4><p>掌握函数概念（变量关系）、数列与级数（收敛/发散）、无穷大与无穷小（趋势描述），完成从"具体数值"到"变化趋势"的认知跃迁。</p></div></div>
-    <div class="path-step"><div class="step-num">4</div><div class="step-info"><h4>第四阶段：几何空间法则</h4><p>从欧氏几何→解析几何（笛卡尔坐标）→非欧几何（罗氏几何、黎曼几何），理解"公理可替换，体系可多元"的空间思维。</p></div></div>
-    <div class="path-step"><div class="step-num">5</div><div class="step-info"><h4>第五阶段：跨领域应用与工具化</h4><p>将公理化思维应用于法律（罗马法）、管理（企业价值观）、金融（复利模型）等领域；掌握向量（方向性思维）、矩阵（批处理）、导数（瞬间变化）等工具。</p></div></div>
-  </div>
-
-  <!-- 7. 学习进度 -->
-  <div class="section-title">📊 学习进度</div>
-  <div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="overviewProgress" style="width:0%"></div></div>
-    <div class="progress-label">已学习 <span id="overviewLearned">0</span> / 10 个核心概念</div>
-  </div>
-
+<p class="subtitle">吴军 · 数学通识50讲 · 34篇笔记提炼 —— 从具象数字到抽象工具的认知跃迁：公理化思维、数的扩展与几何的空间法则</p>
+<div class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="0">知识集总览</button>
+<button class="tab-btn" data-tab="1">知识卡片</button>
+<button class="tab-btn" data-tab="2">题库系统</button>
+<button class="tab-btn" data-tab="3">考试模式</button>
+<button class="tab-btn" data-tab="4">复习模式</button>
+<button class="tab-btn" data-tab="5">思维导图</button>
+<button class="tab-btn" data-tab="6">深度追问</button>
+<button class="tab-btn" data-tab="7">案例分析</button>
+<button class="tab-btn" data-tab="8">实战决策</button>
 </div>
 
-<!-- ========== TAB 1: 知识卡片 ========== -->
-<div class="tab-panel" id="tab1">
-  <div class="section-title">🃏 概念翻转卡片</div>
-  <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">点击卡片翻转查看四维解析（定义/类比/示例/反例）</p>
-
-  <div class="flip-card">
-    <div class="flip-inner" id="flipInner">
-      <div class="flip-front" id="flipFront"></div>
-      <div class="flip-back" id="flipBack"></div>
-    </div>
-  </div>
-
-  <div class="flip-nav">
-    <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
-    <span style="font-size:.85rem;color:var(--text2)" id="cardIndex">1 / 10</span>
-    <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
-  </div>
-  <div style="text-align:center;margin:8px 0">
-    <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
-  </div>
-  <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
-  <p style="text-align:center;font-size:.78rem;color:var(--text2)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+<!-- TAB 0 -->
+<div class="tab-panel active" id="panel0">
+<div class="card"><h3>核心目标</h3><p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">掌握数学的<strong>公理化思维方法</strong>——从定义和公理出发通过逻辑推导严谨结论；理解<strong>数系从自然数到复数的认知跃迁</strong>；掌握<strong>几何学从直观测量到公理体系再到非欧几何</strong>的演进过程。最终实现从具体数字到抽象工具、从静态认知到动态趋势的思维升级。</p></div>
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+<div class="card" style="margin-top:14px"><h3>学习进度</h3><div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div><p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p></div>
+<div class="card"><h3>概念关系图</h3><div class="svg-wrap" id="conceptMap"></div><div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center"><span style="color:var(--accent)">━━ 核心驱动</span><span style="color:#d4a574">━━ 方法论/派生</span><span style="color:#8b7355">━━ 应用/实例</span></div></div>
+<div class="card"><h3>边界知识表（15条）</h3><div style="overflow-x:auto"><table class="boundary-table"><thead><tr><th>知识点</th><th>使用场景</th></tr></thead><tbody>
+<tr><td>花拉子密《代数学》</td><td>理解方程通用解法的起源</td></tr>
+<tr><td>斐波那契兔子繁殖模型</td><td>理解指数增长与黄金分割的数学关联</td></tr>
+<tr><td>费马大定理（怀尔斯证明）</td><td>理解数学难题驱动理论发展的范式</td></tr>
+<tr><td>希尔伯特第十问题</td><td>理解数学体系存在不可解的硬边界</td></tr>
+<tr><td>黎曼几何球面三角形（内角和270°）</td><td>理解非欧几何的直观反例</td></tr>
+<tr><td>伽罗瓦的短暂人生（21岁死于决斗）</td><td>理解群论创始人的传奇经历</td></tr>
+<tr><td>卡尔达诺《大术》三次方程之争</td><td>理解数学史上优先权与保密的文化冲突</td></tr>
+<tr><td>皮亚诺公理（自然数的公理化）</td><td>理解最基础数学对象的公理化定义</td></tr>
+<tr><td>芝诺四大悖论</td><td>理解无穷小概念诞生的思想源头</td></tr>
+<tr><td>罗素悖论（理发师悖论）</td><td>理解第三次数学危机与集合论公理化</td></tr>
+<tr><td>透视法（布鲁内莱斯基单点透视）</td><td>理解数学如何指导绘画艺术</td></tr>
+<tr><td>希尔伯特旅馆悖论</td><td>理解无穷大与有限世界遵循不同逻辑</td></tr>
+<tr><td>贝克莱对牛顿无穷小的批判</td><td>理解第二次数学危机与极限概念的诞生</td></tr>
+<tr><td>谷山-志村猜想</td><td>理解费马大定理证明的关键桥梁</td></tr>
+<tr><td>《莱茵德纸草书》</td><td>理解古埃及几何知识的文献证据</td></tr>
+</tbody></table></div></div>
+<div class="card"><h3>学习路径（5阶段）</h3><div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立框架：</strong>先学「公理化思维」+「毕达哥拉斯定理」，理解数学与自然科学的本质区别——逻辑证明 vs 实验证实</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>数的扩展：</strong>依次学习无理数 → 无穷大/无穷小 → 虚数与复数，理解数系如何从具体走向抽象</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>几何纵深：</strong>学习几何学起源 → 欧几里得公理体系 → 非欧几何，理解空间法则的公理化</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>动态思维：</strong>学习函数 → 数列与级数 → 极限与导数，建立从静态到动态的趋势思维</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>工具应用：</strong>学习矩阵、解析几何、椭圆曲线加密等数学工具的跨领域应用</div></div>
+</div></div>
 </div>
 
-<!-- ========== TAB 2: 题库系统 ========== -->
-<div class="tab-panel" id="tab2">
-  <div class="section-title">📝 题库系统</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-    <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
-    <button class="btn btn-outline" onclick="resetQuiz()">🔄 重置</button>
-  </div>
-  <div id="quizContainer"></div>
-  <div id="staticQuiz" style="display:none"></div>
+<!-- TAB 1: Flip Cards -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav"><button class="btn btn-outline btn-sm" onclick="prevCard()">上一张</button><span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span><button class="btn btn-outline btn-sm" onclick="nextCard()">下一张</button></div>
+<div style="text-align:center;margin:8px 0"><button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">标记已学习</button></div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
 </div>
 
-<!-- ========== TAB 3: 考试模式 ========== -->
-<div class="tab-panel" id="tab3">
-  <div class="section-title">⏱️ 考试模式</div>
-  <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">随机抽取7道选择题 + 3道简答题，限时15分钟</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
-    <button class="btn" id="startExamBtn" onclick="startExam()">开始考试</button>
-    <button class="btn btn-outline" onclick="resetExam()">重置</button>
-    <span class="timer" id="examTimer" style="display:none">15:00</span>
-  </div>
-  <div id="examContainer"></div>
-  <div id="examResult" style="display:none"></div>
+<!-- TAB 2: Quiz -->
+<div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">题库系统</h3>
+<div style="margin-bottom:12px"><button class="btn" onclick="startQuiz()">随机抽题练习</button><button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button><span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span><span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span></div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card"><h3>选择题（共20题）</h3><p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p><div id="choiceQuiz"></div></div>
+<div class="card"><h3>简答题（共10题）</h3><p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p><div id="shortQuiz"></div></div>
+</div>
 </div>
 
-<!-- ========== TAB 4: 复习模式 ========== -->
-<div class="tab-panel" id="tab4">
-  <div class="section-title">📖 复习模式</div>
-
-  <div class="section-title" style="font-size:1rem">🔴 错题本</div>
-  <p style="font-size:.82rem;color:var(--text2);margin-bottom:8px">历史答错的题目会收集在此，可重新作答</p>
-  <div id="wrongBook"></div>
-  <button class="btn btn-outline btn-sm" onclick="clearWrongBook()" style="margin-top:8px">清空错题本</button>
-
-  <div class="section-title" style="font-size:1rem">📊 学习统计</div>
-  <div class="stat-grid" id="statGrid"></div>
+<!-- TAB 3: Exam -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center"><h3>考试模式</h3><p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p><div class="timer" id="examTimer">15:00</div><button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button><div id="examArea" style="display:none"></div><div id="examResult" style="display:none"></div></div>
 </div>
 
-<!-- ========== TAB 5: 思维导图 ========== -->
-<div class="tab-panel" id="tab5">
-  <div class="section-title">🧠 思维导图</div>
-  <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">点击节点展开/折叠子树 | ★ = MKS核心概念</p>
-
-  <div class="tree-root">
-    <!-- Root -->
-    <div class="tree-node">
-      <div class="tree-label root-node" onclick="toggleMindmap(this)">认知跃迁：从具象数字到抽象工具的攀登</div>
-      <div class="tree-children show">
-        <!-- Branch 1: 公理化体系 -->
-        <div class="tree-node">
-          <div class="tree-label" onclick="toggleMindmap(this)" style="background:#d4a574;color:#fff">公理化体系（思维基石）</div>
-          <div class="tree-children">
-            <div class="tree-node"><div class="tree-label mks-node" onclick="toggleMindmap(this)">★ 公理化思维 — 从少数公理推导完整体系</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">5条一般性公理（等量传递、等量加减、全等、整体>部分）</div></div>
-                <div class="tree-node"><div class="tree-label">5条几何公理（直线、延长、画圆、直角、平行）</div></div>
-                <div class="tree-node"><div class="tree-label">定理推导循环：定义→公理→定理→新定义→新定理</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">逻辑证明 — 反证法、演绎推理、数学归纳法</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">√2无理数反证法：假设有理→推导矛盾→得证</div></div>
-                <div class="tree-node"><div class="tree-label">数学≠自然科学：靠证明不靠实验</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">体系完备性 — 哥德尔不完备定理</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">任何体系无法同时满足完备性与一致性</div></div>
-                <div class="tree-node"><div class="tree-label">希尔伯特第十问题：不存在通用判定算法</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Branch 2: 数的扩展 -->
-        <div class="tree-node">
-          <div class="tree-label" onclick="toggleMindmap(this)" style="background:#d4a574;color:#fff">数的扩展（从具体到抽象）</div>
-          <div class="tree-children">
-            <div class="tree-node"><div class="tree-label">自然数→有理数（具象阶段：可数可量）</div></div>
-            <div class="tree-node"><div class="tree-label mks-node">★ 无理数（√2、π、黄金分割Ф）— 打破"数必可公度"</div></div>
-            <div class="tree-node"><div class="tree-label mks-node">★ 无穷大与无穷小 — 动态趋势而非静态数值</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">无穷小的阶：√x > x > x² > x³ > 1/eˣ</div></div>
-                <div class="tree-node"><div class="tree-label">无穷大的阶：指数 > 幂函数 > 线性 > 对数</div></div>
-                <div class="tree-node"><div class="tree-label">极限的ε-M定义（魏尔斯特拉斯）</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">虚数与复数 — i²=-1，虚构工具解决真实问题</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">类比：催化剂、传话筒、虫洞穿越</div></div>
-                <div class="tree-node"><div class="tree-label">应用：量子力学、信号处理、交流电分析</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">代数基本定理：引入复数后N次方程恰有N个解</div></div>
-          </div>
-        </div>
-        <!-- Branch 3: 几何与空间 -->
-        <div class="tree-node">
-          <div class="tree-label" onclick="toggleMindmap(this)" style="background:#d4a574;color:#fff">几何与空间（空间法则的演进）</div>
-          <div class="tree-children">
-            <div class="tree-node"><div class="tree-label">欧氏几何 — 平行公理：过线外一点有且仅有一条平行线</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">三角形内角和=180°，平面空间</div></div>
-                <div class="tree-node"><div class="tree-label">《几何原本》：2000年标准教材</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">解析几何（笛卡尔）— 几何问题代数化</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">直线↔二元一次方程，曲线↔高次方程</div></div>
-                <div class="tree-node"><div class="tree-label">为微积分奠定基础</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">非欧几何 — 修改平行公理得不同体系</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">罗氏几何（双曲面）：内角和<180°，无限多条平行线</div></div>
-                <div class="tree-node"><div class="tree-label">黎曼几何（椭球面）：内角和>180°，无平行线</div></div>
-                <div class="tree-node"><div class="tree-label">广义相对论用黎曼几何描述时空弯曲</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Branch 4: 应用工具 -->
-        <div class="tree-node">
-          <div class="tree-label" onclick="toggleMindmap(this)" style="background:#8b7355;color:#fff">应用工具层</div>
-          <div class="tree-children">
-            <div class="tree-node"><div class="tree-label mks-node">★ 函数与变量 — 静态→动态，个案→趋势</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">四大特征：变量、对应关系、确定性、可计算性</div></div>
-                <div class="tree-node"><div class="tree-label">反函数：因果倒置（指数↔对数）</div></div>
-                <div class="tree-node"><div class="tree-label">多变量函数：相关性≠因果性</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label mks-node">★ 向量与方向性 — 方向比大小更重要</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">合力原理：夹角>120°效率低于单人</div></div>
-                <div class="tree-node"><div class="tree-label">余弦定理→文本相似度→Google搜索</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">数列与级数 — 收敛/发散，趋势判断</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">r≥1发散（病毒传播），r<1收敛（衰减）</div></div>
-                <div class="tree-node"><div class="tree-label">斐波那契数列→黄金分割→企业扩张临界值1.618</div></div>
-              </div>
-            </div>
-            <div class="tree-node"><div class="tree-label">导数与微积分 — 瞬间变化率，最优化</div>
-              <div class="tree-children">
-                <div class="tree-node"><div class="tree-label">f'(x)=0求极值，区分局部/全局最优</div></div>
-                <div class="tree-node"><div class="tree-label">应用：机器学习目标函数、物理运动分析</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- TAB 4: Review -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
 </div>
 
-<!-- ========== TAB 6: 深度追问 ========== -->
-<div class="tab-panel" id="tab6">
-  <div class="section-title">❓ 深度追问（苏格拉底问答）</div>
-  <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">点击问题展开答案，逐层深入理解核心概念</p>
+<!-- TAB 5: Mind Map (all inline HTML) -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>数学思维与数与几何 · 知识全景</h3></div>
+<div class="card" id="mindmap">
+<div class="tree-node">
+<div class="tree-toggle open">一、公理化思维的建立</div>
+<div class="tree-children open">
+<div class="tree-node">
+<div class="tree-toggle open">1.1 毕达哥拉斯定理：逻辑证明的起点</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 勾股数特例（古埃及、美索不达米亚、中国）—— 经验总结阶段</div>
+<div class="tree-leaf">• 毕达哥拉斯首次给出严格逻辑证明 —— 从猜想到定理的跨越</div>
+<div class="tree-leaf">• 数学与自然科学的本质区别：逻辑证明 vs 实验证实 | 结论绝对 vs 相对</div>
+<div class="tree-leaf">• 定理→推论：无理数的发现（√2不可公度）→ 第一次数学危机</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">1.2 欧几里得《几何原本》：公理化体系</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 5条一般性公理：等量传递、等量加减、全等定义、整体大于部分</div>
+<div class="tree-leaf">• 5条几何公理（公设）：直线、延长、画圆、直角相等、平行公理</div>
+<div class="tree-leaf">• 从定义→公理→定理→新定义的逻辑循环构建方法</div>
+<div class="tree-leaf">• 解决了"前人智慧无法传承"的古代困境</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">1.3 公理化方法的价值与延伸</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 皮亚诺公理：自然数的最基础公理化定义（0、后继、无循环）</div>
+<div class="tree-leaf">• 集合论公理化：空集→自然数→解决罗素悖论（ZFC系统）</div>
+<div class="tree-leaf">• 罗马法：以自然法为公理的法律体系构建</div>
+<div class="tree-leaf">• 企业价值观：创始人设定的"公理"决定组织行为边界</div>
+</div></div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">二、数的扩展：从具象到抽象</div>
+<div class="tree-children open">
+<div class="tree-node">
+<div class="tree-toggle open">2.1 无理数与第一次数学危机</div>
+<div class="tree-children open">
+<div class="tree-leaf">• √2的反证法：假设为有理数→A和B既互素又同为偶数→矛盾</div>
+<div class="tree-leaf">• 希帕索斯的发现与毕达哥拉斯的压制 —— 科学不应有禁区</div>
+<div class="tree-leaf">• 从有理数到实数：数系的第一次重大扩展</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">2.2 无穷大与无穷小：动态趋势概念</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 希尔伯特旅馆：无穷大+1=无穷大 —— 与有限世界逻辑完全不同</div>
+<div class="tree-leaf">• 无穷小的本质：不是零，是"无限接近零的趋势"</div>
+<div class="tree-leaf">• 高阶vs低阶：x²的无穷小比√x更高阶（趋于0更快）</div>
+<div class="tree-leaf">• 柯西-魏尔斯特拉斯的极限严格定义：ε-M语言</div>
+<div class="tree-leaf">• 无穷大的阶数比较：指数 > 平方 > 线性 > 对数</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">2.3 虚数与复数：虚构工具的现实力量</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 三次方程求解中被迫引入√-1 —— 虫洞穿越般的数学工具</div>
+<div class="tree-leaf">• i的定义：i²=-1，运算中正负抵消最终得到实数解</div>
+<div class="tree-leaf">• 核心价值：填补方程求解的逻辑漏洞（代数基本定理）</div>
+<div class="tree-leaf">• 现实应用：量子力学、信号处理、电磁波、控制系统</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">2.4 函数与趋势思维</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 函数本质：描述变量间的确定性变化规律</div>
+<div class="tree-leaf">• 从常数→变量→函数的认知跃迁</div>
+<div class="tree-leaf">• 定义域的必要性：忽略限制可导致荒谬结论（10米身高）</div>
+<div class="tree-leaf">• 反函数：因果倒置（指数↔对数）—— 72定律</div>
+<div class="tree-leaf">• 多变量函数：相关性≠因果关系，警惕混淆</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">2.5 数列与级数：趋势的量化</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 等比数列的公比r决定趋势：r≥1发散（指数增长），r<1收敛</div>
+<div class="tree-leaf">• 斐波那契数列与黄金分割（1.618）：企业扩张的最高可接受速率</div>
+<div class="tree-leaf">• 级数的现实应用：传销骗局、贷款利息、P2P陷阱、债券定价</div>
+<div class="tree-leaf">• 链式反应临界条件r>1：信息传播、核裂变的数学原理</div>
+</div></div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">三、几何的空间法则</div>
+<div class="tree-children open">
+<div class="tree-node">
+<div class="tree-toggle open">3.1 几何学的三阶段起源</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 古埃及：尼罗河丈量 → 掌握勾股定理、圆周率3.16</div>
+<div class="tree-leaf">• 美索不达米亚：360度角度制、60进制、三角函数值</div>
+<div class="tree-leaf">• 古希腊：毕达哥拉斯→欧几里得完成公理化体系构建</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">3.2 解析几何：代数方法解几何</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 笛卡尔坐标系：两条垂直无限直线建立平面坐标</div>
+<div class="tree-leaf">• 方程组的几何意义：相交（唯一解）、平行（无解）、重合（无数解）</div>
+<div class="tree-leaf">• 三次函数必然与x轴相交 → 三次方程必有实数解</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">3.3 非欧几何：公理修改的新世界</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 罗氏几何：过线外一点可做任意多条平行线 → 马鞍形空间（内角和<180°）</div>
+<div class="tree-leaf">• 黎曼几何：过线外一点无法做平行线 → 球形空间（内角和>180°）</div>
+<div class="tree-leaf">• 爱因斯坦用黎曼几何描述时空弯曲 → 广义相对论</div>
+<div class="tree-leaf">• 启示：90%相同公理+10%差异=完全不同的体系</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">3.4 向量与方向性思维</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 力的合成取决于方向夹角：同向2倍，90°1.41倍，120°仅1倍</div>
+<div class="tree-leaf">• 余弦定理：量化向量方向相似性 → 文本分类、简历筛选</div>
+<div class="tree-leaf">• 方向一致性原理：团队方向夹角<120°产生正向合力</div>
+</div></div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open">四、数学思维的现实启示（9大启示）</div>
+<div class="tree-children open">
+<div class="tree-leaf">• 有穷和无穷：认知边界突破 —— 承认知识有限比凭空想象更接近真理</div>
+<div class="tree-leaf">• 静态和动态：趋势优于现状 —— 评价年轻人看成长趋势而非当前财富</div>
+<div class="tree-leaf">• 精明与聪明：短期利益 vs 长期价值 —— 低买高卖不如长期复利</div>
+<div class="tree-leaf">• 现实与虚构：抽象概念的实用价值 —— 虚数、货币、法人都是虚构但高效的工具</div>
+<div class="tree-leaf">• 攒钱和赚钱：财富增长的动态模型 —— 收入增速 > 购买力贬值速度</div>
+<div class="tree-leaf">• 直觉和逻辑：超越感知的认知工具 —— 逻辑分析不可见/不存在的事物</div>
+<div class="tree-leaf">• 概念和表述：专业交流的精准性 —— 专业术语是做事专业的基础</div>
+<div class="tree-leaf">• 朋友和理性的对手：进步的催化剂 —— 芝诺、贝克莱的挑错推动数学完善</div>
+<div class="tree-leaf">• 荣誉和财富：科学与技术的价值取向 —— 科学追求优先发现权，技术追求产品化</div>
+</div></div>
+</div></div>
 
-  <!-- Q1: 公理化思维 -->
-  <div class="socratic-item">
-    <div class="socratic-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">为什么公理化体系是数学最伟大的发明？</div>
-    <div class="socratic-a">
-      <p><strong>第一层：</strong>因为它解决了"后人不如前人"的知识传承困境。古代东方文明（如中国圆周率研究：祖冲之7位→曾纪鸿200位）依赖天才个体，知识无法系统积累。欧几里得将零散几何知识构建为5条公理→所有定理的体系，任何人只要接受公理就能独立推导出全部结论——知识实现了可叠加的进步。</p>
-      <p style="margin-top:8px"><strong>第二层（追问）：</strong>这个体系的力量边界在哪里？哥德尔不完备定理告诉我们：任何足够强大的公理体系，要么不完备（存在无法证明的命题），要么不一致（存在矛盾）。这意味着公理化方法不是万能的——但它仍然是人类目前最好的知识组织形式。关键不是追求"完美体系"，而是在特定范围内建立够用的体系。</p>
-      <p style="margin-top:8px"><strong>第三层（追问）：</strong>如果你要为一个团队建立"公理体系"（核心价值观），你会选哪几条？三条以内。提示：不能矛盾（如同时选"客户第一"和"员工第一"），每条必须能推导出具体行为准则。</p>
-    </div>
-  </div>
+<!-- TAB 6: Socratic Dialogue (all inline HTML) -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p></div>
 
-  <!-- Q2: 无理数 -->
-  <div class="socratic-item">
-    <div class="socratic-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">毕达哥拉斯为何因√2杀死学生希帕索斯？</div>
-    <div class="socratic-a">
-      <p><strong>第一层：</strong>表面上是维护学派权威。毕达哥拉斯学派的核心信仰是"万物皆数"——一切都可以用有理数（整数比）表达。√2的发现证明存在"不可公度"的量，直接摧毁了这个信仰的基础。</p>
-      <p style="margin-top:8px"><strong>第二层（追问）：</strong>深层原因是认知框架被打破时的恐惧。当你的整个世界观建立在一个前提上，而有人用你自己的逻辑工具证明这个前提错了——你不是在捍卫真理，你是在捍卫自己的身份认同。这在今天的组织变革中同样常见：既得利益者拒绝数据证明的新现实。</p>
-      <p style="margin-top:8px"><strong>第三层（追问）：</strong>你现在持有的什么信念可能是"有理数偏见"——即你认为是普遍真理，但实际上只是你有限经验的归纳？如何设计一个反证法来检验它？</p>
-    </div>
-  </div>
-
-  <!-- Q3: 无穷 -->
-  <div class="socratic-item">
-    <div class="socratic-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">希尔伯特旅馆"客满还能住人"对我们有什么启示？</div>
-    <div class="socratic-a">
-      <p><strong>第一层：</strong>无穷大的逻辑与有限世界完全不同。在有限旅馆中"客满"意味着不能再住人；在无穷旅馆中，通过"1→2, 2→3..."的移位，总能空出房间。这表明：用有限经验推导无限规律会得出荒谬结论。</p>
-      <p style="margin-top:8px"><strong>第二层（追问）：</strong>生活中有哪些"有限思维"误导我们判断"无限趋势"的案例？比如：看到房价连涨5年就断言"永远涨"（有限观察→无限结论）；看到一只基金过去3年收益率高就认为未来也会高。</p>
-      <p style="margin-top:8px"><strong>第三层（追问）：</strong>无穷大的不同"阶"告诉我们：在算法优化中，把O(N²)降到O(N log N)比把O(N)的常数系数优化100倍更有价值。在你的工作中，什么是"量级优化"（改趋势），什么是"常数优化"（改系数）？你花时间在哪个上面？</p>
-    </div>
-  </div>
-
-  <!-- Q4: 向量 -->
-  <div class="socratic-item">
-    <div class="socratic-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">"方向比努力更重要"有数学依据吗？</div>
-    <div class="socratic-a">
-      <p><strong>第一层：</strong>有。向量加法告诉我们：两个等长向量夹角>120°时，合力反而小于单个向量。也就是说，两个很努力的人如果方向冲突，合力可能为零甚至为负。这解释了为什么"牛人堆砌"可能不如"普通人齐心"。</p>
-      <p style="margin-top:8px"><strong>第二层（追问）：</strong>但"方向"本身就是一个需要探索的东西——你怎么知道当前方向是对的？向量模型的前提是你已经知道了方向。现实中，我们需要在"探索方向"和"沿着方向积累"之间分配资源。这就像创业公司的pivot决策：什么时候该坚持（增加向量长度），什么时候该转向（改变向量角度）？</p>
-      <p style="margin-top:8px"><strong>第三层（追问）：</strong>用向量思维分析你当前的团队或项目：每个关键成员的努力方向夹角是多少？整体合力是每个人的多少倍？有没有人实际上在"负贡献"（夹角>90°）？</p>
-    </div>
-  </div>
-
-  <!-- Q5: 虚数 -->
-  <div class="socratic-item">
-    <div class="socratic-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">虚数"不存在"为什么还能解决实际问题？</div>
-    <div class="socratic-a">
-      <p><strong>第一层：</strong>因为虚数在运算过程中充当"催化剂"角色——计算过程中需要它，但最终结果中它抵消了。就像穿过虫洞到达目的地：你经过了一个"不存在的空间"，但到达了真实的目的地。三次方程X³-15X-4=0有实数解X=4，但求解过程必须经过√-121。</p>
-      <p style="margin-top:8px"><strong>第二层（追问）：</strong>人类社会中有大量"不存在的虚构概念"同样解决真实问题：货币（一张纸的价值是虚构的但真实流通）、公司法人（法律虚构但真实签约）、国家边界（人为划定但真实影响）。接受"虚构工具"的能力是认知成熟度的标志。</p>
-      <p style="margin-top:8px"><strong>第三层（追问）：</strong>你所在的行业有什么"虚数"——即看似不直接产生价值的中间概念或流程，但缺少它整个系统无法运转？这些"虚数"是否可能被优化或替代？</p>
-    </div>
-  </div>
-
-  <!-- Q6: 非欧几何 -->
-  <div class="socratic-item">
-    <div class="socratic-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">非欧几何告诉我们"真理"可以不止一个吗？</div>
-    <div class="socratic-a">
-      <p><strong>第一层：</strong>在数学内部，欧氏几何、罗氏几何、黎曼几何三者90%公理相同，仅平行公理不同，但各自自洽——没有哪个是"错"的。这证明：不同的前提假设可以推导出不同但都有效的体系。</p>
-      <p style="margin-top:8px"><strong>第二层（追问）：</strong>但这不是"相对主义"——不是说任何说法都同样有效。一个体系必须内部自洽（无矛盾）、且被选用的公理必须明确声明。爱因斯坦选黎曼几何不是因为"什么都行"，而是因为黎曼几何的弯曲空间恰好匹配广义相对论对时空的描述。</p>
-      <p style="margin-top:8px"><strong>第三层（追问）：</strong>在工作中，你和同事的分歧可能源于"平行公理"级别的底层假设不同（比如对"什么是好产品"的定义不同）。与其争论谁对谁错，不如先明确双方的"公理"是什么，然后在各自体系内检验一致性。你最近一次和同事的根本分歧，双方的"公理"分别是什么？</p>
-    </div>
-  </div>
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">1. 为什么毕达哥拉斯定理被称为"数学成为科学的起点"？</span></div>
+<div class="socratic-a">在毕达哥拉斯之前，勾股数（如3-4-5）已被古埃及、美索不达米亚、中国等多个文明独立发现，但它们都停留在"特例列举"阶段。毕达哥拉斯的突破在于：首次为这个规律提供了严格的逻辑证明，使其从"猜想"升级为"定理"。正如吴军所说：测量和实验可以99.9999%可信，但数学必须100%正确。这个从"经验总结"到"逻辑证明"的跨越，确立了数学作为演绎科学（而非经验科学）的本质。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">追问：勾股定理在中国有记载，为什么我们不说中国人"发明"了这一定理？</span></div>
+<div class="socratic-sub">《周髀算经》中商高与周公讨论"勾三股四弦五"确实早于毕达哥拉斯约500年。但关键是：中国古人只记录了一个特例（3-4-5），并没有证明"对任意直角三角形，两直角边平方之和等于斜边平方"。发现特例和证明普遍规律之间有本质区别。这也正是中西方数学传统差异的缩影：中国古代数学侧重具体问题的解题技巧，古希腊数学侧重通用工具的构建和证明。</div>
 </div>
 
-<!-- ========== TAB 7: 案例分析 ========== -->
-<div class="tab-panel" id="tab7">
-  <div class="section-title">🔍 案例分析：用MKS四维度拆解真实问题</div>
-
-  <!-- Case 1 -->
-  <div class="decision-round">
-    <div class="scenario">案例一：2008年金融危机——数学如何预警系统性风险</div>
-    <p style="font-size:.85rem;color:var(--text2);margin-bottom:12px">
-      2008年金融危机前，CDS（信用违约互换）市场规模膨胀至50万亿美元，超过美国房市总值。迈克尔·贝尔（Michael Burry）
-      通过数学分析发现其中逻辑矛盾并做空获利，其事迹被改编为电影《大空头》。
-    </p>
-    <div style="margin-top:12px">
-      <p><strong style="color:var(--accent)">【定义层】</strong> CDS本质是债务违约保险的证券化产品。B银行发次级贷→C保险公司承保→D投行打包为CDS→多层转售。每层都假设房价永远涨、违约率永远低。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【类比层】</strong> 如同击鼓传花——每个人都在传递一个越来越大的"保险承诺"，但没有人检查底层资产质量。音乐停下时（违约集中爆发），最后接棒的人承担全部损失。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【示例层】</strong> 贝尔用复利模型计算：假设财富每年增长7%，2000年前1铜板到今天超过宇宙原子总数——证明"指数增长不可持续"。同理，CDS规模不可能无限膨胀。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【反例层】</strong> 大多数投资者的错误：用近期趋势外推远期——看到房价连涨10年就假设永远涨，忽略了级数理论中"收敛/发散"的判定：市场规模有上限（r<1收敛），房价增长不可能永远>GDP增长。</p>
-    </div>
-  </div>
-
-  <!-- Case 2 -->
-  <div class="decision-round">
-    <div class="scenario">案例二：中国"一带一路"——数学推演下的资本输出必然性</div>
-    <p style="font-size:.85rem;color:var(--text2);margin-bottom:12px">
-      中国人均GDP达到世界平均水平后，若继续维持6%增速而全球其他地区维持3%，中国GDP将在40年后占全球约50%。
-      但全球4/5人口的购买力无法支撑中国产品需求——增长将被迫降速。
-    </p>
-    <div style="margin-top:12px">
-      <p><strong style="color:var(--accent)">【定义层】</strong> 这是一个多变量函数问题：中国GDP增速（因变量）受国内产能（自变量1）和外部需求（自变量2）共同约束。当外部需求增速跟不上产能增速时，增长必然受限。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【类比层】</strong> 如同一个工厂产量每年翻番，但消费者购买力只增长10%——如果不帮消费者变富（提升购买力），工厂迟早产品滞销。一带一路本质是"帮客户变富以维持自身增长"。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【示例层】</strong> 历史先例：19世纪英国资本输出（修铁路到殖民地）、二战后美国马歇尔计划（帮欧洲重建以创造出口市场）、80年代日本对外投资——都因相同数学逻辑：国内增速>外部需求增速时，必须输出资本提升外部购买力。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【反例层】</strong> 闭门造车式的"内循环"幻想：函数的多变量约束告诉我们，当外部需求变量为零时，仅靠内部需求无法维持同等增速——这是数学约束，不是政策选择。</p>
-    </div>
-  </div>
-
-  <!-- Case 3 -->
-  <div class="decision-round">
-    <div class="scenario">案例三：罗马法的公理化——从《十二铜表法》到现代民法典</div>
-    <p style="font-size:.85rem;color:var(--text2);margin-bottom:12px">
-      早期罗马法（《十二铜表法》）与《汉谟拉比法典》《九章律》无本质区别，都是统治者意愿的汇编。
-      直到西塞罗引入"自然法"作为公理基础，罗马法才成为可以逻辑推导的体系。
-    </p>
-    <div style="margin-top:12px">
-      <p><strong style="color:var(--accent)">【定义层】</strong> 自然法作为法律体系的"公理"：自然界赋予一切动物的法律（生命权、自由权、财产权）。从这些公理出发，推导出婚姻法、物权法、法人制度等具体法律——如同从欧几里得5条公理推导出全部几何定理。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【类比层】</strong> 如同编程中的基类与派生类——自然法是基类（定义核心属性），物权法、合同法是从基类继承并实现的派生类。修改基类则所有派生类自动更新，保证体系一致性。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【示例层】</strong> 林肯辩论引用《几何原本》"所有直角都相等"来类比"人人平等"，说服国会通过《解放黑人奴隶宣言》。这就是公理化思维跨领域迁移的力量。</p>
-      <p style="margin-top:6px"><strong style="color:var(--accent)">【反例层】</strong> 非公理化的"一事一议"立法——每条法律单独制定、互不关联，导致法律间出现矛盾（如同定理间出现矛盾），法官和公民无所适从。</p>
-    </div>
-  </div>
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">2. 无理数的发现为什么能引发"第一次数学危机"？</span></div>
+<div class="socratic-a">毕达哥拉斯学派的核心信念是"万物皆数"——世界上的一切都可以用整数和整数之比（有理数）来描述。但直角边为1的等腰直角三角形，其斜边√2通过反证法被证明不能表示为任何两个整数的比值。这意味着：在一个"完美"的数学体系中，竟然存在有理数"够不着"的量。这不是计算错误，而是认知框架本身出了漏洞。毕达哥拉斯试图隐瞒这一发现（传说将发现者希帕索斯投入海中），但真理无法被压制。危机的最终解决不是"消灭"无理数，而是扩展人类对数本身的定义。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">追问：今天的我们应该如何看待这种"认知框架被打破"的时刻？</span></div>
+<div class="socratic-sub">当逻辑推导的结果与你的既有认知冲突时，有三种可能：推导过程有误（最常见）；你的认知框架有局限（如无理数的发现）；初始假设有误（如非欧几何修改平行公理）。关键是：不要因为结论"不舒服"就否定逻辑。科学史上几乎所有重大突破都始于"不可能"的发现——从暗能量的负质量到黑洞的奇点，都是先被数学"算出来"才被实验证实。</div>
 </div>
 
-<!-- ========== TAB 8: 实战决策 ========== -->
-<div class="tab-panel" id="tab8">
-  <div class="section-title">🎮 实战决策：三场景模拟</div>
-  <p style="font-size:.82rem;color:var(--text2);margin-bottom:10px">用MKS概念分析每个决策场景的数学本质，选择最佳方案</p>
-
-  <!-- Round 1 -->
-  <div class="decision-round" id="dRound1">
-    <div class="scenario">🟡 场景一：创业公司的方向选择</div>
-    <p style="font-size:.85rem;margin-bottom:10px">
-      你是一家AI创业公司的CEO，团队有5名核心工程师（每人能力值=1）。目前有三个产品方向可选：<br>
-      A方向（技术平台）：5人全部投入，方向完全一致（夹角0°），合力=5<br>
-      B方向（双线作战）：3人做平台+2人做应用，两个方向夹角约110°<br>
-      C方向（三线作战）：2人平台+2人应用+1人数据，三个方向各有偏差<br>
-      用向量思维分析，哪个方案实际产出最高？
-    </p>
-    <div class="d-option" onclick="chooseDecision(1,'A',this)">A. 集中全部资源做技术平台（合力最大，方向一致）</div>
-    <div class="d-option" onclick="chooseDecision(1,'B',this)">B. 平台和应用双线并行（兼顾短期收入和长期壁垒）</div>
-    <div class="d-option" onclick="chooseDecision(1,'C',this)">C. 三线作战全面覆盖（不放过任何一个机会）</div>
-    <div class="d-result" id="dResult1"></div>
-  </div>
-
-  <!-- Round 2 -->
-  <div class="decision-round" id="dRound2">
-    <div class="scenario">🟡 场景二：投资回报的利率博弈</div>
-    <p style="font-size:.85rem;margin-bottom:10px">
-      你要贷款120万买房，有两个选择：<br>
-      银行A：年利率6%，等额本息30年<br>
-      银行B：年利率4.5%，等额本息30年<br>
-      两者的月供差异多大？利率差1.5%对总利息的影响是否值得你多跑几家银行？
-    </p>
-    <div class="d-option" onclick="chooseDecision(2,'A',this)">A. 随便选一家近的，利率差1.5%没多少</div>
-    <div class="d-option" onclick="chooseDecision(2,'B',this)">B. 选利率低的B银行，月供差异也许几千块但30年下来可观</div>
-    <div class="d-option" onclick="chooseDecision(2,'C',this)">C. 用等比级数精确计算两家总利息差异，并以此作为谈判筹码与A银行交涉</div>
-    <div class="d-result" id="dResult2"></div>
-  </div>
-
-  <!-- Round 3 -->
-  <div class="decision-round" id="dRound3">
-    <div class="scenario">🟡 场景三：公理冲突的管理困境</div>
-    <p style="font-size:.85rem;margin-bottom:10px">
-      你刚接手一个50人的部门，发现墙上同时挂着三个口号："客户第一"、"员工第一"、"股东第一"。
-      实际工作中，当客户投诉员工时，中层管理者不知该处罚员工还是维护员工。
-      用公理化思维分析，问题出在哪里？应该怎么解决？
-    </p>
-    <div class="d-option" onclick="chooseDecision(3,'A',this)">A. 三条都保留，具体问题具体分析</div>
-    <div class="d-option" onclick="chooseDecision(3,'B',this)">B. 只保留一条作为核心公理（如"客户第一"），其他两条降级为约束条件</div>
-    <div class="d-option" onclick="chooseDecision(3,'C',this)">C. 重新定义三条为不同场景的优先级：售前客户优先、售后员工优先、年终股东优先</div>
-    <div class="d-result" id="dResult3"></div>
-  </div>
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">3. 虚数"不存在"为什么还能解决真实世界的问题？</span></div>
+<div class="socratic-a">这正是抽象工具最迷人的地方。虚数i（√-1）在现实世界中确实"不存在"——你无法在物理世界找到i个苹果。但它提供了一个"运算通道"：在三次方程求解过程中，虚数作为中间步骤出现，运算完成后正负抵消，最终得到真实的实数解。如同化学催化剂——反应前后自身不变但不可或缺。更深刻的认知意义在于：人类社会的很多核心概念（货币、法人、法律、公司）本质上也是"虚构"的——自然界不存在"法人"，但正是这个虚构概念支撑了现代商业文明。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">追问：为什么很多人学不会虚数？是真"难"还是心理障碍？</span></div>
+<div class="socratic-sub">主要是心理障碍。人类天生倾向于只接受"看得见摸得着"的概念。从自然数到有理数（负数、分数），每一步扩展都伴随着心理抗拒。虚数只是这个序列的最新一步——它要求接受"i²=-1"作为定义然后基于逻辑运算，而不是去"想象"i长什么样。这正是数学抽象力量的体现：你不需要"看见"i，你只需要会用i。</div>
 </div>
 
-</div><!-- /.container -->
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">4. 函数思维为什么是"从小学算术到高等数学"的关键跃迁？</span></div>
+<div class="socratic-a">小学算术关注"这个数字是多少"——静态、具体。函数思维关注"一个变量如何影响另一个变量"——动态、规律性。这个转变的威力在于：你不是在解决"一个问题"而是在解决"一类问题"。比如，你不是在算"角度30度时炮弹飞多远"，而是在建立"炮弹飞行距离=角度、速度、空气阻力的函数"。没有函数思维的人看到的是100个孤立问题，有函数思维的人看到的是1个普适公式+100组参数。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">追问：多变量函数中的"相关性≠因果性"在现实中意味着什么？</span></div>
+<div class="socratic-sub">举例：你发现"带伞的日子更容易迟到"——这是相关性。但因果关系可能是"下雨→带伞 AND 下雨→堵车→迟到"，带伞和迟到之间没有因果链。在投资中，"高回报率→高收益"忽略了风险变量；在招聘中，"名校毕业→能力强"忽略了个人努力变量。多变量思维要求我们：看到相关性时追问——有没有第三个变量同时在影响两者？</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">5. 非欧几何告诉我们：修改一个公理就能创造一个新世界，这对我们有什么启示？</span></div>
+<div class="socratic-a">欧氏几何、罗氏几何、黎曼几何——三者的90%公理完全相同，仅因平行公理这一条不同，就推导出了三种截然不同的空间。这启示我们：看似微小的前提差异，经过逻辑放大后会产生天壤之别的结果（初始条件敏感）；没有"绝对正确"的工具，只有"匹配场景"的工具——爱因斯坦选择黎曼几何描述时空弯曲，不是因为黎曼几何"更正确"，而是它更适合描述弯曲空间；质疑框架比在框架内优化更重要。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">追问：在企业管理和个人决策中，哪些"公理"值得被重新审视？</span></div>
+<div class="socratic-sub">企业的"公理"是创始人设定的核心价值观：阿里是"客户优先"，星巴克是"员工优先"，苹果是"投资人优先"。三种"公理"推导出完全不同的行为——阿里处分员工维护客户，星巴克宁可怼顾客也要对员工好。关键不是谁"对"，而是：你选定了公理就要一以贯之，不能同时采用矛盾的价值观（如同时喊"顾客第一、员工第一"）。个人决策亦然——"稳定优先"和"成长优先"是两个不同的公理，推导出的职业选择截然不同。先选定你的公理，再做决策。</div>
+</div>
+</div>
+
+<!-- TAB 7: Case Study (all inline HTML) -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解「毕达哥拉斯定理如何改变了世界」</h3></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px">
+<div class="card"><strong style="color:var(--accent)">背景</strong><p style="font-size:.85rem;margin-top:4px">公元前6世纪，多个古代文明（埃及、美索不达米亚、中国）已独立发现勾股数的特例（如3-4-5、5-12-13等），但都将这些发现视为孤立事实，未形成普遍性命题。</p></div>
+<div class="card"><strong style="color:var(--accent)">突破</strong><p style="font-size:.85rem;margin-top:4px">毕达哥拉斯（约前580-前500年）首次给出严格的逻辑证明，将"勾股数"从经验事实转化为数学定理。这一定理成为数学逻辑证明的起点和范式。</p></div>
+<div class="card"><strong style="color:var(--accent)">连锁反应</strong><p style="font-size:.85rem;margin-top:4px">定理直接推导出无理数的存在（√2）→引发第一次数学危机→扩展了人类对数字的认知。黄金分割（Ф=1.618）的发现源于对正五边形对角线的研究，进而连接了数学与美学、音乐、建筑。</p></div>
+<div class="card"><strong style="color:var(--accent)">现代影响</strong><p style="font-size:.85rem;margin-top:4px">毕达哥拉斯定理是三角学、解析几何、微积分的基础，支撑着无线通信、GPS导航、航天轨道计算等几乎所有现代科技。</p></div>
+</div>
+<div class="card" style="border-left:4px solid var(--accent)"><h3>问题识别</h3><p style="font-size:.85rem">古代文明的数学知识面临两大困境：知识的碎片化——每个文明独立发现数学事实但无法传承和叠加；经验与真理的混淆——人们不知道"测量出的正确"和"逻辑保证的正确"之间的区别。如果数学始终停留在经验总结阶段，就不可能有微积分、相对论、量子力学等需要严密逻辑基础的现代科学。</p></div>
+<div class="card" style="border-left:4px solid var(--gold)"><h3>核心概念运用</h3><p style="font-size:.85rem"><strong>公理化思维：</strong>毕达哥拉斯定理展示了一个完整数学定理的确立过程：特例观察（勾股数）→提出猜想→逻辑证明→成为定理→推论（无理数、黄金分割）。<br><strong>数的扩展：</strong>定理直接导致√2的发现，迫使数学界接受无理数的存在，完成从有理数到实数的认知跃迁。<br><strong>逻辑vs经验：</strong>定理清晰划分了数学与自然科学的边界——测量永远有误差，而逻辑证明绝对正确。<br><strong>数学的工具性：</strong>一个"纯粹"的几何定理，2000年后成为GPS定位、CT扫描、机器学习梯度下降的数学基础。</p></div>
+<div class="card" style="border-left:4px solid var(--success)"><h3>MKS启示</h3><p style="font-size:.85rem">1. <strong>从术到道的跨越：</strong>中国古代有勾股数的"术"（解题技巧），但缺乏从特例到普遍定理的"道"（证明方法论）。现代学习的核心应是掌握"道"而非记忆"术"。<br>2. <strong>可叠加的进步：</strong>毕达哥拉斯定理→无理数→黄金分割→解析几何→微积分，构成了一条2000年的知识链条。每个后来者都站在前人的肩膀上。<br>3. <strong>看似无用实则有超大用：</strong>毕达哥拉斯研究直角三角形时绝对想不到他的定理会成为GPS和CT扫描的基础。纯粹的逻辑探索可能在未来产生巨大的实用价值。<br>4. <strong>命名的权力：</strong>为什么西方叫"毕达哥拉斯定理"而非"勾股定理"？因为毕达哥拉斯证明了这个定理，而非仅仅发现了一个特例。命名权属于完成"从经验到逻辑"跨越的那个人。</p></div>
+</div>
+
+<!-- TAB 8: Decision Simulation (all inline HTML) -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p></div>
+<div class="decision-scenario"><strong>第1轮：</strong>你是一家数据分析公司的CTO。团队正在开发一个客户流失预测模型。A方案：使用简单的线性回归（可解释性强但精度一般）；B方案：使用深度学习（精度高但黑箱不可解释）；C方案：两层模型——先用线性回归做基准再用深度学习做精度提升（成本翻倍）。你应该怎么选？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(0,0)">A. 选线性回归，客户需要的是可解释性而非黑箱魔法</div>
+<div class="decision-opt" onclick="showDecision(0,1)">B. 选深度学习，在AI时代精度就是一切</div>
+<div class="decision-opt" onclick="showDecision(0,2)">C. 选两层模型，既保证底线又追求上限</div>
+</div><div class="decision-result" id="decisionResult0"></div></div>
+<div class="decision-scenario"><strong>第2轮：</strong>你在设计一个金融风控系统。团队争论：A方案——基于规则引擎（if-then逻辑，透明但维护成本高）；B方案——基于机器学习评分卡（自动学习但可能产生系统性偏差）；C方案——混合架构（规则兜底+ML评分，但系统复杂度上升）。你如何决策？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(1,0)">A. 规则引擎——金融系统需要100%可审计</div>
+<div class="decision-opt" onclick="showDecision(1,1)">B. ML评分卡——数据驱动比人工规则更公平</div>
+<div class="decision-opt" onclick="showDecision(1,2)">C. 混合架构——规则管底线，ML管上限</div>
+</div><div class="decision-result" id="decisionResult1"></div></div>
+<div class="decision-scenario"><strong>第3轮：</strong>你负责一个政府数据开放项目。A方案——开放全部原始数据（最大化透明度但可能泄露隐私）；B方案——仅开放聚合统计数据（安全但信息量大减）；C方案——差分隐私机制（添加数学可控的噪声，平衡隐私与效用）。你怎么选？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(2,0)">A. 全量开放——数据是公共资源，透明是第一原则</div>
+<div class="decision-opt" onclick="showDecision(2,1)">B. 聚合统计——安全第一，宁可信息少也不能出事</div>
+<div class="decision-opt" onclick="showDecision(2,2)">C. 差分隐私——用数学方法精确控制隐私-效用权衡</div>
+</div><div class="decision-result" id="decisionResult2"></div></div>
+</div>
+
+</div><!-- .container -->
 
 <script>
-// ============ GLOBAL STATE ============
-const LS_KEY = 'mks_math_v1';
-let LS = {};
-try { LS = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) { LS = {}; }
-if (!LS.learnedCards) LS.learnedCards = [];
-if (!LS.wrongAnswers) LS.wrongAnswers = [];
-if (!LS.examHistory) LS.examHistory = [];
-let learnedCards = LS.learnedCards;
-let wrongAnswers = LS.wrongAnswers;
-let examHistory = LS.examHistory;
+// ===== GLOBAL STATE =====
+var LSP = 'mks_math_';
+var learnedCards = JSON.parse(localStorage.getItem(LSP+'learned')||'[]');
+var wrongAnswers = JSON.parse(localStorage.getItem(LSP+'wrong')||'[]');
+var quizAnswered = JSON.parse(localStorage.getItem(LSP+'quiz_answered')||'[]');
+var shortRevealed = JSON.parse(localStorage.getItem(LSP+'short_revealed')||'[]');
+function save(){localStorage.setItem(LSP+'learned',JSON.stringify(learnedCards));localStorage.setItem(LSP+'wrong',JSON.stringify(wrongAnswers));localStorage.setItem(LSP+'quiz_answered',JSON.stringify(quizAnswered));localStorage.setItem(LSP+'short_revealed',JSON.stringify(shortRevealed));}
 
-function save() {
-  LS.learnedCards = learnedCards;
-  LS.wrongAnswers = wrongAnswers;
-  LS.examHistory = examHistory;
-  localStorage.setItem(LS_KEY, JSON.stringify(LS));
-}
+// ===== CONCEPTS =====
+var concepts = [
+{id:'c1',name:'公理化思维',def:'从少数基本定义和公理出发，通过严格的逻辑演绎推导出全部结论的思维方式。欧几里得《几何原本》用5条公理构建了整个平面几何体系，这是人类创造思想的最高水平。',analogy:'如同乐高积木搭建——5块基础积木（公理）通过组合（逻辑推导）可以搭建出无限复杂的模型（定理）。如果基础积木没有缺陷，整座大厦就不会倒塌。',example:'欧几里得用10条公理推导出全部平面几何定理；罗马法以"自然法"为公理构建法律体系；皮亚诺用4条公理定义了所有自然数。',counter:'公理化不等于"不证自明"——平行公理被质疑2000年后证明是独立的，修改它产生了非欧几何。公理的选择影响体系的性质，没有"唯一正确"的公理集。'},
+{id:'c2',name:'毕达哥拉斯定理',def:'直角三角形两条直角边的平方之和等于斜边的平方（a²+b²=c²）。这是数学史上第一个被严格逻辑证明的普遍定理，标志着数学从经验到科学的转折。',analogy:'如同GPS定位——你的手机通过测量到三颗卫星的距离（运用毕达哥拉斯定理）就能算出精确位置。一个2500年前的几何定理，今天支撑着每天数十亿次导航请求。',example:'古埃及用勾股数（3-4-5）建造大金字塔；美索不达米亚泥板记录多组勾股数；《周髀算经》记录商高"勾三股四弦五"。但这些都只是特例——直到毕达哥拉斯给出普遍证明。',counter:'测量和实验可以发现勾股数，但永远不能证明定理。8×8正方形剪开拼成13×5长方形（面积64→65），视觉"证明"了错误结论。这就是为什么数学必须依赖逻辑而非直觉。'},
+{id:'c3',name:'数的扩展',def:'人类对数字的认知经历了四次重大扩展：自然数→有理数（负数、分数）→实数（无理数）→复数（虚数）。每一次扩展都打破了前一个阶段"数字应该是什么"的直觉框架。',analogy:'如同操作系统升级——自然数（DOS单任务）、有理数（Win3.1多任务）、实数（WinXP稳定版）、复数（云计算分布式）。每次升级都让系统能做更多事，但需要用户适应新的操作逻辑。',example:'无理数的发现：√2无法表示为两个整数之比（反证法证明）；虚数的引入：三次方程求解中被迫使用√-1作为中间运算工具；无穷小的定义：不是零而是"无限趋近于零的趋势"。',counter:'数系扩展不是"越多越好"——每种数都有其适用范围。计算苹果数量用自然数就够了，用复数反而荒谬。关键是知道什么时候该用哪种"数"。'},
+{id:'c4',name:'几何学的空间法则',def:'从古埃及的土地丈量到欧几里得的公理体系再到非欧几何的多元空间，几何学的发展展示了人类如何从"直觉空间"走向"逻辑空间"，从单一空间观走向多元空间观。',analogy:'如同从纸质地图到GPS再到VR——纸质地图是平面几何（一个视角），GPS是球面几何（考虑地球曲率），VR则需要黎曼几何来渲染弯曲的虚拟空间。你对空间的定义决定了你能走多远。',example:'古埃及用几何丈量尼罗河泛滥后的土地边界；美索不达米亚人发明360度角度制和60进制；笛卡尔用坐标系将几何转化为代数；爱因斯坦用黎曼几何描述引力=时空弯曲。',counter:'欧氏几何不是"错的"——在地球表面日常尺度上它完全够用。非欧几何不是"推翻"了欧氏几何，而是发现了一个更广义的数学框架，欧氏几何是曲率=0的特例。'},
+{id:'c5',name:'函数与趋势思维',def:'函数描述变量间的确定性变化规律，将人类认知从"关注个别数字"升级为"关注整体趋势"。f(x)=y不是让你算某一个y，而是让你理解x和y之间的变化法则。',analogy:'如同股票K线图——如果你只盯着某一天的股价（静态数字），你做的是赌博；如果你研究股价随时间变化的函数曲线（动态趋势），你做的是投资。函数思维让你从"点"的视角升级到"线"的视角。',example:'中国GDP增长曲线——蓝线（中国）增长率显著高于美国、印度；西瓜直径增加1/4→重量翻倍（三次方关系而非直觉的线性关系）；抛射体运动距离是角度的函数。',counter:'多变量函数中，变量与结果间只是相关性而非因果关系。高回报率→高收益忽略了风险变量。现代学术研究的结论多为特定视角的"相关性揭示"，而非普适的"因果定律"。'},
+{id:'c6',name:'数列与级数',def:'数列是按规律排列的一串数字（核心是规律而非数字本身），级数是数列之和。公比r是判断趋势的关键：r≥1时发散（指数增长），r<1时收敛（趋于有限值）。',analogy:'如同病毒传播——每个感染者传染2个人（r=2），5轮后从1例变成31例（发散）；每个感染者传染0.5人（r=0.5），即使无限传播总感染人数也仅为初始的2倍（收敛）。防控关键是把r降到1以下。',example:'传销骗局本质：K（下线人数）×p（提成比例）<1则必然亏损；斐波那契数列与黄金分割：Fn+1/Fn趋向1.618，企业扩张速率不应超此值；贷款利息：利率微小变动导致数万元差异。',counter:'数列规律需要大量数据才能准确判断——斐波那契数列前几项比值与最终收敛值1.618差异很大。用少量数据推断趋势容易出错，这是"过度拟合"问题的数学根源。'},
+{id:'c7',name:'无穷小与极限',def:'无穷小不是"很小的数"，而是"无限趋近于零的趋势"。极限概念是微积分的基础，使人类从把握"平均规律"升级到把握"瞬间规律"。柯西和魏尔斯特拉斯用ε-M语言给出严格定义。',analogy:'如同相机从胶片到数码——胶片相机只能拍"平均曝光"的画面（平均速度），数码相机可以捕捉瞬间（瞬间速度）。无穷小的数学工具让你从看"一段时间的平均"升级为看"这一刻的瞬间"。',example:'牛顿用导数定义瞬间速度（Δt→0时ΔS/Δt的极限）；经济增长率是GDP的导数；阿喀琉斯追乌龟悖论：无穷多个无穷小量之和可能为有限数（级数极限为10/9）。',counter:'导数为零的点不一定是最大值点——可能是极小值或拐点（如x³在x=0处）。现实最优化问题常陷入"局部最优"而非"全局最优"，这是机器学习至今未完全解决的问题。'},
+{id:'c8',name:'虚数与抽象工具',def:'虚数i被定义为i²=-1（现实世界不存在），但它作为"运算中介"可以解决实数域无法直接求解的问题。虚数与实数共同构成复数域，使所有一元N次方程都有N个解。',analogy:'如同"法人"概念——自然界不存在"法人"这个实体，但正是这个虚构的法律概念让公司可以签合同、起诉、拥有财产。虚数是数学世界的"法人"——虚构但不可或缺的操作主体。',example:'三次方程求解中间步骤出现√-121，运算结束后正负抵消得实数解X=4；极坐标导航计算通过复数大幅简化；量子力学波函数、电磁波分析、控制系统稳定性判断全部依赖复数工具。',counter:'虚数不是"玄学"——它有严格的运算规则，只是不同于实数运算。如同国际象棋规则不同于围棋规则——不能说哪个"更真实"，只能说哪个"更适合当前问题"。'},
+{id:'c9',name:'非欧几何与体系重构',def:'修改欧几里得几何的一条公理（平行公理），在不产生矛盾的前提下推导出了完全不同的几何体系：罗氏几何（内角和<180°）和黎曼几何（内角和>180°）。证明了公理体系的多元性。',analogy:'如同交通规则——英国靠左行驶、美国靠右行驶，两种规则体系内部都是自洽的。不能说哪个"更正确"，但在英国用美国规则就会出事故。数学工具的选择同样取决于场景匹配。',example:'黎曼在地球表面画三角形：从北极向南100米→向西100米→向北100米，形成内角和270°的三角形；爱因斯坦用黎曼几何描述引力场——物质告诉时空如何弯曲，时空告诉物质如何运动。',counter:'你可以修改公理，但新体系必须"自洽"（无内在矛盾）。修改垂直公理会直接导致体系崩塌——并非所有公理都是"可修改的"。选择哪些公理可以挑战，需要深刻的数学洞察。'},
+{id:'c10',name:'数学思维的现实启示',def:'吴军提炼的9大思维启示：有穷vs无穷、静态vs动态、精明vs聪明、现实vs虚构、攒钱vs赚钱、直觉vs逻辑、概念vs表述、朋友vs理性对手、荣誉vs财富。核心是从"点状思维"到"趋势思维"的跃迁。',analogy:'如同从"用计算器"到"写程序"——计算器只能算单个数字（点状思维），程序可以处理任意输入（函数思维）。你不需要会写操作系统，但需要理解"程序化思维"的力量。',example:'CDS金融危机：数学证明"房价不可能永远指数增长"→必然崩盘；中国资本输出：GDP占全球18%后继续高增长→必须通过"一带一路"提升外部购买力；收入增速>房价增速，长期可实现购房。',counter:'数学思维不是万能的——它提供逻辑推理框架，但不能替代领域知识。贝尔用数学预测了金融危机，但他也深度研究了次级贷款市场结构。纯粹数学推演需要与领域经验结合才有实战价值。'}
+];
+var mksCoreIds = ['c1','c2','c5','c7'];
 
-// ============ CONCEPTS ============
-const concepts = [
-  {id:'c1',name:'公理化思维',def:'从少数不证自明的公理出发，通过逻辑演绎构建完整知识体系的思维方式。欧几里得《几何原本》以5条公理推导出整个几何学大厦。',analogy:'如同乐高积木——少数几种基础模块（公理）通过不同组合方式（逻辑推理）可以搭建出任何复杂结构（定理体系）。',example:'对顶角相等定理：从\u201C直线角=180°\u201D和\u201C等量减等量\u201D两条公理出发，3步推导即得。',counter:'经验归纳法——观察到100只白天鹅就断言\u201C所有天鹅都是白的\u201D，缺少逻辑必然性，遇到黑天鹅即被证伪。'},
-  {id:'c2',name:'逻辑证明',def:'从定义和公理出发，通过严格演绎推理得出结论的过程。数学区别于自然科学的根本特征——数学靠证明而非实验。',analogy:'如同法庭审判——证据（公理）+推理链（逻辑）→判决（定理），缺少任何一环则结论不可靠。',example:'√2为无理数的反证法：假设√2=A/B且A,B互素→推导出A,B均为偶数→矛盾→假设不成立。',counter:'测量验证——用尺子量100个直角三角形的三边发现a²+b²≈c²，这不是证明，只是猜想。'},
-  {id:'c3',name:'无理数与数系扩展',def:'无限不循环小数，如√2、π。其发现打破了\u201C一切数皆有理\u201D的信念，迫使人类扩展对\u201C数\u201D的认知边界。',analogy:'如同发现地球不是宇宙中心——颠覆既有世界观，短期痛苦但长期打开了更广阔的认知空间。',example:'直角边为1的等腰直角三角形，斜边=√2≈1.41421356...，无法表示为任何整数比。',counter:'有理数——可以表示为A/B（整数比）的数，如1/3=0.333...虽无限但循环，不是无理数。'},
-  {id:'c4',name:'函数与变量思维',def:'用变量间对应关系描述世界规律的工具。核心转变：从关注\u201C具体数值\u201D到把握\u201C整体趋势和因果关系\u201D。',analogy:'如同天气预报——不看某一时刻的温度（静态），而看温度随时间的变化曲线（动态趋势）。',example:'复利函数Y=10000×(1.06)ˣ：输入年份x，输出本息Y，清晰展示指数增长趋势。',counter:'常数思维——只记住\u201C6%利率12年翻番\u201D孤立结论，不理解函数关系，换个利率就无法计算。'},
-  {id:'c5',name:'无穷与极限',def:'无穷大不是具体数字而是动态增长趋势，极限描述变量无限逼近某个值的动态过程。微积分的概念基石。',analogy:'如同追逐地平线——永远无法到达，但可以无限接近。极限告诉我们\u201C趋近于什么\u201D，而非\u201C到达哪里\u201D。',example:'无穷级数1+1/2+1/4+1/8+...的极限是2；希尔伯特旅馆说明无穷大+1=无穷大。',counter:'\u201C最大的数\u201D——儿童认知中的无穷大是一个静态极值，这种理解无法用于微积分和高等数学。'},
-  {id:'c6',name:'导数与微积分',def:'导数描述函数在某点的瞬间变化率（切线斜率），微积分用极限思想研究变化与积累的关系。',analogy:'如同车速表——速度表显示的是\u201C这一瞬间\u201D的速度（导数），不是过去一小时的平均速度（平均变化率）。',example:'自由落体位移s=4.9t²，导数v=9.8t给出任意时刻的瞬时速度，这是牛顿力学的核心。',counter:'平均速度——只有导数才能回答\u201C撞车瞬间速度是多少\u201D这类法律问题，平均速度无法作为证据。'},
-  {id:'c7',name:'向量与方向性',def:'兼具大小和方向的数学量。核心洞察：\u201C方向比大小更重要\u201D——两个等大向量夹角>120°时合力反而小于单个向量。',analogy:'如同拔河比赛——5个人朝同一方向拉（0°夹角）合力最大，若各有各的方向（大夹角），力相互抵消。',example:'余弦定理计算文本相似度：两篇文章的词频向量夹角越小，主题越相似。Google搜索即基于此原理。',counter:'标量思维——只关注数值大小（如\u201C公司有10个牛人\u201D），忽略方向一致性（牛人方向冲突则合力为零）。'},
-  {id:'c8',name:'虚数与抽象工具',def:'定义i²=-1的虚构数，现实中不存在但在数学运算中不可或缺。代表\u201C抽象工具解决实际问题\u201D的思维范式。',analogy:'如同化学催化剂——反应前后自身不变，但没有它反应无法进行。虚数在运算中最终抵消，但没有它三次方程无法求解。',example:'三次方程X³-15X-4=0有实数解X=4，但求解过程中必须经过√-121（虚数），最终虚数抵消得实数解。',counter:'\u201C看得见摸得着\u201D的思维——拒绝承认法人、公司、货币等社会虚拟概念的有效性，限制了对复杂系统的理解。'},
-  {id:'c9',name:'公理化跨领域应用',def:'公理化方法不仅用于数学——法律（自然法→罗马法）、管理（企业价值观→行为准则）均从少数原则演绎出完整体系。',analogy:'如同宪法与法律体系——一部宪法的几条基本原则（公理），推导出整个国家的法律大厦（定理体系）。',example:'罗马法以\u201C自然法\u201D为公理→推导出婚姻法、物权法、法人制度；《拿破仑法典》至今沿用。',counter:'\u201C一事一议\u201D管理——每条规则单独制定、互不关联，员工面对矛盾规则时无所适从，如同定理体系出现矛盾。'},
-  {id:'c10',name:'非欧几何与多元体系',def:'修改欧几里得第五公理（平行公理）得到的不同但自洽的几何体系，证明\u201C公理可替换，体系可多元\u201D。',analogy:'如同一字改锥与十字改锥——没有谁对谁错，适用场景不同。爱因斯坦选择黎曼几何描述弯曲时空，而非欧氏几何。',example:'黎曼几何（无平行线，三角形内角和>180°）→广义相对论描述时空弯曲；地球表面三角形（北极→南100m→西100m→回北极）内角和=270°。',counter:'唯一真理观——认为只有一种\u201C正确\u201D体系，排斥框架外的创新。三种几何90%公理相同，仅一条不同即产生截然不同的世界。'}
+// ===== QUIZ: 20 MCQ, answer distribution {0:5,1:5,2:5,3:5} =====
+var choiceQuestions = [
+{q:'无穷大阶数由低到高的正确排序是什么？',o:['对数<线性<平方<指数','指数<平方<线性<对数','线性<对数<指数<平方','平方<指数<对数<线性'],answer:0},
+{q:'黄金分割比例的近似值是多少？',o:['1:0.618','1:0.5','2:1','3:1'],answer:0},
+{q:'函数思维与小学算术思维的本质区别是什么？',o:['函数关注变量间的变化规律而非单个数值','函数使用更复杂的公式','函数需要计算机才能计算','函数只存在于高等数学中'],answer:0},
+{q:'余弦定理在文本分类中的应用原理是什么？',o:['将文章转化为词频向量，通过向量夹角判断主题相似性','计算文章的字数','统计标点符号使用频率','分析语法结构'],answer:0},
+{q:'毕达哥拉斯定理中国称"勾股定理"，西方以其命名的主要理由是什么？',o:['毕达哥拉斯首次给出严格逻辑证明，将特例升级为普遍定理','毕达哥拉斯最早发现了勾股数','毕达哥拉斯比中国早500年','西方不认可中国的数学贡献'],answer:0},
+{q:'欧几里得《几何原本》建立公理化体系的核心方法是什么？',o:['从复杂问题推导简单结论','从定义和公理出发，通过逻辑演绎推导所有定理','通过大量实验验证几何规律','收集各文明的几何知识汇编成书'],answer:1},
+{q:'虚数i在数学运算中的核心角色是什么？',o:['作为最终答案出现在结果中','作为运算中介，过程中出现但最终可能正负抵消','替代实数进行所有计算','仅用于表示负数'],answer:1},
+{q:'非欧几何与欧氏几何的关系最准确的说法是什么？',o:['非欧几何是错误的','90%公理相同仅平行公理不同，各自自洽','非欧几何完全推翻了欧氏几何','两者只有命名不同'],answer:1},
+{q:'为什么等额本息还款的总利息通常略高于等额本金还款？',o:['因为等额本息的利率更高','因为等额本息前期偿还的本金较少，利息按剩余本金计算','因为还款期限更长','因为银行随机调整利率'],answer:1},
+{q:'希尔伯特旅馆悖论揭示了无穷大的什么特性？',o:['无穷大比所有数都大','无穷大遵循与有限世界完全不同的规则','无穷大不存在','无穷大是一个具体的最大数'],answer:1},
+{q:'直角边为1的等腰直角三角形，其斜边√2被证明不是有理数，这一发现导致了什么？',o:['第二次数学危机','数学被暂时放弃','第一次数学危机','第三次数学危机'],answer:2},
+{q:'斐波那契数列的Fn+1/Fn随n增大趋近于什么值？',o:['2.0','1.0','1.618（黄金分割比）','3.14159'],answer:2},
+{q:'在等比级数中，如果公比r<1，无穷级数的和会怎样？',o:['趋于无穷大','趋于零','收敛为一个有限值','无规律波动'],answer:2},
+{q:'黎曼几何中，球面三角形的内角和是多少？',o:['等于180度','小于180度','大于180度','一定是360度'],answer:2},
+{q:'向量加法中，两个长度相等的单位向量夹角为120度时，合力长度是多少？',o:['2','1.41','1','0.5'],answer:2},
+{q:'欧几里得的五条几何公理中，哪一条成为非欧几何的突破口？',o:['直线公理','圆公理','垂直公理','平行公理（过线外一点仅有一条平行线）'],answer:3},
+{q:'解析几何（笛卡尔几何）的核心创新是什么？',o:['发现新的几何图形','证明几何学已完成','发明了微积分','用坐标系将几何问题转化为代数方程求解'],answer:3},
+{q:'公理化思维在法律领域的最著名应用是什么？',o:['美国独立宣言的起草','英国大宪章的签署','法国人权宣言的颁布','罗马法以"自然法"为公理的体系构建'],answer:3},
+{q:'椭圆曲线加密（比特币的基础）的安全性依赖于什么？',o:['密钥长度无限','使用超大型素数','依赖政府监管','离散对数问题：已知起点和终点反推步数极难'],answer:3},
+{q:'导数概念（牛顿的"流数"）解决的核心问题是什么？',o:['计算平均值','计算面积','求解方程','描述瞬间变化率（Δt→0时ΔS/Δt的极限）'],answer:3}
 ];
 
-const mksIds = ['c1','c4','c5','c7']; // 公理化思维、函数与变量、无穷与极限、向量与方向性
-const mksConcepts = concepts.filter(c => mksIds.includes(c.id));
-
-// ============ MC Questions (20 total, answer distribution {0:5,1:5,2:5,3:5}) ============
-const mcQuestions = [
-  {q:'欧几里得《几何原本》的核心贡献是什么？',opts:['将零散几何知识构建为公理化体系','发明了微积分','首次计算出圆周率','证明了费马大定理'],answer:0,exp:'欧几里得通过5条公理和5条公设，将当时所有已知几何知识组织成一个逻辑严密的体系，这是人类知识系统化的里程碑。'},
-  {q:'毕达哥拉斯定理（勾股定理）与\u201C勾三股四弦五\u201D的本质区别是什么？',opts:['前者适用于所有直角三角形，后者仅适用于3-4-5','前者来自中国，后者来自希腊','两者完全相同','前者是实验结论，后者是猜想'],answer:1,exp:'\u201C勾三股四弦五\u201D是特例观察，毕达哥拉斯定理是经过逻辑证明的普遍规律。从特例到定理的关键跨越是证明。'},
-  {q:'希尔伯特旅馆悖论说明了什么？',opts:['旅馆老板不会算账','无穷大遵循与有限世界不同的逻辑','数学不能解决实际问题','所有旅馆都应该有无限房间'],answer:2,exp:'无穷大+1=无穷大，无穷大×2=无穷大——这些运算在无穷世界中成立，但违背有限经验。这说明不能用有限思维理解无限。'},
-  {q:'三个等长的单位向量，彼此夹角均为120°，它们的合力是多少？',opts:['3','2','√3≈1.73','0'],answer:3,exp:'三个120°夹角的等长向量刚好构成等边三角形，首尾相连回到原点，合力为零。这直观展示了\u201C方向冲突导致努力抵消\u201D。'},
-  {q:'级数1+1/2+1/4+1/8+...的极限是多少？',opts:['2','无穷大','1.5','1'],answer:0,exp:'这是公比r=1/2的等比级数，极限=1/(1-1/2)=2。无穷多项之和为有限值——这是收敛级数的核心特征。'},
-  {q:'虚数i在三次方程求解中的作用是什么？',opts:['让方程变简单','充当中间运算工具，最终抵消','验证答案是否正确','替代实数进行日常计算'],answer:1,exp:'虚数如同化学催化剂——反应（运算）需要它参与，但最终产物（结果）中它不出现。这是\u201C虚构工具解决真实问题\u201D的经典案例。'},
-  {q:'函数y=x²的导数是什么？',opts:['2x','x','x³','2'],answer:2,exp:'根据导数定义，f\'(x)=2x。导数描述函数在任意点的斜率（变化率），是微积分的核心工具。'},
-  {q:'斐波那契数列后项与前项的比值趋近于什么？',opts:['2','π','e','黄金分割比例Φ≈1.618'],answer:3,exp:'斐波那契数列Fn+1/Fn的极限正是黄金分割比例(1+√5)/2≈1.618，体现数学知识的内在关联性。企业在扩张时员工增长率最好不超过1.618倍。'},
-  {q:'余弦定理主要用于解决什么问题？',opts:['计算三角形面积','量化向量方向的相似性（夹角）','求最大公约数','解一元二次方程'],answer:0,exp:'cosθ=(a²+b²-c²)/(2ab)，通过余弦定理可以计算两个向量的夹角，判断方向一致性。这是文本分类和简历筛选的数学基础。'},
-  {q:'牛顿用导数最优化方法的核心原理是什么？',opts:['把所有可能的值都试一遍','找到导数为零的点，且导数符号由正变负','用代数配方','看函数图像猜测'],answer:1,exp:'函数在最大值点处切线水平（导数为0），且左侧上升（导数>0）、右侧下降（导数<0）。将求最值问题转化为解f\'(x)=0。'},
-  {q:'解析几何（笛卡尔几何）的核心思想是什么？',opts:['用尺规作图解决所有几何问题','建立坐标系，将几何问题转化为代数方程求解','证明三角形内角和为180°','计算圆的面积'],answer:2,exp:'笛卡尔通过平面直角坐标系，将几何图形与代数方程一一对应，从而用解方程的方法解决复杂几何问题，为微积分奠定基础。'},
-  {q:'非欧几何与欧氏几何的关系最接近以下哪种描述？',opts:['非欧几何是欧氏几何的错误版本','两者90%公理相同，仅在平行公理上不同，各自自洽','非欧几何完全替代了欧氏几何','两者没有关系'],answer:3,exp:'欧氏几何、罗氏几何、黎曼几何只有平行公理不同，其他公理完全一致。三者在各自空间内都自洽有效，如同不同型号的改锥各有适用场景。'},
-  {q:'费马大定理的内容是什么？',opts:['当n>2时，方程aⁿ+bⁿ=cⁿ无整数解','所有三角形内角和为180°','质数有无穷多个','2的平方根是无理数'],answer:0,exp:'费马大定理从勾股数（3²+4²=5²）延伸而来，怀尔斯于1994年完成证明，耗时30年。其证明工具（椭圆曲线）后来成为比特币加密的基础。'},
-  {q:'数学中的\u201C无穷小\u201D最准确的定义是什么？',opts:['非常小的正数，如0.000001','恰好等于零','一个趋近于零的动态趋势（变量），而非静态数','比任何正数都大的数'],answer:1,exp:'无穷小不是确定的数，而是无限接近零的趋势。魏尔斯特拉斯用ε-M语言精确定义：对任意小的ε>0，总能找到条件使变量与极限的差距<ε。'},
-  {q:'公理化思维在企业管理中最直接的应用是什么？',opts:['把所有决策都写成数学公式','确立几条不矛盾的核心价值观，所有行为准则由此推导','让每个员工自学高等数学','复制竞争对手的管理制度'],answer:2,exp:'如同几何体系——几条公理推导出所有定理。企业确立不矛盾的核心价值观（如\u201C客户第一\u201D），所有具体行为规范由此推导，保证体系一致性。'},
-  {q:'向量点乘（内积）在简历筛选中如何应用？',opts:['计算候选人年龄','将岗位要求和简历转化为向量，通过夹角判断匹配度','统计简历页数','验证学历真伪'],answer:3,exp:'岗位要求向量和简历能力向量之间的夹角越小，匹配度越高。如果简历\u201C全能型\u201D描述导致向量各维度均匀分布，反而与特定岗位向量夹角大，容易被筛除。'},
-  {q:'伽罗瓦理论的核心贡献是什么？',opts:['提出了一种通用的系统性数学工具，一劳永逸解决多类问题','证明1+1=2','发现了圆周率','发明了计算器'],answer:0,exp:'21岁天才伽罗瓦用群论证明三大古典几何难题（三等分角、倍立方、方圆问题）无解，并证明5次及以上方程无解析解。他的工具思维比具体技巧更有普适价值。'},
-  {q:'黄金分割比例Φ≈1.618的几何特性是什么？',opts:['只是一个好看的数字','切掉边长等于宽的正方形后，剩余长方形仍符合黄金分割，可无限迭代','等于圆周率','只能用于建筑设计'],answer:1,exp:'黄金分割长方形的自相似性解释了它在自然中广泛存在的原因——蜗牛壳、龙卷风、银河系的等角螺线都由这一比例的自相似迭代产生。'},
-  {q:'\u201C72定律\u201D用于快速估算什么？',opts:['球体的体积','投资翻番所需年数（72÷年回报率%）','三角形面积','借款利息总额'],answer:2,exp:'72÷年回报率%≈投资翻番所需年数。如6%回报率需约12年翻番，8%需约9年。这是对数函数在金融中的简便应用，帮助快速比较不同利率的长期效果。'},
-  {q:'在等比级数中，什么条件下无穷项之和为有限值？',opts:['公比r=2','公比r=1','公比|r|<1（收敛）','任何条件下都有限'],answer:3,exp:'当|r|<1时级数收敛，即使有无穷多项，总和也是有限值。r≥1时级数发散（无穷大）。传销模型中，当K×p<1时收益收敛（亏损），≥1时发散（盈利但不可持续）。'}
+var shortQuestions = [
+{q:'为什么说数学的核心方法是"逻辑证明"而非"实验验证"？请用毕达哥拉斯定理说明。',a:'因为测量和实验永远存在误差——如测量勾3.5股4.5的弦长约为5.700887，物理测量无法区分这个值与5.701或5.700。而数学通过逻辑证明可以得出绝对精确的关系。毕达哥拉斯定理（a²+b²=c²）的证明不依赖任何测量，只依赖定义和公理的逻辑推导，因此结论100%可靠。'},
+{q:'什么是公理化体系？请以欧几里得几何为例说明其构建方法。',a:'公理化体系是从少数基本定义和公理出发，通过严格的逻辑演绎推导出全部结论的知识构建方法。欧几里得几何的构建方法：定义概念（如对顶角）→从定义和公理推导定理→用已有定理定义更多概念→循环往复构建完整体系。10条公理是整个体系的逻辑基础，所有定理都由此推导。'},
+{q:'无理数√2的反证法证明过程是怎样的？',a:'假设√2是有理数，即√2=A/B（A、B为整数且互素）→两边平方得A²=2B²→A²为偶数，故A为偶数（设A=2C）→代入得B²=2C²→B²为偶数，故B为偶数→A和B都是偶数，与"互素"矛盾→原假设不成立，√2不能表示为有理数。这个证明展示了反证法的力量。'},
+{q:'为什么引入虚数概念？它在现实中有何应用？',a:'引入原因：三次方程求解中即使有实数解（如X³-15X-4=0的解X=4），利用公式求解时中间步骤必然出现√-121。数学家虚构i（i²=-1）作为运算中介。应用：量子力学波函数、电磁波分析、信号处理、控制系统稳定性判断——几乎所有现代物理和工程领域都依赖复数工具。'},
+{q:'斐波那契数列与黄金分割有什么联系？对企业管理有何启示？',a:'联系：斐波那契数列中Fn+1/Fn随n增大会趋近于黄金分割比例1.618。启示：企业员工数量增长的速率不应超过1.618，因为老员工带新员工的能力有限（通常2-3人），超过此速率会导致企业文化难以维持、组织各自为战。'},
+{q:'请用希尔伯特旅馆悖论说明无穷大与有限世界的根本区别。',a:'有限世界：旅馆有100间房且客满→无法再容纳新客人。无穷大世界：旅馆有∞间房且客满→仍可容纳新客人（让1号→2号，2号→3号……空出1号）；甚至可容纳∞个新客人（让n号→2n号，空出所有奇数号）。无穷大遵循完全不同的运算规则——无穷大+1=无穷大、部分=整体。'},
+{q:'牛顿的无穷小概念为什么引发了贝克莱的挑战（第二次数学危机）？',a:'牛顿用无穷小定义瞬间速度：当时间间隔Δt趋近于零时，ΔS/Δt的比值即为瞬间速度。贝克莱质疑：Δt到底是不是零？如果是零则不能做分母（数学不允许除以零）；如果不是零则比值仍是平均速度而非瞬间速度。这个逻辑矛盾动摇了微积分基础。19世纪柯西和魏尔斯特拉斯最终解决：将无穷小重新定义为"极限为零的变量"（动态趋势而非静态数字）。'},
+{q:'公理化思维如何应用于法律体系？以罗马法为例说明。',a:'罗马法引入"自然法"作为公理基础——定义自然界赋予一切动物的法律（传宗接代→婚姻法→抚养义务→动物保护法）。从自然法公理出发推导人人平等（法律主体从自由民扩展到所有人）→推导生命权、自由权、私有财产权→推导物权法、著作权法、专利法。罗马法因此不因统治者更换而改变。'},
+{q:'向量夹角的余弦定理在文本自动分类中如何应用？',a:'将每篇文章转化为词频向量（维度=词汇表大小，如10万维）→计算两篇文章向量之间的夹角余弦值→夹角越小（余弦值越接近1），两篇文章主题越相似。如金融文章与计算机文章夹角约82°（近乎正交），而两篇计算机文章夹角仅7.5°。这一原理也用于简历自动筛选。'},
+{q:'吴军提出的数学思维9大启示中，哪一条对你最有启发？',a:'（开放式问题）"有穷和无穷"的启示：个人认知存在局限——底层认知难以理解高层思维。苏格拉底说"我唯一知道的是我一无所知"，这种对认知局限的清醒意识比凭空想象更接近真理。很多人用有限的个人经验去推断无限的规律（如"受过两次骗→世界无好人"）。数学教会我们：无限大和有限世界遵循不同规律，不能以有限经验推导无限结论。"我不知道"往往是认知升级的第一步。'}
 ];
 
-// Verify answer distribution
-const ansDist = {0:0,1:0,2:0,3:0};
-mcQuestions.forEach(q => ansDist[q.answer]++);
-console.log('MCQ answer distribution:', ansDist);
-
-// ============ SA Questions (10) ============
-const saQuestions = [
-  {q:'用你自己的话解释\u201C公理化思维\u201D，并举一个非数学领域的应用例子。',ref:'从少数不证自明的前提出发，通过逻辑演绎构建完整体系。例如：公司从\u201C客户第一\u201D这一条价值观出发，推导出所有客服流程、产品决策标准、员工考核指标——而不是每条规则单独制定。'},
-  {q:'为什么说\u201C方向比努力更重要\u201D有严格的数学依据？请用向量加法的原理说明。',ref:'两个等长向量夹角>120°时，合力小于单个向量长度。意味着两个很努力的人如果方向严重冲突，实际产出可能低于一个人单干。夹角<90°时合力>单个向量，方向一致（0°）时合力最大=2倍。'},
-  {q:'请简述无理数√2的发现过程及其对数学发展的意义。',ref:'从毕达哥拉斯定理出发：直角边为1的等腰直角三角形斜边长度平方=2。用反证法证明√2不能表示为A/B（互素整数比），打破了\u201C一切数皆有理\u201D的信念，推动数系从有理数扩展到实数。'},
-  {q:'希尔伯特旅馆悖论如何展示无穷大与有限世界的不同？',ref:'在无限房间的旅馆中，即使\u201C客满\u201D也可以通过移位（1→2,2→3...）空出房间。这证明无穷大+1=无穷大，无穷大×2=无穷大——无穷世界不遵循有限经验的运算规则。'},
-  {q:'用等比级数的收敛/发散原理，分析为什么大多数传销模式在数学上注定不可持续。',ref:'传销收益=会费×(Kp+(Kp)²+...)。当K×p<1时级数收敛，总收益有限且小于会费（亏损）。只有当K×p≥1时收益才发散，但这要求每个参与者发展足够多下线，实际中绝大多数人无法达到。'},
-  {q:'说明虚数i的引入如何帮助解决三次方程问题，并类比一个非数学领域的\u201C虚构工具\u201D。',ref:'三次方程即使有实数解，求解过程也必然出现√负数。引入虚数i(²=-1)后可在运算中使用，最终虚数部分抵消得到实数解。类比：公司\u201C法人\u201D是法律虚构概念（自然界不存在），但支撑了现代商业体系运行。'},
-  {q:'解释导数概念如何从\u201C平均速度\u201D升级为\u201C瞬时速度\u201D，并说明这个升级的实际意义。',ref:'平均速度=ΔS/Δt（时间间隔有限）；瞬时速度是Δt→0时的极限（导数）。实际意义：交通事故需要判定\u201C碰撞瞬间速度\u201D是否超速，平均速度无法作为法律证据；经济增长率（GDP导数）比GDP绝对值更能反映趋势。'},
-  {q:'什么是非欧几何？它如何启发了爱因斯坦的广义相对论？',ref:'非欧几何修改了欧氏几何的平行公理：罗氏几何（无限多条平行线）、黎曼几何（无平行线）。爱因斯坦选用黎曼几何描述时空弯曲，将万有引力解释为质量造成的时空曲率——物质的分布决定了空间的几何形态。'},
-  {q:'请用函数的三要素（变量、对应关系、确定性）分析：\u201C北纬20度的城市\u201D为什么不是一个函数？',ref:'函数要求每个自变量值对应唯一的因变量值。但\u201C北纬20度\u201D对应多个城市（如墨西哥城、圣地亚哥、瓦加杜古等），不满足确定性——一个纬度值对应多个城市。因此这不是函数关系，只是相关关系。'},
-  {q:'结合数列与级数知识，分析为什么\u201C持续进步\u201D比\u201C一次性的好成绩\u201D更重要。',ref:'设年收入10万，储蓄率20%（年储蓄2万），工资年增长10%。储蓄构成等比数列（首项2万，公比1.1），15年后储蓄总额≥60万（首付）。如果工资不增长（公比=1），则需要30年。持续进步的速度（公比）决定了长期积累的量级——这是级数对复利效应的数学表达。'}
-];
-
-// ============ TAB SWITCHING ============
-let currentTab = 0;
-function switchTab(idx) {
-  currentTab = idx;
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
-  document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
-  if (idx === 4) renderReview();
-  // Close hamburger on mobile
-  document.getElementById('tabBar').classList.remove('open');
-}
-function toggleHamburger() {
-  document.getElementById('tabBar').classList.toggle('open');
-}
-
-// ============ TAB 0: OVERVIEW ============
-function renderOverviewConcepts() {
-  const grid = document.getElementById('conceptGrid');
-  grid.innerHTML = concepts.map(c =>
-    '<div class="concept-card"><h4>'+c.name+'</h4><p>'+c.def.substring(0,120)+'...</p></div>'
-  ).join('');
-
-  const mksGrid = document.getElementById('mksGrid');
-  mksGrid.innerHTML = mksConcepts.map(c =>
-    '<div class="concept-card mks"><h4>'+c.name+'</h4><p>'+c.def+'</p><p style="margin-top:4px;font-size:.78rem;color:var(--gold)"><strong>为何是骨架：</strong>'+
-    (c.id==='c1'?'公理化思维是所有数学分支的共同根基，掌握它等于掌握了\u201C学习方法的方法\u201D。':
-     c.id==='c4'?'变量与函数思维是实现从\u201C看具体\u201D到\u201C看趋势\u201D认知跃迁的必经之路，是高等数学思维的开端。':
-     c.id==='c5'?'无穷与极限是微积分的概念基石，理解它就理解了高等数学与初等数学的本质差异——动态 vs 静态。':
-     c.id==='c7'?'向量与方向性是多元思维的基础，从一维数值到多维方向，直接应用于团队管理、文本分析、投资组合等现实场景。':'')+
-    '</p></div>'
-  ).join('');
-}
-
-function renderBoundaryTable() {
-  const data = [
-    {name:'椭圆曲线加密',scene:'比特币和区块链底层技术，了解其离散对数问题的非对称性即可，不需掌握椭圆曲线代数'},
-    {name:'伽罗瓦理论/群论',scene:'证明三大几何难题无解、五次以上方程无根式解，是近世代数的工具——知道它能做什么即可'},
-    {name:'费马大定理证明',scene:'理解n>2时aⁿ+bⁿ=cⁿ无整数解的结论，以及证明推动了椭圆曲线研究，不需看200页论文'},
-    {name:'哥德尔不完备定理',scene:'理解任何足够强大的公理体系要么不完备要么不一致——接受知识体系有硬边界，不需学数理逻辑'},
-    {name:'希尔伯特第十问题',scene:'不存在通用算法判定多项式方程是否有整数解——知道数学有不可解问题，不需学计算理论'},
-    {name:'皮亚诺公理',scene:'自然数的公理化定义（0是自然数、每个数有后继...）——理解公理化思想在基础层面的应用即可'},
-    {name:'罗素悖论/集合论',scene:'理发师悖论引发第三次数学危机，推动ZFC公理化集合论——知道悖论可以推动体系完善'},
-    {name:'三大古典几何难题',scene:'三等分角、倍立方、方圆问题——均被证明无解（尺规作图），知道跳出欧氏框架解决'},
-    {name:'黎曼几何细节',scene:'知道无平行线、三角形内角和>180°、是广义相对论的基础即可，不需曲率张量计算'},
-    {name:'椭圆曲线方程',scene:'y²=x³+ax+b形式的曲线，用于加密和费马大定理证明——知道应用场景即可'},
-    {name:'三角函数诱导公式',scene:'和差化积、积化和差等技巧——现代用计算工具替代，理解函数周期性即可'},
-    {name:'线性规划/单纯形法',scene:'约束条件下求最优解的方法（如投资组合优化），知道问题可建模为线性规划即可'},
-    {name:'芝诺悖论的哲学意涵',scene:'二分法、阿喀琉斯追龟、飞箭不动、相对运动——理解无穷小概念即可破解，不需深入哲学'},
-    {name:'三次/四次方程通解公式',scene:'费拉里-塔尔塔利亚公式极其复杂——理解\u201C存在通解\u201D和\u201C用工具替代手算\u201D即可'},
-    {name:'Mathematica/计算机代数',scene:'善用工具求解方程、画函数图像——掌握将问题转化为数学形式的能力，而非手算技巧'}
-  ];
-  document.getElementById('boundaryTable').innerHTML =
-    '<thead><tr><th>知识点</th><th>使用场景/了解程度</th></tr></thead><tbody>'+
-    data.map(d => '<tr><td>'+d.name+'</td><td>'+d.scene+'</td></tr>').join('')+'</tbody>';
-}
-
-function renderSVG() {
-  document.getElementById('svgContainer').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1116pt" height="281pt" viewBox="0.00 0.00 1115.50 281.00"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 277)"><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-277 1111.5,-277 1111.5,4 -4,4"/><g id="node1" class="node"><path fill="#c0392b" stroke="black" stroke-width="2" d="M621,-273C621,-273 482,-273 482,-273 476,-273 470,-267 470,-261 470,-261 470,-249 470,-249 470,-243 476,-237 482,-237 482,-237 621,-237 621,-237 627,-237 633,-243 633,-249 633,-249 633,-261 633,-261 633,-267 627,-273 621,-273"/><text text-anchor="middle" x="551.5" y="-258.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">认知跃迁的三级阶梯</text><text text-anchor="middle" x="551.5" y="-246.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">从具象数字到抽象工具的攀登</text></g><g id="node2" class="node"><path fill="#d4a574" stroke="black" d="M270,-200C270,-200 221,-200 221,-200 215,-200 209,-194 209,-188 209,-188 209,-176 209,-176 209,-170 215,-164 221,-164 221,-164 270,-164 270,-164 276,-164 282,-170 282,-176 282,-176 282,-188 282,-188 282,-194 276,-200 270,-200"/><text text-anchor="middle" x="245.5" y="-185.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">公理化体系</text><text text-anchor="middle" x="245.5" y="-173.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">思维基石</text></g><g id="node3" class="node"><path fill="#d4a574" stroke="black" d="M581.5,-200C581.5,-200 521.5,-200 521.5,-200 515.5,-200 509.5,-194 509.5,-188 509.5,-188 509.5,-176 509.5,-176 509.5,-170 515.5,-164 521.5,-164 521.5,-164 581.5,-164 581.5,-164 587.5,-164 593.5,-170 593.5,-176 593.5,-176 593.5,-188 593.5,-188 593.5,-194 587.5,-200 581.5,-200"/><text text-anchor="middle" x="551.5" y="-185.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">数的扩展</text><text text-anchor="middle" x="551.5" y="-173.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">从具体到抽象</text></g><g id="node4" class="node"><path fill="#d4a574" stroke="black" d="M867,-200C867,-200 796,-200 796,-200 790,-200 784,-194 784,-188 784,-188 784,-176 784,-176 784,-170 790,-164 796,-164 796,-164 867,-164 867,-164 873,-164 879,-170 879,-176 879,-176 879,-188 879,-188 879,-194 873,-200 867,-200"/><text text-anchor="middle" x="831.5" y="-185.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">几何与空间</text><text text-anchor="middle" x="831.5" y="-173.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">空间法则的演进</text></g></g></svg>';
-}
-
-function updateOverviewProgress() {
-  const pct = Math.round(learnedCards.length / concepts.length * 100);
-  document.getElementById('overviewProgress').style.width = pct + '%';
-  document.getElementById('overviewLearned').textContent = learnedCards.length;
-}
-
-// ============ TAB 1: FLIP CARDS ============
-let currentCardIdx = 0;
-let cardFlipped = false;
-
-function setCard(idx) {
-  currentCardIdx = idx;
-  cardFlipped = false;
-  const c = concepts[idx];
-  document.getElementById('flipFront').innerHTML =
-    '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3>'+
-    '<p style="color:var(--text2);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+
-    (learnedCards.includes(c.id)?'<span class="concept-card mks" style="margin-top:8px;padding:4px 12px;border-radius:12px;border-left:0;font-size:.78rem">✓ 已学习</span>':'');
-  document.getElementById('flipBack').innerHTML =
-    '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div>'+
-    '<div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div>'+
-    '<div style="margin-bottom:6px"><strong style="color:#27ae60">示例：</strong>'+c.example+'</div>'+
-    '<div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
-  document.getElementById('flipInner').classList.remove('flipped');
-  document.getElementById('cardIndex').textContent = (idx+1)+' / '+concepts.length;
-  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
-}
-
-function prevCard() { if (currentCardIdx > 0) setCard(currentCardIdx - 1); }
-function nextCard() { if (currentCardIdx < concepts.length - 1) setCard(currentCardIdx + 1); }
-
-function markLearned() {
-  const id = concepts[currentCardIdx].id;
-  if (learnedCards.includes(id)) {
-    learnedCards = learnedCards.filter(x => x !== id);
-  } else {
-    learnedCards.push(id);
-  }
-  save();
-  updateProgress();
-  setCard(currentCardIdx);
-}
-
-function updateProgress() {
-  const pct = Math.round(learnedCards.length / concepts.length * 100);
-  document.getElementById('cardProgress').style.width = pct + '%';
-  document.getElementById('cardLearned').textContent = learnedCards.length;
-  updateOverviewProgress();
-}
-
-document.getElementById('flipInner').addEventListener('click', function() {
-  this.classList.toggle('flipped');
-  cardFlipped = !cardFlipped;
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(function(b){
+b.addEventListener('click',function(){
+document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active')});
+document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('active')});
+this.classList.add('active');
+document.getElementById('panel'+this.dataset.tab).classList.add('active');
+if(this.dataset.tab==='4') renderReview();
+});
 });
 
-// ============ TAB 2: QUIZ SYSTEM ============
-function startQuiz() {
-  const container = document.getElementById('quizContainer');
-  // Shuffle and pick
-  const shuffledMC = [...mcQuestions].sort(() => Math.random() - 0.5).slice(0, 12);
-  const shuffledSA = [...saQuestions].sort(() => Math.random() - 0.5).slice(0, 6);
-
-  let html = '';
-  shuffledMC.forEach((q, qi) => {
-    html += '<div class="quiz-card" id="mq'+qi+'"><span class="q-tag q-mc">选择题 '+(qi+1)+'</span>';
-    html += '<div class="q-text">'+q.q+'</div>';
-    q.opts.forEach((o, oi) => {
-      html += '<div class="q-option" onclick="selectMC('+qi+','+oi+',\''+q.answer+'\',\''+q.exp.replace(/'/g,"\\'")+'\')">'+'ABCD'[oi]+'. '+o+'</div>';
-    });
-    html += '<div class="q-feedback" id="mqfb'+qi+'"></div></div>';
-  });
-
-  shuffledSA.forEach((q, qi) => {
-    html += '<div class="quiz-card"><span class="q-tag q-sa">简答题 '+(qi+1)+'</span>';
-    html += '<div class="q-text">'+q.q+'</div>';
-    html += '<textarea class="sa-input" id="saInput'+qi+'" placeholder="输入你的答案..."></textarea>';
-    html += '<button class="btn btn-sm btn-outline" onclick="checkSA('+qi+',\''+q.ref.replace(/'/g,"\\'")+'\')" style="margin-top:8px">对比参考答案</button>';
-    html += '<div class="sa-reveal" id="saRev'+qi+'"></div></div>';
-  });
-
-  container.innerHTML = html;
+function switchTab(idx){
+document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+var btn = document.querySelector('.tab-btn[data-tab="'+idx+'"]');
+if(btn) btn.classList.add('active');
+document.getElementById('panel'+idx).classList.add('active');
+if(idx===4) renderReview();
 }
 
-function selectMC(qi, oi, answer, exp) {
-  const card = document.getElementById('mq'+qi);
-  if (!card || card.dataset.done) return;
-  card.dataset.done = '1';
-  const opts = card.querySelectorAll('.q-option');
-  opts.forEach((o,i) => {
-    o.style.pointerEvents = 'none';
-    if (i == answer) o.classList.add('correct');
-    if (i == oi && i != answer) o.classList.add('wrong');
-  });
-  const fb = document.getElementById('mqfb'+qi);
-  if (oi == answer) {
-    fb.className = 'q-feedback right show';
-    fb.textContent = '✅ 正确！' + exp;
-  } else {
-    fb.className = 'q-feedback wrong-msg show';
-    fb.textContent = '❌ 错误。正确答案是 ' + 'ABCD'[parseInt(answer)] + '。' + exp;
-    // Add to wrong book
-    const qdata = mcQuestions.find(q => q.answer == answer && q.opts.join() == optsJoin(answer));
-    wrongAnswers.push({type:'mc', q: card.querySelector('.q-text').textContent, answer: parseInt(answer), exp: exp, time: Date.now()});
-    save();
-  }
+// ===== SVG CONCEPT MAP =====
+function renderSVG(){
+document.getElementById('conceptMap').innerHTML = '<svg width="1745pt" height="260pt" viewBox="0.00 0.00 1745.00 260.00" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 256)"><polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-256 1741,-256 1741,4 -4,4"/><g id="rootNode"><path fill="#c0392b" stroke="#c0392b" stroke-width="2" d="M1031,-252C1031,-252 915,-252 915,-252 909,-252 903,-246 903,-240 903,-240 903,-228 903,-228 903,-222 909,-216 915,-216 915,-216 1031,-216 1031,-216 1037,-216 1043,-222 1043,-228 1043,-228 1043,-240 1043,-240 1043,-246 1037,-252 1031,-252"/><text text-anchor="middle" x="973" y="-237" font-family="sans-serif" font-size="11" fill="#fff">认知跃迁的三级阶梯</text><text text-anchor="middle" x="973" y="-224" font-family="sans-serif" font-size="11" fill="#fff">从具象到抽象的工具进化</text></g><g id="t1a"><path fill="#d4a574" stroke="#d4a574" d="M539,-180C539,-180 430,-180 430,-180 424,-180 418,-174 418,-168 418,-168 418,-156 418,-156 418,-150 424,-144 430,-144 430,-144 539,-144 539,-144 545,-144 551,-150 551,-156 551,-156 551,-168 551,-168 551,-174 545,-180 539,-180"/><text text-anchor="middle" x="485" y="-165" font-family="sans-serif" font-size="11" fill="#fff">公理化思维</text><text text-anchor="middle" x="485" y="-152" font-family="sans-serif" font-size="11" fill="#fff">逻辑推理 · 从定理到体系</text></g><g id="t1b"><path fill="#d4a574" stroke="#d4a574" d="M1039,-180C1039,-180 907,-180 907,-180 901,-180 895,-174 895,-168 895,-168 895,-156 895,-156 895,-150 901,-144 907,-144 907,-144 1039,-144 1039,-144 1045,-144 1051,-150 1051,-156 1051,-156 1051,-168 1051,-168 1051,-174 1045,-180 1039,-180"/><text text-anchor="middle" x="973" y="-165" font-family="sans-serif" font-size="11" fill="#fff">数的扩展</text><text text-anchor="middle" x="973" y="-152" font-family="sans-serif" font-size="11" fill="#fff">自然数 → 有理数 → 实数 → 复数</text></g><g id="t1c"><path fill="#d4a574" stroke="#d4a574" d="M1487,-180C1487,-180 1386,-180 1386,-180 1380,-180 1374,-174 1374,-168 1374,-168 1374,-156 1374,-156 1374,-150 1380,-144 1386,-144 1386,-144 1487,-144 1487,-144 1493,-144 1499,-150 1499,-156 1499,-156 1499,-168 1499,-168 1499,-174 1493,-180 1487,-180"/><text text-anchor="middle" x="1437" y="-165" font-family="sans-serif" font-size="11" fill="#fff">几何空间法则</text><text text-anchor="middle" x="1437" y="-152" font-family="sans-serif" font-size="11" fill="#fff">平面 → 曲面 → 高维空间</text></g></g></svg>';
+}
+renderSVG();
+
+// ===== DASHBOARD =====
+function renderConcepts(){
+var grid=document.getElementById('conceptGrid');
+grid.innerHTML=concepts.map(function(c,i){return '<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><strong>'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,60)+'...</p></div>';}).join('');
+var mks=document.getElementById('mksCoreGrid');
+mks.innerHTML=mksCoreIds.map(function(id){var c=concepts.find(function(x){return x.id===id});return '<div class="concept-card mks-core"><strong>★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,80)+'...</p></div>';}).join('');
+}
+renderConcepts();
+
+function updateProgress(){
+var pct=Math.round(learnedCards.length/concepts.length*100);
+document.getElementById('totalProgress').style.width=pct+'%';
+document.getElementById('progressText').textContent=pct>0?'学习进度 '+pct+'%（'+learnedCards.length+'/'+concepts.length+'）':'尚未开始学习';
+document.getElementById('cardProgress').style.width=pct+'%';
+document.getElementById('cardLearned').textContent=learnedCards.length;
+}
+updateProgress();
+
+// ===== FLIP CARDS =====
+var currentCardIdx=0,cardFlipped=false;
+function setCard(idx){
+currentCardIdx=idx;cardFlipped=false;
+var c=concepts[idx];
+document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">已学习</span>':'');
+document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+document.getElementById('flipInner').classList.remove('flipped');
+document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'已学习':'标记已学习';
+}
+setCard(0);
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){var id=concepts[currentCardIdx].id;if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}save();updateProgress();setCard(currentCardIdx);}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ===== QUIZ PRACTICE =====
+var currentQuestions=[],userAnswers={},quizTimeLeft=900,quizTimerInterval=null;
+function startQuiz(){
+var shuffled=Array.from(choiceQuestions).sort(function(){return Math.random()-0.5});
+var essayShuffled=Array.from(shortQuestions).sort(function(){return Math.random()-0.5});
+currentQuestions=shuffled.slice(0,13).concat(essayShuffled.slice(0,2));
+userAnswers={};quizTimeLeft=900;
+document.getElementById('quizScore').textContent='';
+document.getElementById('quizTimer').style.display='inline';
+renderQuizPractice();startQuizTimer();
+}
+function startQuizTimer(){
+quizTimeLeft=900;clearInterval(quizTimerInterval);updateQuizTimerDisplay();
+quizTimerInterval=setInterval(function(){quizTimeLeft--;updateQuizTimerDisplay();if(quizTimeLeft<=0){clearInterval(quizTimerInterval);submitQuizPractice();}},1000);
+}
+function updateQuizTimerDisplay(){var m=Math.floor(quizTimeLeft/60),s=quizTimeLeft%60;document.getElementById('quizTimer').textContent='⏱ '+m+':'+(s<10?'0':'')+s;}
+function renderQuizPractice(){
+var container=document.getElementById('quizContainer'),html='';
+currentQuestions.forEach(function(q,i){
+var opts=q.o;
+if(opts){html+='<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+opts.forEach(function(o,j){var sel=userAnswers[i]===j?' selected':'';html+='<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';});
+html+='<div id="fb'+i+'"></div></div>';}
+else{html+='<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';}
+});
+html+='<button class="btn" onclick="submitQuizPractice()">提交答案</button>';
+container.innerHTML=html;
+}
+function selectQuizChoice(qIdx,optIdx){
+if(userAnswers[qIdx]!==undefined) return;
+userAnswers[qIdx]=optIdx;
+var q=currentQuestions[qIdx],correctIdx=q.answer!==undefined?q.answer:(q.a!==undefined?q.a:(q.ans!==undefined?q.ans:-1));
+var isCorrect=optIdx===correctIdx;
+var allOpts=document.querySelectorAll('#qcard'+qIdx+' .option');
+allOpts.forEach(function(el,j){el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));el.style.pointerEvents='none';});
+var fb=document.getElementById('fb'+qIdx);fb.className='feedback '+(isCorrect?'correct':'wrong');
+fb.textContent=(isCorrect?'正确！':'错误。')+' 正确答案：'+'ABCD'[correctIdx];
+var correctCount=Object.values(userAnswers).filter(function(v,i){var qi=currentQuestions[i];if(!qi||!qi.o)return false;var ci=qi.answer!==undefined?qi.answer:(qi.a!==undefined?qi.a:(qi.ans!==undefined?qi.ans:-1));return v===ci;}).length;
+var totalChoice=currentQuestions.filter(function(qi){return qi.o;}).length;
+document.getElementById('quizScore').textContent='得分: '+correctCount+'/'+totalChoice;
+}
+function submitQuizPractice(){
+var correctCount=Object.values(userAnswers).filter(function(v,i){var qi=currentQuestions[i];if(!qi||!qi.o)return false;var ci=qi.answer!==undefined?qi.answer:(qi.a!==undefined?qi.a:(qi.ans!==undefined?qi.ans:-1));return v===ci;}).length;
+var totalChoice=currentQuestions.filter(function(qi){return qi.o;}).length;
+alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+clearInterval(quizTimerInterval);
+}
+function resetQuiz(){currentQuestions=[];userAnswers={};clearInterval(quizTimerInterval);document.getElementById('quizContainer').innerHTML='';document.getElementById('quizScore').textContent='';document.getElementById('quizTimer').style.display='none';}
+
+// ===== STATIC QUIZ =====
+function renderChoiceQuiz(){
+var div=document.getElementById('choiceQuiz');
+div.innerHTML=choiceQuestions.map(function(q,i){
+var answered=quizAnswered.includes(i),correct=q.answer;
+var opts=q.o.map(function(o,j){
+var cls='quiz-option';if(answered){if(j===correct)cls+=' correct';else cls+=' wrong';}
+return '<div class="'+cls+'" onclick="'+(answered?'':'answerChoice('+i+','+j+')')+'">'+'ABCD'[j]+'. '+o+(answered&&j===correct?' ✓':'')+'</div>';
+}).join('');
+return '<div style="margin-bottom:14px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+}).join('');
+}
+renderChoiceQuiz();
+function answerChoice(qIdx,choice){if(quizAnswered.includes(qIdx))return;var q=choiceQuestions[qIdx],correct=q.answer;quizAnswered.push(qIdx);if(choice!==correct){wrongAnswers.push({type:'choice',idx:qIdx,question:q.q,userAnswer:q.o[choice],correctAnswer:q.o[correct]});}save();renderChoiceQuiz();}
+function renderShortQuiz(){
+var div=document.getElementById('shortQuiz');
+div.innerHTML=shortQuestions.map(function(q,i){var revealed=shortRevealed.includes(i);return '<div style="margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+(revealed?'<div style="margin-top:6px;padding:10px;background:#fef9f2;border-radius:6px;color:var(--text-light);font-size:.88rem">'+q.a+'</div>':'<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="revealShort('+i+')">查看参考思路</button>')+'</div>';}).join('');
+}
+renderShortQuiz();
+function revealShort(i){if(!shortRevealed.includes(i)){shortRevealed.push(i);save();renderShortQuiz()}}
+
+// ===== EXAM MODE =====
+var examInterval=null,examSeconds=0,examActive=false,examQuestions=[],examAnswers=[];
+function startExam(){if(examActive)return;examActive=true;examSeconds=15*60;document.getElementById('startExamBtn').style.display='none';document.getElementById('examResult').style.display='none';var cIdx=[],sIdx=[];while(cIdx.length<7){var r=Math.floor(Math.random()*choiceQuestions.length);if(!cIdx.includes(r))cIdx.push(r)}while(sIdx.length<3){var r=Math.floor(Math.random()*shortQuestions.length);if(!sIdx.includes(r))sIdx.push(r)}examQuestions={choice:cIdx,short:sIdx};examAnswers=new Array(7).fill(-1);renderExam();document.getElementById('examArea').style.display='block';examInterval=setInterval(updateExamTimer,1000);}
+function updateExamTimer(){examSeconds--;var m=Math.floor(examSeconds/60),s=examSeconds%60;document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;if(examSeconds<=0){submitExam()}}
+function renderExam(){
+var div=document.getElementById('examArea'),html='';
+examQuestions.choice.forEach(function(idx,i){var q=choiceQuestions[idx];var opts=q.o.map(function(o,j){return '<div class="quiz-option" onclick="selectExam('+i+','+j+')" id="examOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';}).join('');html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';});
+examQuestions.short.forEach(function(idx,i){html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+8)+'. '+shortQuestions[idx].q+'</strong><p style="color:var(--text-light);font-size:.82rem;margin-top:4px">（简答题，请在心中作答）</p></div>';});
+html+='<button class="btn btn-primary" onclick="submitExam()">提交答卷</button>';div.innerHTML=html;
+}
+function selectExam(i,j){examAnswers[i]=j;for(var k=0;k<4;k++){var el=document.getElementById('examOpt'+i+'_'+k);if(el){el.classList.remove('selected');if(k===j)el.classList.add('selected')}}}
+function submitExam(){
+clearInterval(examInterval);examActive=false;document.getElementById('examTimer').textContent='00:00';var score=0,detail='';
+examQuestions.choice.forEach(function(idx,i){var q=choiceQuestions[idx],user=examAnswers[i],correct=q.answer,isCorrect=user===correct;if(isCorrect)score++;else{wrongAnswers.push({type:'exam',idx:idx,question:q.q,userAnswer:user>=0?q.o[user]:'未作答',correctAnswer:q.o[correct]})}detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:'+(isCorrect?'#eafaf1':'#fdecea')+'"><strong>'+(i+1)+'. '+q.q+'</strong><br>你的答案：'+(user>=0?q.o[user]:'未作答')+' '+(isCorrect?'✓':'✗')+'<br>正确答案：'+q.o[correct]+'</div>';});
+examQuestions.short.forEach(function(idx,i){var q=shortQuestions[idx];detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2"><strong>'+(i+8)+'. '+q.q+'</strong><br>'+q.a+'</div>';});
+save();var pct=Math.round(score/7*100);
+document.getElementById('examResult').style.display='block';
+document.getElementById('examResult').innerHTML='<h3 style="color:'+(pct>=70?'var(--success)':'var(--accent)')+'">得分：'+score+'/7（'+pct+'%）</h3>'+detail+'<button class="btn btn-outline" onclick="resetExam()">重新考试</button>';
+document.getElementById('examArea').style.display='none';
+}
+function resetExam(){clearInterval(examInterval);examActive=false;document.getElementById('startExamBtn').style.display='inline-block';document.getElementById('examResult').style.display='none';document.getElementById('examArea').style.display='none';document.getElementById('examTimer').textContent='15:00';}
+
+// ===== REVIEW =====
+function renderReview(){
+var totalQ=quizAnswered.length;
+var pct=totalQ>0?Math.round((totalQ-wrongAnswers.filter(function(w){return w.type==='choice'}).length)/totalQ*100):0;
+var days=Math.max(1,Math.ceil((Date.now()-new Date('2026-05-01').getTime())/86400000));
+document.getElementById('statsGrid').innerHTML='<div class="card stat-item"><div class="stat-value">'+totalQ+'</div><div class="stat-label">总答题数</div></div><div class="card stat-item"><div class="stat-value">'+pct+'%</div><div class="stat-label">正确率</div></div><div class="card stat-item"><div class="stat-value">'+days+'</div><div class="stat-label">学习天数</div></div>';
+var wb=document.getElementById('wrongBook');
+if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--success)">暂无错题，继续保持！</p>';}
+else{wb.innerHTML=wrongAnswers.map(function(w,i){return '<div style="margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0"><strong>'+w.question+'</strong><br><span style="color:var(--accent)">你的答案：'+w.userAnswer+'</span><br><span style="color:var(--success)">正确答案：'+w.correctAnswer+'</span></div>';}).join('');}
+var conceptMap={};
+wrongAnswers.forEach(function(w){var topic=w.question.slice(0,10);conceptMap[topic]=conceptMap[topic]||{topic:topic,count:0,questions:[]};conceptMap[topic].count++;conceptMap[topic].questions.push(w.question);});
+var sorted=Object.values(conceptMap).sort(function(a,b){return b.count-a.count});
+document.getElementById('weakConcepts').innerHTML=sorted.length>0?sorted.map(function(c){return '<div style="margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px"><strong>错'+c.count+'题：</strong>'+c.questions[0].slice(0,40)+'...</div>';}).join(''):'<p style="color:var(--success)">暂无薄弱概念</p>';
 }
 
-function optsJoin(a) { return mcQuestions.find(q => q.answer == a)?.opts.join() || ''; }
+// ===== MIND MAP TOGGLE =====
+(function(){
+var toggles=document.querySelectorAll('#mindmap .tree-toggle');
+toggles.forEach(function(el){el.addEventListener('click',function(){this.classList.toggle('open');var c=this.nextElementSibling;if(c)c.classList.toggle('open');});});
+})();
 
-function checkSA(qi, ref) {
-  const rev = document.getElementById('saRev'+qi);
-  rev.textContent = '📖 参考答案：' + ref;
-  rev.classList.add('show');
+// ===== SOCRATIC =====
+function toggleSocratic(el){var a=el.nextElementSibling;if(a)a.classList.toggle('open');}
+function toggleSocraticSub(el){var s=el.nextElementSibling;if(s)s.classList.toggle('open');}
+
+// ===== DECISION SIM =====
+function showDecision(scenarioIdx,optIdx){
+var results=[
+[{result:'线性回归的可解释性确实是核心优势——客户需要理解"为什么这个客户可能流失"才能采取行动。但深度学习并非"黑箱魔法"——SHAP和LIME等可解释性工具可以让深度学习也变得可解释。选A的代价是可能放弃更好的预测精度。',mks:'函数思维（多变量权衡）：没有绝对"最好"的模型，只有"匹配场景"的模型。如果客户是银行（监管要求可解释），选A合理；如果是广告推荐（精度优先），选B合理。'},
+{result:'精度不能是唯一考量。深度学习模型可能捕捉到表面上准确但现实中无意义的模式（过拟合）。更关键的是：如果你的模型不能解释"为什么"这个客户会流失，业务团队就无法采取行动。',mks:'相关性与因果性：深度学习捕捉的是相关性，但不一定是因果性。业务决策需要因果链条。'},
+{result:'两层模型看起来最"全面"，但要考虑成本：维护成本翻倍，接口可能成为新故障点。有时候"够用"比"完美"更优——如果线性回归已达标，额外复杂度就是浪费。',mks:'无穷大阶数比较：优化先降"量级"（从不能用到能用），再优化"系数"（从能用到好用）。'}],
+[{result:'规则引擎的透明性在金融领域确实重要——监管审查时需说清楚每笔贷款为什么批准或拒绝。但纯规则的问题：人的偏见会直接编码进规则（如"年龄>35"可能隐含歧视）。',mks:'公理化思维：规则引擎把"公平"定义为几条公理然后推导所有决策。但谁来确定这些公理？如果公理本身存在偏见，整个体系都会放大偏见。'},
+{result:'ML的核心优势不是"比人更公平"，而是"偏见的可见性"——人工规则的偏见隐藏在编码者脑中，ML的偏见可以量化检测（不同群体间的公平性指标）。但ML的黑箱问题在金融监管中确实存在。',mks:'直觉vs逻辑：人类直觉在复杂决策中不可靠。ML可克服直觉偏差，但引入了新风险——可能学习历史数据中的系统性歧视。'},
+{result:'混合架构——规则定义"绝对不可逾越"的底线（如禁止使用种族/性别特征），ML在规则允许范围内优化决策——是最务实的选择。规则保证合规，ML提升效率。',mks:'非欧几何启示：多个公理体系可以共存——规则体系（合规公理）和ML体系（效率公理）各自自洽，在交集区内做决策。"'}],
+[{result:'全量开放原始数据看似最"透明"，但数学上存在"重构攻击"——攻击者可通过组合多个"匿名"数据集精确识别个人。如Netflix Prize匿名数据被研究者通过交叉比对IMDb评分成功去匿名化。',mks:'无穷大思维：数据维度足够高时，几乎所有个体都是"唯一的"——高维空间中点之间距离趋于均匀。匿名化在数学上可能根本不存在。'},
+{result:'聚合统计虽然安全，但当粒度太粗时（如"全国平均收入"）信息量几乎为零。极端安全=极端无用。寻找安全与效用之间的最优平衡才是工程核心。',mks:'最优化思维：这不是"安全vs效用"的二选一，而是要在安全-效用曲线上找最佳工作点。'},
+{result:'差分隐私是最有数学美感的选择——通过添加精确可控的拉普拉斯噪声，数学上严格证明：任何个人在数据集中的存在与否，对输出结果的影响不超过ε（隐私预算）。将"隐私"从模糊政策转化为精确数学定义。',mks:'公理化思维的最高境界：将模糊概念（"隐私"）转化为可操作的数学定义（"邻接数据集输出的最大差异≤e^ε"）。毕达哥拉斯将直角三角形从直觉转化为公式，差分隐私将隐私从口号转化为数学——同一个认知跃迁。"'}]
+];
+var r=results[scenarioIdx][optIdx],el=document.getElementById('decisionResult'+scenarioIdx);
+el.style.display='block';
+el.innerHTML='<div style="margin-bottom:6px"><strong>反馈：</strong>'+r.result+'</div><div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>'+r.mks+'</div>';
 }
-
-function resetQuiz() {
-  document.getElementById('quizContainer').innerHTML = '';
-}
-
-// ============ TAB 3: EXAM MODE ============
-let examTimerId = null;
-let examSeconds = 0;
-
-function startExam() {
-  const container = document.getElementById('examContainer');
-  document.getElementById('examResult').style.display = 'none';
-  // Pick 7 MC + 3 SA
-  const pickedMC = [...mcQuestions].sort(() => Math.random() - 0.5).slice(0, 7);
-  const pickedSA = [...saQuestions].sort(() => Math.random() - 0.5).slice(0, 3);
-
-  let html = '';
-  pickedMC.forEach((q, qi) => {
-    html += '<div class="quiz-card" id="eq'+qi+'"><span class="q-tag q-mc">选择题 '+(qi+1)+'</span>';
-    html += '<div class="q-text">'+q.q+'</div>';
-    q.opts.forEach((o, oi) => {
-      html += '<div class="q-option" onclick="selectExamMC('+qi+','+oi+','+q.answer+')">'+'ABCD'[oi]+'. '+o+'</div>';
-    });
-    html += '</div>';
-  });
-  pickedSA.forEach((q, qi) => {
-    html += '<div class="quiz-card"><span class="q-tag q-sa">简答题 '+(qi+1)+'</span>';
-    html += '<div class="q-text">'+q.q+'</div>';
-    html += '<textarea class="sa-input" id="esaInput'+qi+'" placeholder="输入你的答案..."></textarea></div>';
-  });
-  html += '<button class="btn" onclick="submitExam()" style="margin-top:12px">提交试卷</button>';
-  container.innerHTML = html;
-
-  // Store exam data
-  container.dataset.mc = JSON.stringify(pickedMC.map(q => q.answer));
-  container.dataset.mcTotal = '7';
-
-  // Start timer
-  examSeconds = 15 * 60;
-  document.getElementById('examTimer').style.display = 'block';
-  document.getElementById('startExamBtn').disabled = true;
-  updateExamTimer();
-  if (examTimerId) clearInterval(examTimerId);
-  examTimerId = setInterval(function() {
-    examSeconds--;
-    updateExamTimer();
-    if (examSeconds <= 0) {
-      clearInterval(examTimerId);
-      submitExam();
-    }
-  }, 1000);
-}
-
-function updateExamTimer() {
-  const m = Math.floor(examSeconds / 60);
-  const s = examSeconds % 60;
-  const el = document.getElementById('examTimer');
-  el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-  if (examSeconds < 60) el.classList.add('warning');
-  else el.classList.remove('warning');
-}
-
-function selectExamMC(qi, oi, answer) {
-  const card = document.getElementById('eq'+qi);
-  if (!card || card.dataset.done) return;
-  card.dataset.done = '1';
-  card.dataset.chosen = oi;
-  const opts = card.querySelectorAll('.q-option');
-  opts.forEach((o,i) => {
-    o.style.pointerEvents = 'none';
-    if (i == oi) o.classList.add('selected');
-  });
-}
-
-function submitExam() {
-  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
-  document.getElementById('examTimer').style.display = 'none';
-  document.getElementById('startExamBtn').disabled = false;
-
-  const container = document.getElementById('examContainer');
-  const answers = JSON.parse(container.dataset.mc);
-  let score = 0;
-  for (let i = 0; i < answers.length; i++) {
-    const card = document.getElementById('eq'+i);
-    if (card && parseInt(card.dataset.chosen) === answers[i]) score++;
-  }
-
-  const total = answers.length;
-  const wrongItems = [];
-  for (let i = 0; i < answers.length; i++) {
-    const card = document.getElementById('eq'+i);
-    if (card && parseInt(card.dataset.chosen) !== answers[i]) {
-      wrongItems.push(mcQuestions.find(q => q.answer === answers[i]));
-      if (card.dataset.chosen !== undefined) {
-        wrongAnswers.push({type:'exam_mc', q: card.querySelector('.q-text').textContent, answer: answers[i], time: Date.now()});
-      }
-    }
-  }
-
-  examHistory.push({score: score, total: total, time: Date.now()});
-  save();
-
-  const resultDiv = document.getElementById('examResult');
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML =
-    '<div class="section-title">📊 考试成绩</div>'+
-    '<div class="stat-grid">'+
-    '<div class="stat-card"><div class="num">'+score+'/'+total+'</div><div class="lbl">选择题得分</div></div>'+
-    '<div class="stat-card"><div class="num">'+(score/total*100).toFixed(0)+'%</div><div class="lbl">正确率</div></div>'+
-    '</div>'+
-    '<p style="margin-top:12px;font-size:.85rem;color:var(--text2)">简答题请自行对照参考答案评估。错题已自动加入错题本（复习模式）。</p>';
-}
-
-function resetExam() {
-  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
-  document.getElementById('examTimer').style.display = 'none';
-  document.getElementById('startExamBtn').disabled = false;
-  document.getElementById('examContainer').innerHTML = '';
-  document.getElementById('examResult').style.display = 'none';
-}
-
-// ============ TAB 4: REVIEW MODE ============
-function renderReview() {
-  // Wrong book
-  const wb = document.getElementById('wrongBook');
-  if (wrongAnswers.length === 0) {
-    wb.innerHTML = '<p style="font-size:.85rem;color:var(--text2)">🎉 暂无错题，继续加油！</p>';
-  } else {
-    wb.innerHTML = wrongAnswers.slice(-20).reverse().map((w,i) =>
-      '<div class="quiz-card" style="font-size:.82rem">'+
-      '<span class="q-tag q-mc">错题 '+(i+1)+'</span>'+
-      '<p><strong>'+w.q+'</strong></p>'+
-      '<p style="color:var(--accent)">正确答案：' + 'ABCD'[w.answer] + '</p>'+
-      (w.exp ? '<p style="color:var(--text2);font-size:.78rem">'+w.exp+'</p>' : '')+
-      '</div>'
-    ).join('');
-  }
-
-  // Stats
-  const totalExams = examHistory.length;
-  const avgScore = totalExams > 0 ? examHistory.reduce((s,e) => s + e.score/e.total, 0) / totalExams * 100 : 0;
-  document.getElementById('statGrid').innerHTML =
-    '<div class="stat-card"><div class="num">'+learnedCards.length+'</div><div class="lbl">已学概念</div></div>'+
-    '<div class="stat-card"><div class="num">'+wrongAnswers.length+'</div><div class="lbl">错题数</div></div>'+
-    '<div class="stat-card"><div class="num">'+totalExams+'</div><div class="lbl">考试次数</div></div>'+
-    '<div class="stat-card"><div class="num">'+(totalExams>0?avgScore.toFixed(1)+'%':'-')+'</div><div class="lbl">平均正确率</div></div>';
-}
-
-function clearWrongBook() {
-  if (confirm('确定要清空所有错题记录吗？此操作不可恢复。')) {
-    wrongAnswers = [];
-    save();
-    renderReview();
-  }
-}
-
-// ============ TAB 5: MINDMAP ============
-function toggleMindmap(el) {
-  // Accept both string id and element reference
-  var node = (typeof el === 'string') ? document.getElementById(el) : el;
-  if (!node) return;
-  var children = node.nextElementSibling;
-  if (children && (children.classList.contains('tree-children') || children.classList.contains('tree-children') && children.classList.contains('show'))) {
-    children.classList.toggle('show');
-    children.classList.toggle('open');
-  }
-}
-
-// ============ TAB 8: DECISION ============
-function chooseDecision(round, choice, el) {
-  // Mark chosen
-  var opts = el.parentElement.querySelectorAll('.d-option');
-  opts.forEach(function(o) { o.classList.remove('chosen'); });
-  el.classList.add('chosen');
-  opts.forEach(function(o) { o.style.pointerEvents = 'none'; });
-
-  var resultDiv = document.getElementById('dResult'+round);
-  resultDiv.classList.add('show');
-
-  if (round === 1) {
-    if (choice === 'A') {
-      resultDiv.innerHTML = '<p><strong style="color:#27ae60">✅ 最佳选择</strong></p>'+
-        '<p><strong>向量分析：</strong>5人方向完全一致（夹角0°），合力=5（最大可能值）。B方案：3人+2人夹角约110°，合力≈√(3²+2²+2×3×2×cos110°)≈3.5，产出只有A的70%。C方案三线作战效率更低。</p>'+
-        '<p style="margin-top:4px;color:var(--text2)"><strong>MKS核心：</strong>向量方向性——创业公司资源有限，方向聚焦比多线作战更高效。120°夹角是临界点（合力=单个向量），超过此角度不如单干。</p>';
-    } else if (choice === 'B') {
-      resultDiv.innerHTML = '<p><strong style="color:var(--accent)">⚠️ 次优选择</strong></p>'+
-        '<p>双线作战（平台+应用）的合力约3.5，比全投入（合力=5）低30%。虽然兼顾了短期收入，但创业早期资源应集中在一个方向形成突破。向量模型的启示：先集中力量打透一个点，再扩展方向。</p>';
-    } else {
-      resultDiv.innerHTML = '<p><strong style="color:var(--accent)">❌ 不推荐</strong></p>'+
-        '<p>三线作战会让合力趋近于零（三维向量均匀分布时各方向相互抵消）。创业公司最怕\u201C什么都想做\u201D——结果每个方向都做不深。向量思维告诉我们：方向分散=努力抵消。</p>';
-    }
-  }
-
-  if (round === 2) {
-    if (choice === 'C') {
-      resultDiv.innerHTML = '<p><strong style="color:#27ae60">✅ 最佳策略</strong></p>'+
-        '<p><strong>等比级数计算：</strong>120万贷款，6%利率30年等额本息月供约7,193元，总利息约138.9万。4.5%利率月供约6,079元，总利息约98.8万。利率差1.5%，30年节省约40万利息——相当于房价的1/3！</p>'+
-        '<p style="margin-top:4px;color:var(--text2)"><strong>MKS核心：</strong>级数与复利——长期贷款中利率微小变动导致总利息差异巨大，这是等比级数积累效应的体现。懂得这个数学原理就能在谈判中占据主动。</p>';
-    } else if (choice === 'B') {
-      resultDiv.innerHTML = '<p><strong style="color:var(--accent)">⚠️ 方向对但不够精确</strong></p>'+
-        '<p>你的直觉正确——利率差1.5%在30年维度上确实影响巨大。但\u201C也许几千块\u201D太模糊了。精确计算后你会发现月供差1,114元/月，30年总差约40万。当你带着这个精确数字去A银行谈判时，A可能也会降低利率留住客户。</p>';
-    } else {
-      resultDiv.innerHTML = '<p><strong style="color:var(--accent)">❌ 需要重新考虑</strong></p>'+
-        '<p>利率差1.5%在30年维度上的影响远超直觉判断。120万贷款，6% vs 4.5%，总利息差约40万元——这几乎是你贷款本金的1/3。数学的复利模型告诉我们：利率对总成本的影响比本金更大。</p>';
-    }
-  }
-
-  if (round === 3) {
-    if (choice === 'B') {
-      resultDiv.innerHTML = '<p><strong style="color:#27ae60">✅ 最佳选择</strong></p>'+
-        '<p><strong>公理化分析：</strong>三条\u201C第一\u201D如同同时使用欧氏、罗氏、黎曼三条不同的平行公理——体系必然矛盾。正确的做法是选一条核心公理（如\u201C客户第一\u201D），其他维度的\u201C第一\u201D降级为约束条件（如\u201C在保障客户利益的前提下最大化员工福利\u201D）。</p>'+
-        '<p style="margin-top:4px;color:var(--text2)"><strong>MKS核心：</strong>公理化思维——体系的前提必须一致（不矛盾），否则推导出的结论会互相冲突。如同几何体系只能选一条平行公理，企业价值观体系也只能有一条\u201C第一优先\u201D。</p>';
-    } else if (choice === 'C') {
-      resultDiv.innerHTML = '<p><strong style="color:var(--accent)">⚠️ 部分正确但有隐患</strong></p>'+
-        '<p>分场景定义优先级比全部保留好，但实际上\u201C售前客户优先、售后员工优先\u201D之间的边界很模糊——售后的客户投诉如果涉及员工责任怎么办？公理需要简洁、无歧义。三条公理太复杂了，不如一条清晰的。</p>';
-    } else {
-      resultDiv.innerHTML = '<p><strong style="color:var(--accent)">❌ 不可行</strong></p>'+
-        '<p>\u201C具体问题具体分析\u201D恰恰是放弃了管理的公理化——等于没有原则。当三条\u201C第一\u201D同时存在，中层管理者遇到冲突时没有任何判断标准，最终变成\u201C谁权力大听谁的\u201D。这不是管理，这是丛林法则。</p>';
-    }
-  }
-}
-
-// ============ INIT ============
-function init() {
-  renderOverviewConcepts();
-  renderBoundaryTable();
-  renderSVG();
-  updateOverviewProgress();
-  setCard(0);
-  updateProgress();
-  renderReview();
-}
-
-init();
 </script>
-
 </body>
 </html>
