@@ -3,50 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>吴军·硅谷来信 — 知识主板</title>
+<title>吴军·硅谷来信 — 七窗世界</title>
 <style>
 /* ============================================================
-   「窗外的世界」— 硅谷来信¹ 知识主板导航页
-   设计概念：一扇真实的木框窗户，窗外是辽阔的风景
-   7个专题化作窗台上的7张卡片/路牌，指向不同的世界
+   「七窗世界」— 硅谷来信¹ 知识主板
+   设计概念：一间温暖的旧书房墙壁上，嵌着七扇窗户。
+   每一扇窗外是不同的世界。你站在暗处，往外望。
+   纯 HTML/CSS，无 Canvas，无 JS。
    ============================================================ */
 
 :root {
-  --wall-bg: #fdf6ec;
-  --wall-dark: #f5ead5;
+  --wall: #fdf6ec;
+  --wall-shadow: #e8dcc8;
   --text: #3d2f2f;
   --text-light: #6b5b5b;
-  --accent: #b53434;
-
-  /* 7个专题的柔和自然色调 */
-  --c1: #5b8cbd;
-  --c2: #c4706a;
-  --c3: #b8944a;
-  --c4: #9b7a4a;
-  --c5: #9b72b0;
-  --c6: #6b9b6b;
-  --c7: #6b7db3;
+  --brass: #c4a840;
+  --brass-dark: #8a7020;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 /* ============================================================
-   ROOM — 温暖的室内
+   ROOM — 旧书房的墙壁
    ============================================================ */
 body {
   font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", serif;
   background:
-    /* 暖色墙面 */
-    linear-gradient(180deg, #fdf6ec 0%, #faf1e0 25%, #f5ead5 55%, #fdf6ec 100%),
-    /* 墙纸细纹 */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(139,105,20,0.012) 3px,
-      rgba(139,105,20,0.012) 6px
-    );
-  background-attachment: fixed;
+    /* 暖米色墙面 */
+    linear-gradient(180deg, #fef9f2 0%, #fdf6ec 8%, #faf0e0 30%, #f5ead5 55%, #faf0e0 78%, #fdf6ec 100%),
+    /* 墙纸细密纹理 */
+    repeating-linear-gradient(0deg,
+      transparent, transparent 2px,
+      rgba(139,105,20,0.01) 2px, rgba(139,105,20,0.01) 4px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 18px,
+      rgba(139,105,20,0.015) 18px, rgba(139,105,20,0.015) 19px);
   color: var(--text);
   line-height: 1.7;
   min-height: 100vh;
@@ -56,755 +47,1338 @@ body {
   overflow-x: hidden;
 }
 
-/* 室内灯光暗角 */
+/* 室内暗角 — 从房间中心向外变暗 */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background: radial-gradient(ellipse at 50% 35%,
-    transparent 35%,
-    rgba(50,30,10,0.10) 100%);
+    transparent 20%,
+    rgba(40,25,10,0.04) 45%,
+    rgba(40,25,10,0.10) 70%,
+    rgba(30,18,5,0.18) 100%);
   pointer-events: none;
   z-index: 0;
 }
 
 /* ============================================================
-   HEADER — 铭牌
+   MAIN WALL CONTAINER
+   ============================================================ */
+.wall {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ============================================================
+   HEADER — 墙上的黄铜铭牌 + 标题
    ============================================================ */
 .header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 返回黄铜铭牌 */
+.brass-plaque {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(180deg, #dcc870 0%, #c4a840 25%, #b09030 55%, #c4a840 80%, #d4b860 100%);
+  border: 1.5px solid #8a7020;
+  border-radius: 3px;
+  padding: 5px 14px;
+  text-decoration: none;
+  color: #3d2818;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,220,0.4),
+    inset 0 -1px 2px rgba(0,0,0,0.12),
+    0 0 0 1px rgba(0,0,0,0.06);
   position: relative;
-  z-index: 1;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.brass-plaque:hover {
+  background: linear-gradient(180deg, #eed880 0%, #d4b850 25%, #c0a040 55%, #d4b850 80%, #e4c870 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,220,0.5);
+  color: #2a1a0a;
+}
+/* 螺丝 */
+.brass-plaque::before,
+.brass-plaque::after {
+  content: '';
+  position: absolute;
+  width: 4px; height: 4px;
+  background: radial-gradient(circle at 40% 40%, #a08030 0%, #604810 100%);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.brass-plaque::before { left: 5px; }
+.brass-plaque::after { right: 5px; }
+
+/* 标题 */
+.title-area {
   text-align: center;
-  padding: 32px 20px 20px;
+}
+.title-area h1 {
+  font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+  font-weight: 900;
+  color: #8b1a1a;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+}
+.title-area .subtitle {
+  font-size: clamp(0.7rem, 1.2vw, 0.82rem);
+  color: var(--text-light);
+  letter-spacing: 0.12em;
+}
+
+/* ============================================================
+   WINDOWS GRID — 两层弹性行
+   ============================================================ */
+.windows-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 28px 22px;
   width: 100%;
 }
 
-.header .plaque {
-  display: inline-block;
-  background: linear-gradient(180deg, #fffef9 0%, #fdf5ea 100%);
-  border: 2px solid #d4c5a9;
-  border-radius: 6px;
-  padding: 18px 36px 14px;
-  box-shadow:
-    0 2px 10px rgba(0,0,0,0.06),
-    inset 0 0 0 1px rgba(255,255,255,0.8);
-  position: relative;
+.windows-row.row-top {
+  margin-bottom: 18px;
 }
 
-.header .plaque::before {
-  content: '';
-  position: absolute;
-  top: 3px; left: 3px; right: 3px; bottom: 3px;
-  border: 1px dashed rgba(180,160,130,0.35);
-  border-radius: 3px;
+/* ============================================================
+   PROPS — 窗间小物件
+   ============================================================ */
+.prop {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  opacity: 0.7;
   pointer-events: none;
 }
 
-.header h1 {
-  font-size: clamp(1.2rem, 3vw, 1.9rem);
-  color: var(--accent);
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  margin-bottom: 2px;
-}
-
-.header .subtitle {
-  font-size: clamp(0.7rem, 1.3vw, 0.85rem);
-  color: var(--text-light);
-  letter-spacing: 0.1em;
-}
-
-.stats-row {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-.stat-item { text-align: center; }
-.stat-num {
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  font-weight: 800;
-  color: #8b6914;
-  line-height: 1.2;
-}
-.stat-label {
-  font-size: 0.65rem;
-  color: var(--text-light);
-  letter-spacing: 0.05em;
-}
-
-/* ============================================================
-   WINDOW CONTAINER
-   ============================================================ */
-.window-wrapper {
+/* 旧书堆 */
+.prop-books {
+  width: 50px;
+  height: 70px;
   position: relative;
-  z-index: 1;
-  width: 92%;
-  max-width: 1100px;
-  margin: 0 auto;
-  filter: drop-shadow(0 10px 28px rgba(0,0,0,0.22));
+  margin: 0 4px;
+}
+.prop-books::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 42px; height: 55px;
+  background: linear-gradient(180deg, #8b2020 0%, #6b1515 100%);
+  border-radius: 2px 1px 1px 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.prop-books::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 38px; height: 62px;
+  background: linear-gradient(180deg, #1a4a3a 0%, #0d3025 100%);
+  border-radius: 1px 2px 2px 1px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* 咖啡杯 */
+.prop-coffee {
+  width: 28px;
+  height: 30px;
+  position: relative;
+  margin: 0 8px;
+}
+.prop-coffee::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 2px;
+  width: 24px; height: 20px;
+  background: linear-gradient(180deg, #f5f0e8 0%, #d4c8b8 100%);
+  border-radius: 2px 2px 6px 6px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+.prop-coffee::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 12px;
+  width: 8px; height: 3px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+/* 台灯 */
+.prop-lamp {
+  width: 36px;
+  height: 50px;
+  position: relative;
+  margin: 0 6px;
+}
+.prop-lamp::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 8px;
+  background: linear-gradient(180deg, #4a3828 0%, #3a2818 100%);
+  border-radius: 50%;
+}
+.prop-lamp::after {
+  content: '';
+  position: absolute;
+  bottom: 6px; left: 50%;
+  width: 3px; height: 24px;
+  background: linear-gradient(180deg, #6a5030 0%, #4a3828 100%);
+  transform: translateX(-50%) rotate(-8deg);
+  transform-origin: bottom center;
+}
+
+/* 散落的纸 */
+.prop-papers {
+  width: 40px;
+  height: 32px;
+  position: relative;
+  margin: 0 4px;
+}
+.prop-papers::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 2px;
+  width: 32px; height: 24px;
+  background: #fdf6ec;
+  border: 1px solid #d4c5a9;
+  transform: rotate(-3deg);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+.prop-papers::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 6px;
+  width: 30px; height: 22px;
+  background: #fef9f2;
+  border: 1px solid #d4c5a9;
+  transform: rotate(2deg);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 /* ============================================================
-   WINDOW FRAME — 多层木框（写实木纹 + 立体厚度）
+   WINDOW — 单扇窗户整体
    ============================================================ */
-
-/* 最外层 — 嵌在墙里的窗框外缘 */
-.window-outer {
-  background:
-    /* 木纹底色 */
-    linear-gradient(180deg, #9b7a3a 0%, #8b6914 20%, #7a5c10 50%, #8b6914 80%, #9b7a3a 100%),
-    /* 木纹细线 */
-    repeating-linear-gradient(
-      89deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.06) 2px,
-      rgba(0,0,0,0.06) 3px,
-      transparent 3px,
-      transparent 6px,
-      rgba(255,255,255,0.04) 6px,
-      rgba(255,255,255,0.04) 7px,
-      transparent 7px
-    ),
-    /* 木纹年轮曲线感 */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 8px,
-      rgba(0,0,0,0.04) 8px,
-      rgba(0,0,0,0.04) 9px,
-      transparent 9px,
-      transparent 14px,
-      rgba(255,255,255,0.03) 14px,
-      rgba(255,255,255,0.03) 15px,
-      transparent 15px
-    );
-  border-radius: 12px;
-  padding: 12px;
+.window {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+.window:hover {
+  transform: translateY(-3px);
+}
+.window:hover .win-frame-outer {
   box-shadow:
-    inset 0 2px 6px rgba(0,0,0,0.25),
-    0 0 0 3px rgba(139,105,20,0.15);
+    0 12px 32px rgba(0,0,0,0.28),
+    0 4px 10px rgba(0,0,0,0.18);
 }
 
-/* 中层框 — 略浅色调 */
-.window-middle {
+/* ============================================================
+   WINDOW FRAME — 三层木框（立体厚度）
+   ============================================================ */
+
+/* 最外层 — 深胡桃木，嵌在墙里 */
+.win-frame-outer {
   background:
-    linear-gradient(180deg, #c89860 0%, #b8904a 20%, #a07830 50%, #b8904a 80%, #c89860 100%),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 3px,
-      rgba(0,0,0,0.05) 3px,
-      rgba(0,0,0,0.05) 4px,
-      transparent 4px,
-      transparent 7px
-    );
-  border-radius: 8px;
+    linear-gradient(180deg, #5a3820 0%, #4a2812 15%, #3a2010 45%, #4a2812 75%, #5a3820 100%),
+    repeating-linear-gradient(89deg,
+      transparent, transparent 2px,
+      rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 3px,
+      transparent 3px, transparent 5px,
+      rgba(255,255,255,0.03) 5px, rgba(255,255,255,0.03) 6px,
+      transparent 6px);
+  border-radius: 10px;
   padding: 10px;
   box-shadow:
-    inset 0 1px 3px rgba(255,255,255,0.3),
-    inset 0 -2px 4px rgba(0,0,0,0.15);
+    0 6px 18px rgba(0,0,0,0.25),
+    0 2px 4px rgba(0,0,0,0.15),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+  transition: box-shadow 0.3s ease;
 }
 
-/* 内层框 — 最浅色、最细 */
-.window-inner {
+/* 中层 — 略浅木色 */
+.win-frame-mid {
   background:
-    linear-gradient(180deg, #d4a574 0%, #c89860 25%, #b8904a 60%, #c89860 100%),
-    repeating-linear-gradient(
-      88deg,
-      transparent,
-      transparent 4px,
-      rgba(0,0,0,0.03) 4px,
-      rgba(0,0,0,0.03) 5px,
-      transparent 5px
-    );
-  border-radius: 5px;
+    linear-gradient(180deg, #7a5030 0%, #6a4020 25%, #5a3820 50%, #6a4020 75%, #7a5030 100%),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 3px,
+      rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px,
+      transparent 4px, transparent 7px);
+  border-radius: 6px;
   padding: 8px;
   box-shadow:
-    inset 0 0 6px rgba(0,0,0,0.15),
-    inset 0 1px 2px rgba(255,255,255,0.25);
+    inset 0 2px 5px rgba(0,0,0,0.25),
+    inset 0 -1px 2px rgba(255,255,255,0.12);
 }
 
-/* 玻璃压条 — 深色窄边 */
-.window-glass-frame {
+/* 内层 — 最浅木色 */
+.win-frame-inner {
   background:
-    linear-gradient(180deg, #5a3e2b 0%, #4a3220 50%, #3d2818 100%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(0,0,0,0.15) 3px,
-      rgba(0,0,0,0.15) 4px,
-      transparent 4px
-    );
-  border-radius: 3px;
-  padding: 0;
-  box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
-  line-height: 0;
+    linear-gradient(180deg, #8a6040 0%, #7a5030 30%, #6a4525 60%, #7a5030 100%),
+    repeating-linear-gradient(88deg,
+      transparent, transparent 4px,
+      rgba(0,0,0,0.03) 4px, rgba(0,0,0,0.03) 5px,
+      transparent 5px);
+  border-radius: 4px;
+  padding: 5px;
+  box-shadow:
+    inset 0 0 6px rgba(0,0,0,0.2),
+    inset 0 1px 2px rgba(255,255,255,0.12);
+}
+
+/* 玻璃区域 */
+.win-glass {
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #000; /* fallback */
 }
 
 /* ============================================================
-   LANDSCAPE VIEW — 窗外风景
+   SCENE SHARED — 窗外风景共用样式
    ============================================================ */
-.landscape {
-  position: relative;
-  width: 100%;
-  height: 520px;
-  border-radius: 2px;
+.scene {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  background: #1a2a4a; /* fallback */
 }
 
-/* ---- 天空 ---- */
-.sky {
+/* 暗角 vignette — 从暗处望向亮处 */
+.win-vignette {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg,
-    #3a5078 0%,      /* 顶部：深蓝夜空 */
-    #5a7090 8%,
-    #7a90a8 16%,
-    #a0b8c8 28%,
-    #c0b8a0 45%,     /* 中段：过渡 */
-    #d4a870 62%,     /* 金色区域 */
-    #e8c090 72%,
-    #f0c890 80%,     /* 地平线：暖金 */
-    #e8c888 88%,
-    #d0a870 100%
-  );
-}
-
-/* ---- 夕阳/晨光 ---- */
-.sun-glow {
-  position: absolute;
-  bottom: 18%;
-  left: 22%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle,
-    rgba(255,240,210,0.9) 0%,
-    rgba(255,220,160,0.6) 15%,
-    rgba(255,200,120,0.3) 30%,
-    rgba(255,180,80,0.1) 50%,
-    transparent 70%
-  );
-  border-radius: 50%;
+  z-index: 8;
+  background: radial-gradient(ellipse at 50% 55%,
+    transparent 35%,
+    rgba(0,0,0,0.06) 55%,
+    rgba(0,0,0,0.18) 75%,
+    rgba(0,0,0,0.35) 100%);
   pointer-events: none;
+  border-radius: 2px;
 }
 
-/* 太阳本体 */
-.sun-disc {
-  position: absolute;
-  bottom: 22%;
-  left: 24%;
-  width: 50px;
-  height: 50px;
-  background: radial-gradient(circle,
-    #fffef5 0%,
-    #fff8e0 30%,
-    #ffe0a0 70%,
-    rgba(255,200,100,0) 100%
-  );
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-/* ---- 云层 — 几缕薄云 ---- */
-.cloud {
-  position: absolute;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.cloud-1 {
-  top: 12%;
-  left: 15%;
-  width: 180px;
-  height: 30px;
-  filter: blur(12px);
-  background: rgba(255,255,255,0.12);
-}
-.cloud-2 {
-  top: 22%;
-  right: 10%;
-  width: 220px;
-  height: 24px;
-  filter: blur(14px);
-  background: rgba(255,240,220,0.10);
-}
-.cloud-3 {
-  top: 35%;
-  left: 55%;
-  width: 140px;
-  height: 20px;
-  filter: blur(10px);
-  background: rgba(255,220,180,0.10);
-}
-
-/* ---- 远山 第1层（最远、最淡） ---- */
-.mountains-far {
-  position: absolute;
-  bottom: 35%;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(180deg,
-    rgba(140,160,180,0.5) 0%,
-    rgba(140,160,180,0.7) 40%,
-    rgba(140,160,180,0.55) 100%
-  );
-  clip-path: polygon(
-    0% 100%, 0% 55%, 3% 45%, 7% 52%, 12% 38%, 17% 48%, 22% 32%, 26% 42%,
-    31% 35%, 35% 44%, 40% 28%, 44% 38%, 48% 32%, 53% 40%, 57% 34%,
-    62% 42%, 66% 36%, 70% 44%, 74% 38%, 78% 46%, 82% 40%, 86% 48%,
-    90% 42%, 93% 50%, 96% 44%, 100% 52%, 100% 100%
-  );
-}
-
-/* ---- 远山 第2层（稍近、略深） ---- */
-.mountains-mid {
-  position: absolute;
-  bottom: 32%;
-  left: 0;
-  right: 0;
-  height: 220px;
-  background: linear-gradient(180deg,
-    rgba(100,120,140,0.6) 0%,
-    rgba(100,120,140,0.8) 35%,
-    rgba(90,110,130,0.7) 100%
-  );
-  clip-path: polygon(
-    0% 100%, 0% 62%, 5% 50%, 10% 56%, 15% 44%, 20% 52%, 26% 38%,
-    32% 48%, 37% 34%, 43% 42%, 48% 36%, 53% 44%, 58% 30%,
-    64% 40%, 69% 34%, 74% 42%, 80% 36%, 85% 44%, 90% 38%,
-    94% 46%, 97% 40%, 100% 48%, 100% 100%
-  );
-}
-
-/* ---- 城市天际线（远处剪影） ---- */
-.city-skyline {
-  position: absolute;
-  bottom: 36%;
-  left: 54%;
-  right: 5%;
-  height: 60px;
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  opacity: 0.6;
-}
-.city-skyline::before {
-  content: '';
+/* 玻璃反光条纹 */
+.win-glare {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg,
-    rgba(120,135,155,0.5) 0%,
-    rgba(130,140,160,0.6) 100%
-  );
-  mask-image: linear-gradient(180deg,
-    rgba(0,0,0,0.8) 0%,
-    rgba(0,0,0,0.6) 100%
-  );
-}
-
-/* 城市建筑剪影 */
-.city-skyline .bld {
-  background: rgba(130,140,160,0.55);
-  flex: 0 0 auto;
-  border-radius: 1px 1px 0 0;
-}
-.city-skyline .bld:nth-child(1) { width: 14px; height: 35px; }
-.city-skyline .bld:nth-child(2) { width: 8px; height: 50px; }
-.city-skyline .bld:nth-child(3) { width: 10px; height: 28px; }
-.city-skyline .bld:nth-child(4) { width: 6px; height: 42px; }
-.city-skyline .bld:nth-child(5) { width: 12px; height: 38px; }
-.city-skyline .bld:nth-child(6) { width: 7px; height: 55px; }
-.city-skyline .bld:nth-child(7) { width: 9px; height: 22px; }
-.city-skyline .bld:nth-child(8) { width: 11px; height: 45px; }
-.city-skyline .bld:nth-child(9) { width: 6px; height: 32px; }
-.city-skyline .bld:nth-child(10) { width: 13px; height: 40px; }
-.city-skyline .bld:nth-child(11) { width: 8px; height: 48px; }
-.city-skyline .bld:nth-child(12) { width: 10px; height: 25px; }
-.city-skyline .bld:nth-child(13) { width: 5px; height: 36px; }
-
-/* ---- 水面/海湾 ---- */
-.water {
-  position: absolute;
-  bottom: 30%;
-  left: 25%;
-  right: 0;
-  height: 50px;
-  background: linear-gradient(180deg,
-    rgba(180,170,150,0.4) 0%,
-    rgba(200,180,140,0.5) 20%,
-    rgba(210,180,120,0.6) 40%,
-    rgba(200,170,110,0.5) 60%,
-    rgba(180,160,100,0.4) 80%,
-    rgba(160,150,100,0.3) 100%
-  );
-  border-radius: 0 0 60% 0 / 10px;
-}
-
-/* 水面反光细线 */
-.water::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 1px,
-      rgba(255,240,210,0.15) 1px,
-      rgba(255,240,210,0.15) 2px,
-      transparent 2px,
-      transparent 5px
-    );
-}
-
-/* 水面落日倒影 */
-.water-reflection {
-  position: absolute;
-  bottom: 32%;
-  left: 27%;
-  width: 40px;
-  height: 24px;
-  background: linear-gradient(180deg,
-    rgba(255,240,200,0.5) 0%,
-    rgba(255,220,150,0.3) 40%,
-    transparent 100%
-  );
-  border-radius: 50%;
-  filter: blur(3px);
-}
-
-/* ---- 近山/丘陵 ---- */
-.hills {
-  position: absolute;
-  bottom: 28%;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(180deg,
-    rgba(80,100,70,0.65) 0%,
-    rgba(70,90,60,0.75) 50%,
-    rgba(60,80,55,0.7) 100%
-  );
-  clip-path: polygon(
-    0% 100%, 0% 55%, 8% 42%, 16% 50%, 22% 38%, 28% 46%,
-    35% 32%, 42% 44%, 48% 36%, 54% 42%, 60% 30%,
-    66% 40%, 72% 34%, 78% 42%, 84% 36%, 90% 44%,
-    95% 38%, 100% 46%, 100% 100%
-  );
-}
-
-/* ---- 原野/草地（前景） ---- */
-.field {
-  position: absolute;
-  bottom: 25%;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(180deg,
-    rgba(100,120,70,0.55) 0%,
-    rgba(110,130,80,0.6) 25%,
-    rgba(120,140,85,0.65) 50%,
-    rgba(100,120,65,0.6) 75%,
-    rgba(90,110,60,0.55) 100%
-  );
-}
-
-/* 田野纹理 */
-.field::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      2deg,
-      transparent,
-      transparent 3px,
-      rgba(0,0,0,0.03) 3px,
-      rgba(0,0,0,0.03) 4px,
-      transparent 4px
-    );
-}
-
-/* ---- 近景：几棵树 ---- */
-.tree {
-  position: absolute;
-  bottom: 25%;
-  pointer-events: none;
-}
-.tree-1 {
-  left: 8%;
-  width: 50px;
-  height: 100px;
-  background: linear-gradient(180deg,
-    rgba(40,60,35,0.7) 0%,
-    rgba(45,65,40,0.75) 60%,
-    rgba(35,50,30,0.8) 100%
-  );
-  clip-path: polygon(
-    30% 0%, 70% 0%, 80% 15%, 75% 25%, 85% 30%,
-    78% 40%, 88% 50%, 80% 55%, 82% 65%,
-    75% 70%, 78% 80%, 55% 85%, 45% 85%,
-    25% 80%, 28% 70%, 20% 65%, 22% 55%,
-    15% 50%, 25% 40%, 18% 30%, 28% 25%,
-    22% 15%
-  );
-  border-radius: 40% 40% 0 0;
-}
-.tree-2 {
-  right: 6%;
-  width: 40px;
-  height: 85px;
-  background: linear-gradient(180deg,
-    rgba(35,55,30,0.65) 0%,
-    rgba(40,60,35,0.7) 60%,
-    rgba(30,45,25,0.75) 100%
-  );
-  clip-path: polygon(
-    35% 0%, 65% 0%, 75% 12%, 68% 22%, 80% 28%,
-    72% 38%, 78% 48%, 70% 55%, 75% 65%,
-    60% 70%, 65% 82%, 48% 88%, 35% 85%,
-    38% 72%, 25% 65%, 30% 55%, 20% 48%,
-    28% 38%, 22% 28%, 35% 22%, 28% 12%
-  );
-  border-radius: 40% 40% 0 0;
-}
-
-/* ---- 小路（前景） ---- */
-.path {
-  position: absolute;
-  bottom: 25%;
-  left: 35%;
-  width: 30px;
-  height: 100px;
-  background: linear-gradient(180deg,
-    rgba(180,160,120,0.4) 0%,
-    rgba(170,150,110,0.3) 100%
-  );
-  clip-path: polygon(30% 0%, 70% 0%, 90% 100%, 10% 100%);
-}
-
-/* ---- 玻璃反光 ---- */
-.glass-glare {
-  position: absolute;
-  inset: 0;
+  z-index: 9;
   background:
     linear-gradient(135deg,
-      rgba(255,255,255,0.06) 0%,
-      transparent 25%,
-      transparent 70%,
-      rgba(255,255,255,0.04) 85%,
-      rgba(255,255,255,0.07) 100%
-    ),
+      rgba(255,255,255,0.07) 0%,
+      transparent 18%,
+      transparent 45%,
+      rgba(255,255,255,0.04) 58%,
+      transparent 62%,
+      transparent 78%,
+      rgba(255,255,255,0.05) 90%,
+      rgba(255,255,255,0.09) 100%),
     linear-gradient(225deg,
       transparent 0%,
-      rgba(255,255,255,0.03) 35%,
-      transparent 65%
-    );
+      rgba(255,255,255,0.02) 30%,
+      transparent 48%,
+      rgba(255,255,255,0.03) 62%,
+      transparent 100%);
   pointer-events: none;
-  z-index: 10;
   border-radius: 2px;
 }
-
 
 /* ============================================================
    WINDOW SILL — 窗台
    ============================================================ */
-.sill-area {
-  position: relative;
-  z-index: 2;
-  width: 94%;
-  max-width: 1120px;
-  margin: 0 auto;
-}
-
-/* 窗台上表面 — 卡片立于此上 */
-.sill-top {
-  height: 22px;
+.win-sill {
+  height: 12px;
   background: linear-gradient(180deg,
-    #f0dbb0 0%,
-    #e8cfa0 20%,
-    #d4a574 55%,
-    #c89860 100%
-  );
-  border-radius: 2px 2px 0 0;
+    #e0c090 0%, #c89860 25%, #a07840 60%, #b89060 100%);
+  border-radius: 0 0 6px 6px;
   box-shadow:
-    0 1px 4px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.4);
-  margin: 0 6px;
+    0 3px 8px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  margin: -1px 3px 0;
+  position: relative;
 }
-
-/* 窗台前立面 */
-.sill-front {
-  height: 20px;
-  background:
-    linear-gradient(180deg, #c89860 0%, #b8904a 30%, #a07830 60%, #b8904a 100%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.04) 2px,
-      rgba(0,0,0,0.04) 3px,
-      transparent 3px
-    );
-  border-radius: 0 0 4px 4px;
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.13),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-  margin: 0 5px;
-  margin-bottom: 2px;
-}
-
-/* 窗台装饰线 */
-.sill-front::after {
+.win-sill::after {
   content: '';
   display: block;
-  height: 2px;
-  background: rgba(0,0,0,0.15);
-  margin: 3px 20px 0;
+  height: 1px;
+  background: rgba(0,0,0,0.12);
+  margin: 3px 15px 0;
   border-radius: 1px;
 }
 
 /* ============================================================
-   CARDS ON SILL — 窗台上的7张卡片
+   WINDOW LABEL — 窗下小铜牌
    ============================================================ */
-.cards-row {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  padding: 4px 10px 0;
-  margin-bottom: -4px;
-}
-
-/* 单张卡片 */
-.topic-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  background: linear-gradient(180deg, #fffef9 0%, #fdf5ea 100%);
-  border: 1.5px solid #d4c5a9;
-  border-radius: 4px;
-  padding: 12px 14px 10px;
-  width: 130px;
-  min-width: 100px;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow:
-    0 2px 6px rgba(0,0,0,0.06),
-    0 1px 2px rgba(0,0,0,0.04);
-  position: relative;
-}
-
-/* 卡片顶部彩色装饰条 */
-.topic-card::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 12px;
-  right: 12px;
-  height: 3px;
-  border-radius: 0 0 2px 2px;
-}
-
-/* 卡片底部微阴影 — 模拟立在窗台上的立体感 */
-.topic-card::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 8%;
-  right: 8%;
-  height: 4px;
-  background: rgba(0,0,0,0.08);
-  border-radius: 50%;
-  transition: all 0.25s ease;
-}
-
-.topic-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 6px 16px rgba(0,0,0,0.10),
-    0 2px 4px rgba(0,0,0,0.05);
-}
-.topic-card:hover::after {
-  bottom: -6px;
-  left: 4%;
-  right: 4%;
-  background: rgba(0,0,0,0.12);
-}
-
-/* 卡片图标 */
-.card-icon {
-  font-size: 1.5rem;
-  margin-bottom: 4px;
-  line-height: 1;
-}
-/* 卡片标题 */
-.card-title {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text);
+.win-label {
   text-align: center;
-  line-height: 1.35;
-  letter-spacing: 0.03em;
-}
-/* 卡片计数 */
-.card-count {
-  font-size: 0.58rem;
-  color: var(--text-light);
-  margin-top: 2px;
+  font-size: 0.62rem;
+  color: #8b6914;
   letter-spacing: 0.04em;
+  margin-top: 6px;
+  font-weight: 500;
+  opacity: 0.8;
 }
-
-/* ---- 7个主题的配色 ---- */
-.topic--tech::before  { background: var(--c1); }
-.topic--think::before  { background: var(--c2); }
-.topic--invest::before { background: var(--c3); }
-.topic--history::before { background: var(--c4); }
-.topic--art::before    { background: var(--c5); }
-.topic--edu::before    { background: var(--c6); }
-.topic--career::before { background: var(--c7); }
-
-/* ---- 图标颜色微调 ---- */
-.topic--tech .card-icon  { filter: hue-rotate(-10deg) saturate(0.7); }
-.topic--think .card-icon  { filter: hue-rotate(-5deg) saturate(0.7); }
-.topic--invest .card-icon { filter: hue-rotate(5deg) saturate(0.7); }
-.topic--history .card-icon { filter: hue-rotate(-3deg) saturate(0.6) brightness(0.9); }
-.topic--art .card-icon    { filter: hue-rotate(15deg) saturate(0.7); }
-.topic--edu .card-icon    { filter: hue-rotate(-15deg) saturate(0.6); }
-.topic--career .card-icon { filter: hue-rotate(-8deg) saturate(0.7); }
+.win-label .count {
+  color: #a08050;
+  font-size: 0.56rem;
+}
 
 /* ============================================================
-   BACK LINK — 返回总库
+   SCENE 1 — 硅谷晨曦（科技与商业逻辑 · 77篇）
+   天空：粉橙渐变加州日出
+   远山 + 卫星天线 + 车库 + 服务器蓝灯 + 晨雾
    ============================================================ */
-.back-row {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 22px 20px 10px;
+.scene-tech {
+  background: linear-gradient(180deg,
+    #0d1b40 0%,      /* 夜天顶 */
+    #1a3060 5%,
+    #2a4880 12%,
+    #5a6080 25%,
+    #a05860 40%,     /* 紫红过渡 */
+    #d07050 55%,     /* 朝霞粉 */
+    #e89850 68%,     /* 金色 */
+    #f5c880 82%,     /* 地平线亮金 */
+    #f0d090 92%,
+    #e8c888 100%
+  );
+}
+/* 太阳 */
+.scene-tech .sun {
+  position: absolute;
+  bottom: 12%;
+  left: 22%;
+  width: 60px; height: 60px;
+  background: radial-gradient(circle,
+    rgba(255,250,240,0.95) 0%,
+    rgba(255,230,160,0.5) 25%,
+    rgba(255,200,100,0.2) 50%,
+    transparent 70%);
+  border-radius: 50%;
+}
+/* 远山 */
+.scene-tech .mt {
+  position: absolute;
+  bottom: 38%;
+  left: 0; right: 0;
+  height: 100px;
+  background: linear-gradient(180deg,
+    rgba(25,35,65,0.5) 0%,
+    rgba(20,30,55,0.7) 100%);
+  clip-path: polygon(0% 100%, 0% 65%, 6% 45%, 14% 55%, 20% 38%,
+    28% 50%, 35% 32%, 42% 48%, 50% 28%, 57% 42%,
+    65% 30%, 72% 44%, 80% 35%, 88% 48%, 94% 38%, 100% 50%, 100% 100%);
+}
+/* 近山（有天线） */
+.scene-tech .mt2 {
+  position: absolute;
+  bottom: 36%;
+  left: 10%; right: 15%;
+  height: 80px;
+  background: linear-gradient(180deg,
+    rgba(40,55,40,0.55) 0%,
+    rgba(35,50,35,0.7) 100%);
+  clip-path: polygon(0% 100%, 5% 55%, 18% 40%, 30% 50%, 42% 35%,
+    55% 48%, 68% 38%, 80% 45%, 92% 50%, 100% 55%, 100% 100%);
+}
+/* 卫星天线 — 小三角形+线 */
+.scene-tech .dish {
+  position: absolute;
+  bottom: 42%;
+  left: 40%;
+  width: 16px; height: 18px;
+}
+.scene-tech .dish::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 10px;
+  background: rgba(200,200,210,0.6);
+}
+.scene-tech .dish::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 8px;
+  background: rgba(180,190,200,0.4);
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+  border-radius: 0 0 50% 50%;
+}
+/* 车库建筑 */
+.scene-tech .garage {
+  position: absolute;
+  background: rgba(50,45,40,0.55);
+}
+.scene-tech .garage::after {
+  content: '';
+  position: absolute;
+  top: -8px; left: 0; right: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 8px solid rgba(55,40,30,0.5);
+}
+.scene-tech .g1 { bottom: 32%; left: 18%; width: 24px; height: 16px; }
+.scene-tech .g1::after { border-left-width: 12px; border-right-width: 12px; }
+.scene-tech .g2 { bottom: 30%; left: 30%; width: 20px; height: 18px; }
+.scene-tech .g2::after { border-left-width: 10px; border-right-width: 10px; }
+.scene-tech .g3 { bottom: 33%; left: 48%; width: 28px; height: 14px; }
+.scene-tech .g3::after { border-left-width: 14px; border-right-width: 14px; }
+/* 服务器蓝灯 */
+.scene-tech .blink {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: #5090ff;
+  border-radius: 50%;
+  box-shadow:
+    6px 2px 0 #4080ee, 14px -1px 0 #60a0ff, 22px 4px 0 #3070dd,
+    3px 7px 0 #5090ff, 12px 9px 0 #4080ee, 20px 5px 0 #60a0ff,
+    8px 14px 0 #3070dd, 16px 12px 0 #5090ff, 24px 8px 0 #4080ee;
+}
+.scene-tech .bl1 { bottom: 36%; left: 20%; }
+.scene-tech .bl2 { bottom: 34%; left: 34%; }
+/* 晨雾 */
+.scene-tech .fog {
+  position: absolute;
+  bottom: 28%;
+  left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(200,180,160,0.15) 30%,
+    rgba(200,180,160,0.25) 60%,
+    rgba(200,180,160,0.1) 100%);
+  filter: blur(4px);
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.82rem;
-  font-weight: 500;
-  transition: color 0.2s;
+/* ============================================================
+   SCENE 2 — 不可能的几何（思维方法论 · 58篇）
+   埃舍尔楼梯 + 思维导图脉络 + 冷白月光
+   ============================================================ */
+.scene-think {
+  background: linear-gradient(180deg,
+    #020210 0%,      /* 极深夜空 */
+    #050520 15%,
+    #0a0a30 35%,
+    #0e0e35 55%,
+    #121238 80%,
+    #0a0a28 100%
+  );
 }
-.back-link:hover {
-  color: #7a1e1e;
+/* 月亮 */
+.scene-think .moon {
+  position: absolute;
+  top: 10%; right: 15%;
+  width: 36px; height: 36px;
+  background: radial-gradient(circle at 60% 40%,
+    #f0f0ff 0%, #d0d8f0 35%, #a0b0d0 70%, rgba(100,120,160,0) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(180,200,240,0.3), 0 0 50px rgba(150,170,220,0.15);
 }
+/* 星星 */
+.scene-think .stars {
+  position: absolute;
+  top: 5%; left: 10%;
+  width: 1px; height: 1px;
+  background: #fff;
+  box-shadow:
+    20px 5px 0 #fff, 50px 12px 0 rgba(255,255,255,0.7),
+    80px 3px 0 #fff, 110px 15px 0 rgba(255,255,255,0.5),
+    35px 20px 0 rgba(255,255,255,0.6), 70px 8px 0 #fff,
+    90px 25px 0 rgba(255,255,255,0.5), 120px 6px 0 rgba(255,255,255,0.7),
+    15px 30px 0 rgba(255,255,255,0.4), 55px 22px 0 #fff;
+}
+/* 埃舍尔楼梯段 */
+.scene-think .stair {
+  position: absolute;
+  background: linear-gradient(180deg,
+    rgba(90,85,100,0.7) 0%, rgba(70,65,80,0.8) 100%);
+  border: 1px solid rgba(150,145,160,0.3);
+}
+.scene-think .st1 {
+  bottom: 15%; left: 5%;
+  width: 60px; height: 18px;
+  transform: skewY(-8deg);
+  clip-path: polygon(0% 40%, 100% 0%, 100% 100%, 0% 100%);
+}
+.scene-think .st2 {
+  bottom: 25%; left: 20%;
+  width: 50px; height: 16px;
+  transform: skewY(5deg);
+  background: linear-gradient(180deg,
+    rgba(100,95,110,0.65) 0%, rgba(80,75,90,0.75) 100%);
+  clip-path: polygon(0% 0%, 100% 35%, 100% 100%, 0% 100%);
+}
+.scene-think .st3 {
+  bottom: 20%; left: 35%;
+  width: 55px; height: 14px;
+  transform: skewY(-4deg);
+  clip-path: polygon(0% 30%, 100% 0%, 100% 100%, 0% 100%);
+}
+.scene-think .st4 {
+  bottom: 30%; left: 8%;
+  width: 45px; height: 14px;
+  transform: skewY(6deg);
+  background: linear-gradient(180deg,
+    rgba(80,75,90,0.7) 0%, rgba(60,55,70,0.8) 100%);
+}
+.scene-think .st5 {
+  bottom: 35%; left: 25%;
+  width: 40px; height: 12px;
+  background: linear-gradient(180deg,
+    rgba(100,95,110,0.6) 0%, rgba(75,70,85,0.75) 100%);
+  transform: skewY(-6deg);
+}
+/* 思维导图发光节点 */
+.scene-think .node {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: #80d0ff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #80d0ff, 0 0 12px #4080cc;
+}
+.scene-think .n1 { bottom: 45%; left: 12%; }
+.scene-think .n2 { bottom: 38%; left: 28%; }
+.scene-think .n3 { bottom: 50%; left: 38%; }
+.scene-think .n4 { bottom: 42%; left: 48%; }
+.scene-think .n5 { bottom: 48%; left: 20%; }
+/* 连线 */
+.scene-think .line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg,
+    rgba(100,180,240,0.4), rgba(100,180,240,0.8), rgba(100,180,240,0.4));
+  transform-origin: left center;
+}
+.scene-think .ln1 { bottom: 44%; left: 13%; width: 70px; transform: rotate(-15deg); }
+.scene-think .ln2 { bottom: 40%; left: 29%; width: 50px; transform: rotate(20deg); }
+.scene-think .ln3 { bottom: 50%; left: 22%; width: 60px; transform: rotate(-8deg); }
+
+/* ============================================================
+   SCENE 3 — 华尔街清晨（投资与财富 · 42篇）
+   铜牛 + 交易所廊柱 + 曼哈顿天际线 + 金色晨光
+   ============================================================ */
+.scene-invest {
+  background: linear-gradient(180deg,
+    #1a3060 0%,      /* 晨空深蓝 */
+    #3050a0 10%,
+    #6080c0 22%,
+    #c0b890 45%,     /* 金色过渡 */
+    #e8d0a0 62%,     /* 暖金 */
+    #f5e0b0 78%,
+    #f0d8a8 90%,
+    #e8d0a0 100%
+  );
+}
+/* 金色晨光 */
+.scene-invest .glow {
+  position: absolute;
+  bottom: 15%; left: 30%;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle,
+    rgba(255,240,200,0.7) 0%,
+    rgba(255,220,150,0.3) 30%,
+    transparent 60%);
+  border-radius: 50%;
+}
+/* 天际线剪影 */
+.scene-invest .skyline {
+  position: absolute;
+  bottom: 35%;
+  left: 0; right: 0;
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+}
+.scene-invest .bld {
+  flex: 0 0 auto;
+  background: rgba(60,55,70,0.7);
+  border-radius: 2px 2px 0 0;
+}
+/* 建筑群 */
+.scene-invest .bld:nth-child(1) { width: 8px; height: 50px; }
+.scene-invest .bld:nth-child(2) { width: 12px; height: 65px; }
+.scene-invest .bld:nth-child(3) { width: 6px; height: 35px; }
+.scene-invest .bld:nth-child(4) { width: 10px; height: 72px; }
+.scene-invest .bld:nth-child(5) { width: 7px; height: 42px; }
+.scene-invest .bld:nth-child(6) { width: 14px; height: 58px; }
+.scene-invest .bld:nth-child(7) { width: 5px; height: 30px; }
+.scene-invest .bld:nth-child(8) { width: 9px; height: 68px; }
+.scene-invest .bld:nth-child(9) { width: 11px; height: 45px; }
+.scene-invest .bld:nth-child(10) { width: 6px; height: 52px; }
+.scene-invest .bld:nth-child(11) { width: 13px; height: 60px; }
+.scene-invest .bld:nth-child(12) { width: 8px; height: 38px; }
+/* 廊柱建筑 */
+.scene-invest .columns {
+  position: absolute;
+  bottom: 50%;
+  left: 18%;
+  width: 35px; height: 60px;
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+}
+.scene-invest .col {
+  flex: 1;
+  background: linear-gradient(180deg,
+    rgba(180,170,150,0.5) 0%,
+    rgba(160,150,130,0.6) 100%);
+  border-radius: 40% 40% 0 0;
+}
+.scene-invest .col::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: rgba(180,170,150,0.6);
+  border-radius: 2px;
+  margin-bottom: 2px;
+}
+/* 铜牛（简化剪影） */
+.scene-invest .bull {
+  position: absolute;
+  bottom: 32%;
+  right: 15%;
+  width: 30px; height: 18px;
+  background: rgba(80,50,30,0.7);
+  clip-path: polygon(
+    5% 60%, 15% 30%, 30% 15%, 45% 10%, 55% 18%,
+    65% 10%, 75% 15%, 85% 20%, 90% 35%,
+    95% 50%, 90% 70%, 85% 80%, 80% 85%,
+    70% 90%, 50% 95%, 25% 95%, 10% 90%, 5% 80%
+  );
+  border-radius: 3px;
+}
+/* 地面发光数字 */
+.scene-invest .nums {
+  position: absolute;
+  bottom: 28%;
+  left: 10%;
+  width: 2px; height: 2px;
+  background: #f0d060;
+  border-radius: 50%;
+  box-shadow:
+    10px 3px 0 #f0d060, 25px -2px 0 #e8c850,
+    40px 5px 0 #f0d060, 55px 0 0 #e8c850,
+    18px 8px 0 #e8c850, 35px 6px 0 #f0d060,
+    50px 10px 0 #e8c850, 65px 4px 0 #f0d060;
+}
+
+/* ============================================================
+   SCENE 4 — 不可能的考古遗址（历史与文明对话 · 39篇）
+   希腊廊柱 + 罗马拱门 + 埃及方尖碑 + 敦煌壁画 + 沙漠绿洲夕阳
+   ============================================================ */
+.scene-history {
+  background: linear-gradient(180deg,
+    #100520 0%,      /* 紫黑天顶 */
+    #2a1040 10%,
+    #5a2040 25%,
+    #a04030 45%,     /* 深红 */
+    #d06830 60%,     /* 橙红 */
+    #e89840 75%,     /* 金橙 */
+    #f0c060 88%,     /* 金色地平线 */
+    #e8b858 100%
+  );
+}
+/* 夕阳 */
+.scene-history .sunset {
+  position: absolute;
+  bottom: 18%;
+  left: 40%;
+  width: 50px; height: 50px;
+  background: radial-gradient(circle,
+    rgba(255,220,150,0.9) 0%,
+    rgba(255,180,80,0.5) 25%,
+    rgba(255,140,40,0.2) 50%,
+    transparent 70%);
+  border-radius: 50%;
+}
+/* 沙漠地面 */
+.scene-history .desert {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 28%;
+  background: linear-gradient(180deg,
+    rgba(180,130,60,0.7) 0%,
+    rgba(160,110,40,0.8) 50%,
+    rgba(140,100,35,0.85) 100%);
+}
+/* 沙丘纹理 */
+.scene-history .desert::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 15px;
+  background: linear-gradient(180deg,
+    rgba(200,150,70,0.5) 0%, transparent 100%);
+  clip-path: polygon(0% 100%, 10% 40%, 25% 80%, 40% 20%,
+    55% 70%, 70% 30%, 85% 60%, 100% 15%, 100% 100%);
+}
+/* 金字塔 */
+.scene-history .pyramid {
+  position: absolute;
+  bottom: 26%;
+  left: 8%;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 50px solid rgba(140,110,50,0.75);
+  width: 0; height: 0;
+}
+/* 希腊柱 */
+.scene-history .greek-col {
+  position: absolute;
+  bottom: 26%;
+  left: 38%;
+  width: 10px; height: 55px;
+  background: linear-gradient(180deg,
+    rgba(200,185,160,0.6) 0%,
+    rgba(180,165,140,0.7) 100%);
+}
+.scene-history .greek-col::before {
+  content: '';
+  position: absolute;
+  top: -4px; left: -3px;
+  width: 16px; height: 6px;
+  background: rgba(190,175,150,0.6);
+  border-radius: 1px;
+}
+/* 罗马拱门 */
+.scene-history .arch {
+  position: absolute;
+  bottom: 26%;
+  right: 12%;
+  width: 36px; height: 45px;
+  border: 5px solid rgba(140,120,80,0.6);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+}
+.scene-history .arch::after {
+  content: '';
+  position: absolute;
+  bottom: -18px; left: -5px;
+  width: 12px; height: 18px;
+  background: rgba(140,120,80,0.6);
+}
+/* 方尖碑 */
+.scene-history .obelisk {
+  position: absolute;
+  bottom: 26%;
+  left: 55%;
+  width: 6px; height: 60px;
+  background: linear-gradient(180deg,
+    rgba(180,150,100,0.7) 0%,
+    rgba(160,130,80,0.8) 100%);
+}
+.scene-history .obelisk::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: -3px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid rgba(180,150,100,0.7);
+}
+/* 敦煌色块 */
+.scene-history .dunhuang {
+  position: absolute;
+  bottom: 28%;
+  left: 52%;
+  width: 18px; height: 14px;
+  background: linear-gradient(135deg,
+    rgba(60,120,100,0.55) 0%,
+    rgba(180,120,60,0.55) 50%,
+    rgba(200,160,80,0.5) 100%);
+  border-radius: 2px;
+}
+/* 绿洲水面 */
+.scene-history .oasis {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  width: 40px; height: 10px;
+  background: linear-gradient(180deg,
+    rgba(100,160,180,0.4) 0%,
+    rgba(80,140,160,0.3) 100%);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   SCENE 5 — 画廊窗外（艺术审美与品味 · 61篇）
+   莫奈睡莲 + 梵高星空 + 宋徽宗瑞鹤 — 三风格交融
+   ============================================================ */
+.scene-art {
+  background: linear-gradient(180deg,
+    #0a1030 0%,      /* 梵高夜空 */
+    #1a2050 8%,
+    #203060 15%,
+    #304880 25%,
+    #206050 45%,     /* 莫奈池塘绿 */
+    #308060 60%,
+    #408860 72%,
+    #509868 85%,     /* 池底 */
+    #408058 100%
+  );
+}
+/* 梵高星旋 */
+.scene-art .swirl1 {
+  position: absolute;
+  top: 5%; left: 15%;
+  width: 40px; height: 40px;
+  border: 2px solid rgba(200,180,120,0.5);
+  border-radius: 45% 50% 45% 48%;
+  border-top-color: rgba(220,200,140,0.6);
+  border-right-color: rgba(180,160,100,0.4);
+  transform: rotate(15deg);
+  box-shadow: 0 0 8px rgba(200,180,120,0.2);
+}
+.scene-art .swirl2 {
+  position: absolute;
+  top: 8%; left: 22%;
+  width: 24px; height: 24px;
+  border: 2px solid rgba(180,160,100,0.4);
+  border-radius: 48% 46% 50% 44%;
+  transform: rotate(-20deg);
+}
+.scene-art .swirl3 {
+  position: absolute;
+  top: 3%; right: 25%;
+  width: 32px; height: 32px;
+  border: 2px solid rgba(200,180,120,0.45);
+  border-radius: 46% 50% 44% 50%;
+  transform: rotate(25deg);
+}
+/* 星星亮点 */
+.scene-art .star-dot {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: #ffe8a0;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ffe8a0;
+}
+.scene-art .sd1 { top: 7%; left: 18%; }
+.scene-art .sd2 { top: 12%; right: 30%; }
+.scene-art .sd3 { top: 4%; left: 35%; }
+.scene-art .sd4 { top: 10%; left: 55%; }
+/* 莫奈睡莲池塘 */
+.scene-art .pond {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg,
+    rgba(40,100,80,0.55) 0%,
+    rgba(30,80,60,0.65) 30%,
+    rgba(20,60,40,0.7) 60%,
+    rgba(15,50,30,0.7) 100%);
+}
+/* 睡莲叶 */
+.scene-art .lily {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse,
+    rgba(80,150,100,0.5) 0%,
+    rgba(40,100,70,0.6) 60%,
+    rgba(20,60,40,0.4) 100%);
+}
+.scene-art .lily::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%; height: 30%;
+  background: rgba(255,200,180,0.4);
+  border-radius: 50%;
+}
+.scene-art .l1 { bottom: 14%; left: 10%; width: 28px; height: 18px; }
+.scene-art .l2 { bottom: 20%; left: 30%; width: 22px; height: 14px; }
+.scene-art .l3 { bottom: 10%; left: 50%; width: 32px; height: 20px; }
+.scene-art .l4 { bottom: 18%; right: 15%; width: 20px; height: 12px; }
+/* 水纹 */
+.scene-art .water-line {
+  position: absolute;
+  bottom: 12%;
+  left: 5%; right: 5%;
+  height: 2px;
+  background: rgba(180,220,200,0.25);
+  border-radius: 50%;
+}
+.scene-art .wl2 { bottom: 18%; width: 60%; left: 20%; }
+.scene-art .wl3 { bottom: 24%; width: 40%; left: 30%; }
+/* 瑞鹤剪影 */
+.scene-art .crane {
+  position: absolute;
+  width: 8px; height: 20px;
+}
+.scene-art .crane::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 3px;
+  background: rgba(220,200,160,0.5);
+  border-radius: 50%;
+}
+.scene-art .crane::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 16px;
+  background: rgba(220,200,160,0.4);
+  border-radius: 1px;
+}
+.scene-art .cr1 { top: 6%; right: 8%; transform: rotate(-10deg); }
+.scene-art .cr2 { top: 14%; right: 18%; transform: rotate(5deg); }
+.scene-art .cr3 { top: 9%; right: 28%; transform: rotate(-3deg); }
+
+/* ============================================================
+   SCENE 6 — 大学校园秋日（教育与成长 · 41篇）
+   常春藤红砖墙 + 草坪 + 钟楼剪影 + 金色树叶
+   ============================================================ */
+.scene-edu {
+  background: linear-gradient(180deg,
+    #5080b8 0%,      /* 秋日晴空 */
+    #70a0d0 15%,
+    #a0c0d8 30%,
+    #e8c870 55%,     /* 金色阳光 */
+    #f0d080 70%,
+    #e8c870 85%,
+    #d8b860 100%
+  );
+}
+/* 红砖建筑 */
+.scene-edu .building {
+  position: absolute;
+  bottom: 22%;
+  left: 8%;
+  width: 55px; height: 70px;
+  background: linear-gradient(180deg,
+    #8b3535 0%, #7a2828 30%, #6b2020 60%, #7a2828 100%);
+  border-radius: 3px 3px 0 0;
+}
+/* 砖纹 */
+.scene-edu .building::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+    transparent, transparent 6px,
+    rgba(0,0,0,0.1) 6px, rgba(0,0,0,0.1) 7px),
+    repeating-linear-gradient(90deg,
+    transparent, transparent 10px,
+    rgba(0,0,0,0.06) 10px, rgba(0,0,0,0.06) 11px);
+  border-radius: 3px 3px 0 0;
+}
+/* 窗户 */
+.scene-edu .building::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px; right: 10px;
+  bottom: 15px;
+  background:
+    /* rows of windows */
+    repeating-linear-gradient(0deg,
+      transparent, transparent 14px,
+      rgba(255,240,200,0.4) 14px, rgba(255,240,200,0.4) 16px);
+}
+/* 常春藤 */
+.scene-edu .ivy {
+  position: absolute;
+  bottom: 40%;
+  left: 10%;
+  width: 40px; height: 30px;
+  background: radial-gradient(ellipse at 30% 40%,
+    rgba(40,90,30,0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 50%,
+    rgba(35,80,25,0.5) 0%, transparent 45%),
+    radial-gradient(ellipse at 20% 60%,
+    rgba(45,100,35,0.5) 0%, transparent 40%);
+}
+/* 钟楼 */
+.scene-edu .tower {
+  position: absolute;
+  bottom: 22%;
+  left: 52%;
+  width: 16px; height: 80px;
+  background: linear-gradient(180deg,
+    #8b3535 0%, #7a2828 40%, #6b2020 100%);
+  border-radius: 2px 2px 0 0;
+}
+.scene-edu .tower::before {
+  content: '';
+  position: absolute;
+  top: -12px; left: -2px;
+  width: 20px; height: 14px;
+  background: #6b2525;
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+}
+.scene-edu .tower::after {
+  content: '';
+  position: absolute;
+  top: 14px; left: 4px; right: 4px;
+  height: 8px;
+  background: rgba(255,240,200,0.5);
+  border-radius: 1px;
+  box-shadow: 0 0 4px rgba(255,240,180,0.4);
+}
+/* 树木 */
+.scene-edu .tree {
+  position: absolute;
+}
+.scene-edu .tree::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 25px;
+  background: rgba(80,50,30,0.7);
+  border-radius: 2px;
+}
+.scene-edu .tree::after {
+  content: '';
+  position: absolute;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 35px; height: 30px;
+  border-radius: 50%;
+}
+.scene-edu .tr1 { bottom: 22%; right: 10%; }
+.scene-edu .tr1::after {
+  background: radial-gradient(ellipse,
+    rgba(220,140,40,0.7) 0%, rgba(200,100,20,0.5) 60%, transparent 100%);
+}
+.scene-edu .tr2 { bottom: 20%; left: 32%; }
+.scene-edu .tr2::after {
+  width: 28px; height: 24px;
+  background: radial-gradient(ellipse,
+    rgba(240,180,60,0.6) 0%, rgba(200,130,30,0.45) 60%, transparent 100%);
+}
+/* 草坪 */
+.scene-edu .lawn {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 20%;
+  background: linear-gradient(180deg,
+    rgba(90,130,60,0.6) 0%,
+    rgba(70,110,45,0.65) 100%);
+}
+/* 小人影 */
+.scene-edu .figure {
+  position: absolute;
+  bottom: 20%;
+  width: 4px; height: 10px;
+  background: rgba(60,40,30,0.5);
+  border-radius: 40% 40% 0 0;
+}
+.scene-edu .figure::before {
+  content: '';
+  position: absolute;
+  top: -4px; left: -2px;
+  width: 8px; height: 6px;
+  background: rgba(60,40,30,0.45);
+  border-radius: 50%;
+}
+.scene-edu .f1 { left: 42%; }
+.scene-edu .f2 { left: 48%; }
+.scene-edu .f3 { left: 55%; }
+
+/* ============================================================
+   SCENE 7 — 城市黄昏（职场与人生智慧 · 56篇）
+   写字楼灯火 + 港湾 + 渐暗天空 + 飞机降落
+   ============================================================ */
+.scene-career {
+  background: linear-gradient(180deg,
+    #0a1030 0%,      /* 夜空顶 */
+    #1a2050 8%,
+    #2a3868 18%,
+    #5a4060 40%,     /* 紫过渡 */
+    #a05050 58%,     /* 暖色霞光 */
+    #d07048 72%,
+    #e89848 84%,     /* 城市光污染 */
+    #c87840 92%,
+    #806040 100%
+  );
+}
+/* 星星 */
+.scene-career .star {
+  position: absolute;
+  width: 1px; height: 1px;
+  background: #fff;
+  box-shadow:
+    15px 3px 0 rgba(255,255,255,0.7), 40px 8px 0 #fff,
+    65px 2px 0 rgba(255,255,255,0.5), 90px 12px 0 rgba(255,255,255,0.6),
+    25px 10px 0 #fff, 55px 6px 0 rgba(255,255,255,0.7),
+    80px 15px 0 rgba(255,255,255,0.5), 100px 4px 0 #fff,
+    35px 18px 0 rgba(255,255,255,0.4);
+  top: 5%; left: 8%;
+}
+/* 远山/地平线 */
+.scene-career .horizon {
+  position: absolute;
+  bottom: 36%;
+  left: 0; right: 0;
+  height: 50px;
+  background: linear-gradient(180deg,
+    rgba(60,50,70,0.4) 0%,
+    rgba(50,45,60,0.5) 50%,
+    rgba(60,50,70,0.4) 100%);
+}
+/* 建筑群 */
+.scene-career .buildings {
+  position: absolute;
+  bottom: 34%;
+  left: 0; right: 0;
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+.scene-career .bld {
+  flex: 0 0 auto;
+  background: rgba(40,38,50,0.8);
+  border-radius: 2px 2px 0 0;
+  position: relative;
+}
+/* 建筑尺寸 */
+.scene-career .bld:nth-child(1) { width: 10px; height: 55px; }
+.scene-career .bld:nth-child(2) { width: 7px; height: 70px; }
+.scene-career .bld:nth-child(3) { width: 14px; height: 45px; }
+.scene-career .bld:nth-child(4) { width: 6px; height: 60px; }
+.scene-career .bld:nth-child(5) { width: 12px; height: 75px; }
+.scene-career .bld:nth-child(6) { width: 8px; height: 40px; }
+.scene-career .bld:nth-child(7) { width: 5px; height: 50px; }
+.scene-career .bld:nth-child(8) { width: 11px; height: 68px; }
+.scene-career .bld:nth-child(9) { width: 9px; height: 55px; }
+.scene-career .bld:nth-child(10) { width: 7px; height: 42px; }
+.scene-career .bld:nth-child(11) { width: 13px; height: 62px; }
+.scene-career .bld:nth-child(12) { width: 6px; height: 48px; }
+.scene-career .bld:nth-child(13) { width: 10px; height: 72px; }
+.scene-career .bld:nth-child(14) { width: 8px; height: 38px; }
+/* 亮灯的窗户 — 用 box-shadow 模拟 */
+.scene-career .lit {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: #ffe8a0;
+  border-radius: 50%;
+  z-index: 2;
+}
+.scene-career .lit1 { bottom: 38%; left: 12%; }
+.scene-career .lit2 { bottom: 52%; left: 18%; }
+.scene-career .lit3 { bottom: 42%; left: 30%; }
+.scene-career .lit4 { bottom: 56%; left: 38%; }
+.scene-career .lit5 { bottom: 48%; left: 50%; }
+.scene-career .lit6 { bottom: 40%; left: 58%; }
+.scene-career .lit7 { bottom: 54%; left: 68%; }
+.scene-career .lit8 { bottom: 44%; left: 78%; }
+/* 港湾水面 */
+.scene-career .harbor {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 32%;
+  background: linear-gradient(180deg,
+    rgba(20,25,50,0.65) 0%,
+    rgba(15,20,40,0.75) 30%,
+    rgba(25,35,55,0.7) 60%,
+    rgba(20,30,48,0.75) 100%);
+}
+/* 水面反光 */
+.scene-career .harbor::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 25px;
+  background: repeating-linear-gradient(0deg,
+    transparent, transparent 1px,
+    rgba(255,200,100,0.1) 1px, rgba(255,200,100,0.1) 2px,
+    transparent 2px, transparent 5px);
+}
+/* 城市灯光倒影 */
+.scene-career .reflection {
+  position: absolute;
+  bottom: 8%;
+  left: 15%;
+  width: 3px; height: 16px;
+  background: rgba(255,220,140,0.15);
+  border-radius: 1px;
+  box-shadow:
+    20px 6px 0 rgba(255,220,140,0.12),
+    40px 3px 0 rgba(255,200,120,0.1),
+    55px 8px 0 rgba(255,220,140,0.13),
+    70px 4px 0 rgba(255,200,120,0.1);
+}
+/* 飞机 */
+.scene-career .plane {
+  position: absolute;
+  top: 20%; right: 18%;
+  width: 14px; height: 4px;
+  background: rgba(255,240,220,0.7);
+  border-radius: 2px;
+  transform: rotate(-5deg);
+}
+.scene-career .plane::before {
+  content: '';
+  position: absolute;
+  top: -3px; left: 6px;
+  width: 2px; height: 3px;
+  background: rgba(255,240,220,0.6);
+  border-radius: 1px 1px 0 0;
+}
+.scene-career .plane::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 5px;
+  width: 4px; height: 2px;
+  background: rgba(255,240,220,0.5);
+  border-radius: 1px;
+}
+
+/* ============================================================
+   WINDOW SIZE VARIANTS — 大小不一，模拟老房子
+   ============================================================ */
+/* 第一排 4 扇窗 */
+.win-tech    { width: 260px; }
+.win-think   { width: 195px; }
+.win-invest  { width: 285px; }
+.win-history { width: 230px; }
+
+.win-tech .win-glass    { height: 340px; }
+.win-think .win-glass   { height: 280px; }
+.win-invest .win-glass  { height: 360px; }
+.win-history .win-glass { height: 300px; }
+
+/* 第二排 3 扇窗 */
+.win-art    { width: 310px; }
+.win-edu    { width: 210px; }
+.win-career { width: 290px; }
+
+.win-art .win-glass    { height: 300px; }
+.win-edu .win-glass    { height: 260px; }
+.win-career .win-glass { height: 330px; }
 
 /* ============================================================
    FOOTER
@@ -813,269 +1387,360 @@ body::before {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 6px 20px 24px;
+  padding: 18px 20px 10px;
   color: var(--text-light);
-  font-size: 0.68rem;
-  opacity: 0.55;
+  font-size: 0.65rem;
+  opacity: 0.45;
   letter-spacing: 0.06em;
 }
 
 /* ============================================================
-   RESPONSIVE — Tablet (≤900px)
+   RESPONSIVE — Tablet (≤950px)
    ============================================================ */
-@media (max-width: 900px) {
-  .landscape {
-    height: 380px;
-  }
-  .window-outer { padding: 9px; border-radius: 10px; }
-  .window-middle { padding: 7px; border-radius: 6px; }
-  .window-inner { padding: 6px; border-radius: 4px; }
-  .window-glass-frame { border-radius: 2px; }
+@media (max-width: 950px) {
+  .windows-row { gap: 20px 14px; }
 
-  /* 简化远山 */
-  .mountains-far { display: none; }
+  .win-tech    { width: 220px; }
+  .win-think   { width: 170px; }
+  .win-invest  { width: 240px; }
+  .win-history { width: 195px; }
+  .win-art     { width: 260px; }
+  .win-edu     { width: 180px; }
+  .win-career  { width: 245px; }
 
-  .cards-row {
-    gap: 10px;
-  }
-  .topic-card {
-    width: 110px;
-    min-width: 85px;
-    padding: 10px 10px 8px;
-  }
-  .card-icon { font-size: 1.3rem; }
-  .card-title { font-size: 0.65rem; }
-  .card-count { font-size: 0.55rem; }
+  .win-tech .win-glass    { height: 280px; }
+  .win-think .win-glass   { height: 230px; }
+  .win-invest .win-glass  { height: 300px; }
+  .win-history .win-glass { height: 250px; }
+  .win-art .win-glass     { height: 250px; }
+  .win-edu .win-glass     { height: 220px; }
+  .win-career .win-glass  { height: 270px; }
 
-  .city-skyline {
-    left: 45%;
-  }
+  .win-frame-outer { padding: 7px; border-radius: 8px; }
+  .win-frame-mid   { padding: 6px; border-radius: 5px; }
+  .win-frame-inner { padding: 4px; border-radius: 3px; }
+
+  .prop-books { width: 36px; height: 52px; }
+  .prop-coffee { width: 22px; height: 24px; }
+  .prop-lamp { width: 28px; height: 38px; }
 }
 
 /* ============================================================
-   RESPONSIVE — Mobile (≤600px)
+   RESPONSIVE — Mobile (≤650px)
    ============================================================ */
-@media (max-width: 600px) {
-  .header { padding: 20px 12px 14px; }
-  .header .plaque { padding: 12px 18px 10px; }
-  .stats-row { gap: 16px; }
+@media (max-width: 650px) {
+  .wall { padding: 12px 8px 30px; }
+  .header { gap: 12px; margin-bottom: 10px; }
+  .brass-plaque { font-size: 0.7rem; padding: 4px 10px; }
 
-  .window-wrapper { width: 96%; }
-
-  .landscape {
-    height: 280px;
+  /* 移动端所有窗户堆叠为单列大窗 */
+  .windows-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
   }
 
-  .window-outer { padding: 6px; border-radius: 8px; }
-  .window-middle { padding: 5px; border-radius: 5px; }
-  .window-inner { padding: 4px; border-radius: 3px; }
-  .window-glass-frame { border-radius: 2px; }
-
-  /* 简化风景层次 */
-  .mountains-far,
-  .mountains-mid { display: none; }
-  .city-skyline { left: 40%; right: 3%; }
-  .water { bottom: 28%; }
-  .hills { bottom: 26%; }
-  .field { bottom: 22%; }
-  .tree { display: none; }
-  .path { display: none; }
-
-  .sun-glow {
-    width: 120px;
-    height: 120px;
-    bottom: 16%;
-    left: 18%;
-  }
-  .sun-disc {
-    width: 32px;
-    height: 32px;
-    bottom: 20%;
-    left: 20%;
+  /* 所有窗户等宽 */
+  .win-tech, .win-think, .win-invest, .win-history,
+  .win-art, .win-edu, .win-career {
+    width: 92%;
+    max-width: 420px;
   }
 
-  .cards-row {
-    gap: 8px;
-    padding: 6px 4px 0;
+  .win-tech .win-glass,
+  .win-think .win-glass,
+  .win-invest .win-glass,
+  .win-history .win-glass,
+  .win-art .win-glass,
+  .win-edu .win-glass,
+  .win-career .win-glass {
+    height: 240px;
   }
-  .topic-card {
-    width: 80px;
-    min-width: 60px;
-    padding: 8px 6px 6px;
-    border-radius: 3px;
-  }
-  .topic-card::before {
-    left: 6px;
-    right: 6px;
-    height: 2px;
-  }
-  .card-icon { font-size: 1.1rem; }
-  .card-title { font-size: 0.58rem; }
-  .card-count { font-size: 0.5rem; }
 
-  .sill-top { height: 10px; }
-  .sill-front { height: 12px; }
+  .win-frame-outer { padding: 6px; border-radius: 8px; }
+  .win-frame-mid   { padding: 5px; border-radius: 5px; }
+  .win-frame-inner { padding: 4px; border-radius: 3px; }
 
-  .back-row { padding: 16px 16px 6px; }
+  /* 隐藏部分装饰物 */
+  .prop-lamp, .prop-papers { display: none; }
+  .prop-books { width: 32px; height: 48px; margin: 0 auto; }
+  .prop-coffee { width: 20px; height: 22px; margin: 0 auto; }
+
+  .win-sill { height: 8px; border-radius: 0 0 4px 4px; }
+  .win-label { font-size: 0.6rem; }
+
+  /* 简化场景中的细节 */
+  .scene-tech .fog { height: 20px; }
+  .scene-think .star { display: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
-<header class="header">
-  <div class="plaque">
-    <h1>吴军·硅谷来信</h1>
-    <p class="subtitle">第一季 · 知识主板</p>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-num">7</div>
-        <div class="stat-label">知识专题</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">374</div>
-        <div class="stat-label">精选篇目</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">⏳</div>
-        <div class="stat-label">穿越时空</div>
-      </div>
+<div class="wall">
+
+  <!-- ============================================================
+       HEADER — 黄铜返回铭牌 + 标题
+       ============================================================ -->
+  <header class="header">
+    <a href="../index.html" class="brass-plaque">← 返回知识总库</a>
+    <div class="title-area">
+      <h1>吴军·硅谷来信</h1>
+      <p class="subtitle">第一季 · 七窗世界</p>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- ============================================================
-     WINDOW
-     ============================================================ -->
-<div class="window-wrapper">
-  <div class="window-outer">
-    <div class="window-middle">
-      <div class="window-inner">
-        <div class="window-glass-frame">
+  <!-- ============================================================
+       ROW 1 — 四扇窗
+       ============================================================ -->
+  <div class="windows-row row-top">
 
-          <!-- 窗外风景 -->
-          <div class="landscape">
-
-            <!-- 天空 -->
-            <div class="sky"></div>
-
-            <!-- 太阳 -->
-            <div class="sun-glow"></div>
-            <div class="sun-disc"></div>
-
-            <!-- 云 -->
-            <div class="cloud cloud-1"></div>
-            <div class="cloud cloud-2"></div>
-            <div class="cloud cloud-3"></div>
-
-            <!-- 远山 -->
-            <div class="mountains-far"></div>
-            <div class="mountains-mid"></div>
-
-            <!-- 城市天际线 -->
-            <div class="city-skyline">
-              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
-              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
-              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
-              <span class="bld"></span><span class="bld"></span><span class="bld"></span>
-              <span class="bld"></span>
+    <!-- 窗 1: 科技与商业逻辑 — 硅谷晨曦 -->
+    <a href="1-科技与商业逻辑.html" class="window win-tech">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-tech">
+                <div class="sun"></div>
+                <div class="mt"></div>
+                <div class="mt2"></div>
+                <div class="dish"></div>
+                <div class="garage g1"></div>
+                <div class="garage g2"></div>
+                <div class="garage g3"></div>
+                <div class="blink bl1"></div>
+                <div class="blink bl2"></div>
+                <div class="fog"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
             </div>
-
-            <!-- 水面 -->
-            <div class="water"></div>
-            <div class="water-reflection"></div>
-
-            <!-- 丘陵 -->
-            <div class="hills"></div>
-
-            <!-- 原野 -->
-            <div class="field"></div>
-
-            <!-- 小路 -->
-            <div class="path"></div>
-
-            <!-- 树 -->
-            <div class="tree tree-1"></div>
-            <div class="tree tree-2"></div>
-
-            <!-- 玻璃反光 -->
-            <div class="glass-glare"></div>
-
-          </div><!-- /.landscape -->
-
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div><!-- /.window-wrapper -->
+      <div class="win-sill"></div>
+      <div class="win-label">科技与商业逻辑 <span class="count">· 77篇</span></div>
+    </a>
 
-<!-- ============================================================
-     WINDOW SILL + CARDS
-     ============================================================ -->
-<div class="sill-area">
-  <div class="cards-row">
-    <!-- 1. 科技与商业逻辑 -->
-    <a href="1-科技与商业逻辑.html" class="topic-card topic--tech">
-      <span class="card-icon">🔬</span>
-      <span class="card-title">科技与商业逻辑</span>
-      <span class="card-count">77 篇</span>
-    </a>
-    <!-- 2. 思维方法论 -->
-    <a href="2-思维方法论.html" class="topic-card topic--think">
-      <span class="card-icon">🧠</span>
-      <span class="card-title">思维方法论</span>
-      <span class="card-count">58 篇</span>
-    </a>
-    <!-- 3. 投资与财富 -->
-    <a href="3-投资与财富.html" class="topic-card topic--invest">
-      <span class="card-icon">💰</span>
-      <span class="card-title">投资与财富</span>
-      <span class="card-count">42 篇</span>
-    </a>
-    <!-- 4. 历史与文明对话 -->
-    <a href="4-历史与文明对话.html" class="topic-card topic--history">
-      <span class="card-icon">🏛️</span>
-      <span class="card-title">历史与文明对话</span>
-      <span class="card-count">39 篇</span>
-    </a>
-    <!-- 5. 艺术审美与品味 -->
-    <a href="5-艺术审美与品味.html" class="topic-card topic--art">
-      <span class="card-icon">🎨</span>
-      <span class="card-title">艺术审美与品味</span>
-      <span class="card-count">61 篇</span>
-    </a>
-    <!-- 6. 教育与成长 -->
-    <a href="6-教育与成长.html" class="topic-card topic--edu">
-      <span class="card-icon">🌱</span>
-      <span class="card-title">教育与成长</span>
-      <span class="card-count">41 篇</span>
-    </a>
-    <!-- 7. 职场与人生智慧 -->
-    <a href="7-职场与人生智慧.html" class="topic-card topic--career">
-      <span class="card-icon">🎯</span>
-      <span class="card-title">职场与人生智慧</span>
-      <span class="card-count">56 篇</span>
-    </a>
-  </div>
-  <div class="sill-top"></div>
-  <div class="sill-front"></div>
-</div>
+    <!-- 道具：旧书 -->
+    <div class="prop prop-books"></div>
 
-<!-- ============================================================
-     BACK LINK
-     ============================================================ -->
-<div class="back-row">
-  <a href="../index.html" class="back-link">← 返回知识总库</a>
-</div>
+    <!-- 窗 2: 思维方法论 — 不可能的几何建筑 -->
+    <a href="2-思维方法论.html" class="window win-think">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-think">
+                <div class="moon"></div>
+                <div class="stars"></div>
+                <div class="stair st1"></div>
+                <div class="stair st2"></div>
+                <div class="stair st3"></div>
+                <div class="stair st4"></div>
+                <div class="stair st5"></div>
+                <div class="node n1"></div>
+                <div class="node n2"></div>
+                <div class="node n3"></div>
+                <div class="node n4"></div>
+                <div class="node n5"></div>
+                <div class="line ln1"></div>
+                <div class="line ln2"></div>
+                <div class="line ln3"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-sill"></div>
+      <div class="win-label">思维方法论 <span class="count">· 58篇</span></div>
+    </a>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<footer class="footer">
-  吴军·硅谷来信 · 第一季 · 知识主板 · 374篇 · 7个世界
-</footer>
+    <!-- 窗 3: 投资与财富 — 华尔街清晨 -->
+    <a href="3-投资与财富.html" class="window win-invest">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-invest">
+                <div class="glow"></div>
+                <div class="skyline">
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                </div>
+                <div class="columns">
+                  <span class="col"></span><span class="col"></span><span class="col"></span>
+                </div>
+                <div class="bull"></div>
+                <div class="nums"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-sill"></div>
+      <div class="win-label">投资与财富 <span class="count">· 42篇</span></div>
+    </a>
+
+    <!-- 道具：咖啡杯 -->
+    <div class="prop prop-coffee"></div>
+
+    <!-- 窗 4: 历史与文明对话 — 考古遗址 -->
+    <a href="4-历史与文明对话.html" class="window win-history">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-history">
+                <div class="sunset"></div>
+                <div class="desert"></div>
+                <div class="pyramid"></div>
+                <div class="greek-col"></div>
+                <div class="arch"></div>
+                <div class="obelisk"></div>
+                <div class="dunhuang"></div>
+                <div class="oasis"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-sill"></div>
+      <div class="win-label">历史与文明对话 <span class="count">· 39篇</span></div>
+    </a>
+
+  </div><!-- /.windows-row.row-top -->
+
+  <!-- ============================================================
+       ROW 2 — 三扇窗
+       ============================================================ -->
+  <div class="windows-row">
+
+    <!-- 窗 5: 艺术审美与品味 — 画廊窗外 -->
+    <a href="5-艺术审美与品味.html" class="window win-art">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-art">
+                <div class="swirl1"></div>
+                <div class="swirl2"></div>
+                <div class="swirl3"></div>
+                <div class="star-dot sd1"></div>
+                <div class="star-dot sd2"></div>
+                <div class="star-dot sd3"></div>
+                <div class="star-dot sd4"></div>
+                <div class="pond"></div>
+                <div class="lily l1"></div>
+                <div class="lily l2"></div>
+                <div class="lily l3"></div>
+                <div class="lily l4"></div>
+                <div class="water-line"></div>
+                <div class="water-line wl2"></div>
+                <div class="water-line wl3"></div>
+                <div class="crane cr1"></div>
+                <div class="crane cr2"></div>
+                <div class="crane cr3"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-sill"></div>
+      <div class="win-label">艺术审美与品味 <span class="count">· 61篇</span></div>
+    </a>
+
+    <!-- 道具：台灯 + 散纸 -->
+    <div class="prop prop-lamp"></div>
+
+    <!-- 窗 6: 教育与成长 — 大学校园秋日 -->
+    <a href="6-教育与成长.html" class="window win-edu">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-edu">
+                <div class="building"></div>
+                <div class="ivy"></div>
+                <div class="tower"></div>
+                <div class="tree tr1"></div>
+                <div class="tree tr2"></div>
+                <div class="lawn"></div>
+                <div class="figure f1"></div>
+                <div class="figure f2"></div>
+                <div class="figure f3"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-sill"></div>
+      <div class="win-label">教育与成长 <span class="count">· 41篇</span></div>
+    </a>
+
+    <div class="prop prop-papers"></div>
+
+    <!-- 窗 7: 职场与人生智慧 — 城市黄昏 -->
+    <a href="7-职场与人生智慧.html" class="window win-career">
+      <div class="win-frame-outer">
+        <div class="win-frame-mid">
+          <div class="win-frame-inner">
+            <div class="win-glass">
+              <div class="scene scene-career">
+                <div class="star"></div>
+                <div class="horizon"></div>
+                <div class="buildings">
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span><span class="bld"></span>
+                  <span class="bld"></span><span class="bld"></span>
+                </div>
+                <div class="lit lit1"></div>
+                <div class="lit lit2"></div>
+                <div class="lit lit3"></div>
+                <div class="lit lit4"></div>
+                <div class="lit lit5"></div>
+                <div class="lit lit6"></div>
+                <div class="lit lit7"></div>
+                <div class="lit lit8"></div>
+                <div class="harbor"></div>
+                <div class="reflection"></div>
+                <div class="plane"></div>
+              </div>
+              <div class="win-vignette"></div>
+              <div class="win-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-sill"></div>
+      <div class="win-label">职场与人生智慧 <span class="count">· 56篇</span></div>
+    </a>
+
+  </div><!-- /.windows-row -->
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    七扇窗 · 七个世界 · 374篇精选 · 吴军·硅谷来信 第一季
+  </footer>
+
+</div><!-- /.wall -->
 
 </body>
 </html>
