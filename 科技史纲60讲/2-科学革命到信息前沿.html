@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科学革命到信息前沿 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5555;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+
+.top-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);color:#fdf6ec;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap}
+.top-bar .home-link{color:#d4a574;font-size:13px;border:1px solid #d4a574;padding:3px 10px;border-radius:14px;white-space:nowrap;transition:all .2s}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f;text-decoration:none}
+
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"\25B8";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--card)}
+
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>科学革命到信息前沿 · 最小知识集</h1>
+  <a class="home-link" href="../index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<div class="container">
+<p class="subtitle">吴军·科技史纲60讲 · 从文艺复兴到量子通信——科学方法论的确立、工业革命、电气时代与信息时代的科技爆炸</p>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- TAB 0: Dashboard -->
+<div class="tab-panel active" id="panel0">
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">理解500年科技爆炸的底层逻辑——<strong>科学方法论为何是"元方法"？能量革命如何重塑文明？信息革命怎样改变人类连接方式？</strong>通过文艺复兴、科学革命、工业革命、电气时代到信息时代的五级跃迁，掌握科技演进的核心规律。</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
+<h3>概念关系图（多层深度图 · 所有概念入图 · 带标签边）</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span style="color:#c0392b">━━━ 核心驱动关系</span><span style="color:#d4a574">━━━ 方法论/派生</span><span style="color:#8b7355">━━━ 应用/实例</span><span style="color:#b8860b;border-bottom:2px dashed #b8860b">--- 公式/原则提取</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（15条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>圣母百花大教堂穹顶的双层拱顶结构</td><td>理解文艺复兴技术突破的具体案例</td></tr>
+<tr><td>布鲁内莱斯基的齿轮起重机械</td><td>讨论科学方法指导工程实践时引用</td></tr>
+<tr><td>美第奇家族柏拉图学园的组织模式</td><td>理解学术团体对科技推动的机制</td></tr>
+<tr><td>哈维血液循环论推翻盖伦理论</td><td>科学方法如何修正千年谬误</td></tr>
+<tr><td>拉瓦锡"燃素说"vs"氧气助燃说"之争</td><td>科学理论更替的经典案例</td></tr>
+<tr><td>夏普信号臂系统的190种姿势编码</td><td>通信编码的前电气时代尝试</td></tr>
+<tr><td>莱顿瓶的历史作用（简易电容器）</td><td>电学实验设备的发展史背景</td></tr>
+<tr><td>迈克耳孙-莫雷实验证伪以太</td><td>"证伪"在科学方法论中的价值</td></tr>
+<tr><td>多腔磁控管发明（雷达核心器件）</td><td>二战科技史的细节补充</td></tr>
+<tr><td>格哈特合成乙酰水杨酸后中毒去世</td><td>制药"安全性优先"原则的教训</td></tr>
+<tr><td>达芬奇鸟类解剖对飞行器设计的影响</td><td>跨学科思维与仿生学的早期案例</td></tr>
+<tr><td>李林塔尔2000次滑翔试验死于坠机</td><td>科学方法中理论vs经验的教训</td></tr>
+<tr><td>拉玛与安太尔发明的跳频技术</td><td>CDMA移动通信的技术前身</td></tr>
+<tr><td>唐代裁缝用绿毛浆糊促进伤口愈合</td><td>青霉素实践早于理论1000年</td></tr>
+<tr><td>洛伦兹变换的数学贡献与局限</td><td>"数学工具"与"物理意义"的区别</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径（5阶段推荐顺序）</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立元方法：</strong>先学「科学方法论」+「文艺复兴与信息复兴」——不明白"怎么做科学"，其他都是散落的知识点</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>能量视角：</strong>学习「机械论世界观」→「能量富余与工业革命」→「万用蒸汽机」，理解人类使用能量的飞跃</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>信息视角：</strong>学习「电力革命」→「通信革命与编码」→「危机即机会」，理解信息如何成为核心资源</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>模式思维：</strong>学习「科技商业化路径」+「发明全过程0到N」，建立完整的科技-商业思维框架</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>融会贯通：</strong>用「产业公式（原有产业+新技术=新产业）」将全部概念串联，形成科技判断力</div></div>
+</div>
+</div>
+</div>
+
+<!-- TAB 1: Knowledge Cards -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- TAB 2: Quiz -->
+<div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none"></div>
+</div>
+
+<!-- TAB 3: Exam -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>📋 考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- TAB 4: Review -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>📒 错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>🔍 概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+
+<!-- TAB 5: Mind Map -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>科学革命到信息前沿 · 思维导图</h3>
+<div id="mindmap">
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">一、科学方法论的确立（第一跃）</div>
+<div class="tree-children open">
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">1. 文艺复兴：信息复兴</div>
+<div class="tree-children open">
+<div class="tree-leaf">布鲁内莱斯基：圣母百花大教堂穹顶——失传古罗马技术的复兴</div>
+<div class="tree-leaf">美第奇家族：科西莫投入佛罗伦萨6倍税收建立柏拉图学园</div>
+<div class="tree-leaf">达芬奇：艺术家+科学家，鸟类解剖→飞行器设计，人体解剖→现代医学奠基</div>
+<div class="tree-leaf">本质：信息的复兴——掌握失传技术，技术从宗教回归人间应用</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">2. 从日心说到实证科学</div>
+<div class="tree-children">
+<div class="tree-leaf">哥白尼：日心说假说但缺乏实证（计算精度不如地心说）</div>
+<div class="tree-leaf">布鲁诺澄清：非因日心说被处死，而是泛神论+揭露教会丑闻</div>
+<div class="tree-leaf">伽利略核心：1609年自造高倍望远镜→木星卫星体系+金星满盈</div>
+<div class="tree-leaf">方法论革命：确立实验+观测的科学范式</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">3. 科学方法体系化</div>
+<div class="tree-children">
+<div class="tree-leaf">哈维：逻辑推理（心脏泵血量不能无限）+9年实验→推翻盖伦千年谬误</div>
+<div class="tree-leaf">笛卡尔：五步法（提出→实验→结论→推广→新问题）</div>
+<div class="tree-leaf">从自发到自觉：科研从"撞大运"变为"可操作流程"</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">4. 机械论世界观（牛顿集大成）</div>
+<div class="tree-children">
+<div class="tree-leaf">数学：二项式定理+微积分（与莱布尼茨分别独立发明）</div>
+<div class="tree-leaf">物理学：力学三定律+万有引力+精准定义质量/力/惯性</div>
+<div class="tree-leaf">机械论：世界客观/确定/可认识，从"神创论"到"可知论"</div>
+<div class="tree-leaf">哈雷用牛顿理论预测彗星73年后回归——人类首次精确预测未来</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">5. 现代化学诞生</div>
+<div class="tree-children">
+<div class="tree-leaf">炼金术→化学：磷的发现确立实验可重复性</div>
+<div class="tree-leaf">拉瓦锡：推翻燃素说+质量守恒+化学命名法+公制度量衡</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">二、工业与能量革命（第二跃）</div>
+<div class="tree-children">
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">1. 工业革命的本质：能量富余</div>
+<div class="tree-children">
+<div class="tree-leaf">核心标准：人均GDP从800→4万美元（50倍），人均寿命翻倍</div>
+<div class="tree-leaf">农业革命→粮食增产→劳动力富余→手工业扩张→动力短缺→蒸汽机</div>
+<div class="tree-leaf">过山车原理：判断历史影响力看"起点→终点"结果差异</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">2. 瓦特万用蒸汽机</div>
+<div class="tree-children">
+<div class="tree-leaf">纽卡门蒸汽机局限：效率低（80%热量浪费）、仅直线运动</div>
+<div class="tree-leaf">瓦特突破：分离式冷凝器+圆周运动+模块化，2年完成（前人50年未破）</div>
+<div class="tree-leaf">范式转变：首次自觉应用牛顿力学原理指导发明</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">3. 月光社与制度环境</div>
+<div class="tree-children">
+<div class="tree-leaf">月光社：月圆之夜聚会，约30人精英圈子（博尔顿、韦奇伍德、普利斯特里等）</div>
+<div class="tree-leaf">博尔顿：变卖五金厂资助瓦特——"为蒸汽机创造一切条件"</div>
+<div class="tree-leaf">英国制度优势：16世纪专利法+发明转化机制+全社会对发明家崇拜</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">4. 内燃机、汽车与飞机</div>
+<div class="tree-children">
+<div class="tree-leaf">奥托四冲程内燃机：效率>10%超越蒸汽机，17年售5万台</div>
+<div class="tree-leaf">戴姆勒/本茨：1885年分别发明汽车→1926年合并为戴姆勒-奔驰</div>
+<div class="tree-leaf">莱特兄弟：风洞200+翼形千次测试→1903年飞行者一号</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">5. 电的双重革命</div>
+<div class="tree-children">
+<div class="tree-leaf">能量维度：富兰克林风筝实验→伏打电池→法拉第磁生电→麦克斯韦方程组</div>
+<div class="tree-leaf">信息维度：电报/电话→广播→互联网</div>
+<div class="tree-leaf">产业转型：原有产业+电=新产业（冶金/化工/城市）</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">三、信息与通信革命（第三/四/五跃）</div>
+<div class="tree-children">
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">1. 通信革命</div>
+<div class="tree-children">
+<div class="tree-leaf">莫尔斯：不等长编码（高频字母短码）→电报首次实现人类无时差连接</div>
+<div class="tree-leaf">贝尔：电话开创通信产业（2016年全球电信3.5万亿美元）</div>
+<div class="tree-leaf">通信本质：编码是核心——语言/旗语/莫尔斯码/0-1数字/量子态</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">2. 互联网本质：以信息换能量</div>
+<div class="tree-children">
+<div class="tree-leaf">ARPANET：1960年代远程使用超级计算机，信息传递替代物理移动</div>
+<div class="tree-leaf">电商逻辑：消费者省出行时间+商家省推广成本+社会降低整体能耗</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">3. 科技商业化：爱迪生vs特斯拉</div>
+<div class="tree-children">
+<div class="tree-leaf">爱迪生：科技+商业+资本，创立企业研究实验室</div>
+<div class="tree-leaf">特斯拉：纯粹技术理想主义，专利死后才获确认</div>
+<div class="tree-leaf">瓦特第三条路：专注专利授权，不直接经营</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">4. 现代制药：发明从0到N</div>
+<div class="tree-children">
+<div class="tree-leaf">阿司匹林：1763发现水杨酸→1897霍夫曼合成→1899拜耳量产</div>
+<div class="tree-leaf">青霉素：1928弗莱明发现→弗洛里8大突破→1944诺曼底全员使用</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">5. 危机即机会：量子时代</div>
+<div class="tree-children">
+<div class="tree-leaf">爱因斯坦1905奇迹年：狭义相对论+光量子+E=mc²+布朗运动</div>
+<div class="tree-leaf">普朗克：能量是离散的（量子），解释黑体辐射</div>
+<div class="tree-leaf">海森堡测不准：不确定性是世界固有属性</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">四、核心公式与原则</div>
+<div class="tree-children">
+<div class="tree-leaf">笛卡尔五步法：提出→实验→结论→推广→发现新问题</div>
+<div class="tree-leaf">产业公式：原有产业+新技术=新产业</div>
+<div class="tree-leaf">发明全过程：从0到N才是完整发明</div>
+<div class="tree-leaf">以信息换能量：互联网和通信革命的统一解释框架</div>
+</div>
+</div>
+</div></div>
+</div>
+
+<!-- TAB 6: Socratic -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问（苏格拉底问答）</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p>
+<div id="socratic">
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">1. 为什么说"科学方法论"是500年科技爆炸的元方法？</span></div>
+<div class="socratic-a">笛卡尔之前的科学家靠个人悟性或特殊机遇取得突破（伽利略的超常动手能力、开普勒依赖第谷数据），这些成功难以复制。笛卡尔总结的五步法，使科学研究从"撞大运"变成"可操作流程"。此后瓦特用牛顿力学改进蒸汽机（2年vs前人50年）、拉瓦锡用定量实验推翻燃素说、莱特兄弟用风洞系统测试——本质上都在重复笛卡尔流程。没有科学方法论，一切科技突破都只是孤立的偶然事件，无法形成500年的持续爆炸。</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">2. 工业革命为什么偏偏发生在英国而不是中国？</span></div>
+<div class="socratic-a">三个必要条件恰好只在英国汇聚：①能量富余——农业革命（播种机、轮耕）使粮食增产、劳动力释放；②制度土壤——16世纪建立的专利保护体系+月光社等学术团体提供了"发明→商业化"的转化通道；③科学传统——牛顿机械思维已普及近百年，瓦特才能用科学原理而非经验试错来改进蒸汽机。反观中国：明代重农抑商、缺乏专利制度、没有科学理论传统，技术只能停留在"偶然发现"层面。</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">3. 爱迪生和特斯拉的路，对今天的工程师意味着什么？</span></div>
+<div class="socratic-a">爱迪生路径：科技+商业+资本运作，名利双收但要求极高；特斯拉路径：专注技术深度，接受商业边界的局限——更现实但需"不攀比"的心态。瓦特提供了第三条路：专注专利授权而非直接运营。关键在边界意识：清楚自身专长与弱项，不做越界之事。马斯克表面以特斯拉命名公司，实际走的是爱迪生模式。</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">4. "危机即机会"对商业世界有什么启发？</span></div>
+<div class="socratic-a">经典物理学在宏观世界完美运行200年，直到实验发现无法解释高速/微观现象。"危机"不是因为物理学不够好，而是认知边界被拓展了。三重启发：①回到原点——很多"难题"是因为前提假设错了（如伽利略变换假设时空独立）；②直觉有边界——日常经验无法理解光速世界，正如传统行业老手无法理解互联网逻辑；③危机是筛选器——物理学危机造就了爱因斯坦，2008年金融危机让富士康从低端代工转型高端制造。每次范式转换，都是新玩家的入场券。</div>
+
+</div></div>
+</div>
+
+<!-- TAB 7: Case Study -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：青霉素发明——从0到N的完整过程</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px">
+  <div class="card"><strong style="color:var(--accent)">背景</strong><p style="font-size:.85rem;margin-top:4px">1928年弗莱明偶然发现青霉抑制葡萄球菌。但培养液浓度仅2单位/升，远低于临床需求。弗莱明不懂化学和制药学，无法提纯有效成分。</p></div>
+  <div class="card"><strong style="color:var(--accent)">转折</strong><p style="font-size:.85rem;margin-top:4px">1938年弗洛里（组织者）+钱恩（生化）+亚伯拉罕+希特利组成牛津团队。1941年赴美与默克/辉瑞/施贵宝/礼来合作量产。</p></div>
+  <div class="card"><strong style="color:var(--accent)">结果</strong><p style="font-size:.85rem;margin-top:4px">青霉素使人类平均寿命增加15岁。诺曼底登陆每位盟军伤员均使用。1945年弗洛里/钱恩/弗莱明共获诺贝尔奖。</p></div>
+  <div class="card"><strong style="color:var(--accent)">现代启示</strong><p style="font-size:.85rem;margin-top:4px">彼得·蒂尔《从0到1》推崇的"原始创新"叙事掩盖了真相：弗莱明只是起跑者，弗洛里团队才是跑到终点的人。从0到N才是真正的发明。</p></div>
+</div>
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>MKS四维度拆解</h3>
+<div style="margin:8px 0"><strong style="color:var(--accent)">1. 科学方法论维度：</strong>青霉素完美演绎了笛卡尔五步法——（提出）伤口感染能否被抑制→（实验）50只小鼠对照（25只注射存活/25只未注射死亡）→（结论）青霉素有效→（推广）美国药厂工业化量产→（新问题）如何人工合成？→1957年希恩成功合成。每一步都是方法论驱动，不是运气。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">2. 能量/资源维度：</strong>弗莱明的2单位/升是"实验室好奇"，弗洛里的瓶罐霉菌工厂是"小规模验证"，美国药厂工业化量产才是"质的飞跃"。关键链：玉米浆替代蔗糖(20倍)→哈密瓜高产菌株(1000倍)→千名工程师协作(再增近百倍)。资源规模化投入是0到N不可或缺的环节。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">3. 制度与协作维度：</strong>英国有弗莱明+弗洛里的基础研究，但没有量产能力。弗洛里赴美+洛克菲勒基金会出钱+四家药企合作——跨大西洋的科学-工业协作网络才是成功的关键制度要素。如果留在英国单干，可能再等20年都无法量产。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">4. 危机驱动维度：</strong>二战是青霉素从"科研项目"变成"军事刚需"的催化剂。诺曼底登陆的紧迫性+士兵生命的大量需求，把青霉素推到美国第二优先级项目。印证"战争是科技助产士"——和平时期需要30年的研发，战时6年走完。</div>
+</div></div>
+</div>
+
+<!-- TAB 8: Decision Simulation -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p>
+<div id="decisionSim">
+
+<div class="decision-scenario">
+<strong>第1轮：</strong>你是新能源公司CTO，研发固态电池。有一条"捷径"——收购拥有半固态电池专利的小公司，可提前2年出产品但技术上限较低。你应该？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(0,0)">A. 收购——提前2年上市抢占市场，技术迭代后续再做</div>
+<div class="decision-opt" onclick="showDecision(0,1)">B. 放弃收购——坚持自主研发全固态电池，追求技术上限</div>
+<div class="decision-opt" onclick="showDecision(0,2)">C. 双轨并行——并购但保持独立团队，半固态先上市，全固态继续研发</div>
+</div>
+<div class="decision-result" id="decisionResult0"></div>
+</div>
+
+<div class="decision-scenario">
+<strong>第2轮：</strong>你在传统制造企业负责数字化转型。老板要求"一步到位建成智能工厂"，但一线工人连基础ERP都不会用。你应该？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(1,0)">A. 听老板的——直接上全套智能系统，用KPI强制推行</div>
+<div class="decision-opt" onclick="showDecision(1,1)">B. 拒绝——建议先做数字化基础培训，分阶段推进</div>
+<div class="decision-opt" onclick="showDecision(1,2)">C. 折中——先上简单MES系统让工人适应，同时规划智能工厂蓝图</div>
+</div>
+<div class="decision-result" id="decisionResult1"></div>
+</div>
+
+<div class="decision-scenario">
+<strong>第3轮：</strong>你是科研团队负责人，团队发现有趣现象（类似弗莱明看到霉菌杀死细菌），但与当前项目主攻方向不直接相关。你应该？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(2,0)">A. 忽略——专注主攻方向，不要分心</div>
+<div class="decision-opt" onclick="showDecision(2,1)">B. 全力转向——这可能是一个重大发现</div>
+<div class="decision-opt" onclick="showDecision(2,2)">C. 分配少数资源并行探索，主线不变</div>
+</div>
+<div class="decision-result" id="decisionResult2"></div>
+</div>
+
+</div></div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+"use strict";
+
+var LS_KEY = "mks_tech_hist";
+var learnedCards = JSON.parse(localStorage.getItem(LS_KEY+"_learned")||"[]");
+var wrongAnswers = JSON.parse(localStorage.getItem(LS_KEY+"_wrong")||"[]");
+var quizAnswered = JSON.parse(localStorage.getItem(LS_KEY+"_qz")||"[]");
+var shortRevealed = JSON.parse(localStorage.getItem(LS_KEY+"_sr")||"[]");
+var examSeconds = 0;
+var examInterval = null;
+var examActive = false;
+var examQuestions = [];
+var examAnswers = [];
+var currentCardIdx = 0;
+var cardFlipped = false;
+var quizTimeLeft = 900;
+var quizTimerInterval = null;
+var currentQuestions = [];
+var userAnswers = {};
+
+function save(){
+  localStorage.setItem(LS_KEY+"_learned",JSON.stringify(learnedCards));
+  localStorage.setItem(LS_KEY+"_wrong",JSON.stringify(wrongAnswers));
+  localStorage.setItem(LS_KEY+"_qz",JSON.stringify(quizAnswered));
+  localStorage.setItem(LS_KEY+"_sr",JSON.stringify(shortRevealed));
+}
+
+var concepts = [
+  {id:"c1",name:"科学方法论",def:"笛卡尔总结的\u201C提出问题→实验→导出结论→推广普遍化→发现新问题\u201D五步循环，是科学研究的元操作模板。它将科研从依赖个人悟性的\u201C撞大运\u201D变为可复制的系统流程，是500年科技爆炸的底层引擎。",analogy:"如同编程中的for循环——单次执行只能解决一个问题，但循环结构本身可以解决无限多问题。笛卡尔方法论就是科学研究的\u201Cfor循环\u201D模板。",example:"哈维质疑盖伦\u201C血液无限量\u201D假设→计算心脏泵血量（500磅/小时不可能无限）→9年解剖实验→提出血液循环论→推翻千年谬误。每一步都是五步法的精确执行。",counter:"科学方法论不是\u201C万能算法\u201D——它解决的是\u201C怎么做研究\u201D，不能代替\u201C研究什么\u201D的选题判断。选题需要直觉和见识，方法论只是执行工具。"},
+  {id:"c2",name:"文艺复兴与信息复兴",def:"文艺复兴的本质是信息的复兴——通过重新掌握古希腊罗马失传的技术与知识（建筑、数学、解剖学），使知识从宗教垄断回归人间应用，激发了科学、艺术、工程的全面爆发。",analogy:"如同一个硬盘被格式化后重新恢复数据——中世纪的欧洲丢失了古典文明的\u201C文件系统\u201D，文艺复兴本质上是一次大规模的数据恢复和重新索引。",example:"布鲁内莱斯基通过研究古罗马建筑遗迹\u201C恢复\u201D了万神殿穹顶技术，用400万块砖建成世界最大砖石穹顶；达芬奇通过解剖鸟类设计飞行器——信息一旦被恢复，马上就产生了新创造。",counter:"信息复兴≠技术进步——阿拉伯世界早于欧洲保存了大量古希腊文献，但因为没有美第奇家族式的资助体系和学术团体，未能催生科技革命。信息+制度+资本三者缺一不可。"},
+  {id:"c3",name:"机械论世界观",def:"牛顿确立的世界观：物质世界是客观存在的、确定的、可被认识的，所有现象背后都存在可用数学描述的规律。这是人类首次摆脱\u201C神创论\u201D，建立\u201C通过自身努力可以理解世界\u201D的理性信念。",analogy:"如同从\u201C黑箱操作\u201D变成\u201C开源代码\u201D——在牛顿之前，世界运作的规律被认为是上帝的秘密；牛顿之后，人类相信这些\u201C代码\u201D是可读、可理解、可预测的。",example:"哈雷用牛顿理论预测一颗彗星将在73年后回归——当彗星如期而至（哈雷彗星），人类第一次证明：宇宙规律不仅可以理解，还能精确预测未来。从\u201C神谕\u201D到\u201C科学预测\u201D的里程碑。",counter:"机械论在微观世界失灵——量子力学的非连续性和测不准原理证明，宇宙在最底层不是\u201C精密钟表\u201D。机械思维的边界：适用于宏观世界，不适用于量子尺度。"},
+  {id:"c4",name:"能量富余与工业革命",def:"工业革命的本质是能量使用水平的飞跃。农业革命使粮食增产→劳动力富余→转向手工业→动力短缺→催生蒸汽机。人均GDP从800美元跃升至4万美元——生产力超过此前2000年总和。",analogy:"如同手机电量从5%充到100%——之前的人类社会一直处于\u201C低电量模式\u201D（靠人力和畜力），工业革命相当于\u201C插上了电源\u201D（化石能源），所有应用（生产、交通、通信）瞬间被激活。",example:"英国农业革命使南部人口翻倍→剩余劳动力涌入纺织业→飞梭和珍妮纺纱机提升效率→畜力/水力不够用→瓦特蒸汽机应运而生。不是\u201C蒸汽机创造了工业革命\u201D，而是\u201C能量富余催生了蒸汽机\u201D。",counter:"能量富余是必要条件而非充分条件——中国南宋时期农业效率也极高，但缺乏专利制度和科学传统，富余的劳动力没有被导入技术创新，而是被科举制度吸收。"},
+  {id:"c5",name:"万用蒸汽机与创新范式",def:"瓦特首次自觉应用牛顿力学原理指导发明——分离式冷凝器+圆周运动+模块化设计，2年完成前人50年未突破的改进。这不仅是一台机器，更创立了\u201C科学理论→工程实现→商业推广\u201D的创新范式。",analogy:"如同从\u201C试错炼丹\u201D变成\u201C化学合成\u201D——工匠改良靠多代人的经验积累，瓦特改良靠理解底层物理原理（知道热力学才设计分离冷凝器）。前者是\u201C瞎猫碰死耗子\u201D，后者是\u201C按图索骥\u201D。",example:"纽卡门蒸汽机半个世纪无人能改进——工匠只知道\u201C气缸要反复加热冷却\u201D但不理解\u201C80%热量浪费在重复加热气缸\u201D。瓦特的物理知识让他直接锁定\u201C把冷凝和做功分开\u201D这个关键突破点。",counter:"瓦特模式的核心前提是\u201C有成熟科学理论可依赖\u201D——在科学理论尚未建立的领域（如19世纪早期的电学），即使最聪明的发明家也只能回到试错模式。"},
+  {id:"c6",name:"电力革命与电磁理论",def:"电具有能量+信息双重属性。能量维度：电力替代蒸汽成为新动力源；信息维度：电报/电话/广播/互联网均基于电磁理论。从富兰克林风筝实验到麦克斯韦方程组，电磁理论的系统化使电力成为现代文明的底层基础设施。",analogy:"如同\u201C血管系统+神经系统\u201D的双重角色——电线输送电流如同血管输送血液（能量），电线传输信号如同神经传递脉冲（信息）。电力革命同时升级了文明的循环系统和神经系统。",example:"富兰克林证实雷电=静电→伏打发明电池→奥斯特发现电生磁→法拉第发现磁生电→麦克斯韦用四个方程统一电磁光。从1820年奥斯特发现到1891年特斯拉实现全美供电，历时71年——基础研究最终找到了实用价值。",counter:"电力革命的双重性也带来误区——很多人以为\u201C通电=现代化\u201D。实际上，电的能量属性容易复制（建电厂就行），但信息属性需要制度配合（电报需要识字率、互联网需要开放网络）。"},
+  {id:"c7",name:"通信革命与编码",def:"通信的本质是编码——语言、旗语、莫尔斯码、0/1数字编码、量子叠加态，都是将语义转换为可传输信号的方法。莫尔斯创立的\u201C不等长编码\u201D（高频字母短码、低频字母长码）至今指导着数据压缩技术。",analogy:"如同物流系统的\u201C包装标准化\u201D——你把一封信（信息）装进不同尺寸的箱子（编码），箱子越小越省运费（带宽），但标准必须统一才能被正确拆包（解码）。莫尔斯码就是第一个全球通用的\u201C包装标准\u201D。",example:"莫尔斯分析英语字母频率：E最常见→用最简单的\u201C嘀\u201D（一个点）表示；Q很少出现→用\u201C嗒嗒嘀嗒\u201D（四个信号）。这就是180年前的霍夫曼编码思想——用数学优化信息传输效率。",counter:"编码只是手段不是目的——夏普信号臂有190多种姿势对应190种信息，但未被广泛采用，因为编码复杂性超过使用者学习成本。好编码的标准：在传输效率和易用性之间取得最优平衡。"},
+  {id:"c8",name:"科技商业化路径",def:"爱迪生vs特斯拉代表了科技商业化的两种模式。爱迪生路径：技术+商业+资本运作，建立企业研究实验室；特斯拉路径：专注技术深度，不涉足商业。瓦特提供了第三条路：专注专利授权，不直接经营。",analogy:"如同游戏中的三种职业——爱迪生是\u201C全栈战士\u201D（技术+商业+管理），特斯拉是\u201C纯法师\u201D（技术值拉满但防御为零），瓦特是\u201C辅助\u201D（输出技术专利给坦克队友博尔顿）。没有哪个\u201C更正确\u201D，只有\u201C更适合你的天赋\u201D。",example:"马斯克表面以特斯拉命名公司（致敬技术理想主义），实际走的是爱迪生模式：技术商业化+资本运作+产品迭代。特斯拉本人的无线电专利死后才获最高法院确认——理想主义的代价。",counter:"二分法简化了现实——当代最成功的科技公司都是\u201C爱迪生模式\u201D的现代版本，但不意味着特斯拉模式\u201C错了\u201D。基础研究（如贝尔实验室）恰恰需要特斯拉式的长期主义，只是个人承担这种模式的风险极高。"},
+  {id:"c9",name:"危机即机会",def:"经典物理学在宏观世界完美运行200年后，因无法解释光速不变和黑体辐射而陷入\u201C物理学危机\u201D。这场危机催生了相对论和量子力学——危机不是系统的失败，而是认知边界被拓展的信号。",analogy:"如同地图软件\u201C导航偏移\u201D提醒——不是地图错了，而是你开到了地图覆盖范围之外。经典物理学就是牛顿绘制的\u201C地图\u201D，在宏观低速区域完美可用，但进入高速/微观领域就需要\u201C更新地图\u201D。",example:"迈克耳孙-莫雷实验发现光速在任何参照系都不变→与伽利略变换矛盾→洛伦兹提出数学变换→爱因斯坦赋予物理意义→狭义相对论诞生。关键教训：回到原点——不是修补伽利略变换，而是质疑其前提（时空独立）。",counter:"\u201C危机就是机会\u201D的前提是你有能力识别和利用危机——大多数人面对危机时的本能是防御和收缩。爱迪生在交流电挑战面前选择了\u201C证明交流电危险\u201D而非拥抱新技术，说明即使伟大发明家也难逃\u201C创新者窘境\u201D。"},
+  {id:"c10",name:"发明全过程0到N",def:"真正的发明是从0到N的完整过程，不是从0到1的单点突破。青霉素案例说明：弗莱明的偶然发现只是起点，弗洛里团队的提纯+美国药厂量产+科学家结构分析+人工合成，总共8大突破才完成了从\u201C天然物\u201D到\u201C药物\u201D的全程。",analogy:"如同跑马拉松——从0到1只是起跑，从1到N才是跑完全程。媒体喜欢报道\u201C第一个冲过起跑线的人\u201D（弗莱明），但真正改变世界的是\u201C跑完42公里的那群人\u201D（弗洛里/钱恩/希特利/药厂工程师）。",example:"弗莱明培养液浓度仅2单位/升→弗洛里团队用玉米浆替代蔗糖（20倍提升）→玛丽从哈密瓜发现高产菌株（1000倍提升）→美国药厂千名工程师协作（再增近百倍）→1944年诺曼底每位盟军伤员都能使用。从2单位到80万单位——这就是N。",counter:"不是所有0都值得走到N——特斯拉的无线输电就是\u201C不应该走完的0\u201D。判断一个0是否值得投入资源走到N，本身就是最重要的科技判断力。标准：是否解决真实需求？是否有可规模化路径？技术瓶颈是否可突破？"}
+];
+var mksCoreIds = ["c1","c3","c4","c7"];
+
+var choiceQuestions = [
+  {q:"笛卡尔科学方法五步法的正确顺序是什么？",o:["提出问题→进行实验→得出结论→推广普遍化→发现新问题","实验→提出→结论→发现→推广","推广→实验→提出→结论→发现","结论→推广→提出→实验→发现"],answer:0},
+  {q:"\u201C危机即机会\u201D在物理学史上的典型案例是什么？",o:["物理学的终结","科学家集体失业","物理学变成了化学","物理学危机催生了相对论和量子力学"],answer:3},
+  {q:"工业革命为什么首先发生在英国？",o:["英国煤储量最多","英国最早发明蒸汽机","能量富余+专利制度+科学传统三条件汇聚","英国人口最多"],answer:2},
+  {q:"瓦特改良蒸汽机的关键突破点是什么？",o:["使用了更好的煤炭","分离式冷凝器——把冷凝和做功分开","增加了气缸数量","发明了新的燃料"],answer:1},
+  {q:"青霉素从实验室发现到临床使用，经历了几个重大突破？",o:["1个——弗莱明的发现就是全部","3个——弗莱明+弗洛里+美国药厂","8个——从弗莱明偶然发现到1957年人工合成","2个——弗莱明发现+牛津团队提纯"],answer:2},
+  {q:"互联网的本质是什么？",o:["连接全球的计算机网络","电子商务的基础设施","社交媒体的技术平台","以信息换能量——通过信息传递替代物理移动"],answer:3},
+  {q:"爱迪生坚持直流电的真正原因是什么？",o:["商业竞争策略——支付交流电专利费比输电损耗更昂贵","他不懂交流电原理","他年轻时已放弃交流电","直流电技术更先进"],answer:0},
+  {q:"牛顿最伟大的遗产是什么？",o:["发明了微积分","发现了万有引力","提出了力学三定律","确立了机械论世界观——人类可通过自身努力理解世界"],answer:3},
+  {q:"月光社对工业革命的关键作用是什么？",o:["学术团体催化了发明从实验室到商业化的转化","发明了蒸汽机","提供了资金","推翻了英国的君主制"],answer:0},
+  {q:"文艺复兴的本质是什么？",o:["宗教改革的副产品","信息的复兴——重新掌握失传的古希腊罗马技术","商人阶级的政治夺权","艺术家群体的涌现"],answer:1},
+  {q:"莫尔斯电码采用哪种编码策略？",o:["定长编码——类似ASCII","不等长编码（高频字母短码、低频字母长码）——类似霍夫曼压缩","颜色编码——类似CSS","固定8位编码——类似UTF-8"],answer:1},
+  {q:"爱迪生和特斯拉的根本区别是什么？",o:["爱迪生发明电灯，特斯拉发明交流电","爱迪生更富，特斯拉更穷","爱迪生将科技与商业结合，特斯拉是纯粹的技术理想主义者","爱迪生是美国人，特斯拉是塞尔维亚人"],answer:2}
+];
+var shortQuestions = [
+  {q:"简述笛卡尔科学方法五步法，并说明为什么它是\u201C元方法\u201D。",a:"五步法：提出问题→进行实验→得出结论→推广普遍化→发现新问题。它是\u201C元方法\u201D因为：它使科学研究从依赖个人悟性（伽利略、开普勒都难以复制）变为可操作、可复制的系统流程。之后瓦特用牛顿力学改进蒸汽机、拉瓦锡用定量实验推翻燃素说、莱特兄弟用风洞系统测试——本质上都在重复这个流程。"},
+  {q:"为什么说工业革命的本质是\u201C能量富余\u201D而非\u201C蒸汽机\u201D？",a:"因为因果关系是：农业革命（播种机+轮耕）→粮食增产→劳动力富余→转向手工业→动力短缺→催生蒸汽机。不是蒸汽机创造了工业革命，而是能量富余催生了对蒸汽机的需求。证据：人均GDP从800美元跃升至4万美元（50倍），生产力超过此前2000年总和。"},
+  {q:"爱迪生和特斯拉的路径选择对当代工程师有什么启示？",a:"三条路：爱迪生（技术+商业+资本）名利双收但要求极高；特斯拉（专注技术）更现实但需接受商业边界的局限；瓦特（专注专利授权）可能是大多数技术人的最优解。核心原则：明确自身专长与弱项的边界，不做越界之事；选择专业道路后不与商业成功攀比。"},
+  {q:"青霉素的\u201C从0到N\u201D过程说明了什么？",a:"说明真正的发明不是从0到1的单点突破，而是从0到N的完整过程。弗莱明的偶然发现（1928）只是起点，弗洛里团队的8大突破（提纯、动物实验、量产、合成）才是真正改变世界的关键。彼得·蒂尔\u201C从0到1\u201D的说法在青霉素历史上恰好是错的——从1到N的人远比从0到1的人稀少。"},
+  {q:"\u201C危机即机会\u201D在现代商业世界有哪些应用？",a:"三重启发：①回到原点——很多\u201C难题\u201D是因为前提假设错了（如洛伦兹直接修正伽利略变换的基础而非修补）；②直觉有边界——日常经验无法理解光速世界，正如传统行业老手无法理解互联网逻辑；③危机是筛选器——物理学危机造就爱因斯坦/玻尔，2008年金融危机让富士康从低端代工转型高端制造。"}
+];
+
+function switchTab(idx){
+  document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active")});
+  document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active")});
+  document.querySelector(".tab-btn[data-tab=\""+idx+"\"]").classList.add("active");
+  document.getElementById("panel"+idx).classList.add("active");
+  if(idx===4) renderReview();
+}
+
+document.querySelectorAll(".tab-btn").forEach(function(b){
+  b.addEventListener("click",function(){
+    switchTab(this.dataset.tab);
+  });
+});
+
+function renderSVG(){
+  var svg=document.getElementById("svgTemplate").innerHTML;
+
+  document.getElementById("conceptMap").innerHTML=svg;
+}
+renderSVG();
+
+function renderConcepts(){
+  var grid=document.getElementById("conceptGrid");
+  grid.innerHTML=concepts.map(function(c,i){
+    return "<div class=\"concept-card\" onclick=\"switchTab(1);setCard("+i+")\"><strong>"+c.name+"</strong><p style=\"font-size:.82rem;color:var(--text-light);margin-top:4px\">"+c.def.slice(0,55)+"...</p></div>";
+  }).join("");
+  var mks=document.getElementById("mksCoreGrid");
+  mks.innerHTML=mksCoreIds.map(function(id){
+    var c=concepts.find(function(x){return x.id===id});
+    return "<div class=\"concept-card mks-core\"><strong>★ "+c.name+"</strong><p style=\"font-size:.82rem;color:var(--text-light);margin-top:4px\">"+c.def.slice(0,75)+"...</p></div>";
+  }).join("");
+}
+renderConcepts();
+
+function updateProgress(){
+  var pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById("totalProgress").style.width=pct+"%";
+  document.getElementById("progressText").textContent=pct>0?"学习进度 "+pct+"%("+learnedCards.length+"/"+concepts.length+")":"尚未开始学习";
+  document.getElementById("cardProgress").style.width=pct+"%";
+  document.getElementById("cardLearned").textContent=learnedCards.length;
+}
+updateProgress();
+
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById("flipFront").innerHTML="<h3 style=\"font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)\">"+c.name+"</h3><p style=\"color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)\">点击翻转卡片查看详情</p>"+(learnedCards.includes(c.id)?"<span class=\"tag\" style=\"margin-top:8px\">✓ 已学习</span>":"");
+  document.getElementById("flipBack").innerHTML="<div style=\"margin-bottom:6px\"><strong style=\"color:var(--accent)\">定义：</strong>"+c.def+"</div><div style=\"margin-bottom:6px\"><strong style=\"color:var(--accent)\">类比：</strong>"+c.analogy+"</div><div style=\"margin-bottom:6px\"><strong style=\"color:var(--success)\">示例：</strong>"+c.example+"</div><div><strong style=\"color:var(--accent)\">反例/边界：</strong>"+c.counter+"</div>";
+  document.getElementById("flipInner").classList.remove("flipped");
+  document.getElementById("cardIndex").textContent=(idx+1)+" / "+concepts.length;
+  document.getElementById("markLearnedBtn").textContent=learnedCards.includes(c.id)?"✓ 已学习":"✓ 标记已学习";
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1);}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1);}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id});}else{learnedCards.push(id);}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById("flipInner").addEventListener("click",function(){this.classList.toggle("flipped");cardFlipped=!cardFlipped;});
+
+function startQuiz(){
+  var shuffled=[].concat(choiceQuestions).sort(function(){return Math.random()-0.5});
+  var essayShuffled=[].concat(shortQuestions).sort(function(){return Math.random()-0.5});
+  currentQuestions=shuffled.slice(0,9).concat(essayShuffled.slice(0,3));
+  userAnswers={};
+  quizTimeLeft=900;
+  document.getElementById("quizScore").textContent="";
+  renderQuizPractice();
+  startQuizTimer("quizTimer");
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft=900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display="inline";
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval=setInterval(function(){
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){clearInterval(quizTimerInterval);submitQuizPractice();}
+  },1000);
+}
+
+function updateQuizTimerDisplay(elemId){
+  var m=Math.floor(quizTimeLeft/60);
+  var s=quizTimeLeft%60;
+  document.getElementById(elemId).textContent="⏱ "+m+":"+(s<10?"0":"")+s;
+}
+
+function renderQuizPractice(){
+  var container=document.getElementById("quizContainer");
+  var html="";
+  currentQuestions.forEach(function(q,i){
+    var opts=q.o;
+    if(opts){
+      html+="<div class=\"quiz-card\" id=\"qcard"+i+"\"><div class=\"q-num\">选择题 "+(i+1)+"</div><div class=\"q-text\">"+q.q+"</div>";
+      opts.forEach(function(o,j){
+        var sel=userAnswers[i]===j?" selected":"";
+        html+="<div class=\"option"+sel+"\" onclick=\"selectQuizChoice("+i+","+j+")\" id=\"opt"+i+"_"+j+"\">"+"ABCD"[j]+". "+o+"</div>";
+      });
+      html+="<div id=\"fb"+i+"\"></div></div>";
+    }else{
+      html+="<div class=\"quiz-card\"><div class=\"q-num\">简答题 "+(i+1)+"</div><div class=\"q-text\">"+q.q+"</div><textarea class=\"essay-area\" id=\"essay"+i+"\" placeholder=\"输入你的回答...\">"+(userAnswers[i]||"")+"</textarea></div>";
+    }
+  });
+  html+="<button class=\"btn\" onclick=\"submitQuizPractice()\">📩 提交答案</button>";
+  container.innerHTML=html;
+}
+
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx]=optIdx;
+  var q=currentQuestions[qIdx];
+  var correctIdx=q.answer;
+  var isCorrect=optIdx===correctIdx;
+  var allOpts=document.querySelectorAll("#qcard"+qIdx+" .option");
+  allOpts.forEach(function(el,j){
+    el.classList.add(j===correctIdx?"correct":(j===optIdx&&!isCorrect?"wrong":""));
+    el.style.pointerEvents="none";
+  });
+  var fb=document.getElementById("fb"+qIdx);
+  fb.className="feedback "+(isCorrect?"correct":"wrong");
+  fb.textContent=(isCorrect?"✓ 正确！":"✗ 错误。")+" "+(q.explain||"");
+  var correctCount=Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!qi.o) return false;
+    return v===qi.answer;
+  }).length;
+  var totalChoice=currentQuestions.filter(function(q){return q.o;}).length;
+  document.getElementById("quizScore").textContent="得分: "+correctCount+"/"+totalChoice;
+}
+
+function submitQuizPractice(){
+  var correctCount=Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!qi.o) return false;
+    return v===qi.answer;
+  }).length;
+  var totalChoice=currentQuestions.filter(function(q){return q.o;}).length;
+  alert("选择题得分: "+correctCount+"/"+totalChoice+"\n简答题已保存（自我对照参考答案）");
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  currentQuestions=[];
+  userAnswers={};
+  clearInterval(quizTimerInterval);
+  document.getElementById("quizContainer").innerHTML="";
+  document.getElementById("quizScore").textContent="";
+  document.getElementById("quizTimer").style.display="none";
+}
+
+function startExam(){
+  if(examActive) return;
+  examActive=true;
+  examSeconds=15*60;
+  document.getElementById("startExamBtn").style.display="none";
+  document.getElementById("examResult").style.display="none";
+  var cIdx=[],sIdx=[];
+  while(cIdx.length<7){var r=Math.floor(Math.random()*choiceQuestions.length);if(cIdx.indexOf(r)===-1)cIdx.push(r);}
+  while(sIdx.length<3){var r=Math.floor(Math.random()*shortQuestions.length);if(sIdx.indexOf(r)===-1)sIdx.push(r);}
+  examQuestions={choice:cIdx,short:sIdx};
+  examAnswers=new Array(7).fill(-1);
+  renderExam();
+  document.getElementById("examArea").style.display="block";
+  examInterval=setInterval(updateTimer,1000);
+}
+
+function updateTimer(){
+  examSeconds--;
+  var m=Math.floor(examSeconds/60),s=examSeconds%60;
+  document.getElementById("examTimer").textContent=m+":"+(s<10?"0":"")+s;
+  if(examSeconds<=0) submitExam();
+}
+
+function renderExam(){
+  var div=document.getElementById("examArea");
+  var html="";
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var opts=q.o.map(function(o,j){
+      return "<div class=\"quiz-option\" onclick=\"selectExam("+i+","+j+")\" id=\"examOpt"+i+"_"+j+"\">"+"ABCD"[j]+". "+o+"</div>";
+    }).join("");
+    html+="<div style=\"margin-bottom:14px;text-align:left\"><strong style=\"color:var(--accent)\">"+(i+1)+". "+q.q+"</strong>"+opts+"</div>";
+  });
+  examQuestions.short.forEach(function(idx,i){
+    html+="<div style=\"margin-bottom:14px;text-align:left\"><strong style=\"color:var(--accent)\">"+(i+8)+". "+shortQuestions[idx].q+"</strong><p style=\"color:var(--text-light);font-size:.82rem;margin-top:4px\">（简答题，请在心中作答后点击\u201C提交\u201D查看参考思路）</p></div>";
+  });
+  html+="<button class=\"btn btn-primary\" onclick=\"submitExam()\">提交答卷</button>";
+  div.innerHTML=html;
+}
+
+function selectExam(i,j){
+  examAnswers[i]=j;
+  for(var k=0;k<4;k++){var el=document.getElementById("examOpt"+i+"_"+k);if(el){el.classList.remove("selected");if(k===j)el.classList.add("selected");}}
+}
+
+function submitExam(){
+  clearInterval(examInterval);
+  examActive=false;
+  document.getElementById("examTimer").textContent="00:00";
+  var score=0;
+  var detail="";
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var user=examAnswers[i];
+    var correct=q.answer;
+    var isCorrect=user===correct;
+    if(isCorrect) score++;
+    else{wrongAnswers.push({type:"exam",idx:idx,question:q.q,userAnswer:user>=0?q.o[user]:"未作答",correctAnswer:q.o[correct]});}
+    detail+="<div style=\"margin:6px 0;padding:8px;border-radius:6px;background:"+(isCorrect?"#eafaf1":"#fdecea")+"\"><strong>"+(i+1)+". "+q.q+"</strong><br>你的答案："+(user>=0?q.o[user]:"未作答")+" "+(isCorrect?"✓":"✗")+"<br>正确答案："+q.o[correct]+"</div>";
+  });
+  examQuestions.short.forEach(function(idx,i){
+    var q=shortQuestions[idx];
+    detail+="<div style=\"margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2\"><strong>"+(i+8)+". "+q.q+"</strong><br>"+q.a+"</div>";
+  });
+  save();
+  var pct=Math.round(score/7*100);
+  document.getElementById("examResult").style.display="block";
+  document.getElementById("examResult").innerHTML="<h3 style=\"color:"+(pct>=70?"var(--success)":"var(--accent)")+"\">得分："+score+"/7（"+pct+"%）</h3>"+detail+"<button class=\"btn btn-outline\" onclick=\"document.getElementById('startExamBtn').style.display='inline-block';document.getElementById('examResult').style.display='none';document.getElementById('examArea').style.display='none';document.getElementById('examTimer').textContent='15:00'\">重新考试</button>";
+  document.getElementById("examArea").style.display="none";
+}
+
+function renderReview(){
+  var totalQ=quizAnswered.length;
+  var correctQ=quizAnswered.length-wrongAnswers.filter(function(w){return w.type==="choice";}).length;
+  var pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+  var days=Math.max(1,Math.ceil((Date.now()-new Date("2026-05-01").getTime())/86400000));
+  document.getElementById("statsGrid").innerHTML="<div class=\"card stat-item\"><div class=\"stat-value\">"+totalQ+"</div><div class=\"stat-label\">总答题数</div></div><div class=\"card stat-item\"><div class=\"stat-value\">"+pct+"%</div><div class=\"stat-label\">正确率</div></div><div class=\"card stat-item\"><div class=\"stat-value\">"+days+"</div><div class=\"stat-label\">学习天数</div></div>";
+  var wb=document.getElementById("wrongBook");
+  if(wrongAnswers.length===0){wb.innerHTML="<p style=\"color:var(--success)\">暂无错题，继续保持！</p>";}
+  else{wb.innerHTML=wrongAnswers.map(function(w,i){return "<div style=\"margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0\"><strong>"+w.question+"</strong><br><span style=\"color:var(--accent)\">你的答案："+w.userAnswer+"</span><br><span style=\"color:var(--success)\">正确答案："+w.correctAnswer+"</span></div>";}).join("");}
+  var conceptMap2={};
+  wrongAnswers.forEach(function(w){
+    var topic=w.question?w.question.slice(0,8):"";
+    conceptMap2[topic]=conceptMap2[topic]||{topic:topic,count:0,questions:[]};
+    conceptMap2[topic].count++;
+    conceptMap2[topic].questions.push(w.question);
+  });
+  var sorted=Object.values(conceptMap2).sort(function(a,b){return b.count-a.count;});
+  document.getElementById("weakConcepts").innerHTML=sorted.length>0?sorted.map(function(c){return "<div style=\"margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px\"><strong>错"+c.count+"题：</strong>"+c.questions[0].slice(0,40)+"...</div>";}).join(""):"<p style=\"color:var(--success)\">暂无薄弱概念</p>";
+}
+
+function toggleMindmap(el){
+  if(typeof el==="string") el=document.querySelector(el);
+  el.classList.toggle("open");
+  var children=el.nextElementSibling;
+  if(children) children.classList.toggle("open");
+}
+
+function toggleSocratic(el){el.nextElementSibling.classList.toggle("open");}
+
+function showDecision(scenarioIdx,optIdx){
+  var scenarios=[
+    [
+      {result:"收购是\u201C爱迪生模式\u201D的典型应用——技术+商业+资本运作。但\u201C技术上限较低\u201D是实隙，用半固态占领市场后竞争对手可能直接跳过半固态做全固态。",mks:"科技商业化路径：爱迪生模式的风险——短期商业成功可能锁死长期技术路线。"},
+      {result:"这是\u201C特斯拉模式\u201D——追求技术上限，但风险是2年后竞争对手可能已经占领市场。特斯拉的教训：技术理想主义者往往在商业化阶段掉队。",mks:"科技商业化路径：特斯拉模式的风险——\u201C技术最优\u201D不等于\u201C商业最优\u201D。"},
+      {result:"最佳选择。这是\u201C瓦特路径\u201D的现代版本——不把鸡蛋放在一个篮子里，双轨并行。半固态先占市场，全固态保持技术竞争力。",mks:"科技商业化路径：瓦特模式——专注核心能力+合作补足短板。"}
+    ],
+    [
+      {result:"这是\u201C泰勒科学管理\u201D的翻版——忽略人的因素，把工人当成\u201C机器零件\u201D。强制推行的结果往往是形式主义，数据乱填。",mks:"机械思维的局限性：确定性/可拆解/标准化无法处理复杂人组织。"},
+      {result:"这是\u201C特斯拉模式\u201D——方向正确但可能被老板视为\u201C不执行\u201D。关键是要用\u201C信息\u201D说服老板：展示分阶段推进的数据和案例。",mks:"科学方法论：\u201C大胆假设，小心求证\u201D——你的假设是\u201C分步走更好\u201D，用数据证明它。"},
+      {result:"最佳选择。这是\u201C发明全过程0到N\u201D的思维——不是\u201C一步到位\u201D而是\u201C渐进迭代\u201D。先解决\u201C有没有\u201D的问题（MES系统），再解决\u201C好不好\u201D的问题（智能工厂）。",mks:"发明全过程0到N：从\u201C能用\u201D到\u201C好用\u201D再到\u201C普及\u201D是必经过程。"}
+    ],
+    [
+      {result:"这是安全的选择，但可能错过\u201C青霉素时刻\u201D。弗莱明如果忽略了\u201C霉菌死亡圈\u201D现象，青霉素的发现可能推迟几十年。",mks:"危机即机会：\u201C异常现象\u201D往往是新范式的信号。"},
+      {result:"\u201C全力转向\u201D是特斯拉式的冒险——放弃主线去追\u201C有趣现象\u201D。但特斯拉本人就是因为这种\u201C全力投入无法实现的技术\u201D而失去资金支持的。",mks:"科技商业化路径：特斯拉模式的风险——技术理想主义者往往不考虑商业可行性。"},
+      {result:"最佳选择。这是\u201C瓦特路径\u201D的科研版本——主线保持专注，分配10-20%资源做并行探索。弗莱明当年没有\u201C全力转向\u201D青霉素——他继续做自己的研究，而是发表了论文让别人去追。",mks:"发明全过程0到N：从0到1可以是\u201C副产品\u201D，不必放弃主线。"}
+    ]
+  ];
+  var r=scenarios[scenarioIdx][optIdx];
+  var el=document.getElementById("decisionResult"+scenarioIdx);
+  el.style.display="block";
+  el.innerHTML="<div style=\"margin-bottom:6px\"><strong>反馈：</strong>"+r.result+"</div><div style=\"font-size:.85rem;color:var(--text-light)\"><strong>MKS分析：</strong>"+r.mks+"</div>";
+}
+</script>
+
+
+<div id="svgTemplate" style="display:none"><svg width="1858pt" height="441pt"
+ viewBox="0.00 0.00 1857.50 441.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 437)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-437 1853.5,-437 1853.5,4 -4,4"/>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="3" d="M861,-433C861,-433 753,-433 753,-433 747,-433 741,-427 741,-421 741,-421 741,-409 741,-409 741,-403 747,-397 753,-397 753,-397 861,-397 861,-397 867,-397 873,-403 873,-409 873,-409 873,-421 873,-421 873,-427 867,-433 861,-433"/>
+<text text-anchor="middle" x="807" y="-418" font-family="Noto Sans SC" font-size="10.00" fill="white">理性的阶梯</text>
+<text text-anchor="middle" x="807" y="-407" font-family="Noto Sans SC" font-size="10.00" fill="white">500年科技爆炸的五级跃迁</text>
+</g>
+<!-- pillar1 -->
+<g id="node2" class="node">
+<title>pillar1</title>
+<path fill="#d4a574" stroke="black" d="M874,-352C874,-352 740,-352 740,-352 734,-352 728,-346 728,-340 728,-340 728,-328 728,-328 728,-322 734,-316 740,-316 740,-316 874,-316 874,-316 880,-316 886,-322 886,-328 886,-328 886,-340 886,-340 886,-346 880,-352 874,-352"/>
+<text text-anchor="middle" x="807" y="-337" font-family="Noto Sans SC" font-size="10.00" fill="white">科学方法论的确立</text>
+<text text-anchor="middle" x="807" y="-326" font-family="Noto Sans SC" font-size="10.00" fill="white">文艺复兴→伽利略→笛卡尔→牛顿</text>
+</g>
+<!-- root&#45;&gt;pillar1 -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;pillar1</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M807,-396.86C807,-386.71 807,-373.63 807,-362.12"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="810.5,-362.11 807,-352.11 803.5,-362.11 810.5,-362.11"/>
+<text text-anchor="middle" x="819.5" y="-372.6" font-family="Noto Sans SC" font-size="8.00">第一跃</text>
+</g>
+<!-- pillar2 -->
+<g id="node3" class="node">
+<title>pillar2</title>
+<path fill="#d4a574" stroke="black" d="M1398.5,-352C1398.5,-352 1293.5,-352 1293.5,-352 1287.5,-352 1281.5,-346 1281.5,-340 1281.5,-340 1281.5,-328 1281.5,-328 1281.5,-322 1287.5,-316 1293.5,-316 1293.5,-316 1398.5,-316 1398.5,-316 1404.5,-316 1410.5,-322 1410.5,-328 1410.5,-328 1410.5,-340 1410.5,-340 1410.5,-346 1404.5,-352 1398.5,-352"/>
+<text text-anchor="middle" x="1346" y="-337" font-family="Noto Sans SC" font-size="10.00" fill="white">工业与能量革命</text>
+<text text-anchor="middle" x="1346" y="-326" font-family="Noto Sans SC" font-size="10.00" fill="white">瓦特→内燃机→电力→核能</text>
+</g>
+<!-- root&#45;&gt;pillar2 -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;pillar2</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M873.09,-404.31C973.99,-389.52 1165.82,-361.41 1271.52,-345.92"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="1272.08,-349.37 1281.47,-344.46 1271.07,-342.45 1272.08,-349.37"/>
+<text text-anchor="middle" x="1104.5" y="-372.6" font-family="Noto Sans SC" font-size="8.00">第二跃</text>
+</g>
+<!-- pillar3 -->
+<g id="node4" class="node">
+<title>pillar3</title>
+<path fill="#d4a574" stroke="black" d="M428.5,-271C428.5,-271 321.5,-271 321.5,-271 315.5,-271 309.5,-265 309.5,-259 309.5,-259 309.5,-247 309.5,-247 309.5,-241 315.5,-235 321.5,-235 321.5,-235 428.5,-235 428.5,-235 434.5,-235 440.5,-241 440.5,-247 440.5,-247 440.5,-259 440.5,-259 440.5,-265 434.5,-271 428.5,-271"/>
+<text text-anchor="middle" x="375" y="-256" font-family="Noto Sans SC" font-size="10.00" fill="white">信息与通信革命</text>
+<text text-anchor="middle" x="375" y="-245" font-family="Noto Sans SC" font-size="10.00" fill="white">莫尔斯→互联网→量子通信</text>
+</g>
+<!-- root&#45;&gt;pillar3 -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;pillar3</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M760.77,-396.88C680.81,-367.26 517.01,-306.6 430.83,-274.68"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="431.82,-271.31 421.23,-271.12 429.39,-277.88 431.82,-271.31"/>
+<text text-anchor="middle" x="658" y="-332.1" font-family="Noto Sans SC" font-size="8.00">第三/四/五跃</text>
+</g>
+<!-- renaiss -->
+<g id="node5" class="node">
+<title>renaiss</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M848.5,-271C848.5,-271 765.5,-271 765.5,-271 759.5,-271 753.5,-265 753.5,-259 753.5,-259 753.5,-247 753.5,-247 753.5,-241 759.5,-235 765.5,-235 765.5,-235 848.5,-235 848.5,-235 854.5,-235 860.5,-241 860.5,-247 860.5,-247 860.5,-259 860.5,-259 860.5,-265 854.5,-271 848.5,-271"/>
+<text text-anchor="middle" x="807" y="-256" font-family="Noto Sans SC" font-size="10.00">文艺复兴：信息复兴</text>
+<text text-anchor="middle" x="807" y="-245" font-family="Noto Sans SC" font-size="10.00">布鲁内莱斯基·美第奇</text>
+</g>
+<!-- pillar1&#45;&gt;renaiss -->
+<g id="edge4" class="edge">
+<title>pillar1&#45;&gt;renaiss</title>
+<path fill="none" stroke="#d4a574" d="M807,-315.86C807,-305.71 807,-292.63 807,-281.12"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="810.5,-281.11 807,-271.11 803.5,-281.11 810.5,-281.11"/>
+<text text-anchor="middle" x="815.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">起点</text>
+</g>
+<!-- helio -->
+<g id="node6" class="node">
+<title>helio</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M723.5,-271C723.5,-271 620.5,-271 620.5,-271 614.5,-271 608.5,-265 608.5,-259 608.5,-259 608.5,-247 608.5,-247 608.5,-241 614.5,-235 620.5,-235 620.5,-235 723.5,-235 723.5,-235 729.5,-235 735.5,-241 735.5,-247 735.5,-247 735.5,-259 735.5,-259 735.5,-265 729.5,-271 723.5,-271"/>
+<text text-anchor="middle" x="672" y="-256" font-family="Noto Sans SC" font-size="10.00">日心说→实证科学</text>
+<text text-anchor="middle" x="672" y="-245" font-family="Noto Sans SC" font-size="10.00">伽利略望远镜·开普勒定律</text>
+</g>
+<!-- pillar1&#45;&gt;helio -->
+<g id="edge5" class="edge">
+<title>pillar1&#45;&gt;helio</title>
+<path fill="none" stroke="#d4a574" d="M777.71,-315.86C757.89,-304.26 731.53,-288.84 710.09,-276.29"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="711.63,-273.14 701.24,-271.11 708.1,-279.18 711.63,-273.14"/>
+<text text-anchor="middle" x="752.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">突破</text>
+</g>
+<!-- method -->
+<g id="node7" class="node">
+<title>method</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M578.5,-271C578.5,-271 485.5,-271 485.5,-271 479.5,-271 473.5,-265 473.5,-259 473.5,-259 473.5,-247 473.5,-247 473.5,-241 479.5,-235 485.5,-235 485.5,-235 578.5,-235 578.5,-235 584.5,-235 590.5,-241 590.5,-247 590.5,-247 590.5,-259 590.5,-259 590.5,-265 584.5,-271 578.5,-271"/>
+<text text-anchor="middle" x="532" y="-256" font-family="Noto Sans SC" font-size="10.00">科学方法体系</text>
+<text text-anchor="middle" x="532" y="-245" font-family="Noto Sans SC" font-size="10.00">哈维循环·笛卡尔五步法</text>
+</g>
+<!-- pillar1&#45;&gt;method -->
+<g id="edge6" class="edge">
+<title>pillar1&#45;&gt;method</title>
+<path fill="none" stroke="#d4a574" d="M747.67,-315.96C704.42,-303.53 645.72,-286.67 600.48,-273.67"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="601.33,-270.28 590.75,-270.88 599.4,-277 601.33,-270.28"/>
+<text text-anchor="middle" x="686.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">方法</text>
+</g>
+<!-- newton -->
+<g id="node8" class="node">
+<title>newton</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1103,-271C1103,-271 997,-271 997,-271 991,-271 985,-265 985,-259 985,-259 985,-247 985,-247 985,-241 991,-235 997,-235 997,-235 1103,-235 1103,-235 1109,-235 1115,-241 1115,-247 1115,-247 1115,-259 1115,-259 1115,-265 1109,-271 1103,-271"/>
+<text text-anchor="middle" x="1050" y="-256" font-family="Noto Sans SC" font-size="10.00">机械论世界观</text>
+<text text-anchor="middle" x="1050" y="-245" font-family="Noto Sans SC" font-size="10.00">牛顿力学·万有引力·微积分</text>
+</g>
+<!-- pillar1&#45;&gt;newton -->
+<g id="edge7" class="edge">
+<title>pillar1&#45;&gt;newton</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M859.43,-315.96C897.19,-303.68 948.29,-287.07 988.07,-274.13"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="989.24,-277.43 997.67,-271.01 987.07,-270.78 989.24,-277.43"/>
+<text text-anchor="middle" x="948.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">集大成</text>
+</g>
+<!-- chemistry -->
+<g id="node9" class="node">
+<title>chemistry</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M955,-271C955,-271 891,-271 891,-271 885,-271 879,-265 879,-259 879,-259 879,-247 879,-247 879,-241 885,-235 891,-235 891,-235 955,-235 955,-235 961,-235 967,-241 967,-247 967,-247 967,-259 967,-259 967,-265 961,-271 955,-271"/>
+<text text-anchor="middle" x="923" y="-256" font-family="Noto Sans SC" font-size="10.00">现代化学诞生</text>
+<text text-anchor="middle" x="923" y="-245" font-family="Noto Sans SC" font-size="10.00">拉瓦锡·质量守恒</text>
+</g>
+<!-- pillar1&#45;&gt;chemistry -->
+<g id="edge8" class="edge">
+<title>pillar1&#45;&gt;chemistry</title>
+<path fill="none" stroke="#d4a574" d="M832.17,-315.86C848.89,-304.47 871.04,-289.39 889.28,-276.96"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="891.58,-279.63 897.88,-271.11 887.64,-273.84 891.58,-279.63"/>
+<text text-anchor="middle" x="877.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">分支</text>
+</g>
+<!-- energy -->
+<g id="node10" class="node">
+<title>energy</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1259.5,-271C1259.5,-271 1198.5,-271 1198.5,-271 1192.5,-271 1186.5,-265 1186.5,-259 1186.5,-259 1186.5,-247 1186.5,-247 1186.5,-241 1192.5,-235 1198.5,-235 1198.5,-235 1259.5,-235 1259.5,-235 1265.5,-235 1271.5,-241 1271.5,-247 1271.5,-247 1271.5,-259 1271.5,-259 1271.5,-265 1265.5,-271 1259.5,-271"/>
+<text text-anchor="middle" x="1229" y="-256" font-family="Noto Sans SC" font-size="10.00">工业革命的本质</text>
+<text text-anchor="middle" x="1229" y="-245" font-family="Noto Sans SC" font-size="10.00">能量富余理论</text>
+</g>
+<!-- pillar2&#45;&gt;energy -->
+<g id="edge9" class="edge">
+<title>pillar2&#45;&gt;energy</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1320.61,-315.86C1303.67,-304.42 1281.2,-289.25 1262.76,-276.8"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1264.58,-273.8 1254.34,-271.11 1260.67,-279.61 1264.58,-273.8"/>
+<text text-anchor="middle" x="1299.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">本质</text>
+</g>
+<!-- watt -->
+<g id="node11" class="node">
+<title>watt</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1390.5,-271C1390.5,-271 1301.5,-271 1301.5,-271 1295.5,-271 1289.5,-265 1289.5,-259 1289.5,-259 1289.5,-247 1289.5,-247 1289.5,-241 1295.5,-235 1301.5,-235 1301.5,-235 1390.5,-235 1390.5,-235 1396.5,-235 1402.5,-241 1402.5,-247 1402.5,-247 1402.5,-259 1402.5,-259 1402.5,-265 1396.5,-271 1390.5,-271"/>
+<text text-anchor="middle" x="1346" y="-256" font-family="Noto Sans SC" font-size="10.00">万用蒸汽机</text>
+<text text-anchor="middle" x="1346" y="-245" font-family="Noto Sans SC" font-size="10.00">瓦特：科学+技术结合</text>
+</g>
+<!-- pillar2&#45;&gt;watt -->
+<g id="edge10" class="edge">
+<title>pillar2&#45;&gt;watt</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1346,-315.86C1346,-305.71 1346,-292.63 1346,-281.12"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1349.5,-281.11 1346,-271.11 1342.5,-281.11 1349.5,-281.11"/>
+<text text-anchor="middle" x="1354.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">突破</text>
+</g>
+<!-- moonsoc -->
+<g id="node12" class="node">
+<title>moonsoc</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1525.5,-271C1525.5,-271 1432.5,-271 1432.5,-271 1426.5,-271 1420.5,-265 1420.5,-259 1420.5,-259 1420.5,-247 1420.5,-247 1420.5,-241 1426.5,-235 1432.5,-235 1432.5,-235 1525.5,-235 1525.5,-235 1531.5,-235 1537.5,-241 1537.5,-247 1537.5,-247 1537.5,-259 1537.5,-259 1537.5,-265 1531.5,-271 1525.5,-271"/>
+<text text-anchor="middle" x="1479" y="-256" font-family="Noto Sans SC" font-size="10.00">月光社与制度环境</text>
+<text text-anchor="middle" x="1479" y="-245" font-family="Noto Sans SC" font-size="10.00">专利保护·学术团体催化</text>
+</g>
+<!-- pillar2&#45;&gt;moonsoc -->
+<g id="edge11" class="edge">
+<title>pillar2&#45;&gt;moonsoc</title>
+<path fill="none" stroke="#d4a574" d="M1374.86,-315.86C1394.38,-304.26 1420.35,-288.84 1441.47,-276.29"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1443.39,-279.22 1450.2,-271.11 1439.81,-273.21 1443.39,-279.22"/>
+<text text-anchor="middle" x="1424.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">土壤</text>
+</g>
+<!-- ice -->
+<g id="node13" class="node">
+<title>ice</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1682,-271C1682,-271 1568,-271 1568,-271 1562,-271 1556,-265 1556,-259 1556,-259 1556,-247 1556,-247 1556,-241 1562,-235 1568,-235 1568,-235 1682,-235 1682,-235 1688,-235 1694,-241 1694,-247 1694,-247 1694,-259 1694,-259 1694,-265 1688,-271 1682,-271"/>
+<text text-anchor="middle" x="1625" y="-256" font-family="Noto Sans SC" font-size="10.00">内燃机与汽车</text>
+<text text-anchor="middle" x="1625" y="-245" font-family="Noto Sans SC" font-size="10.00">奥托循环→戴姆勒·本茨·福特</text>
+</g>
+<!-- pillar2&#45;&gt;ice -->
+<g id="edge12" class="edge">
+<title>pillar2&#45;&gt;ice</title>
+<path fill="none" stroke="#d4a574" d="M1406.2,-315.96C1449.92,-303.57 1509.22,-286.78 1555.05,-273.81"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1556.24,-277.11 1564.91,-271.01 1554.34,-270.37 1556.24,-277.11"/>
+<text text-anchor="middle" x="1501.5" y="-291.6" font-family="Noto Sans SC" font-size="8.00">延伸</text>
+</g>
+<!-- electric -->
+<g id="node14" class="node">
+<title>electric</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1108,-190C1108,-190 992,-190 992,-190 986,-190 980,-184 980,-178 980,-178 980,-166 980,-166 980,-160 986,-154 992,-154 992,-154 1108,-154 1108,-154 1114,-154 1120,-160 1120,-166 1120,-166 1120,-178 1120,-178 1120,-184 1114,-190 1108,-190"/>
+<text text-anchor="middle" x="1050" y="-175" font-family="Noto Sans SC" font-size="10.00">电的双重革命</text>
+<text text-anchor="middle" x="1050" y="-164" font-family="Noto Sans SC" font-size="10.00">富兰克林→法拉第→麦克斯韦</text>
+</g>
+<!-- pillar2&#45;&gt;electric -->
+<g id="edge13" class="edge">
+<title>pillar2&#45;&gt;electric</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1281.47,-323.62C1242.96,-315.26 1195.08,-299.68 1161,-271 1136.66,-250.51 1150.25,-229.72 1127,-208 1121.69,-203.04 1115.55,-198.69 1109.11,-194.9"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1110.64,-191.75 1100.18,-190.07 1107.31,-197.9 1110.64,-191.75"/>
+<text text-anchor="middle" x="1169.5" y="-251.1" font-family="Noto Sans SC" font-size="8.00">跃迁</text>
+</g>
+<!-- evolution -->
+<g id="node15" class="node">
+<title>evolution</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1837.5,-271C1837.5,-271 1724.5,-271 1724.5,-271 1718.5,-271 1712.5,-265 1712.5,-259 1712.5,-259 1712.5,-247 1712.5,-247 1712.5,-241 1718.5,-235 1724.5,-235 1724.5,-235 1837.5,-235 1837.5,-235 1843.5,-235 1849.5,-241 1849.5,-247 1849.5,-247 1849.5,-259 1849.5,-259 1849.5,-265 1843.5,-271 1837.5,-271"/>
+<text text-anchor="middle" x="1781" y="-256" font-family="Noto Sans SC" font-size="10.00">进化论</text>
+<text text-anchor="middle" x="1781" y="-245" font-family="Noto Sans SC" font-size="10.00">达尔文：自然选择·适者生存</text>
+</g>
+<!-- pillar2&#45;&gt;evolution -->
+<g id="edge14" class="edge">
+<title>pillar2&#45;&gt;evolution</title>
+<path fill="none" stroke="#8b7355" d="M1410.65,-322.62C1480.11,-311.28 1593.98,-292.14 1702.03,-271.15"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1702.99,-274.53 1712.13,-269.18 1701.64,-267.66 1702.99,-274.53"/>
+<text text-anchor="middle" x="1622" y="-291.6" font-family="Noto Sans SC" font-size="8.00">科学革命</text>
+</g>
+<!-- comm -->
+<g id="node16" class="node">
+<title>comm</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M760.5,-109C760.5,-109 677.5,-109 677.5,-109 671.5,-109 665.5,-103 665.5,-97 665.5,-97 665.5,-85 665.5,-85 665.5,-79 671.5,-73 677.5,-73 677.5,-73 760.5,-73 760.5,-73 766.5,-73 772.5,-79 772.5,-85 772.5,-85 772.5,-97 772.5,-97 772.5,-103 766.5,-109 760.5,-109"/>
+<text text-anchor="middle" x="719" y="-94" font-family="Noto Sans SC" font-size="10.00">通信革命</text>
+<text text-anchor="middle" x="719" y="-83" font-family="Noto Sans SC" font-size="10.00">莫尔斯电报·贝尔电话</text>
+</g>
+<!-- pillar3&#45;&gt;comm -->
+<g id="edge15" class="edge">
+<title>pillar3&#45;&gt;comm</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M392.05,-234.94C420.11,-206.88 472.92,-154.04 473,-154 529.74,-121.8 603.18,-106.11 655,-98.6"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="655.63,-102.04 665.06,-97.2 654.67,-95.11 655.63,-102.04"/>
+<text text-anchor="middle" x="481.5" y="-170.1" font-family="Noto Sans SC" font-size="8.00">开端</text>
+</g>
+<!-- biz -->
+<g id="node17" class="node">
+<title>biz</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M416,-190C416,-190 334,-190 334,-190 328,-190 322,-184 322,-178 322,-178 322,-166 322,-166 322,-160 328,-154 334,-154 334,-154 416,-154 416,-154 422,-154 428,-160 428,-166 428,-166 428,-178 428,-178 428,-184 422,-190 416,-190"/>
+<text text-anchor="middle" x="375" y="-175" font-family="Noto Sans SC" font-size="10.00">科技商业化模式</text>
+<text text-anchor="middle" x="375" y="-164" font-family="Noto Sans SC" font-size="10.00">爱迪生vs特斯拉路径</text>
+</g>
+<!-- pillar3&#45;&gt;biz -->
+<g id="edge16" class="edge">
+<title>pillar3&#45;&gt;biz</title>
+<path fill="none" stroke="#d4a574" d="M375,-234.86C375,-224.71 375,-211.63 375,-200.12"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="378.5,-200.11 375,-190.11 371.5,-200.11 378.5,-200.11"/>
+<text text-anchor="middle" x="383.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">模式</text>
+</g>
+<!-- pharma -->
+<g id="node18" class="node">
+<title>pharma</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M606.5,-190C606.5,-190 511.5,-190 511.5,-190 505.5,-190 499.5,-184 499.5,-178 499.5,-178 499.5,-166 499.5,-166 499.5,-160 505.5,-154 511.5,-154 511.5,-154 606.5,-154 606.5,-154 612.5,-154 618.5,-160 618.5,-166 618.5,-166 618.5,-178 618.5,-178 618.5,-184 612.5,-190 606.5,-190"/>
+<text text-anchor="middle" x="559" y="-175" font-family="Noto Sans SC" font-size="10.00">现代制药业</text>
+<text text-anchor="middle" x="559" y="-164" font-family="Noto Sans SC" font-size="10.00">阿司匹林·青霉素(0到N)</text>
+</g>
+<!-- pillar3&#45;&gt;pharma -->
+<g id="edge17" class="edge">
+<title>pillar3&#45;&gt;pharma</title>
+<path fill="none" stroke="#d4a574" d="M430.72,-234.99C446.23,-229.74 462.95,-223.59 478,-217 492.53,-210.64 507.95,-202.61 521.4,-195.15"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="523.36,-198.07 530.36,-190.11 519.92,-191.97 523.36,-198.07"/>
+<text text-anchor="middle" x="505.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">应用</text>
+</g>
+<!-- crisis -->
+<g id="node19" class="node">
+<title>crisis</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M76,-190C76,-190 12,-190 12,-190 6,-190 0,-184 0,-178 0,-178 0,-166 0,-166 0,-160 6,-154 12,-154 12,-154 76,-154 76,-154 82,-154 88,-160 88,-166 88,-166 88,-178 88,-178 88,-184 82,-190 76,-190"/>
+<text text-anchor="middle" x="44" y="-175" font-family="Noto Sans SC" font-size="10.00">危机即机会</text>
+<text text-anchor="middle" x="44" y="-164" font-family="Noto Sans SC" font-size="10.00">相对论·量子力学</text>
+</g>
+<!-- pillar3&#45;&gt;crisis -->
+<g id="edge18" class="edge">
+<title>pillar3&#45;&gt;crisis</title>
+<path fill="none" stroke="#d4a574" d="M309.45,-239.31C254.96,-228.33 175.25,-211.29 98.05,-190.46"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="98.73,-187.01 88.17,-187.76 96.89,-193.77 98.73,-187.01"/>
+<text text-anchor="middle" x="211.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">理论</text>
+</g>
+<!-- internet -->
+<g id="node20" class="node">
+<title>internet</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M168.5,-190C168.5,-190 117.5,-190 117.5,-190 111.5,-190 105.5,-184 105.5,-178 105.5,-178 105.5,-166 105.5,-166 105.5,-160 111.5,-154 117.5,-154 117.5,-154 168.5,-154 168.5,-154 174.5,-154 180.5,-160 180.5,-166 180.5,-166 180.5,-178 180.5,-178 180.5,-184 174.5,-190 168.5,-190"/>
+<text text-anchor="middle" x="143" y="-175" font-family="Noto Sans SC" font-size="10.00">互联网本质</text>
+<text text-anchor="middle" x="143" y="-164" font-family="Noto Sans SC" font-size="10.00">以信息换能量</text>
+</g>
+<!-- pillar3&#45;&gt;internet -->
+<g id="edge19" class="edge">
+<title>pillar3&#45;&gt;internet</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M322.33,-234.95C287.26,-223.48 239.95,-207.78 190.25,-190.4"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="191.21,-187.02 180.62,-187.02 188.9,-193.63 191.21,-187.02"/>
+<text text-anchor="middle" x="274.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">本质</text>
+</g>
+<!-- war -->
+<g id="node21" class="node">
+<title>war</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M291.5,-190C291.5,-190 210.5,-190 210.5,-190 204.5,-190 198.5,-184 198.5,-178 198.5,-178 198.5,-166 198.5,-166 198.5,-160 204.5,-154 210.5,-154 210.5,-154 291.5,-154 291.5,-154 297.5,-154 303.5,-160 303.5,-166 303.5,-166 303.5,-178 303.5,-178 303.5,-184 297.5,-190 291.5,-190"/>
+<text text-anchor="middle" x="251" y="-175" font-family="Noto Sans SC" font-size="10.00">科技助产士</text>
+<text text-anchor="middle" x="251" y="-164" font-family="Noto Sans SC" font-size="10.00">雷达·原子弹(曼哈顿)</text>
+</g>
+<!-- pillar3&#45;&gt;war -->
+<g id="edge20" class="edge">
+<title>pillar3&#45;&gt;war</title>
+<path fill="none" stroke="#8b7355" d="M348.09,-234.86C330.06,-223.37 306.11,-208.11 286.52,-195.63"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="288.17,-192.53 277.85,-190.11 284.41,-198.43 288.17,-192.53"/>
+<text text-anchor="middle" x="325.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">催化</text>
+</g>
+<!-- method&#45;&gt;pharma -->
+<g id="edge28" class="edge">
+<title>method&#45;&gt;pharma</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M537.86,-234.86C541.36,-224.61 545.89,-211.37 549.85,-199.76"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="553.23,-200.7 553.15,-190.11 546.61,-198.44 553.23,-200.7"/>
+<text text-anchor="middle" x="583.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">科学方法→药物研发</text>
+</g>
+<!-- sci_method -->
+<g id="node25" class="node">
+<title>sci_method</title>
+<polygon fill="#fef5e7" stroke="#d4a574" points="749.5,-190 636.5,-190 636.5,-154 755.5,-154 755.5,-184 749.5,-190"/>
+<polyline fill="none" stroke="#d4a574" points="749.5,-190 749.5,-184 "/>
+<polyline fill="none" stroke="#d4a574" points="755.5,-184 749.5,-184 "/>
+<text text-anchor="middle" x="696" y="-175" font-family="Noto Sans SC" font-size="10.00">科学方法四步</text>
+<text text-anchor="middle" x="696" y="-164" font-family="Noto Sans SC" font-size="10.00">假设→实验→结论→推广</text>
+</g>
+<!-- method&#45;&gt;sci_method -->
+<g id="edge24" class="edge">
+<title>method&#45;&gt;sci_method</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M581.89,-234.94C595.75,-229.69 610.65,-223.55 624,-217 636.79,-210.73 650.25,-202.87 662.02,-195.54"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="664.08,-198.38 670.66,-190.08 660.34,-192.47 664.08,-198.38"/>
+</g>
+<!-- newton&#45;&gt;electric -->
+<g id="edge27" class="edge">
+<title>newton&#45;&gt;electric</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M1050,-234.86C1050,-224.71 1050,-211.63 1050,-200.12"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1053.5,-200.11 1050,-190.11 1046.5,-200.11 1053.5,-200.11"/>
+<text text-anchor="middle" x="1086.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">机械思维→电磁理论</text>
+</g>
+<!-- taylor -->
+<g id="node24" class="node">
+<title>taylor</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M1376.5,-190C1376.5,-190 1315.5,-190 1315.5,-190 1309.5,-190 1303.5,-184 1303.5,-178 1303.5,-178 1303.5,-166 1303.5,-166 1303.5,-160 1309.5,-154 1315.5,-154 1315.5,-154 1376.5,-154 1376.5,-154 1382.5,-154 1388.5,-160 1388.5,-166 1388.5,-166 1388.5,-178 1388.5,-178 1388.5,-184 1382.5,-190 1376.5,-190"/>
+<text text-anchor="middle" x="1346" y="-175" font-family="Noto Sans SC" font-size="10.00">机械时代的管理</text>
+<text text-anchor="middle" x="1346" y="-164" font-family="Noto Sans SC" font-size="10.00">泰勒科学管理</text>
+</g>
+<!-- watt&#45;&gt;taylor -->
+<g id="edge23" class="edge">
+<title>watt&#45;&gt;taylor</title>
+<path fill="none" stroke="#8b7355" d="M1346,-234.86C1346,-224.71 1346,-211.63 1346,-200.12"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1349.5,-200.11 1346,-190.11 1342.5,-200.11 1349.5,-200.11"/>
+<text text-anchor="middle" x="1363" y="-210.6" font-family="Noto Sans SC" font-size="8.00">思维延伸</text>
+</g>
+<!-- flight -->
+<g id="node22" class="node">
+<title>flight</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M1655.5,-190C1655.5,-190 1594.5,-190 1594.5,-190 1588.5,-190 1582.5,-184 1582.5,-178 1582.5,-178 1582.5,-166 1582.5,-166 1582.5,-160 1588.5,-154 1594.5,-154 1594.5,-154 1655.5,-154 1655.5,-154 1661.5,-154 1667.5,-160 1667.5,-166 1667.5,-166 1667.5,-178 1667.5,-178 1667.5,-184 1661.5,-190 1655.5,-190"/>
+<text text-anchor="middle" x="1625" y="-175" font-family="Noto Sans SC" font-size="10.00">飞行时代的到来</text>
+<text text-anchor="middle" x="1625" y="-164" font-family="Noto Sans SC" font-size="10.00">三代发明家接力</text>
+</g>
+<!-- ice&#45;&gt;flight -->
+<g id="edge21" class="edge">
+<title>ice&#45;&gt;flight</title>
+<path fill="none" stroke="#8b7355" d="M1625,-234.86C1625,-224.71 1625,-211.63 1625,-200.12"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1628.5,-200.11 1625,-190.11 1621.5,-200.11 1628.5,-200.11"/>
+<text text-anchor="middle" x="1633.5" y="-210.6" font-family="Noto Sans SC" font-size="8.00">动力</text>
+</g>
+<!-- electric&#45;&gt;comm -->
+<g id="edge29" class="edge">
+<title>electric&#45;&gt;comm</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M979.8,-154.25C921.44,-140.32 839.1,-120.66 782.64,-107.19"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="783.3,-103.75 772.76,-104.83 781.67,-110.56 783.3,-103.75"/>
+<text text-anchor="middle" x="919.5" y="-129.6" font-family="Noto Sans SC" font-size="8.00">电→信息载体</text>
+</g>
+<!-- weapon -->
+<g id="node23" class="node">
+<title>weapon</title>
+<path fill="#fffaf2" stroke="#8b7355" d="M1091.5,-109C1091.5,-109 1008.5,-109 1008.5,-109 1002.5,-109 996.5,-103 996.5,-97 996.5,-97 996.5,-85 996.5,-85 996.5,-79 1002.5,-73 1008.5,-73 1008.5,-73 1091.5,-73 1091.5,-73 1097.5,-73 1103.5,-79 1103.5,-85 1103.5,-85 1103.5,-97 1103.5,-97 1103.5,-103 1097.5,-109 1091.5,-109"/>
+<text text-anchor="middle" x="1050" y="-94" font-family="Noto Sans SC" font-size="10.00">武器进化逻辑</text>
+<text text-anchor="middle" x="1050" y="-83" font-family="Noto Sans SC" font-size="10.00">马克沁机枪·能量传递</text>
+</g>
+<!-- electric&#45;&gt;weapon -->
+<g id="edge22" class="edge">
+<title>electric&#45;&gt;weapon</title>
+<path fill="none" stroke="#8b7355" d="M1050,-153.86C1050,-143.71 1050,-130.63 1050,-119.12"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1053.5,-119.11 1050,-109.11 1046.5,-119.11 1053.5,-119.11"/>
+</g>
+<!-- encode -->
+<g id="node27" class="node">
+<title>encode</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="771,-36 661,-36 661,0 777,0 777,-30 771,-36"/>
+<polyline fill="none" stroke="#8b7355" points="771,-36 771,-30 "/>
+<polyline fill="none" stroke="#8b7355" points="777,-30 771,-30 "/>
+<text text-anchor="middle" x="719" y="-21" font-family="Noto Sans SC" font-size="10.00">编码是核心</text>
+<text text-anchor="middle" x="719" y="-10" font-family="Noto Sans SC" font-size="10.00">莫尔斯码→0/1→量子态</text>
+</g>
+<!-- comm&#45;&gt;encode -->
+<g id="edge26" class="edge">
+<title>comm&#45;&gt;encode</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M719,-72.81C719,-64.79 719,-55.05 719,-46.07"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="722.5,-46.03 719,-36.03 715.5,-46.03 722.5,-46.03"/>
+</g>
+<!-- tech_formula -->
+<g id="node26" class="node">
+<title>tech_formula</title>
+<polygon fill="#fef5e7" stroke="#d4a574" points="434.5,-109 309.5,-109 309.5,-73 440.5,-73 440.5,-103 434.5,-109"/>
+<polyline fill="none" stroke="#d4a574" points="434.5,-109 434.5,-103 "/>
+<polyline fill="none" stroke="#d4a574" points="440.5,-103 434.5,-103 "/>
+<text text-anchor="middle" x="375" y="-94" font-family="Noto Sans SC" font-size="10.00">产业公式</text>
+<text text-anchor="middle" x="375" y="-83" font-family="Noto Sans SC" font-size="10.00">原有产业+新技术=新产业</text>
+</g>
+<!-- biz&#45;&gt;tech_formula -->
+<g id="edge25" class="edge">
+<title>biz&#45;&gt;tech_formula</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M375,-153.86C375,-143.71 375,-130.63 375,-119.12"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="378.5,-119.11 375,-109.11 371.5,-119.11 378.5,-119.11"/>
+</g>
+</g>
+</svg></div>
+</body>
+</html>

@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文明底层与古代技术 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5a5a;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;padding-top:60px}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+
+/* Top bar */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; color: #fdf6ec; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s; text-decoration: none;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; }
+
+.tab-bar{position:sticky;top:58px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:rgba(253,246,236,.95);backdrop-filter:blur(8px);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;justify-content:center}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+
+/* Flip Card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Quiz */
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fef9f4;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--card)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+
+/* Tree */
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"\25B8";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+
+/* Socratic */
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+
+/* Decision */
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+
+/* Table */
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+  .flip-card{height:clamp(180px,50vw,240px)}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>文明底层与古代技术 · 最小知识集</h1>
+  <a class="home-link" href="../index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<div class="container">
+
+<p class="subtitle">吴军·科技史纲60讲 · 文明的双螺旋——能量与信息两条主线驱动万年文明史，火·农耕·冶金·文字·大学</p>
+
+<!-- Tab Bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- ==================== TAB 0: 知识集总览 ==================== -->
+<div class="tab-panel active" id="panel0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">通过能量与信息两条主线，理解<strong>人类文明从起源到中世纪的底层驱动力</strong>——为什么火是第一发明？农耕为何是"被迫的选择"？书写系统如何让文明可叠加？冶金、城市、大学怎样将人类从生存推向发展？掌握文明演进的基本规律，建立理解科技史的完整框架。</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
+<h3>概念关系图</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span style="color:var(--accent)">━━ 文明驱动力</span><span style="color:#d4a574">━━ 方法/派生</span><span style="color:#8b7355;text-decoration-style:dashed">--- 跨越连接</span><span style="color:#8b7355;text-decoration-style:dotted">⋯ 文明产物</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（15条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>卡尔达肖夫指数（I/II/III型文明）</td><td>衡量文明能量利用水平的宏观标尺</td></tr>
+<tr><td>虱子基因推算穿衣起源（斯托金）</td><td>信息相关性解决考古难题的经典案例</td></tr>
+<tr><td>阿舍利手斧（200万年前）</td><td>最早标准化工具的考古证据</td></tr>
+<tr><td>FOXP2基因突变时间线</td><td>理解语言能力的生物学基础</td></tr>
+<tr><td>萨林斯"原始丰裕社会"理论</td><td>挑战"农耕优于狩猎"的常识认知</td></tr>
+<tr><td>幸运纬度带（北纬20-35度）</td><td>农业起源的地理决定论</td></tr>
+<tr><td>仰韶文化与良渚文化</td><td>中国新石器时代的代表遗址</td></tr>
+<tr><td>卡迭石战役（公元前1274年）</td><td>铁器对铜器技术碾压的军事案例</td></tr>
+<tr><td>温查文化（最早炼青铜未普及）</td><td>"技术样品"与"大规模应用"的区别</td></tr>
+<tr><td>哥德堡号沉船事件（1745年）</td><td>瓷器贸易价值的经典佐证</td></tr>
+<tr><td>贝希斯敦铭文（三种楔形文字）</td><td>信息冗余破解古文字的经典案例</td></tr>
+<tr><td>罗塞塔石碑（三语对照）</td><td>信息冗余度在古代文字破译中的应用</td></tr>
+<tr><td>腓特烈一世学术特权法令（1158年）</td><td>现代大学制度诞生的法律标志</td></tr>
+<tr><td>格罗斯泰斯特（牛津首任校长）</td><td>系统教学原则的确立者</td></tr>
+<tr><td>垄耕种植法（春秋末期）</td><td>中国传统农业核心技术，欧洲17世纪才掌握</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径（5阶段推荐顺序）</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立框架：</strong>先学「能量主线」+「信息主线」——理解双螺旋模型是掌握科技史的钥匙</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>能量纵深：</strong>火的使用→工具制造→农耕革命→冶金技术→城市聚居，理解能量获取的阶梯式跃升</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>信息纵深：</strong>语言基因→书写系统→造纸与印刷→大学诞生，理解知识如何被固化、复制、传承</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>交叉验证：</strong>用能量+信息双视角重新审视每一讲——如金字塔=能量总量标志+信息组织能力</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>应用迁移：</strong>用双螺旋思维分析现代现象——AI=能量（算力）× 信息（数据+算法），公司=资源×信息效率</div></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== TAB 1: 知识卡片 ==================== -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- ==================== TAB 2: 题库系统 ==================== -->
+<div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn btn-primary" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+</div>
+</div>
+
+<!-- ==================== TAB 3: 考试模式 ==================== -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- ==================== TAB 4: 复习模式 ==================== -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+
+<!-- ==================== TAB 5: 思维导图 ==================== -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>文明底层与古代技术 · 思维导图</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:12px">点击节点展开/折叠，全部可交互</p>
+<div id="mindmap">
+<!-- Mindmap Root: 文明底层与古代技术 -->
+<div class="tree-node" style="margin-left:0;border-left:none">
+  <div class="tree-toggle open" onclick="toggleMindmap(this)">🏛️ 文明底层与古代技术</div>
+  <div class="tree-children open">
+    <!-- Energy branch -->
+    <div class="tree-node">
+      <div class="tree-toggle open" onclick="toggleMindmap(this)">⚡ 能量主线 —— 文明标尺与钥匙</div>
+      <div class="tree-children open">
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🔥 火的使用（首个外部能源）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">取暖：突破非洲地理限制，扩散至全球</div>
+            <div class="tree-leaf">驱兽：占据山洞，开启定居生活</div>
+            <div class="tree-leaf">熟食：节省消化能量，释放创造性活动时间</div>
+            <div class="tree-leaf">能量转换：从野果（不稳定）→肉类（高密度）</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🪓 工具制造（能量效率倍增器）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">阿舍利手斧（200万年前）：最早标准化工具</div>
+            <div class="tree-leaf">石核（锤/斧）、刮制石器（刀）、尖状石器（匕首）</div>
+            <div class="tree-leaf">投射武器：弓箭+标枪 → 战胜尼安德特人关键</div>
+            <div class="tree-leaf">本质：用外部工具替代自身进化</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🌾 农耕革命（滞后效应·能量盈余）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">触发：太阳活动→全球变暖（偶然因素）</div>
+            <div class="tree-leaf">滞后效应：气温达标（12000年前）→农业开始（10000年前）</div>
+            <div class="tree-leaf">核心驯化：小麦（1000年）、水稻（断水促种法）</div>
+            <div class="tree-leaf">能量正循环：6000大卡→剩余3000大卡→养活更多人</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">⚒️ 冶金技术（能量掌控的标志）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">青铜时代（公元前3300年起）：多文明独立发明</div>
+            <div class="tree-leaf">铁器时代（公元前1300年起）：需1300°C+高温</div>
+            <div class="tree-leaf">卡迭石战役：铁器→载3人战车 vs 铜轴→载2人</div>
+            <div class="tree-leaf">人均能量：5000大卡→10000大卡</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🏙️ 城市聚居（能量密度的胜利）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">乌鲁克城（公元前4000年）：最早城市，5000人</div>
+            <div class="tree-leaf">人均能量达消耗量5倍（≈中国1970年代末水平）</div>
+            <div class="tree-leaf">轮子（前3200年）：滚动摩擦→运输效率数量级提升</div>
+            <div class="tree-leaf">帆船：首次利用风能（自然界机械能）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Information branch -->
+    <div class="tree-node">
+      <div class="tree-toggle open" onclick="toggleMindmap(this)">📡 信息主线 —— 组织能量的法则</div>
+      <div class="tree-children open">
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🗣️ 语言与FOXP2基因</div>
+          <div class="tree-children">
+            <div class="tree-leaf">FOXP2基因突变 → 现代智人语言能力优势</div>
+            <div class="tree-leaf">智人可组织~200人协作，尼安德特人仅~10人</div>
+            <div class="tree-leaf">超越基因的信息传递：经验可跨代传承</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">✍️ 书写系统（知识固化）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">楔形文字（5500年前）：美索不达米亚，最早</div>
+            <div class="tree-leaf">古埃及象形文字（5200年前）：罗塞塔石碑破解</div>
+            <div class="tree-leaf">中国甲骨文（3400年前）：独立起源</div>
+            <div class="tree-leaf">横向传播（同时代）+ 纵向传播（跨世代）</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">📜 造纸与印刷（信息复制革命）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">蔡伦：发明的是造纸"术"（可规模化的廉价工艺）</div>
+            <div class="tree-leaf">古腾堡：铅锡合金活字+整套印刷设备+工艺流程</div>
+            <div class="tree-leaf">印刷→欧洲图书从0→10亿册（18世纪）</div>
+            <div class="tree-leaf">中国雕版印刷与科举制度同步，互为支撑</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🎓 大学诞生（知识制度化）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">博洛尼亚大学（1088年）：第一所现代大学</div>
+            <div class="tree-leaf">腓特烈一世法令（1158年）：学术特权确立</div>
+            <div class="tree-leaf">牛津大学：格罗斯泰斯特→系统教学原则</div>
+            <div class="tree-leaf">罗杰·培根：开创实验科学方法</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-toggle" onclick="toggleMindmap(this)">🔍 文字破译（信息冗余的力量）</div>
+          <div class="tree-children">
+            <div class="tree-leaf">罗塞塔石碑：三语对照→商博良破解古埃及文字</div>
+            <div class="tree-leaf">贝希斯敦铭文：三种楔形文字→罗林森破译</div>
+            <div class="tree-leaf">核心原理：信息冗余 → 交叉验证 → 补全未知</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Dual-helix cross-links -->
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="toggleMindmap(this)">🔗 双螺旋交叉节点</div>
+      <div class="tree-children">
+        <div class="tree-leaf">定居 → 人口聚集 → 信息管理需求 → 文字诞生</div>
+        <div class="tree-leaf">高温技术（冶金）→ 瓷器发明 → 全球贸易（信息+能量）</div>
+        <div class="tree-leaf">农耕能量盈余 → 养活知识阶层 → 大学出现</div>
+        <div class="tree-leaf">书写系统 → 知识叠加 → 科技可累积 → 文明不可逆</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div></div>
+</div>
+
+<!-- ==================== TAB 6: 深度追问 ==================== -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问（苏格拉底问答）</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考。每个核心概念 2-3 层追问。</p>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">Q1: 为什么说"能量是文明的标尺"？GDP不是更直观吗？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第一层：</strong>GDP衡量的是经济活动的结果，而能量衡量的是经济活动的<em>能力</em>。一个文明能利用多少能量，决定它能养活多少人、打多深的井、建多大的城。GDP可以靠金融泡沫，能量不行。</p>
+</div>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">↳ 追问：那为什么近代中国GDP高却被鸦片战争打败？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第二层：</strong>因为能量总量≠能量密度。清朝GDP虽高但分散在4亿农民中，英国的蒸汽机将能量集中在工厂和军舰上。关键不是你有多少能量，而是<em>单位面积/单位时间</em>能调动多少能量。</p>
+</div>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">↳ 再追问：这对今天的国家竞争有什么启示？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第三层：</strong>今天同样如此——不仅看GDP总量，更要看"人均能量效率"（如人均电力消耗、芯片算力密度）。这也是为什么"单位能耗计算能力"成为当前IT硬件的核心竞争指标。</p>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">Q2: 农耕革命真的是"进步"吗？萨林斯说狩猎采集者生活更轻松。</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第一层：</strong>从个体生活质量看，狩猎采集者每天劳动几小时，早期农民要十几小时——农耕确实更"辛苦"。但从群体竞争力看，农耕每平方公里可养活的人口是狩猎的10-100倍。</p>
+</div>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">↳ 追问：所以文明进步的本质是"数量压倒质量"？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第二层：</strong>准确说是"规模效应"。个体效率降低但群体总产出暴增→可以养活非生产人口（工匠、士兵、祭司）→社会复杂度提升→文明诞生。这个逻辑在今天仍然成立：大城市个体的生活成本更高，但城市的创新密度和机会远胜乡村。</p>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">Q3: 为什么书写系统比"文字"更重要？两者有什么区别？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第一层：</strong>文字是符号系统（如甲骨文、楔形符号），书写系统是<em>准确传递复杂思想的规则体系</em>。有文字没书写系统=有单词没语法，只能记录简单事物，无法表达推理和抽象概念。</p>
+</div>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">↳ 追问：这和现代的知识管理有什么关系？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第二层：</strong>一个公司有"数据"（文字）不等于有"知识体系"（书写系统）。真正的竞争力来自后者——标准化的文档规范、可检索的知识库、结构化的培训体系。这就是蔡伦造纸"术"比偶然造出的"纸"更重要的现代映射。</p>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">Q4: 冶金技术为什么被列为文明三大标志之一？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第一层：</strong>因为冶金是人类首次<em>系统性地创造自然界不存在的材料</em>。青铜和铁不是"发现的"，而是通过控制高温化学反应"发明的"。这标志着人类从"利用自然"进入了"改造自然"的新阶段。</p>
+</div>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">↳ 追问：为什么温查文化能炼青铜却没进入青铜时代？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第二层：</strong>这揭示了技术史的核心规律：<em>技术样品≠技术普及</em>。实验室做出来和量产是两回事——需要配套的矿石开采体系、燃料供应链、工匠培训制度、社会需求拉动。就像今天很多"实验室突破"到"商业落地"隔着太平洋。</p>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">Q5: 大学为什么会诞生在中世纪"黑暗时代"？这有违常识。</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第一层：</strong>"黑暗中世纪"是启蒙思想家的夸张。实际上公元754年欧洲统一于基督教统治后，获得了长期和平。安稳环境+教士群体（不愁温饱、有书籍、有探索上帝奥秘的动机）→自发形成师生共同体→大学诞生。</p>
+</div>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')">
+  <span class="q-text">↳ 追问：这说明了什么普遍规律？</span>
+</div>
+<div class="socratic-a">
+  <p><strong>第二层：</strong>知识创造需要两个条件：（1）<em>能量剩余</em>——有人可以不从事生产；（2）<em>信息自由</em>——不同的思想可以碰撞。中世纪大学的启示是：看起来最不可能的地方往往开出最美的花，因为"稳定"和"闲暇"的组合比"动荡中的思想自由"更有利于知识积累。</p>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== TAB 7: 案例分析 ==================== -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解「金字塔的建造」</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">运用能量×信息双螺旋框架，四维度拆解古代工程奇迹</p>
+
+<div class="card" style="background:#fef9f2">
+<h4 style="color:var(--accent)">一、能量维度：总量 vs 效率</h4>
+<p>胡夫金字塔：230万块巨石，平均2.5吨，最大80吨。需要约20万劳工的后勤能量供给。这是农耕文明<strong>能量总量</strong>优势的体现——尼罗河每年泛滥带来肥沃土壤，单位土地产出极高，能养活大量非农业人口。但同时，这恰恰反映了能量<strong>效率</strong>的低下——用海量人力堆积，而非技术杠杆。</p>
+<p style="margin-top:6px"><strong>MKS洞察：</strong>大型工程=中央集权×能量总量。类似现代的"举国体制"项目——航天工程、高铁网络，本质上仍然依赖能量总量而非效率。</p>
+</div>
+
+<div class="card" style="background:#fef9f2">
+<h4 style="color:var(--accent)">二、信息维度：组织与知识传承</h4>
+<p>组织20万人施工本身就是信息管理挑战。古埃及的<strong>书写系统</strong>（象形文字+世俗体）使工程指令可以标准化传递。祭司阶层作为知识分子，负责天文观测（确定正北方向）、几何计算（坡度1:4的最佳力学结构）、记录工程进度。</p>
+<p style="margin-top:6px"><strong>MKS洞察：</strong>金字塔的三角形入口是最优承重结构——古埃及人的工程知识通过书写系统得以累积和传递，这是"信息驱动能量"的早期典范。</p>
+</div>
+
+<div class="card" style="background:#fef9f2">
+<h4 style="color:var(--accent)">三、偶然性维度：地理禀赋</h4>
+<p>尼罗河的地理特征（定期泛滥→肥沃淤泥→高产农业→能量盈余→养活劳工）是金字塔的必要条件。如果古埃及在撒哈拉沙漠腹地，再先进的文明也建不了金字塔。<strong>地理偶然性</strong>（幸运纬度带+大河+气候）是早期文明的共同特征。</p>
+<p style="margin-top:6px"><strong>MKS洞察：</strong>伟大成就的背后往往有"非自身努力"的外部条件。现代类比：硅谷=斯坦福（人才）+风投（资本）+加州气候（宜居）+军事需求（冷战）——四重偶然叠加。</p>
+</div>
+
+<div class="card" style="background:#fef9f2">
+<h4 style="color:var(--accent)">四、滞后效应与反弹</h4>
+<p>金字塔建造技术并未直接催生更先进的建筑技术——古埃及此后没有再建出更高建筑。这体现了<strong>技术发展的非连续性</strong>：巨大的能量投入产出了"奇观"，但未能形成可叠加的技术体系。对比：古希腊虽无巨型建筑，但其数学和逻辑体系持续"生蛋"至今。</p>
+<p style="margin-top:6px"><strong>MKS洞察：</strong>投资"可叠加"的知识体系比投资"一次性"的宏伟工程更有长远价值。这对个人——是考一堆证书（奇观），还是建立可迁移的思维模型（可叠加）？</p>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== TAB 8: 实战决策 ==================== -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项。运用能量×信息双螺旋思维做判断。</p>
+
+<!-- Round 1 -->
+<div class="decision-scenario">
+<h4 style="color:var(--accent);margin-bottom:6px">🔴 第1轮：文明跃迁</h4>
+<p style="margin-bottom:8px"><strong>场景：</strong>你是一个公元前4000年两河流域的部落首领。你的部落有3000人，当前以狩猎+采集为生，人均日产能量6000大卡，刚好维持生存。你观察到邻近部落开始种植野生小麦，但初期产量很低（投入产出比接近1:1）。你会怎么做？</p>
+<div class="decision-options">
+  <div class="decision-opt" onclick="decide(1,'A',this)"><strong>A. 立即全面转向农耕</strong>——虽然初期效率低，但长远看能量总量会提升</div>
+  <div class="decision-opt" onclick="decide(1,'B',this)"><strong>B. 维持狩猎采集为主，小范围试种</strong>——等别人验证成功后再跟进</div>
+  <div class="decision-opt" onclick="decide(1,'C',this)"><strong>C. 不种地，但派战士劫掠农耕部落</strong>——直接获取别人生产的能量</div>
+</div>
+<div class="decision-result" id="decision1"></div>
+</div>
+
+<!-- Round 2 -->
+<div class="decision-scenario">
+<h4 style="color:var(--accent);margin-bottom:6px">🟠 第2轮：信息投资</h4>
+<p style="margin-bottom:8px"><strong>场景：</strong>你的城邦已发展至2万人规模，有足够的能量盈余。现在面临抉择：城邦里出现了一群祭司，他们声称能通过"与神沟通"来预测尼罗河洪水时间，要求你出资建造神庙并供养他们。实际上，他们只是在系统记录天文观测数据。你会？</p>
+<div class="decision-options">
+  <div class="decision-opt" onclick="decide(2,'A',this)"><strong>A. 出资建神庙养活祭司阶层</strong>——虽然看起来是迷信投资，但他们可能在积累有用的知识</div>
+  <div class="decision-opt" onclick="decide(2,'B',this)"><strong>B. 拒绝出资，要求祭司自食其力</strong>——不能让不事生产的人消耗能量盈余</div>
+  <div class="decision-opt" onclick="decide(2,'C',this)"><strong>C. 只资助其中看起来"有用"的研究，禁止纯粹的宗教活动</strong></div>
+</div>
+<div class="decision-result" id="decision2"></div>
+</div>
+
+<!-- Round 3 -->
+<div class="decision-scenario">
+<h4 style="color:var(--accent);margin-bottom:6px">🟡 第3轮：技术封锁</h4>
+<p style="margin-bottom:8px"><strong>场景：</strong>你的文明发明了先进的冶铁技术（可铸造铁制兵器和农具），这让你在军事和农业上都有绝对优势。邻近的敌对城邦愿意用大量黄金购买你的铁器。你会？</p>
+<div class="decision-options">
+  <div class="decision-opt" onclick="decide(3,'A',this)"><strong>A. 严格禁止铁器和冶铁技术出口</strong>——保持技术垄断就是保持文明优势</div>
+  <div class="decision-opt" onclick="decide(3,'B',this)"><strong>B. 高价出口铁制成品，但封锁冶铁工艺</strong>——赚钱的同时保住核心know-how</div>
+  <div class="decision-opt" onclick="decide(3,'C',this)"><strong>C. 开放出口铁器，同时大力投资下一代技术研发</strong>——用贸易收益加速自己进步</div>
+</div>
+<div class="decision-result" id="decision3"></div>
+</div>
+
+</div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ==================== GLOBAL STATE (must be at top to avoid TDZ) ====================
+const LS_KEY = 'mks_civ_ancient';
+var LS = {};
+
+function loadLS(){
+  try { var d=JSON.parse(localStorage.getItem(LS_KEY)||'{}'); return d; } catch(e){ return {}; }
+}
+function saveLS(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(LS)); } catch(e){}
+}
+
+LS = loadLS();
+if(!LS.learnedCards) LS.learnedCards = [];
+if(!LS.wrongBook) LS.wrongBook = [];
+if(!LS.examHistory) LS.examHistory = [];
+if(!LS.quizStats) LS.quizStats = {total:0,correct:0};
+
+// ==================== CONCEPTS ====================
+var concepts = [
+  {
+    id: 'c1', name: '能量主线',
+    short: '能量是文明标尺',
+    def: '能量是人类文明发展的底层驱动。世界本质是能量构成，文明水平可用能量获取、转换、利用的总量和效率来衡量。从卡尔达肖夫指数到人均日耗能量，能量尺度比GDP更本质地反映文明发展水平。',
+    analogy: '像公司的现金流——一家公司能否存活，不看财报利润，看它每天实际消耗多少资金。能量就是文明的"现金流"，GDP只是"报表"。',
+    example: '古埃及金字塔需要养活20万劳工，能量基础是尼罗河每年泛滥带来的农业高产。同时期的欧洲部落连一座石头建筑都无力建造。',
+    counter: '能量总量高不等于文明先进。清朝GDP占世界三分之一，但鸦片战争被英国击败——因为能量密度（蒸汽机）远低于对手。'
+  },
+  {
+    id: 'c2', name: '信息主线',
+    short: '信息组织能量',
+    def: '信息是组织和调动能量的法则。当能量积累到一定规模，信息成为协调大规模社会行动的关键——语言、文字、公式、算法本质都是"信息"，它们决定能量如何被高效配置。',
+    analogy: '像交响乐团的指挥——每个乐手（能量）都有演奏能力，但没有指挥（信息）就没有协奏。指挥手中的总谱就是"书写系统"，排练就是"信息传递"。',
+    example: '智人战胜尼安德特人的关键不是体力，而是FOXP2基因突变带来的语言能力，可以组织200人的协同行动，vs对手仅10人。',
+    counter: '有信息无能量也不行。中世纪的修道院拥有当时最好的图书馆（信息），但能量总量不足时，只能抄书无法创造新知识。'
+  },
+  {
+    id: 'c3', name: '火的使用',
+    short: '首个外部能源',
+    def: '人类掌握的首个高于自身能量的外部能源。三大作用：取暖（突破地理限制）、驱兽（减少自身能量消耗）、熟食（缩短消化时间，释放创造性活动的时间）。',
+    analogy: '像创业公司拿到第一笔外部融资——之前全靠创始人自己扛，有了融资（外部能量）才能雇人、租办公室、专注产品。',
+    example: '火使人类可以占据山洞作为固定住所，从非洲扩散至欧亚大陆。北京猿人洞穴的用火痕迹距今约50万年。',
+    counter: '火不是人类独有的能力——有些鸟类会利用野火驱赶猎物。区别在于人类能主动生火和控制火，而非被动利用。'
+  },
+  {
+    id: 'c4', name: '工具制造',
+    short: '能量效率倍增器',
+    def: '人类与动物的根本区别在于主动借助外力获取能量。从200万年前的阿舍利手斧到20万年前的工具大爆发，复杂工具实现了功能分化：石核（锤/斧）、刮制石器（刀）、尖状石器（匕首）。',
+    analogy: '像程序员使用IDE和框架——赤手空拳也能写代码，但有工具后效率差几十倍。工具本质是"把前人的经验封装成可复用的杠杆"。',
+    example: '投射武器（弓箭、标枪）是智人第二次走出非洲战胜尼安德特人的核心技术，能将致命动能远距离输送。',
+    counter: '拥有工具不等于会用。非洲一些部落至今用简单工具维持生存，关键在于是否形成"工具改进工具"的正循环。'
+  },
+  {
+    id: 'c5', name: '语言基因',
+    short: 'FOXP2与协作规模',
+    def: '现代智人FOXP2基因发生突变，使语言从简单信号发展为丰富抽象的符号系统。这一信息革命使智人能组织约200人的大规模协作，实现超越基因的信息传递（经验跨代传承）。',
+    analogy: '像操作系统升级——动物用"汇编语言"（基因）传递信息，效率极低且以生命为代价试错。人类升级为"高级语言"（口语），可以直接告诉后代"别碰彩色毒虫"。',
+    example: '智人可描述完整计划："明天南边要打仗，带上你的兵器"；尼安德特人只能表达"打仗，你，兵器"——信息带宽差异决定了竞争结果。',
+    counter: '语言能力不等同于沟通能力。现代组织中，人人会说话但信息传递仍然严重失真——关键在于是否有清晰的"书写系统"（标准化文档、流程）。'
+  },
+  {
+    id: 'c6', name: '农耕革命',
+    short: '滞后效应与能量盈余',
+    def: '农耕不是人类的"主动选择"，而是太阳活动引发全球变暖后的适应性结果。关键概念：滞后效应——气温达标（约12000年前）到农业开始（约10000年前）间隔2000多年，因为需要融冰耗能和三大技术准备。',
+    analogy: '像电动车普及——电池技术早就存在，但真正普及需要充电桩网络、电网升级、用户习惯改变三大"预先要求"同时到位，之间会有漫长滞后。',
+    example: '中国先民发现"断水促种"法——水稻快成熟时断水，促其多结种子（单株可达上百颗）。这是一个偶然发现到系统化的过程。',
+    counter: '农耕在个体层面效率低于狩猎（每天劳动时间更长），但群体层面——每平方公里可养活的人数是狩猎的10-100倍，在部落竞争中形成碾压优势。'
+  },
+  {
+    id: 'c7', name: '冶金技术',
+    short: '青铜到铁器的跃迁',
+    def: '文明三大标志之一。人类首次系统性地创造自然界不存在的材料。青铜时代（约公元前3300年）需高温烧制能力，铁器时代（约公元前1300年）需1300°C以上炉温。冶金能力直接反映文明的能量掌控水平。',
+    analogy: '像芯片制造工艺从28nm到7nm——每次节点跃迁都需全新的设备和工艺，炉温1300°C就像EUV光刻机，是技术壁垒的核心。',
+    example: '赫梯帝国用铁兵器+铁车轴战车（载3人）在卡迭石战役击退埃及铜轴战车（载2人），这是历史上最早记录的冶金技术碾压案例。',
+    counter: '温查文化（约公元前4500年）最早冶炼青铜但未进入青铜时代——"实验室样品"和"大规模量产"之间的鸿沟，三千年前就存在。'
+  },
+  {
+    id: 'c8', name: '书写系统',
+    short: '知识固化与跨代传播',
+    def: '文字是符号系统，书写系统是准确传递复杂思想的规则体系。楔形文字（约5500年前）、古埃及象形文字（约5200年前）、中国甲骨文（约3400年前）独立起源。书写系统实现横向传播（同时代）+纵向传播（跨世代）。',
+    analogy: '像代码版本控制——口口相传=没有git的项目，改了什么都不知道。书写系统=git commit，每次进步都固化下来，后人可以在此基础上继续，实现"可叠加式进步"。',
+    example: '罗塞塔石碑（三语对照）让19世纪的商博良破解了失传千年的古埃及文字，使人类对5000年前埃及的了解远超500年前的美洲历史。',
+    counter: '玛雅文明有文字但读写是精英特权，知识传递受阻到停滞。这说明仅"有书写系统"还不够，还需要"信息传播的开放性"。'
+  },
+  {
+    id: 'c9', name: '城市聚居',
+    short: '能量密度驱动文明',
+    def: '农耕革命使人口密度提高，当能量密度足够高时，可以养活非农业人口（僧侣、管理者、工匠），社会开始分化。核心公式：高能量密度→社会分工→复杂度提升→文明诞生。乌鲁克城（约公元前4000年）是最早的城市。',
+    analogy: '像创业孵化器——把一个城市的创业者集中在一栋楼里，密度提升带来"随机碰撞"，碰撞产生创新。硅谷的本质不是任何单一因素，而是全球最高的"创新能量密度"。',
+    example: '苏美尔人在城市聚居后发明了轮子（约公元前3200年）和帆船，轮子使运输效率提升一个数量级（滚动摩擦vs滑动摩擦），帆船首次利用风能。',
+    counter: '高密度也有代价——瘟疫传播更快、社会矛盾更集中。今天的超大城市面临同样问题，但历史证明：文明从未因密度过高而倒退，只会在更高的复杂度上找到新平衡。'
+  },
+  {
+    id: 'c10', name: '大学诞生',
+    short: '知识制度化传承',
+    def: '大学是"中世纪开出的最美的花"。1088年博洛尼亚大学成立，1158年腓特烈一世签署学术特权法令。大学的核心价值：（1）培养科学家的场所；（2）统一范式内叠加进步；（3）信息枢纽——知识的保留、降噪、强化与传播。',
+    analogy: '像开源社区——个人可以自学编程，但Linux kernel这样的复杂系统需要制度化协作。大学就是知识领域的"Linux Foundation"，确保不同时代的人在同一套规范下接力。',
+    example: '牛津大学首任校长格罗斯泰斯特确立"系统教学原则"，消除教学随意性；罗杰·培根开创实验科学方法，建立英国首个科学实验室。',
+    counter: '大学起源于宗教目的（"荣耀神"），却因学术自由最终产生了动摇教义的自然科学。这说明：制度一旦建立，其演化方向可能超越创立者的初衷。'
+  }
+];
+
+var mksCoreIds = ['c1','c2','c3','c6'];
+var learnedCards = LS.learnedCards || [];
+
+// ==================== TAB SWITCHING ====================
+document.addEventListener('DOMContentLoaded', function(){
+  var btns = document.querySelectorAll('.tab-btn');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var idx = this.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(function(x){ x.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(x){ x.classList.remove('active'); });
+      this.classList.add('active');
+      var panel = document.getElementById('panel'+idx);
+      if(panel) panel.classList.add('active');
+      if(idx==='4') renderReview();
+    });
+  });
+  renderOverview();
+  setCard(0);
+  updateProgress();
+});
+
+// ==================== OVERVIEW RENDERING ====================
+function renderOverview(){
+  var conceptGrid = document.getElementById('conceptGrid');
+  var mksCoreGrid = document.getElementById('mksCoreGrid');
+  if(!conceptGrid) return;
+  var h='';
+  for(var i=0;i<concepts.length;i++){
+    var c=concepts[i];
+    h+='<div class="concept-card'+(mksCoreIds.indexOf(c.id)>=0?' mks-core':'')+'" onclick="switchToCard('+i+')">';
+    h+='<h4 style="color:var(--accent);margin-bottom:4px">'+c.name+(mksCoreIds.indexOf(c.id)>=0?' <span class="mks-star">★ MKS</span>':'')+'</h4>';
+    h+='<p style="font-size:.82rem;color:var(--text-light)">'+c.short+'</p>';
+    h+='</div>';
+  }
+  conceptGrid.innerHTML=h;
+  // MKS core
+  var mh='';
+  for(var j=0;j<mksCoreIds.length;j++){
+    var cc=concepts.find(function(x){return x.id===mksCoreIds[j];});
+    if(!cc) continue;
+    mh+='<div class="concept-card mks-core" onclick="switchToCard('+concepts.indexOf(cc)+')">';
+    mh+='<h4 style="color:var(--accent);margin-bottom:4px">★ '+cc.name+' <span class="mks-star">骨架</span></h4>';
+    mh+='<p style="font-size:.82rem;color:var(--text-light)">'+cc.def.substring(0,80)+'...</p>';
+    mh+='</div>';
+  }
+  mksCoreGrid.innerHTML=mh;
+  // SVG
+  renderSVG();
+}
+
+function renderSVG(){
+  var el=document.getElementById('conceptMap');
+  if(!el) return;
+  // Embed inline SVG (compressed from dot output)
+  el.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1382 281" width="100%" height="auto"><rect fill="#fdf6ec" width="1382" height="281"/><g transform="translate(4,277)"><polygon fill="#fdf6ec" points="-4,4 -4,-277 1378,-277 1378,4"/>'+
+'<path fill="#c0392b" stroke="#3d2f2f" stroke-width="2" d="M707,-273L653,-273L641,-261L641,-249L719,-249L719,-261Z"/><text x="680" y="-258" font-size="11" text-anchor="middle" fill="#fff">文明双螺旋</text><text x="680" y="-246" font-size="11" text-anchor="middle" fill="#fff">能量 × 信息</text>'+
+'<path fill="#d4a574" stroke="#3d2f2f" d="M463,-191L395,-191L383,-179L383,-167L475,-167L475,-179Z"/><text x="429" y="-176" font-size="11" text-anchor="middle" fill="#fff">能量主线</text><text x="429" y="-164" font-size="11" text-anchor="middle" fill="#fff">获取·转换·积累</text>'+
+'<path fill="#d4a574" stroke="#3d2f2f" d="M1038,-191L970,-191L958,-179L958,-167L1050,-167L1050,-179Z"/><text x="1004" y="-176" font-size="11" text-anchor="middle" fill="#fff">信息主线</text><text x="1004" y="-164" font-size="11" text-anchor="middle" fill="#fff">编码·传播·组织</text>'+
+'<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M641,-242C599,-228 532,-207 485,-192"/><polygon fill="#c0392b" points="485,-188,475,-189,484,-195"/><text x="588" y="-212" font-size="9" text-anchor="middle" fill="#c0392b">文明标尺</text>'+
+'<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M719,-244C776,-230 883,-204 948,-188"/><polygon fill="#c0392b" points="949,-191,958,-185,947,-184"/><text x="880" y="-212" font-size="9" text-anchor="middle" fill="#c0392b">组织法则</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M72,-109L12,-109L0,-97L0,-85L84,-85L84,-97Z"/><text x="42" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">火的使用</text><text x="42" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">首个外部能源</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M211,-109L151,-109L139,-97L139,-85L223,-85L223,-97Z"/><text x="181" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">工具制造</text><text x="181" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">能量效率倍增</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M339,-109L253,-109L241,-97L241,-85L351,-85L351,-97Z"/><text x="296" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">农耕革命</text><text x="296" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">滞后效应·能量盈余</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M477,-109L382,-109L370,-97L370,-85L489,-85L489,-97Z"/><text x="429" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">冶金技术</text><text x="429" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">青铜→铁器·高温控制</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M619,-109L555,-109L543,-97L543,-85L631,-85L631,-97Z"/><text x="587" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">城市聚居</text><text x="587" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">能量密度·分工</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M737,-109L662,-109L650,-97L650,-85L749,-85L749,-97Z"/><text x="699" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">衣服发明</text><text x="699" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">能量节流·跨纬度</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M856,-109L779,-109L767,-97L767,-85L868,-85L868,-97Z"/><text x="817" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">语言基因</text><text x="817" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">FOXP2·协作规模</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M966,-109L898,-109L886,-97L886,-85L978,-85L978,-97Z"/><text x="932" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">书写系统</text><text x="932" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">文字·载体·固化</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M1094,-109L1008,-109L996,-97L996,-85L1106,-85L1106,-97Z"/><text x="1051" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">造纸与印刷</text><text x="1051" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">信息复制·传播带宽</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M1234,-109L1136,-109L1124,-97L1124,-85L1246,-85L1246,-97Z"/><text x="1185" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">大学诞生</text><text x="1185" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">知识制度化·范式传承</text>'+
+'<path fill="#fffaf2" stroke="#5a3e3e" d="M1362,-109L1276,-109L1264,-97L1264,-85L1374,-85L1374,-97Z"/><text x="1319" y="-94" font-size="11" text-anchor="middle" fill="#3d2f2f">文字破译</text><text x="1319" y="-82" font-size="11" text-anchor="middle" fill="#3d2f2f">信息冗余·交叉验证</text>'+
+'<path fill="none" stroke="#d4a574" d="M383,-162C310,-147 170,-118 94,-103"/><polygon fill="#d4a574" points="95,-100,84,-101,93,-106"/>'+
+'<path fill="none" stroke="#d4a574" d="M383,-157C345,-145 290,-128 233,-109"/><polygon fill="#d4a574" points="234,-106,223,-106,231,-112"/>'+
+'<path fill="none" stroke="#d4a574" d="M400,-155C381,-143 355,-127 333,-114"/><polygon fill="#d4a574" points="335,-111,324,-109,331,-117"/>'+
+'<path fill="none" stroke="#d4a574" d="M429,-155L429,-119"/><polygon fill="#d4a574" points="433,-119,429,-109,425,-119"/>'+
+'<path fill="none" stroke="#d4a574" d="M475,-172C506,-169 545,-161 571,-137C576,-132 580,-126 582,-119"/><polygon fill="#d4a574" points="586,-120,585,-109,579,-118"/>'+
+'<path fill="none" stroke="#d4a574" d="M475,-164C507,-158 551,-149 588,-137C610,-130 633,-121 652,-113"/><polygon fill="#d4a574" points="654,-116,662,-109,651,-110"/>'+
+'<path fill="none" stroke="#d4a574" d="M964,-155C935,-143 897,-126 867,-113"/><polygon fill="#d4a574" points="868,-110,857,-109,865,-116"/>'+
+'<path fill="none" stroke="#d4a574" d="M988,-155C978,-144 965,-129 954,-117"/><polygon fill="#d4a574" points="957,-114,947,-109,951,-119"/>'+
+'<path fill="none" stroke="#d4a574" d="M1023,-155C1028,-149 1033,-143 1037,-137C1040,-132 1043,-125 1045,-119"/><polygon fill="#d4a574" points="1048,-120,1048,-109,1041,-118"/>'+
+'<path fill="none" stroke="#d4a574" d="M1043,-155C1070,-143 1108,-126 1137,-113"/><polygon fill="#d4a574" points="1139,-116,1146,-109,1136,-110"/>'+
+'<path fill="none" stroke="#d4a574" d="M1050,-161C1099,-149 1177,-129 1254,-109"/><polygon fill="#d4a574" points="1255,-113,1264,-107,1253,-106"/>'+
+'<path fill="#fef5e7" stroke="#8b7355" d="M100,-27L40,-27L28,-15L28,-3L112,-3L112,-15Z"/><text x="70" y="-12" font-size="10" text-anchor="middle" fill="#3d2f2f">金字塔/长城</text>'+
+'<path fill="#fef5e7" stroke="#8b7355" d="M470,-27L388,-27L376,-15L376,-3L482,-3L482,-15Z"/><text x="429" y="-12" font-size="10" text-anchor="middle" fill="#3d2f2f">瓷器·高科技贸易垄断</text>'+
+'<path fill="#fef5e7" stroke="#8b7355" d="M740,-27L680,-27L668,-15L668,-3L752,-3L752,-15Z"/><text x="710" y="-12" font-size="10" text-anchor="middle" fill="#3d2f2f">轮子与帆船</text>'+
+'<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M587,-73L587,-37"/><polygon fill="#8b7355" points="587,-40,584,-30,590,-40"/>'+
+'<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M429,-73L429,-37"/><polygon fill="#8b7355" points="429,-40,426,-30,432,-40"/>'+
+'<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M587,-37L500,-37L500,-27"/><polygon fill="#8b7355" points="500,-30,496,-20,503,-30"/>'+
+'<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M530,-109L530,-37"/><polygon fill="#8b7355" points="530,-40,527,-30,533,-40"/>'+
+'</g></svg>';
+}
+
+function switchToCard(idx){
+  document.querySelectorAll('.tab-btn').forEach(function(x){ x.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(x){ x.classList.remove('active'); });
+  document.querySelector('.tab-btn[data-tab="1"]').classList.add('active');
+  document.getElementById('panel1').classList.add('active');
+  setCard(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ==================== FLIP CARDS ====================
+var currentCardIdx = 0;
+var cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  var c=concepts[idx];
+  var frontEl=document.getElementById('flipFront');
+  var backEl=document.getElementById('flipBack');
+  var innerEl=document.getElementById('flipInner');
+  if(!frontEl||!backEl||!innerEl) return;
+  var learnedTag = (learnedCards.indexOf(c.id)>=0) ? '<span class="tag" style="margin-top:8px">✓ 已学习</span>' : '';
+  frontEl.innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">'+c.short+'</p><p style="color:var(--text-light);margin-top:12px;font-size:clamp(.75rem,1.4vw,.82rem)">点击翻转卡片查看详情</p>'+learnedTag;
+  backEl.innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  innerEl.classList.remove('flipped');
+  var ciEl=document.getElementById('cardIndex');
+  if(ciEl) ciEl.textContent=(idx+1)+' / '+concepts.length;
+  var mlEl=document.getElementById('markLearnedBtn');
+  if(mlEl) mlEl.textContent=(learnedCards.indexOf(c.id)>=0)?'✓ 已学习':'✓ 标记已学习';
+}
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1);}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1);}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.indexOf(id)>=0){
+    learnedCards=learnedCards.filter(function(x){return x!==id;});
+  }else{
+    learnedCards.push(id);
+  }
+  LS.learnedCards=learnedCards;
+  saveLS();
+  updateProgress();
+  setCard(currentCardIdx);
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var inner=document.getElementById('flipInner');
+  if(inner){
+    inner.addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped;});
+  }
+});
+
+// ==================== QUIZ DATA ====================
+// 20 MCQs, answer distribution: {0:5, 1:5, 2:5, 3:5}
+var mcqData = [
+  {q:'吴军提出科技史的两条核心主线是什么？', opts:['能量与信息','政治与军事','文化与经济','地理与气候'], answer:0},
+  {q:'人类掌握的首个高于自身能量的外部能源是什么？', opts:['火','衣服','工具','轮子'], answer:0},
+  {q:'现代智人战胜尼安德特人的关键信息优势是什么？', opts:['FOXP2基因突变带来的语言能力','更大的脑容量','更强的体力','更先进的武器'], answer:0},
+  {q:'衣服发明的能量逻辑是什么？', opts:['减少热量散失，实现能量"节流"','增加能量摄入','提高运动效率','储存食物能量'], answer:0},
+  {q:'为什么说"农耕是被迫的选择"？', opts:['农耕初期个体效率低于狩猎，但因人口规模优势胜出','人类天生喜欢种地','天气变冷导致猎物减少','部落首领强制推行'], answer:0},
+  {q:'卡尔达肖夫指数的I型文明需要什么能力？', opts:['利用一颗行星的全部能量','利用一个恒星系的全部能量','利用一个星系的全部能量','实现可控核聚变'], answer:1},
+  {q:'"滞后效应"在农耕革命中如何体现？', opts:['气温达标12000年前，农业开始10000年前，间隔2000年','太阳活动到冰川融化没有延迟','驯化小麦只需要一年','农耕技术一经发明立即普及'], answer:1},
+  {q:'楔形文字最早出现在什么时间？', opts:['约5500年前','约3400年前','约2000年前','约7000年前'], answer:1},
+  {q:'赫梯帝国在卡迭石战役中战胜埃及的技术优势是什么？', opts:['铁制兵器+铁车轴战车（载3人）','更多的士兵','更优秀的指挥官','大象骑兵'], answer:1},
+  {q:'蔡伦造纸术的革命性贡献是什么？', opts:['发明了纸张本身','创造了可规模化生产的廉价造纸工艺','发现造纸原料','发明了印刷术'], answer:1},
+  {q:'古腾堡印刷术相比毕昇活字印刷的革命性突破是什么？', opts:['整套印刷设备+高效生产工艺流程+铅锡合金活字','更早发明活字','使用木活字','印刷速度更快'], answer:2},
+  {q:'大学诞生的核心条件不包括哪项？', opts:['稳定的社会环境','知识阶层（教士群体）','学术团体的自发形成','国王的个人兴趣'], answer:2},
+  {q:'为什么温查文化能炼青铜却没进入青铜时代？', opts:['技术样品≠大规模应用，缺乏配套体系','被外族入侵灭亡','青铜质量太差','当地没有铜矿'], answer:2},
+  {q:'罗塞塔石碑破解的关键原理是什么？', opts:['信息冗余——三语对照可交叉验证','外星人的帮助','古希腊文献的记载','计算机的发明'], answer:2},
+  {q:'中国垄耕种植法的核心优势不包括什么？', opts:['光照与通风均匀','便于田间操作','高效灌溉','不需要任何肥料'], answer:2},
+  {q:'能量密度对文明的意义是什么？', opts:['提高单位面积能量利用效率，释放人力发展科技','减少人口','降低生活水平','缩小城市规模'], answer:3},
+  {q:'书写系统与"文字"的本质区别是什么？', opts:['书写系统是准确传递复杂思想的规则体系，文字只是符号','没有区别，是同义词','文字比书写系统更高级','书写系统只能用于记账'], answer:3},
+  {q:'金字塔建造反映的文明规律是什么？', opts:['农耕文明的能量总量优势可以支撑大型工程','外星人帮助了古埃及人','古埃及人掌握了现代起重机技术','金字塔是用魔法建造的'], answer:3},
+  {q:'中世纪大学诞生的悖论说明了什么？', opts:['制度一旦建立，演化方向可能超越创立者初衷','宗教总是阻碍科学','黑暗时代没有科学','大学与宗教无关'], answer:3},
+  {q:'文明进步的必要条件和充分条件分别是什么？', opts:['必要条件=能量总量，充分条件=能量密度','必要条件=人口数量，充分条件=土地面积','必要条件=科技进步，充分条件=经济发展','必要条件=教育水平，充分条件=政治制度'], answer:3}
+];
+
+var shortQA = [
+  {q:'为什么说"能量是文明的标尺"而不仅仅是GDP？', hint:'从能量总量vs能量密度的角度回答，举例说明清朝GDP高但鸦片战争失败的原因。'},
+  {q:'滞后效应在农耕革命中扮演了什么角色？', hint:'太阳活动→全球变暖→冰川融化消耗大量能量→气温上升滞后数千年→农业开始形成的前提条件缓慢到位。'},
+  {q:'书写系统为什么比"文字"更重要？', hint:'文字是符号系统（词汇），书写系统是规则体系（语法+逻辑）。有文字没书写系统=有单词没语法，无法表达复杂推理。'},
+  {q:'温查文化能炼青铜却没进入青铜时代，这个案例说明了什么技术创新规律？', hint:'实验室样品≠大规模量产。需要配套的矿石开采、燃料供应链、工匠培训、社会需求共同拉动。'},
+  {q:'从能量和信息的双重视角，分析金字塔的建造。', hint:'能量：尼罗河泛滥带来的农业高产养活20万劳工。信息：书写系统传递工程指令，祭司阶层掌握天文和几何知识。'},
+  {q:'龚腾堡印刷术成功的核心因素是什么？', hint:'不是发明活字本身（毕昇早已发明），而是创造了整套设备+标准铸造工艺+师徒培训推广体系。'},
+  {q:'现代智人战胜尼安德特人的核心优势是什么？', hint:'FOXP2基因突变→语言能力→可组织200人协作 vs 尼安德特人仅10人→人数碾压+复杂战术。'},
+  {q:'中世纪大学为什么被称为"开出的最美的花"？', hint:'看起来最不可能的地方（所谓"黑暗时代"）诞生了影响最深远的制度创新。稳定+闲暇+求知动机的组合胜过了动荡中的自由。'},
+  {q:'瓷器为什么被称为中国最伟大的发明？', hint:'四大标准：发明难度（欧洲1500年后才掌握）、用途广泛（盛器→高压电绝缘→航天隔热）、经济价值（持续数百年的贸易垄断）、不可替代性。'},
+  {q:'能量与信息双螺旋模型对现代人有什么启示？', hint:'任何复杂系统都可以从这两个维度拆解。公司=资源（能量）×组织效率（信息）；AI=算力（能量）×算法+数据（信息）。'}
+];
+
+// ==================== QUIZ SYSTEM ====================
+var quizActive = false;
+var quizTimerId = null;
+var quizSeconds = 0;
+var quizQuestions = [];
+var quizAnswered = 0;
+var quizCorrect = 0;
+
+function startQuiz(){
+  resetQuiz();
+  quizActive = true;
+  var shuffled = mcqData.slice().sort(function(){return Math.random()-0.5;});
+  quizQuestions = shuffled.slice(0, 10);
+  quizAnswered = 0; quizCorrect = 0; quizSeconds = 0;
+  renderQuizQuestions();
+  document.getElementById('quizContainer').style.display='block';
+  var tsEl = document.getElementById('quizTimer');
+  if(tsEl) tsEl.textContent='00:00';
+  quizTimerId = setInterval(function(){
+    quizSeconds++;
+    var m = Math.floor(quizSeconds/60);
+    var s = quizSeconds%60;
+    if(tsEl) tsEl.textContent=(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
+  }, 1000);
+  var sqEl = document.getElementById('quizScore');
+  if(sqEl) sqEl.textContent='';
+}
+
+function resetQuiz(){
+  if(quizTimerId){clearInterval(quizTimerId);quizTimerId=null;}
+  quizActive = false;
+  quizSeconds = 0;
+  quizQuestions = [];
+  quizAnswered = 0;
+  quizCorrect = 0;
+  var qc = document.getElementById('quizContainer');
+  if(qc) qc.innerHTML='';
+  qc.style.display='none';
+  var tsEl = document.getElementById('quizTimer');
+  if(tsEl) tsEl.textContent='';
+  var sqEl = document.getElementById('quizScore');
+  if(sqEl) sqEl.textContent='';
+}
+
+function renderQuizQuestions(){
+  var qc = document.getElementById('quizContainer');
+  if(!qc) return;
+  var h = '';
+  for(var i=0;i<quizQuestions.length;i++){
+    var q = quizQuestions[i];
+    h += '<div class="quiz-card" id="qcard'+i+'">';
+    h += '<div class="q-num">第'+(i+1)+'题</div>';
+    h += '<div class="q-text">'+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      h += '<div class="option quiz-option" onclick="answerQuiz('+i+','+j+',this)" id="qopt'+i+'_'+j+'">'+String.fromCharCode(65+j)+'. '+q.opts[j]+'</div>';
+    }
+    h += '<div class="feedback" id="qfb'+i+'"></div>';
+    h += '</div>';
+  }
+  qc.innerHTML = h;
+  qc.style.display = 'block';
+}
+
+function answerQuiz(qidx, oidx, el){
+  if(el.classList.contains('correct')||el.classList.contains('wrong')) return;
+  var q = quizQuestions[qidx];
+  var card = document.getElementById('qcard'+qidx);
+  if(!card) return;
+  // Disable all options
+  var opts = card.querySelectorAll('.option');
+  for(var i=0;i<opts.length;i++){ opts[i].style.pointerEvents='none'; }
+  // Mark correct
+  var correctEl = card.querySelector('#qopt'+qidx+'_'+q.answer);
+  if(correctEl) correctEl.classList.add('correct');
+  // Mark selected
+  el.classList.add('selected');
+  if(oidx===q.answer){
+    el.classList.add('correct');
+    quizCorrect++;
+    var fb = card.querySelector('.feedback');
+    if(fb){ fb.className='feedback correct'; fb.textContent='✅ 正确！'; }
+  }else{
+    el.classList.add('wrong');
+    var fb = card.querySelector('.feedback');
+    if(fb){ fb.className='feedback wrong'; fb.textContent='❌ 错误！正确答案是 '+String.fromCharCode(65+q.answer)+'. '+q.opts[q.answer]; }
+    // Add to wrong book
+    LS.wrongBook.push({q:q.q, opts:q.opts, answer:q.answer, yourAnswer:oidx, time:new Date().toISOString()});
+    saveLS();
+  }
+  quizAnswered++;
+  LS.quizStats.total = (LS.quizStats.total||0)+1;
+  if(oidx===q.answer) LS.quizStats.correct = (LS.quizStats.correct||0)+1;
+  saveLS();
+  var sqEl = document.getElementById('quizScore');
+  if(sqEl) sqEl.textContent=' 已答:'+quizAnswered+'/'+quizQuestions.length+' 正确:'+quizCorrect;
+  // Check if all answered
+  if(quizAnswered >= quizQuestions.length){
+    if(quizTimerId){clearInterval(quizTimerId);quizTimerId=null;}
+    quizActive = false;
+    var tsEl = document.getElementById('quizTimer');
+    var m=Math.floor(quizSeconds/60), s=quizSeconds%60;
+    if(tsEl) tsEl.textContent='完成! '+(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
+  }
+}
+
+// ==================== EXAM MODE ====================
+var examTimerId = null;
+var examSeconds = 0;
+var examQuestions = [];
+var examAnswered = 0;
+var examCorrect = 0;
+
+function startExam(){
+  var startBtn = document.getElementById('startExamBtn');
+  if(startBtn) startBtn.style.display='none';
+  // Build exam: 7 MC + 3 SA
+  var mcShuffled = mcqData.slice().sort(function(){return Math.random()-0.5;});
+  var saShuffled = shortQA.slice().sort(function(){return Math.random()-0.5;});
+  examQuestions = [];
+  for(var i=0;i<7;i++){ examQuestions.push({type:'mc',data:mcShuffled[i]}); }
+  for(var j=0;j<3;j++){ examQuestions.push({type:'sa',data:saShuffled[j]}); }
+  examAnswered = 0; examCorrect = 0; examSeconds = 0;
+  var ea = document.getElementById('examArea');
+  if(!ea) return;
+  ea.style.display='block';
+  var h='';
+  for(var k=0;k<examQuestions.length;k++){
+    var eq = examQuestions[k];
+    h+='<div class="quiz-card" id="ecard'+k+'">';
+    h+='<div class="q-num">第'+(k+1)+'题</div>';
+    if(eq.type==='mc'){
+      h+='<div class="q-text">'+eq.data.q+'</div>';
+      for(var l=0;l<eq.data.opts.length;l++){
+        h+='<div class="option exam-opt" onclick="answerExam('+k+','+l+',this)" id="eopt'+k+'_'+l+'">'+String.fromCharCode(65+l)+'. '+eq.data.opts[l]+'</div>';
+      }
+      h+='<div class="feedback" id="efb'+k+'"></div>';
+    }else{
+      h+='<div class="q-text">'+eq.data.q+'</div>';
+      h+='<textarea class="essay-area" placeholder="请在此输入你的答案..."></textarea>';
+      h+='<div style="margin-top:8px"><button class="btn btn-outline btn-sm" onclick="revealExamAnswer('+k+',this)">查看参考答案</button></div>';
+      h+='<div class="feedback" id="efb'+k+'" style="display:none">'+eq.data.hint+'</div>';
+    }
+    h+='</div>';
+  }
+  h+='<div style="text-align:center;margin:16px 0"><button class="btn btn-primary" onclick="submitExam()">提交考试</button></div>';
+  ea.innerHTML=h;
+  // Start timer
+  var etEl = document.getElementById('examTimer');
+  examTimerId = setInterval(function(){
+    examSeconds++;
+    var remaining = 900 - examSeconds; // 15 minutes
+    if(remaining <= 0){
+      submitExam();
+      return;
+    }
+    var m = Math.floor(remaining/60);
+    var s = remaining%60;
+    if(etEl) etEl.textContent = (m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
+  }, 1000);
+  if(etEl) etEl.textContent = '15:00';
+}
+
+function answerExam(qidx, oidx, el){
+  var eq = examQuestions[qidx];
+  if(!eq||eq.type!=='mc') return;
+  var card = document.getElementById('ecard'+qidx);
+  if(!card) return;
+  var opts = card.querySelectorAll('.exam-opt');
+  for(var i=0;i<opts.length;i++){ opts[i].style.pointerEvents='none'; }
+  var correctEl = card.querySelector('#eopt'+qidx+'_'+eq.data.answer);
+  if(correctEl) correctEl.classList.add('correct');
+  el.classList.add('selected');
+  if(oidx===eq.data.answer){
+    el.classList.add('correct');
+    examCorrect++;
+    var fb = card.querySelector('.feedback');
+    if(fb){ fb.className='feedback correct'; fb.textContent='✅ 正确！'; }
+  }else{
+    el.classList.add('wrong');
+    var fb = card.querySelector('.feedback');
+    if(fb){ fb.className='feedback wrong'; fb.textContent='❌ 错误！正确答案是 '+String.fromCharCode(65+eq.data.answer); }
+    LS.wrongBook.push({q:eq.data.q, opts:eq.data.opts, answer:eq.data.answer, yourAnswer:oidx, time:new Date().toISOString()});
+    saveLS();
+  }
+  examAnswered++;
+}
+
+function revealExamAnswer(qidx, btn){
+  var fb = document.getElementById('efb'+qidx);
+  if(fb){ fb.style.display='block'; }
+  if(btn){ btn.style.display='none'; }
+}
+
+function submitExam(){
+  if(examTimerId){clearInterval(examTimerId);examTimerId=null;}
+  var er = document.getElementById('examResult');
+  if(!er) return;
+  er.style.display='block';
+  var weakConcepts = [];
+  if(examCorrect < 5) weakConcepts.push('能量主线');
+  if(examCorrect < 6) weakConcepts.push('信息主线');
+  er.innerHTML='<h4 style="color:var(--accent)">考试结果</h4>'+
+    '<p>选择题正确：<strong>'+examCorrect+' / 7</strong></p>'+
+    '<p>用时：'+Math.floor(examSeconds/60)+'分'+examSeconds%60+'秒</p>'+
+    '<p style="margin-top:8px;color:var(--accent)">薄弱概念：'+(weakConcepts.length>0?weakConcepts.join('、'):'无')+'</p>'+
+    '<p style="font-size:.82rem;color:var(--text-light)">建议回到知识卡片复习对应概念</p>';
+  // Save to history
+  LS.examHistory.push({correct:examCorrect, total:7, time:examSeconds, date:new Date().toISOString()});
+  saveLS();
+  var eaEl = document.getElementById('examArea');
+  if(eaEl) eaEl.style.display='none';
+}
+
+// ==================== REVIEW MODE ====================
+function renderReview(){
+  var statsGrid = document.getElementById('statsGrid');
+  if(!statsGrid) return;
+  var totalQuiz = LS.quizStats.total||0;
+  var correctQuiz = LS.quizStats.correct||0;
+  var rate = totalQuiz>0 ? Math.round(correctQuiz/totalQuiz*100) : 0;
+  statsGrid.innerHTML='<div class="stat-item"><div class="stat-value">'+totalQuiz+'</div><div class="stat-label">总答题数</div></div>'+
+    '<div class="stat-item"><div class="stat-value">'+rate+'%</div><div class="stat-label">正确率</div></div>'+
+    '<div class="stat-item"><div class="stat-value">'+learnedCards.length+'</div><div class="stat-label">已学概念</div></div>';
+  // Wrong book
+  var wb = document.getElementById('wrongBook');
+  if(!wb) return;
+  if(LS.wrongBook.length===0){
+    wb.innerHTML='<p style="color:var(--text-light)">暂无错题记录，继续加油！</p>';
+  }else{
+    var wh='';
+    for(var i=LS.wrongBook.length-1;i>=Math.max(0,LS.wrongBook.length-10);i--){
+      var w=LS.wrongBook[i];
+      wh+='<div style="padding:8px;margin:4px 0;border:1px solid var(--border);border-radius:6px;background:#fef9f2;font-size:.85rem">';
+      wh+='<strong>❌</strong> '+w.q+'<br>';
+      wh+='<span style="color:var(--success)">正确答案：</span>'+w.opts[w.answer]+'<br>';
+      wh+='<span style="color:var(--accent)">你的答案：</span>'+(w.yourAnswer!==undefined?w.opts[w.yourAnswer]:'未作答')+'</div>';
+    }
+    wb.innerHTML=wh+'<button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="clearWrongBook()">清空错题本</button>';
+  }
+  // Weak concepts
+  var wc = document.getElementById('weakConcepts');
+  if(!wc) return;
+  var weakH = '<p style="font-size:.85rem;color:var(--text-light);margin-bottom:8px">基于学习记录分析：</p>';
+  for(var j=0;j<concepts.length;j++){
+    var c=concepts[j];
+    var status = (learnedCards.indexOf(c.id)>=0) ? '✅ 已学习' : '⬛ 待学习';
+    weakH+='<div style="padding:6px;font-size:.85rem">'+status+' - '+c.name+'</div>';
+  }
+  wc.innerHTML=weakH;
+}
+
+function clearWrongBook(){
+  LS.wrongBook = [];
+  saveLS();
+  renderReview();
+}
+
+// ==================== MINIMAP TOGGLE ====================
+function toggleMindmap(el){
+  if(typeof el==='string'){ el = document.querySelector(el); }
+  if(!el) return;
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if(children && children.classList.contains('tree-children')){
+    children.classList.toggle('show');
+    children.classList.toggle('open');
+  }
+}
+
+// ==================== DECISION SIMULATION ====================
+function decide(round, choice, el){
+  var resultDiv = document.getElementById('decision'+round);
+  if(!resultDiv) return;
+  // Disable all options in this scenario
+  var scenario = el.closest('.decision-scenario');
+  var opts = scenario.querySelectorAll('.decision-opt');
+  for(var i=0;i<opts.length;i++){ opts[i].style.pointerEvents='none'; opts[i].style.opacity='0.6'; }
+  el.style.opacity='1'; el.style.borderColor='var(--gold)'; el.style.background='#fffdf5';
+
+  var feedback = '';
+  if(round===1){
+    if(choice==='A'){ feedback='<strong>⚠️ 过于激进：</strong>农耕初期投入产出比接近1:1，全面转型意味着短期饥荒风险。但长远看，这是正确方向——只是需要"滞后效应"的缓冲期。<strong>MKS分析：</strong>农耕的能量总量优势需要人口增长才能显现，建议渐进过渡。'; }
+    else if(choice==='B'){ feedback='<strong>✅ 最优策略：</strong>"小范围试种+维持狩猎"是历史上实际发生的过渡模式。<strong>MKS分析：</strong>这体现了"信息主线"的智慧——先积累验证数据（哪些作物可行），再放大能量投入。'; }
+    else{ feedback='<strong>⚠️ 短视策略：</strong>劫掠只能获得一次性收益，无法建立可持续的能量来源。历史上的游牧民族最终都被农耕文明同化或边缘化。<strong>MKS分析：</strong>能量必须可持续生产，而非简单转移。'; }
+  }else if(round===2){
+    if(choice==='A'){ feedback='<strong>✅ 历史正确选择：</strong>古埃及的祭司阶层就是通过这种方式发展起来的。他们的天文观测最终诞生了历法、几何学和农业知识。<strong>MKS分析：</strong>"看似无用"的信息投资是文明进步的关键——这就是为什么今天的基础科研仍需要国家资助。'; }
+    else if(choice==='B'){ feedback='<strong>❌ 短视：</strong>这将断送你文明的信息能力。没有祭司的天文记录，你无法预测洪水，农业产出会大幅波动。<strong>MKS分析：</strong>信息投资的回报往往是非线性和延迟的，看不见即时效益就不投，等于自废武功。'; }
+    else{ feedback='<strong>⚠️ 不可行：</strong>你无法在当时区分"有用"和"无用"的研究。祭司的宗教仪式和天文观测是一体的——正如今天基础科研和应用技术难以割裂。<strong>MKS分析：</strong>信息系统的价值在于其整体性，不能用简单的ROI思维裁剪。'; }
+  }else{
+    if(choice==='A'){ feedback='<strong>⚠️ 有效但有限：</strong>技术封锁确实能维持短期优势，但历史证明技术最终会扩散。中国瓷器技术被封锁千年，最终还是被欧洲破解。<strong>MKS分析：</strong>技术具有流动性，封锁只能延缓不能阻止。'; }
+    else if(choice==='B'){ feedback='<strong>✅ 经典策略：</strong>这就是中国瓷器贸易的模式——卖成品不卖工艺，维持了数百年的贸易顺差。但最终欧洲通过科学方法还是独立研发出了瓷器。<strong>MKS分析：</strong>信息最终会流动，工艺封锁的时间窗口取决于对手的科学方法进步速度。'; }
+    else{ feedback='<strong>⭐ 最优长期策略：</strong>用贸易收益加速自己进步，你始终比对手快一步。这是信息时代的核心竞争逻辑——不是阻止别人学习，而是自己学得更快。<strong>MKS分析：</strong>这就是"可叠加式进步"的精髓——把每次收益转化为下一轮的输入，形成正反馈循环。'; }
+  }
+  resultDiv.innerHTML = feedback;
+  resultDiv.style.display = 'block';
+}
+
+// ==================== PROGRESS ====================
+function updateProgress(){
+  var pct = Math.round(learnedCards.length / concepts.length * 100);
+  var tp = document.getElementById('totalProgress');
+  if(tp) tp.style.width = pct+'%';
+  var pt = document.getElementById('progressText');
+  if(pt) pt.textContent = pct>0 ? '已学习 '+learnedCards.length+' / '+concepts.length+' 个概念 ('+pct+'%)' : '尚未开始学习';
+  var cp = document.getElementById('cardProgress');
+  if(cp) cp.style.width = pct+'%';
+  var cl = document.getElementById('cardLearned');
+  if(cl) cl.textContent = learnedCards.length;
+}
+
+function save(){ LS.learnedCards=learnedCards; saveLS(); }
+
+// Initialize
+setCard(0);
+updateProgress();
+</script>
+
+</body>
+</html>
