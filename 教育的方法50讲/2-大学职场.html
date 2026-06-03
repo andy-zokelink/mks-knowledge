@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大学淬炼与职场跃迁 — 最小知识集</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
+--text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--gold:#b8860b;
+--shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
+--green:#4caf50;
+}
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s; text-decoration: none;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; }
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+
+.tab-bar{position:sticky;top:44px;z-index:100;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
+.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
+.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff}
+
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+h2{font-size:clamp(1.2rem,2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent2)}
+h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
+
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s}
+.concept-card:hover{transform:translateY(-2px)}
+.concept-card.mks{border-left-color:var(--gold);position:relative}
+.concept-card.mks::after{content:'\2605';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
+.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-core{background:#fde8e8;color:var(--accent)}
+.badge-mks{background:#fef3cd;color:var(--gold)}
+.badge-boundary{background:#e8f0fe;color:#3a6ea5}
+
+.progress-wrap{margin:16px 0}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
+.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* SVG */
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+/* Flip Card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Quiz */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-card .q-text{font-weight:700;margin-bottom:12px}
+.quiz-card .q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border);font-size:.85rem}
+.quiz-card .q-option:hover{border-color:var(--accent2);background:#fef9f4}
+.quiz-card .q-option.selected{border-color:var(--accent);background:#fde8e8}
+.quiz-card .q-option.correct{border-color:var(--green);background:#e8f5e9}
+.quiz-card .q-option.wrong{border-color:var(--accent);background:#ffebee}
+.quiz-card .q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
+.quiz-card .q-feedback.show{display:block}
+
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--green)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+
+.subtitle{font-size:clamp(.85rem,1.5vw,.95rem);color:var(--text2);text-align:center;margin:10px 0 16px}
+
+/* Tree */
+.tree-wrap{font-size:.88rem;line-height:1.8}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;color:var(--accent);font-weight:700;user-select:none}
+.tree-toggle::before{content:'\25B8 ';display:inline-block;transition:transform .2s}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-leaf{color:var(--text2)}
+
+/* mindmap */
+.mindmap{padding:0}
+.mindmap .node{margin-left:20px}
+.mindmap .node-header{cursor:pointer;padding:6px 0;font-weight:bold;color:var(--accent);display:flex;align-items:center;gap:6px}
+.mindmap .node-header::before{content:"\25B8";display:inline-block;transition:transform 0.2s;font-size:0.7rem}
+.mindmap .node-header.open::before{transform:rotate(90deg)}
+.mindmap .node-children{display:none;margin-left:16px;border-left:2px solid var(--border);padding-left:10px}
+.mindmap .node-children.show,.mindmap .node-children.open{display:block}
+.mindmap .leaf{padding:3px 0;font-size:0.88rem;color:var(--text)}
+
+/* Socratic */
+.socratic-item{margin-bottom:12px}
+.socratic-q{cursor:pointer;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);font-weight:700;transition:all .2s}
+.socratic-q:hover{border-color:var(--accent2)}
+.socratic-q::before{content:'\2753 '}
+.socratic-a{display:none;padding:12px 16px;background:#fef9f4;border-radius:0 0 var(--radius) var(--radius);font-size:.85rem;color:var(--text2)}
+.socratic-a.show{display:block}
+
+/* Decision */
+.decision-round{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.decision-round .scenario{font-weight:700;margin-bottom:12px;color:var(--accent)}
+.decision-round .d-option{padding:10px 14px;margin:6px 0;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
+.decision-round .d-option:hover{border-color:var(--accent2);background:#fef9f4}
+.decision-round .d-option.chosen{border-color:var(--accent);background:#fde8e8}
+.decision-round .d-result{display:none;margin-top:12px;padding:14px;border-radius:8px;background:#fef9f4;font-size:.85rem}
+.decision-round .d-result.show{display:block}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-card{text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-card .lbl{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.tbl th,.tbl td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+.tbl th{background:var(--accent);color:#fff;font-weight:600}
+.tbl tr:nth-child(even){background:#fef9f4}
+
+@media(max-width:640px){
+.tab-bar{gap:2px;padding:6px 2px}
+.tab-btn{padding:5px 8px;font-size:.7rem;border-radius:14px}
+.grid2,.grid3,.grid4{grid-template-columns:1fr}
+}
+
+.timer{font-size:1.3rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
+.timer.warning{animation:pulse .5s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.5}}
+
+.btn{padding:10px 24px;border-radius:20px;border:2px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+.btn:hover{background:#a93226;border-color:#a93226}
+.btn-outline{background:transparent;color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+.btn-success{background:var(--green);border-color:var(--green);color:#fff}
+.btn-success:hover{background:#388e3c;border-color:#388e3c}
+.tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700;background:#e8f5e9;color:#2e7d32}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0;font-size:.78rem}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%}
+
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <h1>教育金字塔·大学淬炼与职场跃迁 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+<div class="container">
+
+<p class="subtitle">最小知识集 · 吴军《教育的方法50讲》第23-52讲 + 加餐 · 40篇笔记提炼</p>
+<p class="subtitle" style="font-size:.78rem;margin-top:4px">母隐喻：教育金字塔·登顶——大学淬炼能力筑基，职场跃迁价值实现</p>
+
+<nav class="tab-bar" id="tabBar">
+<button class="tab-btn active" onclick="switchTab(0)">知识集总览</button>
+<button class="tab-btn" onclick="switchTab(1)">知识卡片</button>
+<button class="tab-btn" onclick="switchTab(2)">题库系统</button>
+<button class="tab-btn" onclick="switchTab(3)">考试模式</button>
+<button class="tab-btn" onclick="switchTab(4)">复习模式</button>
+<button class="tab-btn" onclick="switchTab(5)">思维导图</button>
+<button class="tab-btn" onclick="switchTab(6)">深度追问</button>
+<button class="tab-btn" onclick="switchTab(7)">案例分析</button>
+<button class="tab-btn" onclick="switchTab(8)">实战决策</button>
+</nav>
+
+<!-- ========== TAB 0: 知识集总览 ========== -->
+<section class="tab-content active" id="tab0">
+<div class="card">
+<h2>核心目标</h2>
+<p style="font-size:1.05rem">理解<strong>大学阶段的关键能力培养、选校选专业决策框架</strong>，掌握<strong>职场发展的底层法则——从求职、晋升到领导力</strong>，在「大学淬炼→职场跃迁」的完整链条中形成对个人发展的独立判断。</p>
+</div>
+
+<h2>10个核心概念</h2>
+<div class="grid2" id="conceptGrid"></div>
+
+<h2>★ 4个MKS核心骨架</h2>
+<div class="grid2" id="mksGrid"></div>
+
+<h2>概念关系图</h2>
+<div class="svg-wrap" id="svgContainer"></div>
+<div class="legend">
+<span><span class="dot" style="background:#c0392b"></span> 核心驱动</span>
+<span><span class="dot" style="background:#d4a574"></span> 方法论/派生</span>
+<span><span class="dot" style="background:#8b7355"></span> 应用/实例</span>
+<span><span class="dot" style="background:#b8860b"></span> 跨域交叉</span>
+<span><span class="dot" style="background:#3a6ea5"></span> 回环反馈</span>
+</div>
+
+<h2>边界知识表</h2>
+<div style="overflow-x:auto">
+<table class="tbl" id="boundaryTable"><thead><tr><th>知识点</th><th>使用场景</th><th>只需知道</th></tr></thead><tbody></tbody></table>
+</div>
+
+<h2>学习路径（5阶段）</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin:16px 0" id="learningPath"></div>
+
+<h2>学习进度</h2>
+<div class="progress-wrap">
+<div class="progress-bar"><div class="progress-fill" id="overallProgress" style="width:0%"></div></div>
+<div class="progress-label" id="progressLabel">已学习 0/10 个概念</div>
+</div>
+</section>
+
+<!-- ========== TAB 1: 知识卡片 ========== -->
+<section class="tab-content" id="tab1">
+<div class="card" style="text-align:center">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text2)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text2)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+</section>
+
+<!-- ========== TAB 2: 题库系统 ========== -->
+<section class="tab-content" id="tab2">
+<div class="card">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text2)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<h2>选择题（15道）<span class="badge badge-core" style="margin-left:8px">即时判分</span></h2>
+<div id="mcqContainer"></div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 3: 考试模式 ========== -->
+<section class="tab-content" id="tab3">
+<div class="card">
+<div style="text-align:center;padding:20px">
+<h2>模拟考试</h2>
+<p style="color:var(--text2)">从题库随机抽取 12道选择 | 限时15分钟</p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn" onclick="startExam()" id="examStartBtn">开始考试</button>
+<div id="examArea"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 4: 复习模式 ========== -->
+<section class="tab-content" id="tab4">
+<h2>学习统计</h2>
+<div class="stat-grid" id="statsGrid"></div>
+
+<h2 style="margin-top:20px">错题本</h2>
+<div id="errorBook"></div>
+<p style="font-size:.82rem;color:var(--text2)" id="emptyError">暂无错题，继续保持！</p>
+
+<h2 style="margin-top:20px">概念薄弱点</h2>
+<div id="weakConcepts"></div>
+<div style="margin-top:16px">
+<button class="btn btn-outline btn-sm" onclick="resetProgress()">重置全部进度</button>
+</div>
+</section>
+
+<!-- ========== TAB 5: 思维导图 ========== -->
+<section class="tab-content" id="tab5">
+<div class="card"><h2>可折叠思维导图</h2></div>
+<div class="card mindmap">
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">教育金字塔·大学淬炼与职场跃迁</div>
+<div class="node-children open">
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">一、大学淬炼层（第23-35讲）</div>
+<div class="node-children open">
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">1.1 四大关键能力</div>
+<div class="node-children open">
+<div class="leaf">• 逻辑思维：演绎+归纳推理，科学思维基础</div>
+<div class="leaf">• 写作表达：语言的边界=世界的边界（维特根斯坦）</div>
+<div class="leaf">• 实验能力：小规模试错·控制变量·降低风险</div>
+<div class="leaf">• 规划能力：资源分配与矛盾排除，非目标本身</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">1.2 通识教育本质</div>
+<div class="node-children open">
+<div class="leaf">• 词源：希腊"自由民的技能"→现代"主人公教育"</div>
+<div class="leaf">• 四大类七领域：自然科学·社会科学·人文学科·艺术</div>
+<div class="leaf">• 哈佛模式：自由选课·重点制(concentrations)·严进宽出</div>
+<div class="leaf">• Mudd模式：STEM聚焦·跨学科·高就业·小规模精英</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">1.3 选校决策体系</div>
+<div class="node-children open">
+<div class="leaf">• 五大因素：地点(30分)·专业(20-40分)·学校(20-40分)·喜好(10分)·深造</div>
+<div class="leaf">• 名校定义：C9+人大/东南/南开共12所，清北第一梯队</div>
+<div class="leaf">• 211好专业 > 985普通专业（非C9间差距缩小）</div>
+<div class="leaf">• 一本 > 二本：第一学历门槛显著</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">1.4 知识转化率</div>
+<div class="node-children open">
+<div class="leaf">• Y = X × η：学识收获=学校知识×个人转化率</div>
+<div class="leaf">• 哈佛X=100但η=20% → 实际收获20，不如普通大学高η</div>
+<div class="leaf">• 兴趣与擅长决定η，不喜欢专业→转化率极低</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">1.5 真学懂三大标准</div>
+<div class="node-children open">
+<div class="leaf">• ①用新知识更新认知体系（给大脑换操作系统）</div>
+<div class="leaf">• ②跨学科综合应用知识（历史·心理·风险管理）</div>
+<div class="leaf">• ③结合阅历反复深化理解（需实践验证）</div>
+<div class="leaf">• 案例：诺贝尔基金年化仅4.3%，远非媒体吹捧的"卓越投资"</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="node">
+<div class="node-header open" onclick="toggleMindmap(this)">二、职场跃迁层（第36-52讲）</div>
+<div class="node-children open">
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">2.1 第一份工作选择</div>
+<div class="node-children open">
+<div class="leaf">• 企业招聘三条件：能力胜任·好管理·善合作</div>
+<div class="leaf">• 四大原则：培养型·高势能·成长型·总部优先</div>
+<div class="leaf">• 警惕"榨干型企业"：高薪无培养，价值耗尽后弃用</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">2.2 暗夜猫头鹰效应</div>
+<div class="node-children open">
+<div class="leaf">• 无人监督时的真实表现决定职业发展</div>
+<div class="leaf">• 下班后选择：持续学习 vs 刷短视频→长期分水岭</div>
+<div class="leaf">• 日常细节：迟到·拖延·敷衍→被标记"不可托付"</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">2.3 为自己工作</div>
+<div class="node-children open">
+<div class="leaf">• 从"被动打工"到"主动成长"的心态转变</div>
+<div class="leaf">• 主动性决定约50%职场成就</div>
+<div class="leaf">• 四种被动行为：敷衍·漠视全局·急功近利·工作失衡</div>
+<div class="leaf">• Meta华裔总监案例：6年从想离职到成为高管</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">2.4 有效做功公式</div>
+<div class="node-children open">
+<div class="leaf">• W = F(努力) × D(坚持) × cosθ(方向夹角)</div>
+<div class="leaf">• θ=90°→完全无效；θ>90°→负效做功</div>
+<div class="leaf">• 方向偏差比努力不足更致命</div>
+<div class="leaf">• 团队合力 = Σ(F_i × cosθ_i)，方向一致>个体能力</div>
+</div>
+</div>
+
+<div class="node">
+<div class="node-header" onclick="toggleMindmap(this)">2.5 职场晋升与领导力</div>
+<div class="node-children open">
+<div class="leaf">• 晋升三要素：选对平台·资格积累·主动争取</div>
+<div class="leaf">• 资格三件：不可替代性·做出功劳·获得声誉</div>
+<div class="leaf">• 领导力四步：学会服从→自我管理→带好新人→组建团队</div>
+<div class="leaf">• 伪工作与假努力：优先级思维+方向校准=超越90%职场人</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 6: 深度追问 ========== -->
+<section class="tab-content" id="tab6">
+<div class="card"><h2>苏格拉底式深度追问</h2></div>
+
+<div class="socratic-item">
+<div class="card">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">为什么要培养"逻辑思维能力"而不是"多学几门技能"？</div>
+<div class="socratic-a">技能是具体的"鱼"，而逻辑思维是"渔"。大学阶段每项技能3-5年就过时，但逻辑思维的四大价值（路径推理、判断力增强、思维清晰、经验总结）让你终身受用。从演绎推理到归纳推理——科学革命以来人类进步加速度的本质驱动力就是逻辑方法。</div>
+</div>
+<div class="socratic-item" style="margin-left:20px">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">那为什么中国教育体系不重视逻辑学通识教育？</div>
+<div class="socratic-a">根源在于高考制度和工业化赶超思维。标准答案导向的教育强调"记住知识"而非"质疑知识"，而逻辑训练恰恰要求不断质疑前提和推理链条。法国精英大学校预科班每周50小时的高强度训练中大量是逻辑推理，中国完全可以借鉴。</div>
+</div>
+<div class="socratic-item" style="margin-left:20px">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">如果我现在已经大学毕业了，还能补逻辑思维吗？</div>
+<div class="socratic-a">当然可以。吴军推荐《逻辑思维训练50讲》，从命题逻辑开始学。更实用的是：每次做决策时，刻意写下你的前提假设（premise）和推理链条，然后逐条检查是否有漏洞。工作中遇到问题，区分"这是归纳结论还是演绎结论"——归纳结论只是概率性的，可能反例存在。</div>
+</div>
+</div>
+
+<div class="socratic-item">
+<div class="card">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">通识教育本质是"主人公教育"——普通人需要这个吗？</div>
+<div class="socratic-a">需要。通识教育的词源是"自由民的技能"——古希腊自由民是城邦的主人。现代社会人人都是公民，都需要行使投票权、判断公共政策。没有法律通识的人看不懂合同条款，没有经济学通识的人无法理解通胀对自己存款的影响。通识教育不是让你成为哲学家，而是让你成为自己生活的主人。</div>
+</div>
+<div class="socratic-item" style="margin-left:20px">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">通识教育和专业教育该怎样平衡？</div>
+<div class="socratic-a">吴军比喻：通识教育如同地基，地基面积越大，建筑才可能越高。但你不必在通识领域拿学位——所有大学生应学基础自然科学、经济学101、法学101就足够了。关键是扫除盲点，不是追求深度。一个计算机专业学生懂基本经济学，和一个经济学专业学生会写代码，两者的跨界能力是完全不同的。</div>
+</div>
+</div>
+
+<div class="socratic-item">
+<div class="card">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">"有效做功公式"听起来很抽象——能不能用具体例子说明？</div>
+<div class="socratic-a">以两个同龄人的10年职场为例：A选了AI方向（方向θ≈0°，cosθ=1），每天工作8小时（F=8），坚持10年（D=10）。W=8×10×1=80。B选了房地产销售（θ≈60°，偏离AI核心技能），每天加班12小时（F=12），坚持10年（D=10）。W=12×10×0.5=60。更关键的是，10年后AI人才供不应求，房地产销售可能面临裁员——θ角的代价是复利。</div>
+</div>
+<div class="socratic-item" style="margin-left:20px">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">如果θ>90°，努力越多反而越糟——怎么判断自己是否在"负效做功"？</div>
+<div class="socratic-a">三个信号：①你的核心技能在市场上贬值（比如传统纸媒编辑在短视频时代）；②做同样的事需要付出更多努力才能达到同样结果（内卷化）；③你投入的时间换来的不是资产而是负债（比如举债投资自己不懂的领域）。如果出现任何一个信号，立即停下来重新校准方向，而不是加倍努力。</div>
+</div>
+</div>
+
+<div class="socratic-item">
+<div class="card">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">"暗夜猫头鹰效应"——下班后的时间真有那么重要？</div>
+<div class="socratic-a">吴军引用了矿工史蒂芬森的案例：一个没受过正规教育的矿工，通过下班后自学识字和机械知识，最终成为铁路工程师，实现了阶层跨越。下班后每天2小时的持续学习，一年730小时，相当于大学一个学期的总课时。10年就是7300小时——足以在任何一个领域达到专家水平（10000小时定律的73%）。而刷短视频的人，10年后除了空荡荡的快乐，什么都没留下。</div>
+</div>
+<div class="socratic-item" style="margin-left:20px">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">但下班后已经很累了，哪还有精力学习？</div>
+<div class="socratic-a">吴军的观点是：正因为累，才更检验真实动力。"暗夜猫头鹰"就是看你累的时候的选择。如果你真的对某个方向有热情，累不是障碍——它甚至是一种恢复。另外，北京通勤每天2小时的案例说明：如果你把这2小时变成学习时间（比如听课程音频），而不是刷手机，长期收益远超省下的房租差。</div>
+</div>
+</div>
+
+<div class="socratic-item">
+<div class="card">
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('show')">"为自己工作"会不会太理想化？老板不还是剥削你？</div>
+<div class="socratic-a">Meta华裔总监的案例给出了答案：他本来想跳槽，后来转变心态——把公司当"练手场"，主动学习核心技术、请教他人、探索额外工作。6年后他成为高管并获得期权。关键是：你不是"为老板牺牲"，而是通过提升不可替代性来获得议价权。老板多次加薪挽留就是证明。如果你把每一份工作都当作"带薪学习"，你的能力积累速度远超那些"给多少钱干多少活"的同事。</div>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 7: 案例分析 ========== -->
+<section class="tab-content" id="tab7">
+
+<div class="card">
+<h2>案例分析：哈维·穆德学院——小体量如何做到起薪全美第一？</h2>
+<p style="color:var(--text2);margin-bottom:16px">用MKS四维度拆解一所成立仅70年的"小而精"学院如何超越哈佛斯坦福</p>
+
+<div class="card" style="border-left:4px solid var(--accent)">
+<h3>问题识别</h3>
+<p style="font-size:.85rem">哈维·穆德学院（Harvey Mudd College）1955年才成立，没有常青藤的历史积淀，学生仅约900人。但2024年本科毕业生起薪中位数11.5万美元，全美第一，超过MIT（11.02万）、哈佛、斯坦福。硅谷大厂HR对其简历高度认可，常直接给予面试机会。问题：一所小型学院如何在70年内建立如此强的就业竞争力？其教育模式能否被借鉴？</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>核心概念运用</h3>
+<p style="font-size:.85rem">
+<strong>① 知识转化率（Y=X×η）：</strong>Mudd虽然"知识供给X"可能不如MIT庞大，但极高师生比（900学生:100教师）和个性化培养使个人转化率η极高。小班教学+教授亲自指导→学生真正学懂。<br>
+<strong>② 通识教育本质：</strong>Mudd虽聚焦STEM，但强制要求修读人文课程，培养"懂技术的完整人"而非"技术工具人"。校徽中太阳、莫比乌斯带、圆规、地球仪分别象征能量、结构、科学与文明的连接、人文视野。<br>
+<strong>③ 选校决策匹配度：</strong>Mudd清晰定位"理工科极客天堂"，不强求全面发展，招生时优先录取STEM与人文学科均擅长且认同理念的学生。<br>
+<strong>④ 真学懂三标准：</strong>Mudd强调"解决未知实际问题"，培养跨2-3学科能力，协作解决复杂问题——完全符合"更新认知+跨学科+实践应用"。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #3a6ea5">
+<h3>解决方案与成果</h3>
+<p style="font-size:.85rem">
+<strong>学科聚焦：</strong>仅设6个基础STEM专业（生物/化学/计算机/工程/数学/物理），拒绝扩张诱惑。<br>
+<strong>资源整合：</strong>克莱蒙特五校联盟成员，与波莫纳学院等共享资源，可跨校选课，弥补小规模劣势。<br>
+<strong>培养理念：</strong>宁缺毋滥——即使某专业只有1%学生（如2025年生物学），仍提供完整培养计划。<br>
+<strong>成果：</strong>毕业生多成为工程师，不少校友为信息产业关键技术发明者。虽然20年后MIT毕业生薪酬反超，但本科教育质量和就业起点已证明其模式的有效性。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #6b8e23">
+<h3>MKS启示</h3>
+<p style="font-size:.85rem">
+1. <strong>专注的力量：</strong>70年只做STEM本科教育一件事——比起大而全，小而精更能建立不可替代性。<br>
+2. <strong>匹配度>排名：</strong>选校的核心不是排名高低，而是"学校特质与学生特质的匹配度"。Mudd不适合所有人，但对"理工极客"是最佳选择。<br>
+3. <strong>转化率优先：</strong>与其在名校做分母（低η），不如在适合的学校做分子（高η）——杨立昆选择普通大学获得自由度的案例同样印证。<br>
+4. <strong>资源整合：</strong>五校联盟模式为小体量机构提供了"不为所有，但为所用"的破局思路。
+</p>
+</div>
+</div>
+</section>
+
+<!-- ========== TAB 8: 实战决策 ========== -->
+<section class="tab-content" id="tab8">
+
+<div class="card"><h2>3轮决策模拟</h2><p style="color:var(--text2)">每轮3选项，选择后看MKS分析反馈</p></div>
+
+<div class="decision-round" id="decisionRound1">
+<div class="scenario">🔴 第1轮：选校抉择</div>
+<p style="font-size:.85rem;margin-bottom:12px">你高考成绩可以上：A) 清华大学冷门专业 B) 北京邮电大学计算机系 C) 二本热门专业。你未来不打算读研，希望毕业后直接就业。</p>
+<div class="d-option" onclick="makeDecision(1,0,this)">A. 清华冷门专业——名校光环最重要</div>
+<div class="d-option" onclick="makeDecision(1,1,this)">B. 北邮计算机——211好专业 > 985普通专业</div>
+<div class="d-option" onclick="makeDecision(1,2,this)">C. 二本热门专业——离家近且学费低</div>
+<div class="d-result" id="dResult1"></div>
+</div>
+
+<div class="decision-round" id="decisionRound2">
+<div class="scenario">🔴 第2轮：第一份工作</div>
+<p style="font-size:.85rem;margin-bottom:12px">你拿到两个Offer：A) 一家高薪但无培训体系的初创公司 B) Google（薪资低30%，但有完善导师制）C) 朋友介绍的国企稳定岗位</p>
+<div class="d-option" onclick="makeDecision(2,0,this)">A. 高薪初创——收入最重要，以后再说</div>
+<div class="d-option" onclick="makeDecision(2,1,this)">B. Google——培养型企业，积累职业资本</div>
+<div class="d-option" onclick="makeDecision(2,2,this)">C. 国企稳定——铁饭碗，不用卷</div>
+<div class="d-result" id="dResult2"></div>
+</div>
+
+<div class="decision-round" id="decisionRound3">
+<div class="scenario">🔴 第3轮：职场困境</div>
+<p style="font-size:.85rem;margin-bottom:12px">你在公司工作3年，每天996但感觉没学到新东西，同期入职的同事已晋升。你发现自己的大部分时间花在"看起来很忙但其实不创造核心价值"的任务上。</p>
+<div class="d-option" onclick="makeDecision(3,0,this)">A. 跳槽——换个环境重新开始</div>
+<div class="d-option" onclick="makeDecision(3,1,this)">B. 梳理优先级——只做高回报任务，向领导说明理由</div>
+<div class="d-option" onclick="makeDecision(3,2,this)">C. 继续忍耐——经济不好，有工作就不错了</div>
+<div class="d-result" id="dResult3"></div>
+</div>
+
+</section>
+
+</div><!-- container -->
+
+<script>
+// ============ GLOBAL STATE ============
+const LS_KEY = 'mks_edu2';
+let LS = {};
+try { LS = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) {}
+if (!LS.learned) LS.learned = [];
+if (!LS.errors) LS.errors = [];
+if (!LS.quizHistory) LS.quizHistory = [];
+if (!LS.decisions) LS.decisions = {};
+function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(LS)); } catch(e) {} }
+
+let learnedCards = LS.learned || [];
+let errorBook = LS.errors || [];
+let quizTimerInterval = null;
+
+// ============ DATA ============
+const concepts = [
+  { id: 'c1', name: '四大关键能力', desc: '第23讲核心框架：逻辑思维能力（演绎+归纳）、写作与表达能力（语言的边界=世界的边界）、实验能力（小规模试错·控制变量）、规划能力（资源分配与矛盾排除）。四种能力贯穿中小学，越早培养越好。', mks: true,
+    def: '大学阶段必须培养的四种底层能力：逻辑思维（科学思维基础）、写作表达（有效传递思想）、实验能力（降低试错成本的方法论）、规划能力（资源分配工具，非目标本身）。',
+    analogy: '如同操作系统的四大内核模块——逻辑是CPU（处理信息），写作是I/O（与外界交互），实验是测试框架（小步快跑验证），规划是调度器（资源分配与优先级）。缺了任何一个，系统都跑不稳。',
+    example: '逻辑：从欧姆定律（I=V/R）推导出无线充电的可行性条件；实验：先用几千元测试投资风险承受力，而非All in；规划：以当前实际成绩为基础制定升学方案，而非假设"超常发挥"。',
+    counter: '反例：依赖题海战术而非逻辑推理的学生，高考后知识迅速遗忘；没有规划能力的毕业生盲目入职后发现行业衰退，又无二次选择能力。' },
+
+  { id: 'c2', name: '大学核心价值', desc: '第24讲：现代大学源于中世纪教会学校，核心价值五要素——优质人脉资源（同学圈子+师生关系）、前沿知识接触（最新科技成果）、系统理论训练（长期发展基础）、思想视野拓展（跨专业学习）、社会地位背书（逐渐减弱的学历优势）。', mks: true,
+    def: '大学相比高中和职业学校的独特价值：不是为了"找个好工作"，而是为了获得优质人脉、前沿知识、系统理论和思想视野，为长期发展奠定基础。',
+    analogy: '如同购买"终身会员"而非"一次服务"——学费买的不是四年的课程（那些网上都能找到），而是进入精英圈子的入场券、深度学习的氛围、以及"什么年龄段该做什么事"的人生阶段体验。',
+    example: '哈佛学生通过主动联系教授进入实验室，从浅尝辄止者到深度参与者，后者可能获得博士推荐机会。盖茨/扎克伯格退学的前提是"创业已有眉目"，而非退学导致成功。',
+    counter: '反例/边界：中韩家长认为大学是"天经地义的选择"，但德国/法国认可职业教育——工匠、园艺师通过职业学校培养。统计显示大学文凭与收入正相关，但"读书无用论"本质是知识未被真正学懂。' },
+
+  { id: 'c3', name: '通识教育本质', desc: '第25讲：通识教育词源为希腊语"自由民的技能"（区别于奴隶的谋生技能），现代本质是"主人公教育"——培养社会主人心态，行使公民权所需的法律/艺术/批判性思维素养。四大类七领域：自然科学、社会科学、人文学科、艺术学科。', mks: true,
+    def: '通识教育的本质不是"什么都学一点"，而是培养社会主人公心态——让你从"被安排的工具人"变成"能独立判断的公民"。词源上，liberal arts 是"自由民的技艺"，区别于奴隶的谋生技能。',
+    analogy: '如同地基与建筑的关系——通识教育是地基，面积越大，建筑（人生成就）才可能越高。但不需要在地基上建摩天大楼（不需要拿到通识学位），只需要扫除知识盲点就足够了。',
+    example: '吴军转型写作得益于学生时代的语文、历史、哲学基础——这些在当时看来"无用"的通识积累，在40岁后成为核心竞争力。清华音乐课满分虽对升学无直接帮助，但长期塑造完整人格。',
+    counter: '反例/边界：水暖工/电工对通识要求低，但医生/工程师需系统通识教育。所有大学生应学基础自然科学、经济学101、法学101，但无需追求通识领域学位。' },
+
+  { id: 'c4', name: '选校决策公式', desc: '第27讲核心框架：五大因素（地点30分·专业20-40分·学校20-40分·喜好10分·深造计划）+ 优先级排序（名校>C9>985好专业>211好专业>大城市普通专业）。不读研时专业权重40分，读研时学校权重40分。', mks: true,
+    def: '选校决策的量化框架：五大因素（地点、专业、学校、喜好、深造）按100分制分配权重，不读研时专业占40分，读研时学校占40分。优先级：名校 > C9好专业 > 985好专业 > 211好专业 > 大城市普通专业。',
+    analogy: '如同投资组合配置——地点是市场环境（决定机会密度），专业是赛道选择（决定天花板高度），学校是平台背书（决定初始信用），三者权重随你的"投资周期"（是否读研）动态调整。',
+    example: '不读研：地点30+专业40+学校20+喜好10=100；读研：地点30+专业20+学校40+喜好10=100。211计算机（好专业）优于985冷门专业。北京邮电vs北京理工：用人单位更关注专业匹配度。',
+    counter: '反例/边界：依赖QS排名而忽视学术贡献（伯克利63位诺奖得主排第17，新加坡国立0诺奖排第8）。盲目追求"名校光环"忽视专业匹配，导致高退学率。' },
+
+  { id: 'c5', name: '知识转化率', desc: '第28讲：大学价值Y=学校知识X×个人转化率η。哈佛X=100但η=20%→实际收获20，可能不如波士顿大学X=80且η=40%→收获32。η受兴趣、学习能力、专业适配度影响，不喜欢专业→η极低。', mks: false,
+    def: '学识收获 Y = 学校提供的知识技能 X × 个人转化率 η。名校不一定等于高收获——如果转化率低（不喜欢专业），实际学到的东西可能不如普通学校。',
+    analogy: '如同吃饭——米其林三星（X=100）但你胃口不好（η=20%），吸收的营养可能不如家常菜（X=70）但你胃口好（η=60%）。选校的核心不是"学校有多好"，而是"你能吸收多少"。',
+    example: '图灵奖得主杨立昆选择普通大学而非顶尖名校，因为自由度高带来高转化率。不喜欢计算机的学生被家长逼着学→转化率极低→毕业即失业。',
+    counter: '反例：家长常见误区——只看学校的"供给端"（排名、师资），不看学生的"需求端"（兴趣、匹配度）。热门专业+不感兴趣=高X低η=低Y。' },
+
+  { id: 'c6', name: '哈佛 vs Mudd模式', desc: '第29/31讲对比：哈佛（综合性研究型·自由选课·重点concentrations制·严进宽出·70%学生得A·适合目标清晰高度自觉者）vs Mudd（小而精STEM·6个基础专业·跨学科培养·起薪全美第一11.5万·适合理工科极客）。', mks: false,
+    def: '两种顶尖教育模式的极端对比：哈佛代表"通识教育的极致自由"（无强制课程、70%得A、课外活动占50%时间），Mudd代表"专才教育的极致效率"（仅6个STEM专业、900人小规模、起薪全美第一）。',
+    analogy: '如同两种操作系统——哈佛是Linux（高度自由定制，但需要用户知道自己在做什么），Mudd是macOS（高度优化集成，专为特定任务设计）。选错系统的代价：自觉性不足的人在哈佛会虚度四年；不爱技术的人在Mudd会痛苦不堪。',
+    example: '哈佛：1/3学生中途改变"重点"，课程组合高度个性化，写作课唯一必修。Mudd：强制跨2-3学科学习（如计算机+机械），五校联盟资源共享，宁缺毋滥的招生原则。',
+    counter: '反例/边界：哈佛不适合"仅追求名校招牌以获取安稳工作者"。Mudd不适合讨厌数理化的学生。最危险的认知是把排名当作唯一标准，忽视学校特质与学生特质的匹配度。' },
+
+  { id: 'c7', name: '真学懂三大标准', desc: '第32讲：大学学习区别于中学的"记住→解题"，要实现"理解→应用"。标准①用新知识更新认知体系；②跨学科综合应用知识；③结合阅历反复深化理解。案例：诺贝尔基金年化仅4.3%，媒体吹捧的"卓越投资能力"经不起复利计算检验。', mks: false,
+    def: '从"知道"到"理解"再到"应用"的三重跃迁：①用科学认知替代直觉判断（给大脑换操作系统）；②跨学科综合应用（如分析诺奖基金需历史+金融+心理学）；③在实践中反复深化（知识需要阅历才能真正内化）。',
+    analogy: '如同学游泳——中学阶段是\u201C记住游泳理论，能在试卷上回答‘蛙泳的四个要点’\u201D；大学阶段是\u201C真正下水，能在有浪的海里游回来\u201D。真学懂=换操作系统，不只是装新App。',
+    example: '学完指数函数后，看到"诺贝尔基金128年增长200倍"应自动计算年化回报率（4.3%），而非直觉认为"卓越投资"。大学退学创业的成功关键在于提前掌握了知识综合应用能力。',
+    counter: '反例：只记住麦克斯韦方程组的公式但无法判断无线充电可行性——这就是"知道但没学懂"。大多数学生的"懂"其实只有30-50%，需要刻意提高标准。' },
+
+  { id: 'c8', name: '暗夜猫头鹰效应', desc: '第43讲：职场与校园考试的本质差异——职场考试无铃声、无范围、无标准答案、反馈滞后。"暗夜猫头鹰"比喻无监督状态下的真实行为被持续记录，下班后的选择和日常细节最终决定职业前途。"好运气"是从地里长出来的——长期行为积累的结果。', mks: false,
+    def: '职场评价不是考场的"期中/期末"，而是"暗夜猫头鹰"——一只无形的眼睛持续记录无人监督时的真实表现。下班后选择学习还是刷视频、做事是否拖拉敷衍，这些被悄悄标记，影响晋升和机会。',
+    analogy: '如同游戏的"隐藏评分系统"——没有提示、没有进度条，但每个行为都在加减分。开会迟到-1、主动解决问题+5、下班后学习+3、敷衍报告-2。累积到一定程度，晋升/被裁的结果就产生了。',
+    example: '史蒂芬森从矿工到工程师：通过下班后自学识字和机械知识实现阶层跨越。吴军下班后学术积累，加速硕士学业并成功申请美国博士。',
+    counter: '反例：白天表现完美但下班后纯娱乐，长期来看被"暗夜猫头鹰"标记为"缺乏成长动力"。职场没有老师主动指出不足——需要自我审视独处时的潜意识行为。' },
+
+  { id: 'c9', name: '为自己工作', desc: '第44讲：职场三种决定因素——能力1/3+主动性1/3+机遇1/3，但主动性间接影响能力获取，实际决定约50%职场成就。Meta华裔总监案例：从想跳槽→把公司当"练手场"→6年后成为高管。"练手场"思维=将公司资源视为个人成长的免费培训。', mks: false,
+    def: '从"为公司工作"到"为自己工作"的心态跃迁——把每份工作当作"带薪学习"，将公司资源（技术、经验、平台）转化为个人能力。主动性不仅是"多干活"，而是"主动寻找能提升不可替代性的机会"。',
+    analogy: '如同健身房——有些人交了会费但每次敷衍了事（被动打工），有些人把健身房当作"免费使用昂贵器械的机会"并认真训练（为自己工作）。同样的会费，不同的肌肉增长曲线。',
+    example: 'Meta华裔总监：初始状态想跳槽→转变心态主动学习核心技术→数月后获加薪→承担核心任务→职级提升→6年后成为高管获期权。硅谷20%工作时间制：自愿参与新项目换取技能提升。',
+    counter: '反例：四种被动打工行为——①敷衍只求交差（低水平重复）②漠视公司全局（面试答不上上家主要收入来源）③急功近利拒绝无即时回报的事④过度牺牲健康。这些行为最终都是自己买单。' },
+
+  { id: 'c10', name: '有效做功公式', desc: '第51讲：物理学做功公式映射职场——W（成就）=F（努力）×D（坚持）×cosθ（方向偏差角）。θ>90°时负效做功（越努力越糟糕）。团队合力=Σ(F_i×cosθ_i)，方向一致>个体能力。"狮子带领的羊群"强于"羊带领的狮群"。', mks: false,
+    def: '职场成就 = 努力程度 × 坚持时间 × 方向一致性（cosθ）。θ=90°时完全无效（举重物跑步），θ>90°时负效做功（逆势操作）。方向和努力的辩证：找对方向 + 持续努力 = 有效做功。',
+    analogy: '如同推箱子——你用了很大力(F)，推了很久(D)，但如果方向偏了(θ)，箱子可能纹丝不动甚至离目标越来越远。两个人同时推比一个人推快，但前提是往同一个方向——如果一个人往相反方向推，速度反而变慢。',
+    example: 'AI专家在房地产公司（θ接近90°）→贡献度低于土地获取岗位。大学教授沉迷摄影比赛（θ>90°）→偏离教学科研目标。Google/微软年增速>10%，内部机会多，θ角自然小。',
+    counter: '反例/边界：负效做功警示——当θ>90°时，"不行动"优于"错误行动"。持续恒定做功也很重要——初期用力100N后松懈到10N，总功远低于恒定50N。' }
+];
+
+const boundaryKnowledge = [
+  { name: '纽曼vs洪堡教育理念', scene: '理解中西大学模式的哲学根源' },
+  { name: 'C9联盟成员校', scene: '快速定位国内最顶尖12所大学' },
+  { name: '美国硕士ROI数据(40%为负)', scene: '理性评估读研经济回报' },
+  { name: '大学排名局限性(QS vs 学术贡献)', scene: '不被排名数字迷惑' },
+  { name: '学历门槛效应(中国)', scene: '理解为何部分岗位强制要求硕士' },
+  { name: '间隔年(Gap Year)制度', scene: '规划本科到研究生的过渡' },
+  { name: '企业"资源原则"招聘', scene: '理解金融/咨询行业的特殊录用逻辑' },
+  { name: '人格障碍患病率(4.1%)', scene: '职场霸凌者的识别与防范' },
+  { name: 'DEI文化(多元·公平·包容)', scene: '理解硅谷大裁员的背景因素' },
+  { name: '中美医护比差异(1:4 vs 1:1.2)', scene: '护理专业前景判断' },
+  { name: '法国精英大学校(Grande École)', scene: '理解另一种精英教育体系' },
+  { name: '美国终身教职制度', scene: '理解学术职业发展路径' },
+  { name: '四次工业革命就业数据', scene: '反驳"AI消灭工作"的恐慌论' },
+  { name: 'CES 2026中国企业崛起', scene: '感知技术趋势与教育方向的关系' },
+  { name: '智力五层级模型', scene: '认清智力边界，制定合理目标' }
+];
+
+const learningPath = [
+  { phase: 1, title: '能力筑基', desc: '四大关键能力→逻辑·写作·实验·规划，大学前尽可能培养' },
+  { phase: 2, title: '理念建立', desc: '通识教育本质→大学核心价值→理解"为什么上大学"' },
+  { phase: 3, title: '决策框架', desc: '选校五大因素+权重公式→知识转化率→选专业方法' },
+  { phase: 4, title: '职场入门', desc: '第一份工作选择→伪工作假努力→暗夜猫头鹰→为自己工作' },
+  { phase: 5, title: '跃迁进阶', desc: '有效做功→晋升三要素→领导力四步→避坑清单→未来趋势' }
+];
+
+// ============ MCQ ============
+// 15 Qs, answer distribution: {0:4, 1:4, 2:4, 3:3}
+const mcQuestions = [
+  { q: '吴军提出的"四大关键能力"不包括哪一项？', opts: ['逻辑思维能力', '写作与表达能力', '实验能力', '编程能力'], answer: 3, exp: '四大关键能力：逻辑思维能力、写作与表达能力、实验能力、规划能力。编程能力虽重要但不在这四大基础能力之列。' },
+  { q: '通识教育（Liberal Arts）在古希腊语中的原意是什么？', opts: ['自由民的技能', '通晓百科的知识', '文学艺术的修养', '领导者的必修课'], answer: 0, exp: '希腊语 ελεύθερες τέχνες 意为"自由民的技能"——自由民是城邦主人，享有公民权，需学习哲学、数学、修辞等"自由人的知识"，区别于奴隶的谋生技能。' },
+  { q: '吴军选校权重公式中，不读研时"专业"因素占多少分？', opts: ['40分', '30分', '20分', '10分'], answer: 0, exp: '不读研时：地点30分+专业40分+学校20分+喜好10分。读研时：专业降至20分，学校升至40分，因读研有二次选择专业的机会。' },
+  { q: '知识转化率公式Y=X×η中，η代表什么？', opts: ['学校的知识总量', '个人的学习转化率', '人脉资源价值', '专业就业前景'], answer: 1, exp: 'η是个人的知识转化率，受兴趣、学习能力、专业适配度影响。不喜欢/不擅长的专业→转化率极低→即使名校也可能"毕业即失业"。' },
+  { q: '哈佛本科的"重点(concentrations)"与传统"专业(major)"的核心区别是什么？', opts: ['重点比专业更难', '重点只能选择一个领域', '重点强调通才教育基础上的个性化选课方向', '重点不需要修任何课程'], answer: 2, exp: '哈佛的"重点"是通才教育基础上的个性化选课方向，1/3学生中途改变，课程组合高度个性化。它比"专业"更强调兴趣与擅长领域，少有人选课清单完全相同。' },
+  { q: '哈维·穆德学院2024年本科毕业生起薪约为多少？', opts: ['8.5万美元', '11.5万美元', '9.0万美元', '13.0万美元'], answer: 1, exp: '11.5万美元（Payscale数据，全美第一），高于MIT（11.02万美元）和哈佛。该校仅设6个基础STEM专业，900名学生，但硅谷认可度极高。' },
+  { q: '"真学懂"的第一标准是什么？', opts: ['用新知识更新认知体系', '能背诵所有公式', '考到90分以上', '能写出漂亮的论文'], answer: 0, exp: '第一标准：用科学认知替代直觉判断——"给大脑换操作系统"。如学过指数函数后，看到"100年200倍"应自动计算年化率（4.3%），而非直觉认为"高回报"。' },
+  { q: '"暗夜猫头鹰效应"比喻什么？', opts: ['深夜工作效率最高', '需要加班才能完成工作', '职场中无处不在的隐性评价机制', '在黑暗中也能精准判断'], answer: 2, exp: '"暗夜猫头鹰"比喻职场中的隐性评价——无铃声、无固定范围、无标准答案的"考试"，从入职第一天就开始记录。下班后的选择和日常细节被持续观察和标记。' },
+  { q: '"为自己工作"的核心心态是什么？', opts: ['尽快升职加薪', '把工作视为自我成长的载体而非谋生手段', '每天加班证明自己', '只做对自己有利的事'], answer: 1, exp: '核心：无论公司态度如何，始终明确"为自己工作"——将工作视为自我成长的载体，把公司资源转化为个人能力。这是从"被动打工者"到"主动成长者"的关键跃迁。' },
+  { q: '有效做功公式W=F×D×cosθ中，θ代表什么？', opts: ['努力的总量', '坚持的时间', '努力方向与目标方向的夹角', '外部环境的阻力'], answer: 2, exp: 'θ是努力方向与目标方向的偏差角度。θ=90°时cosθ=0→完全无效（举重物跑步）；θ>90°时cosθ为负→越努力越糟糕（逆势操作）。方向偏差比努力不足更致命。' },
+  { q: '伪工作者的根源是什么？', opts: ['工作时间不够长', '能力不足', '运气不好', '学校思维——按"先来后到"而非"回报大小"排序任务'], answer: 3, exp: '根源是把学校思维带入职场：学校任务有限且按顺序完成即可，职场任务无限且需按回报优先级排序。伪工作者把"容易的"或"先来的"任务放前面，而非"重要的"。' },
+  { q: '吴军提出的职场晋升三要素不包括哪一项？', opts: ['选对增长的平台', '积累晋升所需的资格', '主动争取利用市场机制', '依靠人际关系和送礼'], answer: 3, exp: '晋升三要素：①选对平台（进入蓬勃发展的公司/部门）②资格积累（不可替代性+功劳+声誉）③主动争取（利用市场有效性，通过外部Offer谈判等）。人际关系重要但非核心三要素。' },
+  { q: '吴军建议第一份工作应优先选择什么类型的企业？', opts: ['培养型企业（如Google/微软/四大）', '薪资最高的企业', '离家最近的企业', '规模最小的创业公司'], answer: 0, exp: '优先培养型企业——如Google/微软（行业黄埔军校，宽松培养环境）或四大/埃森哲（高强度训练）。警惕"榨干型企业"：高初始待遇但无培养体系，价值耗尽后弃用。' },
+  { q: '吴军的领导力四步进阶法中，第一步是什么？', opts: ['组建自己的团队', '学会服从', '带好新人', '自我管理'], answer: 1, exp: '四步进阶：①学会服从（西点军校核心理念——先学会服从，再学会指挥）②自我管理（德鲁克：知识社会中每人都是自我管理者）③带好新人（从1-2名实习生的指导开始）④组建团队。' },
+  { q: '就业难的根源从教育系统层面看是什么？', opts: ['大学生数量太多', '经济不景气', '专业设置与市场需求错配', '学生太懒惰'], answer: 2, exp: '核心：专业与市场需求错配。中国顶尖大学100多个专业中1/3以上难以对口就业，2024年撤销1428个专业+2220个专业停招。美国MIT超半数学生选EECS，市场驱动淘汰更有效。' }
+];
+
+// ============ RENDER OVERVIEW ============
+function renderOverview() {
+  // Concept grid
+  const cg = document.getElementById('conceptGrid');
+  cg.innerHTML = concepts.map(c =>
+    '<div class="concept-card' + (c.mks ? ' mks' : '') + '"><h4>' + c.name + '</h4><p>' + c.desc + '</p></div>'
+  ).join('');
+
+  // MKS grid
+  const mg = document.getElementById('mksGrid');
+  mg.innerHTML = concepts.filter(c => c.mks).map(c =>
+    '<div class="concept-card mks"><h4>' + c.name + '</h4><p>' + c.desc.split('：')[0] + '：' + c.desc.split('。')[0] + '</p><span class="badge badge-mks" style="margin-top:6px">★ MKS骨架</span></div>'
+  ).join('');
+
+  // Boundary table
+  const bt = document.getElementById('boundaryTable').querySelector('tbody');
+  bt.innerHTML = boundaryKnowledge.map(b =>
+    '<tr><td><strong>' + b.name + '</strong></td><td>' + b.scene + '</td><td style="color:var(--text2)">知道即可</td></tr>'
+  ).join('');
+
+  // Learning path
+  const lp = document.getElementById('learningPath');
+  lp.innerHTML = learningPath.map(p =>
+    '<div class="card" style="border-left:3px solid var(--accent);padding:10px 14px;font-size:.85rem;min-width:150px"><strong>阶段' + p.phase + '：' + p.title + '</strong><br><span style="color:var(--text2)">' + p.desc + '</span></div>'
+  ).join('');
+}
+renderOverview();
+updateOverviewProgress();
+
+// ============ SVG ============
+document.getElementById('svgContainer').innerHTML = `<svg width="2935pt" height="413pt"
+ viewBox="0.00 0.00 2934.50 413.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 409)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-409 2930.5,-409 2930.5,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<path fill="#fffaf2" stroke="#e8d5c0" stroke-dasharray="5,2" d="M2852.5,-8C2852.5,-8 2906.5,-8 2906.5,-8 2912.5,-8 2918.5,-14 2918.5,-20 2918.5,-20 2918.5,-385 2918.5,-385 2918.5,-391 2912.5,-397 2906.5,-397 2906.5,-397 2852.5,-397 2852.5,-397 2846.5,-397 2840.5,-391 2840.5,-385 2840.5,-385 2840.5,-20 2840.5,-20 2840.5,-14 2846.5,-8 2852.5,-8"/>
+<text text-anchor="middle" x="2879.5" y="-385.8" font-family="Times,serif" font-size="9.00" fill="#3d2f2f">图例</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2.5" d="M1516.5,-371C1516.5,-371 1422.5,-371 1422.5,-371 1416.5,-371 1410.5,-365 1410.5,-359 1410.5,-359 1410.5,-347 1410.5,-347 1410.5,-341 1416.5,-335 1422.5,-335 1422.5,-335 1516.5,-335 1516.5,-335 1522.5,-335 1528.5,-341 1528.5,-347 1528.5,-347 1528.5,-359 1528.5,-359 1528.5,-365 1522.5,-371 1516.5,-371"/>
+<text text-anchor="middle" x="1469.5" y="-356.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">教育金字塔·登顶</text>
+<text text-anchor="middle" x="1469.5" y="-344.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">大学淬炼与职场跃迁</text>
+</g>
+<!-- t1_uni -->
+<g id="node2" class="node">
+<title>t1_uni</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M1052,-289C1052,-289 997,-289 997,-289 991,-289 985,-283 985,-277 985,-277 985,-265 985,-265 985,-259 991,-253 997,-253 997,-253 1052,-253 1052,-253 1058,-253 1064,-259 1064,-265 1064,-265 1064,-277 1064,-277 1064,-283 1058,-289 1052,-289"/>
+<text text-anchor="middle" x="1024.5" y="-274.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">大学淬炼层</text>
+<text text-anchor="middle" x="1024.5" y="-262.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">(第23&#45;35讲)</text>
+</g>
+<!-- root&#45;&gt;t1_uni -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;t1_uni</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M1410.41,-341.38C1321.89,-325.46 1156.49,-295.73 1073.97,-280.89"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="1074.55,-277.44 1064.09,-279.12 1073.31,-284.33 1074.55,-277.44"/>
+<text text-anchor="middle" x="1293" y="-309.8" font-family="Noto Sans SC" font-size="9.00">能力筑基</text>
+</g>
+<!-- t1_career -->
+<g id="node3" class="node">
+<title>t1_career</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.5" d="M2078,-289C2078,-289 2023,-289 2023,-289 2017,-289 2011,-283 2011,-277 2011,-277 2011,-265 2011,-265 2011,-259 2017,-253 2023,-253 2023,-253 2078,-253 2078,-253 2084,-253 2090,-259 2090,-265 2090,-265 2090,-277 2090,-277 2090,-283 2084,-289 2078,-289"/>
+<text text-anchor="middle" x="2050.5" y="-274.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">职场跃迁层</text>
+<text text-anchor="middle" x="2050.5" y="-262.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">(第36&#45;52讲)</text>
+</g>
+<!-- root&#45;&gt;t1_career -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;t1_career</title>
+<path fill="none" stroke="#c0392b" stroke-width="2" d="M1528.68,-343.85C1643.29,-328.07 1893.66,-293.6 2000.53,-278.88"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="2" points="2001.29,-282.31 2010.72,-277.48 2000.34,-275.37 2001.29,-282.31"/>
+<text text-anchor="middle" x="1814" y="-309.8" font-family="Noto Sans SC" font-size="9.00">价值实现</text>
+</g>
+<!-- t2_ability -->
+<g id="node4" class="node">
+<title>t2_ability</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M375.5,-207C375.5,-207 281.5,-207 281.5,-207 275.5,-207 269.5,-201 269.5,-195 269.5,-195 269.5,-183 269.5,-183 269.5,-177 275.5,-171 281.5,-171 281.5,-171 375.5,-171 375.5,-171 381.5,-171 387.5,-177 387.5,-183 387.5,-183 387.5,-195 387.5,-195 387.5,-201 381.5,-207 375.5,-207"/>
+<text text-anchor="middle" x="328.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">四大关键能力</text>
+<text text-anchor="middle" x="328.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">逻辑·写作·实验·规划</text>
+</g>
+<!-- t1_uni&#45;&gt;t2_ability -->
+<g id="edge3" class="edge">
+<title>t1_uni&#45;&gt;t2_ability</title>
+<path fill="none" stroke="#d4a574" d="M984.83,-265.44C870.99,-252.35 542.13,-214.56 397.8,-197.97"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="398.07,-194.47 387.73,-196.81 397.27,-201.43 398.07,-194.47"/>
+<text text-anchor="middle" x="737" y="-227.8" font-family="Noto Sans SC" font-size="9.00">培养基础</text>
+</g>
+<!-- t2_liberal -->
+<g id="node5" class="node">
+<title>t2_liberal</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M843.5,-207C843.5,-207 719.5,-207 719.5,-207 713.5,-207 707.5,-201 707.5,-195 707.5,-195 707.5,-183 707.5,-183 707.5,-177 713.5,-171 719.5,-171 719.5,-171 843.5,-171 843.5,-171 849.5,-171 855.5,-177 855.5,-183 855.5,-183 855.5,-195 855.5,-195 855.5,-201 849.5,-207 843.5,-207"/>
+<text text-anchor="middle" x="781.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">通识教育本质</text>
+<text text-anchor="middle" x="781.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">主人公教育 vs 工具人教育</text>
+</g>
+<!-- t1_uni&#45;&gt;t2_liberal -->
+<g id="edge4" class="edge">
+<title>t1_uni&#45;&gt;t2_liberal</title>
+<path fill="none" stroke="#d4a574" d="M984.92,-256.97C946.45,-244.31 887.48,-224.89 842.92,-210.22"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="843.95,-206.88 833.36,-207.07 841.76,-213.53 843.95,-206.88"/>
+<text text-anchor="middle" x="937" y="-227.8" font-family="Noto Sans SC" font-size="9.00">理念根基</text>
+</g>
+<!-- t2_select -->
+<g id="node6" class="node">
+<title>t2_select</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M999.5,-207C999.5,-207 913.5,-207 913.5,-207 907.5,-207 901.5,-201 901.5,-195 901.5,-195 901.5,-183 901.5,-183 901.5,-177 907.5,-171 913.5,-171 913.5,-171 999.5,-171 999.5,-171 1005.5,-171 1011.5,-177 1011.5,-183 1011.5,-183 1011.5,-195 1011.5,-195 1011.5,-201 1005.5,-207 999.5,-207"/>
+<text text-anchor="middle" x="956.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">选校决策体系</text>
+<text text-anchor="middle" x="956.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">五大因素·权重公式</text>
+</g>
+<!-- t1_uni&#45;&gt;t2_select -->
+<g id="edge5" class="edge">
+<title>t1_uni&#45;&gt;t2_select</title>
+<path fill="none" stroke="#d4a574" d="M1009.75,-252.64C1000.32,-241.56 987.97,-227.02 977.53,-214.74"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="980.14,-212.4 970.99,-207.05 974.8,-216.94 980.14,-212.4"/>
+<text text-anchor="middle" x="1014" y="-227.8" font-family="Noto Sans SC" font-size="9.00">实践路径</text>
+</g>
+<!-- t2_convert -->
+<g id="node7" class="node">
+<title>t2_convert</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1091,-207C1091,-207 1042,-207 1042,-207 1036,-207 1030,-201 1030,-195 1030,-195 1030,-183 1030,-183 1030,-177 1036,-171 1042,-171 1042,-171 1091,-171 1091,-171 1097,-171 1103,-177 1103,-183 1103,-183 1103,-195 1103,-195 1103,-201 1097,-207 1091,-207"/>
+<text text-anchor="middle" x="1066.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">知识转化率</text>
+<text text-anchor="middle" x="1066.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">Y = X × η</text>
+</g>
+<!-- t1_uni&#45;&gt;t2_convert -->
+<g id="edge6" class="edge">
+<title>t1_uni&#45;&gt;t2_convert</title>
+<path fill="none" stroke="#d4a574" d="M1033.61,-252.64C1039.21,-241.98 1046.49,-228.12 1052.77,-216.15"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1056,-217.53 1057.55,-207.05 1049.8,-214.28 1056,-217.53"/>
+<text text-anchor="middle" x="1067" y="-227.8" font-family="Noto Sans SC" font-size="9.00">效率关键</text>
+</g>
+<!-- t2_mastery -->
+<g id="node8" class="node">
+<title>t2_mastery</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1306.5,-207C1306.5,-207 1182.5,-207 1182.5,-207 1176.5,-207 1170.5,-201 1170.5,-195 1170.5,-195 1170.5,-183 1170.5,-183 1170.5,-177 1176.5,-171 1182.5,-171 1182.5,-171 1306.5,-171 1306.5,-171 1312.5,-171 1318.5,-177 1318.5,-183 1318.5,-183 1318.5,-195 1318.5,-195 1318.5,-201 1312.5,-207 1306.5,-207"/>
+<text text-anchor="middle" x="1244.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">真学懂三大标准</text>
+<text text-anchor="middle" x="1244.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">更新认知·跨学科·阅历深化</text>
+</g>
+<!-- t1_uni&#45;&gt;t2_mastery -->
+<g id="edge7" class="edge">
+<title>t1_uni&#45;&gt;t2_mastery</title>
+<path fill="none" stroke="#d4a574" d="M1064.09,-255.61C1098.64,-243.04 1149.19,-224.66 1188,-210.55"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1189.39,-213.76 1197.59,-207.06 1187,-207.19 1189.39,-213.76"/>
+<text text-anchor="middle" x="1167" y="-227.8" font-family="Noto Sans SC" font-size="9.00">终极目标</text>
+</g>
+<!-- t2_owl -->
+<g id="node9" class="node">
+<title>t2_owl</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1716,-207C1716,-207 1611,-207 1611,-207 1605,-207 1599,-201 1599,-195 1599,-195 1599,-183 1599,-183 1599,-177 1605,-171 1611,-171 1611,-171 1716,-171 1716,-171 1722,-171 1728,-177 1728,-183 1728,-183 1728,-195 1728,-195 1728,-201 1722,-207 1716,-207"/>
+<text text-anchor="middle" x="1663.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">暗夜猫头鹰效应</text>
+<text text-anchor="middle" x="1663.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">无人监督时的真实表现</text>
+</g>
+<!-- t1_career&#45;&gt;t2_owl -->
+<g id="edge8" class="edge">
+<title>t1_career&#45;&gt;t2_owl</title>
+<path fill="none" stroke="#d4a574" d="M2010.9,-261.81C1946.89,-248.58 1819.64,-222.28 1738.2,-205.44"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1738.51,-201.93 1728.01,-203.33 1737.09,-208.79 1738.51,-201.93"/>
+<text text-anchor="middle" x="1899" y="-227.8" font-family="Noto Sans SC" font-size="9.00">隐性评价</text>
+</g>
+<!-- t2_self -->
+<g id="node10" class="node">
+<title>t2_self</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1982,-207C1982,-207 1877,-207 1877,-207 1871,-207 1865,-201 1865,-195 1865,-195 1865,-183 1865,-183 1865,-177 1871,-171 1877,-171 1877,-171 1982,-171 1982,-171 1988,-171 1994,-177 1994,-183 1994,-183 1994,-195 1994,-195 1994,-201 1988,-207 1982,-207"/>
+<text text-anchor="middle" x="1929.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">为自己工作</text>
+<text text-anchor="middle" x="1929.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">从被动打工到主动成长</text>
+</g>
+<!-- t1_career&#45;&gt;t2_self -->
+<g id="edge9" class="edge">
+<title>t1_career&#45;&gt;t2_self</title>
+<path fill="none" stroke="#d4a574" d="M2024.54,-252.84C2006.84,-241.13 1983.2,-225.5 1963.93,-212.76"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1965.69,-209.73 1955.41,-207.13 1961.83,-215.57 1965.69,-209.73"/>
+<text text-anchor="middle" x="2016" y="-227.8" font-family="Noto Sans SC" font-size="9.00">心态根基</text>
+</g>
+<!-- t2_work -->
+<g id="node11" class="node">
+<title>t2_work</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M2196,-207C2196,-207 2103,-207 2103,-207 2097,-207 2091,-201 2091,-195 2091,-195 2091,-183 2091,-183 2091,-177 2097,-171 2103,-171 2103,-171 2196,-171 2196,-171 2202,-171 2208,-177 2208,-183 2208,-183 2208,-195 2208,-195 2208,-201 2202,-207 2196,-207"/>
+<text text-anchor="middle" x="2149.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">有效做功公式</text>
+<text text-anchor="middle" x="2149.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">W = F × D × cosθ</text>
+</g>
+<!-- t1_career&#45;&gt;t2_work -->
+<g id="edge10" class="edge">
+<title>t1_career&#45;&gt;t2_work</title>
+<path fill="none" stroke="#d4a574" d="M2071.98,-252.64C2086.22,-241.14 2105.07,-225.9 2120.61,-213.34"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="2122.82,-216.06 2128.4,-207.05 2118.42,-210.61 2122.82,-216.06"/>
+<text text-anchor="middle" x="2125" y="-227.8" font-family="Noto Sans SC" font-size="9.00">效能法则</text>
+</g>
+<!-- t2_fake -->
+<g id="node12" class="node">
+<title>t2_fake</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M2426.5,-207C2426.5,-207 2328.5,-207 2328.5,-207 2322.5,-207 2316.5,-201 2316.5,-195 2316.5,-195 2316.5,-183 2316.5,-183 2316.5,-177 2322.5,-171 2328.5,-171 2328.5,-171 2426.5,-171 2426.5,-171 2432.5,-171 2438.5,-177 2438.5,-183 2438.5,-183 2438.5,-195 2438.5,-195 2438.5,-201 2432.5,-207 2426.5,-207"/>
+<text text-anchor="middle" x="2377.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">伪工作与假努力</text>
+<text text-anchor="middle" x="2377.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">优先级思维·方向校准</text>
+</g>
+<!-- t1_career&#45;&gt;t2_fake -->
+<g id="edge11" class="edge">
+<title>t1_career&#45;&gt;t2_fake</title>
+<path fill="none" stroke="#d4a574" d="M2090.27,-260.27C2143.86,-247.16 2240.15,-223.6 2306.36,-207.4"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="2307.43,-210.75 2316.31,-204.97 2305.77,-203.95 2307.43,-210.75"/>
+<text text-anchor="middle" x="2253" y="-227.8" font-family="Noto Sans SC" font-size="9.00">效率陷阱</text>
+</g>
+<!-- t2_promo -->
+<g id="node13" class="node">
+<title>t2_promo</title>
+<path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M2705.5,-207C2705.5,-207 2615.5,-207 2615.5,-207 2609.5,-207 2603.5,-201 2603.5,-195 2603.5,-195 2603.5,-183 2603.5,-183 2603.5,-177 2609.5,-171 2615.5,-171 2615.5,-171 2705.5,-171 2705.5,-171 2711.5,-171 2717.5,-177 2717.5,-183 2717.5,-183 2717.5,-195 2717.5,-195 2717.5,-201 2711.5,-207 2705.5,-207"/>
+<text text-anchor="middle" x="2660.5" y="-192.2" font-family="Noto Sans SC" font-size="11.00">职场晋升三要素</text>
+<text text-anchor="middle" x="2660.5" y="-180.2" font-family="Noto Sans SC" font-size="11.00">平台·资格·主动争取</text>
+</g>
+<!-- t1_career&#45;&gt;t2_promo -->
+<g id="edge12" class="edge">
+<title>t1_career&#45;&gt;t2_promo</title>
+<path fill="none" stroke="#d4a574" d="M2090.05,-264.81C2192.23,-251.41 2465.88,-215.52 2593.39,-198.8"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="2593.96,-202.26 2603.42,-197.49 2593.05,-195.32 2593.96,-202.26"/>
+<text text-anchor="middle" x="2411" y="-227.8" font-family="Noto Sans SC" font-size="9.00">成长路径</text>
+</g>
+<!-- t3_logic -->
+<g id="node14" class="node">
+<title>t3_logic</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="87,-125 0,-125 0,-89 93,-89 93,-119 87,-125"/>
+<polyline fill="none" stroke="#8b7355" points="87,-125 87,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="93,-119 87,-119 "/>
+<text text-anchor="middle" x="46.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">逻辑思维</text>
+<text text-anchor="middle" x="46.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">演绎+归纳推理</text>
+</g>
+<!-- t2_ability&#45;&gt;t3_logic -->
+<g id="edge13" class="edge">
+<title>t2_ability&#45;&gt;t3_logic</title>
+<path fill="none" stroke="#8b7355" d="M269.39,-171.92C225.96,-160.01 165.29,-143.19 102.85,-125.07"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="103.81,-121.7 93.23,-122.27 101.85,-128.43 103.81,-121.7"/>
+<text text-anchor="middle" x="205" y="-145.8" font-family="Noto Sans SC" font-size="9.00">核心</text>
+</g>
+<!-- t3_write -->
+<g id="node15" class="node">
+<title>t3_write</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="243.5,-125 111.5,-125 111.5,-89 249.5,-89 249.5,-119 243.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="243.5,-125 243.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="249.5,-119 243.5,-119 "/>
+<text text-anchor="middle" x="180.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">写作表达</text>
+<text text-anchor="middle" x="180.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">语言的边界=世界的边界</text>
+</g>
+<!-- t2_ability&#45;&gt;t3_write -->
+<g id="edge14" class="edge">
+<title>t2_ability&#45;&gt;t3_write</title>
+<path fill="none" stroke="#8b7355" d="M296.75,-170.84C274.61,-158.87 244.88,-142.8 221.02,-129.9"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="222.66,-126.81 212.2,-125.13 219.33,-132.97 222.66,-126.81"/>
+<text text-anchor="middle" x="273" y="-145.8" font-family="Noto Sans SC" font-size="9.00">外显</text>
+</g>
+<!-- t3_experiment -->
+<g id="node16" class="node">
+<title>t3_experiment</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="383.5,-125 267.5,-125 267.5,-89 389.5,-89 389.5,-119 383.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="383.5,-125 383.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="389.5,-119 383.5,-119 "/>
+<text text-anchor="middle" x="328.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">实验能力</text>
+<text text-anchor="middle" x="328.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">小规模试错·控制变量</text>
+</g>
+<!-- t2_ability&#45;&gt;t3_experiment -->
+<g id="edge15" class="edge">
+<title>t2_ability&#45;&gt;t3_experiment</title>
+<path fill="none" stroke="#8b7355" d="M328.5,-170.64C328.5,-160.3 328.5,-146.94 328.5,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="332,-135.05 328.5,-125.05 325,-135.05 332,-135.05"/>
+<text text-anchor="middle" x="338" y="-145.8" font-family="Noto Sans SC" font-size="9.00">方法</text>
+</g>
+<!-- t3_plan -->
+<g id="node17" class="node">
+<title>t3_plan</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="519.5,-125 407.5,-125 407.5,-89 525.5,-89 525.5,-119 519.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="519.5,-125 519.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="525.5,-119 519.5,-119 "/>
+<text text-anchor="middle" x="466.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">规划能力</text>
+<text text-anchor="middle" x="466.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">资源分配与矛盾排除</text>
+</g>
+<!-- t2_ability&#45;&gt;t3_plan -->
+<g id="edge16" class="edge">
+<title>t2_ability&#45;&gt;t3_plan</title>
+<path fill="none" stroke="#8b7355" d="M358.1,-170.84C378.57,-158.97 405.99,-143.08 428.13,-130.25"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="430.05,-133.18 436.94,-125.13 426.54,-127.12 430.05,-133.18"/>
+<text text-anchor="middle" x="416" y="-145.8" font-family="Noto Sans SC" font-size="9.00">框架</text>
+</g>
+<!-- t3_harvard -->
+<g id="node18" class="node">
+<title>t3_harvard</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="685.5,-125 543.5,-125 543.5,-89 691.5,-89 691.5,-119 685.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="685.5,-125 685.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="691.5,-119 685.5,-119 "/>
+<text text-anchor="middle" x="617.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">哈佛模式</text>
+<text text-anchor="middle" x="617.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">自由选课·重点制·严进宽出</text>
+</g>
+<!-- t2_liberal&#45;&gt;t3_harvard -->
+<g id="edge17" class="edge">
+<title>t2_liberal&#45;&gt;t3_harvard</title>
+<path fill="none" stroke="#8b7355" d="M746.32,-170.84C721.57,-158.76 688.25,-142.51 661.71,-129.56"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="663.15,-126.37 652.62,-125.13 660.08,-132.66 663.15,-126.37"/>
+<text text-anchor="middle" x="723.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">体现于</text>
+</g>
+<!-- t3_mudd -->
+<g id="node19" class="node">
+<title>t3_mudd</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="847.5,-125 709.5,-125 709.5,-89 853.5,-89 853.5,-119 847.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="847.5,-125 847.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="853.5,-119 847.5,-119 "/>
+<text text-anchor="middle" x="781.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">Mudd模式</text>
+<text text-anchor="middle" x="781.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">STEM聚焦·跨学科·高就业</text>
+</g>
+<!-- t2_liberal&#45;&gt;t3_mudd -->
+<g id="edge18" class="edge">
+<title>t2_liberal&#45;&gt;t3_mudd</title>
+<path fill="none" stroke="#8b7355" d="M781.5,-170.64C781.5,-160.3 781.5,-146.94 781.5,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="785,-135.05 781.5,-125.05 778,-135.05 785,-135.05"/>
+<text text-anchor="middle" x="795.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">对比于</text>
+</g>
+<!-- t3_location -->
+<g id="node20" class="node">
+<title>t3_location</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="973,-125 872,-125 872,-89 979,-89 979,-119 973,-125"/>
+<polyline fill="none" stroke="#8b7355" points="973,-125 973,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="979,-119 973,-119 "/>
+<text text-anchor="middle" x="925.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">地点权重30分</text>
+<text text-anchor="middle" x="925.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">经济中心城市优先</text>
+</g>
+<!-- t2_select&#45;&gt;t3_location -->
+<g id="edge19" class="edge">
+<title>t2_select&#45;&gt;t3_location</title>
+<path fill="none" stroke="#8b7355" d="M937.64,-170.7C933.15,-165.49 928.96,-159.43 926.5,-153 924.41,-147.53 923.45,-141.4 923.15,-135.47"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="926.65,-135.21 923.21,-125.19 919.65,-135.17 926.65,-135.21"/>
+<text text-anchor="middle" x="945" y="-145.8" font-family="Noto Sans SC" font-size="9.00">关键变量</text>
+</g>
+<!-- t3_major_weight -->
+<g id="node21" class="node">
+<title>t3_major_weight</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1120,-125 997,-125 997,-89 1126,-89 1126,-119 1120,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1120,-125 1120,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1126,-119 1120,-119 "/>
+<text text-anchor="middle" x="1061.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">专业权重20&#45;40分</text>
+<text text-anchor="middle" x="1061.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">势能高低决定转换难易</text>
+</g>
+<!-- t2_select&#45;&gt;t3_major_weight -->
+<g id="edge20" class="edge">
+<title>t2_select&#45;&gt;t3_major_weight</title>
+<path fill="none" stroke="#8b7355" d="M964.91,-170.94C970.12,-161.73 977.53,-150.71 986.5,-143 992.19,-138.11 998.69,-133.75 1005.42,-129.92"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1007.49,-132.79 1014.69,-125.02 1004.21,-126.6 1007.49,-132.79"/>
+<text text-anchor="middle" x="1005" y="-145.8" font-family="Noto Sans SC" font-size="9.00">核心变量</text>
+</g>
+<!-- t3_grad -->
+<g id="node22" class="node">
+<title>t3_grad</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1309,-125 1154,-125 1154,-89 1315,-89 1315,-119 1309,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1309,-125 1309,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1315,-119 1309,-119 "/>
+<text text-anchor="middle" x="1234.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">读研ROI</text>
+<text text-anchor="middle" x="1234.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">计算机97%正向·MBA仅38%</text>
+</g>
+<!-- t2_mastery&#45;&gt;t3_grad -->
+<g id="edge21" class="edge">
+<title>t2_mastery&#45;&gt;t3_grad</title>
+<path fill="none" stroke="#8b7355" d="M1242.33,-170.64C1241.04,-160.3 1239.37,-146.94 1237.9,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1241.34,-134.54 1236.63,-125.05 1234.4,-135.41 1241.34,-134.54"/>
+<text text-anchor="middle" x="1259" y="-145.8" font-family="Noto Sans SC" font-size="9.00">延伸决策</text>
+</g>
+<!-- t3_gapyear -->
+<g id="node23" class="node">
+<title>t3_gapyear</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1434,-125 1333,-125 1333,-89 1440,-89 1440,-119 1434,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1434,-125 1434,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1440,-119 1434,-119 "/>
+<text text-anchor="middle" x="1386.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">间隔年价值</text>
+<text text-anchor="middle" x="1386.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">社会经验反哺学业</text>
+</g>
+<!-- t2_mastery&#45;&gt;t3_gapyear -->
+<g id="edge22" class="edge">
+<title>t2_mastery&#45;&gt;t3_gapyear</title>
+<path fill="none" stroke="#8b7355" d="M1274.96,-170.84C1296.11,-158.92 1324.48,-142.94 1347.32,-130.07"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1349.09,-133.09 1356.09,-125.13 1345.66,-126.99 1349.09,-133.09"/>
+<text text-anchor="middle" x="1343" y="-145.8" font-family="Noto Sans SC" font-size="9.00">补充路径</text>
+</g>
+<!-- t3_offhour -->
+<g id="node24" class="node">
+<title>t3_offhour</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1577,-125 1458,-125 1458,-89 1583,-89 1583,-119 1577,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1577,-125 1577,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1583,-119 1577,-119 "/>
+<text text-anchor="middle" x="1520.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">下班后的分水岭</text>
+<text text-anchor="middle" x="1520.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">持续学习 vs 娱乐消遣</text>
+</g>
+<!-- t2_owl&#45;&gt;t3_offhour -->
+<g id="edge23" class="edge">
+<title>t2_owl&#45;&gt;t3_offhour</title>
+<path fill="none" stroke="#8b7355" d="M1632.82,-170.84C1611.52,-158.92 1582.95,-142.94 1559.96,-130.07"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1561.56,-126.96 1551.13,-125.13 1558.14,-133.07 1561.56,-126.96"/>
+<text text-anchor="middle" x="1620" y="-145.8" font-family="Noto Sans SC" font-size="9.00">关键体现</text>
+</g>
+<!-- t3_detail -->
+<g id="node25" class="node">
+<title>t3_detail</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1720,-125 1601,-125 1601,-89 1726,-89 1726,-119 1720,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1720,-125 1720,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1726,-119 1720,-119 "/>
+<text text-anchor="middle" x="1663.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">日常细节</text>
+<text text-anchor="middle" x="1663.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">迟到·拖延·敷衍被标记</text>
+</g>
+<!-- t2_owl&#45;&gt;t3_detail -->
+<g id="edge24" class="edge">
+<title>t2_owl&#45;&gt;t3_detail</title>
+<path fill="none" stroke="#8b7355" d="M1663.5,-170.64C1663.5,-160.3 1663.5,-146.94 1663.5,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1667,-135.05 1663.5,-125.05 1660,-135.05 1667,-135.05"/>
+<text text-anchor="middle" x="1682" y="-145.8" font-family="Noto Sans SC" font-size="9.00">隐性信号</text>
+</g>
+<!-- t3_active -->
+<g id="node26" class="node">
+<title>t3_active</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1846.5,-125 1744.5,-125 1744.5,-89 1852.5,-89 1852.5,-119 1846.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1846.5,-125 1846.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1852.5,-119 1846.5,-119 "/>
+<text text-anchor="middle" x="1798.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">主动性的力量</text>
+<text text-anchor="middle" x="1798.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">决定50%职场成就</text>
+</g>
+<!-- t2_self&#45;&gt;t3_active -->
+<g id="edge25" class="edge">
+<title>t2_self&#45;&gt;t3_active</title>
+<path fill="none" stroke="#8b7355" d="M1901.4,-170.84C1882.06,-159.03 1856.18,-143.22 1835.21,-130.42"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1836.91,-127.36 1826.56,-125.13 1833.27,-133.33 1836.91,-127.36"/>
+<text text-anchor="middle" x="1891" y="-145.8" font-family="Noto Sans SC" font-size="9.00">核心驱动</text>
+</g>
+<!-- t3_avoid -->
+<g id="node27" class="node">
+<title>t3_avoid</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="1982.5,-125 1870.5,-125 1870.5,-89 1988.5,-89 1988.5,-119 1982.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="1982.5,-125 1982.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="1988.5,-119 1982.5,-119 "/>
+<text text-anchor="middle" x="1929.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">四种被动行为</text>
+<text text-anchor="middle" x="1929.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">敷衍·漠视·急功·失衡</text>
+</g>
+<!-- t2_self&#45;&gt;t3_avoid -->
+<g id="edge26" class="edge">
+<title>t2_self&#45;&gt;t3_avoid</title>
+<path fill="none" stroke="#8b7355" d="M1929.5,-170.64C1929.5,-160.3 1929.5,-146.94 1929.5,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1933,-135.05 1929.5,-125.05 1926,-135.05 1933,-135.05"/>
+<text text-anchor="middle" x="1948" y="-145.8" font-family="Noto Sans SC" font-size="9.00">需要警惕</text>
+</g>
+<!-- t3_direction -->
+<g id="node28" class="node">
+<title>t3_direction</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2112.5,-125 2006.5,-125 2006.5,-89 2118.5,-89 2118.5,-119 2112.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2112.5,-125 2112.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2118.5,-119 2112.5,-119 "/>
+<text text-anchor="middle" x="2062.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">方向(θ)</text>
+<text text-anchor="middle" x="2062.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">偏离90°=完全无效</text>
+</g>
+<!-- t2_work&#45;&gt;t3_direction -->
+<g id="edge27" class="edge">
+<title>t2_work&#45;&gt;t3_direction</title>
+<path fill="none" stroke="#8b7355" d="M2130.38,-170.99C2124.03,-165.3 2116.94,-158.9 2110.5,-153 2103.21,-146.31 2095.35,-138.99 2088.15,-132.24"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2090.33,-129.49 2080.65,-125.19 2085.54,-134.59 2090.33,-129.49"/>
+<text text-anchor="middle" x="2133.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">决定性变量</text>
+</g>
+<!-- t3_force -->
+<g id="node29" class="node">
+<title>t3_force</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2202,-125 2137,-125 2137,-89 2208,-89 2208,-119 2202,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2202,-125 2202,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2208,-119 2202,-119 "/>
+<text text-anchor="middle" x="2172.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">努力(F)</text>
+<text text-anchor="middle" x="2172.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">质量&gt;数量</text>
+</g>
+<!-- t2_work&#45;&gt;t3_force -->
+<g id="edge28" class="edge">
+<title>t2_work&#45;&gt;t3_force</title>
+<path fill="none" stroke="#8b7355" d="M2154.49,-170.64C2157.49,-160.19 2161.38,-146.67 2164.78,-134.86"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2168.2,-135.63 2167.6,-125.05 2161.47,-133.69 2168.2,-135.63"/>
+<text text-anchor="middle" x="2181" y="-145.8" font-family="Noto Sans SC" font-size="9.00">基础变量</text>
+</g>
+<!-- t3_distance -->
+<g id="node30" class="node">
+<title>t3_distance</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2304.5,-125 2226.5,-125 2226.5,-89 2310.5,-89 2310.5,-119 2304.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2304.5,-125 2304.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2310.5,-119 2304.5,-119 "/>
+<text text-anchor="middle" x="2268.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">坚持(D)</text>
+<text text-anchor="middle" x="2268.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">长期主义积累</text>
+</g>
+<!-- t2_work&#45;&gt;t3_distance -->
+<g id="edge29" class="edge">
+<title>t2_work&#45;&gt;t3_distance</title>
+<path fill="none" stroke="#8b7355" d="M2176.25,-170.89C2184.97,-165.25 2194.68,-158.91 2203.5,-153 2214.1,-145.9 2225.57,-138.02 2235.89,-130.86"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2238.03,-133.64 2244.24,-125.06 2234.03,-127.9 2238.03,-133.64"/>
+<text text-anchor="middle" x="2237" y="-145.8" font-family="Noto Sans SC" font-size="9.00">积累变量</text>
+</g>
+<!-- t3_priority -->
+<g id="node31" class="node">
+<title>t3_priority</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2418,-125 2329,-125 2329,-89 2424,-89 2424,-119 2418,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2418,-125 2418,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2424,-119 2418,-119 "/>
+<text text-anchor="middle" x="2376.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">优先级思维</text>
+<text text-anchor="middle" x="2376.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">按回报大小排序</text>
+</g>
+<!-- t2_fake&#45;&gt;t3_priority -->
+<g id="edge30" class="edge">
+<title>t2_fake&#45;&gt;t3_priority</title>
+<path fill="none" stroke="#8b7355" d="M2377.28,-170.64C2377.15,-160.3 2376.99,-146.94 2376.84,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2380.34,-135.01 2376.71,-125.05 2373.34,-135.09 2380.34,-135.01"/>
+<text text-anchor="middle" x="2387" y="-145.8" font-family="Noto Sans SC" font-size="9.00">解决</text>
+</g>
+<!-- t3_direction2 -->
+<g id="node32" class="node">
+<title>t3_direction2</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2588.5,-125 2442.5,-125 2442.5,-89 2594.5,-89 2594.5,-119 2588.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2588.5,-125 2588.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2594.5,-119 2588.5,-119 "/>
+<text text-anchor="middle" x="2518.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">方向校准</text>
+<text text-anchor="middle" x="2518.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">避免战术勤奋掩盖战略懒惰</text>
+</g>
+<!-- t2_fake&#45;&gt;t3_direction2 -->
+<g id="edge31" class="edge">
+<title>t2_fake&#45;&gt;t3_direction2</title>
+<path fill="none" stroke="#8b7355" d="M2407.75,-170.84C2428.75,-158.92 2456.92,-142.94 2479.59,-130.07"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2481.33,-133.11 2488.3,-125.13 2477.88,-127.02 2481.33,-133.11"/>
+<text text-anchor="middle" x="2466" y="-145.8" font-family="Noto Sans SC" font-size="9.00">预防</text>
+</g>
+<!-- t3_platform -->
+<g id="node33" class="node">
+<title>t3_platform</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2694.5,-125 2616.5,-125 2616.5,-89 2700.5,-89 2700.5,-119 2694.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2694.5,-125 2694.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2700.5,-119 2694.5,-119 "/>
+<text text-anchor="middle" x="2658.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">选对增长平台</text>
+<text text-anchor="middle" x="2658.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">增速&gt;规模</text>
+</g>
+<!-- t2_promo&#45;&gt;t3_platform -->
+<g id="edge32" class="edge">
+<title>t2_promo&#45;&gt;t3_platform</title>
+<path fill="none" stroke="#8b7355" d="M2660.07,-170.64C2659.81,-160.3 2659.47,-146.94 2659.18,-135.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2662.68,-134.96 2658.93,-125.05 2655.68,-135.13 2662.68,-134.96"/>
+<text text-anchor="middle" x="2679" y="-145.8" font-family="Noto Sans SC" font-size="9.00">机会来源</text>
+</g>
+<!-- t3_qualification -->
+<g id="node34" class="node">
+<title>t3_qualification</title>
+<polygon fill="#fef9f4" stroke="#8b7355" points="2826.5,-125 2718.5,-125 2718.5,-89 2832.5,-89 2832.5,-119 2826.5,-125"/>
+<polyline fill="none" stroke="#8b7355" points="2826.5,-125 2826.5,-119 "/>
+<polyline fill="none" stroke="#8b7355" points="2832.5,-119 2826.5,-119 "/>
+<text text-anchor="middle" x="2775.5" y="-110.2" font-family="Noto Sans SC" font-size="11.00">资格积累</text>
+<text text-anchor="middle" x="2775.5" y="-98.2" font-family="Noto Sans SC" font-size="11.00">不可替代·功劳·声誉</text>
+</g>
+<!-- t2_promo&#45;&gt;t3_qualification -->
+<g id="edge33" class="edge">
+<title>t2_promo&#45;&gt;t3_qualification</title>
+<path fill="none" stroke="#8b7355" d="M2685.17,-170.84C2701.85,-159.24 2724.06,-143.78 2742.29,-131.11"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="2744.66,-133.72 2750.87,-125.13 2740.66,-127.97 2744.66,-133.72"/>
+<text text-anchor="middle" x="2744" y="-145.8" font-family="Noto Sans SC" font-size="9.00">能力基础</text>
+</g>
+<!-- t3_logic&#45;&gt;t2_owl -->
+<g id="edge34" class="edge">
+<title>t3_logic&#45;&gt;t2_owl</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M93.02,-123.2C96.21,-123.91 99.39,-124.52 102.5,-125 124.49,-128.39 1688.85,-127.18 1704.5,-143 1711.13,-149.71 1708.16,-157.21 1701.47,-164.13"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="1699.02,-161.62 1693.76,-170.81 1703.61,-166.91 1699.02,-161.62"/>
+<text text-anchor="middle" x="1740.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">逻辑判断力支撑</text>
+</g>
+<!-- t3_write&#45;&gt;t2_self -->
+<g id="edge35" class="edge">
+<title>t3_write&#45;&gt;t2_self</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M249.7,-123.85C252.67,-124.29 255.61,-124.67 258.5,-125 282.13,-127.67 1953.77,-126.1 1970.5,-143 1977.13,-149.7 1974.16,-157.2 1967.47,-164.13"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="1965.02,-161.62 1959.76,-170.81 1969.61,-166.91 1965.02,-161.62"/>
+<text text-anchor="middle" x="2005.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">表达力→说服力</text>
+</g>
+<!-- t3_experiment&#45;&gt;t2_fake -->
+<g id="edge36" class="edge">
+<title>t3_experiment&#45;&gt;t2_fake</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M389.81,-123.73C392.74,-124.22 395.65,-124.65 398.5,-125 427.18,-128.56 2459.15,-122.47 2479.5,-143 2495.52,-159.16 2475.32,-169.97 2448.78,-176.93"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="2447.68,-173.59 2438.77,-179.32 2449.31,-180.4 2447.68,-173.59"/>
+<text text-anchor="middle" x="2525.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">实验思维→试错优化</text>
+</g>
+<!-- t3_plan&#45;&gt;t2_work -->
+<g id="edge37" class="edge">
+<title>t3_plan&#45;&gt;t2_work</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M525.68,-123.66C528.65,-124.18 531.6,-124.63 534.5,-125 558.26,-128.05 2242.65,-125.97 2259.5,-143 2278.11,-161.81 2250.48,-173.06 2218.26,-179.62"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="2217.34,-176.23 2208.16,-181.5 2218.63,-183.11 2217.34,-176.23"/>
+<text text-anchor="middle" x="2296.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">规划→方向校准</text>
+</g>
+<!-- t3_offhour&#45;&gt;t2_ability -->
+<g id="edge40" class="edge">
+<title>t3_offhour&#45;&gt;t2_ability</title>
+<path fill="none" stroke="#3a6ea5" stroke-dasharray="5,2" d="M1447.66,-124.85C1248.54,-147.71 795.2,-126.77 613.5,-143 539.37,-149.62 455.29,-163.71 397.77,-174.38"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" points="1448.31,-128.3 1457.81,-123.62 1447.46,-121.35 1448.31,-128.3"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" points="396.9,-170.98 387.71,-176.26 398.18,-177.86 396.9,-170.98"/>
+<text text-anchor="middle" x="650" y="-145.8" font-family="Noto Sans SC" font-size="9.00">终身学习回补能力</text>
+</g>
+<!-- t3_active&#45;&gt;t2_mastery -->
+<g id="edge38" class="edge">
+<title>t3_active&#45;&gt;t2_mastery</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M1744.18,-123.13C1740.92,-123.82 1737.67,-124.45 1734.5,-125 1639.14,-141.49 1613.54,-131.12 1517.5,-143 1453.88,-150.87 1382.41,-162.76 1328.56,-172.34"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="1327.94,-168.9 1318.71,-174.11 1329.17,-175.79 1327.94,-168.9"/>
+<text text-anchor="middle" x="1548.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">主动性→真学懂</text>
+</g>
+<!-- t3_direction&#45;&gt;t2_select -->
+<g id="edge39" class="edge">
+<title>t3_direction&#45;&gt;t2_select</title>
+<path fill="none" stroke="#b8860b" stroke-dasharray="5,2" d="M2006.29,-123.57C2003.33,-124.12 2000.39,-124.6 1997.5,-125 1892.81,-139.47 1149.12,-117.75 1046.5,-143 1041.14,-144.32 1019.16,-155.29 998.27,-166.07"/>
+<polygon fill="#b8860b" stroke="#b8860b" points="996.39,-163.1 989.12,-170.81 999.61,-169.32 996.39,-163.1"/>
+<text text-anchor="middle" x="1091" y="-145.8" font-family="Noto Sans SC" font-size="9.00">方向思维→选校选专业</text>
+</g>
+<!-- t3_platform&#45;&gt;t2_convert -->
+<g id="edge41" class="edge">
+<title>t3_platform&#45;&gt;t2_convert</title>
+<path fill="none" stroke="#3a6ea5" stroke-dasharray="5,2" d="M2606.3,-124.53C2605.36,-124.7 2604.43,-124.85 2603.5,-125 2446.31,-149.75 1327.17,-110.03 1171.5,-143 1149.16,-147.73 1125.67,-157.31 1106.59,-166.42"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" points="2607.41,-127.87 2616.45,-122.33 2605.94,-121.02 2607.41,-127.87"/>
+<polygon fill="#3a6ea5" stroke="#3a6ea5" points="1105.03,-163.29 1097.6,-170.83 1108.12,-169.57 1105.03,-163.29"/>
+<text text-anchor="middle" x="1203.5" y="-145.8" font-family="Noto Sans SC" font-size="9.00">平台反哺转化率</text>
+</g>
+<!-- l1 -->
+<g id="node35" class="node">
+<title>l1</title>
+<path fill="#fffaf2" stroke="transparent" d="M2894.5,-371C2894.5,-371 2864.5,-371 2864.5,-371 2858.5,-371 2852.5,-365 2852.5,-359 2852.5,-359 2852.5,-347 2852.5,-347 2852.5,-341 2858.5,-335 2864.5,-335 2864.5,-335 2894.5,-335 2894.5,-335 2900.5,-335 2906.5,-341 2906.5,-347 2906.5,-347 2906.5,-359 2906.5,-359 2906.5,-365 2900.5,-371 2894.5,-371"/>
+<text text-anchor="middle" x="2879.5" y="-351.1" font-family="Noto Sans SC" font-size="8.00">核心驱动</text>
+</g>
+<!-- l2 -->
+<g id="node36" class="node">
+<title>l2</title>
+<path fill="#fffaf2" stroke="transparent" d="M2898,-289C2898,-289 2861,-289 2861,-289 2855,-289 2849,-283 2849,-277 2849,-277 2849,-265 2849,-265 2849,-259 2855,-253 2861,-253 2861,-253 2898,-253 2898,-253 2904,-253 2910,-259 2910,-265 2910,-265 2910,-277 2910,-277 2910,-283 2904,-289 2898,-289"/>
+<text text-anchor="middle" x="2879.5" y="-269.1" font-family="Noto Sans SC" font-size="8.00">方法论/派生</text>
+</g>
+<!-- l1&#45;&gt;l2 -->
+<!-- l3 -->
+<g id="node37" class="node">
+<title>l3</title>
+<path fill="#fffaf2" stroke="transparent" d="M2894.5,-207C2894.5,-207 2864.5,-207 2864.5,-207 2858.5,-207 2852.5,-201 2852.5,-195 2852.5,-195 2852.5,-183 2852.5,-183 2852.5,-177 2858.5,-171 2864.5,-171 2864.5,-171 2894.5,-171 2894.5,-171 2900.5,-171 2906.5,-177 2906.5,-183 2906.5,-183 2906.5,-195 2906.5,-195 2906.5,-201 2900.5,-207 2894.5,-207"/>
+<text text-anchor="middle" x="2879.5" y="-187.1" font-family="Noto Sans SC" font-size="8.00">应用/实例</text>
+</g>
+<!-- l2&#45;&gt;l3 -->
+<!-- l4 -->
+<g id="node38" class="node">
+<title>l4</title>
+<path fill="#fffaf2" stroke="transparent" d="M2894.5,-125C2894.5,-125 2864.5,-125 2864.5,-125 2858.5,-125 2852.5,-119 2852.5,-113 2852.5,-113 2852.5,-101 2852.5,-101 2852.5,-95 2858.5,-89 2864.5,-89 2864.5,-89 2894.5,-89 2894.5,-89 2900.5,-89 2906.5,-95 2906.5,-101 2906.5,-101 2906.5,-113 2906.5,-113 2906.5,-119 2900.5,-125 2894.5,-125"/>
+<text text-anchor="middle" x="2879.5" y="-105.1" font-family="Noto Sans SC" font-size="8.00">跨域交叉</text>
+</g>
+<!-- l3&#45;&gt;l4 -->
+<!-- l5 -->
+<g id="node39" class="node">
+<title>l5</title>
+<path fill="#fffaf2" stroke="transparent" d="M2894.5,-52C2894.5,-52 2864.5,-52 2864.5,-52 2858.5,-52 2852.5,-46 2852.5,-40 2852.5,-40 2852.5,-28 2852.5,-28 2852.5,-22 2858.5,-16 2864.5,-16 2864.5,-16 2894.5,-16 2894.5,-16 2900.5,-16 2906.5,-22 2906.5,-28 2906.5,-28 2906.5,-40 2906.5,-40 2906.5,-46 2900.5,-52 2894.5,-52"/>
+<text text-anchor="middle" x="2879.5" y="-32.1" font-family="Noto Sans SC" font-size="8.00">回环反馈</text>
+</g>
+<!-- l4&#45;&gt;l5 -->
+</g>
+</svg>`;;
+
+</script>
+
+<script>
+// ============ FLIP CARD ============
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx) {
+  currentCardIdx = idx; cardFlipped = false;
+  var c = concepts[idx];
+  document.getElementById('flipFront').innerHTML = '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">' + c.name + '</h3><p style="color:var(--text2);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>' + (learnedCards.includes(c.id) ? '<span class="tag" style="margin-top:8px">✓ 已学习</span>' : '');
+  document.getElementById('flipBack').innerHTML = '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>' + c.def + '</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>' + c.analogy + '</div><div style="margin-bottom:6px"><strong style="color:var(--green)">示例：</strong>' + c.example + '</div><div><strong style="color:var(--accent)">反例/边界：</strong>' + c.counter + '</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = (idx + 1) + ' / ' + concepts.length;
+  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard() { if (currentCardIdx > 0) setCard(currentCardIdx - 1); }
+function nextCard() { if (currentCardIdx < concepts.length - 1) setCard(currentCardIdx + 1); }
+function markLearned() {
+  var id = concepts[currentCardIdx].id;
+  if (learnedCards.includes(id)) { learnedCards = learnedCards.filter(function(x) { return x !== id; }); }
+  else { learnedCards.push(id); }
+  LS.learned = learnedCards; save(); updateCardProgress(); updateOverviewProgress(); setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click', function() { this.classList.toggle('flipped'); cardFlipped = !cardFlipped; });
+
+function updateCardProgress() {
+  var pct = concepts.length > 0 ? Math.round(learnedCards.length / concepts.length * 100) : 0;
+  document.getElementById('cardProgress').style.width = pct + '%';
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+}
+updateCardProgress();
+
+function updateOverviewProgress() {
+  var pct = concepts.length > 0 ? Math.round(learnedCards.length / concepts.length * 100) : 0;
+  var el = document.getElementById('overallProgress');
+  if (el) el.style.width = pct + '%';
+  var lb = document.getElementById('progressLabel');
+  if (lb) lb.textContent = '已学习 ' + learnedCards.length + '/' + concepts.length + ' 个概念';
+}
+
+// ============ QUIZ ============
+var quizQuestions = [];
+var quizAnswers = [];
+var quizSubmitted = false;
+var quizStartTime = 0;
+var quizTimerSec = 0;
+
+function startQuiz() {
+  var shuffled = mcQuestions.slice().sort(function() { return Math.random() - 0.5; });
+  quizQuestions = shuffled.slice(0, 15);
+  quizAnswers = new Array(15).fill(-1);
+  quizSubmitted = false;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('staticQuiz').style.display = 'none';
+
+  var html = '';
+  for (var i = 0; i < quizQuestions.length; i++) {
+    var q = quizQuestions[i];
+    html += '<div class="quiz-card"><div class="q-num">第' + (i + 1) + '题</div><div class="q-text">' + q.q + '</div>';
+    for (var j = 0; j < q.opts.length; j++) {
+      html += '<div class="option" onclick="selectOption(' + i + ',' + j + ',this)" id="opt_' + i + '_' + j + '">' + String.fromCharCode(65 + j) + '. ' + q.opts[j] + '</div>';
+    }
+    html += '<div class="feedback" id="fb_' + i + '"></div></div>';
+  }
+  html += '<div style="text-align:center;margin-top:16px"><button class="btn" onclick="submitQuiz()">提交答案</button></div>';
+  document.getElementById('quizContainer').innerHTML = html;
+
+  quizStartTime = Date.now();
+  quizTimerSec = 0;
+  updateQuizTimer();
+  if (quizTimerInterval) clearInterval(quizTimerInterval);
+  quizTimerInterval = setInterval(updateQuizTimer, 1000);
+}
+
+function resetQuiz() {
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').textContent = '';
+  document.getElementById('staticQuiz').style.display = 'none';
+  quizQuestions = [];
+  quizAnswers = [];
+  quizSubmitted = false;
+  if (quizTimerInterval) { clearInterval(quizTimerInterval); quizTimerInterval = null; }
+}
+
+function updateQuizTimer() {
+  quizTimerSec = Math.floor((Date.now() - quizStartTime) / 1000);
+  var m = Math.floor(quizTimerSec / 60);
+  var s = quizTimerSec % 60;
+  document.getElementById('quizTimer').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function selectOption(qIdx, optIdx, el) {
+  if (quizSubmitted) return;
+  quizAnswers[qIdx] = optIdx;
+  var opts = el.parentElement.querySelectorAll('.option');
+  for (var i = 0; i < opts.length; i++) { opts[i].classList.remove('selected'); }
+  el.classList.add('selected');
+}
+
+function submitQuiz() {
+  if (quizSubmitted) return;
+  quizSubmitted = true;
+  if (quizTimerInterval) { clearInterval(quizTimerInterval); quizTimerInterval = null; }
+
+  var correct = 0;
+  for (var i = 0; i < quizQuestions.length; i++) {
+    var ans = quizAnswers[i];
+    var correctAns = quizQuestions[i].answer;
+    var fb = document.getElementById('fb_' + i);
+    if (ans === correctAns) {
+      correct++;
+      fb.className = 'feedback correct';
+      fb.textContent = '✅ 正确！' + quizQuestions[i].exp;
+      fb.style.display = 'block';
+      var correctEl = document.getElementById('opt_' + i + '_' + ans);
+      if (correctEl) correctEl.classList.add('correct');
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ 错误。正确答案是 ' + String.fromCharCode(65 + correctAns) + '。' + quizQuestions[i].exp;
+      fb.style.display = 'block';
+      if (ans >= 0) {
+        var wrongEl = document.getElementById('opt_' + i + '_' + ans);
+        if (wrongEl) wrongEl.classList.add('wrong');
+      }
+      var correctEl = document.getElementById('opt_' + i + '_' + correctAns);
+      if (correctEl) correctEl.classList.add('correct');
+      // Track errors
+      var errEntry = { q: quizQuestions[i].q, opts: quizQuestions[i].opts, answer: correctAns, exp: quizQuestions[i].exp, userAnswer: ans, time: new Date().toISOString() };
+      LS.errors = LS.errors || [];
+      LS.errors.push(errEntry);
+      errorBook = LS.errors;
+    }
+  }
+  save();
+  document.getElementById('quizScore').textContent = '得分：' + correct + '/' + quizQuestions.length;
+
+  // Store history
+  LS.quizHistory = LS.quizHistory || [];
+  LS.quizHistory.push({ date: new Date().toISOString(), score: correct, total: quizQuestions.length, time: quizTimerSec });
+  if (LS.quizHistory.length > 50) LS.quizHistory = LS.quizHistory.slice(-50);
+  save();
+}
+
+// ============ EXAM MODE ============
+var examQuestions = [];
+var examAnswers = [];
+var examSubmitted = false;
+var examTimerInterval = null;
+var examSeconds = 900; // 15 min
+
+function startExam() {
+  var shuffled = mcQuestions.slice().sort(function() { return Math.random() - 0.5; });
+  examQuestions = shuffled.slice(0, 12);
+  examAnswers = new Array(12).fill(-1);
+  examSubmitted = false;
+  examSeconds = 900;
+  document.getElementById('examStartBtn').style.display = 'none';
+  document.getElementById('examResult').style.display = 'none';
+  updateExamTimer();
+
+  var html = '';
+  for (var i = 0; i < examQuestions.length; i++) {
+    var q = examQuestions[i];
+    html += '<div class="quiz-card"><div class="q-num">第' + (i + 1) + '题</div><div class="q-text">' + q.q + '</div>';
+    for (var j = 0; j < q.opts.length; j++) {
+      html += '<div class="option" onclick="selectExamOption(' + i + ',' + j + ',this)" id="eopt_' + i + '_' + j + '">' + String.fromCharCode(65 + j) + '. ' + q.opts[j] + '</div>';
+    }
+    html += '<div class="feedback" id="efb_' + i + '"></div></div>';
+  }
+  html += '<div style="text-align:center;margin-top:16px"><button class="btn" onclick="submitExam()">交卷</button></div>';
+  document.getElementById('examArea').innerHTML = html;
+  if (examTimerInterval) clearInterval(examTimerInterval);
+  examTimerInterval = setInterval(function() {
+    examSeconds--;
+    updateExamTimer();
+    if (examSeconds <= 0) { submitExam(); }
+  }, 1000);
+}
+
+function updateExamTimer() {
+  var m = Math.floor(examSeconds / 60);
+  var s = examSeconds % 60;
+  document.getElementById('examTimer').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (examSeconds < 60) { document.getElementById('examTimer').classList.add('warning'); }
+}
+
+function selectExamOption(qIdx, optIdx, el) {
+  if (examSubmitted) return;
+  examAnswers[qIdx] = optIdx;
+  var opts = el.parentElement.querySelectorAll('.option');
+  for (var i = 0; i < opts.length; i++) { opts[i].classList.remove('selected'); }
+  el.classList.add('selected');
+}
+
+function submitExam() {
+  if (examSubmitted) return;
+  examSubmitted = true;
+  if (examTimerInterval) { clearInterval(examTimerInterval); examTimerInterval = null; }
+
+  var correct = 0;
+  for (var i = 0; i < examQuestions.length; i++) {
+    var ans = examAnswers[i];
+    var correctAns = examQuestions[i].answer;
+    var fb = document.getElementById('efb_' + i);
+    if (ans === correctAns) {
+      correct++;
+      fb.className = 'feedback correct';
+      fb.textContent = '✅ 正确！';
+      fb.style.display = 'block';
+      var correctEl = document.getElementById('eopt_' + i + '_' + ans);
+      if (correctEl) correctEl.classList.add('correct');
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = '❌ 正确答案：' + String.fromCharCode(65 + correctAns) + '。' + examQuestions[i].exp;
+      fb.style.display = 'block';
+      if (ans >= 0) {
+        var wrongEl = document.getElementById('eopt_' + i + '_' + ans);
+        if (wrongEl) wrongEl.classList.add('wrong');
+      }
+      var correctEl = document.getElementById('eopt_' + i + '_' + correctAns);
+      if (correctEl) correctEl.classList.add('correct');
+      LS.errors = LS.errors || [];
+      LS.errors.push({ q: examQuestions[i].q, opts: examQuestions[i].opts, answer: correctAns, exp: examQuestions[i].exp, userAnswer: ans, time: new Date().toISOString() });
+      errorBook = LS.errors;
+    }
+  }
+  save();
+
+  var pct = Math.round(correct / examQuestions.length * 100);
+  var grade = pct >= 90 ? '优秀 🌟' : pct >= 70 ? '良好 👍' : pct >= 60 ? '及格' : '需要加油 💪';
+  var weakness = '';
+  if (pct < 80) {
+    var wrongTopics = [];
+    for (var k = 0; k < examQuestions.length; k++) {
+      if (examAnswers[k] !== examQuestions[k].answer) {
+        wrongTopics.push(examQuestions[k].q.substring(0, 15) + '...');
+      }
+    }
+    weakness = '<p style="color:var(--text2);margin-top:12px">薄弱环节：' + wrongTopics.slice(0, 5).join('、') + '</p>';
+  }
+
+  document.getElementById('examResult').style.display = 'block';
+  document.getElementById('examResult').innerHTML = '<div class="card" style="text-align:center">'
+    + '<h3>考试结果</h3>'
+    + '<p style="font-size:1.5rem;font-weight:700;color:var(--accent)">' + correct + ' / ' + examQuestions.length + ' (' + pct + '%)</p>'
+    + '<p style="font-size:1rem">等级：' + grade + '</p>'
+    + weakness
+    + '<button class="btn btn-outline btn-sm" onclick="retryExam()" style="margin-top:12px">重新考试</button></div>';
+}
+
+function retryExam() {
+  document.getElementById('examArea').innerHTML = '';
+  document.getElementById('examResult').style.display = 'none';
+  document.getElementById('examStartBtn').style.display = 'inline-block';
+  document.getElementById('examTimer').textContent = '15:00';
+  document.getElementById('examTimer').classList.remove('warning');
+  examQuestions = [];
+  examAnswers = [];
+  examSubmitted = false;
+  examSeconds = 900;
+  if (examTimerInterval) { clearInterval(examTimerInterval); examTimerInterval = null; }
+}
+
+// ============ REVIEW MODE ============
+function renderReview() {
+  // Stats
+  var totalAttempts = (LS.quizHistory || []).length;
+  var avgScore = 0;
+  if (totalAttempts > 0) {
+    var sum = (LS.quizHistory || []).reduce(function(acc, h) { return acc + h.score / h.total; }, 0);
+    avgScore = Math.round(sum / totalAttempts * 100);
+  }
+  document.getElementById('statsGrid').innerHTML = ''
+    + '<div class="stat-card"><div class="num">' + learnedCards.length + '/' + concepts.length + '</div><div class="lbl">已学习概念</div></div>'
+    + '<div class="stat-card"><div class="num">' + totalAttempts + '</div><div class="lbl">练习次数</div></div>'
+    + '<div class="stat-card"><div class="num">' + avgScore + '%</div><div class="lbl">平均正确率</div></div>'
+    + '<div class="stat-card"><div class="num">' + (errorBook || []).length + '</div><div class="lbl">错题数</div></div>';
+
+  // Error book
+  var eb = document.getElementById('errorBook');
+  var ee = document.getElementById('emptyError');
+  if (!errorBook || errorBook.length === 0) {
+    eb.innerHTML = '';
+    ee.style.display = 'block';
+  } else {
+    ee.style.display = 'none';
+    var recent = errorBook.slice(-20).reverse();
+    eb.innerHTML = recent.map(function(e, i) {
+      return '<div class="card" style="font-size:.85rem"><strong>错题' + (recent.length - i) + '：</strong>' + e.q + '<br><span style="color:var(--green)">正确答案：' + String.fromCharCode(65 + e.answer) + '. ' + e.opts[e.answer] + '</span><br><span style="color:var(--text2)">' + e.exp + '</span></div>';
+    }).join('');
+  }
+
+  // Weak concepts
+  var wc = document.getElementById('weakConcepts');
+  var unlearned = concepts.filter(function(c) { return !learnedCards.includes(c.id); });
+  if (unlearned.length === 0) {
+    wc.innerHTML = '<div class="card"><p style="color:var(--green)">✅ 已学习全部概念！</p></div>';
+  } else {
+    wc.innerHTML = '<div class="card"><p>以下概念尚未标记"已学习"：</p>' + unlearned.map(function(c) { return '<span class="badge badge-core" style="margin:2px">' + c.name + '</span>'; }).join(' ') + '</div>';
+  }
+}
+
+// ============ MINDMAP TOGGLE ============
+function toggleMindmap(el) {
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if (children && (children.classList.contains('node-children') || children.classList.contains('tree-children'))) {
+    children.classList.toggle('open');
+    children.classList.toggle('show');
+  }
+}
+
+// ============ SOCRATIC TOGGLE ============
+// Handled by inline onclick: onclick="this.nextElementSibling.classList.toggle('show')"
+
+// ============ DECISION ============
+function makeDecision(round, choice, el) {
+  var key = 'd' + round;
+  if (LS.decisions && LS.decisions[key]) return; // already decided
+  LS.decisions = LS.decisions || {};
+  LS.decisions[key] = choice;
+  save();
+
+  // Highlight chosen
+  var parent = el.parentElement;
+  var allOpts = parent.querySelectorAll('.d-option');
+  for (var i = 0; i < allOpts.length; i++) { allOpts[i].classList.remove('chosen'); }
+  el.classList.add('chosen');
+
+  var resultEl = document.getElementById('dResult' + round);
+  resultEl.classList.add('show');
+
+  var feedbacks = {
+    d1: [
+      '<strong>❌ MKS分析：</strong>不读研时专业权重40分！清华冷门专业意味着高学校分(X)但低转化率(η)——如果你对冷门专业不感兴趣，Y=X×η的实际收获可能很低。而且不读研无二次选择机会。<br><strong>教训：</strong>名校光环在就业市场上的价值被高估——用人单位更关注专业匹配度。',
+      '<strong>✅ MKS分析（最优）：</strong>不读研时专业权重40分，学校权重仅20分。211好专业 > 985普通专业。北邮计算机在互联网行业的校友网络和雇主认可度极高，加上北京的地域优势（30分），是综合最优解。<br><strong>核心概念：</strong>选校决策公式 + 知识转化率。',
+      '<strong>⚠ MKS分析：</strong>二本热门专业虽然费用低，但第一学历门槛显著（一本>二本），且二本计算机师资可能匮乏，导致毕业生竞争力低下。美国州立大学计算机"毕业即失业"的现象在中国同样存在。<br><strong>建议：</strong>如果经济允许，尽量选择有竞争力的学校。'
+    ],
+    d2: [
+      '<strong>❌ MKS分析：</strong>警惕"榨干型企业"——高初始薪资但无培养体系，价值耗尽后弃用。坏的工作习惯一旦养成，知名企业宁可招无经验应届生也不要你。<br><strong>教训：</strong>第一份工作的本质是积累职业资本，而非短期收入最大化。',
+      '<strong>✅ MKS分析（最优）：</strong>培养型企业（完善导师制+规范工作习惯）是第一份工作的最佳选择。Google的宽松培养环境如同"好的教练"，坏习惯一旦形成很难纠正。<br><strong>核心概念：</strong>第一份工作四大原则（培养型·高势能·成长型·总部优先）。薪资低30%但3年后能力跃迁，长期收益远超。',
+      '<strong>⚠ MKS分析：</strong>国企稳定但有风险：增长缓慢的组织中个人进步速度可能低于企业发展速度→排名下降→职级停滞。且国企文化可能不适应市场变化。<br><strong>建议：</strong>如果你追求安稳且不介意慢速成长，可选。但年轻人通常在培养型企业前3-5年积累最快。'
+    ],
+    d3: [
+      '<strong>❌ MKS分析：</strong>第47讲核心避坑——"换工作解决不了问题"。"不会游泳的人换游泳池也学不会游泳"。职场问题具有普遍性，新公司蜜月期后会遇到相似甚至更严重的问题。<br><strong>案例：</strong>腾讯员工被高薪挖角离职，多数因新公司问题更多而后悔返回。',
+      '<strong>✅ MKS分析（最优）：</strong>这是伪工作者的破解之道——建立优先级思维，按回报大小排序，主动沟通说明不做低价值工作的原因。聚焦能带来长期叠加效应的任务（如晋升带来的40-50%收入增长 > 私活20%的简单叠加）。<br><strong>核心概念：</strong>伪工作与假努力 + 为自己工作。',
+      '<strong>⚠ MKS分析：</strong>忍耐有其合理性（就业市场不景气时），但需分清"忍耐"与"放弃成长"的边界。如果你在忍耐中仍然利用空闲时间积累能力（暗夜猫头鹰效应），那是在为下一步做准备。如果纯粹"混日子"，3年后能力原地踏步才是最大的风险。'
+    ]
+  };
+
+  resultEl.innerHTML = feedbacks['d' + round][choice];
+}
+
+// ============ TAB SWITCHING ============
+function switchTab(idx) {
+  var tabs = document.querySelectorAll('.tab-content');
+  var btns = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+  for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('active'); }
+  tabs[idx].classList.add('active');
+  btns[idx].classList.add('active');
+
+  if (idx === 4) renderReview();
+}
+
+// ============ RESET PROGRESS ============
+function resetProgress() {
+  if (confirm('确定要重置全部学习进度和错题记录吗？此操作不可恢复。')) {
+    LS = { learned: [], errors: [], quizHistory: [], decisions: {} };
+    learnedCards = [];
+    errorBook = [];
+    save();
+    setCard(0);
+    updateCardProgress();
+    updateOverviewProgress();
+    renderReview();
+    renderOverview();
+  }
+}
+
+// ============ INIT ============
+updateOverviewProgress();
+</script>
+</body>
+</html>

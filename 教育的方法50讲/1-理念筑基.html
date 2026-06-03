@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>教育金字塔·基石 — 理念筑基与方法落地</title>
+<style>
+:root{
+  --bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;--text:#3d2f2f;
+  --text-light:#6b5b5b;--border:#e8d5c4;--success:#27ae60;--warning:#e67e22;
+  --shadow:0 2px 12px rgba(61,47,47,0.08);--radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding-top:60px}
+.main-nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,var(--accent),#8b1a1a);display:flex;flex-wrap:wrap;justify-content:center;gap:2px;padding:6px 10px;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+.tab-btn{background:transparent;color:rgba(255,255,255,0.75);border:none;padding:8px 14px;cursor:pointer;font-size:clamp(.72rem,1.5vw,.85rem);border-radius:6px;transition:all .25s;white-space:nowrap}
+.tab-btn:hover{background:rgba(255,255,255,0.12);color:#fff}
+.tab-btn.active{background:rgba(255,255,255,0.2);color:#fff;font-weight:600}
+.home-link{display:flex;align-items:center;gap:4px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:clamp(.65rem,1.3vw,.75rem);padding:6px 10px;border-radius:6px;transition:all .25s;margin-right:8px}
+.home-link:hover{background:rgba(255,255,255,0.12);color:#fff}
+.container{max-width:1200px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(16px,3vw,24px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+.card h2{color:var(--accent);font-size:clamp(1.2rem,2.5vw,1.6rem);margin-bottom:12px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2vw,1.2rem);margin-bottom:8px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.tag{display:inline-block;background:var(--accent);color:#fff;padding:2px 10px;border-radius:12px;font-size:.72rem;margin:2px 4px}
+.tag-outline{display:inline-block;background:transparent;color:var(--accent);border:1px solid var(--accent);padding:2px 10px;border-radius:12px;font-size:.72rem;margin:2px 4px}
+.tag-warn{display:inline-block;background:var(--warning);color:#fff;padding:2px 10px;border-radius:12px;font-size:.72rem;margin:2px 4px}
+.btn{display:inline-block;padding:10px 22px;border:none;border-radius:6px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .25s;font-family:inherit}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn-success{background:var(--success);color:#fff}
+.btn-sm{padding:6px 16px;font-size:.8rem}
+.progress-bar{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:12px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .5s ease}
+.stats-row{display:flex;flex-wrap:wrap;gap:16px;margin:16px 0}
+.stat-box{flex:1;min-width:140px;text-align:center;padding:16px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+.stat-box .num{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--accent)}
+.stat-box .label{font-size:.78rem;color:var(--text-light);margin-top:4px}
+.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fef5e7,#fffaf2);padding:16px 20px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0}
+.boundary-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px 14px;text-align:left;font-weight:500}
+.boundary-table td{padding:10px 14px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even) td{background:rgba(255,250,242,0.5)}
+.path-list{list-style:none;counter-reset:path}
+.path-list li{counter-increment:path;padding:12px 16px 12px 48px;position:relative;margin:8px 0;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+.path-list li::before{content:counter(path);position:absolute;left:12px;top:12px;width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-container{max-width:800px;margin:0 auto}
+.quiz-item{background:var(--card);border-radius:var(--radius);padding:clamp(16px,3vw,24px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+.quiz-item .q-title{font-weight:600;color:var(--accent);margin-bottom:12px;font-size:clamp(.9rem,1.8vw,1rem)}
+.quiz-option{display:block;width:100%;text-align:left;padding:10px 16px;margin:6px 0;background:#fdf6ec;border:1.5px solid #e8d5c4;border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;font-family:inherit}
+.quiz-option:hover{border-color:#d4a574;background:#fffaf2}
+.quiz-option.selected{border-color:#c0392b;background:#fef5e7;font-weight:500}
+.quiz-option.correct{border-color:var(--success);background:#e8f5e9;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option:disabled{cursor:not-allowed;opacity:.85}
+.exam-timer{text-align:center;font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--accent);font-weight:700;margin:16px 0}
+.exam-result{text-align:center;padding:32px}
+.exam-result .score{font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:var(--accent)}
+.tree{padding:12px 0}
+.tree-node{margin:4px 0}
+.tree-label{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:500;transition:all .2s;font-size:.9rem}
+.tree-label:hover{background:rgba(192,57,43,0.06)}
+.tree-toggle{font-size:.7rem;width:18px;text-align:center;transition:transform .3s}
+.tree-toggle.open{transform:rotate(90deg)}
+.tree-children{display:none;margin-left:24px;border-left:2px solid var(--accent2);padding-left:12px}
+.tree-children.show,.tree-children.open{display:block}
+.socratic-item{background:var(--card);border-radius:var(--radius);padding:clamp(16px,3vw,24px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:12px}
+.socratic-q{font-weight:600;color:var(--accent);cursor:pointer;padding:8px 0;display:flex;justify-content:space-between;align-items:center}
+.socratic-a{display:none;margin-top:10px;padding:12px 16px;background:#fdf6ec;border-radius:8px;border-left:3px solid var(--accent2);font-size:.88rem;color:var(--text)}
+.socratic-a.show{display:block}
+.case-card{background:var(--card);border-radius:var(--radius);padding:clamp(16px,3vw,24px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px}
+.case-card .case-header{font-size:clamp(1rem,2vw,1.2rem);font-weight:600;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--accent2)}
+.case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
+.case-dim{background:#fdf6ec;border-radius:8px;padding:12px 16px;border-left:3px solid var(--accent2)}
+.case-dim h4{color:var(--accent);font-size:.85rem;margin-bottom:6px}
+.decision-scenario{background:var(--card);border-radius:var(--radius);padding:clamp(16px,3vw,24px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px}
+.decision-options{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.decision-opt{padding:12px 18px;background:#fdf6ec;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.9rem;text-align:left;font-family:inherit}
+.decision-opt:hover{border-color:var(--accent2);background:#fffaf2}
+.decision-opt.chosen{border-color:var(--accent);background:#fef5e7}
+.decision-feedback{display:none;margin-top:12px;padding:14px 18px;background:#fdf6ec;border-radius:8px;border-left:4px solid var(--accent);font-size:.88rem}
+.decision-feedback.show{display:block}
+@media(max-width:960px){
+  .main-nav{flex-wrap:wrap;justify-content:center;padding:4px 6px}
+  .tab-btn{padding:6px 10px;font-size:.7rem}
+  .card-grid{grid-template-columns:1fr}
+  .stats-row{flex-direction:column}
+  .case-grid{grid-template-columns:1fr}
+  .boundary-table{font-size:.75rem;display:block;overflow-x:auto}
+}
+@media(max-width:480px){
+  body{padding-top:52px}
+  .tab-btn{padding:5px 7px;font-size:.65rem}
+  .container{padding:8px}
+  .flip-card{height:clamp(180px,55vw,240px)}
+}
+.svg-container{width:100%;overflow-x:auto;margin:16px 0;text-align:center}
+.svg-container svg{max-width:100%;height:auto}
+.text-center{text-align:center}
+.mt-16{margin-top:16px}
+.mb-16{margin-bottom:16px}
+.flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.hidden{display:none}
+.text-light{color:var(--text-light);font-size:.85rem}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.subtab-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.subtab-btn:not(.home-btn){background:transparent;color:var(--text);border:1.5px solid var(--border);padding:6px 14px;cursor:pointer;border-radius:20px;font-size:.82rem;font-family:inherit;transition:all .2s}
+.subtab-btn:not(.home-btn):hover{border-color:var(--accent2);color:var(--accent)}
+.subtab-btn:not(.home-btn).active{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav class="main-nav" id="mainNav">
+  <a href="index.html" class="home-link">&#x1F3E0; 首页</a>
+  <button class="tab-btn active" onclick="switchTab(0)">知识集总览</button>
+  <button class="tab-btn" onclick="switchTab(1)">知识卡片</button>
+  <button class="tab-btn" onclick="switchTab(2)">题库系统</button>
+  <button class="tab-btn" onclick="switchTab(3)">考试模式</button>
+  <button class="tab-btn" onclick="switchTab(4)">复习模式</button>
+  <button class="tab-btn" onclick="switchTab(5)">思维导图</button>
+  <button class="tab-btn" onclick="switchTab(6)">深度追问</button>
+  <button class="tab-btn" onclick="switchTab(7)">案例分析</button>
+  <button class="tab-btn" onclick="switchTab(8)">实战决策</button>
+</nav>
+
+<div class="container">
+
+<!-- Tab 0: 知识集总览 -->
+<div class="tab-panel active" id="tab0">
+  <div class="card text-center">
+    <h2>教育金字塔·基石</h2>
+    <p style="font-size:clamp(1rem,2vw,1.2rem);color:var(--text-light);max-width:700px;margin:0 auto">
+      核心目标：帮助家长建立科学的<strong>教育认知框架</strong>，掌握<strong>可落地的教育方法</strong>，
+      让95%的普通孩子在正确的理念指导下，实现个性化成长与终身发展。
+    </p>
+  </div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x1F4CC; 10 个核心概念</h3>
+  <div class="card-grid" id="conceptOverview"></div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x2B50; 4 个 MKS 骨架概念</h3>
+  <div id="mksCoreContainer"></div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x1F578; 概念关系图（Graphviz dot 生成）</h3>
+  <div class="card">
+    <div class="svg-container" id="svgContainer"></div>
+  </div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x1F4CA; 学习进度</h3>
+  <div class="card">
+    <div class="stats-row" id="overviewStats"></div>
+    <div class="progress-bar"><div class="progress-fill" id="overviewProgress" style="width:0%"></div></div>
+    <p style="text-align:center;font-size:.82rem;color:var(--text-light);margin-top:8px" id="overviewProgressText">已学习 0 / 10 个概念</p>
+  </div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x1F4D6; 边界知识表（15 条）</h3>
+  <div class="card" style="overflow-x:auto">
+    <table class="boundary-table" id="boundaryTable"></table>
+  </div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x1F9ED; 学习路径（5 阶段）</h3>
+  <div class="card">
+    <ol class="path-list" id="learningPath"></ol>
+  </div>
+  <h3 style="color:var(--accent);margin:20px 0 12px">&#x1F4DC; 专题来源：24 篇笔记</h3>
+  <div class="card">
+    <p style="font-size:.88rem;color:var(--text-light)">本专题基于吴军《教育的方法50讲》第01-22讲 + 发刊词 + 书单，共24篇笔记，聚焦<strong>理念基础（01-09讲）</strong>和<strong>实践方法（10-22讲）</strong>两大模块。</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px" id="lectureTags"></div>
+  </div>
+</div>
+
+<!-- Tab 1: 知识卡片 -->
+<div class="tab-panel" id="tab1">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F4C7; 知识卡片</h2>
+  <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+  <div class="flip-nav">
+    <button class="btn btn-outline btn-sm" onclick="prevCard()">&#x2190; 上一张</button>
+    <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+    <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 &#x2192;</button>
+  </div>
+  <div style="text-align:center;margin:8px 0">
+    <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">&#x2713; 标记已学习</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: 题库系统 -->
+<div class="tab-panel" id="tab2">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F4DD; 题库系统</h2>
+  <div class="card text-center">
+    <p style="color:var(--text-light);margin-bottom:16px">15 道选择题，随机抽题练习。</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="startQuiz()">&#x1F3B2; 随机抽题练习</button>
+      <button class="btn btn-outline" onclick="resetQuiz()">&#x1F504; 重置</button>
+    </div>
+  </div>
+  <div id="quizContainer" class="quiz-container"></div>
+  <div id="staticQuiz" style="display:none"></div>
+</div>
+
+<!-- Tab 3: 考试模式 -->
+<div class="tab-panel" id="tab3">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F3AF; 考试模式</h2>
+  <div class="card text-center" id="examStartCard">
+    <p style="color:var(--text-light);margin-bottom:16px">从题库随机抽取 10 题（7道选择 + 3道简答），限时 15 分钟。</p>
+    <button class="btn btn-primary" onclick="startExam()">&#x25B6; 开始考试</button>
+  </div>
+  <div id="examContainer"></div>
+</div>
+
+<!-- Tab 4: 复习模式 -->
+<div class="tab-panel" id="tab4">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F4DA; 复习模式</h2>
+  <div class="subtab-nav">
+    <button class="subtab-btn active" onclick="switchReviewSubtab(0)" id="reviewSubtab0">&#x1F4D5; 错题本</button>
+    <button class="subtab-btn" onclick="switchReviewSubtab(1)" id="reviewSubtab1">&#x1F4CA; 薄弱点分析</button>
+    <button class="subtab-btn" onclick="switchReviewSubtab(2)" id="reviewSubtab2">&#x1F4C8; 学习统计</button>
+  </div>
+  <div id="reviewWrong" class="review-subtab active"></div>
+  <div id="reviewWeak" class="review-subtab" style="display:none"></div>
+  <div id="reviewStats" class="review-subtab" style="display:none"></div>
+</div>
+
+<!-- Tab 5: 思维导图 -->
+<div class="tab-panel" id="tab5">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F9E0; 思维导图</h2>
+  <div class="card" style="overflow-x:auto">
+    <div class="tree">
+      <div class="tree-node">
+        <div class="tree-label" onclick="toggleTreeNode(this)">
+          <span class="tree-toggle open">&#x25B6;</span>
+          <span style="color:var(--accent);font-weight:700;font-size:1.05rem">&#x1F3DB; 教育金字塔·基石：理念筑基 × 方法落地</span>
+        </div>
+        <div class="tree-children show">
+          <div class="tree-node">
+            <div class="tree-label" onclick="toggleTreeNode(this)">
+              <span class="tree-toggle open">&#x25B6;</span>
+              <span style="color:#d4a574;font-weight:600">&#x1F4A1; 理念层：教育认知与方向（01-09讲）</span>
+            </div>
+            <div class="tree-children show">
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F3AF; 01 普娃定位：95%孩子是普娃，教育决定结果</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 标准差定义：2个标准差以内可替代，3个标准差才是牛娃（2.5%）</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 三大误区：高估孩子、低估他人、同质化竞争</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 完美三要素：天赋+热爱+长期耕耘</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F4DA; 02-03 教育核心与目的：四大能力 + 三重目的</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 四大核心能力：专业·社会·解决问题·独立生活</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 教育三重目的：明辨是非·谋生手段·发展机会</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 安迪-比尔定律：教育水平提升→学历贬值</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F916; 04-05 AI时代变革：内容与方法双转型</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 从读写到计算：教育重心转移</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 三大关系：通识vs技能·需求vs兴趣·深度vs广度</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 因材施教：AI+大数据精准定位知识盲点，效率提升50%</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 以学为主：开卷考试+实践导向</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F476; 08-09 早教科学 + 未来教育方向</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 排队模型：边际效益递减，边际成本上升</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 课堂准备度：社会认知+安全意识+自理能力</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 未来教育：公民意识+打破标准答案思维</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F3AE; 06 电子产品管控 + 10 快乐教育反思</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 电子产品与成绩呈负相关（英法研究）</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 快乐教育陷阱：美国功能性文盲7000万</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; KIPP：低起点激励+正向反馈，非无条件降低要求</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tree-node">
+            <div class="tree-label" onclick="toggleTreeNode(this)">
+              <span class="tree-toggle">&#x25B6;</span>
+              <span style="color:#d4a574;font-weight:600">&#x1F527; 方法层：实践策略与路径（10-22讲）</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F3E0; 07 父母是天花板：陪伴+启蒙+示范</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 天花板形成：行为模仿+思维传递+认知误区</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 五大陪伴价值：安全感+认知+行为+情商+学业</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F9D2; 12 年龄规律：皮亚杰认知发展四阶段</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 感知运动(0-2岁)：感知世界，避免早教</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 前运算(2-7岁)：简单运算+同理心关键期</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 具体运算(7-12岁)：逻辑思维+词汇量爆发</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 抽象运算(12岁+)：演绎推理+三观塑造</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F4D0; 13-14 知识优先级：斯宾塞五层次 + 赚钱与历史</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 1.直接自我保全·2.间接自我保全·3.为人父母</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 4.好公民·5.文化娱乐（凡尔赛知识）</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 挣钱vs赚钱：线性劳动 vs 资本增值</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F31F; 17 天赋发掘：六大类型+三大方法</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 六大类型：艺术·学术·运动·技术·人际·多元</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 三大方法：自然观察·多元尝试·专业评估</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 艺术道路判断：高一未获省级奖→建议仅作兴趣</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F4DD; 18 考试策略：战略+战术优化</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 五大因素：休息·复习·学习·环境·智力</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 三阶段：当场搞懂→抓住重点→稳定发挥</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 80-20法则：80%分数来自20%~60%内容</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F30D; 19-20 国际教育 + 教育分流</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 留学五问：价值·适配·国家·专业·时机</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 二元制教育 → 普职融合转变</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 初中分流效率最高，大学分流效率最低</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F9ED; 22 教育路线选择：精英·普通·职业</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 精英教育：极少数人（学生极优秀+家庭优越）</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 普通高等教育：大多数人（平衡发展+专业深耕）</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 职业教育：实践能力强者（日本2800+职业学校）</span></div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <div class="tree-label" onclick="toggleTreeNode(this)">
+                  <span class="tree-toggle">&#x25B6;</span>
+                  <span>&#x1F91D; 15-16 家长角色+青少年培养细节</span>
+                </div>
+                <div class="tree-children">
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 从监督者→朋友：三大黄金沟通时间</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 注意力=年龄×3分钟</span></div>
+                  <div class="tree-node"><span class="tree-label" style="cursor:default;font-size:.82rem;color:var(--text-light)">&#x2022; 社交网络研究：少用=认知高4%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 6: 深度追问 -->
+<div class="tab-panel" id="tab6">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F50D; 深度追问（苏格拉底问答）</h2>
+  <p style="color:var(--text-light);margin-bottom:16px">对每个核心概念进行 2-3 层追问，点击问题展开答案。</p>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q1: 为什么说"95%的孩子是普娃"？这个结论背后的统计依据是什么？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A1: 吴军用"标准差"来量化：1个标准差（优于平均）仍可被替代；2个标准差（明显优于平均）是普娃上限，受运气影响仍可被超越；只有3个标准差以上（超过99.8%的人）才算真正不可替代的"牛娃"，仅占人口2.5%。这个统计框架的核心洞察是：<strong>可替代性决定教育策略</strong>——普娃间差距小，教育质量直接决定谁更突出。</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q1-追问: 如果95%都是普娃，那"鸡娃"有意义吗？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A: 有意义但需要方向正确。普娃竞争的本质是"跑赢同类"——多数人存在"假努力"（战术勤奋掩盖战略懒惰）。与其同质化内卷5-6门课，不如培养"完美三要素"（天赋+热爱+长期耕耘）。关键不是比别人多刷多少题，而是<strong>找到差异化优势领域并持续深耕</strong>。</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q2: 教育的三重目的（明辨是非·谋生·发展）中，为什么"明辨是非"排第一位？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A2: 引用哈佛前校长福斯特的定义：教育让人"知道谁在胡说八道"。人生由无数判断构成，关键判断失误（如误入传销、被伪科学误导）会导致整个人生道路偏离。柏拉图《理想国》"岩洞寓言"的寓意正是：教育让人区分真实与幻象。<strong>判断力是所有决策的基础，没有它，谋生技能和发展机会都无从谈起。</strong></div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q2-追问: 在AI时代，"明辨是非"能力更重要的原因是什么？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A: AI生成内容泛滥，但只能满足基础需求。2024年底美国AI学院会议共识：AI内容无法用于申请经费或重要汇报。<strong>高水平读写能力是鉴别和改进AI内容的前提</strong>——正如吴军所说："写作能力差的人甚至不知道AI写得差"。明辨是非在AI时代升级为：知道谁在胡说八道+知道AI在胡说八道。</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q3: 皮亚杰的认知四阶段理论为什么对家庭教育至关重要？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A3: 因为<strong>教育必须匹配认知发展阶段，否则事倍功半甚至有害</strong>。7岁前的孩子不具备逻辑运算能力（不理解3+4=4+3），强行灌输复杂概念不仅效率低（6岁学1小时的内容7岁只需12分钟），还可能形成错误概念，后续纠正成本极高。卢梭在《爱弥儿》中也强调："有限的生命与智慧应专注于可理解的知识。"</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q3-追问: 中国家长最容易在哪个认知阶段犯错？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A: 最常在前运算阶段（2-7岁）和具体运算阶段（7-12岁）犯错。2-7岁时过早进行"拔高"教育（如强迫学奥数），忽视同理心培养的关键窗口；7-12岁时过度关注"粗心"的表面现象，实际是逻辑理解不透彻，刷题治标不治本——而这段时期的<strong>词汇量增长</strong>（决定未来表达与知识范围）反而被很多家长忽视。</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q4: 斯宾塞五层次知识理论中，为什么"文化娱乐知识"被放在最底层？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A4: 斯宾塞用"衣服比喻"：保暖功能（基础能力）是"1"，装饰功能（才艺）是"0"。<strong>没有"1"，再多的"0"也无意义</strong>。钢琴、舞蹈、击剑等才艺属于"凡尔赛知识"——锦上添花但非安身立命之本。现实中许多家长在才艺上投入巨大，却忽视了人际处理、婚姻经营等核心素养，导致教育投入与人生幸福所需知识的<strong>优先级错配</strong>。</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q4-追问: 家长如何判断自己的教育投入是否存在"优先级错配"？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A: 自问三个问题：①孩子成年后能否独立谋生（直接自我保全）？②孩子能否处理人际关系和经营家庭（为人父母知识）？③才艺培训是否挤占了前两项的时间与资源？如果问题①和②答案是否定的，说明出现了严重的优先级倒置。<strong>理性投入顺序：自我保全知识→为人父母/好公民知识→文化娱乐知识。</strong></div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q5: 为什么"父母是孩子的天花板"这一论断如此重要？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A5: 学校传授知识，家长决定发展高度。天花板通过三个机制形成：①<strong>行为模仿</strong>——孩子复刻家长的为人处世方式；②<strong>思维传递</strong>——家长的认知框架（如认为"权力即一切"）直接塑造孩子的世界观；③<strong>资源分配</strong>——家长的视野决定了孩子能接触到什么机会。优秀家长抬高天花板，失职家长可能将其"踩成地板"。</div>
+  </div>
+
+  <div class="socratic-item">
+    <div class="socratic-q" onclick="toggleSocratic(this)">Q5-追问: 如果家长觉得自己认知有限，如何突破自身天花板？ <span>&#x25BC;</span></div>
+    <div class="socratic-a">A: 三个可行路径：①<strong>高质量陪伴</strong>——陪伴本身就有五大价值（安全感+认知+行为+情商+学业），不需要家长是专家；②<strong>借力外部资源</strong>——请称职的家教、利用优质在线课程（如MOOC）、带孩子接触各领域专业人士；③<strong>同步学习</strong>——家长主动学习"为人父母的知识"（如读教育经典），与孩子共同成长。关键是<strong>有成长心态，而非假装什么都懂</strong>。</div>
+  </div>
+</div>
+
+<!-- Tab 7: 案例分析 -->
+<div class="tab-panel" id="tab7">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F4CB; 案例分析（MKS 四维度拆解）</h2>
+  <p style="color:var(--text-light);margin-bottom:16px">用真实案例做 MKS 核心概念/类比/示例/反例四维度拆解。</p>
+
+  <div class="case-card">
+    <div class="case-header">&#x1F3AE; 案例一：KIPP计划 vs 快乐教育——两个美国教育实验的对比</div>
+    <p style="font-size:.88rem;color:var(--text-light);margin-bottom:12px"><strong>背景：</strong>美国20世纪90年代兴起"快乐教育"（减少教学内容、降低考核、用鼓励取代惩罚），结果导致功能性文盲达7000万。同期KIPP（Knowledge Is Power Project）在贫困社区推行"低起点激励+高期望"模式，多数学生成功进入大学。</p>
+    <div class="case-grid">
+      <div class="case-dim"><h4>&#x1F4D6; 核心概念</h4><p style="font-size:.82rem">努力-回报循环 vs 无条件降低要求。KIPP通过正向反馈建立"努力→进步→奖励"循环；快乐教育取消了这种因果联系。</p></div>
+      <div class="case-dim"><h4>&#x1F517; 类比</h4><p style="font-size:.82rem">健身：不降低杠铃重量（快乐教育），而是从轻重量开始逐步加重，每次进步给正向反馈（KIPP）。前者让人虚弱，后者让人强壮。</p></div>
+      <div class="case-dim"><h4>&#x2705; 正向示例</h4><p style="font-size:.82rem">KIPP学生早到校晚离校，聚焦数学、语文、自然科学，成绩提升后获得坐凳子/玩游戏等奖励，多数实现阶层跃迁。</p></div>
+      <div class="case-dim"><h4>&#x274C; 反例/边界</h4><p style="font-size:.82rem">芝加哥某公立高中2023年仅1%毕业生数学和阅读达标。快乐教育初衷是减负，最终导致弱势群体教育质量下降，加剧阶层固化。</p></div>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">&#x1F4DA; 案例二：方家园教授的"因材施教"实验——AI赋能个性化教学</div>
+    <p style="font-size:.88rem;color:var(--text-light);margin-bottom:12px"><strong>背景：</strong>方家园教授对上万名中小学生进行大数据+AI精准诊断，针对每个学生的知识盲点进行个性化训练。结果B级学生达到A+水平，4.5个月完成常规9个月内容，效率提升50%。</p>
+    <div class="case-grid">
+      <div class="case-dim"><h4>&#x1F4D6; 核心概念</h4><p style="font-size:.82rem">因材施教——不是让学生适应统一的课堂节奏，而是让教学节奏适应每个学生的知识盲点。AI充当"虚拟私教"角色。</p></div>
+      <div class="case-dim"><h4>&#x1F517; 类比</h4><p style="font-size:.82rem">GPS导航：传统课堂像固定路线的大巴，不管乘客目的地；AI诊断像个性化导航，知道你在哪、要去哪、当前路口该左转还是右转。</p></div>
+      <div class="case-dim"><h4>&#x2705; 正向示例</h4><p style="font-size:.82rem">B级学生经针对性训练后数学和英语A/A+率显著提升，学习时间缩短50%。关键不是"多教"而是"教对地方"。</p></div>
+      <div class="case-dim"><h4>&#x274C; 反例/边界</h4><p style="font-size:.82rem">AI不能替代家长的陪伴和情感支持。技术是工具，亲子关系和孩子的内在动力才是教育成功的根基。</p></div>
+    </div>
+  </div>
+
+  <div class="case-card">
+    <div class="case-header">&#x1F30D; 案例三：留学决策——"换池游泳"的陷阱</div>
+    <p style="font-size:.88rem;color:var(--text-light);margin-bottom:12px"><strong>背景：</strong>部分家长因孩子在国内学业不佳而选择送出国留学，认为国外教育更"宽松"。吴军指出这是"换池游泳"误区——不会游泳的人换泳池仍会溺水。</p>
+    <div class="case-grid">
+      <div class="case-dim"><h4>&#x1F4D6; 核心概念</h4><p style="font-size:.82rem">留学是"学习知识"的手段，非"逃避竞争"的工具。决策须回答五个问题：价值·适配·国家·专业·时机。</p></div>
+      <div class="case-dim"><h4>&#x1F517; 类比</h4><p style="font-size:.82rem">健身换健身房：不会因为换了更贵的健身房就自动变强壮——核心是训练方法和坚持，场地是次要因素。</p></div>
+      <div class="case-dim"><h4>&#x2705; 正向示例</h4><p style="font-size:.82rem">自觉性强+独立性好的孩子出国，利用更好的平台和资源实现个人成长。如热爱计算机的学生选择MIT/CMU，接触前沿研究。</p></div>
+      <div class="case-dim"><h4>&#x274C; 反例/边界</h4><p style="font-size:.82rem">国内学业不佳+缺乏主动性的孩子出国后无人监管，可能彻底荒废。留学不是万能解药，适配性第一。</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 8: 实战决策 -->
+<div class="tab-panel" id="tab8">
+  <h2 style="color:var(--accent);margin-bottom:16px">&#x1F3AE; 实战决策模拟</h2>
+  <p style="color:var(--text-light);margin-bottom:16px">3 轮教育决策模拟，每轮 3 个选项 + 反馈 + MKS 分析。</p>
+
+  <div class="decision-scenario" id="decision1">
+    <h3 style="color:var(--accent);margin-bottom:8px">&#x1F3AF; 第 1 轮：早教决策</h3>
+    <p style="font-size:.9rem;color:var(--text-light);margin-bottom:12px"><strong>场景：</strong>你的孩子今年4岁，周围家长纷纷给孩子报了识字班、英语启蒙、钢琴课。你的孩子对搭积木和户外玩耍更感兴趣。你如何选择？</p>
+    <div class="decision-options">
+      <button class="decision-opt" onclick="makeDecision(0,0)">A. 跟上大部队，给孩子报2-3个启蒙班，"不能输在起跑线"</button>
+      <button class="decision-opt" onclick="makeDecision(0,1)">B. 只报1个孩子有兴趣的活动（如搭积木/乐高），其余时间自由玩耍和户外运动</button>
+      <button class="decision-opt" onclick="makeDecision(0,2)">C. 自己在家教识字和算术，每天1小时，"笨鸟先飞"</button>
+    </div>
+    <div class="decision-feedback" id="feedback0"></div>
+  </div>
+
+  <div class="decision-scenario" id="decision2">
+    <h3 style="color:var(--accent);margin-bottom:8px">&#x1F3AF; 第 2 轮：教育路线选择</h3>
+    <p style="font-size:.9rem;color:var(--text-light);margin-bottom:12px"><strong>场景：</strong>孩子初中毕业，成绩中等偏上但不拔尖（年级前30%），动手能力强（喜欢拆装电器、做手工），但厌恶刷题。面对高中vs职校分流，你的建议是？</p>
+    <div class="decision-options">
+      <button class="decision-opt" onclick="makeDecision(1,0)">A. 坚持上普通高中，"大学是唯一出路"，多补课总能上去</button>
+      <button class="decision-opt" onclick="makeDecision(1,1)">B. 选择有企业合作的优质职业学校，读新能源/先进制造等有市场需求的专业</button>
+      <button class="decision-opt" onclick="makeDecision(1,2)">C. 送出国读高中，"换个赛道"避开国内竞争</button>
+    </div>
+    <div class="decision-feedback" id="feedback1"></div>
+  </div>
+
+  <div class="decision-scenario" id="decision3">
+    <h3 style="color:var(--accent);margin-bottom:8px">&#x1F3AF; 第 3 轮：电子产品管理</h3>
+    <p style="font-size:.9rem;color:var(--text-light);margin-bottom:12px"><strong>场景：</strong>孩子上高一，周末使用电脑时间很长，自称在"学编程"和"拥抱AI"，但你发现他经常在玩游戏和刷短视频。你怎么处理？</p>
+    <div class="decision-options">
+      <button class="decision-opt" onclick="makeDecision(2,0)">A. 完全禁止电子产品，"一刀切"最省心</button>
+      <button class="decision-opt" onclick="makeDecision(2,1)">B. 约定规则（如每天最多1小时娱乐使用），提供替代活动（运动/兴趣班），并亲自参与了解他在做什么</button>
+      <button class="decision-opt" onclick="makeDecision(2,2)">C. 不管，"孩子大了该自己负责"，相信他的自控力</button>
+    </div>
+    <div class="decision-feedback" id="feedback2"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+
+// ====== GLOBALS ======
+var LS_KEY = "edu_methods_mks";
+var LS = {};
+try {
+  LS = JSON.parse(localStorage.getItem(LS_KEY)) || {};
+} catch(e) { LS = {}; }
+if (!LS.learned) LS.learned = [];
+if (!LS.wrong) LS.wrong = [];
+if (!LS.quizHistory) LS.quizHistory = [];
+if (!LS.examHistory) LS.examHistory = [];
+
+function save() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(LS)); } catch(e) {}
+}
+
+// ====== CONCEPTS (JSON embedded) ======
+var concepts = [{"id": "c1", "name": "普娃定位", "lecture": "01", "def": "95%的孩子属于普娃——无他人不可替代的优势（智力/体能/家庭等），统计学上不超过2个标准差。核心洞察：普娃间差距不大，教育质量直接决定谁更突出。", "analogy": "跑步比赛：牛娃是专业选手（博尔特级），普娃是业余跑者。业余跑者之间的胜负不取决于天赋差距，而取决于谁训练更科学、更持续。", "example": "吴军自身经历：中学时自觉度不高，但大学后发现多数同学持续学习能力更弱。他的孩子高中/大学后成绩突飞猛进，源于保持了学习动力。", "counter": "误区：把“概率极小的成就”（如进斯坦福/C9）作为目标。中国每年斯坦福本科录取仅约10人，C9年招生仅占大学新生1%。"}, {"id": "c2", "name": "教育三重目的", "lecture": "03", "def": "①明辨是非（认知世界真相+理性判断）；②掌握谋生手段（专业能力）；③扩展发展机会（长期竞争优势）。三者需平衡，不可偏废。", "analogy": "建房子：明辨是非是地基（判断力决定一切），谋生手段是主体结构（能住人），发展机会是楼层高度（能走多远）。地基不牢，楼越高越危险。", "example": "知道航空知识就不会被“民间科学家自制飞机”忽悠；知道宏观经济学就能识别“打败市场”的承诺不可信。", "counter": "手段目的化：把“考上好大学”当作教育终点而非中间站。上大学是手段，明辨是非+谋生+发展才是目的。"}, {"id": "c3", "name": "AI时代教育变革", "lecture": "04-05", "def": "教育重心从读写转向计算；需把握三大关系：通识vs技能（先立足再发展）、需求vs兴趣（无免费午餐）、深度vs广度（广度优先避免同质化）。", "analogy": "汽车时代：不会开车也能坐车到达目的地，但会开车的人选择更多、走得更远。AI是“车”，通识+判断力是“驾驶技术”。", "example": "方家园教授用AI+大数据诊断上万名学生，B级生达A+，4.5个月完成9个月内容——效率提升源于精准定位知识盲点。", "counter": "认为AI时代不需要学习——恰好相反，高水平读写能力是鉴别和改进AI内容的前提。“写作差的人甚至不知道AI写得差。”"}, {"id": "c4", "name": "因材施教", "lecture": "05", "def": "根据每个学生的知识盲点和学习节奏进行个性化教学。AI时代技术实现路径：大数据精准诊断+自适应学习系统。核心原则：以学为主而非以教为主。", "analogy": "GPS导航vs固定路线大巴：传统课堂是大巴（不管你去哪，路线固定），AI因材施教是GPS（知道你在哪、要去哪、该左转还是右转）。", "example": "传统课堂中早懂学生被迫陪听，未懂学生被迫跟进——两者时间都被浪费。因材施教让每个人按自己节奏前进。", "counter": "AI不能替代家长的陪伴和情感支持。技术是效率工具，亲子关系和内在动力才是教育成功的根基。"}, {"id": "c5", "name": "父母是天花板", "lecture": "07", "def": "家长素质直接决定孩子发展上限。天花板通过三种机制形成：行为模仿（孩子复刻家长为人处世）、思维传递（认知框架塑造世界观）、资源分配（视野决定机会）。", "analogy": "鱼缸里的鱼：鱼能长多大不取决于鱼本身，而取决于鱼缸大小。家长就是那个鱼缸——优秀家长是海洋，失职家长是杯子。", "example": "作者童年随父母进实验室形成对实验的自然认知；晚餐时讨论财经新闻，孩子成年后自然掌握投资思维——这是“耳濡目染”的力量。", "counter": "误区：将孩子视为投资品（“我花了多少钱，你对得起我吗？”）。正确观念：付出基于爱而非回报，否则双方都被绑架。"}, {"id": "c6", "name": "认知发展阶段", "lecture": "12", "def": "皮亚杰四阶段：感知运动(0-2岁，感知世界)、前运算(2-7岁，自我中心思维)、具体运算(7-12岁，具象逻辑)、抽象运算(12岁+，演绎推理)。教育必须匹配发展阶段。", "analogy": "种菜：不同季节种不同的菜，冬天种西瓜只会颗粒无收。同样，7岁前孩子不具备逻辑运算能力，强行灌输=冬天种西瓜。", "example": "7-12岁是词汇量爆发期+同理心发展关键期，此时加强阅读和社交引导效果最好。12岁后才能理解代数中的抽象变量概念。", "counter": "6岁学1小时的内容，7岁只需12分钟——超前教育的边际效益可能断崖式下跌，挤占2-7岁关键能力培养黄金期。"}, {"id": "c7", "name": "斯宾塞五层次", "lecture": "13-14", "def": "知识优先级（从底层到顶层）：①直接自我保全（谋生·人际）；②间接自我保全（理财·法律）；③为人父母；④好公民；⑤文化娱乐（凡尔赛知识）。没有①，再多⑤也无意义。", "analogy": "衣服比喻：保暖功能（基础能力）是“1”，装饰功能（才艺）是“0”。没有“1”，再多的“0”（钢琴/击剑/舞蹈）也只是零。", "example": "小常具备基本谋生能力+人际技能→生活无忧；小梅仅擅长经商但缺乏人性洞察→财富易流失。光有钱无法替代基本生存技能。", "counter": "名媛班、为淑女形象学芭蕾等形式化才艺培训——仅有表面装饰而无内核支撑，反而培养出“公主病/王子病”。"}, {"id": "c8", "name": "天赋发掘", "lecture": "17", "def": "天赋是先天的智力和能力优势，只能发掘不能创造。六大类型：艺术·学术·运动·技术·人际·多元。三大发掘方法：自然观察·多元尝试·专业评估。", "analogy": "淘金：天赋就像金矿，不是每个人脚下都有，但大多数人至少有一种。关键不是“制造金子”而是“找到自己的矿脉”然后深入挖掘。", "example": "拿破仑童年擅长指挥打仗游戏→显示早期指挥天赋；吴军女儿在高尔夫沙坑击球时专注满足→发现运动天赋。", "counter": "过早下定论：多数人数学潜力依赖启蒙培养，照本宣科式教学易埋没天赋。艺术道路需谨慎——若高一仍未获省级比赛奖项，建议仅作兴趣。"}, {"id": "c9", "name": "教育分流", "lecture": "20,22", "def": "教育体系分三条路径：精英教育（极少数）、普通高等教育（大多数）、职业教育（实践能力强者）。核心原则：适合孩子的路径才是最优解。", "analogy": "登山：不是所有人都要走同一条路登顶。有人适合攀岩（精英教育），有人走台阶（普通高等教育），有人坐缆车+步行结合（职业教育）。到达山顶才是目的。", "example": "日本2800+所职业学校，与普通高等教育人数相当（约60万/年），2024年就业率均95%+，部分职校生手握3-4个工作机会。", "counter": "认知陷阱：将分流等同于淘汰。部分蓝领工作收入和福利已高于白领，社会地位取决于工作性质和收入，而非学历标签。"}, {"id": "c10", "name": "考试策略", "lecture": "18", "def": "备考=战略+战术。战略：区分考试类型、理解五大影响因素（休息·复习·学习·环境·智力）、制定合理目标。战术：学习阶段当场搞懂+复习阶段80/20聚焦+考场稳定发挥。", "analogy": "打仗：战略是决定打哪座城、投入多少兵力；战术是怎么攻城效率最高。多数学生只有战术（刷题）没有战略（分析什么值得刷）。", "example": "80-20法则：大学考试80%分数来自20%内容→80%时间复习这20%；中学80%分数来自60%内容→仍聚焦高频考点。", "counter": "“粗心”的本质多为知识掌握不扎实——概念清晰后可大幅减少。发挥=实力的一部分：冠军运动员的心理素质是平时训练出来的。"}];
+
+// ====== MCQ (JSON embedded) ======
+var allMCQ = [{"q": "根据吴军的观点，普娃在总人口中的占比约为？", "options": ["95%", "75%", "50%", "99%"], "answer": 0}, {"q": "吴军认为教育三重目的中最基础的一层是？", "options": ["掌握谋生手段", "扩展发展机会", "考上好大学", "明辨是非的判断能力"], "answer": 3}, {"q": "AI时代教育重心从读写转向什么？", "options": ["背诵", "计算", "艺术", "体育"], "answer": 1}, {"q": "皮亚杰认知发展理论中，7-12岁属于哪个阶段？", "options": ["具体运算阶段", "前运算阶段", "感知运动阶段", "抽象运算阶段"], "answer": 0}, {"q": "斯宾塞五层次知识理论中，最底层（最重要）的是？", "options": ["文化娱乐知识", "为人父母的知识", "直接自我保全的知识", "成为好公民的知识"], "answer": 2}, {"q": "吴军认为“父母是孩子的天花板”，天花板形成的最主要机制是？", "options": ["经济投入", "行为模仿与思维传递", "基因遗传", "学校选择"], "answer": 1}, {"q": "关于早教，吴军的核心观点是？", "options": ["早教是准备而非超前竞争，需匹配发育阶段", "完全不需要早教", "越早越好，不能输在起跑线", "3岁前必须学会认字和算术"], "answer": 0}, {"q": "KIPP计划与快乐教育的根本区别在于？", "options": ["KIPP收费更贵", "KIPP是线上教育", "KIPP只教数学", "KIPP建立低起点激励+高期望，不无条件降低要求"], "answer": 3}, {"q": "关于留学决策，吴军认为最需要避免的误区是？", "options": ["选择美国大学", "选择英语国家", "换池游泳（逃避国内竞争）", "本科阶段出国"], "answer": 2}, {"q": "教育分流中，哪个时间点分流效率最高？", "options": ["初中毕业", "高中毕业", "大学本科毕业", "小学毕业"], "answer": 0}, {"q": "天赋发掘的三大方法不包括？", "options": ["观察自然表现", "创造多元尝试机会", "寻求专业评估", "强制每天练习4小时"], "answer": 3}, {"q": "关于电子产品使用，吴军的核心建议是？", "options": ["完全禁止", "无限制使用", "约定规则+提供替代活动+亲自参与", "只允许用于学习"], "answer": 2}, {"q": "考试备考中，吴军认为“80-20法则”指的是？", "options": ["80%学生能考80分", "80%时间复习20%核心内容", "80%题目来自20%知识点（大学场景）", "每天学习80分钟休息20分钟"], "answer": 2}, {"q": "关于“快乐教育”，吴军的观点是？", "options": ["学习应该永远是快乐的", "不痛苦不等于快乐，应避免无条件降低要求", "快乐是教育的必要目标", "孩子天生热爱学习"], "answer": 1}, {"q": "教育路线的三条路径中，面向大多数人的是？", "options": ["精英教育", "普通高等教育", "职业教育", "家庭教育"], "answer": 1}];
+
+// ====== SA Questions (JSON embedded) ======
+var saQuestions = [{"q": "请简述教育的三重目的及其相互关系。", "keywords": "明辨是非,谋生手段,发展机会"}, {"q": "皮亚杰认知发展四阶段是什么？为什么“教育必须匹配发展阶段”？", "keywords": "感知运动,前运算,具体运算,抽象运算,匹配"}, {"q": "斯宾塞五层次知识理论对你安排孩子课外培训有什么启示？", "keywords": "直接自我保全,优先级,才艺"}];
+
+// ====== TAB SWITCHING ======
+var currentTab = 0;
+function switchTab(idx) {
+  currentTab = idx;
+  var btns = document.querySelectorAll(".tab-btn");
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.toggle("active", i === idx); }
+  var panels = document.querySelectorAll(".tab-panel");
+  for (var i = 0; i < panels.length; i++) { panels[i].classList.toggle("active", i === idx); }
+  if (idx === 0) renderOverview();
+  if (idx === 4) renderReview();
+}
+
+// ====== TAB 0: OVERVIEW ======
+function renderOverview() {
+  // Sub-item 1: concept grid
+  var gridHtml = "";
+  concepts.forEach(function(c) {
+    var ci = concepts.indexOf(c);
+    gridHtml += '<div class="card" style="cursor:pointer" onclick="switchTab(1);setCard(' + ci + ')">'
+      + '<h4 style="color:var(--accent)">' + c.name + '</h4>'
+      + '<p style="font-size:.8rem;color:var(--text-light);margin-top:6px">' + c.def.substring(0,60) + '...</p>'
+      + '<span class="tag-outline" style="margin-top:8px">第' + c.lecture + '讲</span>'
+      + '</div>';
+  });
+  document.getElementById("conceptOverview").innerHTML = gridHtml;
+
+  // Sub-item 2: MKS core
+  var mksIds = ["c1","c2","c5","c6"];
+  var mksLabels = {
+    "c1":"一切教育策略的前提——先认清95%是普娃的现实",
+    "c2":"教育的方向盘——避免手段目的化，三个维度缺一不可",
+    "c5":"教育的承重墙——家长的认知高度就是孩子能达到的上限",
+    "c6":"教育的时间表——违背发展阶段，一切方法都是徒劳"
+  };
+  var mksHtml = "";
+  concepts.forEach(function(c) {
+    if (mksIds.indexOf(c.id) === -1) return;
+    mksHtml += '<div class="mks-core"><strong style="color:var(--accent)">\u2605 ' + c.name + '（第' + c.lecture + '讲）</strong>'
+      + '<p style="font-size:.85rem;color:var(--text-light);margin-top:4px">' + c.def + '</p>'
+      + '<p style="font-size:.78rem;color:var(--accent);margin-top:4px"><em>骨架理由：' + (mksLabels[c.id]||"") + '</em></p></div>';
+  });
+  document.getElementById("mksCoreContainer").innerHTML = mksHtml;
+
+  // Sub-item 3: SVG
+  document.getElementById("svgContainer").innerHTML = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="1485pt" height="352pt"
+ viewBox="0.00 0.00 1485.00 352.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 348)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-348 1481,-348 1481,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<path fill="#fffaf2" stroke="#d4a574" stroke-dasharray="5,2" d="M722,-246C722,-246 1242,-246 1242,-246 1248,-246 1254,-252 1254,-258 1254,-258 1254,-324 1254,-324 1254,-330 1248,-336 1242,-336 1242,-336 722,-336 722,-336 716,-336 710,-330 710,-324 710,-324 710,-258 710,-258 710,-252 716,-246 722,-246"/>
+<text text-anchor="middle" x="982" y="-324" font-family="Times,serif" font-size="10.00" fill="#3d2f2f">图例</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2" d="M687.5,-290C687.5,-290 588.5,-290 588.5,-290 582.5,-290 576.5,-284 576.5,-278 576.5,-278 576.5,-266 576.5,-266 576.5,-260 582.5,-254 588.5,-254 588.5,-254 687.5,-254 687.5,-254 693.5,-254 699.5,-260 699.5,-266 699.5,-266 699.5,-278 699.5,-278 699.5,-284 693.5,-290 687.5,-290"/>
+<text text-anchor="middle" x="638" y="-275.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">教育金字塔·基石</text>
+<text text-anchor="middle" x="638" y="-263.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">理念筑基 × 方法落地</text>
+</g>
+<!-- L1_idea -->
+<g id="node2" class="node">
+<title>L1_idea</title>
+<path fill="#d4a574" stroke="black" d="M425.5,-208C425.5,-208 354.5,-208 354.5,-208 348.5,-208 342.5,-202 342.5,-196 342.5,-196 342.5,-184 342.5,-184 342.5,-178 348.5,-172 354.5,-172 354.5,-172 425.5,-172 425.5,-172 431.5,-172 437.5,-178 437.5,-184 437.5,-184 437.5,-196 437.5,-196 437.5,-202 431.5,-208 425.5,-208"/>
+<text text-anchor="middle" x="390" y="-193.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">理念层</text>
+<text text-anchor="middle" x="390" y="-181.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">教育认知与方向</text>
+</g>
+<!-- root&#45;&gt;L1_idea -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;L1_idea</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M585.1,-253.94C544.67,-240.89 489.01,-222.94 447.48,-209.54"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="448.37,-206.15 437.78,-206.41 446.22,-212.81 448.37,-206.15"/>
+<text text-anchor="middle" x="547.5" y="-228.8" font-family="Noto Sans SC" font-size="9.00">指引方向</text>
+</g>
+<!-- L1_method -->
+<g id="node3" class="node">
+<title>L1_method</title>
+<path fill="#d4a574" stroke="black" d="M1086.5,-208C1086.5,-208 1015.5,-208 1015.5,-208 1009.5,-208 1003.5,-202 1003.5,-196 1003.5,-196 1003.5,-184 1003.5,-184 1003.5,-178 1009.5,-172 1015.5,-172 1015.5,-172 1086.5,-172 1086.5,-172 1092.5,-172 1098.5,-178 1098.5,-184 1098.5,-184 1098.5,-196 1098.5,-196 1098.5,-202 1092.5,-208 1086.5,-208"/>
+<text text-anchor="middle" x="1051" y="-193.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">方法层</text>
+<text text-anchor="middle" x="1051" y="-181.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">实践策略与路径</text>
+</g>
+<!-- root&#45;&gt;L1_method -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;L1_method</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M680.4,-253.98C688.79,-251.02 697.6,-248.19 706,-246 805.22,-220.11 923.87,-204.43 993,-196.76"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="993.68,-200.21 1003.24,-195.65 992.92,-193.25 993.68,-200.21"/>
+<text text-anchor="middle" x="808.5" y="-228.8" font-family="Noto Sans SC" font-size="9.00">落地执行</text>
+</g>
+<!-- L2_position -->
+<g id="node4" class="node">
+<title>L2_position</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M89.5,-126C89.5,-126 16.5,-126 16.5,-126 10.5,-126 4.5,-120 4.5,-114 4.5,-114 4.5,-102 4.5,-102 4.5,-96 10.5,-90 16.5,-90 16.5,-90 89.5,-90 89.5,-90 95.5,-90 101.5,-96 101.5,-102 101.5,-102 101.5,-114 101.5,-114 101.5,-120 95.5,-126 89.5,-126"/>
+<text text-anchor="middle" x="53" y="-111.2" font-family="Noto Sans SC" font-size="11.00">普娃定位</text>
+<text text-anchor="middle" x="53" y="-99.2" font-family="Noto Sans SC" font-size="11.00">95%是普通孩子</text>
+</g>
+<!-- L1_idea&#45;&gt;L2_position -->
+<g id="edge4" class="edge">
+<title>L1_idea&#45;&gt;L2_position</title>
+<path fill="none" stroke="#d4a574" d="M342.05,-179.14C286.46,-167.47 192.19,-146.97 112,-126 111.79,-125.94 111.57,-125.89 111.36,-125.83"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="112.13,-122.42 101.56,-123.2 110.31,-129.18 112.13,-122.42"/>
+<text text-anchor="middle" x="245.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">首要前提</text>
+</g>
+<!-- L2_purpose -->
+<g id="node5" class="node">
+<title>L2_purpose</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M223,-126C223,-126 133,-126 133,-126 127,-126 121,-120 121,-114 121,-114 121,-102 121,-102 121,-96 127,-90 133,-90 133,-90 223,-90 223,-90 229,-90 235,-96 235,-102 235,-102 235,-114 235,-114 235,-120 229,-126 223,-126"/>
+<text text-anchor="middle" x="178" y="-111.2" font-family="Noto Sans SC" font-size="11.00">教育三重目的</text>
+<text text-anchor="middle" x="178" y="-99.2" font-family="Noto Sans SC" font-size="11.00">明辨是非·谋生·发展</text>
+</g>
+<!-- L1_idea&#45;&gt;L2_purpose -->
+<g id="edge5" class="edge">
+<title>L1_idea&#45;&gt;L2_purpose</title>
+<path fill="none" stroke="#d4a574" d="M344.78,-171.94C311.99,-159.56 267.48,-142.77 232.69,-129.64"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="233.74,-126.29 223.15,-126.04 231.27,-132.84 233.74,-126.29"/>
+<text text-anchor="middle" x="315.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">根本问题</text>
+</g>
+<!-- L2_future -->
+<g id="node6" class="node">
+<title>L2_future</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M375,-126C375,-126 265,-126 265,-126 259,-126 253,-120 253,-114 253,-114 253,-102 253,-102 253,-96 259,-90 265,-90 265,-90 375,-90 375,-90 381,-90 387,-96 387,-102 387,-102 387,-114 387,-114 387,-120 381,-126 375,-126"/>
+<text text-anchor="middle" x="320" y="-111.2" font-family="Noto Sans SC" font-size="11.00">AI时代方向</text>
+<text text-anchor="middle" x="320" y="-99.2" font-family="Noto Sans SC" font-size="11.00">读写&#45;&gt;计算·通识与技能</text>
+</g>
+<!-- L1_idea&#45;&gt;L2_future -->
+<g id="edge6" class="edge">
+<title>L1_idea&#45;&gt;L2_future</title>
+<path fill="none" stroke="#d4a574" d="M374.81,-171.64C365.11,-160.56 352.39,-146.02 341.64,-133.74"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="344.14,-131.27 334.92,-126.05 338.87,-135.88 344.14,-131.27"/>
+<text text-anchor="middle" x="378.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">时代背景</text>
+</g>
+<!-- L2_early -->
+<g id="node7" class="node">
+<title>L2_early</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M503,-126C503,-126 417,-126 417,-126 411,-126 405,-120 405,-114 405,-114 405,-102 405,-102 405,-96 411,-90 417,-90 417,-90 503,-90 503,-90 509,-90 515,-96 515,-102 515,-102 515,-114 515,-114 515,-120 509,-126 503,-126"/>
+<text text-anchor="middle" x="460" y="-111.2" font-family="Noto Sans SC" font-size="11.00">早教科学</text>
+<text text-anchor="middle" x="460" y="-99.2" font-family="Noto Sans SC" font-size="11.00">匹配发育·避免内卷</text>
+</g>
+<!-- L1_idea&#45;&gt;L2_early -->
+<g id="edge7" class="edge">
+<title>L1_idea&#45;&gt;L2_early</title>
+<path fill="none" stroke="#d4a574" d="M405.19,-171.64C414.89,-160.56 427.61,-146.02 438.36,-133.74"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="441.13,-135.88 445.08,-126.05 435.86,-131.27 441.13,-135.88"/>
+<text text-anchor="middle" x="448.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">起点策略</text>
+</g>
+<!-- L2_happy -->
+<g id="node8" class="node">
+<title>L2_happy</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M637,-126C637,-126 545,-126 545,-126 539,-126 533,-120 533,-114 533,-114 533,-102 533,-102 533,-96 539,-90 545,-90 545,-90 637,-90 637,-90 643,-90 649,-96 649,-102 649,-102 649,-114 649,-114 649,-120 643,-126 637,-126"/>
+<text text-anchor="middle" x="591" y="-111.2" font-family="Noto Sans SC" font-size="11.00">快乐教育反思</text>
+<text text-anchor="middle" x="591" y="-99.2" font-family="Noto Sans SC" font-size="11.00">KIPP·努力&#45;回报循环</text>
+</g>
+<!-- L1_idea&#45;&gt;L2_happy -->
+<g id="edge8" class="edge">
+<title>L1_idea&#45;&gt;L2_happy</title>
+<path fill="none" stroke="#d4a574" d="M437.54,-181.68C465.12,-176.31 500.03,-167.54 529,-154 541.05,-148.37 553.15,-140.27 563.41,-132.49"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="565.86,-135.02 571.57,-126.09 561.54,-129.51 565.86,-135.02"/>
+<text text-anchor="middle" x="564.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">常见误区</text>
+</g>
+<!-- L1_method&#45;&gt;L1_idea -->
+<g id="edge3" class="edge">
+<title>L1_method&#45;&gt;L1_idea</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M1003.45,-190C884.84,-190 576.2,-190 447.58,-190"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="447.54,-186.5 437.54,-190 447.54,-193.5 447.54,-186.5"/>
+<text text-anchor="middle" x="720.5" y="-195.8" font-family="Noto Sans SC" font-size="9.00">反馈校准</text>
+</g>
+<!-- M2_parent -->
+<g id="node9" class="node">
+<title>M2_parent</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M747,-126C747,-126 679,-126 679,-126 673,-126 667,-120 667,-114 667,-114 667,-102 667,-102 667,-96 673,-90 679,-90 679,-90 747,-90 747,-90 753,-90 759,-96 759,-102 759,-102 759,-114 759,-114 759,-120 753,-126 747,-126"/>
+<text text-anchor="middle" x="713" y="-111.2" font-family="Noto Sans SC" font-size="11.00">父母是天花板</text>
+<text text-anchor="middle" x="713" y="-99.2" font-family="Noto Sans SC" font-size="11.00">陪伴·启蒙·示范</text>
+</g>
+<!-- L1_method&#45;&gt;M2_parent -->
+<g id="edge9" class="edge">
+<title>L1_method&#45;&gt;M2_parent</title>
+<path fill="none" stroke="#d4a574" d="M1003.37,-184.9C956.97,-180.16 884.74,-170.75 824,-154 801.95,-147.92 778.35,-138.76 758.61,-130.28"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="759.82,-126.99 749.26,-126.19 757.02,-133.4 759.82,-126.99"/>
+<text text-anchor="middle" x="833.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">根基</text>
+</g>
+<!-- M2_stage -->
+<g id="node10" class="node">
+<title>M2_stage</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M872.5,-126C872.5,-126 789.5,-126 789.5,-126 783.5,-126 777.5,-120 777.5,-114 777.5,-114 777.5,-102 777.5,-102 777.5,-96 783.5,-90 789.5,-90 789.5,-90 872.5,-90 872.5,-90 878.5,-90 884.5,-96 884.5,-102 884.5,-102 884.5,-114 884.5,-114 884.5,-120 878.5,-126 872.5,-126"/>
+<text text-anchor="middle" x="831" y="-111.2" font-family="Noto Sans SC" font-size="11.00">年龄规律</text>
+<text text-anchor="middle" x="831" y="-99.2" font-family="Noto Sans SC" font-size="11.00">皮亚杰认知四阶段</text>
+</g>
+<!-- L1_method&#45;&gt;M2_stage -->
+<g id="edge10" class="edge">
+<title>L1_method&#45;&gt;M2_stage</title>
+<path fill="none" stroke="#d4a574" d="M1004.07,-171.94C969.9,-159.51 923.46,-142.62 887.29,-129.47"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="888.45,-126.17 877.85,-126.04 886.06,-132.74 888.45,-126.17"/>
+<text text-anchor="middle" x="972.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">遵循规律</text>
+</g>
+<!-- M2_priority -->
+<g id="node11" class="node">
+<title>M2_priority</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M997.5,-126C997.5,-126 914.5,-126 914.5,-126 908.5,-126 902.5,-120 902.5,-114 902.5,-114 902.5,-102 902.5,-102 902.5,-96 908.5,-90 914.5,-90 914.5,-90 997.5,-90 997.5,-90 1003.5,-90 1009.5,-96 1009.5,-102 1009.5,-102 1009.5,-114 1009.5,-114 1009.5,-120 1003.5,-126 997.5,-126"/>
+<text text-anchor="middle" x="956" y="-111.2" font-family="Noto Sans SC" font-size="11.00">知识优先级</text>
+<text text-anchor="middle" x="956" y="-99.2" font-family="Noto Sans SC" font-size="11.00">斯宾塞五层次理论</text>
+</g>
+<!-- L1_method&#45;&gt;M2_priority -->
+<g id="edge11" class="edge">
+<title>L1_method&#45;&gt;M2_priority</title>
+<path fill="none" stroke="#d4a574" d="M1030.39,-171.64C1016.85,-160.24 998.97,-145.18 984.13,-132.69"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="986.15,-129.81 976.25,-126.05 981.64,-135.17 986.15,-129.81"/>
+<text text-anchor="middle" x="1027.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">内容筛选</text>
+</g>
+<!-- M2_talent -->
+<g id="node12" class="node">
+<title>M2_talent</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1126,-126C1126,-126 1040,-126 1040,-126 1034,-126 1028,-120 1028,-114 1028,-114 1028,-102 1028,-102 1028,-96 1034,-90 1040,-90 1040,-90 1126,-90 1126,-90 1132,-90 1138,-96 1138,-102 1138,-102 1138,-114 1138,-114 1138,-120 1132,-126 1126,-126"/>
+<text text-anchor="middle" x="1083" y="-111.2" font-family="Noto Sans SC" font-size="11.00">天赋发掘</text>
+<text text-anchor="middle" x="1083" y="-99.2" font-family="Noto Sans SC" font-size="11.00">六大类型·三大方法</text>
+</g>
+<!-- L1_method&#45;&gt;M2_talent -->
+<g id="edge12" class="edge">
+<title>L1_method&#45;&gt;M2_talent</title>
+<path fill="none" stroke="#d4a574" d="M1057.94,-171.64C1062.17,-161.09 1067.64,-147.39 1072.4,-135.51"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1075.72,-136.63 1076.18,-126.05 1069.22,-134.03 1075.72,-136.63"/>
+<text text-anchor="middle" x="1086.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">发现特长</text>
+</g>
+<!-- M2_exam -->
+<g id="node13" class="node">
+<title>M2_exam</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1237.5,-126C1237.5,-126 1168.5,-126 1168.5,-126 1162.5,-126 1156.5,-120 1156.5,-114 1156.5,-114 1156.5,-102 1156.5,-102 1156.5,-96 1162.5,-90 1168.5,-90 1168.5,-90 1237.5,-90 1237.5,-90 1243.5,-90 1249.5,-96 1249.5,-102 1249.5,-102 1249.5,-114 1249.5,-114 1249.5,-120 1243.5,-126 1237.5,-126"/>
+<text text-anchor="middle" x="1203" y="-111.2" font-family="Noto Sans SC" font-size="11.00">考试策略</text>
+<text text-anchor="middle" x="1203" y="-99.2" font-family="Noto Sans SC" font-size="11.00">战略+战术优化</text>
+</g>
+<!-- L1_method&#45;&gt;M2_exam -->
+<g id="edge13" class="edge">
+<title>L1_method&#45;&gt;M2_exam</title>
+<path fill="none" stroke="#d4a574" d="M1083.61,-171.84C1106.35,-159.87 1136.88,-143.8 1161.38,-130.9"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1163.23,-133.89 1170.45,-126.13 1159.97,-127.69 1163.23,-133.89"/>
+<text text-anchor="middle" x="1154.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">应试工具</text>
+</g>
+<!-- M2_track -->
+<g id="node14" class="node">
+<title>M2_track</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1354.5,-126C1354.5,-126 1279.5,-126 1279.5,-126 1273.5,-126 1267.5,-120 1267.5,-114 1267.5,-114 1267.5,-102 1267.5,-102 1267.5,-96 1273.5,-90 1279.5,-90 1279.5,-90 1354.5,-90 1354.5,-90 1360.5,-90 1366.5,-96 1366.5,-102 1366.5,-102 1366.5,-114 1366.5,-114 1366.5,-120 1360.5,-126 1354.5,-126"/>
+<text text-anchor="middle" x="1317" y="-111.2" font-family="Noto Sans SC" font-size="11.00">教育分流</text>
+<text text-anchor="middle" x="1317" y="-99.2" font-family="Noto Sans SC" font-size="11.00">二元制·普职融合</text>
+</g>
+<!-- L1_method&#45;&gt;M2_track -->
+<g id="edge14" class="edge">
+<title>L1_method&#45;&gt;M2_track</title>
+<path fill="none" stroke="#d4a574" d="M1098.7,-176.24C1122.32,-169.79 1151.23,-161.72 1177,-154 1203.56,-146.05 1232.77,-136.74 1257.61,-128.67"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1258.84,-131.95 1267.26,-125.52 1256.67,-125.3 1258.84,-131.95"/>
+<text text-anchor="middle" x="1225.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">路径分化</text>
+</g>
+<!-- M2_route -->
+<g id="node15" class="node">
+<title>M2_route</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1465,-126C1465,-126 1397,-126 1397,-126 1391,-126 1385,-120 1385,-114 1385,-114 1385,-102 1385,-102 1385,-96 1391,-90 1397,-90 1397,-90 1465,-90 1465,-90 1471,-90 1477,-96 1477,-102 1477,-102 1477,-114 1477,-114 1477,-120 1471,-126 1465,-126"/>
+<text text-anchor="middle" x="1431" y="-111.2" font-family="Noto Sans SC" font-size="11.00">教育路线选择</text>
+<text text-anchor="middle" x="1431" y="-99.2" font-family="Noto Sans SC" font-size="11.00">精英·普通·职业</text>
+</g>
+<!-- L1_method&#45;&gt;M2_route -->
+<g id="edge15" class="edge">
+<title>L1_method&#45;&gt;M2_route</title>
+<path fill="none" stroke="#d4a574" d="M1098.54,-181.81C1160.32,-172.02 1271.6,-152.86 1375.19,-126.1"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1376.08,-129.48 1384.87,-123.57 1374.31,-122.71 1376.08,-129.48"/>
+<text text-anchor="middle" x="1314.5" y="-146.8" font-family="Noto Sans SC" font-size="9.00">终局选择</text>
+</g>
+<!-- L2_position&#45;&gt;M2_route -->
+<g id="edge17" class="edge">
+<title>L2_position&#45;&gt;M2_route</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M101.7,-123.95C105.16,-124.75 108.62,-125.44 112,-126 285.19,-154.49 726.03,-152.07 901.5,-148 1109.26,-143.19 1166.56,-163.42 1374.69,-125.95"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1375.51,-129.36 1384.72,-124.12 1374.25,-122.47 1375.51,-129.36"/>
+<text text-anchor="middle" x="874" y="-146.8" font-family="Noto Sans SC" font-size="9.00">定位决定路径</text>
+</g>
+<!-- L3_puwa -->
+<g id="node16" class="node">
+<title>L3_puwa</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="96,-40 0,-40 0,-4 102,-4 102,-34 96,-40"/>
+<polyline fill="none" stroke="#8b7355" points="96,-40 96,-34 "/>
+<polyline fill="none" stroke="#8b7355" points="102,-34 96,-34 "/>
+<text text-anchor="middle" x="51" y="-25.2" font-family="Noto Sans SC" font-size="11.00">完美三要素</text>
+<text text-anchor="middle" x="51" y="-13.2" font-family="Noto Sans SC" font-size="11.00">天赋+热爱+耕耘</text>
+</g>
+<!-- L2_position&#45;&gt;L3_puwa -->
+<g id="edge21" class="edge">
+<title>L2_position&#45;&gt;L3_puwa</title>
+<path fill="none" stroke="#8b7355" d="M52.59,-89.6C52.32,-78.26 51.96,-63.23 51.65,-50.32"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="55.14,-50.01 51.41,-40.1 48.15,-50.18 55.14,-50.01"/>
+<text text-anchor="middle" x="71.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00">解决路径</text>
+</g>
+<!-- L3_4ability -->
+<g id="node17" class="node">
+<title>L3_4ability</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="232,-40 120,-40 120,-4 238,-4 238,-34 232,-40"/>
+<polyline fill="none" stroke="#8b7355" points="232,-40 232,-34 "/>
+<polyline fill="none" stroke="#8b7355" points="238,-34 232,-34 "/>
+<text text-anchor="middle" x="179" y="-25.2" font-family="Noto Sans SC" font-size="11.00">四大核心能力</text>
+<text text-anchor="middle" x="179" y="-13.2" font-family="Noto Sans SC" font-size="11.00">专业·社会·解决·独立</text>
+</g>
+<!-- L2_purpose&#45;&gt;L3_4ability -->
+<g id="edge22" class="edge">
+<title>L2_purpose&#45;&gt;L3_4ability</title>
+<path fill="none" stroke="#8b7355" d="M178.21,-89.6C178.34,-78.26 178.52,-63.23 178.67,-50.32"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="182.18,-50.14 178.8,-40.1 175.18,-50.05 182.18,-50.14"/>
+<text text-anchor="middle" x="197.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00">落地标准</text>
+</g>
+<!-- L2_future&#45;&gt;M2_exam -->
+<g id="edge19" class="edge">
+<title>L2_future&#45;&gt;M2_exam</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M387.02,-124.51C390.05,-125.06 393.05,-125.56 396,-126 396,-126 1056.06,-126 1146.37,-124.28"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1146.61,-127.78 1156.47,-123.92 1146.35,-120.78 1146.61,-127.78"/>
+<text text-anchor="middle" x="759" y="-146.8" font-family="Noto Sans SC" font-size="9.00">能力重于分数</text>
+</g>
+<!-- L3_stem -->
+<g id="node18" class="node">
+<title>L3_stem</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="356,-40 278,-40 278,-4 362,-4 362,-34 356,-40"/>
+<polyline fill="none" stroke="#8b7355" points="356,-40 356,-34 "/>
+<polyline fill="none" stroke="#8b7355" points="362,-34 356,-34 "/>
+<text text-anchor="middle" x="320" y="-25.2" font-family="Noto Sans SC" font-size="11.00">STEM基础</text>
+<text text-anchor="middle" x="320" y="-13.2" font-family="Noto Sans SC" font-size="11.00">青少年期奠定</text>
+</g>
+<!-- L2_future&#45;&gt;L3_stem -->
+<g id="edge23" class="edge">
+<title>L2_future&#45;&gt;L3_stem</title>
+<path fill="none" stroke="#8b7355" d="M320,-89.6C320,-78.26 320,-63.23 320,-50.32"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="323.5,-50.1 320,-40.1 316.5,-50.1 323.5,-50.1"/>
+<text text-anchor="middle" x="338.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00">关键基础</text>
+</g>
+<!-- L3_kipp -->
+<g id="node19" class="node">
+<title>L3_kipp</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="627,-40 549,-40 549,-4 633,-4 633,-34 627,-40"/>
+<polyline fill="none" stroke="#8b7355" points="627,-40 627,-34 "/>
+<polyline fill="none" stroke="#8b7355" points="633,-34 627,-34 "/>
+<text text-anchor="middle" x="591" y="-25.2" font-family="Noto Sans SC" font-size="11.00">KIPP计划</text>
+<text text-anchor="middle" x="591" y="-13.2" font-family="Noto Sans SC" font-size="11.00">知识就是力量</text>
+</g>
+<!-- L2_happy&#45;&gt;L3_kipp -->
+<g id="edge24" class="edge">
+<title>L2_happy&#45;&gt;L3_kipp</title>
+<path fill="none" stroke="#8b7355" d="M591,-89.6C591,-78.26 591,-63.23 591,-50.32"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="594.5,-50.1 591,-40.1 587.5,-50.1 594.5,-50.1"/>
+<text text-anchor="middle" x="609.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00">替代方案</text>
+</g>
+<!-- M2_parent&#45;&gt;L2_position -->
+<g id="edge20" class="edge">
+<title>M2_parent&#45;&gt;L2_position</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M666.93,-123.63C663.92,-124.48 660.93,-125.28 658,-126 601.11,-140.04 586.39,-143.09 528,-148 435.75,-155.75 203.12,-142.37 112,-126 111.89,-125.98 111.79,-125.96 111.68,-125.94"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="112.23,-122.48 101.72,-123.83 110.78,-129.33 112.23,-122.48"/>
+<text text-anchor="middle" x="505" y="-146.8" font-family="Noto Sans SC" font-size="9.00">认知天花板</text>
+</g>
+<!-- M2_stage&#45;&gt;L2_early -->
+<g id="edge16" class="edge">
+<title>M2_stage&#45;&gt;L2_early</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M777.36,-125.44C747.21,-134.27 708.67,-143.96 673.5,-148 621.19,-154.01 562.43,-141.56 519.82,-129.01"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="520.75,-125.63 510.17,-126.08 518.72,-132.33 520.75,-125.63"/>
+<text text-anchor="middle" x="655" y="-146.8" font-family="Noto Sans SC" font-size="9.00">理论支撑</text>
+</g>
+<!-- L3_piaget -->
+<g id="node20" class="node">
+<title>L3_piaget</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="876,-44 772,-44 772,0 882,0 882,-38 876,-44"/>
+<polyline fill="none" stroke="#8b7355" points="876,-44 876,-38 "/>
+<polyline fill="none" stroke="#8b7355" points="882,-38 876,-38 "/>
+<text text-anchor="middle" x="827" y="-31.2" font-family="Noto Sans SC" font-size="11.00">认知四阶段</text>
+<text text-anchor="middle" x="827" y="-19.2" font-family="Noto Sans SC" font-size="11.00">感知运动·前运算</text>
+<text text-anchor="middle" x="827" y="-7.2" font-family="Noto Sans SC" font-size="11.00">具体运算·抽象运算</text>
+</g>
+<!-- M2_stage&#45;&gt;L3_piaget -->
+<g id="edge25" class="edge">
+<title>M2_stage&#45;&gt;L3_piaget</title>
+<path fill="none" stroke="#8b7355" d="M830.17,-89.6C829.69,-79.41 829.06,-66.25 828.49,-54.32"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="831.98,-54.08 828.01,-44.26 824.99,-54.41 831.98,-54.08"/>
+<text text-anchor="middle" x="847.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00">理论基础</text>
+</g>
+<!-- M2_priority&#45;&gt;L2_purpose -->
+<g id="edge18" class="edge">
+<title>M2_priority&#45;&gt;L2_purpose</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M902.39,-124.27C899.56,-124.91 896.76,-125.49 894,-126 894,-126 328.65,-126 245.22,-124.65"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="245.18,-121.14 235.08,-124.33 244.97,-128.14 245.18,-121.14"/>
+<text text-anchor="middle" x="612" y="-146.8" font-family="Noto Sans SC" font-size="9.00">层次对应</text>
+</g>
+<!-- L3_spencer -->
+<g id="node21" class="node">
+<title>L3_spencer</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="1013.5,-44 900.5,-44 900.5,0 1019.5,0 1019.5,-38 1013.5,-44"/>
+<polyline fill="none" stroke="#8b7355" points="1013.5,-44 1013.5,-38 "/>
+<polyline fill="none" stroke="#8b7355" points="1019.5,-38 1013.5,-38 "/>
+<text text-anchor="middle" x="960" y="-31.2" font-family="Noto Sans SC" font-size="11.00">五层次知识</text>
+<text text-anchor="middle" x="960" y="-19.2" font-family="Noto Sans SC" font-size="11.00">直接保全&#45;&gt;为人父母</text>
+<text text-anchor="middle" x="960" y="-7.2" font-family="Noto Sans SC" font-size="11.00">好公民&#45;&gt;文化娱乐</text>
+</g>
+<!-- M2_priority&#45;&gt;L3_spencer -->
+<g id="edge26" class="edge">
+<title>M2_priority&#45;&gt;L3_spencer</title>
+<path fill="none" stroke="#8b7355" d="M956.83,-89.6C957.31,-79.41 957.94,-66.25 958.51,-54.32"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="962.01,-54.41 958.99,-44.26 955.02,-54.08 962.01,-54.41"/>
+<text text-anchor="middle" x="976.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00">理论框架</text>
+</g>
+<!-- leg1 -->
+<g id="node22" class="node">
+<title>leg1</title>
+<path fill="#fffaf2" stroke="transparent" d="M1234,-290C1234,-290 1136,-290 1136,-290 1130,-290 1124,-284 1124,-278 1124,-278 1124,-266 1124,-266 1124,-260 1130,-254 1136,-254 1136,-254 1234,-254 1234,-254 1240,-254 1246,-260 1246,-266 1246,-266 1246,-278 1246,-278 1246,-284 1240,-290 1234,-290"/>
+<text text-anchor="middle" x="1185" y="-270.1" font-family="Noto Sans SC" font-size="8.00">━ 核心驱动关系（理念互馈）</text>
+</g>
+<!-- leg2 -->
+<g id="node23" class="node">
+<title>leg2</title>
+<path fill="#fffaf2" stroke="transparent" d="M1094,-290C1094,-290 984,-290 984,-290 978,-290 972,-284 972,-278 972,-278 972,-266 972,-266 972,-260 978,-254 984,-254 984,-254 1094,-254 1094,-254 1100,-254 1106,-260 1106,-266 1106,-266 1106,-278 1106,-278 1106,-284 1100,-290 1094,-290"/>
+<text text-anchor="middle" x="1039" y="-270.1" font-family="Noto Sans SC" font-size="8.00">━ 方法论/派生关系（层内展开）</text>
+</g>
+<!-- leg3 -->
+<g id="node24" class="node">
+<title>leg3</title>
+<path fill="#fffaf2" stroke="transparent" d="M941.5,-290C941.5,-290 840.5,-290 840.5,-290 834.5,-290 828.5,-284 828.5,-278 828.5,-278 828.5,-266 828.5,-266 828.5,-260 834.5,-254 840.5,-254 840.5,-254 941.5,-254 941.5,-254 947.5,-254 953.5,-260 953.5,-266 953.5,-266 953.5,-278 953.5,-278 953.5,-284 947.5,-290 941.5,-290"/>
+<text text-anchor="middle" x="891" y="-270.1" font-family="Noto Sans SC" font-size="8.00">━ 应用/实例关系（落地产物）</text>
+</g>
+<!-- leg4 -->
+<g id="node25" class="node">
+<title>leg4</title>
+<path fill="#fffaf2" stroke="transparent" d="M798,-290C798,-290 730,-290 730,-290 724,-290 718,-284 718,-278 718,-278 718,-266 718,-266 718,-260 724,-254 730,-254 730,-254 798,-254 798,-254 804,-254 810,-260 810,-266 810,-266 810,-278 810,-278 810,-284 804,-290 798,-290"/>
+<text text-anchor="middle" x="764" y="-270.1" font-family="Noto Sans SC" font-size="8.00">┅ 跨层反馈/交叉关系</text>
+</g>
+</g>
+</svg>
+`;
+
+  // Sub-item 4: progress
+  var learnedCount = LS.learned.length;
+  var progressPct = Math.round(learnedCount / concepts.length * 100);
+  document.getElementById("overviewProgress").style.width = progressPct + "%";
+  document.getElementById("overviewProgressText").textContent = "已学习 " + learnedCount + " / " + concepts.length + " 个概念";
+  document.getElementById("overviewStats").innerHTML =
+    '<div class="stat-box"><div class="num">' + learnedCount + '</div><div class="label">已学概念</div></div>'
+    + '<div class="stat-box"><div class="num">' + LS.wrong.length + '</div><div class="label">错题数量</div></div>'
+    + '<div class="stat-box"><div class="num">' + LS.quizHistory.length + '</div><div class="label">答题总数</div></div>'
+    + '<div class="stat-box"><div class="num">' + LS.examHistory.length + '</div><div class="label">考试次数</div></div>';
+
+  // Sub-item 5: boundary table
+  var boundaryItems = [["电子产品管控细则", "日常家庭管理"], ["澳大利亚社交网络禁令(2025)", "政策参考"], ["DKU昆山杜克大学", "留学路径参考"], ["DEI平权政策", "理解美国教育背景"], ["奥数局限性", "课外培训决策"], ["Phi Beta Kappa协会", "名校圈层认知"], ["《爱弥儿》卢梭", "教育理论溯源"], ["哈克学校(The Harker)", "精英教育案例"], ["C9院校定义", "国内升学规划"], ["二元制教育(德国模式)", "教育分流理解"], ["JAMA期刊研究", "科学育儿依据"], ["信息革命三阶段", "AI时代背景"], ["MOOC公开课资源", "自学工具"], ["NAEP美国教育评估", "国际对比参考"], ["《曾国藩家书》等经典", "家长自我提升"]];
+  var bHtml = "<thead><tr><th>#</th><th>知识点</th><th>使用场景</th></tr></thead><tbody>";
+  boundaryItems.forEach(function(item, i) {
+    bHtml += "<tr><td>" + (i+1) + "</td><td>" + item[0] + "</td><td>" + item[1] + "</td></tr>";
+  });
+  bHtml += "</tbody>";
+  document.getElementById("boundaryTable").innerHTML = bHtml;
+
+  // Sub-item 6: learning path
+  var pathSteps = ["<strong>第一阶段：认知校准</strong>（第01-03讲）——接受“95%是普娃”现实→理解教育三重目的→破除“好大学=终点”迷思", "<strong>第二阶段：方向确立</strong>（第04-06讲）——理解AI时代变革→把握通识/技能/深度/广度关系→建立电子产品管理策略", "<strong>第三阶段：家庭基础</strong>（第07-10讲）——成为孩子天花板→理解未来教育方向→科学早教→避免快乐教育陷阱", "<strong>第四阶段：方法掌握</strong>（第11-18讲）——构建知识体系→遵循年龄规律→知识优先级排序→发掘天赋→高效备考", "<strong>第五阶段：路径决策</strong>（第19-22讲）——留学评估→教育分流应对→教育路线选择（精英/普通/职业）"];
+  document.getElementById("learningPath").innerHTML = pathSteps.map(function(s) { return "<li>" + s + "</li>"; }).join("");
+
+  // Sub-item 7: lecture tags
+  var lectures = [];
+  for (var i = 1; i <= 22; i++) lectures.push("第" + (i < 10 ? "0" : "") + i + "讲");
+  lectures.unshift("发刊词"); lectures.push("书单");
+  document.getElementById("lectureTags").innerHTML = lectures.map(function(l) {
+    return '<span class="tag-outline">' + l + '</span>';
+  }).join("");
+}
+
+// ====== TAB 1: FLIP CARDS ======
+var currentCardIdx = 0;
+var cardFlipped = false;
+
+function setCard(idx) {
+  currentCardIdx = idx;
+  cardFlipped = false;
+  var c = concepts[idx];
+  var learned = LS.learned.indexOf(c.id) !== -1;
+  var frontHtml = '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">' + c.name + '</h3>'
+    + '<p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'
+    + (learned ? '<span class="tag" style="margin-top:8px">\u2713 已学习</span>' : '');
+  document.getElementById("flipFront").innerHTML = frontHtml;
+  document.getElementById("flipBack").innerHTML =
+    '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>' + c.def + '</div>'
+    + '<div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>' + c.analogy + '</div>'
+    + '<div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>' + c.example + '</div>'
+    + '<div><strong style="color:var(--accent)">反例/边界：</strong>' + c.counter + '</div>';
+  document.getElementById("flipInner").classList.remove("flipped");
+  document.getElementById("cardIndex").textContent = (idx + 1) + " / " + concepts.length;
+  document.getElementById("markLearnedBtn").textContent = learned ? "\u2713 已学习" : "\u2713 标记已学习";
+}
+
+function prevCard() { if (currentCardIdx > 0) setCard(currentCardIdx - 1); }
+function nextCard() { if (currentCardIdx < concepts.length - 1) setCard(currentCardIdx + 1); }
+function markLearned() {
+  var id = concepts[currentCardIdx].id;
+  var idx = LS.learned.indexOf(id);
+  if (idx !== -1) {
+    LS.learned.splice(idx, 1);
+  } else {
+    LS.learned.push(id);
+  }
+  save();
+  updateProgress();
+  setCard(currentCardIdx);
+}
+
+function updateProgress() {
+  var pct = Math.round(LS.learned.length / concepts.length * 100);
+  document.getElementById("cardProgress").style.width = pct + "%";
+  document.getElementById("cardLearned").textContent = LS.learned.length;
+}
+
+document.getElementById("flipInner").addEventListener("click", function() {
+  this.classList.toggle("flipped");
+  cardFlipped = !cardFlipped;
+});
+
+// ====== TAB 2: QUIZ ======
+var quizActive = false;
+var quizTimer = null;
+var quizQuestions = [];
+var quizUserAnswers = [];
+var quizSubmitted = false;
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function startQuiz() {
+  quizActive = true;
+  quizSubmitted = false;
+  quizQuestions = shuffle(allMCQ);
+  quizUserAnswers = new Array(quizQuestions.length);
+  for (var k = 0; k < quizUserAnswers.length; k++) quizUserAnswers[k] = -1;
+  renderQuizQuestions();
+}
+
+function renderQuizQuestions() {
+  var container = document.getElementById("quizContainer");
+  var html = "";
+  for (var qi = 0; qi < quizQuestions.length; qi++) {
+    var q = quizQuestions[qi];
+    html += '<div class="quiz-item"><div class="q-title">' + (qi+1) + '. ' + q.q + '</div>';
+    for (var oi = 0; oi < q.options.length; oi++) {
+      html += '<button class="quiz-option" id="qopt_' + qi + '_' + oi + '" onclick="selectQuizOption(' + qi + ',' + oi + ')">' + String.fromCharCode(65+oi) + '. ' + q.options[oi] + '</button>';
+    }
+    html += '</div>';
+  }
+  html += '<div class="text-center mt-16"><button class="btn btn-primary" onclick="submitQuiz()">\u2705 提交答案</button></div>';
+  container.innerHTML = html;
+}
+
+function selectQuizOption(qi, oi) {
+  if (quizSubmitted) return;
+  quizUserAnswers[qi] = oi;
+  for (var j = 0; j < 4; j++) {
+    var el = document.getElementById("qopt_" + qi + "_" + j);
+    if (el) el.classList.toggle("selected", j === oi);
+  }
+}
+
+function submitQuiz() {
+  quizSubmitted = true;
+  var correct = 0;
+  for (var qi = 0; qi < quizQuestions.length; qi++) {
+    var userAns = quizUserAnswers[qi];
+    var correctAns = quizQuestions[qi].answer;
+    for (var j = 0; j < 4; j++) {
+      var el = document.getElementById("qopt_" + qi + "_" + j);
+      if (!el) continue;
+      el.disabled = true;
+      if (j === correctAns) el.classList.add("correct");
+      if (j === userAns && j !== correctAns) el.classList.add("wrong");
+    }
+    if (userAns === correctAns) {
+      correct++;
+    } else {
+      var wrongEntry = {q: quizQuestions[qi].q, options: quizQuestions[qi].options, correct: correctAns, user: userAns, date: new Date().toISOString()};
+      var found = false;
+      for (var w = 0; w < LS.wrong.length; w++) {
+        if (LS.wrong[w].q === quizQuestions[qi].q) { found = true; break; }
+      }
+      if (!found) LS.wrong.push(wrongEntry);
+    }
+  }
+  LS.quizHistory.push({total: quizQuestions.length, correct: correct, date: new Date().toISOString()});
+  save();
+
+  var container = document.getElementById("quizContainer");
+  container.innerHTML = '<div class="card text-center" style="margin-top:16px"><h3 style="color:var(--accent)">\u1F3AF 得分：' + correct + ' / ' + quizQuestions.length + '</h3><p style="color:var(--text-light);margin-top:8px">正确率 ' + Math.round(correct/quizQuestions.length*100) + '%</p><button class="btn btn-primary mt-16" onclick="startQuiz()">\u1F504 再做一次</button></div>' + container.innerHTML;
+}
+
+function resetQuiz() {
+  quizActive = false;
+  quizSubmitted = false;
+  quizQuestions = [];
+  quizUserAnswers = [];
+  if (quizTimer) { clearInterval(quizTimer); quizTimer = null; }
+  document.getElementById("quizContainer").innerHTML = "";
+}
+
+// ====== TAB 3: EXAM MODE ======
+var examActive = false;
+var examTimerInterval = null;
+var examTimeLeft = 900;
+var examQuestions = [];
+var examUserAnswers = [];
+
+function startExam() {
+  examActive = true;
+  examTimeLeft = 900;
+  document.getElementById("examStartCard").style.display = "none";
+
+  var shuffledMCQ = shuffle(allMCQ);
+  var mcqPart = shuffledMCQ.slice(0, 7);
+  examQuestions = mcqPart.concat(saQuestions);
+  examUserAnswers = new Array(examQuestions.length);
+  for (var k = 0; k < examUserAnswers.length; k++) examUserAnswers[k] = -1;
+
+  var html = '<div class="exam-timer" id="examTimer">\u23F1 ' + Math.floor(examTimeLeft/60) + ':' + (examTimeLeft%60 < 10 ? "0" : "") + (examTimeLeft%60) + '</div>';
+
+  for (var qi = 0; qi < examQuestions.length; qi++) {
+    var q = examQuestions[qi];
+    if (qi < 7) {
+      html += '<div class="quiz-item"><div class="q-title">' + (qi+1) + '. [选择] ' + q.q + '</div>';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<button class="quiz-option" id="examopt_' + qi + '_' + oi + '" onclick="selectExamOption(' + qi + ',' + oi + ')">' + String.fromCharCode(65+oi) + '. ' + q.options[oi] + '</button>';
+      }
+      html += '</div>';
+    } else {
+      html += '<div class="quiz-item"><div class="q-title">' + (qi+1) + '. [简答] ' + q.q + '</div>';
+      html += '<textarea id="exam_sa_' + qi + '" style="width:100%;min-height:80px;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;background:#fdf6ec" placeholder="请输入你的回答..."></textarea></div>';
+    }
+  }
+  html += '<div class="text-center mt-16"><button class="btn btn-primary" onclick="submitExam()">\u1F4E4 提交考试</button></div>';
+  document.getElementById("examContainer").innerHTML = html;
+
+  examTimerInterval = setInterval(function() {
+    examTimeLeft--;
+    var m = Math.floor(examTimeLeft / 60);
+    var s = examTimeLeft % 60;
+    var timerEl = document.getElementById("examTimer");
+    if (timerEl) timerEl.textContent = "\u23F1 " + m + ":" + (s < 10 ? "0" : "") + s;
+    if (examTimeLeft <= 0) { submitExam(); }
+  }, 1000);
+}
+
+function selectExamOption(qi, oi) {
+  if (!examActive) return;
+  examUserAnswers[qi] = oi;
+  for (var j = 0; j < 4; j++) {
+    var el = document.getElementById("examopt_" + qi + "_" + j);
+    if (el) el.classList.toggle("selected", j === oi);
+  }
+}
+
+function submitExam() {
+  if (!examActive) return;
+  examActive = false;
+  if (examTimerInterval) { clearInterval(examTimerInterval); examTimerInterval = null; }
+
+  var mcqCorrect = 0;
+  for (var i = 0; i < 7; i++) {
+    if (examUserAnswers[i] === examQuestions[i].answer) mcqCorrect++;
+  }
+
+  for (var i = 7; i < 10; i++) {
+    var ta = document.getElementById("exam_sa_" + i);
+    if (ta) examUserAnswers[i] = ta.value;
+  }
+
+  LS.examHistory.push({mcqCorrect: mcqCorrect, totalMCQ: 7, date: new Date().toISOString()});
+  save();
+
+  document.getElementById("examContainer").innerHTML = '<div class="card exam-result"><h2 style="color:var(--accent)">\u1F3C6 考试完成！</h2><div class="score">' + mcqCorrect + ' / 7</div><p style="color:var(--text-light)">选择题正确率：' + Math.round(mcqCorrect/7*100) + '%</p><p style="color:var(--text-light);font-size:.82rem;margin-top:8px">简答题请自行对照笔记中的概念要点进行评分。</p><button class="btn btn-primary mt-16" onclick="startExam()">\u1F504 重新考试</button></div>';
+}
+
+// ====== TAB 4: REVIEW MODE ======
+var reviewSubtab = 0;
+function switchReviewSubtab(idx) {
+  reviewSubtab = idx;
+  var btns = document.querySelectorAll(".subtab-btn");
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.toggle("active", i === idx); }
+  document.getElementById("reviewWrong").style.display = idx === 0 ? "block" : "none";
+  document.getElementById("reviewWeak").style.display = idx === 1 ? "block" : "none";
+  document.getElementById("reviewStats").style.display = idx === 2 ? "block" : "none";
+  renderReview();
+}
+
+function renderReview() {
+  // Wrong book
+  var wrongHtml = '<h3 style="color:var(--accent);margin-bottom:12px">\u1F4D5 错题本</h3>';
+  if (LS.wrong.length === 0) {
+    wrongHtml += '<div class="card"><p style="color:var(--text-light)">暂无错题，继续加油！</p></div>';
+  } else {
+    for (var i = 0; i < LS.wrong.length; i++) {
+      var w = LS.wrong[i];
+      wrongHtml += '<div class="card"><p><strong>' + (i+1) + '. ' + w.q + '</strong></p>'
+        + '<p style="color:var(--success);font-size:.85rem">\u2705 正确答案：' + String.fromCharCode(65+w.correct) + '. ' + w.options[w.correct] + '</p>'
+        + '<p style="color:var(--accent);font-size:.85rem">\u274C 你的答案：' + (w.user >= 0 ? String.fromCharCode(65+w.user) + '. ' + w.options[w.user] : '未作答') + '</p></div>';
+    }
+  }
+  document.getElementById("reviewWrong").innerHTML = wrongHtml;
+
+  // Weak points
+  var weakHtml = '<h3 style="color:var(--accent);margin-bottom:12px">\u1F4CA 薄弱点分析</h3>';
+  if (LS.wrong.length === 0) {
+    weakHtml += '<div class="card"><p style="color:var(--text-light)">暂无数据。完成一些测验后，系统将分析你的薄弱概念。</p></div>';
+  } else {
+    var conceptMap = {};
+    var kwMap = {
+      "普娃": "普娃定位", "教育三重": "教育三重目的", "AI时代": "AI时代教育变革",
+      "因材施教": "因材施教", "天花板": "父母是天花板", "皮亚杰": "认知发展阶段",
+      "斯宾塞": "斯宾塞五层次", "天赋": "天赋发掘", "分流": "教育分流", "考试": "考试策略",
+      "快乐教育": "斯宾塞五层次", "KIPP": "斯宾塞五层次", "留学": "教育分流", "电子产品": "因材施教",
+      "早教": "认知发展阶段", "80-20": "考试策略", "教育路线": "教育分流"
+    };
+    for (var i = 0; i < LS.wrong.length; i++) {
+      var w = LS.wrong[i];
+      var matched = false;
+      for (var kw in kwMap) {
+        if (w.q.indexOf(kw) !== -1) {
+          conceptMap[kwMap[kw]] = (conceptMap[kwMap[kw]] || 0) + 1;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) conceptMap["综合"] = (conceptMap["综合"] || 0) + 1;
+    }
+    weakHtml += '<div class="card-grid">';
+    var entries = [];
+    for (var k in conceptMap) entries.push([k, conceptMap[k]]);
+    entries.sort(function(a,b) { return b[1] - a[1]; });
+    for (var e = 0; e < entries.length; e++) {
+      weakHtml += '<div class="card"><h4 style="color:var(--accent)">' + entries[e][0] + '</h4><p style="font-size:2rem;font-weight:700;color:var(--accent)">' + entries[e][1] + '</p><p style="color:var(--text-light);font-size:.8rem">错题数</p></div>';
+    }
+    weakHtml += '</div>';
+  }
+  document.getElementById("reviewWeak").innerHTML = weakHtml;
+
+  // Stats
+  var statsHtml = '<h3 style="color:var(--accent);margin-bottom:12px">\u1F4C8 学习统计</h3><div class="stats-row">';
+  var totalAnswered = 0, totalCorrect = 0;
+  for (var i = 0; i < LS.quizHistory.length; i++) {
+    totalAnswered += LS.quizHistory[i].total;
+    totalCorrect += LS.quizHistory[i].correct;
+  }
+  statsHtml += '<div class="stat-box"><div class="num">' + totalAnswered + '</div><div class="label">总答题数</div></div>';
+  statsHtml += '<div class="stat-box"><div class="num">' + (totalAnswered > 0 ? Math.round(totalCorrect/totalAnswered*100) : 0) + '%</div><div class="label">总正确率</div></div>';
+  statsHtml += '<div class="stat-box"><div class="num">' + LS.learned.length + '</div><div class="label">已学概念</div></div>';
+  statsHtml += '<div class="stat-box"><div class="num">' + LS.examHistory.length + '</div><div class="label">考试次数</div></div>';
+  statsHtml += '</div>';
+
+  if (LS.quizHistory.length > 0) {
+    statsHtml += '<h4 style="color:var(--accent);margin-top:16px">\u1F4C5 最近答题记录</h4>';
+    var recent = LS.quizHistory.slice(-5).reverse();
+    for (var i = 0; i < recent.length; i++) {
+      var h = recent[i];
+      statsHtml += '<div class="card" style="margin-bottom:8px"><span style="color:var(--text-light);font-size:.82rem">' + (h.date ? h.date.substring(0,10) : "未知") + '</span> — 正确 ' + h.correct + '/' + h.total + ' (' + Math.round(h.correct/h.total*100) + '%)</div>';
+    }
+  }
+  document.getElementById("reviewStats").innerHTML = statsHtml;
+}
+
+// ====== TAB 5: TREE TOGGLE ======
+function toggleTreeNode(el) {
+  var toggle = el.querySelector(".tree-toggle");
+  var children = el.nextElementSibling;
+  if (toggle) toggle.classList.toggle("open");
+  if (children && children.classList.contains("tree-children")) {
+    children.classList.toggle("show");
+    children.classList.toggle("open");
+  }
+}
+
+// ====== TAB 6: SOCRATIC TOGGLE ======
+function toggleSocratic(el) {
+  var answer = el.nextElementSibling;
+  if (answer && answer.classList.contains("socratic-a")) {
+    answer.classList.toggle("show");
+  }
+}
+
+// ====== TAB 8: DECISION ======
+function makeDecision(round, choice) {
+  var feedbacks = [
+    [
+      '<p style="color:var(--accent);font-weight:600">\u26A0\uFE0F 你可能陷入了"排队内卷"陷阱。</p><p style="margin-top:8px"><strong>MKS分析：</strong>早教的核心不是"提前学"而是"准备"。4岁孩子处在2-7岁的前运算阶段，强行灌输识字/英语可能因认知能力不足而形成错误概念（后续纠正成本极高）。同时挤占了同理心培养的关键窗口期。参考皮亚杰理论和"排队模型"——全体提前学习无法增加好学校名额，反而推高总体成本。</p>',
+      '<p style="color:var(--success);font-weight:600">\u2705 好选择！你遵循了"匹配发展阶段"原则。</p><p style="margin-top:8px"><strong>MKS分析：</strong>①遵循认知阶段（前运算期以玩为主）；②发展健康兴趣（避免小学沉迷游戏）；③保留了关键能力培养空间（课堂准备度——社会认知、自理能力、安全意识）。积木/乐高培养空间思维和创造力，比死记硬背识字更有长期价值。</p>',
+      '<p style="color:var(--accent);font-weight:600">\u26A0\uFE0F 这种做法事倍功半。</p><p style="margin-top:8px"><strong>MKS分析：</strong>根据皮亚杰理论，6岁孩子理解力仅为7岁的60%，学习同样的内容需要5倍时间。而且7岁前儿童处于前运算阶段，逻辑能力弱（不理解3+4=4+3），"灌输"式的认字算术效率很低。更严重的是，可能因早期挫败感导致终身学习厌恶。不如用这些时间发展运动、社交和好奇心。</p>'
+    ],
+    [
+      '<p style="color:var(--accent);font-weight:600">\u26A0\uFE0F 这条路可能事倍功半。</p><p style="margin-top:8px"><strong>MKS分析：</strong>孩子"厌恶刷题"且动手能力强，强迫走高考路线可能既折磨孩子又难以达到顶尖水平。教育分流不是淘汰——德国和日本的经验证明，职业教育与普通高等教育地位相当（日本职校就业率95%+）。关键问题是：大学是手段，好工作+好生活才是目的。</p>',
+      '<p style="color:var(--success);font-weight:600">\u2705 这是务实且明智的选择！</p><p style="margin-top:8px"><strong>MKS分析：</strong>①遵循"天赋发掘"原则——动手能力强是真实的技术天赋信号；②契合"教育分流"规律——初中分流效率最高；③选择有企业合作的学校（订单式培养）确保就业；④新能源/先进制造是有市场需求的方向。记住吴军的话：适合孩子的路径才是最优解。</p>',
+      '<p style="color:var(--accent);font-weight:600">\u26A0\uFE0F 这是典型的"换池游泳"思维。</p><p style="margin-top:8px"><strong>MKS分析：</strong>孩子在国内学业一般+厌恶刷题，到国外并不会自动变好——不会游泳的人换泳池仍会溺水。留学是高投入决策，需要孩子有自觉性和独立性。而且低龄留学的隐性成本高昂（缺乏父母陪伴导致价值观培养缺失）。不如先在国内找到适合的发展方向。</p>'
+    ],
+    [
+      '<p style="color:var(--accent);font-weight:600">\u26A0\uFE0F "一刀切"不是最佳策略。</p><p style="margin-top:8px"><strong>MKS分析：</strong>完全禁止可能引发逆反心理，也让孩子失去了学习计算机和编程的机会。但吴军明确说过："学习计算机与玩游戏完全两码事"（他30年计算机经验，游戏时间几乎为零）。电子产品使用与成绩呈负相关（英法研究证实）。关键是建立规则和替代方案，而非简单禁止。</p>',
+      '<p style="color:var(--success);font-weight:600">\u2705 这是科学的中间路线！</p><p style="margin-top:8px"><strong>MKS分析：</strong>①遵循"自制力培养"原则——查理·芒格："缺乏自制力永远无法成功"；②JAMA研究：社交网络重度使用者认知能力比轻度使用者低2-2.5%；③提供了替代活动（运动/兴趣），让孩子从游戏外找到满足感；④亲自参与了解——这是"家长是朋友"角色的体现。关键洞察："不痛苦不等于快乐"，合理规则+正向替代比一刀切更有效。</p>',
+      '<p style="color:var(--accent);font-weight:600">\u26A0\uFE0F 高一学生自控力通常不足以自我管理。</p><p style="margin-top:8px"><strong>MKS分析：</strong>吴军的核心观点：自制力需达到班级前10%，才能期待成绩进入前10%。满足于自制力后50%，则需接受成绩后50%的现实。高一孩子的大脑前额叶（负责自控）尚未完全发育（25岁才成熟）。放任不管不仅影响成绩，还可能形成长期的行为惯性。家长的角色不是"放手不管"而是"逐步赋权"。</p>'
+    ]
+  ];
+
+  var fb = feedbacks[round][choice];
+  document.getElementById("feedback" + round).innerHTML = fb;
+  document.getElementById("feedback" + round).classList.add("show");
+
+  var scenario = document.getElementById("decision" + (round+1));
+  if (scenario) {
+    var opts = scenario.querySelectorAll(".decision-opt");
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].classList.toggle("chosen", i === choice);
+    }
+  }
+}
+
+// ====== INIT ======
+function init() {
+  renderOverview();
+  setCard(0);
+  updateProgress();
+}
+
+document.addEventListener("DOMContentLoaded", init);
+
+</script>
+</body>
+</html>
