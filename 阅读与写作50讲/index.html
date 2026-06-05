@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阅读与写作50讲 · 双螺旋</title>
+<style>
+:root{
+  --bg:#faf5ee; --paper:#fefbf7; --card:#fffdf9;
+  --ink:#2c2416; --ink2:#5c4a32; --ink3:#8a7560;
+  --red:#b5343a; --red2:#8b1a1f; --gold:#b8860b;
+  --border:#e0d5c5; --line:#d4c8b0;
+  --read:#3a6b8c; --write:#8c4a3a;
+  --radius:12px; --shadow:0 2px 16px rgba(44,36,22,.06);
+  font-size:clamp(15px,1.3vw,17px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Serif SC",serif;
+  background:var(--bg); color:var(--ink); line-height:1.75;
+  min-height:100vh;
+}
+
+/* ===== PAPER TEXTURE ===== */
+body::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(180,160,130,.04) 28px,rgba(180,160,130,.04) 29px),
+    radial-gradient(ellipse at 15% 10%,rgba(200,170,140,.08) 0%,transparent 60%),
+    radial-gradient(ellipse at 85% 90%,rgba(180,150,120,.06) 0%,transparent 60%);
+}
+
+/* ===== MAIN WRAPPER ===== */
+.main-wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:56px 20px 80px}
+
+/* ===== TOP BAR ===== */
+.top-shelf{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;margin-bottom:60px;
+  padding-bottom:20px;border-bottom:2px solid var(--border);
+}
+.top-shelf .logo{
+  font-size:.78rem;color:var(--ink3);letter-spacing:.15em;
+  text-transform:uppercase;font-weight:600;
+}
+.top-shelf .home-back{
+  color:var(--ink3);text-decoration:none;font-size:.85rem;
+  padding:6px 18px;border:1px solid var(--border);
+  border-radius:20px;transition:all .25s;
+}
+.top-shelf .home-back:hover{color:var(--ink);border-color:var(--ink2);background:var(--paper)}
+
+/* ===== HERO ===== */
+.hero{text-align:center;margin-bottom:64px}
+.hero .emblem{
+  display:inline-block;width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--read),var(--write));
+  margin-bottom:24px;position:relative;
+  box-shadow:0 8px 32px rgba(44,36,22,.12);
+}
+.hero .emblem::after{
+  content:'∞';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:3rem;font-weight:300;color:#fff;line-height:1;
+}
+.hero h1{
+  font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:900;
+  color:var(--ink);margin-bottom:12px;letter-spacing:.03em;
+}
+.hero h1 .hl-read{color:var(--read)}
+.hero h1 .hl-write{color:var(--write)}
+.hero .subtitle{
+  font-size:1.05rem;color:var(--ink2);max-width:500px;margin:0 auto 24px;
+  line-height:1.9;font-style:italic;
+}
+.hero .stats{
+  display:inline-flex;gap:32px;font-size:.8rem;color:var(--ink3);
+}
+.hero .stats span{display:flex;align-items:center;gap:6px}
+.hero .stats .big{font-size:1.2rem;font-weight:700;color:var(--gold)}
+
+/* ===== DOUBLE HELIX VISUAL ===== */
+.helix-viz{
+  display:flex;align-items:center;justify-content:center;gap:32px;
+  margin-bottom:64px;position:relative;
+}
+.helix-viz .strand{
+  flex:1;max-width:280px;text-align:center;
+}
+.helix-viz .strand-label{
+  font-size:.8rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;margin-bottom:16px;
+  padding:8px 24px;border-radius:20px;display:inline-block;
+}
+.helix-viz .read-strand .strand-label{
+  background:rgba(58,107,140,.08);color:var(--read);border:1px solid rgba(58,107,140,.2);
+}
+.helix-viz .write-strand .strand-label{
+  background:rgba(140,74,58,.08);color:var(--write);border:1px solid rgba(140,74,58,.2);
+}
+.helix-viz .strand-items{
+  display:flex;flex-direction:column;gap:8px;
+}
+.helix-viz .strand-item{
+  font-size:.8rem;color:var(--ink2);padding:8px 14px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;transition:all .25s;
+}
+.helix-viz .strand-item:hover{transform:translateX(3px);border-color:var(--ink3)}
+.helix-viz .read-strand .strand-item:hover{border-left:3px solid var(--read)}
+.helix-viz .write-strand .strand-item:hover{border-left:3px solid var(--write)}
+
+.helix-viz .center-connector{
+  display:flex;flex-direction:column;align-items:center;gap:24px;
+}
+.helix-viz .connector-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--gold);opacity:.5;
+}
+
+/* ===== CONTENT SECTION ===== */
+.section-title{
+  text-align:center;margin-bottom:40px;
+  font-size:.78rem;font-weight:700;letter-spacing:.15em;
+  color:var(--ink3);text-transform:uppercase;
+}
+.section-title::after{
+  content:'';display:block;width:40px;height:2px;
+  background:var(--gold);margin:12px auto 0;
+}
+
+/* Classic texts grid */
+.classics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;margin-bottom:64px;
+}
+.classic-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;text-align:center;
+  transition:all .3s;cursor:default;
+  position:relative;overflow:hidden;
+}
+.classic-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(44,36,22,.1);
+}
+.classic-card .book-icon{font-size:2.5rem;margin-bottom:10px;display:block}
+.classic-card h4{font-size:.92rem;color:var(--ink);margin-bottom:4px}
+.classic-card .author{font-size:.72rem;color:var(--ink3);font-style:italic}
+.classic-card .era{
+  display:inline-block;font-size:.65rem;color:var(--gold);
+  padding:2px 8px;border:1px solid rgba(184,134,11,.2);
+  border-radius:8px;margin-top:8px;
+}
+
+/* ===== MAIN CTA ===== */
+.main-cta{
+  text-align:center;margin:48px 0 64px;
+}
+.main-cta a.enter-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:1.05rem;font-weight:700;color:var(--paper);
+  background:linear-gradient(135deg,var(--read),var(--write));
+  padding:16px 40px;border-radius:32px;text-decoration:none;
+  transition:all .35s;
+  box-shadow:0 6px 24px rgba(44,36,22,.12);
+  letter-spacing:.04em;
+}
+.main-cta a.enter-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 36px rgba(44,36,22,.18);
+}
+.main-cta .hint{
+  font-size:.78rem;color:var(--ink3);margin-top:16px;
+}
+
+/* ===== QUOTE ===== */
+.quote-block{
+  text-align:center;margin:64px 0;padding:32px;
+  background:var(--paper);border:1px solid var(--border);
+  border-radius:var(--radius);max-width:600px;margin-left:auto;margin-right:auto;
+}
+.quote-block .mark{font-size:3rem;color:var(--red);opacity:.25;line-height:1;margin-bottom:8px}
+.quote-block .quote-text{
+  font-size:1.1rem;color:var(--ink2);font-style:italic;line-height:2;
+  margin-bottom:12px;
+}
+.quote-block .quote-src{font-size:.78rem;color:var(--ink3)}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;margin-top:48px;padding-top:28px;
+  border-top:1px solid var(--border);
+}
+.footer a.home-link{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--ink3);text-decoration:none;font-size:.88rem;
+  padding:8px 24px;border:1px solid var(--border);border-radius:24px;
+  transition:all .25s;
+}
+.footer a.home-link:hover{color:var(--ink);border-color:var(--ink2);background:var(--paper)}
+.footer .copy{font-size:.72rem;color:var(--ink3);margin-top:20px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .main-wrap{padding:32px 14px 56px}
+  .hero{margin-bottom:44px}
+  .hero .emblem{width:64px;height:64px}
+  .hero .emblem::after{font-size:2.4rem}
+  .hero h1{font-size:clamp(1.5rem,6vw,2.2rem)}
+  .helix-viz{flex-direction:column;gap:20px}
+  .helix-viz .strand{max-width:100%;width:100%}
+  .helix-viz .center-connector{flex-direction:row;gap:12px}
+  .classics-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+}
+@media(max-width:480px){
+  .hero .stats{gap:16px;flex-wrap:wrap;justify-content:center}
+  .classics-grid{grid-template-columns:repeat(2,1fr)}
+  .main-cta a.enter-btn{padding:14px 28px;font-size:.95rem}
+}
+</style>
+</head>
+<body>
+
+<main class="main-wrap">
+
+  <!-- Top shelf -->
+  <div class="top-shelf">
+    <span class="logo">吴军 · 阅读与写作50讲</span>
+    <a class="home-back" href="../../index.html">← 返回知识主板</a>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="emblem"></div>
+    <h1>
+      <span class="hl-read">阅读</span>与<span class="hl-write">写作</span>
+    </h1>
+    <p class="subtitle">
+      理解与表达的双螺旋——阅读是解码世界，写作是编码思想。
+      二者互为镜像，彼此缠绕上升，构成智识生命的全部遗传信息。
+    </p>
+    <div class="stats">
+      <span>📄 <span class="big">52</span> 篇笔记</span>
+      <span>📖 <span class="big">20+</span> 部经典精读</span>
+      <span>🔗 阅读解码 + 写作编码</span>
+    </div>
+  </header>
+
+  <!-- Double helix visual -->
+  <div class="section-title">理解 ← 双螺旋 → 表达</div>
+  <div class="helix-viz">
+    <div class="strand read-strand">
+      <div class="strand-label">📖 阅读解码</div>
+      <div class="strand-items">
+        <div class="strand-item">文本细读 · 精读方法论</div>
+        <div class="strand-item">结构分析 · 解构叙事逻辑</div>
+        <div class="strand-item">语境还原 · 历史与文化坐标</div>
+        <div class="strand-item">批判性阅读 · 对话与质疑</div>
+        <div class="strand-item">通感阅读 · 跨文体感知</div>
+        <div class="strand-item">隐喻破译 · 深层语义挖掘</div>
+      </div>
+    </div>
+
+    <div class="center-connector">
+      <div class="connector-dot"></div>
+      <div class="connector-dot"></div>
+      <div class="connector-dot"></div>
+      <div class="connector-dot"></div>
+      <div class="connector-dot"></div>
+      <div class="connector-dot"></div>
+    </div>
+
+    <div class="strand write-strand">
+      <div class="strand-label">✍️ 写作编码</div>
+      <div class="strand-items">
+        <div class="strand-item">叙事结构 · 布局与节奏</div>
+        <div class="strand-item">修辞技艺 · 比喻与通感</div>
+        <div class="strand-item">逻辑链条 · 论证与说服</div>
+        <div class="strand-item">风格养成 · 语调与腔调</div>
+        <div class="strand-item">素材转化 · 经验到文字</div>
+        <div class="strand-item">修改之道 · 删减与打磨</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 20+ Classics -->
+  <div class="section-title">20+ 部经典精读</div>
+  <div class="classics-grid">
+    <div class="classic-card">
+      <span class="book-icon">📜</span>
+      <h4>诗经</h4>
+      <div class="author">集体创作</div>
+      <div class="era">先秦</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🏛️</span>
+      <h4>史记</h4>
+      <div class="author">司马迁</div>
+      <div class="era">西汉</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">📿</span>
+      <h4>红楼梦</h4>
+      <div class="author">曹雪芹</div>
+      <div class="era">清代</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🗡️</span>
+      <h4>战争与和平</h4>
+      <div class="author">托尔斯泰</div>
+      <div class="era">19世纪</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🐳</span>
+      <h4>白鲸</h4>
+      <div class="author">梅尔维尔</div>
+      <div class="era">19世纪</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🎭</span>
+      <h4>哈姆雷特</h4>
+      <div class="author">莎士比亚</div>
+      <div class="era">17世纪</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🌊</span>
+      <h4>老人与海</h4>
+      <div class="author">海明威</div>
+      <div class="era">20世纪</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🔮</span>
+      <h4>百年孤独</h4>
+      <div class="author">马尔克斯</div>
+      <div class="era">20世纪</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🌸</span>
+      <h4>源氏物语</h4>
+      <div class="author">紫式部</div>
+      <div class="era">11世纪</div>
+    </div>
+    <div class="classic-card">
+      <span class="book-icon">🦋</span>
+      <h4>庄子</h4>
+      <div class="author">庄周</div>
+      <div class="era">战国</div>
+    </div>
+  </div>
+
+  <!-- Main CTA -->
+  <div class="main-cta">
+    <a class="enter-btn" href="../tech_mks/2-阅读与写作50讲.html">
+      进入全部内容 →
+    </a>
+    <div class="hint">52篇笔记 · 阅读方法论 + 写作技艺 + 经典精读</div>
+  </div>
+
+  <!-- Quote -->
+  <div class="quote-block">
+    <div class="mark">"</div>
+    <p class="quote-text">
+      阅读是理解世界，写作是表达自我。<br>
+      一个不会阅读的人，只能活一辈子；<br>
+      一个不会写作的人，只能被理解一次。
+    </p>
+    <div class="quote-src">—— 吴军 · 阅读与写作50讲</div>
+  </div>
+
+  <footer class="footer">
+    <a class="home-link" href="../../index.html">← 返回知识主板</a>
+    <div class="copy">吴军 · 阅读与写作50讲 — 52篇笔记 · 理解与表达的双螺旋</div>
+  </footer>
+
+</main>
+
+<script>
+// Subtle entrance animation for classic cards
+(function(){
+  var cards = document.querySelectorAll('.classic-card');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  },{threshold:.2});
+
+  cards.forEach(function(card,i){
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(16px)';
+    card.style.transition = 'all .5s cubic-bezier(.22,.61,.36,1)';
+    card.style.transitionDelay = (i*.04)+'s';
+    observer.observe(card);
+    setTimeout(function(){card.style.opacity='1';card.style.transform='translateY(0)';},100+i*60);
+  });
+})();
+</script>
+</body>
+</html>
