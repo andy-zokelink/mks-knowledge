@@ -1,180 +1,398 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>世界文明史 · 文明之河</title>
 <style>
+:root{
+  --bg:#0d1117; --surface:#161b22; --card:#1c2333;
+  --gold:#d4a853; --gold2:#f0d78c; --gold3:#a68b3c;
+  --water1:#1a6b8a; --water2:#1e5490; --water3:#2d5fa5; --water4:#3a7bd5;
+  --text:#e6e1cf; --text2:#9e9a8a; --text3:#6b6758;
+  --radius:16px; --shadow:0 4px 32px rgba(0,0,0,.35);
+  font-size:clamp(15px,1.4vw,17px);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0a0806;color:#e8dcc8;min-height:100vh;overflow-x:hidden}
-.river{max-width:800px;margin:0 auto;padding:60px 24px 100px;position:relative}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.7;
+  min-height:100vh; overflow-x:hidden;
+}
 
-/* 河流动画背景 */
-.river::before{
-  content:'';position:absolute;left:50%;top:0;bottom:0;width:3px;
+/* ===== RIVER BACKGROUND ===== */
+.river-bg{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events:none; z-index:0; opacity:.10;
+  background:
+    radial-gradient(ellipse 1200px 350px at 50% 12%, var(--water1) 0%, transparent 70%),
+    radial-gradient(ellipse 1400px 400px at 50% 32%, var(--water2) 0%, transparent 70%),
+    radial-gradient(ellipse 1300px 380px at 50% 52%, var(--water3) 0%, transparent 70%),
+    radial-gradient(ellipse 1600px 420px at 50% 72%, var(--water4) 0%, transparent 70%),
+    radial-gradient(ellipse 1000px 280px at 50% 90%, var(--water1) 0%, transparent 70%);
+}
+.stars-wrap{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events:none; z-index:0;
+}
+.star{
+  position:absolute; background:var(--gold);
+  border-radius:50%; animation:twinkle var(--d) ease-in-out infinite;
+  animation-delay:var(--delay); opacity:0;
+}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:.9}}
+
+/* ===== MAIN WRAPPER ===== */
+.main-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:60px 20px 80px}
+
+/* ===== HEADER ===== */
+.header{text-align:center;margin-bottom:72px}
+.header .brand{
+  font-size:.85rem;color:var(--gold3);letter-spacing:.18em;
+  text-transform:uppercase;margin-bottom:12px;font-weight:500;
+}
+.header h1{
+  font-size:clamp(2rem,5vw,3.2rem);font-weight:900;
+  background:linear-gradient(180deg,var(--gold2) 0%,var(--gold) 40%,var(--gold3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:16px;letter-spacing:.04em;line-height:1.2;
+}
+.header .tagline{
+  font-size:1.05rem; color:var(--text2); max-width:560px; margin:0 auto 20px;
+  font-style:italic; line-height:1.8;
+}
+.header .meta-badge{
+  display:inline-flex;gap:28px;font-size:.82rem;color:var(--text3);
+}
+.header .meta-badge span{display:flex;align-items:center;gap:6px}
+.header .meta-badge .num{color:var(--gold);font-weight:700;font-size:1.15rem}
+
+/* ===== RIVER LINE ===== */
+.river-divider{
+  position:relative; width:4px;
   background:linear-gradient(180deg,
-    rgba(180,140,80,.15) 0%,rgba(180,140,80,.3) 20%,rgba(200,160,100,.4) 40%,
-    rgba(180,140,100,.35) 60%,rgba(160,200,220,.3) 80%,rgba(140,180,210,.25) 100%);
-  transform:translateX(-50%);z-index:0
+    var(--water1) 0%, var(--water2) 20%, var(--water3) 45%,
+    var(--water4) 65%, var(--gold) 90%, var(--gold2) 100%);
+  margin:0 auto 56px; height:50px; border-radius:2px;
+  box-shadow:0 0 20px rgba(30,84,144,.3);
 }
-.river::after{
-  content:'';position:absolute;left:50%;top:0;bottom:0;width:80px;
-  background:radial-gradient(ellipse at center,
-    rgba(180,140,80,.06) 0%,transparent 70%);
-  transform:translateX(-50%);z-index:0;
-  animation:riverShimmer 6s ease-in-out infinite
+.river-divider::after{
+  content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+  width:0;height:0;
+  border-left:14px solid transparent;border-right:14px solid transparent;
+  border-top:18px solid var(--gold);
+  filter:drop-shadow(0 0 6px rgba(212,168,83,.4));
 }
-@keyframes riverShimmer{0%,100%{opacity:.4}50%{opacity:.8}}
 
-/* 源头 */
-.source{text-align:center;padding:40px 0 60px;position:relative;z-index:1}
-.source .mark{font-size:48px;margin-bottom:16px;animation:float 3s ease-in-out infinite}
-.source h1{font-size:38px;font-weight:700;color:#f0e0c0;text-shadow:0 0 40px rgba(200,160,100,.3);margin-bottom:10px}
-.source p{color:#a09078;font-size:15px;letter-spacing:1px}
-.source .divider{width:60px;height:2px;background:rgba(200,160,100,.4);margin:20px auto 0;border-radius:1px}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+/* ===== CHAPTER CARDS ===== */
+.chapters{display:flex;flex-direction:column;gap:36px}
 
-/* 河段 - 交替左右弯曲 */
-.bend{display:flex;align-items:center;margin-bottom:8px;position:relative;z-index:1;min-height:180px}
-.bend.left{flex-direction:row}
-.bend.right{flex-direction:row-reverse}
-.spacer{flex:1;min-width:40px}
-.card{width:360px;background:linear-gradient(135deg,rgba(30,22,14,.95),rgba(40,30,18,.9));border:1px solid rgba(180,140,80,.15);border-radius:16px;padding:28px;position:relative;transition:all .3s;text-decoration:none;color:inherit;display:block}
-.card:hover{transform:translateY(-4px);border-color:rgba(200,160,100,.35);box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 0 1px rgba(200,160,80,.1) inset}
-.card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,160,100,.2),transparent);border-radius:1px}
-.num{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
-.bend:nth-child(3) .num{color:#c08040}
-.bend:nth-child(5) .num{color:#c89050}
-.bend:nth-child(7) .num{color:#d0a060}
-.bend:nth-child(9) .num{color:#d0b870}
-.bend:nth-child(11) .num{color:#c0c8d0}
-.title{font-size:20px;font-weight:700;color:#e8d0a0;margin-bottom:6px}
-.meta{font-size:12px;color:#807060;margin-bottom:10px}
-.desc{font-size:14px;color:#b0a090;line-height:1.7}
+.chapter{
+  position:relative; background:var(--card); border-radius:var(--radius);
+  padding:36px 32px; box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.04);
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+  text-decoration:none; color:inherit; display:block;
+  overflow:hidden; cursor:pointer;
+}
+.chapter::before{
+  content:'';position:absolute;left:0;top:0;height:100%;width:4px;
+  transition:width .4s;
+}
+.chapter:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,.08);
+  box-shadow:0 12px 44px rgba(0,0,0,.5);
+}
+.chapter:hover::before{width:6px}
 
-/* 河流弯曲节点 */
-.meander{display:flex;justify-content:center;align-items:center;height:60px;position:relative;z-index:1}
-.meander svg{width:160px;height:50px}
-.meander path{fill:none;stroke:rgba(180,140,100,.25);stroke-width:1.5;stroke-dasharray:8 6;animation:flowDash 2s linear infinite}
-@keyframes flowDash{to{stroke-dashoffset:-28}}
-.meander .ripple{position:absolute;width:6px;height:6px;background:rgba(200,160,100,.4);border-radius:50%;animation:rippleFloat 2.5s ease-in-out infinite}
-.meander .ripple:nth-child(2){animation-delay:.8s;left:calc(50% + 20px)}
-.meander .ripple:nth-child(3){animation-delay:1.6s;left:calc(50% - 20px)}
-@keyframes rippleFloat{0%,100%{opacity:0;transform:translateY(10px)}30%{opacity:.8}70%{opacity:.2;transform:translateY(-10px)}}
+.ch1::before{background:var(--water1)}
+.ch2::before{background:var(--water2)}
+.ch3::before{background:var(--water3)}
+.ch4::before{background:var(--water4)}
+.ch5::before{background:linear-gradient(180deg,var(--water4),var(--gold))}
 
-/* 入海口 */
-.delta{text-align:center;padding:60px 0 40px;position:relative;z-index:1}
-.delta .mark{font-size:42px;margin-bottom:12px}
-.delta .text{color:#8098a8;font-size:14px;letter-spacing:2px}
-.delta .horizon{width:120px;height:1px;background:linear-gradient(90deg,transparent,rgba(140,180,210,.4),transparent);margin:20px auto}
+.chapter .ch-num{
+  font-size:4.5rem; font-weight:900; position:absolute;
+  right:32px; top:16px; opacity:.035; color:#fff;
+  font-family:"Georgia","Times New Roman",serif;
+  transition:opacity .35s; line-height:1;
+}
+.chapter:hover .ch-num{opacity:.07}
 
-.footer{text-align:center;padding:20px;position:relative;z-index:1}
-.footer a{color:rgba(160,140,120,.4);font-size:12px;text-decoration:none;transition:color .3s}
-.footer a:hover{color:rgba(200,180,150,.7)}
+.chapter .ch-badge{
+  display:inline-block; font-size:.68rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase;
+  padding:4px 12px; border-radius:12px; margin-bottom:16px;
+  color:#fff;
+}
+.ch1 .ch-badge{background:rgba(26,107,138,.45)}
+.ch2 .ch-badge{background:rgba(30,84,144,.45)}
+.ch3 .ch-badge{background:rgba(45,95,165,.45)}
+.ch4 .ch-badge{background:rgba(58,123,213,.45)}
+.ch5 .ch-badge{background:rgba(166,139,60,.4)}
 
-/* 水滴粒子 */
-.drops{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.drop{position:absolute;width:2px;height:2px;background:rgba(200,160,100,.3);border-radius:50%;animation:dropFall linear infinite}
-@keyframes dropFall{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.3}100%{transform:translateY(100vh);opacity:0}}
+.chapter h2{font-size:1.45rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.chapter .ch-period{font-size:.82rem;color:var(--text3);margin-bottom:12px;font-family:"SF Mono","Consolas",monospace}
+.chapter p.desc{font-size:.92rem;color:var(--text2);line-height:1.8;margin-bottom:16px}
+.chapter .ch-tags{display:flex;flex-wrap:wrap;gap:6px}
+.chapter .ch-tags span{
+  font-size:.7rem; padding:3px 10px; border-radius:10px;
+  background:rgba(255,255,255,.03); color:var(--text3);
+  border:1px solid rgba(255,255,255,.05);
+}
+.chapter .ch-arrow{
+  position:absolute; right:40px; bottom:36px;
+  font-size:1.4rem; color:var(--text3); transition:all .35s;
+}
+.chapter:hover .ch-arrow{color:var(--gold);transform:translateX(4px)}
 
-@media(max-width:640px){
-  .bend{flex-direction:row!important}
-  .spacer{display:none}
-  .card{width:100%}
-  .source h1{font-size:28px}
+/* Key insight line */
+.insight-line{
+  display:flex; align-items:flex-start; gap:10px; margin-top:18px; padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.insight-line .icon{font-size:.95rem;flex-shrink:0;line-height:1.6}
+.insight-line .text{font-size:.8rem;color:var(--gold2);font-style:italic;line-height:1.55}
+
+/* Enter animation */
+.chapter.enter{
+  opacity:0; transform:translateY(28px);
+  transition:all .6s cubic-bezier(.22,.61,.36,1);
+}
+.chapter.visible{opacity:1;transform:translateY(0)}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center; margin-top:80px; padding-top:32px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.footer a.home-link{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--gold3);text-decoration:none;font-size:.9rem;
+  padding:8px 24px;border:1px solid rgba(212,168,83,.2);border-radius:24px;
+  transition:all .3s;
+}
+.footer a.home-link:hover{color:var(--gold2);border-color:var(--gold);background:rgba(212,168,83,.06)}
+.footer .copy{font-size:.75rem;color:var(--text3);margin-top:24px}
+
+/* ===== FLOATING PARTICLES ===== */
+.particles-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.particle{
+  position:absolute; width:2px; height:2px; background:var(--gold);
+  border-radius:50%; animation:rise var(--float-d) linear infinite;
+  animation-delay:var(--float-delay); opacity:0;
+}
+@keyframes rise{
+  0%{opacity:0;transform:translateY(105vh) scale(0)}
+  8%{opacity:.7}
+  85%{opacity:.4}
+  100%{opacity:0;transform:translateY(-10vh) scale(2)}
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .main-wrap{padding:36px 14px 56px}
+  .header{margin-bottom:48px}
+  .header h1{font-size:clamp(1.6rem,7vw,2.4rem)}
+  .chapters{gap:24px}
+  .chapter{padding:24px 20px}
+  .chapter .ch-num{font-size:3rem;right:16px;top:10px}
+  .chapter h2{font-size:1.2rem}
+  .chapter .ch-arrow{right:24px;bottom:24px}
+}
+@media(max-width:480px){
+  .header .meta-badge{gap:14px;flex-wrap:wrap;justify-content:center}
+  .chapter{padding:20px 16px}
+  .chapter h2{font-size:1.1rem}
+  .insight-line{flex-wrap:wrap}
 }
 </style>
+</head>
+<body>
 
-<div class="drops" id="drops"></div>
+<div class="river-bg"></div>
+<div class="stars-wrap" id="stars"></div>
+<div class="particles-wrap" id="particles"></div>
 
-<div class="river">
-  <div class="source">
-    <div class="mark">🟤</div>
+<main class="main-wrap">
+
+  <header class="header">
+    <div class="brand">吴军来信 · 世界文明史</div>
     <h1>文明之河</h1>
-    <p>317 篇笔记 · 从走出非洲到现代世界的壮阔航程</p>
-    <div class="divider"></div>
-  </div>
+    <p class="tagline">
+      从东非大裂谷走出的智人，到渗透全球每一个角落的现代文明——
+      这是一条奔流七万年的长河，每一个转弯都改写了人类的命运。
+    </p>
+    <div class="meta-badge">
+      <span>📜 <span class="num">317</span> 篇笔记</span>
+      <span>📂 <span class="num">5</span> 个专题</span>
+      <span>🗺️ 文明全景</span>
+    </div>
+  </header>
 
-  <div class="meander"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div></div>
+  <div class="river-divider"></div>
 
-  <div class="bend left">
-    <a class="card" href="1-文明起源与早期国家.html">
-      <div class="num">第一章 · 源头</div>
-      <div class="title">🌱 文明起源与早期国家</div>
-      <div class="meta">60 篇</div>
-      <div class="desc">走出非洲的智人、新仙女木事件催化的定居革命、农业起源与物种驯化——文明的第一滴水从东非裂谷滴落。</div>
+  <div class="chapters">
+
+    <!-- Chapter 1: 文明起源与早期国家 -->
+    <a class="chapter ch1 enter" href="1-文明起源与早期国家.html">
+      <span class="ch-num">I</span>
+      <span class="ch-badge">约 30 万 — 前 3500 年</span>
+      <h2>文明起源与早期国家</h2>
+      <div class="ch-period">走出非洲 → 定居农耕 → 最早国家</div>
+      <p class="desc">
+        智人走出东非大裂谷，凭借火、工具和语言三种独特能力足迹遍布全球。
+        新仙女木事件迫使人类从迁徙转向定居，新月沃土上最早的农业文明破土而出。
+        地理环境与物种交流编织了文明最初的经纬。
+      </p>
+      <div class="ch-tags">
+        <span>走出非洲</span><span>新仙女木事件</span><span>农业革命</span><span>驯化</span><span>纳图芬</span><span>新月沃土</span>
+      </div>
+      <div class="insight-line">
+        <span class="icon">💡</span>
+        <span class="text">"定居是人类进入文明社会的先决条件——大自然用一次全球降温，把人类推进了农耕时代。"</span>
+      </div>
+      <span class="ch-arrow">→</span>
     </a>
-    <div class="spacer"></div>
-  </div>
 
-  <div class="meander"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div></div>
-
-  <div class="bend right">
-    <div class="spacer"></div>
-    <a class="card" href="2-古代文明全景.html">
-      <div class="num">第二章 · 支流</div>
-      <div class="title">🌍 古代文明全景</div>
-      <div class="meta">62 篇</div>
-      <div class="desc">美索不达米亚、古埃及、古印度、古代中国——四大农耕文明如支流汇入，轮子、文字、青铜在此诞生。</div>
+    <!-- Chapter 2: 古代文明全景 -->
+    <a class="chapter ch2 enter" href="2-古代文明全景.html">
+      <span class="ch-num">II</span>
+      <span class="ch-badge">约 前 3500 — 前 500 年</span>
+      <h2>古代文明全景</h2>
+      <div class="ch-period">五大文明中心 → 农耕 vs 商业 → 贸易网络</div>
+      <p class="desc">
+        美索不达米亚、古埃及、古印度、古代中国、古希腊——五大文明中心
+        因地理与气候的差异走上不同的路。农耕文明追求集中与秩序，商业文明孕育契约与
+        自由。跨文明的商贸早已将世界暗中连接。
+      </p>
+      <div class="ch-tags">
+        <span>五大文明中心</span><span>农耕vs商业</span><span>三星堆</span><span>跨文明贸易</span><span>文明影响力</span>
+      </div>
+      <div class="insight-line">
+        <span class="icon">💡</span>
+        <span class="text">"平坦沃土催生集中王权，破碎海岸催生城邦自由——文明形态由地理写就。"</span>
+      </div>
+      <span class="ch-arrow">→</span>
     </a>
-  </div>
 
-  <div class="meander"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div></div>
-
-  <div class="bend left">
-    <a class="card" href="3-轴心时代与古典文明.html">
-      <div class="num">第三章 · 激流</div>
-      <div class="title">🏺 轴心时代与古典文明</div>
-      <div class="meta">82 篇</div>
-      <div class="desc">孔子、老子、希腊三哲、佛陀、犹太先知——人类精神在各大流域同时觉醒，思想的激流奔涌而出。</div>
+    <!-- Chapter 3: 轴心时代与古典文明 -->
+    <a class="chapter ch3 enter" href="3-轴心时代与古典文明.html">
+      <span class="ch-num">III</span>
+      <span class="ch-badge">约 前 800 — 公元 500 年</span>
+      <h2>轴心时代与古典文明</h2>
+      <div class="ch-period">思想大爆发 → 古典帝国 → 文明碰撞</div>
+      <p class="desc">
+        公元前800至前200年，孔子、佛陀、苏格拉底、先知——人类精神的"轴心时代"
+        几乎同时点亮了欧亚大陆。随后，波斯、希腊、罗马、秦汉帝国在战争与迁徙中
+        将古典文明推向巅峰，宗教成为跨越疆域的最强文明载体。
+      </p>
+      <div class="ch-tags">
+        <span>轴心时代</span><span>古印欧人迁徙</span><span>希腊化</span><span>大乘佛教</span><span>罗马帝国</span><span>丝绸之路</span>
+      </div>
+      <div class="insight-line">
+        <span class="icon">💡</span>
+        <span class="text">"同一批印欧人的后代，千年后互视为异族——文明的分化本身就是一部史诗。"</span>
+      </div>
+      <span class="ch-arrow">→</span>
     </a>
-    <div class="spacer"></div>
-  </div>
 
-  <div class="meander"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div></div>
-
-  <div class="bend right">
-    <div class="spacer"></div>
-    <a class="card" href="4-中世纪与宗教世界.html">
-      <div class="num">第四章 · 暗涌</div>
-      <div class="title">⛪ 中世纪与宗教世界</div>
-      <div class="meta">59 篇</div>
-      <div class="desc">封建契约、政教博弈、十字军东征、蒙古冲击——河道转入地下暗涌，积蓄着下一段奔流的力量。</div>
+    <!-- Chapter 4: 中世纪与宗教世界 -->
+    <a class="chapter ch4 enter" href="4-中世纪与宗教世界.html">
+      <span class="ch-num">IV</span>
+      <span class="ch-badge">约 公元 500 — 1500 年</span>
+      <h2>中世纪与宗教世界</h2>
+      <div class="ch-period">宗教文明圈 → 唐宋巅峰 → 蒙古冲击</div>
+      <p class="desc">
+        古典文明崩塌后的"黑暗时代"并非只有停滞。东方的唐宋在经济与文化上登峰造极，
+        伊斯兰文明在翻译运动中保存了古典智慧，基督教的修道院成为知识最后的避难所。
+        蒙古帝国的铁蹄碾碎了旧格局，也意外打通了东西方的通道。
+      </p>
+      <div class="ch-tags">
+        <span>宋朝盛世</span><span>士族门阀</span><span>伊斯兰黄金时代</span><span>蒙古帝国</span><span>中世纪城市</span>
+      </div>
+      <div class="insight-line">
+        <span class="icon">💡</span>
+        <span class="text">"宋朝300年仅杀2位高官——经济富裕才是文明宽容的真正底气。"</span>
+      </div>
+      <span class="ch-arrow">→</span>
     </a>
-  </div>
 
-  <div class="meander"><div class="ripple"></div><div class="ripple"></div><div class="ripple"></div></div>
-
-  <div class="bend left">
-    <a class="card" href="5-近现代文明转型.html">
-      <div class="num">第五章 · 入海</div>
-      <div class="title">⚡ 近现代文明转型</div>
-      <div class="meta">54 篇</div>
-      <div class="desc">文艺复兴、科学革命、工业革命、启蒙运动——河流冲破一切束缚，汇入现代文明的浩瀚海洋。</div>
+    <!-- Chapter 5: 近现代文明转型 -->
+    <a class="chapter ch5 enter" href="5-近现代文明转型.html">
+      <span class="ch-num">V</span>
+      <span class="ch-badge">约 公元 1500 — 至今</span>
+      <h2>近现代文明转型</h2>
+      <div class="ch-period">文艺复兴 → 科学革命 → 工业革命 → 信息时代</div>
+      <p class="desc">
+        美第奇家族在佛罗伦萨点燃的文艺复兴之火，经宗教改革、科学革命、启蒙运动、
+        工业革命——四次伟大的革命接力，彻底将人类从马尔萨斯陷阱和历史循环中解放。
+        人文主义将目光从神转向人，科学将经验升华为法则，现代文明从此破茧。
+      </p>
+      <div class="ch-tags">
+        <span>文艺复兴</span><span>人文主义</span><span>美第奇家族</span><span>科学革命</span><span>启蒙运动</span><span>工业革命</span>
+      </div>
+      <div class="insight-line">
+        <span class="icon">💡</span>
+        <span class="text">"但丁、彼特拉克、薄伽丘——文坛三杰用笔尖撬动了神权，把人放回了世界的中心。"</span>
+      </div>
+      <span class="ch-arrow">→</span>
     </a>
-    <div class="spacer"></div>
+
   </div>
 
-  <div class="delta">
-    <div class="mark">🌊</div>
-    <div class="text">河流入海 · 文明不息</div>
-    <div class="horizon"></div>
-  </div>
+  <footer class="footer">
+    <a class="home-link" href="../index.html">← 返回知识主板</a>
+    <div class="copy">吴军来信 · 世界文明史 — 317篇笔记 · 5大专题 · 从走出非洲到近现代转型</div>
+  </footer>
 
-  <div class="footer">
-    <a href="../index.html">← 返回知识主板</a>
-  </div>
-</div>
+</main>
 
 <script>
-// 水滴粒子
-const drops=document.getElementById('drops');
-for(let i=0;i<20;i++){
-  const d=document.createElement('div');
-  d.className='drop';
-  d.style.left=Math.random()*100+'%';
-  d.style.animationDuration=(6+Math.random()*10)+'s';
-  d.style.animationDelay=Math.random()*8+'s';
-  drops.appendChild(d);
-}
+// Twinkling stars
+(function(){
+  var c = document.getElementById('stars');
+  var f = document.createDocumentFragment();
+  for(var i=0; i<55; i++){
+    var s = document.createElement('div');
+    s.className = 'star';
+    var sz = Math.random()*2.2+1;
+    s.style.cssText =
+      'width:'+sz+'px;height:'+sz+'px;'+
+      'left:'+(Math.random()*100)+'%;top:'+(Math.random()*100)+'%;'+
+      '--d:'+(Math.random()*3+2)+'s;--delay:'+(Math.random()*5)+'s';
+    f.appendChild(s);
+  }
+  c.appendChild(f);
+})();
+
+// Rising particles
+(function(){
+  var c = document.getElementById('particles');
+  var f = document.createDocumentFragment();
+  for(var i=0; i<25; i++){
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText =
+      'left:'+(Math.random()*100)+'%;'+
+      '--float-d:'+(Math.random()*10+8)+'s;'+
+      '--float-delay:'+(Math.random()*12)+'s;'+
+      'width:'+(Math.random()*2+1)+'px;height:'+(Math.random()*2+1)+'px';
+    f.appendChild(p);
+  }
+  c.appendChild(f);
+})();
+
+// Staggered entrance animation
+(function(){
+  var chs = document.querySelectorAll('.chapter.enter');
+  chs.forEach(function(ch,i){
+    setTimeout(function(){
+      ch.classList.add('visible');
+    }, 150 + i*120);
+  });
+})();
 </script>
+</body>
 </html>
