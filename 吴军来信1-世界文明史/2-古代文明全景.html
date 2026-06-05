@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界文明史 · 古代文明全景</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --text: #3d2f2f;
+  --shadow: rgba(61,47,47,0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+a { color: var(--accent); text-decoration: none; }
+header {
+  background: linear-gradient(135deg, var(--accent), #8e291f);
+  color: #fff;
+  padding: 28px 16px 22px;
+  text-align: center;
+  position: relative;
+}
+header h1 { font-size: 1.6rem; letter-spacing: 2px; }
+header p { opacity: 0.9; margin-top: 6px; font-size: 0.95rem; }
+.home-link {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 20px;
+  color: #fff; font-size: 0.85rem;
+}
+.tabs {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 50;
+}
+.tab-btn {
+  border: none; background: transparent; padding: 12px 14px; cursor: pointer;
+  font-size: 0.9rem; color: var(--text); border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+.tab-btn:hover { color: var(--accent); }
+.tab-panel { display: none; padding: 20px 16px 40px; max-width: 1100px; margin: 0 auto; }
+.tab-panel.active { display: block; }
+
+/* Overview */
+.overview-hero {
+  background: var(--card); border-radius: var(--radius); padding: 24px; margin-bottom: 20px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+.overview-hero h2 { color: var(--accent); margin-bottom: 10px; font-size: 1.25rem; }
+.overview-hero p { margin-bottom: 8px; }
+.meta-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px;
+}
+.meta-card {
+  background: #fff; border-radius: var(--radius); padding: 16px;
+  box-shadow: 0 2px 8px var(--shadow); border-left: 4px solid var(--accent);
+}
+.meta-card h4 { font-size: 0.95rem; margin-bottom: 6px; }
+.meta-card p { font-size: 0.88rem; opacity: 0.9; }
+
+/* Cards */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+}
+.flip-card {
+  perspective: 1000px; cursor: pointer;
+}
+.flip-inner {
+  position: relative; width: 100%;
+  height: clamp(220px, 40vw, 280px);
+  transition: transform 0.55s; transform-style: preserve-3d;
+}
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+  border-radius: var(--radius); padding: 18px; overflow: hidden;
+  box-shadow: 0 4px 10px var(--shadow);
+}
+.flip-front {
+  background: var(--card); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+}
+.flip-front h4 { font-size: 1.05rem; color: var(--accent); }
+.card-tag { font-size: 0.75rem; background: var(--accent); color: #fff; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+.flip-back {
+  background: #fff; transform: rotateY(180deg); display: flex; align-items: center;
+}
+.flip-back p { font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+
+/* Quiz */
+.quiz-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+.btn {
+  border: none; background: var(--accent); color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem;
+}
+.btn.secondary { background: #8e7d6b; }
+.btn:hover { opacity: 0.9; }
+.staticQuiz { display: none; }
+.q-item, .exam-item { background: #fff; border-radius: var(--radius); padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 6px var(--shadow); }
+.q-text, .exam-q { font-weight: 700; margin-bottom: 8px; }
+.q-options label, .exam-options label { display: block; padding: 4px 0; cursor: pointer; font-size: 0.92rem; }
+.q-answer { margin-top: 8px; color: var(--accent); font-weight: 700; }
+.exam-score { font-size: 1.2rem; color: var(--accent); margin-top: 14px; font-weight: 700; }
+
+/* Review */
+.review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.review-card { background: #fff; border-radius: var(--radius); padding: 18px; box-shadow: 0 2px 8px var(--shadow); }
+.review-card h4 { color: var(--accent); margin-bottom: 10px; font-size: 1rem; }
+.review-card ul { padding-left: 18px; font-size: 0.9rem; }
+.review-card li { margin-bottom: 6px; }
+
+/* Mindmap */
+.mindmap-wrap { text-align: center; }
+.mindmap-svg { background: #fff; border-radius: var(--radius); padding: 10px; box-shadow: 0 2px 8px var(--shadow); overflow-x: auto; }
+.mindmap-svg svg { max-width: 100%; height: auto; }
+.mindmap-note { margin-top: 12px; font-size: 0.88rem; opacity: 0.85; }
+
+/* Deep */
+.deep-wrap { max-width: 900px; margin: 0 auto; }
+.deep-item { background: #fff; border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px var(--shadow); }
+.deep-item h4 { color: var(--accent); margin-bottom: 8px; }
+.deep-item p { font-size: 0.92rem; }
+
+/* Case */
+.case-wrap { max-width: 900px; margin: 0 auto; }
+.case-item { background: #fff; border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px var(--shadow); }
+.case-item h4 { color: var(--accent); margin-bottom: 8px; }
+.case-item p { font-size: 0.92rem; margin-bottom: 6px; }
+
+/* Decision */
+.decision-wrap { max-width: 900px; margin: 0 auto; }
+.decision-item { background: #fff; border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px var(--shadow); }
+.decision-item h4 { color: var(--accent); margin-bottom: 10px; }
+.decision-options label { display: block; padding: 4px 0; font-size: 0.92rem; cursor: pointer; }
+.decision-analysis { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 8px; display: none; }
+.decision-analysis p { font-size: 0.9rem; }
+
+footer { text-align: center; padding: 24px; font-size: 0.85rem; opacity: 0.7; }
+@media (max-width: 640px) {
+  header h1 { font-size: 1.25rem; }
+  .tab-btn { padding: 10px 8px; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="home-link" href="index.html">← 首页</a>
+  <h1>世界文明史 · 古代文明全景</h1>
+  <p>母隐喻：四大河流孕育的人类文明第一朵花 · 62篇笔记</p>
+</header>
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="0">总览</button>
+  <button class="tab-btn" data-tab="1">卡片</button>
+  <button class="tab-btn" data-tab="2">题库</button>
+  <button class="tab-btn" data-tab="3">考试</button>
+  <button class="tab-btn" data-tab="4">复习</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</nav>
+
+<!-- Tab 0: 总览 -->
+<div class="tab-panel active" id="tab0">
+  <div class="overview-hero">
+    <h2>“四大河流孕育的人类文明第一朵花”</h2>
+    <p>本专题涵盖世界文明史第2模块：古代文明全景。以美索不达米亚（两河）、古埃及（尼罗河）、古印度（印度河）、古代中国（黄河/长江）四大农耕文明为核心，梳理从城市诞生、文字发明、帝国崛起到轴心时代思想突破的完整脉络。</p>
+    <p>核心线索：自然条件塑造文明形态 → 技术与文字奠基 → 帝国扩张与制度演进 → 贸易与冲突交织 → 轴心时代人文突破。</p>
+  </div>
+  <div class="meta-grid">
+    <div class="meta-card"><h4>⚡ 关键发明</h4><p>轮子、帆船、青铜器、楔形文字、甲骨文、腓尼基字母、金字塔、大运河</p></div>
+    <div class="meta-card"><h4>⚔️ 帝国兴衰</h4><p>阿卡德、古巴比伦、亚述、新巴比伦、古埃及王朝、殷商、西周、秦汉</p></div>
+    <div class="meta-card"><h4>✍️ 思想突破</h4><p>百家争鸣、佛教与耆那教、希腊哲学萌芽、《诗经》与《荷马史诗》</p></div>
+    <div class="meta-card"><h4>↔️ 文明互动</h4><p>跨文明贸易（青铜原料、粮食）、技术传播（冶铁术）、字母文字扩散</p></div>
+  </div>
+</div>
+
+<!-- Tab 1: 卡片 -->
+<div class="tab-panel" id="tab1">
+  <div class="cards-grid">
+    
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>控制力与向心力：阿卡德帝国为什么灭亡了？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **核心观点**：长期稳定的政权为文明发展提供必要的**时间与空间**，需深入理解维系政权的关键力量。 - **历史视角**：传统观点强调统治者个人才智/品德，但现代研究表明，**结构性因素**（经济、制度、地理、技术）的影响更为深远。 - **定义**：政权对所辖疆域的管理与支配能力。 - **早期文明的局限**：因经济能力与行政管理水平低下，仅能统治**百十来里**范围（如美索不达米亚、古印度、中国上古邦国）。 - **武力控制的双刃剑**：   - 优势：专职军队可扩大统治范围。   - 风险：维持成本高，滥用武力导致国力消耗（如阿卡德帝国因常...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>苏美尔文明：人类最早的文明如何诞生？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心定义** - **历史地位**：目前已知的**人类最早文明**，起源于美索不达米亚地区。 - **神秘性**：起源地未知，如“一夜之间出现”，文明程度高度发达。 - **文明判定**：满足三大条件——**城市**（公元前4000年建立）、**书写系统**（公元前3000年开始使用）、**金属器**（公元前3000年开始使用）。 新月沃土（人类文明摇篮）包含三个核心区域： 1. **中部**：约旦河地区（纳图芬文化，最早农耕） 2. **东北部**：美索不达米亚（苏美尔文明诞生地） 3. **西南部**：尼罗河下游（古埃及文明诞生地） | 地区 |...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>美索不达米亚的楔形文字是如何被破解的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**楔形文字特性** - **定义**：美索不达米亚地区特有的古老文字，距今约**五千年**，是**世界上最早的文字之一**。 - **形态**：由细长三角形（楔形）符号构成，较甲骨文更抽象，缺乏与现代文字的对应记载。 **破译难点** - 无已知对应碑刻或记载，被称为&quot;天书&quot;。 - 符号抽象度高，与象形文字相比识别难度更大。 **罗林森其人** - **身份**：英国军人、外交家、语言学家（Sir Henry Creswicke Rawlinson，1810-1895）。 - **特点**：军事生涯无显著建树，却凭借语言学天赋成为古文字学权威，被誉为&quot;...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>阿卡德帝国：美索不达米亚是如何统一的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心问题**：在邦国林立的美索不达米亚地区，首个统一政权如何诞生？   - **前提**：苏美尔文明（经济、科技、管理先进）吸引周边民族（阿卡德人、阿拉姆人、希伯来人等），形成文明融合与潜在威胁。   - **转折**：公元前24世纪苏美尔城邦陷入内乱，经济破坏、民心尽失，为外部统一力量提供契机。 - **身份背景**：阿卡德族人，原基什国国王臣仆（类比唐朝粟特人安禄山），趁外敌入侵夺权。   - **军事创新**：建立世界军事史上**第一支常备军**（约5000人），对当时仅十来万人口的城邦构成压倒性优势。   - **统一过程**：逐个击破苏美尔...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>最早的文明开创者：苏美尔人都发明了什么？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**发明的两种类型** - **短期技术型**：复杂但生命周期短，无衍生发明（如磁带、激光唱盘）。 - **基础工具型**：简单但为后续发明奠基，持续使用（如车轮、刀）。   **苏美尔人的定位**：其发明多属于第二类，虽发明者佚名，但奠定了人类文明基础。 - **成分**：以铜为主，混合锡和铅的合金。 - **性能**：熔点低于纯铜，硬度高于纯铜，适合制造**兵器和工具**。 - **偶然发现**（约7000年前）：富含铜锡的岩石建造火炉时，金属熔化混合形成青铜。 - **技术掌握**：**公元前3300年**（前3500-前3000年间），苏美尔人实...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>楔形文字：世界上最古老的文字是怎么出现的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心观点**：人类文明的传承与发展**离不开文字和书写系统**，其作用体现在两个关键维度： 1. **知识传递**：突破口头传承的局限（失真、范围有限、易失传），如欧洲中世纪因古希腊罗马文献失传导致技术断层，直至文艺复兴时期从阿拉伯地区传回后才重启发展。 2. **社会管理**：支撑大规模国家治理，实现命令传达与信息汇报的准确化、远距离化。 | 特征 | 语言 | 文字 | | :--- | :--- | :--- | | **传递方式** | 口头即时传播 | 符号记录传播 | | **局限性** | 需在场、易篡改、无留存 | 可跨越时空、持久保...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>古巴比伦文明：文明奇迹是如何缔造的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**文明定位与影响力** - **历史坐标**：继苏美尔人、阿卡德人之后，第三个登上美索不达米亚舞台的文明。 - **常见误解**：常被与美索不达米亚文明等同，但实为该地区历史政权之一；空中花园、通天塔属于**新巴比伦**（晚于古巴比伦几百年）。 - **核心遗产**：以《汉谟拉比法典》闻名，体现法律制度对文明的深远影响。 - **闪米特族分支**：与迦太基、阿拉伯文明同属闪米特人，非印欧人（高加索人）种群。 - **文化特征**：半游牧半农耕民族，公元前2006年乌尔第三王朝灭亡后，在群雄割据中崛起。 - **独立时间**：公元前1894年，阿摩利人酋...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>赫梯帝国：后来者如何居上？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **族群属性**：赫梯人作为**古印欧人**分支，公元前2000年从安纳托利亚进入美索不达米亚边缘地带。 - **早期状态**：以狩猎游牧为主，部落间存在争斗，文明程度落后于美索不达米亚本土。 - **转型关键**：通过学习美索不达米亚文明的宗教、文化，发展农耕与商业，于**公元前1650年**建立赫梯古王国（首任国王：哈图西里一世）。 - **早期继承危机**：采用&quot;选贤&quot;继承制导致王位争夺不断，建国后百余年因内耗无法对外扩张。 - **铁列平改革（公元前16世纪）**：确立**世袭长子继承制**（无长子则次子，无男性后代则女婿继位），获得贵族支持...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>亚述：第一个世界性帝国如何崛起？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **族群属性**：亚述人是**闪米特人**的一支，与古巴比伦人同期登上美索不达米亚舞台。 - **地理分布**：控制底格里斯河与幼发拉底河**上游地区**，下游由古巴比伦控制。 - **早期状态**：建国后数百年间为独立政权，但**时强时弱**，长期作为美索不达米亚历史舞台的**配角**，曾沦为他国附属国。 1. **首次崛起（公元前15世纪末）**：逐渐强大，但受赫梯帝国压制（赫梯掌握先进冶铁术、控制西亚西部商业），后因外来族群入侵失去大片领土，再次沦为地区性政权。 2. **强势崛起（公元前12世纪）**：赫梯帝国因内忧外患衰弱，美索不达米亚分裂...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>巴比伦之囚是怎么一回事？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**巴比伦之囚** - **时间范围**：公元前586-前538年。 - **事件本质**：犹太人从家乡**迦南地**被掳至巴比伦城的历史事件，犹太民族自称为“**受难时代**”。 - **历史意义**：   - 犹太民族将希望寄托于神，形成**高度虔诚的信仰传统**。   - 催生**耶利米、以斯拉、尼希米**等关键先知，其思想成为犹太文化根源。   - 奠定犹太民族“**以信仰维系共同体**”的核心特性。 1. **始祖亚伯拉罕时期（公元前2000年左右）**    - 妻子撒拉无法生育，以埃及女仆**夏甲**为妾，生下**以实玛利**（阿拉伯人祖先...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>新巴比伦帝国：美索不达米亚文明的尾声</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心特征** - **“新”巴比伦定义**：区别于缔造《汉谟拉比法典》的古巴比伦，特指修建**空中花园**和**通天塔**的文明。 - **历史地位**：美索不达米亚地区**最后一个独立发展的帝国**，统治时间不足百年（前626-前539年），但文明成就评价高于亚述。 - **文明贡献**：继承亚述文化传统，普及教育、发展科学，奠定**西方数学和天文学基础**。 - **迦勒底人的反抗**：亚述统治后期，巴比伦尼亚地区起义不断，迦勒底人（当地族群）多次反抗未果。 - **关键转折（前626年）**：亚述任命迦勒底领袖**那波帕拉萨尔**为巴比伦总督，...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>美索不达米亚：世界文明的起点</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心价值**   - **时间跨度**：从苏美尔人建立城市至新巴比伦帝国灭亡，持续约**3500年**（比该文明终结至今的时间还长近1000年）。   - **文明地位**：作为**世界文明重要地标**，其发展历程堪称“后来世界历史的缩影”，为现代社会生活（轮子、帆船、金融工具等）提供了源头。 美索不达米亚贡献了人类多项**基础性发明与科学成就**：   | 领域       | 具体成果                                                                 | |------------|-...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>美索不达米亚文明是如何被发现的?</h4>
+        </div>
+        <div class="flip-back">
+          <p>美索不达米亚文明比中华文明早**上千年**，但因建筑材料为**泥坯砖**，经千年侵蚀后仅存土墩残垣。中世纪时，该文明的真实面貌已被遗忘，仅存于传说中。现代对其全面了解，得益于三位关键人物的考古探索。 - **身份**：英国驻巴格达领事、东印度公司代表 - **时间线**：   - 1787年出生，童年在英国度过   - 20岁（1807年）成为驻巴格达领事   - 1818年发掘库云吉克（Kouyunjik）遗址   - 1821年因重病去世 - **主要贡献**：   1. 发掘**古巴比伦城遗址**，收集泥板文书等小型文物   2. 确认库云吉克为*...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>没有纸张，亚述的政令和公文如何传递？</h4>
+        </div>
+        <div class="flip-back">
+          <p>亚述行省制度**既非分封制也非郡县制**，呈现早期中央集权特征： - **与分封制的差异**：总督由中央任命，**不可世袭**（理论上），权力受中央约束，可随时撤换；而分封制下封国自治性强且封地世袭。 - **与郡县制的差异**：亚述总督权力大于中国郡县长官，可任命下属官员；中国郡县制下，县令直接对中央负责，可弹劾太守。 - **特殊情况**：中央控制力削弱时可能出现总督职位世袭，类似**唐朝藩镇割据**，但非制度常态。 - **载体解决方案**：使用**泥板**传递命令，因公文简短，笨重问题可接受。 - **核心瓶颈**：**交通基础设施落后**，表现...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">美索不达米亚文明</div>
+          <h4>腓尼基字母：拼音文字从哪里来？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**象形文字的共性与局限** - **现存可解读的古代象形文字**：古埃及象形文字、古中国象形文字、美索不达米亚早期文字（共三种）。 - **核心优势**：直观性强，不识字者可通过联想理解含义。 - **主要缺陷**：难写、歧义性大、字形与读音脱节（如汉字早期多写法、读音与字形无关）。 **表音化趋势的必然性** - **学习传播需求**：拼音文字可通过字形直接读出读音，降低学习门槛，利于跨区域传播。 - **中文的特殊性**：虽保留象形体系，但通过**形声字**（表意+表音偏旁）部分实现表音化，缓解学习难度。 - **文明存续逻辑**：文字进化本质是*...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>迷思：为什么一直有人觉得金字塔是外星人造的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**基本参数** - **高度**：建成时146米（相当于40-50层楼），埃菲尔铁塔前**世界最高人造建筑**。 - **保持纪录时长**：数千年（期间林肯大教堂曾短暂超过，因雷击顶部受损后纪录回归）。 - **底座规模**：正方形边长230米，面积约5-6个足球场。 - **重量**：约600万吨，至今保持**全球最重建筑纪录**（第二名400万吨，第三名200万吨）。 - **建造年代**：约4600年前，古埃及第四王朝时期。 - **石材用量**：约230万块石灰岩巨石，平均重量2.5吨，最大达百吨级。 - **砌筑方式**：无水泥或灰浆粘连，仅...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>古埃及：世界上第一个统一王朝是如何建立的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心定位** - **文明地位**：曾被认为是人类最早文明，后被苏美尔文明取代，但仍延续近3000年（公元前31世纪-罗马帝国时期）。 - **学习框架**：将通过3讲概述历史脉络，重点分析文明特点与成就，并与**美索不达米亚文明**、**中华文明**对比。 - **时间跨度**：公元前13000年-公元前9000年，尼罗河定期泛滥带来肥沃土壤，支持野生谷物生长。 - **社会转型**：狩猎部落逐渐发现作物规律，从采集狩猎转向定居，依赖野生谷物为生。 | 时间节点 | 关键发展 | | :--- | :--- | | **公元前5500年** | 尼...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>金字塔：为什么说古王朝是古埃及最出名的时代？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心定位**：古埃及历史上最著名的时代，因**金字塔**的大量建造而闻名，时间跨度涵盖第三王朝至第六王朝。   **关键特征**： - **文明标志**：金字塔作为法老陵墓出现，取代前王朝和早王朝时期的简单墓葬形式。 - **历史地位**：古埃及文明第一个高峰期，政治体制确立、神权与王权结合的关键阶段。 1. **经济基础**：前王朝和早王朝时期经济水平提升，具备支撑大型建筑的物质条件。 2. **宗教信仰**：对**冥神奥赛里斯（Osiris）** 的崇拜形成，将重生、木乃伊与陵墓（金字塔）三者关联。 | 王朝 | 金字塔特征 | 代表建筑 | 历...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>统一：古埃及是如何走向鼎盛的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**历史定位**   中王朝（约公元前2055-前1650年）是古埃及从分裂走向统一的关键时期，为后续全盛奠定基础。其核心特征是**中央集权重建**与**经济文化复苏**。 - **农耕文明刚需**：统一政权是大规模水利建设的前提（与中华文明、古印度文明共性）。 - **直接成果**：国家版图扩张至**幼发拉底河沿岸**（东）与**红海南端**（南），经济实力与民生水平显著提升。 | 领域 | 具体措施与成果 | | :--- | :--- | | **农业** | 修复并新建水利灌溉系统，增设排水渠；**犁的改进**与**青铜工具普及**提升耕作效率 ...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>农业帝国：古埃及文明的特点是什么？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**文明对比现象** - **相似性表现**：古埃及与古代中国均以**君主专制**为主，历史进程呈现&quot;统一-混乱-再统一&quot;的循环模式（中国&quot;分久必合，合久必分&quot;）。 - **时空差异**：两地相隔遥远，古埃及第一王朝建立于**公元前3100年**，中国夏朝约始于**公元前2070年**，时间差超千年。 - **核心结论**：这种相似性并非巧合，根源在于两者均为**典型的农耕文明**，共享大型农业社会的共性特征。 - **地理特征**：埃及地势平坦，尼罗河进入埃及后流速减缓、河道变宽，形成大片冲积平原。 - **洪水规律**：尼罗河**每年定期泛滥**，洪...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>天狼星与医书：古埃及的科学技术成就有哪些？</h4>
+        </div>
+        <div class="flip-back">
+          <p>古埃及文明代表了**“需求驱动型”**的科技发展模式：从农业生产和社会建设的实际需求出发，积累技术经验，最终上升为系统化的科学知识。这与古希腊“先有科学理论再应用于技术”的路径形成鲜明对比。 古埃及农业面临的首要挑战是**确定播种与收获时间**（无钟表、无日历）和**标记洪水边界**（无测量工具），这些需求直接推动了早期天文学和数学的发展。 - **参照系选择**：以**天狼星**（亮度-1.46视星等，距离8.6光年）作为固定参照，因其亮度最高且位置相对太阳变化最小（月亮、木星等天体存在“漂移”）。 - **偕日升现象**：当太阳与天狼星同时升起（地球...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>太阳神与冥神：古埃及人的信仰世界什么样？</h4>
+        </div>
+        <div class="flip-back">
+          <p>古埃及是**笃信多神教**的文明，宗教渗透社会生活各层面，**神权与王权**既相互依存又存在权力博弈。王室若失去祭司阶层支持，统治难以稳固。其信仰体系呈现**官方与民间二元分化**特征，并与**生死轮回的宇宙观**紧密结合。 - **崇拜主体**：王室主导，庞大祭司阶层维持运转。 - **表现形式**：建造宏伟神庙，举行繁琐宗教仪式。 - **使用限制**：神庙仅供法老、高级祭司和贵族进入，百姓无权祭拜。 - **崇拜对象**：管具体事务的小神，如：   - **尼罗河神**：保证风调雨顺   - **巴斯特女神**：保佑家庭平安、人丁兴旺 - **祭拜...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>从圣书体到世俗体：古埃及的文字是如何演变的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>古埃及文字系统随实用性需求逐步简化，形成三种主要字体： | 字体类型 | 别称 | 特点 | 应用场景 | 演变类比 | | :--- | :--- | :--- | :--- | :--- | | **圣书体** | 神碑体、碑铭体 | 约1000个图形文字，由表音字母和表意文字构成，视觉美观且常上色 | 神殿刻写、石碑铭文、正式文书 | 类似中国**象形文字**的原始形态 | | **僧侣体** | - | 圣书体的潦草简化版，书写效率提升 | 僧侣非正式场合记录 | 类似中国**隶书到草书**的简化过程 | | **世俗体** | - | 进一步简...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>亡灵书与雕塑：古埃及的艺术伟大在哪？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心观点**：相较于广为人知的希腊化时期艺术（如“米洛斯的维纳斯”“萨莫色雷斯的胜利女神”），古埃及艺术具有更深远的艺术史价值——不仅本身造诣极高，更直接影响并造就了古希腊艺术。**代表性作品**包括拉美西斯二世坐像、《门考拉夫妇立像》、娜芙蒂蒂女王胸像等。 - **基本信息**：现存最完好的古埃及莎草纸书卷，高约40厘米，长达20多米，以绘画为主，夹杂说明文字，藏于大英博物馆。 - **功能定位**：作为陪葬品的“路引”，记录死者生前事迹以证明其值得永生，并包含来世所需咒文与约定事项。 - **主要内容**：六十多个章节，描绘灵魂（在阿努比斯引导下...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>战争与贸易：对外交流给古埃及带来了什么？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**地理与文明基础**   - **核心优势**：尼罗河贯穿上下埃及，提供肥沃土壤与稳定粮食产出，形成**持续时间最长的农耕文明**之一。   - **封闭性与必要性**：相对封闭的地理环境保障自给自足，但**任何快速发展的文明都需与外界沟通**，早期交流集中于商贸领域。   **贸易动因**   - **资源互补**：粮食（自给）与**青铜原料**（短缺）、木材、橄榄油等物资的交换需求。   - **经济逻辑**：商人主导远途贸易，国家通过贸易获取奢侈品与战略资源，弥补逆差。 | 贸易方向 | 主要商品（进口） | 主要商品（出口） | 关键措施 | ...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>古埃及文明的终结：大一统王朝的兴衰启示</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **文明属性**：世界上**第一个典型的、持续时间非常长的农耕文明**。 - **地理环境**：东为红海、北为地中海、西为利比亚半沙漠、南为努比亚沙漠，形成天然屏障，**免受外族入侵和大规模移民冲击**。 - **统一王朝**：公元前31世纪建立人类历史上**第一个大一统王朝**，统一成本低（生活生产方式相似、无地理阻碍）。 - **管理模式**：**直接管理制**（国王直接管理地方），区别于中国先秦的分封制间接管理。 - **统治工具**：   1. **宗教手段**：统一思想并神化国王，确立权威   2. **文官制度**：以宰相为首，中央直接管...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>为什么金字塔在古王朝之后就很少修建了呢？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **西周时期**：已出现玻璃珠子项链，早于瓷器历史，称为**琉璃**。 - **技术属性**：中国古代玻璃为**铅钡玻璃**，与西方钠钙玻璃成分不同，证明为独立研发。 - **技术局限**：   - 烧制温度低（不到1000度），导致气泡多、易碎。   - 含钡成分使透明度低，美观度不足。 - **发展转折**：清代从西方引进技术，可制作高透明玻璃，但因**昂贵易碎**未普及。 - **瓷器产业的压制效应**：瓷器技术高度成熟，形成**替代技术垄断**，抑制玻璃发展。 - **技术发展规律**：当某一技术方案（瓷器）率先满足需求，会客观上抑制其他可替...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>元旦彩蛋</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **时间节点**：1月1日新年，延续每年元旦讲解莎士比亚作品的传统。 - **关联课程**：结合正在讲述的世界文明史中**古埃及内容**，回应听众关于罗马占领后埃及文明是否终结、埃及艳后故事的提问。 - **核心主题**：通过莎士比亚悲剧《安东尼和克利奥帕特拉》，解析罗马将军安东尼与埃及艳后克利奥帕特拉的历史故事。 - **身份定位**：被称为“埃及艳后”，实为**托勒密王朝最后一任女王**（克利奥帕特拉七世），非埃及人，而是**希腊马其顿人后裔**。 - **王朝渊源**：托勒密王朝由**亚历山大部将托勒密一世**开创，统治者及上层社会均为希腊人。...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>古埃及人是如何完成这些巨型艺术品的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **普遍现象**：不仅古埃及，古代许多大一统政权均偏好修建高大建筑，该现象延续至近代。 - **典型案例**：汉高祖八年（公元前199年）萧何营建**未央宫**，因宫殿壮丽引发刘邦不满，萧何解释称“**非壮丽无以重威，且无令后世有以加也**”（《资治通鉴·卷十一》），最终说服刘邦。 - **震慑作用**：在绝对王权时代，高大建筑是权力象征，可对民众形成心理震慑（如古埃及金字塔、神殿，中世纪大教堂，欧洲城市罗马竞技场复刻建筑）。 - **古人洞见**：司马光在《资治通鉴》中批判此现象，提出“**王者以仁义为丽，道德为威，未闻其以宫室填服天下也**”，认...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古埃及文明</div>
+          <h4>为什么很多早期文明都会修建金字塔？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **主要代表**：埃及金字塔（最宏伟、工程量最大、历史最悠久）、美洲印第安人金字塔（玛雅文明、特奥蒂瓦坎文明）。 - **其他例证**：美索不达米亚文明、古代中国文明、印度洋毛里求斯岛均有金字塔形建筑（因规模较小或存在更宏伟遗迹而被忽略）。 - **结构优势**：**力学结构稳定**，是早期文明条件下**相对容易建设**的大型建筑形式。 - **技术基础**：建造所需的**数学知识**在当时已被人类掌握。 - **核心观点**：古埃及金字塔的特点是**工程量巨大**，而非**技术难度高**。 - **类比论证**：中国秦始皇陵的规模同样是国力体现，不...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古印度文明</div>
+          <h4>商贸：一万年前，中亚和印度怎么做生意？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**现象观察** - **中国历史规律**：唐、宋、元及明朝中晚期等商贸活跃朝代，百姓富庶且经济水平高；但因农业社会属性，史书对经贸活动记载有限，导致其重要性常被忽视。 - **普世性存在**：即便在军事对抗激烈时期（如希波战争、拿破仑战争、冷战），跨文明贸易仍持续进行。 **核心问题** 1. 什么支撑着跨文明的商贸活动？ 2. 商贸对文明的发展发挥着怎样的作用？ - **资源困境**：三星堆大量青铜器所需的铜、锡矿，本地无易于开采的矿藏。 - **来源推测**：   - **江西说**：主流观点认为矿石来自江西，但需沿长江逆流运输，在三千多年前难度极...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古印度文明</div>
+          <h4>阴差阳错：印度河文明是如何被发现的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**基本定义** - **名称由来**：因主要分布于印度河流域得名，又称**哈拉帕文明**（以最早发现地命名）。 - **时间跨度**：公元前2600年-公元前1900年，繁荣约700年。 - **历史地位**：南亚地区最古老文明，将南亚文明史向前推进至公元前2600年左右。 - **地理范围**：覆盖今天的巴基斯坦（400+遗址）、印度（600+遗址）及少量阿富汗境内遗址。 - **发现者**：英国东印度公司探险家**查尔斯·梅森（Charles Masson）**（19世纪初）。 - **发现背景**：初衷为寻找亚历山大东征遗迹，在巴基斯坦哈拉帕地区...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古印度文明</div>
+          <h4>印度的种姓制度是怎么回事？</h4>
+        </div>
+        <div class="flip-back">
+          <p>种姓制度并非印度独有，在**东亚、东南亚、西亚及西非**等地区均存在类似社会划分： - **古代波斯**：与印度同源（雅利安人后代），分为僧侣、武士、文官、平民四等级，前三者为外来雅利安人，平民为原住民。 - **古代朝鲜（11世纪-近代）**：六等级制度，从高到低为两班（文班/武班贵族）、中人（富裕阶层）、常民（有产农民/市民）、贱民（无产者）、白丁（赤贫者）、奴婢（无自由）。 - **古代中国**：虽存在&quot;士农工商&quot;或&quot;公侯伯子男&quot;等划分，阶层有一定流动性（如农民可通过科举成为士绅），但整体仍具固化特征。 印度社会学家**古里（Govind Sada...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古印度文明</div>
+          <h4>沙门思潮和佛教：宗教在印度是如何发展起来的？</h4>
+        </div>
+        <div class="flip-back">
+          <p>- **地理位置**：从中华文明往西，聚焦**南亚次大陆**。 - **历史脉络**：早于佛教的**印度河文明**（第40讲提及）→**吠陀文明**→吠陀时代晚期。 - **社会矛盾**：**婆罗门教**的**种姓制度**弊端显现，婆罗门种姓与其他3个种姓矛盾激化。 - **思想涌现**：新教派兴起，统称“**沙门思潮**”，时期称为“**沙门时期**”（“沙门”原指舍弃世俗、奉行禁欲苦修的宗教人士）。 - **创始人**：**伐达摩那**（部落首领之子，生活富足）。 - **关键转折**：30岁放弃财富、家庭（妻子和女儿），出家追求精神觉醒。 - **...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古印度文明</div>
+          <h4>新春特辑</h4>
+        </div>
+        <div class="flip-back">
+          <p>作为与美索不达米亚、古埃及、古希腊和古代中国并列的**古老文明**，印度拥有数量众多且持续多日的传统节日。印度官方认可的节假日每年达**120多个**，平均每三天就有一个节日，这一特点可能与印度人的较高幸福指数相关。本文重点解析印度最具代表性的六大节日：排灯节、湿婆节、桑格拉提节、黑天圣诞节、十胜节和洒红节。 - **性质**：印度教徒和锡克教徒的**丰收节日**，向财富女神致敬。 - **时间**：基于印度历法，每年10月或11月（公历日期不固定），持续**五天**。 - **象征意义**：善良、光明和知识战胜邪恶、黑暗和愚昧。 - **灯火装饰**：...</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.querySelector('.flip-inner').classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-tag">古印度文明</div>
+          <h4>外扩的文明：印度文明圈如何形成？</h4>
+        </div>
+        <div class="flip-back">
+          <p>**核心矛盾** - **历史记录困境**：印度古代视现实为幻象，导致**本土史料极度匮乏**，现代研究主要依赖间接资料（如法显《佛国记》、玄奘《大唐西域记》）。 - **文明贡献与篇幅失衡**：世界史书籍中印度史篇幅较短，与其实际影响力不匹配，但不能因此低估其文明成就。 **影响力数据** - **人口覆盖**：印度文明圈影响区域（含中国西南、东南亚大部、南亚、中亚部分）人口约**25亿**，占世界人口**30%**。 - **语言渗透**：中文中大量词汇源自印度，如**瞬间、刹那、因果、解脱**等。 **传播特点** - **主体差异**：与基督教传...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 2: 题库 -->
+<div class="tab-panel" id="tab2">
+  <div class="quiz-bar">
+    <button class="btn" onclick="drawQuiz()">随机抽题</button>
+    <button class="btn secondary" onclick="resetQuiz()">重置</button>
+    <button class="btn secondary" onclick="showAllAnswers()">显示答案</button>
+  </div>
+  <div id="quizContainer" class="staticQuiz">
+    
+    <div class="q-item" data-idx="0">
+      <p class="q-text">1. 目前已知的人类最早文明起源于哪个地区？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q0" value="0"> 尼罗河流域</label><label><input type="radio" name="q0" value="1"> 美索不达米亚地区</label><label><input type="radio" name="q0" value="2"> 印度河流域</label><label><input type="radio" name="q0" value="3"> 黄河流域</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 美索不达米亚地区</div>
+    </div>
+    <div class="q-item" data-idx="1">
+      <p class="q-text">2. 古埃及人用什么天体作为历法的基准来确定播种时间？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q1" value="0"> 北极星</label><label><input type="radio" name="q1" value="1"> 天狼星</label><label><input type="radio" name="q1" value="2"> 太阳</label><label><input type="radio" name="q1" value="3"> 月亮</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 天狼星</div>
+    </div>
+    <div class="q-item" data-idx="2">
+      <p class="q-text">3. 世界上最早的文字之一是美索不达米亚的什么文字？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q2" value="0"> 象形文字</label><label><input type="radio" name="q2" value="1"> 甲骨文</label><label><input type="radio" name="q2" value="2"> 楔形文字</label><label><input type="radio" name="q2" value="3"> 腓尼基字母</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：C. 楔形文字</div>
+    </div>
+    <div class="q-item" data-idx="3">
+      <p class="q-text">4. 阿卡德帝国的建立者萨尔贡在军事上的重要创新是什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q3" value="0"> 发明铁器</label><label><input type="radio" name="q3" value="1"> 建立第一支常备军</label><label><input type="radio" name="q3" value="2"> 使用骑兵为主</label><label><input type="radio" name="q3" value="3"> 建造战车</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 建立第一支常备军</div>
+    </div>
+    <div class="q-item" data-idx="4">
+      <p class="q-text">5. 《汉谟拉比法典》是哪个文明的著名遗产？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q4" value="0"> 古埃及</label><label><input type="radio" name="q4" value="1"> 苏美尔</label><label><input type="radio" name="q4" value="2"> 古巴比伦</label><label><input type="radio" name="q4" value="3"> 亚述</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：C. 古巴比伦</div>
+    </div>
+    <div class="q-item" data-idx="5">
+      <p class="q-text">6. 埃及金字塔建造数量最多的时期是哪个王朝？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q5" value="0"> 第三王朝</label><label><input type="radio" name="q5" value="1"> 第四王朝</label><label><input type="radio" name="q5" value="2"> 第五王朝</label><label><input type="radio" name="q5" value="3"> 第六王朝</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 第四王朝</div>
+    </div>
+    <div class="q-item" data-idx="6">
+      <p class="q-text">7. 印度种姓制度中，哪个种姓处于顶端？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q6" value="0"> 刹帝利</label><label><input type="radio" name="q6" value="1"> 吠舍</label><label><input type="radio" name="q6" value="2"> 首陀罗</label><label><input type="radio" name="q6" value="3"> 婆罗门</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：D. 婆罗门</div>
+    </div>
+    <div class="q-item" data-idx="7">
+      <p class="q-text">8. 印欧人能够成功扩张的关键技术之一是什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q7" value="0"> 造船技术</label><label><input type="radio" name="q7" value="1"> 马匹驯化</label><label><input type="radio" name="q7" value="2"> 纺织技术</label><label><input type="radio" name="q7" value="3"> 陶瓷制作</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 马匹驯化</div>
+    </div>
+    <div class="q-item" data-idx="8">
+      <p class="q-text">9. 古代中国从封建制到帝制的根本性制度转型被称为什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q8" value="0"> 商周之变</label><label><input type="radio" name="q8" value="1"> 周秦之变</label><label><input type="radio" name="q8" value="2"> 秦汉之变</label><label><input type="radio" name="q8" value="3"> 隋唐之变</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 周秦之变</div>
+    </div>
+    <div class="q-item" data-idx="9">
+      <p class="q-text">10. 腓尼基字母的主要创造者是哪个民族？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q9" value="0"> 苏美尔人</label><label><input type="radio" name="q9" value="1"> 埃及人</label><label><input type="radio" name="q9" value="2"> 腓尼基人</label><label><input type="radio" name="q9" value="3"> 希腊人</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：C. 腓尼基人</div>
+    </div>
+    <div class="q-item" data-idx="10">
+      <p class="q-text">11. 青铜器的主要成分是什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q10" value="0"> 铜和锌</label><label><input type="radio" name="q10" value="1"> 铜和锡</label><label><input type="radio" name="q10" value="2"> 铁和碳</label><label><input type="radio" name="q10" value="3"> 金与银</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 铜和锡</div>
+    </div>
+    <div class="q-item" data-idx="11">
+      <p class="q-text">12. 被称为&quot;亚述学之父&quot;、破解楔形文字的关键人物是谁？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q11" value="0"> 商博良</label><label><input type="radio" name="q11" value="1"> 罗林森</label><label><input type="radio" name="q11" value="2"> 施里曼</label><label><input type="radio" name="q11" value="3"> 埃文斯</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 罗林森</div>
+    </div>
+    <div class="q-item" data-idx="12">
+      <p class="q-text">13. 古埃及文字系统中，用于神殿刻写和石碑铭文的正式字体叫什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q12" value="0"> 僧侣体</label><label><input type="radio" name="q12" value="1"> 世俗体</label><label><input type="radio" name="q12" value="2"> 圣书体</label><label><input type="radio" name="q12" value="3"> 草书体</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：C. 圣书体</div>
+    </div>
+    <div class="q-item" data-idx="13">
+      <p class="q-text">14. 世界上关于古代大洪水的传说大约有多少个？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q13" value="0"> 约50个</label><label><input type="radio" name="q13" value="1"> 约100个</label><label><input type="radio" name="q13" value="2"> 约270个</label><label><input type="radio" name="q13" value="3"> 约500个</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：C. 约270个</div>
+    </div>
+    <div class="q-item" data-idx="14">
+      <p class="q-text">15. 轴心时代中国诗歌的代表作是什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q14" value="0"> 《楚辞》</label><label><input type="radio" name="q14" value="1"> 《诗经》</label><label><input type="radio" name="q14" value="2"> 《汉乐府》</label><label><input type="radio" name="q14" value="3"> 《唐诗三百首》</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 《诗经》</div>
+    </div>
+    <div class="q-item" data-idx="15">
+      <p class="q-text">16. 新巴比伦帝国的著名建筑包括什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q15" value="0"> 金字塔</label><label><input type="radio" name="q15" value="1"> 空中花园和通天塔</label><label><input type="radio" name="q15" value="2"> 帕特农神庙</label><label><input type="radio" name="q15" value="3"> 长城</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 空中花园和通天塔</div>
+    </div>
+    <div class="q-item" data-idx="16">
+      <p class="q-text">17. 殷商时期中国历史上出现了哪种文字记载？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q16" value="0"> 金文</label><label><input type="radio" name="q16" value="1"> 甲骨文</label><label><input type="radio" name="q16" value="2"> 小篆</label><label><input type="radio" name="q16" value="3"> 隶书</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 甲骨文</div>
+    </div>
+    <div class="q-item" data-idx="17">
+      <p class="q-text">18. 赫梯帝国在军事上的核心竞争力是什么？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q17" value="0"> 海军优势</label><label><input type="radio" name="q17" value="1"> 冶铁技术</label><label><input type="radio" name="q17" value="2"> 弓箭技术</label><label><input type="radio" name="q17" value="3"> 骑兵数量</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 冶铁技术</div>
+    </div>
+    <div class="q-item" data-idx="18">
+      <p class="q-text">19. 隋朝大运河的开凿主要解决了什么问题？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q18" value="0"> 南北交通</label><label><input type="radio" name="q18" value="1"> 南北资源调配</label><label><input type="radio" name="q18" value="2"> 军事防御</label><label><input type="radio" name="q18" value="3"> 灌溉农田</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：B. 南北资源调配</div>
+    </div>
+    <div class="q-item" data-idx="19">
+      <p class="q-text">20. 以下哪个不是古埃及多神教中的神祇？</p>
+      <div class="q-options">
+        <label><input type="radio" name="q19" value="0"> 太阳神拉</label><label><input type="radio" name="q19" value="1"> 冥神奥赛里斯</label><label><input type="radio" name="q19" value="2"> 湿婆</label><label><input type="radio" name="q19" value="3"> 尼罗河神</label>
+      </div>
+      <div class="q-answer" style="display:none">答案：C. 湿婆</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 3: 考试 -->
+<div class="tab-panel" id="tab3">
+  <div class="quiz-bar">
+    <button class="btn" onclick="submitExam()">交卷</button>
+    <button class="btn secondary" onclick="resetExam()">重置</button>
+  </div>
+  <div id="examContainer">
+    
+    <div class="exam-item" data-idx="0">
+      <p class="exam-q">1. 目前已知的人类最早文明起源于哪个地区？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq0" value="0"> 尼罗河流域</label><label><input type="radio" name="eq0" value="1"> 美索不达米亚地区</label><label><input type="radio" name="eq0" value="2"> 印度河流域</label><label><input type="radio" name="eq0" value="3"> 黄河流域</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="1">
+      <p class="exam-q">2. 古埃及人用什么天体作为历法的基准来确定播种时间？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq1" value="0"> 北极星</label><label><input type="radio" name="eq1" value="1"> 天狼星</label><label><input type="radio" name="eq1" value="2"> 太阳</label><label><input type="radio" name="eq1" value="3"> 月亮</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="2">
+      <p class="exam-q">3. 世界上最早的文字之一是美索不达米亚的什么文字？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq2" value="0"> 象形文字</label><label><input type="radio" name="eq2" value="1"> 甲骨文</label><label><input type="radio" name="eq2" value="2"> 楔形文字</label><label><input type="radio" name="eq2" value="3"> 腓尼基字母</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="3">
+      <p class="exam-q">4. 阿卡德帝国的建立者萨尔贡在军事上的重要创新是什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq3" value="0"> 发明铁器</label><label><input type="radio" name="eq3" value="1"> 建立第一支常备军</label><label><input type="radio" name="eq3" value="2"> 使用骑兵为主</label><label><input type="radio" name="eq3" value="3"> 建造战车</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="4">
+      <p class="exam-q">5. 《汉谟拉比法典》是哪个文明的著名遗产？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq4" value="0"> 古埃及</label><label><input type="radio" name="eq4" value="1"> 苏美尔</label><label><input type="radio" name="eq4" value="2"> 古巴比伦</label><label><input type="radio" name="eq4" value="3"> 亚述</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="5">
+      <p class="exam-q">6. 埃及金字塔建造数量最多的时期是哪个王朝？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq5" value="0"> 第三王朝</label><label><input type="radio" name="eq5" value="1"> 第四王朝</label><label><input type="radio" name="eq5" value="2"> 第五王朝</label><label><input type="radio" name="eq5" value="3"> 第六王朝</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="6">
+      <p class="exam-q">7. 印度种姓制度中，哪个种姓处于顶端？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq6" value="0"> 刹帝利</label><label><input type="radio" name="eq6" value="1"> 吠舍</label><label><input type="radio" name="eq6" value="2"> 首陀罗</label><label><input type="radio" name="eq6" value="3"> 婆罗门</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="7">
+      <p class="exam-q">8. 印欧人能够成功扩张的关键技术之一是什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq7" value="0"> 造船技术</label><label><input type="radio" name="eq7" value="1"> 马匹驯化</label><label><input type="radio" name="eq7" value="2"> 纺织技术</label><label><input type="radio" name="eq7" value="3"> 陶瓷制作</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="8">
+      <p class="exam-q">9. 古代中国从封建制到帝制的根本性制度转型被称为什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq8" value="0"> 商周之变</label><label><input type="radio" name="eq8" value="1"> 周秦之变</label><label><input type="radio" name="eq8" value="2"> 秦汉之变</label><label><input type="radio" name="eq8" value="3"> 隋唐之变</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="9">
+      <p class="exam-q">10. 腓尼基字母的主要创造者是哪个民族？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq9" value="0"> 苏美尔人</label><label><input type="radio" name="eq9" value="1"> 埃及人</label><label><input type="radio" name="eq9" value="2"> 腓尼基人</label><label><input type="radio" name="eq9" value="3"> 希腊人</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="10">
+      <p class="exam-q">11. 青铜器的主要成分是什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq10" value="0"> 铜和锌</label><label><input type="radio" name="eq10" value="1"> 铜和锡</label><label><input type="radio" name="eq10" value="2"> 铁和碳</label><label><input type="radio" name="eq10" value="3"> 金与银</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="11">
+      <p class="exam-q">12. 被称为&quot;亚述学之父&quot;、破解楔形文字的关键人物是谁？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq11" value="0"> 商博良</label><label><input type="radio" name="eq11" value="1"> 罗林森</label><label><input type="radio" name="eq11" value="2"> 施里曼</label><label><input type="radio" name="eq11" value="3"> 埃文斯</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="12">
+      <p class="exam-q">13. 古埃及文字系统中，用于神殿刻写和石碑铭文的正式字体叫什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq12" value="0"> 僧侣体</label><label><input type="radio" name="eq12" value="1"> 世俗体</label><label><input type="radio" name="eq12" value="2"> 圣书体</label><label><input type="radio" name="eq12" value="3"> 草书体</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="13">
+      <p class="exam-q">14. 世界上关于古代大洪水的传说大约有多少个？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq13" value="0"> 约50个</label><label><input type="radio" name="eq13" value="1"> 约100个</label><label><input type="radio" name="eq13" value="2"> 约270个</label><label><input type="radio" name="eq13" value="3"> 约500个</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="14">
+      <p class="exam-q">15. 轴心时代中国诗歌的代表作是什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq14" value="0"> 《楚辞》</label><label><input type="radio" name="eq14" value="1"> 《诗经》</label><label><input type="radio" name="eq14" value="2"> 《汉乐府》</label><label><input type="radio" name="eq14" value="3"> 《唐诗三百首》</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="15">
+      <p class="exam-q">16. 新巴比伦帝国的著名建筑包括什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq15" value="0"> 金字塔</label><label><input type="radio" name="eq15" value="1"> 空中花园和通天塔</label><label><input type="radio" name="eq15" value="2"> 帕特农神庙</label><label><input type="radio" name="eq15" value="3"> 长城</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="16">
+      <p class="exam-q">17. 殷商时期中国历史上出现了哪种文字记载？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq16" value="0"> 金文</label><label><input type="radio" name="eq16" value="1"> 甲骨文</label><label><input type="radio" name="eq16" value="2"> 小篆</label><label><input type="radio" name="eq16" value="3"> 隶书</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="17">
+      <p class="exam-q">18. 赫梯帝国在军事上的核心竞争力是什么？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq17" value="0"> 海军优势</label><label><input type="radio" name="eq17" value="1"> 冶铁技术</label><label><input type="radio" name="eq17" value="2"> 弓箭技术</label><label><input type="radio" name="eq17" value="3"> 骑兵数量</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="18">
+      <p class="exam-q">19. 隋朝大运河的开凿主要解决了什么问题？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq18" value="0"> 南北交通</label><label><input type="radio" name="eq18" value="1"> 南北资源调配</label><label><input type="radio" name="eq18" value="2"> 军事防御</label><label><input type="radio" name="eq18" value="3"> 灌溉农田</label>
+      </div>
+    </div>
+    <div class="exam-item" data-idx="19">
+      <p class="exam-q">20. 以下哪个不是古埃及多神教中的神祇？</p>
+      <div class="exam-options">
+        <label><input type="radio" name="eq19" value="0"> 太阳神拉</label><label><input type="radio" name="eq19" value="1"> 冥神奥赛里斯</label><label><input type="radio" name="eq19" value="2"> 湿婆</label><label><input type="radio" name="eq19" value="3"> 尼罗河神</label>
+      </div>
+    </div>
+  </div>
+  <div id="examResult" class="exam-score"></div>
+</div>
+
+<!-- Tab 4: 复习 (inline) -->
+<div class="tab-panel" id="tab4">
+  
+<div class="review-wrap">
+  <h3>“古代文明全景”复习要点</h3>
+  <div class="review-grid">
+    <div class="review-card">
+      <h4>美索不达米亚</h4>
+      <ul>
+        <li>苏美尔：人类最早文明（城市、文字、青铜器）</li>
+        <li>阿卡德：萨尔贡建立第一支常备军</li>
+        <li>古巴比伦：《汉谟拉比法典》</li>
+        <li>亚述：第一个世界性帝国</li>
+        <li>新巴比伦：空中花园、通天塔</li>
+      </ul>
+    </div>
+    <div class="review-card">
+      <h4>古埃及</h4>
+      <ul>
+        <li>公元前3100年建立第一个大一统王朝</li>
+        <li>尼罗河定期泛滥奠定农业基础</li>
+        <li>金字塔：古王朝时期的权力象征</li>
+        <li>天狼星偕日升制定历法</li>
+        <li>多神教：太阳神与冥神崇拜</li>
+      </ul>
+    </div>
+    <div class="review-card">
+      <h4>古印度</h4>
+      <ul>
+        <li>印度河文明（哈拉帕/摩亨佐-达罗）</li>
+        <li>吠陀文明：雅利安人进入南亚</li>
+        <li>种姓制度：婆罗门、刹帝利、吠舍、首陀罗</li>
+        <li>沙门思潮：耆那教与佛教兴起</li>
+        <li>文明圈通过贸易向东南亚扩散</li>
+      </ul>
+    </div>
+    <div class="review-card">
+      <h4>古代中国</h4>
+      <ul>
+        <li>殷商：甲骨文、青铜文明高峰</li>
+        <li>西周：礼乐文明与分封制</li>
+        <li>轴心时代：百家争鸣与《诗经》</li>
+        <li>周秦之变：封建制到帝制转型</li>
+        <li>大运河：唐宋经济繁荣的纽带</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Tab 5: 思维导图 (inline) -->
+<div class="tab-panel" id="tab5">
+  
+<div class="mindmap-wrap">
+  <h3>“四大河流孕育的人类文明第一朵花”思维导图</h3>
+  <div class="mindmap-svg">
+    <svg width="606pt" height="796pt"
+ viewBox="0.00 0.00 606.03 796.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 792)">
+<title>AncientCivilizations</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-792 602.03,-792 602.03,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_mesopotamia</title>
+<polygon fill="#fff0e0" stroke="#c0392b" points="11.03,-416 11.03,-780 170.03,-780 170.03,-416 11.03,-416"/>
+<text text-anchor="middle" x="90.53" y="-764.8" font-family="Noto Sans CJK SC" font-size="14.00">美索不达米亚（两河）</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_egypt</title>
+<polygon fill="#fff0e0" stroke="#c0392b" points="459.03,-320 459.03,-694 590.03,-694 590.03,-320 459.03,-320"/>
+<text text-anchor="middle" x="524.53" y="-678.8" font-family="Noto Sans CJK SC" font-size="14.00">古埃及（尼罗河）</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_india</title>
+<polygon fill="#fff0e0" stroke="#c0392b" points="300.03,-8 300.03,-379 438.03,-379 438.03,-8 300.03,-8"/>
+<text text-anchor="middle" x="369.03" y="-363.8" font-family="Noto Sans CJK SC" font-size="14.00">古印度（印度河）</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_china</title>
+<polygon fill="#fff0e0" stroke="#c0392b" points="20.03,-8 20.03,-379 184.03,-379 184.03,-8 20.03,-8"/>
+<text text-anchor="middle" x="102.03" y="-363.8" font-family="Noto Sans CJK SC" font-size="14.00">古代中国（黄河/长江）</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<ellipse fill="#c0392b" stroke="#c0392b" cx="301.03" cy="-653" rx="131.28" ry="18"/>
+<text text-anchor="middle" x="301.03" y="-649.6" font-family="Noto Sans CJK SC" font-size="13.00" fill="#ffffff">四大河流孕育的人类文明第一朵花</text>
+</g>
+<!-- m3 -->
+<g id="node4" class="node">
+<title>m3</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M152.53,-598C152.53,-598 69.53,-598 69.53,-598 63.53,-598 57.53,-592 57.53,-586 57.53,-586 57.53,-574 57.53,-574 57.53,-568 63.53,-562 69.53,-562 69.53,-562 152.53,-562 152.53,-562 158.53,-562 164.53,-568 164.53,-574 164.53,-574 164.53,-586 164.53,-586 164.53,-592 158.53,-598 152.53,-598"/>
+<text text-anchor="middle" x="111.03" y="-583.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">古巴比伦</text>
+<text text-anchor="middle" x="111.03" y="-571.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（汉谟拉比法典）</text>
+</g>
+<!-- root&#45;&gt;m3 -->
+<g id="edge18" class="edge">
+<title>root&#45;&gt;m3</title>
+<path fill="none" stroke="#c0392b" d="M257.91,-635.89C230.76,-625.74 195.46,-612.55 166.27,-601.64"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="156.62,-598.04 167.56,-597.32 161.3,-599.79 165.99,-601.54 165.99,-601.54 165.99,-601.54 161.3,-599.79 164.41,-605.75 156.62,-598.04 156.62,-598.04"/>
+</g>
+<!-- e2 -->
+<g id="node8" class="node">
+<title>e2</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M542.53,-598C542.53,-598 471.53,-598 471.53,-598 465.53,-598 459.53,-592 459.53,-586 459.53,-586 459.53,-574 459.53,-574 459.53,-568 465.53,-562 471.53,-562 471.53,-562 542.53,-562 542.53,-562 548.53,-562 554.53,-568 554.53,-574 554.53,-574 554.53,-586 554.53,-586 554.53,-592 548.53,-598 542.53,-598"/>
+<text text-anchor="middle" x="507.03" y="-583.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">古王朝</text>
+<text text-anchor="middle" x="507.03" y="-571.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（金字塔时代）</text>
+</g>
+<!-- root&#45;&gt;e2 -->
+<g id="edge19" class="edge">
+<title>root&#45;&gt;e2</title>
+<path fill="none" stroke="#c0392b" d="M347.26,-636.07C377.57,-625.62 417.43,-611.88 449.75,-600.74"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="459.52,-597.37 451.53,-604.89 454.8,-599 450.07,-600.63 450.07,-600.63 450.07,-600.63 454.8,-599 448.6,-596.38 459.52,-597.37 459.52,-597.37"/>
+</g>
+<!-- i2 -->
+<g id="node13" class="node">
+<title>i2</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M398.53,-283C398.53,-283 315.53,-283 315.53,-283 309.53,-283 303.53,-277 303.53,-271 303.53,-271 303.53,-259 303.53,-259 303.53,-253 309.53,-247 315.53,-247 315.53,-247 398.53,-247 398.53,-247 404.53,-247 410.53,-253 410.53,-259 410.53,-259 410.53,-271 410.53,-271 410.53,-277 404.53,-283 398.53,-283"/>
+<text text-anchor="middle" x="357.03" y="-268.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">吠陀文明</text>
+<text text-anchor="middle" x="357.03" y="-256.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（雅利安人进入）</text>
+</g>
+<!-- root&#45;&gt;i2 -->
+<g id="edge20" class="edge">
+<title>root&#45;&gt;i2</title>
+<path fill="none" stroke="#c0392b" d="M289.73,-634.99C281.59,-621.08 272.03,-600.57 272.03,-581 272.03,-581 272.03,-581 272.03,-337 272.03,-315.85 287.72,-299.77 305.62,-288.3"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="314.53,-283.04 308.21,-292 310.22,-285.58 305.92,-288.13 305.92,-288.13 305.92,-288.13 310.22,-285.58 303.63,-284.25 314.53,-283.04 314.53,-283.04"/>
+</g>
+<!-- c2 -->
+<g id="node18" class="node">
+<title>c2</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M126.53,-283C126.53,-283 61.53,-283 61.53,-283 55.53,-283 49.53,-277 49.53,-271 49.53,-271 49.53,-259 49.53,-259 49.53,-253 55.53,-247 61.53,-247 61.53,-247 126.53,-247 126.53,-247 132.53,-247 138.53,-253 138.53,-259 138.53,-259 138.53,-271 138.53,-271 138.53,-277 132.53,-283 126.53,-283"/>
+<text text-anchor="middle" x="94.03" y="-268.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">西周</text>
+<text text-anchor="middle" x="94.03" y="-256.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（礼乐/分封）</text>
+</g>
+<!-- root&#45;&gt;c2 -->
+<g id="edge21" class="edge">
+<title>root&#45;&gt;c2</title>
+<path fill="none" stroke="#c0392b" d="M210.79,-639.88C132.48,-628.57 29.42,-611.46 15.03,-598 -3.08,-581.07 1.03,-568.79 1.03,-544 1.03,-544 1.03,-544 1.03,-337 1.03,-313.63 19.81,-296.92 40.5,-285.61"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="49.43,-281.09 42.54,-289.62 44.97,-283.35 40.51,-285.61 40.51,-285.61 40.51,-285.61 44.97,-283.35 38.48,-281.59 49.43,-281.09 49.43,-281.09"/>
+</g>
+<!-- m1 -->
+<g id="node2" class="node">
+<title>m1</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M156.53,-757C156.53,-757 51.53,-757 51.53,-757 45.53,-757 39.53,-751 39.53,-745 39.53,-745 39.53,-733 39.53,-733 39.53,-727 45.53,-721 51.53,-721 51.53,-721 156.53,-721 156.53,-721 162.53,-721 168.53,-727 168.53,-733 168.53,-733 168.53,-745 168.53,-745 168.53,-751 162.53,-757 156.53,-757"/>
+<text text-anchor="middle" x="104.03" y="-742.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">苏美尔文明</text>
+<text text-anchor="middle" x="104.03" y="-730.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（最早的城市与文字）</text>
+</g>
+<!-- m2 -->
+<g id="node3" class="node">
+<title>m2</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M139.53,-671C139.53,-671 68.53,-671 68.53,-671 62.53,-671 56.53,-665 56.53,-659 56.53,-659 56.53,-647 56.53,-647 56.53,-641 62.53,-635 68.53,-635 68.53,-635 139.53,-635 139.53,-635 145.53,-635 151.53,-641 151.53,-647 151.53,-647 151.53,-659 151.53,-659 151.53,-665 145.53,-671 139.53,-671"/>
+<text text-anchor="middle" x="104.03" y="-656.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">阿卡德帝国</text>
+<text text-anchor="middle" x="104.03" y="-644.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（首个常备军）</text>
+</g>
+<!-- m1&#45;&gt;m2 -->
+<g id="edge1" class="edge">
+<title>m1&#45;&gt;m2</title>
+<path fill="none" stroke="#c0392b" d="M104.03,-720.6C104.03,-709.26 104.03,-694.23 104.03,-681.32"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="104.03,-671.1 108.53,-681.1 104.03,-676.1 104.03,-681.1 104.03,-681.1 104.03,-681.1 104.03,-676.1 99.53,-681.1 104.03,-671.1 104.03,-671.1"/>
+</g>
+<!-- m2&#45;&gt;m3 -->
+<g id="edge2" class="edge">
+<title>m2&#45;&gt;m3</title>
+<path fill="none" stroke="#c0392b" d="M105.72,-634.81C106.51,-626.79 107.47,-617.05 108.36,-608.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="109.35,-598.03 112.85,-608.42 108.86,-603 108.37,-607.98 108.37,-607.98 108.37,-607.98 108.86,-603 103.89,-607.54 109.35,-598.03 109.35,-598.03"/>
+</g>
+<!-- m4 -->
+<g id="node5" class="node">
+<title>m4</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M146.53,-525C146.53,-525 41.53,-525 41.53,-525 35.53,-525 29.53,-519 29.53,-513 29.53,-513 29.53,-501 29.53,-501 29.53,-495 35.53,-489 41.53,-489 41.53,-489 146.53,-489 146.53,-489 152.53,-489 158.53,-495 158.53,-501 158.53,-501 158.53,-513 158.53,-513 158.53,-519 152.53,-525 146.53,-525"/>
+<text text-anchor="middle" x="94.03" y="-510.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">亚述帝国</text>
+<text text-anchor="middle" x="94.03" y="-498.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（第一个世界性帝国）</text>
+</g>
+<!-- m3&#45;&gt;m4 -->
+<g id="edge3" class="edge">
+<title>m3&#45;&gt;m4</title>
+<path fill="none" stroke="#c0392b" d="M106.91,-561.81C104.97,-553.7 102.61,-543.84 100.44,-534.78"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="98.1,-525.03 104.81,-533.71 99.27,-529.89 100.43,-534.75 100.43,-534.75 100.43,-534.75 99.27,-529.89 96.06,-535.8 98.1,-525.03 98.1,-525.03"/>
+</g>
+<!-- e4 -->
+<g id="node10" class="node">
+<title>e4</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M542.53,-452C542.53,-452 471.53,-452 471.53,-452 465.53,-452 459.53,-446 459.53,-440 459.53,-440 459.53,-428 459.53,-428 459.53,-422 465.53,-416 471.53,-416 471.53,-416 542.53,-416 542.53,-416 548.53,-416 554.53,-422 554.53,-428 554.53,-428 554.53,-440 554.53,-440 554.53,-446 548.53,-452 542.53,-452"/>
+<text text-anchor="middle" x="507.03" y="-437.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">新王朝</text>
+<text text-anchor="middle" x="507.03" y="-425.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（鼎盛与扩张）</text>
+</g>
+<!-- m3&#45;&gt;e4 -->
+<g id="edge22" class="edge">
+<title>m3&#45;&gt;e4</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M158.01,-561.92C231.1,-535.34 371.78,-484.18 450.37,-455.6"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="460.11,-452.06 452.25,-459.71 455.41,-453.77 450.71,-455.48 450.71,-455.48 450.71,-455.48 455.41,-453.77 449.17,-451.25 460.11,-452.06 460.11,-452.06"/>
+<text text-anchor="middle" x="378.53" y="-504.5" font-family="Noto Sans CJK SC" font-size="10.00">贸易与冲突</text>
+</g>
+<!-- m5 -->
+<g id="node6" class="node">
+<title>m5</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M143.03,-452C143.03,-452 45.03,-452 45.03,-452 39.03,-452 33.03,-446 33.03,-440 33.03,-440 33.03,-428 33.03,-428 33.03,-422 39.03,-416 45.03,-416 45.03,-416 143.03,-416 143.03,-416 149.03,-416 155.03,-422 155.03,-428 155.03,-428 155.03,-440 155.03,-440 155.03,-446 149.03,-452 143.03,-452"/>
+<text text-anchor="middle" x="94.03" y="-437.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">新巴比伦</text>
+<text text-anchor="middle" x="94.03" y="-425.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（空中花园/通天塔）</text>
+</g>
+<!-- m4&#45;&gt;m5 -->
+<g id="edge4" class="edge">
+<title>m4&#45;&gt;m5</title>
+<path fill="none" stroke="#c0392b" d="M94.03,-488.81C94.03,-480.79 94.03,-471.05 94.03,-462.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="94.03,-452.03 98.53,-462.03 94.03,-457.03 94.03,-462.03 94.03,-462.03 94.03,-462.03 94.03,-457.03 89.53,-462.03 94.03,-452.03 94.03,-452.03"/>
+</g>
+<!-- c1 -->
+<g id="node17" class="node">
+<title>c1</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M132.03,-356C132.03,-356 56.03,-356 56.03,-356 50.03,-356 44.03,-350 44.03,-344 44.03,-344 44.03,-332 44.03,-332 44.03,-326 50.03,-320 56.03,-320 56.03,-320 132.03,-320 132.03,-320 138.03,-320 144.03,-326 144.03,-332 144.03,-332 144.03,-344 144.03,-344 144.03,-350 138.03,-356 132.03,-356"/>
+<text text-anchor="middle" x="94.03" y="-341.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">殷商</text>
+<text text-anchor="middle" x="94.03" y="-329.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（甲骨文/青铜）</text>
+</g>
+<!-- m5&#45;&gt;c1 -->
+<g id="edge24" class="edge">
+<title>m5&#45;&gt;c1</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M94.03,-415.76C94.03,-401.98 94.03,-382.4 94.03,-366.47"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="94.03,-356.13 98.53,-366.13 94.03,-361.13 94.03,-366.13 94.03,-366.13 94.03,-366.13 94.03,-361.13 89.53,-366.13 94.03,-356.13 94.03,-356.13"/>
+<text text-anchor="middle" x="114.03" y="-390" font-family="Noto Sans CJK SC" font-size="10.00">技术传播</text>
+</g>
+<!-- e1 -->
+<g id="node7" class="node">
+<title>e1</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M555.03,-671C555.03,-671 471.03,-671 471.03,-671 465.03,-671 459.03,-665 459.03,-659 459.03,-659 459.03,-647 459.03,-647 459.03,-641 465.03,-635 471.03,-635 471.03,-635 555.03,-635 555.03,-635 561.03,-635 567.03,-641 567.03,-647 567.03,-647 567.03,-659 567.03,-659 567.03,-665 561.03,-671 555.03,-671"/>
+<text text-anchor="middle" x="513.03" y="-656.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">早王朝统一</text>
+<text text-anchor="middle" x="513.03" y="-644.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（公元前3100年）</text>
+</g>
+<!-- e1&#45;&gt;e2 -->
+<g id="edge5" class="edge">
+<title>e1&#45;&gt;e2</title>
+<path fill="none" stroke="#c0392b" d="M511.57,-634.81C510.9,-626.79 510.07,-617.05 509.31,-608.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="508.47,-598.03 513.79,-607.61 508.89,-603.01 509.31,-607.99 509.31,-607.99 509.31,-607.99 508.89,-603.01 504.82,-608.37 508.47,-598.03 508.47,-598.03"/>
+</g>
+<!-- e3 -->
+<g id="node9" class="node">
+<title>e3</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M542.53,-525C542.53,-525 471.53,-525 471.53,-525 465.53,-525 459.53,-519 459.53,-513 459.53,-513 459.53,-501 459.53,-501 459.53,-495 465.53,-489 471.53,-489 471.53,-489 542.53,-489 542.53,-489 548.53,-489 554.53,-495 554.53,-501 554.53,-501 554.53,-513 554.53,-513 554.53,-519 548.53,-525 542.53,-525"/>
+<text text-anchor="middle" x="507.03" y="-510.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">中王朝</text>
+<text text-anchor="middle" x="507.03" y="-498.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（统一与复兴）</text>
+</g>
+<!-- e2&#45;&gt;e3 -->
+<g id="edge6" class="edge">
+<title>e2&#45;&gt;e3</title>
+<path fill="none" stroke="#c0392b" d="M507.03,-561.81C507.03,-553.79 507.03,-544.05 507.03,-535.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="507.03,-525.03 511.53,-535.03 507.03,-530.03 507.03,-535.03 507.03,-535.03 507.03,-535.03 507.03,-530.03 502.53,-535.03 507.03,-525.03 507.03,-525.03"/>
+</g>
+<!-- e3&#45;&gt;e4 -->
+<g id="edge7" class="edge">
+<title>e3&#45;&gt;e4</title>
+<path fill="none" stroke="#c0392b" d="M507.03,-488.81C507.03,-480.79 507.03,-471.05 507.03,-462.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="507.03,-452.03 511.53,-462.03 507.03,-457.03 507.03,-462.03 507.03,-462.03 507.03,-462.03 507.03,-457.03 502.53,-462.03 507.03,-452.03 507.03,-452.03"/>
+</g>
+<!-- e5 -->
+<g id="node11" class="node">
+<title>e5</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M577.53,-356C577.53,-356 506.53,-356 506.53,-356 500.53,-356 494.53,-350 494.53,-344 494.53,-344 494.53,-332 494.53,-332 494.53,-326 500.53,-320 506.53,-320 506.53,-320 577.53,-320 577.53,-320 583.53,-320 589.53,-326 589.53,-332 589.53,-332 589.53,-344 589.53,-344 589.53,-350 583.53,-356 577.53,-356"/>
+<text text-anchor="middle" x="542.03" y="-341.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">托勒密王朝</text>
+<text text-anchor="middle" x="542.03" y="-329.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（希腊化时期）</text>
+</g>
+<!-- e4&#45;&gt;e5 -->
+<g id="edge8" class="edge">
+<title>e4&#45;&gt;e5</title>
+<path fill="none" stroke="#c0392b" d="M513.45,-415.76C518.68,-401.71 526.15,-381.64 532.14,-365.55"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="535.65,-356.13 536.38,-367.07 533.9,-360.82 532.16,-365.5 532.16,-365.5 532.16,-365.5 533.9,-360.82 527.94,-363.93 535.65,-356.13 535.65,-356.13"/>
+</g>
+<!-- i5 -->
+<g id="node16" class="node">
+<title>i5</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M417.53,-44C417.53,-44 346.53,-44 346.53,-44 340.53,-44 334.53,-38 334.53,-32 334.53,-32 334.53,-20 334.53,-20 334.53,-14 340.53,-8 346.53,-8 346.53,-8 417.53,-8 417.53,-8 423.53,-8 429.53,-14 429.53,-20 429.53,-20 429.53,-32 429.53,-32 429.53,-38 423.53,-44 417.53,-44"/>
+<text text-anchor="middle" x="382.03" y="-29.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">印度文明圈</text>
+<text text-anchor="middle" x="382.03" y="-17.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（东南亚扩散）</text>
+</g>
+<!-- e4&#45;&gt;i5 -->
+<g id="edge23" class="edge">
+<title>e4&#45;&gt;i5</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M494.5,-415.95C482.45,-397.82 466.03,-367.84 466.03,-339 466.03,-339 466.03,-339 466.03,-98 466.03,-77 450.52,-60.93 432.83,-49.44"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="424.03,-44.17 434.92,-45.45 428.32,-46.74 432.6,-49.31 432.6,-49.31 432.6,-49.31 428.32,-46.74 430.29,-53.17 424.03,-44.17 424.03,-44.17"/>
+<text text-anchor="middle" x="486.03" y="-221" font-family="Noto Sans CJK SC" font-size="10.00">文化传播</text>
+</g>
+<!-- i1 -->
+<g id="node12" class="node">
+<title>i1</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M425.53,-356C425.53,-356 312.53,-356 312.53,-356 306.53,-356 300.53,-350 300.53,-344 300.53,-344 300.53,-332 300.53,-332 300.53,-326 306.53,-320 312.53,-320 312.53,-320 425.53,-320 425.53,-320 431.53,-320 437.53,-326 437.53,-332 437.53,-332 437.53,-344 437.53,-344 437.53,-350 431.53,-356 425.53,-356"/>
+<text text-anchor="middle" x="369.03" y="-341.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">印度河文明</text>
+<text text-anchor="middle" x="369.03" y="-329.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（哈拉帕/摩亨佐&#45;达罗）</text>
+</g>
+<!-- i1&#45;&gt;i2 -->
+<g id="edge9" class="edge">
+<title>i1&#45;&gt;i2</title>
+<path fill="none" stroke="#c0392b" d="M366.12,-319.81C364.77,-311.79 363.12,-302.05 361.6,-293.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="359.91,-283.03 366.01,-292.14 360.74,-287.96 361.57,-292.89 361.57,-292.89 361.57,-292.89 360.74,-287.96 357.14,-293.64 359.91,-283.03 359.91,-283.03"/>
+</g>
+<!-- i3 -->
+<g id="node14" class="node">
+<title>i3</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M411.03,-117C411.03,-117 335.03,-117 335.03,-117 329.03,-117 323.03,-111 323.03,-105 323.03,-105 323.03,-93 323.03,-93 323.03,-87 329.03,-81 335.03,-81 335.03,-81 411.03,-81 411.03,-81 417.03,-81 423.03,-87 423.03,-93 423.03,-93 423.03,-105 423.03,-105 423.03,-111 417.03,-117 411.03,-117"/>
+<text text-anchor="middle" x="373.03" y="-102.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">沙门思潮</text>
+<text text-anchor="middle" x="373.03" y="-90.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（耆那教/佛教）</text>
+</g>
+<!-- i2&#45;&gt;i3 -->
+<g id="edge10" class="edge">
+<title>i2&#45;&gt;i3</title>
+<path fill="none" stroke="#c0392b" d="M348.21,-246.88C339.07,-226.87 327.12,-192.8 335.03,-164 338.78,-150.33 346.29,-136.63 353.65,-125.43"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="359.45,-117.03 357.47,-127.82 356.61,-121.15 353.77,-125.26 353.77,-125.26 353.77,-125.26 356.61,-121.15 350.07,-122.7 359.45,-117.03 359.45,-117.03"/>
+</g>
+<!-- i4 -->
+<g id="node15" class="node">
+<title>i4</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M416.03,-200C416.03,-200 356.03,-200 356.03,-200 350.03,-200 344.03,-194 344.03,-188 344.03,-188 344.03,-176 344.03,-176 344.03,-170 350.03,-164 356.03,-164 356.03,-164 416.03,-164 416.03,-164 422.03,-164 428.03,-170 428.03,-176 428.03,-176 428.03,-188 428.03,-188 428.03,-194 422.03,-200 416.03,-200"/>
+<text text-anchor="middle" x="386.03" y="-185.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">种姓制度</text>
+<text text-anchor="middle" x="386.03" y="-173.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（婆罗门教）</text>
+</g>
+<!-- i2&#45;&gt;i4 -->
+<g id="edge12" class="edge">
+<title>i2&#45;&gt;i4</title>
+<path fill="none" stroke="#c0392b" d="M363.18,-246.82C367.02,-236.08 372.06,-222.03 376.42,-209.84"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="379.89,-200.15 380.75,-211.08 378.2,-204.86 376.52,-209.57 376.52,-209.57 376.52,-209.57 378.2,-204.86 372.28,-208.05 379.89,-200.15 379.89,-200.15"/>
+</g>
+<!-- i3&#45;&gt;i5 -->
+<g id="edge11" class="edge">
+<title>i3&#45;&gt;i5</title>
+<path fill="none" stroke="#c0392b" d="M375.21,-80.81C376.22,-72.79 377.46,-63.05 378.6,-54.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="379.87,-44.03 383.08,-54.52 379.24,-48.99 378.61,-53.95 378.61,-53.95 378.61,-53.95 379.24,-48.99 374.15,-53.38 379.87,-44.03 379.87,-44.03"/>
+</g>
+<!-- i4&#45;&gt;i3 -->
+<g id="edge13" class="edge">
+<title>i4&#45;&gt;i3</title>
+<path fill="none" stroke="#c0392b" d="M383.27,-163.82C381.56,-153.19 379.34,-139.31 377.39,-127.2"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="375.78,-117.15 381.81,-126.31 376.57,-122.09 377.37,-127.03 377.37,-127.03 377.37,-127.03 376.57,-122.09 372.92,-127.74 375.78,-117.15 375.78,-117.15"/>
+</g>
+<!-- c1&#45;&gt;c2 -->
+<g id="edge14" class="edge">
+<title>c1&#45;&gt;c2</title>
+<path fill="none" stroke="#c0392b" d="M94.03,-319.81C94.03,-311.79 94.03,-302.05 94.03,-293.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="94.03,-283.03 98.53,-293.03 94.03,-288.03 94.03,-293.03 94.03,-293.03 94.03,-293.03 94.03,-288.03 89.53,-293.03 94.03,-283.03 94.03,-283.03"/>
+</g>
+<!-- c3 -->
+<g id="node19" class="node">
+<title>c3</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M154.03,-200C154.03,-200 94.03,-200 94.03,-200 88.03,-200 82.03,-194 82.03,-188 82.03,-188 82.03,-176 82.03,-176 82.03,-170 88.03,-164 94.03,-164 94.03,-164 154.03,-164 154.03,-164 160.03,-164 166.03,-170 166.03,-176 166.03,-176 166.03,-188 166.03,-188 166.03,-194 160.03,-200 154.03,-200"/>
+<text text-anchor="middle" x="124.03" y="-185.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">春秋战国</text>
+<text text-anchor="middle" x="124.03" y="-173.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（百家争鸣）</text>
+</g>
+<!-- c2&#45;&gt;c3 -->
+<g id="edge15" class="edge">
+<title>c2&#45;&gt;c3</title>
+<path fill="none" stroke="#c0392b" d="M100.39,-246.82C104.37,-236.08 109.57,-222.03 114.09,-209.84"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="117.67,-200.15 118.42,-211.09 115.94,-204.84 114.2,-209.53 114.2,-209.53 114.2,-209.53 115.94,-204.84 109.98,-207.97 117.67,-200.15 117.67,-200.15"/>
+</g>
+<!-- c3&#45;&gt;i3 -->
+<g id="edge25" class="edge">
+<title>c3&#45;&gt;i3</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M166.27,-167.26C206.6,-154.14 267.78,-134.24 313.13,-119.48"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="322.84,-116.32 314.73,-123.7 318.09,-117.87 313.33,-119.42 313.33,-119.42 313.33,-119.42 318.09,-117.87 311.94,-115.14 322.84,-116.32 322.84,-116.32"/>
+<text text-anchor="middle" x="283.03" y="-138" font-family="Noto Sans CJK SC" font-size="10.00">轴心时代</text>
+</g>
+<!-- c4 -->
+<g id="node20" class="node">
+<title>c4</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M154.03,-117C154.03,-117 94.03,-117 94.03,-117 88.03,-117 82.03,-111 82.03,-105 82.03,-105 82.03,-93 82.03,-93 82.03,-87 88.03,-81 94.03,-81 94.03,-81 154.03,-81 154.03,-81 160.03,-81 166.03,-87 166.03,-93 166.03,-93 166.03,-105 166.03,-105 166.03,-111 160.03,-117 154.03,-117"/>
+<text text-anchor="middle" x="124.03" y="-102.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">秦统一</text>
+<text text-anchor="middle" x="124.03" y="-90.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（帝制转型）</text>
+</g>
+<!-- c3&#45;&gt;c4 -->
+<g id="edge16" class="edge">
+<title>c3&#45;&gt;c4</title>
+<path fill="none" stroke="#c0392b" d="M124.03,-163.82C124.03,-153.19 124.03,-139.31 124.03,-127.2"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="124.03,-117.15 128.53,-127.15 124.03,-122.15 124.03,-127.15 124.03,-127.15 124.03,-127.15 124.03,-122.15 119.53,-127.15 124.03,-117.15 124.03,-117.15"/>
+</g>
+<!-- c5 -->
+<g id="node21" class="node">
+<title>c5</title>
+<path fill="#fffaf2" stroke="#c0392b" d="M162.03,-44C162.03,-44 86.03,-44 86.03,-44 80.03,-44 74.03,-38 74.03,-32 74.03,-32 74.03,-20 74.03,-20 74.03,-14 80.03,-8 86.03,-8 86.03,-8 162.03,-8 162.03,-8 168.03,-8 174.03,-14 174.03,-20 174.03,-20 174.03,-32 174.03,-32 174.03,-38 168.03,-44 162.03,-44"/>
+<text text-anchor="middle" x="124.03" y="-29.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">汉唐宋</text>
+<text text-anchor="middle" x="124.03" y="-17.2" font-family="Noto Sans CJK SC" font-size="11.00" fill="#3d2f2f">（大运河/繁荣）</text>
+</g>
+<!-- c4&#45;&gt;c5 -->
+<g id="edge17" class="edge">
+<title>c4&#45;&gt;c5</title>
+<path fill="none" stroke="#c0392b" d="M124.03,-80.81C124.03,-72.79 124.03,-63.05 124.03,-54.07"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="124.03,-44.03 128.53,-54.03 124.03,-49.03 124.03,-54.03 124.03,-54.03 124.03,-54.03 124.03,-49.03 119.53,-54.03 124.03,-44.03 124.03,-44.03"/>
+</g>
+</g>
+</svg>
+  </div>
+  <p class="mindmap-note">注：美索不达米亚（底格里斯河/幼发拉底河）、古埃及（尼罗河）、古印度（印度河）、古代中国（黄河/长江）构成人类早期文明的四大中心。</p>
+</div>
+</div>
+
+<!-- Tab 6: 深度追问 (inline) -->
+<div class="tab-panel" id="tab6">
+  
+<div class="deep-wrap">
+  <h3>深度追问</h3>
+  <div class="deep-item">
+    <h4>追问一：为什么农耕文明倾向于大一统，而商业文明倾向于城邦制？</h4>
+    <p>农耕文明依赖大河灌溉，需要集中人力修建水利系统，天然要求强中央集权；商业文明依赖贸易，地理上多为沿海或河流交汇处，交通便利但难以形成单一权力中心，因此多为独立城邦。</p>
+  </div>
+  <div class="deep-item">
+    <h4>追问二：金字塔与秦始皇陵有何共性？</h4>
+    <p>两者都是大一统政权动用全国人力物力修建的巨型工程，核心动机并非单纯的技术展示，而是“非壮丽无以重威”的权力象征。它们体现的是国力与组织动员能力，而非古代科技远超后世。</p>
+  </div>
+  <div class="deep-item">
+    <h4>追问三：海上民族为什么能终结青铜时代？</h4>
+    <p>海上民族作为迁徙族群，不受固定领土和官僚体系束缚，行动灵活。他们对地中海沿岸文明发动持续袭击，破坏了贸易网络（尤其是青铜原料的锡和铜），导致原有文明秩序崩溃，铁器时代随之到来。</p>
+  </div>
+  <div class="deep-item">
+    <h4>追问四：文字从神圣化到普及经历了什么？</h4>
+    <p>早期文字由祭司阶层垄断，被视为神的语言。商业文明（如美索不达米亚）因实际需求率先推动文字简化与普及，从泥板书到羊皮纸再到纸张，载体进化降低了知识传播成本，最终促成轴心时代的思想爆发。</p>
+  </div>
+</div>
+</div>
+
+<!-- Tab 7: 案例分析 (inline) -->
+<div class="tab-panel" id="tab7">
+  
+<div class="case-wrap">
+  <h3>案例分析</h3>
+  <div class="case-item">
+    <h4>案例一：埃及莎草纸封锁与帕加马羊皮纸的发明</h4>
+    <p><strong>背景：</strong>埃及托勒密王朝对帕加马实施莎草纸出口禁令，试图阻止其建立大型图书馆。</p>
+    <p><strong>结果：</strong>帕加马人发明羊皮纸，虽然成本更高，但更耐磨耐用，反而促成帕加马成为地中海第二大文化中心。</p>
+    <p><strong>启示：</strong>经济封锁的直接效果容易预测，但长远影响往往事与愿违，技术替代会打破垄断。</p>
+  </div>
+  <div class="case-item">
+    <h4>案例二：铁列平改革与赫梯帝国崛起</h4>
+    <p><strong>背景：</strong>赫梯早期采用“选贤”继承制，导致王位争夺不断，内耗严重。</p>
+    <p><strong>改革：</strong>铁列平确立长子继承制，获得贵族支持，终结内乱，为对外扩张奠定基础。</p>
+    <p><strong>启示：</strong>制度优劣需结合时代背景判断。在早期文明中，确定性比“最优”更重要。</p>
+  </div>
+  <div class="case-item">
+    <h4>案例三：王莽篡汉与士族门阀政治</h4>
+    <p><strong>背景：</strong>西汉后期外戚王莽凭借士族支持建立新朝，但改革过于激进，触动多方利益。</p>
+    <p><strong>结果：</strong>新朝仅存14年，东汉后九品中正制被士族门阀把持，形成“上品无寒门”的局面。</p>
+    <p><strong>启示：</strong>削弱地方豪强是中央集权的永恒难题，制度设计若被利益集团俘获，反而加剧阶层固化。</p>
+  </div>
+</div>
+</div>
+
+<!-- Tab 8: 实战决策 (inline) -->
+<div class="tab-panel" id="tab8">
+  
+<div class="decision-wrap">
+  <h3>实战决策</h3>
+  <div class="decision-item">
+    <h4>情境一：如果你是早期文明的管理者，如何平衡控制力与向心力？</h4>
+    <div class="decision-options">
+      <label><input type="radio" name="d1" value="A"> A. 强化武力控制，建立庞大常备军</label>
+      <label><input type="radio" name="d1" value="B"> B. 借助宗教神化王权，统一民众思想</label>
+      <label><input type="radio" name="d1" value="C"> C. 发展经济与贸易，让民众分享繁荣收益</label>
+      <label><input type="radio" name="d1" value="D"> D. 建立世袭长子继承制，确保权力平稳过渡</label>
+    </div>
+    <div class="decision-analysis" id="da1">
+      <p><strong>参考答案：C</strong></p>
+      <p>武力控制成本高昂且易引发反弹（如阿卡德帝国因常年军事镇压而崩溃）；单纯思想控制缺乏物质基础；继承制度解决的是内部稳定，但无法替代经济向心力。历史表明，让民众从文明发展中获益（如古埃及的农业灌溉、唐宋的运河贸易）才是维持长期稳定的关键。</p>
+    </div>
+  </div>
+  <div class="decision-item">
+    <h4>情境二：面对技术封锁，你应该如何应对？</h4>
+    <div class="decision-options">
+      <label><input type="radio" name="d2" value="A"> A. 寻求第三方供应渠道</label>
+      <label><input type="radio" name="d2" value="B"> B. 加大研发投入，寻找替代技术</label>
+      <label><input type="radio" name="d2" value="C"> C. 通过外交谈判解除封锁</label>
+      <label><input type="radio" name="d2" value="D"> D. 接受现状，降低发展目标</label>
+    </div>
+    <div class="decision-analysis" id="da2">
+      <p><strong>参考答案：B</strong></p>
+      <p>帕加马面对莎草纸封锁发明羊皮纸的历史表明，替代技术的突破最能从根本上打破封锁。第三方渠道可能再次受制于人；外交谈判取决于双方实力对比；接受现状则丧失发展主动权。自主研发虽前期投入大，但长期收益最高。</p>
+    </div>
+  </div>
+  <div class="decision-item">
+    <h4>情境三：如何评价一个文明的影响力？</h4>
+    <div class="decision-options">
+      <label><input type="radio" name="d3" value="A"> A. 看政权疆域大小和存续时间</label>
+      <label><input type="radio" name="d3" value="B"> B. 看对周边地区的影响力范围和持续时间</label>
+      <label><input type="radio" name="d3" value="C"> C. 看是否建立了统一的大帝国</label>
+      <label><input type="radio" name="d3" value="D"> D. 看军事征服的次数和规模</label>
+    </div>
+    <div class="decision-analysis" id="da3">
+      <p><strong>参考答案：B</strong></p>
+      <p>根据汤因比的理论，衡量文明的核心标准是其对周围的影响力范围及持续时间，而非政权本身。宋朝虽疆域不大，却被视为中国经济与文明程度最高的朝代，因为它在科技、商业和文化上的辐射力远超军事边界。</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <p>MKS Knowledge · 吴军来信 · 世界文明史</p>
+</footer>
+
+<script>
+// Tab switching
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabBtns.forEach(b => b.classList.remove('active'));
+    tabPanels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Quiz logic
+const allQuestions = [{"q":"目前已知的人类最早文明起源于哪个地区？","options":["尼罗河流域","美索不达米亚地区","印度河流域","黄河流域"],"a":1},{"q":"古埃及人用什么天体作为历法的基准来确定播种时间？","options":["北极星","天狼星","太阳","月亮"],"a":1},{"q":"世界上最早的文字之一是美索不达米亚的什么文字？","options":["象形文字","甲骨文","楔形文字","腓尼基字母"],"a":2},{"q":"阿卡德帝国的建立者萨尔贡在军事上的重要创新是什么？","options":["发明铁器","建立第一支常备军","使用骑兵为主","建造战车"],"a":1},{"q":"《汉谟拉比法典》是哪个文明的著名遗产？","options":["古埃及","苏美尔","古巴比伦","亚述"],"a":2},{"q":"埃及金字塔建造数量最多的时期是哪个王朝？","options":["第三王朝","第四王朝","第五王朝","第六王朝"],"a":1},{"q":"印度种姓制度中，哪个种姓处于顶端？","options":["刹帝利","吠舍","首陀罗","婆罗门"],"a":3},{"q":"印欧人能够成功扩张的关键技术之一是什么？","options":["造船技术","马匹驯化","纺织技术","陶瓷制作"],"a":1},{"q":"古代中国从封建制到帝制的根本性制度转型被称为什么？","options":["商周之变","周秦之变","秦汉之变","隋唐之变"],"a":1},{"q":"腓尼基字母的主要创造者是哪个民族？","options":["苏美尔人","埃及人","腓尼基人","希腊人"],"a":2},{"q":"青铜器的主要成分是什么？","options":["铜和锌","铜和锡","铁和碳","金与银"],"a":1},{"q":"被称为\"亚述学之父\"、破解楔形文字的关键人物是谁？","options":["商博良","罗林森","施里曼","埃文斯"],"a":1},{"q":"古埃及文字系统中，用于神殿刻写和石碑铭文的正式字体叫什么？","options":["僧侣体","世俗体","圣书体","草书体"],"a":2},{"q":"世界上关于古代大洪水的传说大约有多少个？","options":["约50个","约100个","约270个","约500个"],"a":2},{"q":"轴心时代中国诗歌的代表作是什么？","options":["《楚辞》","《诗经》","《汉乐府》","《唐诗三百首》"],"a":1},{"q":"新巴比伦帝国的著名建筑包括什么？","options":["金字塔","空中花园和通天塔","帕特农神庙","长城"],"a":1},{"q":"殷商时期中国历史上出现了哪种文字记载？","options":["金文","甲骨文","小篆","隶书"],"a":1},{"q":"赫梯帝国在军事上的核心竞争力是什么？","options":["海军优势","冶铁技术","弓箭技术","骑兵数量"],"a":1},{"q":"隋朝大运河的开凿主要解决了什么问题？","options":["南北交通","南北资源调配","军事防御","灌溉农田"],"a":1},{"q":"以下哪个不是古埃及多神教中的神祇？","options":["太阳神拉","冥神奥赛里斯","湿婆","尼罗河神"],"a":2}];
+let drawnIndices = [];
+
+function drawQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.style.display = 'block';
+  const items = container.querySelectorAll('.q-item');
+  // Shuffle and pick 10
+  const idxs = Array.from({length: items.length}, (_,i)=>i);
+  for (let i = idxs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+  }
+  drawnIndices = idxs.slice(0, 10);
+  items.forEach((el, i) => {
+    el.style.display = drawnIndices.includes(i) ? 'block' : 'none';
+    el.querySelector('.q-answer').style.display = 'none';
+    const radios = el.querySelectorAll('input[type=radio]');
+    radios.forEach(r => r.checked = false);
+  });
+}
+
+function resetQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.style.display = 'none';
+  drawnIndices = [];
+}
+
+function showAllAnswers() {
+  const container = document.getElementById('quizContainer');
+  container.querySelectorAll('.q-item').forEach(el => {
+    if (el.style.display !== 'none') el.querySelector('.q-answer').style.display = 'block';
+  });
+}
+
+// Exam logic
+function submitExam() {
+  let score = 0;
+  allQuestions.forEach((q, i) => {
+    const selected = document.querySelector('input[name="eq' + i + '"]:checked');
+    if (selected && parseInt(selected.value) === q.a) score++;
+  });
+  document.getElementById('examResult').textContent = '得分：' + score + ' / ' + allQuestions.length;
+}
+
+function resetExam() {
+  document.querySelectorAll('#examContainer input[type=radio]').forEach(r => r.checked = false);
+  document.getElementById('examResult').textContent = '';
+}
+
+// Decision reveal
+document.querySelectorAll('.decision-options input[type=radio]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const parent = this.closest('.decision-item');
+    const analysis = parent.querySelector('.decision-analysis');
+    if (analysis) analysis.style.display = 'block';
+  });
+});
+</script>
+</body>
+</html>

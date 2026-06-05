@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>轴心时代与古典文明 — 最小知识集</title>
+<style>
+:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent-light:#d4a574;--text:#3d2f2f;--text-light:#8b7355;--border:#e8d5c0;--shadow:0 2px 12px rgba(0,0,0,.06);--success:#2e7d32;--radius:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);padding-top:60px;line-height:1.6}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--card);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 6px rgba(0,0,0,.08);flex-wrap:wrap;gap:6px}
+.top-bar .logo{font-weight:700;font-size:clamp(.9rem,2vw,1.1rem);color:var(--accent);white-space:nowrap}
+.home-link{color:var(--text-light);text-decoration:none;font-size:.85rem;padding:4px 10px;border:1px solid var(--border);border-radius:var(--radius);white-space:nowrap}
+.home-link:hover{color:var(--accent);border-color:var(--accent)}
+.main-tabs{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;padding:10px 8px;max-width:1100px;margin:0 auto}
+.tab-btn{padding:6px 12px;font-size:clamp(.72rem,1.5vw,.82rem);border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:var(--radius);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn:hover,.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none;max-width:1100px;margin:0 auto;padding:12px 16px 40px}
+.tab-content.active{display:block}
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,22px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+h2{color:var(--accent);font-size:clamp(1.1rem,2.5vw,1.4rem);margin-bottom:10px}
+h3{color:var(--text);font-size:clamp(.95rem,2vw,1.15rem);margin-bottom:8px}
+.btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:var(--radius);cursor:pointer;font-size:.88rem;transition:all .2s}
+.btn:hover{opacity:.9;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:5px 12px;font-size:.8rem}
+.btn-success{background:var(--success)}
+.btn-success.btn-outline{color:var(--success);border-color:var(--success);background:transparent}
+.btn-success.btn-outline:hover{background:var(--success);color:#fff}
+.tag{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:12px;font-size:.7rem}
+.tag-secondary{background:var(--accent-light);color:#fff}
+.progress-bar{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .5s}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.concept-card{border:1px solid var(--border);border-radius:var(--radius);padding:12px;background:var(--card);cursor:pointer;transition:all .2s}
+.concept-card:hover{box-shadow:var(--shadow);border-color:var(--accent-light)}
+.concept-card.mks-core{border-color:var(--accent);border-width:2px;position:relative}
+.concept-card.mks-core::after{content:"★ MKS核心";position:absolute;top:-8px;right:8px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:10px;font-size:.65rem}
+.svg-container{display:flex;justify-content:center;overflow-x:auto;padding:10px 0}
+.svg-container svg{max-width:100%;height:auto}
+/* flip cards */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+/* quiz */
+.quiz-option{padding:10px 14px;margin:6px 0;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .2s;background:var(--card)}
+.quiz-option:hover{border-color:var(--accent-light);background:#fef9f2}
+.quiz-option.correct{border-color:var(--success);background:#e8f5e9}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea}
+.quiz-option.selected{border-width:2px;font-weight:600}
+/* mindmap tree */
+.tree-node{margin-left:0;border-left:2px solid var(--accent-light)}
+.tree-node>.tree-label{cursor:pointer;padding:6px 10px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:6px}
+.tree-node>.tree-label::before{content:"▸";display:inline-block;transition:transform .3s;font-size:.7rem}
+.tree-node.expanded>.tree-label::before{transform:rotate(90deg)}
+.tree-children{display:none;margin-left:18px;border-left:1px solid var(--border)}
+.tree-children.show,.tree-children.open{display:block}
+.tree-leaf{padding:5px 10px;color:var(--text);font-size:.85rem;border-left:2px solid transparent}
+/* deep ask */
+.ask-item{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.ask-question{padding:10px 14px;background:var(--card);cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.ask-question:hover{background:#fef9f2}
+.ask-question::after{content:"▾";color:var(--accent);transition:transform .3s}
+.ask-item.open .ask-question::after{transform:rotate(180deg)}
+.ask-answer{display:none;padding:10px 14px;background:#fef9f2;border-top:1px solid var(--border);font-size:.88rem}
+.ask-item.open .ask-answer{display:block}
+/* decision */
+.decision-round{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
+.decision-header{padding:10px 16px;background:var(--accent);color:#fff;font-weight:700}
+.decision-body{padding:14px 16px;background:var(--card)}
+.decision-option{padding:8px 14px;margin:5px 0;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .2s}
+.decision-option:hover{background:#fef9f2;border-color:var(--accent-light)}
+.decision-feedback{display:none;padding:10px 14px;margin-top:8px;background:#fef9f2;border-radius:var(--radius);border-left:3px solid var(--accent)}
+/* responsive */
+@media(max-width:768px){
+body{padding-top:56px}
+.tab-btn{padding:5px 8px;font-size:.7rem}
+.concept-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.flip-card{height:clamp(180px,40vw,240px)}
+}
+/* static quiz hidden by default */
+#staticQuiz{display:none}
+/* boundary table */
+.boundary-table{width:100%;font-size:.85rem;border-collapse:collapse}
+.boundary-table td,.boundary-table th{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left}
+.boundary-table th{color:var(--accent);font-weight:700}
+/* exam timer */
+.exam-timer{font-size:1.2rem;font-weight:700;color:var(--accent);text-align:center;padding:10px}
+/* case analysis */
+.case-dim{padding:8px 14px;border-left:3px solid var(--accent);margin:8px 0;background:#fef9f2;border-radius:0 var(--radius) var(--radius) 0}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<nav class="top-bar">
+  <span class="logo">🏛️ 轴心时代与古典文明</span>
+  <a href="index.html" class="home-link">← 返回知识主板</a>
+</nav>
+
+<!-- Main Tabs -->
+<div class="main-tabs" id="mainTabs">
+  <button class="tab-btn active" data-tab="0">📊 知识集总览</button>
+  <button class="tab-btn" data-tab="1">🃏 知识卡片</button>
+  <button class="tab-btn" data-tab="2">📝 题库系统</button>
+  <button class="tab-btn" data-tab="3">⏱️ 考试模式</button>
+  <button class="tab-btn" data-tab="4">🔄 复习模式</button>
+  <button class="tab-btn" data-tab="5">🌳 思维导图</button>
+  <button class="tab-btn" data-tab="6">❓ 深度追问</button>
+  <button class="tab-btn" data-tab="7">📋 案例分析</button>
+  <button class="tab-btn" data-tab="8">🎯 实战决策</button>
+</div>
+
+<!-- Tab 0: 知识集总览 -->
+<div class="tab-content active" id="tab0">
+  <div class="card">
+    <h2>🎯 核心目标</h2>
+    <p style="font-size:clamp(.95rem,2vw,1.1rem);line-height:1.8">
+    理解公元前800年至公元220年间，人类各大文明在<strong style="color:var(--accent)">轴心时代</strong>同步发生的思想突破，以及随后<strong style="color:var(--accent)">古典文明</strong>（秦汉、罗马、希腊化、波斯、印度）如何奠定东西方文明的底色。这一时期的哲学、宗教、法律、政治制度至今仍是人类文明的底层操作系统。
+    </p>
+  </div>
+
+  <h2>🧩 核心概念</h2>
+  <div class="concept-grid" id="conceptGrid"></div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>🗺️ 概念关系图</h2>
+    <div class="svg-container" id="svgContainer"></div>
+  </div>
+
+  <div class="card">
+    <h2>📚 边界知识表</h2>
+    <table class="boundary-table">
+      <tr><th>知识点</th><th>使用场景</th></tr>
+      <tr><td>古罗马历法（儒略历）</td><td>理解现代公历起源与月份命名</td></tr>
+      <tr><td>德尔斐神谕</td><td>分析古希腊社会决策心理机制</td></tr>
+      <tr><td>斯巴达军事制度</td><td>对比雅典民主，理解"夭折文明"</td></tr>
+      <tr><td>古罗马日常生活</td><td>了解地中海饮食/服饰/娱乐文化</td></tr>
+      <tr><td>二十四节气划分</td><td>对比阴历/农历/阳历差异</td></tr>
+      <tr><td>古希腊悲剧</td><td>理解日神/酒神精神与西方戏剧源流</td></tr>
+      <tr><td>铁器革命</td><td>轴心时代四大文明经济底层动力</td></tr>
+      <tr><td>科举前的太学</td><td>中国古代高等教育与官僚选拔</td></tr>
+      <tr><td>凯尔特人历史</td><td>理解苏格兰/爱尔兰与欧洲民族迁徙</td></tr>
+      <tr><td>马其顿崛起</td><td>边陲小国成长路径与N+1理论</td></tr>
+      <tr><td>萨珊王朝与中亚</td><td>波斯-中国贸易与摩尼教传播</td></tr>
+      <tr><td>佛教三大高僧</td><td>鸠摩罗什/法显/玄奘的译经对比</td></tr>
+      <tr><td>卡诺莎之辱</td><td>中世纪王权与教权博弈</td></tr>
+      <tr><td>拜占庭文明</td><td>千年帝国存续的地缘/文化/经济优势</td></tr>
+      <tr><td>《神曲》的人文意义</td><td>从中世纪到文艺复兴的思想转折</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🗺️ 推荐学习路径</h2>
+    <ol style="padding-left:20px;line-height:2">
+      <li><strong>轴心时代概览</strong>：理解公元前800-前300年全球同步思想爆发</li>
+      <li><strong>古希腊三哲 + 科学</strong>：苏格拉底→柏拉图→亚里士多德的哲学体系</li>
+      <li><strong>中华百家争鸣</strong>：老子→孔子→周秦之变→秦汉大一统</li>
+      <li><strong>波斯与印度</strong>：祆教二元论、佛教诞生与传播</li>
+      <li><strong>罗马古典文明</strong>：共和制→帝国→法律与工程遗产</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>📈 学习进度</h2>
+    <div class="progress-bar"><div class="progress-fill" id="overallProgress" style="width:0%"></div></div>
+    <p style="font-size:.8rem;color:var(--text-light);margin-top:4px">已掌握 <span id="overallLearned">0</span> / <span id="overallTotal">12</span> 个核心概念</p>
+  </div>
+</div>
+
+<!-- Tab 1: 知识卡片 -->
+<div class="tab-content" id="tab1">
+  <h2>🃏 概念翻转卡片</h2>
+  <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+  <div class="flip-nav">
+    <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+    <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 12</span>
+    <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+  </div>
+  <div style="text-align:center;margin:8px 0">
+    <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 12 个概念</p>
+</div>
+
+<!-- Tab 2: 题库系统 -->
+<div class="tab-content" id="tab2">
+  <h2>📝 题库系统</h2>
+  <div class="card" style="text-align:center">
+    <p style="margin-bottom:12px;color:var(--text-light)">共 20 道选择题，点击下方按钮随机抽题练习</p>
+    <button class="btn" onclick="startQuiz()" id="startQuizBtn" style="margin-right:8px">🎲 随机抽题练习</button>
+    <button class="btn btn-outline" onclick="resetQuiz()">🔄 重置</button>
+    <div id="quizContainer" style="margin-top:14px"></div>
+    <div id="staticQuiz"></div>
+    <div id="quizScore" style="margin-top:8px;font-weight:700;color:var(--accent)"></div>
+  </div>
+</div>
+
+<!-- Tab 3: 考试模式 -->
+<div class="tab-content" id="tab3">
+  <h2>⏱️ 考试模式 (限时15分钟)</h2>
+  <div class="card">
+    <p style="color:var(--text-light);margin-bottom:10px">随机抽取 7 道选择 + 3 道简答，检验对轴心时代与古典文明的掌握程度</p>
+    <button class="btn" onclick="startExam()" id="startExamBtn">开始考试</button>
+    <div id="examContainer"></div>
+    <div id="examResult" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- Tab 4: 复习模式 -->
+<div class="tab-content" id="tab4">
+  <h2>🔄 复习模式 — 错题本</h2>
+  <div class="card">
+    <p style="color:var(--text-light);margin-bottom:10px">回顾历史错题，分析薄弱概念，针对性强化学习</p>
+    <div id="reviewContainer">
+      <div id="errorList"></div>
+      <div id="weakConcepts" style="margin-top:12px"></div>
+      <div id="reviewStats" style="margin-top:12px;font-size:.85rem;color:var(--text-light)"></div>
+      <button class="btn btn-outline btn-sm" onclick="clearErrors()" style="margin-top:10px">清空错题本</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 5: 思维导图 -->
+<div class="tab-content" id="tab5">
+  <h2>🌳 思维导图</h2>
+  <div class="card" style="overflow-x:auto">
+    <div class="tree-node expanded">
+      <div class="tree-label" onclick="toggleTreeNode(this)">轴心时代与古典文明</div>
+      <div class="tree-children show">
+        <div class="tree-node expanded">
+          <div class="tree-label" onclick="toggleTreeNode(this)">中华文明</div>
+          <div class="tree-children show">
+            <div class="tree-node expanded">
+              <div class="tree-label" onclick="toggleTreeNode(this)">春秋战国 / 百家争鸣</div>
+              <div class="tree-children show">
+                <div class="tree-leaf">孔子：仁、礼、中庸、大同社会</div>
+                <div class="tree-leaf">老子：道法自然、辩证转化、无为而治</div>
+                <div class="tree-leaf">法家：商鞅变法、法术势、中央集权</div>
+                <div class="tree-leaf">墨家：兼爱非攻、科技知识</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">周秦之变 / 天下观转型</div>
+              <div class="tree-children">
+                <div class="tree-leaf">分封制 → 郡县制</div>
+                <div class="tree-leaf">贵族政治 → 官僚体系</div>
+                <div class="tree-leaf">"家先于国" → "国先于家"</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">秦汉大一统帝国</div>
+              <div class="tree-children">
+                <div class="tree-leaf">秦：统一文字/度量衡/货币/驰道</div>
+                <div class="tree-leaf">汉：推恩令、独尊儒术、盐铁官营</div>
+                <div class="tree-leaf">太学：官办最高学府、士人阶层形成</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tree-node expanded">
+          <div class="tree-label" onclick="toggleTreeNode(this)">古希腊文明</div>
+          <div class="tree-children show">
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">哲学三哲</div>
+              <div class="tree-children">
+                <div class="tree-leaf">苏格拉底：反问式教学、灵魂不死</div>
+                <div class="tree-leaf">柏拉图：理念论、《理想国》、洞穴比喻</div>
+                <div class="tree-leaf">亚里士多德：逻辑学、归纳法、中庸美德</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">科学体系构建</div>
+              <div class="tree-children">
+                <div class="tree-leaf">毕达哥拉斯：定理证明、演绎法</div>
+                <div class="tree-leaf">欧几里得：公理化几何体系</div>
+                <div class="tree-leaf">阿基米德：浮力定律、杠杆原理</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">雅典民主制度</div>
+              <div class="tree-children">
+                <div class="tree-leaf">梭伦奠基 → 庇西特拉图落实</div>
+                <div class="tree-leaf">克里斯提尼确立 → 伯里克利巅峰</div>
+                <div class="tree-leaf">陶片放逐法、五百人议会</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tree-node expanded">
+          <div class="tree-label" onclick="toggleTreeNode(this)">古罗马文明</div>
+          <div class="tree-children show">
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">政治制度</div>
+              <div class="tree-children">
+                <div class="tree-leaf">王政 → 共和 → 帝国</div>
+                <div class="tree-leaf">元老院、执政官、保民官</div>
+                <div class="tree-leaf">五贤帝：养子继承制的黄金时代</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">罗马法体系</div>
+              <div class="tree-children">
+                <div class="tree-leaf">《十二铜表法》：首部成文法</div>
+                <div class="tree-leaf">公法/私法分立、万民法</div>
+                <div class="tree-leaf">查士丁尼法典：大陆法系源头</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">工程与建筑</div>
+              <div class="tree-children">
+                <div class="tree-leaf">混凝土 + 拱形技术</div>
+                <div class="tree-leaf">引水渠、竞技场、万神殿</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tree-node expanded">
+          <div class="tree-label" onclick="toggleTreeNode(this)">波斯与印度文明</div>
+          <div class="tree-children show">
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">波斯阿契美尼德帝国</div>
+              <div class="tree-children">
+                <div class="tree-leaf">行省制、邮政系统、差异化税收</div>
+                <div class="tree-leaf">祆教/拜火教：善恶二元、救世主概念</div>
+                <div class="tree-leaf">居鲁士大帝、大流士一世</div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-label" onclick="toggleTreeNode(this)">古印度</div>
+              <div class="tree-children">
+                <div class="tree-leaf">沙门思潮 → 佛教诞生</div>
+                <div class="tree-leaf">大乘佛教 / 上座部佛教</div>
+                <div class="tree-leaf">笈多王朝：印度黄金时代</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTreeNode(this)">犹太一神教</div>
+          <div class="tree-children">
+            <div class="tree-leaf">巴比伦之囚：多神到一神转折</div>
+            <div class="tree-leaf">耶利米、以斯拉、尼希米三先知</div>
+            <div class="tree-leaf">对基督教、伊斯兰教深远影响</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTreeNode(this)">希腊化时代 / 文明融合</div>
+          <div class="tree-children">
+            <div class="tree-leaf">亚历山大东征 → 帝国分裂</div>
+            <div class="tree-leaf">托勒密·塞琉古·安提柯三王朝</div>
+            <div class="tree-leaf">犬儒/伊壁鸠鲁/斯多葛三大哲学</div>
+            <div class="tree-leaf">科学繁荣：欧几里得、阿基米德</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTreeNode(this)">宗教传播与文明交流</div>
+          <div class="tree-children">
+            <div class="tree-leaf">佛教东传：鸠摩罗什→法显→玄奘</div>
+            <div class="tree-leaf">基督教兴起：君士坦丁与米兰敕令</div>
+            <div class="tree-leaf">丝绸之路：贸易+文化+宗教网络</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 6: 深度追问 -->
+<div class="tab-content" id="tab6">
+  <h2>❓ 深度追问（苏格拉底问答）</h2>
+  <div class="card">
+
+    <div class="ask-item">
+      <div class="ask-question" onclick="toggleAsk(this)">为什么轴心时代会在全球同步出现？</div>
+      <div class="ask-answer">
+        <p><strong>第一层：</strong>铁器普及带来生产力跃升，农耕文明发展到一定阶段后，人类开始从生存焦虑转向精神层面的思考。</p>
+        <p style="margin-top:8px"><strong>第二层：</strong>各国均处于政治秩序崩解期（周朝礼崩乐坏、希腊城邦危机、犹太灭国），旧价值观瓦解，催生新思想的迫切需求。</p>
+        <p style="margin-top:8px"><strong>第三层：</strong>这印证了"挑战-应战"文明发展模式：越是危机动荡的时代，越能激发深刻的哲学反思。安逸稳定的时代反而容易产生思想的平庸。</p>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-question" onclick="toggleAsk(this)">孔子的"仁"和苏格拉底的"反问"有何本质区别？</div>
+      <div class="ask-answer">
+        <p><strong>第一层：</strong>孔子给出明确答案（"克己复礼为仁"），苏格拉底只提问不给答案（"我唯一知道的就是我的无知"）。</p>
+        <p style="margin-top:8px"><strong>第二层：</strong>这反映东西方思维的根本差异——东方追求体系化的道德规范，西方追求渐进式的真理探索。孔子以"确信"建立秩序，苏格拉底以"怀疑"逼近真理。</p>
+        <p style="margin-top:8px"><strong>第三层：</strong>两种模式各有价值：孔子的明确规范降低了社会协作成本（适合大一统帝国），苏格拉底的持续追问推动了科学发展（适合多元竞争环境）。试问：如果中国企业完全采用苏格拉底式管理，可行性如何？</p>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-question" onclick="toggleAsk(this)">雅典民主制为何最终失败？</div>
+      <div class="ask-answer">
+        <p><strong>第一层：</strong>伯罗奔尼撒战争中，雅典公民大会反复推翻优秀将领的决策，甚至处死6名海军将领，自毁军事指挥核心。</p>
+        <p style="margin-top:8px"><strong>第二层：</strong>直接民主缺乏制度缓冲，容易演变为勒庞所说的"乌合之众"——群体叠加的可能是愚蠢而非智慧。克里昂等民粹煽动者通过福利政策收买选民。</p>
+        <p style="margin-top:8px"><strong>第三层：</strong>美国国父们正是吸取了雅典教训，设计了代议制而非直接民主。麦迪逊说"纯粹的民主总是动荡和争斗"。这给当代互联网"全民投票"式决策敲响了警钟。</p>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-question" onclick="toggleAsk(this)">罗马法为何能"征服"世界？</div>
+      <div class="ask-answer">
+        <p><strong>第一层：</strong>罗马法从《十二铜表法》到查士丁尼法典，发展出完整的私法/公法体系，奠定了"法律面前人人平等"的自然法原则。</p>
+        <p style="margin-top:8px"><strong>第二层：</strong>其独特优势在于逻辑严谨性——类似欧几里得几何学，从公理（如"人有不可剥夺的权利"）演绎出完整法律体系，而非依赖统治者随意颁布。</p>
+        <p style="margin-top:8px"><strong>第三层：</strong>现代大陆法系（法国、德国、日本、中国）皆可追溯至罗马法。对比之下，中华法系更侧重刑法而轻私法，这影响了东西方对"权利"的认知差异。</p>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-question" onclick="toggleAsk(this)">秦汉大一统为何确立了"中国必须统一"的天下观？</div>
+      <div class="ask-answer">
+        <p><strong>第一层：</strong>周秦之变彻底改变了中国人的价值排序——从"家先于国"（如伍子胥叛国被赞）转变为"国先于家"。</p>
+        <p style="margin-top:8px"><strong>第二层：</strong>秦朝通过郡县制、编户齐民、强制分家等制度，打破了血缘家族对个人的控制，建立了中央对个体的直接管理。汉朝通过独尊儒术将这一秩序思想化。</p>
+        <p style="margin-top:8px"><strong>第三层：</strong>对比欧洲：罗马灭亡后再无统一帝国，王权与教权的制衡产生了多元政治格局。中国"大一统"基因使分裂时期也被视为"乱世"，而欧洲视分裂为常态。</p>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-question" onclick="toggleAsk(this)">佛教为何在印度衰落却在中国兴盛？</div>
+      <div class="ask-answer">
+        <p><strong>第一层：</strong>印度本土：婆罗门教吸收佛教思想后演变为印度教（戒律更宽松），加上北方伊斯兰教冲击，佛教在印度失去根基。</p>
+        <p style="margin-top:8px"><strong>第二层：</strong>中国：经过鸠摩罗什（意译）和玄奘（直译）的译经工作，佛教完成了中国化转型。大乘佛教"普度众生"理念与儒家济世情怀产生共鸣。</p>
+        <p style="margin-top:8px"><strong>第三层：</strong>更深层看，佛教填补了中华文明在"终极关怀"层面的空白——儒家解决入世问题，道家解决身心修养，佛教提供了来世与因果解释，三者互补构成了完整的中国思想体系。</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Tab 7: 案例分析 -->
+<div class="tab-content" id="tab7">
+  <h2>📋 案例分析：用MKS四维度拆解"周秦之变"</h2>
+  <div class="card">
+    <h3>案例背景</h3>
+    <p>公元前221年秦统一至公元前202年汉朝建立，中国经历了从"封建制"到"中央集权帝制"的根本转变，此后两千余年再无退回封建制的可能。这一转型的深层机制是什么？</p>
+  </div>
+
+  <div class="card">
+    <h3>📌 维度一：核心概念识别</h3>
+    <div class="case-dim">
+      <strong>天下观转型</strong>：从"家先于国"转向"国先于家"，这是最根本的认知革命<br>
+      <strong>郡县制</strong>：以地域行政取代血缘分封<br>
+      <strong>编户齐民</strong>：中央直接管理个体家庭，打破大家族结构<br>
+      <strong>独尊儒术</strong>：思想统一为政治统一提供合法性
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 维度二：概念关系推导</h3>
+    <div class="case-dim">
+      铁器普及 → 小农经济取代庄园经济 → 土地私有制确立 → 贵族经济基础瓦解<br>
+      贵族瓦解 → 郡县制可行 → 中央集权取代分封 → 官僚体系取代世卿世禄<br>
+      官僚体系需要 → 教育制度（太学）→ 儒家经典成为教材 → 思想统一
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 维度三：类比理解</h3>
+    <div class="case-dim">
+      周秦之变 ≈ 企业从"家族企业"转型为"现代股份制公司"：<br>
+      - 分封制 = 各分公司家族世袭，总部管控力弱<br>
+      - 郡县制 = 职业经理人制度，总部直接任命和考核<br>
+      - 独尊儒术 = 统一的企业文化和价值观体系
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 维度四：边界与局限</h3>
+    <div class="case-dim">
+      <strong>正面边界</strong>：大一统为中国带来长期稳定、文化延续性和规模优势<br>
+      <strong>负面边界</strong>：过度中央集权抑制地方活力，思想统一压制异端创新（对比欧洲分裂状态反而催生竞争和多元创新）<br>
+      <strong>启示</strong>：统一不是越多越好，关键在于统一什么（货币/度量衡/文字？）和保留什么（地方自主权/思想自由？）
+    </div>
+  </div>
+</div>
+
+<!-- Tab 8: 实战决策 -->
+<div class="tab-content" id="tab8">
+  <h2>🎯 实战决策模拟</h2>
+  <p style="color:var(--text-light);margin-bottom:12px">你将扮演一位轴心时代的统治者，面对真实的文明抉择。每个决策都有MKS概念分析。</p>
+
+  <div class="decision-round" id="round1">
+    <div class="decision-header">🏛️ 第一轮：你是雅典执政官（公元前431年）</div>
+    <div class="decision-body">
+      <p><strong>情境：</strong>斯巴达率领伯罗奔尼撒同盟向雅典宣战。你的首席将军伯里克利建议：依托城墙防御 + 海军封锁斯巴达港口，避免与斯巴达陆军正面交锋。但许多公民质疑这是"懦弱"。</p>
+      <div class="decision-option" onclick="decide(1,'A')">A. 采纳伯里克利的防守反击策略，坚持长期消耗战</div>
+      <div class="decision-option" onclick="decide(1,'B')">B. 顺应民意，派陆军出城与斯巴达决一死战</div>
+      <div class="decision-option" onclick="decide(1,'C')">C. 与斯巴达谈判，割让部分利益换取和平</div>
+      <div class="decision-feedback" id="feedback1"></div>
+    </div>
+  </div>
+
+  <div class="decision-round" id="round2">
+    <div class="decision-header">🏯 第二轮：你是汉武帝（公元前127年）</div>
+    <div class="decision-body">
+      <p><strong>情境：</strong>七王之乱虽已平息，但分封诸侯仍有强大势力。主父偃上疏建议推行"推恩令"——允许诸侯王将封地分给所有儿子（而非仅嫡长子），新侯国直接由朝廷管辖。</p>
+      <div class="decision-option" onclick="decide(2,'A')">A. 采纳推恩令，以制度设计和平削弱诸侯</div>
+      <div class="decision-option" onclick="decide(2,'B')">B. 直接削藩，派兵强制收回诸侯领地</div>
+      <div class="decision-option" onclick="decide(2,'C')">C. 维持现状，集中力量对付匈奴外患</div>
+      <div class="decision-feedback" id="feedback2"></div>
+    </div>
+  </div>
+
+  <div class="decision-round" id="round3">
+    <div class="decision-header">🌍 第三轮：你是罗马元老院成员（公元前133年）</div>
+    <div class="decision-body">
+      <p><strong>情境：</strong>格拉古兄弟提出改革：将国有土地分配给无地农民，并授予罗马盟友公民权。贵族强烈反对，社会矛盾一触即发。</p>
+      <div class="decision-option" onclick="decide(3,'A')">A. 支持改革，以短期贵族利益换取长期社会稳定</div>
+      <div class="decision-option" onclick="decide(3,'B')">B. 反对改革，维护贵族既得利益和现有秩序</div>
+      <div class="decision-option" onclick="decide(3,'C')">C. 寻求折中方案，部分分配土地但不授予公民权</div>
+      <div class="decision-feedback" id="feedback3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== GLOBAL STATE =====
+const LS_KEY = 'mks_wms_t3';
+let state = {learned:[],errors:[],quizDone:0,examDone:0};
+try{const s=localStorage.getItem(LS_KEY);if(s){const p=JSON.parse(s);state={...state,...p};}}catch(e){}
+function save(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+let learnedCards = state.learned || [];
+let errorBook = state.errors || [];
+
+// ===== CONCEPTS =====
+const concepts = [
+  {id:'c1',name:'轴心时代',def:'德国哲学家雅斯贝尔斯提出，公元前800年-前300年间，欧亚非各文明同步出现思想爆发的时期，奠定了当今世界各文明的底色。',analogy:'如同多个独立研发团队在同一时期分别开发出各自的操作系统（儒家、佛教、希腊哲学、祆教），这些"系统"至今仍在运行。',example:'中国百家争鸣（孔子、老子）、印度佛教诞生、希腊三哲、波斯祆教、犹太一神教——几乎同期的思想大爆发。',counter:'并非所有文明都经历了轴心时代——美洲文明、撒哈拉以南非洲在这一时期未产生类似的思想突破。'},
+  {id:'c2',name:'孔子与儒家思想',def:'以"仁"为核心道德规范、"礼"为社会秩序、"中庸"为方法论的思想体系，经西汉独尊儒术后成为中华文明两千年的主流意识形态。',analogy:'如同企业的核心价值观手册——定义了什么是"好员工"（仁）、"正确流程"（礼）、"合适决策"（中庸）。',example:'"己所不欲勿施于人"成为普世道德金律；美国最高法院门楣刻有孔子像，象征其对法治文明的贡献。',counter:'孔子原意与后世实践常有偏差——董仲舒的"独尊儒术"杂糅了法家、阴阳家思想，与孔子原始主张不完全一致。'},
+  {id:'c3',name:'老子与道家思想',def:'以"道"为宇宙本源和运行规律，主张"无为而治""顺其自然"的哲学体系，其辩证法（福祸相依）是东方思维的代表。',analogy:'如同系统的底层架构设计——不直接干预应用层（无为），但定义了整个系统的运行规则（道），违规操作自然失败。',example:'西汉初年采纳"休养生息"政策，践行无为而治，经济迅速恢复；《道德经》是全球翻译语言最多的中国哲学著作。',counter:'道家≠道教——道教诞生于汉朝（比老子晚600-700年），奉老子为鼻祖但加入了神仙方术等内容。'},
+  {id:'c4',name:'古希腊哲学三哲',def:'苏格拉底（反问式教学+灵魂论）、柏拉图（理念论+《理想国》）、亚里士多德（逻辑学+归纳法+百科全书式学问）构成的西方哲学源头。',analogy:'如同软件的三个核心模块——苏格拉底是"调试器"（通过提问找bug），柏拉图是"架构设计"（定义理想模型），亚里士多德是"功能实现"（落地到可操作的知识体系）。',example:'柏拉图《理想国》的混合政体思想成为近代代议制理论基础；亚里士多德创立逻辑学和生物学研究方法论。',counter:'三人思想并非完全继承——亚里士多德名言"吾爱吾师，吾尤爱真理"表明他并不完全赞同柏拉图（理念论 vs 经验论）。'},
+  {id:'c5',name:'古希腊科学',def:'人类第一个发展出严格意义上科学的文明——以公理化体系（毕达哥拉斯、欧几里得）+ 经验归纳（亚里士多德）+ 数学化描述（阿基米德）为核心方法。',analogy:'如同从"菜谱"升级到"化学"——古埃及人会算π但不知为何，古希腊人用公理推导出π的性质和证明方法。',example:'欧几里得《几何原本》：五条公理推导出整个几何学体系，影响了牛顿、笛卡尔的思维方式；阿基米德用类似微积分的方法推导球体积公式。',counter:'古希腊科学≠现代实验科学——古希腊人重逻辑推导轻实验验证（如亚里士多德的物理结论包含大量错误，统治欧洲近两千年才被伽利略证伪）。'},
+  {id:'c6',name:'雅典民主制度',def:'从梭伦奠基→庇西特拉图以僭主之名推进→克里斯提尼确立五百人议会+陶片放逐法→伯里克利取消财产限制，经历约200年接力改革形成的直接民主。',analogy:'如同一个"全员参与式管理"的创业公司——每个公民都可以在全体大会上投票，但问题是：当公司变大、决策变复杂时，全员投票往往选出民粹方案。',example:'克里斯提尼打破血缘部落、重建10个地域部落，抽签选代表——这是削弱传统氏族势力的制度创新。',counter:'雅典直接民主排斥了妇女、奴隶和外邦人（约占人口90%），且最终因民粹主义（处死优秀将领、西西里远征冒险）导致伯罗奔尼撒战争失败。'},
+  {id:'c7',name:'罗马法体系',def:'从《十二铜表法》（首部成文法）→公法/私法分立→万民法→查士丁尼法典，以自然法为原则、逻辑演绎为方法的完整法律体系，是大陆法系的源头。',analogy:'如同操作系统的"权限管理模块"——定义了谁（主体）、能做什么（权利）、不能做什么（义务）、违反怎么办（责任），这套框架至今仍是现代法律的基础设计。',example:'"法律面前人人平等"源于罗马自然法思想；法国《拿破仑法典》、日本民法典、中国民法均追溯至罗马法体系。',counter:'罗马法保护的主要是自由民的权利——奴隶在罗马法下是"物"而非"人"，与现代人权观念有本质区别。'},
+  {id:'c8',name:'祆教/拜火教与二元论',def:'查拉图斯特拉创立的宗教，核心教义是善神（阿胡拉·玛兹达）与恶神的宇宙性斗争，最早提出救世主、末日审判、天堂地狱等概念。',analogy:'如同世界观层面的"道德操作系统"——将宇宙理解为善恶两种力量的持续对抗，人类的选择决定了灵魂的最终去向（类似RPG游戏中的道德值系统）。',example:'善恶二元论深刻影响了犹太教、基督教和伊斯兰教（救世主、末日审判、天堂地狱概念均源自祆教）；尼采《查拉图斯特拉如是说》假托其名表达哲学思想。',counter:'祆教在伊斯兰教兴起后大幅衰落，现存仅伊朗5座小规模寺院——虽然其核心概念被后来的宗教吸收，但作为独立宗教的影响力已微乎其微。'},
+  {id:'c9',name:'犹太一神教',def:'经历巴比伦之囚的危机后，通过耶利米、以斯拉、尼希米三先知的努力，犹太民族完成了从多神信仰到严格一神论的关键转型。',analogy:'如同操作系统的"内核重构"——从松散的多神模块（各管一摊）重写为一个统一的单内核（一个上帝管理一切），系统稳定性（民族凝聚力）大幅提升。',example:'耶利米预言70年后重返耶路撒冷，被居鲁士大帝的政策验证；以斯拉系统化摩西律法奠定了犹太教的行为准则。',counter:'一神教的确立也带来了排他性——犹太人与其他民族的宗教隔离，是其历史上屡遭迫害的原因之一。'},
+  {id:'c10',name:'秦汉大一统',def:'秦朝首次实现中国统一（郡县制+统一文字/货币/度量衡），汉朝完成制度巩固（推恩令+独尊儒术+盐铁官营），奠定了此后两千年中央集权帝制的基本模式。',analogy:'如同从"加盟连锁"转为"直营模式"——周朝是各诸侯加盟（自主管理），秦朝收为直营（中央委派CEO），汉朝进一步统一企业文化和财务系统。',example:'推恩令以制度设计而非武力解决了分封制弊端（藩国越分越小）；"汉族""汉语"的名称源于汉朝。',counter:'秦朝因改革过度（14年即灭亡）证明制度变革速度不能超越社会承受能力；汉朝独尊儒术压制了其他思想流派的发展。'},
+  {id:'c11',name:'希腊化时代',def:'亚历山大东征后（公元前323年-公元前30年），希腊文明与东方文明大规模融合的时期，产生了科学繁荣（欧几里得、阿基米德）和多种人生哲学（犬儒、伊壁鸠鲁、斯多葛）。',analogy:'如同科技公司的"出海并购"——希腊"母公司"通过亚历山大东征收购了波斯、埃及等"本地公司"，结果本地化融合产生了意想不到的创新。',example:'亚历山大城的图书馆和博物馆成为西方科学文化最高殿堂；斯多葛学派影响罗马皇帝马可·奥勒留和罗马法编订。',counter:'文明融合也带来了动荡——旧价值观瓦解、社会不安定，哲学流派多为"乱世中的精神避难所"而非建设性方案。'},
+  {id:'c12',name:'佛教诞生与传播',def:'释迦牟尼在沙门思潮中创立佛教（核心：因果业力+轮回+解脱），后分裂为大乘（普度众生）和上座部（自我修行），经希腊化融合后东传至中国、东亚。',analogy:'如同"开源软件"的传播模式——佛教在印度诞生（源代码），经过希腊化地区时被二次开发（大乘佛教融合希腊元素），传到中国后又进一步本地化（禅宗等派别）。',example:'鸠摩罗什（意译派）和玄奘（直译派）的译经工作使佛经在中国系统传播；佛教与儒道融合形成中国化的禅宗。',counter:'佛教在诞生地印度反而衰落——印度教吸收佛教思想后更具竞争力，加上伊斯兰教的冲击，佛教在印度几乎消失。'}
+];
+
+// ===== TAB SWITCHING =====
+const tabs = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.tab-content');
+tabs.forEach(btn => {
+  btn.addEventListener('click', function(){
+    const idx = parseInt(this.dataset.tab);
+    tabs.forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    panels.forEach(p => p.classList.remove('active'));
+    panels[idx].classList.add('active');
+    if(idx===0) renderConceptGrid();
+    if(idx===4) renderReview();
+    if(idx===0) updateOverallProgress();
+  });
+});
+
+// ===== CONCEPT GRID =====
+function renderConceptGrid(){
+  const grid = document.getElementById('conceptGrid');
+  const mksCore = ['c1','c2','c4','c10']; // 轴心时代、孔子、希腊哲学、秦汉大一统
+  grid.innerHTML = concepts.map(c => `
+    <div class="concept-card${mksCore.includes(c.id)?' mks-core':''}" onclick="switchToCard('${c.id}')">
+      <strong>${c.name}</strong>
+      <p style="font-size:.78rem;color:var(--text-light);margin-top:4px">${c.def.substring(0,50)}...</p>
+    </div>
+  `).join('');
+}
+function switchToCard(cid){
+  const idx = concepts.findIndex(c => c.id === cid);
+  if(idx >= 0){setCard(idx);tabs[1].click();}
+}
+
+// ===== SVG =====
+(function renderSVG(){
+  var container = document.getElementById('svgContainer');
+  if(container){
+    container.innerHTML = '<svg width="2106pt" height="348pt"  viewBox="0.00 0.00 2105.50 348.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 344)"> <title>G</title> <polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-344 2101.5,-344 2101.5,4 -4,4"/> <g id="clust1" class="cluster"> <title>cluster_legend</title> <path fill="#fffaf2" stroke="#d4a574" d="M20,-8C20,-8 106,-8 106,-8 112,-8 118,-14 118,-20 118,-20 118,-320 118,-320 118,-326 112,-332 106,-332 106,-332 20,-332 20,-332 14,-332 8,-326 8,-320 8,-320 8,-20 8,-20 8,-14 14,-8 20,-8"/> <text text-anchor="middle" x="100.5" y="-320.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">图例</text> </g> <!-- L1 --> <g id="node1" class="node"> <title>L1</title> <path fill="#c0392b" stroke="transparent" stroke-width="1.2" d="M98,-288C98,-288 28,-288 28,-288 22,-288 16,-282 16,-276 16,-276 16,-264 16,-264 16,-258 22,-252 28,-252 28,-252 98,-252 98,-252 104,-252 110,-258 110,-264 110,-264 110,-276 110,-276 110,-282 104,-288 98,-288"/> <text text-anchor="middle" x="63" y="-268.1" font-family="Noto Sans SC" font-size="8.00" fill="#000000">核心驱动关系</text> </g> <!-- L2 --> <g id="node2" class="node"> <title>L2</title> <path fill="#d4a574" stroke="transparent" stroke-width="1.2" d="M98,-215C98,-215 28,-215 28,-215 22,-215 16,-209 16,-203 16,-203 16,-191 16,-191 16,-185 22,-179 28,-179 28,-179 98,-179 98,-179 104,-179 110,-185 110,-191 110,-191 110,-203 110,-203 110,-209 104,-215 98,-215"/> <text text-anchor="middle" x="63" y="-195.1" font-family="Noto Sans SC" font-size="8.00" fill="#000000">派生/影响关系</text> </g> <!-- L1&#45;&gt;L2 --> <!-- L3 --> <g id="node3" class="node"> <title>L3</title> <path fill="#8b7355" stroke="transparent" stroke-width="1.2" d="M98,-133C98,-133 28,-133 28,-133 22,-133 16,-127 16,-121 16,-121 16,-109 16,-109 16,-103 22,-97 28,-97 28,-97 98,-97 98,-97 104,-97 110,-103 110,-109 110,-109 110,-121 110,-121 110,-127 104,-133 98,-133"/> <text text-anchor="middle" x="63" y="-113.1" font-family="Noto Sans SC" font-size="8.00" fill="#000000">应用/实践关系</text> </g> <!-- L2&#45;&gt;L3 --> <!-- L4 --> <g id="node4" class="node"> <title>L4</title> <path fill="#5a3e3e" stroke="transparent" stroke-width="1.2" d="M98,-52C98,-52 28,-52 28,-52 22,-52 16,-46 16,-40 16,-40 16,-28 16,-28 16,-22 22,-16 28,-16 28,-16 98,-16 98,-16 104,-16 110,-22 110,-28 110,-28 110,-40 110,-40 110,-46 104,-52 98,-52"/> <text text-anchor="middle" x="63" y="-32.1" font-family="Noto Sans SC" font-size="8.00" fill="#000000">文明对话/互动</text> </g> <!-- L3&#45;&gt;L4 --> <!-- root --> <g id="node5" class="node"> <title>root</title> <path fill="#c0392b" stroke="black" stroke-width="2.5" d="M1113.5,-288C1113.5,-288 980.5,-288 980.5,-288 974.5,-288 968.5,-282 968.5,-276 968.5,-276 968.5,-264 968.5,-264 968.5,-258 974.5,-252 980.5,-252 980.5,-252 1113.5,-252 1113.5,-252 1119.5,-252 1125.5,-258 1125.5,-264 1125.5,-264 1125.5,-276 1125.5,-276 1125.5,-282 1119.5,-288 1113.5,-288"/> <text text-anchor="middle" x="1047" y="-273.6" font-family="Noto Sans SC" font-size="13.00" fill="#000000">轴心时代与古典文明</text> <text text-anchor="middle" x="1047" y="-259.6" font-family="Noto Sans SC" font-size="13.00" fill="#000000">人类精神觉醒的百家争鸣</text> </g> <!-- china --> <g id="node6" class="node"> <title>china</title> <path fill="#d4a574" stroke="black" stroke-width="1.2" d="M448,-133C448,-133 350,-133 350,-133 344,-133 338,-127 338,-121 338,-121 338,-109 338,-109 338,-103 344,-97 350,-97 350,-97 448,-97 448,-97 454,-97 460,-103 460,-109 460,-109 460,-121 460,-121 460,-127 454,-133 448,-133"/> <text text-anchor="middle" x="399" y="-118.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">中华文明</text> <text text-anchor="middle" x="399" y="-106.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">诸子百家·秦汉大一统</text> </g> <!-- root&#45;&gt;china --> <g id="edge4" class="edge"> <title>root&#45;&gt;china</title> <path fill="none" stroke="#c0392b" stroke-width="1.8" d="M968.41,-268.11C835.74,-265.49 573.83,-255.22 492,-215 458.78,-198.67 431.34,-165.16 415.08,-141.66"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.8" points="417.88,-139.56 409.4,-133.2 412.07,-143.46 417.88,-139.56"/> </g> <!-- greece --> <g id="node7" class="node"> <title>greece</title> <path fill="#d4a574" stroke="black" stroke-width="1.2" d="M1666,-215C1666,-215 1598,-215 1598,-215 1592,-215 1586,-209 1586,-203 1586,-203 1586,-191 1586,-191 1586,-185 1592,-179 1598,-179 1598,-179 1666,-179 1666,-179 1672,-179 1678,-185 1678,-191 1678,-191 1678,-203 1678,-203 1678,-209 1672,-215 1666,-215"/> <text text-anchor="middle" x="1632" y="-200.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">古希腊文明</text> <text text-anchor="middle" x="1632" y="-188.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">哲学·科学·民主</text> </g> <!-- root&#45;&gt;greece --> <g id="edge5" class="edge"> <title>root&#45;&gt;greece</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1125.59,-259.46C1245.46,-244.91 1471.08,-217.53 1575.87,-204.81"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1576.43,-208.27 1585.93,-203.59 1575.58,-201.32 1576.43,-208.27"/> </g> <!-- rome --> <g id="node8" class="node"> <title>rome</title> <path fill="#d4a574" stroke="black" stroke-width="1.2" d="M1395.5,-133C1395.5,-133 1316.5,-133 1316.5,-133 1310.5,-133 1304.5,-127 1304.5,-121 1304.5,-121 1304.5,-109 1304.5,-109 1304.5,-103 1310.5,-97 1316.5,-97 1316.5,-97 1395.5,-97 1395.5,-97 1401.5,-97 1407.5,-103 1407.5,-109 1407.5,-109 1407.5,-121 1407.5,-121 1407.5,-127 1401.5,-133 1395.5,-133"/> <text text-anchor="middle" x="1356" y="-118.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">古罗马文明</text> <text text-anchor="middle" x="1356" y="-106.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">法律·工程·共和制</text> </g> <!-- root&#45;&gt;rome --> <g id="edge6" class="edge"> <title>root&#45;&gt;rome</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1081.55,-251.89C1138.02,-223.93 1250.01,-168.48 1312.06,-137.76"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1313.79,-140.8 1321.2,-133.23 1310.69,-134.53 1313.79,-140.8"/> </g> <!-- persia --> <g id="node9" class="node"> <title>persia</title> <path fill="#d4a574" stroke="black" stroke-width="1.2" d="M986,-215C986,-215 922,-215 922,-215 916,-215 910,-209 910,-203 910,-203 910,-191 910,-191 910,-185 916,-179 922,-179 922,-179 986,-179 986,-179 992,-179 998,-185 998,-191 998,-191 998,-203 998,-203 998,-209 992,-215 986,-215"/> <text text-anchor="middle" x="954" y="-200.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">波斯文明</text> <text text-anchor="middle" x="954" y="-188.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">帝国治理·祆教</text> </g> <!-- root&#45;&gt;persia --> <g id="edge7" class="edge"> <title>root&#45;&gt;persia</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1024.49,-251.81C1012.49,-242.66 997.57,-231.26 984.54,-221.32"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="986.38,-218.32 976.31,-215.03 982.13,-223.88 986.38,-218.32"/> </g> <!-- india --> <g id="node10" class="node"> <title>india</title> <path fill="#d4a574" stroke="black" stroke-width="1.2" d="M577,-215C577,-215 513,-215 513,-215 507,-215 501,-209 501,-203 501,-203 501,-191 501,-191 501,-185 507,-179 513,-179 513,-179 577,-179 577,-179 583,-179 589,-185 589,-191 589,-191 589,-203 589,-203 589,-209 583,-215 577,-215"/> <text text-anchor="middle" x="545" y="-200.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">古印度文明</text> <text text-anchor="middle" x="545" y="-188.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">佛教·沙门思潮</text> </g> <!-- root&#45;&gt;india --> <g id="edge8" class="edge"> <title>root&#45;&gt;india</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M968.29,-257.87C865.57,-243.34 688.45,-218.29 599.43,-205.7"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="599.67,-202.2 589.28,-204.26 598.69,-209.13 599.67,-202.2"/> </g> <!-- jewish --> <g id="node11" class="node"> <title>jewish</title> <path fill="#d4a574" stroke="black" stroke-width="1.2" d="M1118.5,-133C1118.5,-133 1043.5,-133 1043.5,-133 1037.5,-133 1031.5,-127 1031.5,-121 1031.5,-121 1031.5,-109 1031.5,-109 1031.5,-103 1037.5,-97 1043.5,-97 1043.5,-97 1118.5,-97 1118.5,-97 1124.5,-97 1130.5,-103 1130.5,-109 1130.5,-109 1130.5,-121 1130.5,-121 1130.5,-127 1124.5,-133 1118.5,-133"/> <text text-anchor="middle" x="1081" y="-118.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">犹太文明</text> <text text-anchor="middle" x="1081" y="-106.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">一神教·先知传统</text> </g> <!-- root&#45;&gt;jewish --> <g id="edge9" class="edge"> <title>root&#45;&gt;jewish</title> <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1050.83,-251.75C1056.7,-225.35 1067.96,-174.69 1074.94,-143.28"/> <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1078.37,-143.95 1077.13,-133.43 1071.54,-142.43 1078.37,-143.95"/> </g> <!-- confucius --> <g id="node12" class="node"> <title>confucius</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M627.5,-52C627.5,-52 582.5,-52 582.5,-52 576.5,-52 570.5,-46 570.5,-40 570.5,-40 570.5,-28 570.5,-28 570.5,-22 576.5,-16 582.5,-16 582.5,-16 627.5,-16 627.5,-16 633.5,-16 639.5,-22 639.5,-28 639.5,-28 639.5,-40 639.5,-40 639.5,-46 633.5,-52 627.5,-52"/> <text text-anchor="middle" x="605" y="-37.2" font-family="Noto Sans SC" font-size="11.00">孔子</text> <text text-anchor="middle" x="605" y="-25.2" font-family="Noto Sans SC" font-size="11.00">仁·礼·中庸</text> </g> <!-- china&#45;&gt;confucius --> <g id="edge10" class="edge"> <title>china&#45;&gt;confucius</title> <path fill="none" stroke="#d4a574" d="M444.38,-96.92C474.94,-85.38 516.39,-69.64 560.77,-52.46"/> <polygon fill="#d4a574" stroke="#d4a574" points="562.22,-55.65 570.28,-48.77 559.69,-49.12 562.22,-55.65"/> </g> <!-- laozi --> <g id="node13" class="node"> <title>laozi</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M215.5,-52C215.5,-52 140.5,-52 140.5,-52 134.5,-52 128.5,-46 128.5,-40 128.5,-40 128.5,-28 128.5,-28 128.5,-22 134.5,-16 140.5,-16 140.5,-16 215.5,-16 215.5,-16 221.5,-16 227.5,-22 227.5,-28 227.5,-28 227.5,-40 227.5,-40 227.5,-46 221.5,-52 215.5,-52"/> <text text-anchor="middle" x="178" y="-37.2" font-family="Noto Sans SC" font-size="11.00">老子</text> <text text-anchor="middle" x="178" y="-25.2" font-family="Noto Sans SC" font-size="11.00">道法自然·辩证法</text> </g> <!-- china&#45;&gt;laozi --> <g id="edge11" class="edge"> <title>china&#45;&gt;laozi</title> <path fill="none" stroke="#d4a574" d="M351.32,-96.96C317.33,-84.81 271.48,-68.42 235.47,-55.54"/> <polygon fill="#d4a574" stroke="#d4a574" points="236.19,-52.08 225.6,-52.01 233.83,-58.68 236.19,-52.08"/> </g> <!-- qinhan --> <g id="node14" class="node"> <title>qinhan</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M332.5,-52C332.5,-52 257.5,-52 257.5,-52 251.5,-52 245.5,-46 245.5,-40 245.5,-40 245.5,-28 245.5,-28 245.5,-22 251.5,-16 257.5,-16 257.5,-16 332.5,-16 332.5,-16 338.5,-16 344.5,-22 344.5,-28 344.5,-28 344.5,-40 344.5,-40 344.5,-46 338.5,-52 332.5,-52"/> <text text-anchor="middle" x="295" y="-37.2" font-family="Noto Sans SC" font-size="11.00">秦汉帝国</text> <text text-anchor="middle" x="295" y="-25.2" font-family="Noto Sans SC" font-size="11.00">中央集权·郡县制</text> </g> <!-- china&#45;&gt;qinhan --> <g id="edge12" class="edge"> <title>china&#45;&gt;qinhan</title> <path fill="none" stroke="#d4a574" d="M376.43,-96.86C361.58,-85.57 341.95,-70.66 325.68,-58.3"/> <polygon fill="#d4a574" stroke="#d4a574" points="327.6,-55.37 317.52,-52.11 323.37,-60.94 327.6,-55.37"/> </g> <!-- zhouqin --> <g id="node15" class="node"> <title>zhouqin</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M423.5,-52C423.5,-52 374.5,-52 374.5,-52 368.5,-52 362.5,-46 362.5,-40 362.5,-40 362.5,-28 362.5,-28 362.5,-22 368.5,-16 374.5,-16 374.5,-16 423.5,-16 423.5,-16 429.5,-16 435.5,-22 435.5,-28 435.5,-28 435.5,-40 435.5,-40 435.5,-46 429.5,-52 423.5,-52"/> <text text-anchor="middle" x="399" y="-37.2" font-family="Noto Sans SC" font-size="11.00">周秦之变</text> <text text-anchor="middle" x="399" y="-25.2" font-family="Noto Sans SC" font-size="11.00">天下观转型</text> </g> <!-- china&#45;&gt;zhouqin --> <g id="edge13" class="edge"> <title>china&#45;&gt;zhouqin</title> <path fill="none" stroke="#d4a574" d="M399,-96.86C399,-86.71 399,-73.63 399,-62.12"/> <polygon fill="#d4a574" stroke="#d4a574" points="402.5,-62.11 399,-52.11 395.5,-62.11 402.5,-62.11"/> </g> <!-- legalism --> <g id="node16" class="node"> <title>legalism</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M540.5,-52C540.5,-52 465.5,-52 465.5,-52 459.5,-52 453.5,-46 453.5,-40 453.5,-40 453.5,-28 453.5,-28 453.5,-22 459.5,-16 465.5,-16 465.5,-16 540.5,-16 540.5,-16 546.5,-16 552.5,-22 552.5,-28 552.5,-28 552.5,-40 552.5,-40 552.5,-46 546.5,-52 540.5,-52"/> <text text-anchor="middle" x="503" y="-37.2" font-family="Noto Sans SC" font-size="11.00">法家</text> <text text-anchor="middle" x="503" y="-25.2" font-family="Noto Sans SC" font-size="11.00">商鞅变法·法术势</text> </g> <!-- china&#45;&gt;legalism --> <g id="edge14" class="edge"> <title>china&#45;&gt;legalism</title> <path fill="none" stroke="#d4a574" d="M421.57,-96.86C436.42,-85.57 456.05,-70.66 472.32,-58.3"/> <polygon fill="#d4a574" stroke="#d4a574" points="474.63,-60.94 480.48,-52.11 470.4,-55.37 474.63,-60.94"/> </g> <!-- greece&#45;&gt;rome --> <g id="edge30" class="edge"> <title>greece&#45;&gt;rome</title> <path fill="none" stroke="#5a3e3e" stroke-width="1.2" stroke-dasharray="5,2" d="M1585.74,-184.26C1560.35,-177.69 1528.36,-169.19 1500,-161 1472.78,-153.14 1442.85,-143.89 1417.36,-135.82"/> <polygon fill="#5a3e3e" stroke="#5a3e3e" stroke-width="1.2" points="1418.41,-132.49 1407.82,-132.8 1416.3,-139.16 1418.41,-132.49"/> <text text-anchor="middle" x="1518.5" y="-153.8" font-family="Noto Sans SC" font-size="9.00" fill="#5a3e3e">文明继承</text> </g> <!-- socrates --> <g id="node17" class="node"> <title>socrates</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M2051.5,-133C2051.5,-133 2002.5,-133 2002.5,-133 1996.5,-133 1990.5,-127 1990.5,-121 1990.5,-121 1990.5,-109 1990.5,-109 1990.5,-103 1996.5,-97 2002.5,-97 2002.5,-97 2051.5,-97 2051.5,-97 2057.5,-97 2063.5,-103 2063.5,-109 2063.5,-109 2063.5,-121 2063.5,-121 2063.5,-127 2057.5,-133 2051.5,-133"/> <text text-anchor="middle" x="2027" y="-118.2" font-family="Noto Sans SC" font-size="11.00">苏格拉底</text> <text text-anchor="middle" x="2027" y="-106.2" font-family="Noto Sans SC" font-size="11.00">反问式教学</text> </g> <!-- greece&#45;&gt;socrates --> <g id="edge15" class="edge"> <title>greece&#45;&gt;socrates</title> <path fill="none" stroke="#d4a574" d="M1678.1,-190.58C1743.59,-182.25 1867.25,-164.19 1980.4,-132.92"/> <polygon fill="#d4a574" stroke="#d4a574" points="1981.58,-136.23 1990.26,-130.15 1979.69,-129.49 1981.58,-136.23"/> </g> <!-- plato --> <g id="node18" class="node"> <title>plato</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1502,-133C1502,-133 1438,-133 1438,-133 1432,-133 1426,-127 1426,-121 1426,-121 1426,-109 1426,-109 1426,-103 1432,-97 1438,-97 1438,-97 1502,-97 1502,-97 1508,-97 1514,-103 1514,-109 1514,-109 1514,-121 1514,-121 1514,-127 1508,-133 1502,-133"/> <text text-anchor="middle" x="1470" y="-118.2" font-family="Noto Sans SC" font-size="11.00">柏拉图</text> <text text-anchor="middle" x="1470" y="-106.2" font-family="Noto Sans SC" font-size="11.00">理想国·理念论</text> </g> <!-- greece&#45;&gt;plato --> <g id="edge16" class="edge"> <title>greece&#45;&gt;plato</title> <path fill="none" stroke="#d4a574" d="M1597.25,-178.84C1572.8,-166.76 1539.89,-150.51 1513.67,-137.56"/> <polygon fill="#d4a574" stroke="#d4a574" points="1515.21,-134.42 1504.7,-133.13 1512.11,-140.7 1515.21,-134.42"/> </g> <!-- aristotle --> <g id="node19" class="node"> <title>aristotle</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1608,-133C1608,-133 1544,-133 1544,-133 1538,-133 1532,-127 1532,-121 1532,-121 1532,-109 1532,-109 1532,-103 1538,-97 1544,-97 1544,-97 1608,-97 1608,-97 1614,-97 1620,-103 1620,-109 1620,-109 1620,-121 1620,-121 1620,-127 1614,-133 1608,-133"/> <text text-anchor="middle" x="1576" y="-118.2" font-family="Noto Sans SC" font-size="11.00">亚里士多德</text> <text text-anchor="middle" x="1576" y="-106.2" font-family="Noto Sans SC" font-size="11.00">逻辑学·归纳法</text> </g> <!-- greece&#45;&gt;aristotle --> <g id="edge17" class="edge"> <title>greece&#45;&gt;aristotle</title> <path fill="none" stroke="#d4a574" d="M1619.85,-178.64C1612.24,-167.77 1602.3,-153.57 1593.81,-141.44"/> <polygon fill="#d4a574" stroke="#d4a574" points="1596.54,-139.24 1587.94,-133.05 1590.8,-143.25 1596.54,-139.24"/> </g> <!-- greek_science --> <g id="node20" class="node"> <title>greek_science</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1725.5,-133C1725.5,-133 1650.5,-133 1650.5,-133 1644.5,-133 1638.5,-127 1638.5,-121 1638.5,-121 1638.5,-109 1638.5,-109 1638.5,-103 1644.5,-97 1650.5,-97 1650.5,-97 1725.5,-97 1725.5,-97 1731.5,-97 1737.5,-103 1737.5,-109 1737.5,-109 1737.5,-121 1737.5,-121 1737.5,-127 1731.5,-133 1725.5,-133"/> <text text-anchor="middle" x="1688" y="-118.2" font-family="Noto Sans SC" font-size="11.00">古希腊科学</text> <text text-anchor="middle" x="1688" y="-106.2" font-family="Noto Sans SC" font-size="11.00">公理化·演绎推理</text> </g> <!-- greece&#45;&gt;greek_science --> <g id="edge18" class="edge"> <title>greece&#45;&gt;greek_science</title> <path fill="none" stroke="#d4a574" d="M1644.15,-178.64C1651.76,-167.77 1661.7,-153.57 1670.19,-141.44"/> <polygon fill="#d4a574" stroke="#d4a574" points="1673.2,-143.25 1676.06,-133.05 1667.46,-139.24 1673.2,-143.25"/> </g> <!-- greek_art --> <g id="node21" class="node"> <title>greek_art</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1832,-133C1832,-133 1768,-133 1768,-133 1762,-133 1756,-127 1756,-121 1756,-121 1756,-109 1756,-109 1756,-103 1762,-97 1768,-97 1768,-97 1832,-97 1832,-97 1838,-97 1844,-103 1844,-109 1844,-109 1844,-121 1844,-121 1844,-127 1838,-133 1832,-133"/> <text text-anchor="middle" x="1800" y="-118.2" font-family="Noto Sans SC" font-size="11.00">悲剧与艺术</text> <text text-anchor="middle" x="1800" y="-106.2" font-family="Noto Sans SC" font-size="11.00">日神·酒神精神</text> </g> <!-- greece&#45;&gt;greek_art --> <g id="edge19" class="edge"> <title>greece&#45;&gt;greek_art</title> <path fill="none" stroke="#d4a574" d="M1668.04,-178.84C1693.4,-166.76 1727.52,-150.51 1754.72,-137.56"/> <polygon fill="#d4a574" stroke="#d4a574" points="1756.5,-140.59 1764.02,-133.13 1753.49,-134.27 1756.5,-140.59"/> </g> <!-- hellenistic --> <g id="node32" class="node"> <title>hellenistic</title> <polygon fill="none" stroke="#8b7355" stroke-width="1.2" stroke-dasharray="5,2" points="1972,-133 1862,-133 1862,-97 1972,-97 1972,-133"/> <text text-anchor="middle" x="1917" y="-118.2" font-family="Noto Sans SC" font-size="11.00">希腊化时代</text> <text text-anchor="middle" x="1917" y="-106.2" font-family="Noto Sans SC" font-size="11.00">文明融合·科学繁荣</text> </g> <!-- greece&#45;&gt;hellenistic --> <g id="edge31" class="edge"> <title>greece&#45;&gt;hellenistic</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M1678.11,-183.06C1725.34,-169.8 1799.18,-149.07 1852.27,-134.17"/> <polygon fill="#8b7355" stroke="#8b7355" points="1853.25,-137.53 1861.93,-131.46 1851.35,-130.79 1853.25,-137.53"/> <text text-anchor="middle" x="1814" y="-153.8" font-family="Noto Sans SC" font-size="9.00" fill="#8b7355">希腊化时代</text> </g> <!-- roman_law --> <g id="node22" class="node"> <title>roman_law</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1277,-52C1277,-52 1179,-52 1179,-52 1173,-52 1167,-46 1167,-40 1167,-40 1167,-28 1167,-28 1167,-22 1173,-16 1179,-16 1179,-16 1277,-16 1277,-16 1283,-16 1289,-22 1289,-28 1289,-28 1289,-40 1289,-40 1289,-46 1283,-52 1277,-52"/> <text text-anchor="middle" x="1228" y="-37.2" font-family="Noto Sans SC" font-size="11.00">罗马法</text> <text text-anchor="middle" x="1228" y="-25.2" font-family="Noto Sans SC" font-size="11.00">十二铜表法·大陆法系</text> </g> <!-- rome&#45;&gt;roman_law --> <g id="edge20" class="edge"> <title>rome&#45;&gt;roman_law</title> <path fill="none" stroke="#d4a574" d="M1328.23,-96.86C1309.52,-85.32 1284.67,-69.97 1264.39,-57.46"/> <polygon fill="#d4a574" stroke="#d4a574" points="1266.07,-54.38 1255.72,-52.11 1262.39,-60.34 1266.07,-54.38"/> </g> <!-- roman_republic --> <g id="node23" class="node"> <title>roman_republic</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1639,-52C1639,-52 1575,-52 1575,-52 1569,-52 1563,-46 1563,-40 1563,-40 1563,-28 1563,-28 1563,-22 1569,-16 1575,-16 1575,-16 1639,-16 1639,-16 1645,-16 1651,-22 1651,-28 1651,-28 1651,-40 1651,-40 1651,-46 1645,-52 1639,-52"/> <text text-anchor="middle" x="1607" y="-37.2" font-family="Noto Sans SC" font-size="11.00">罗马共和制</text> <text text-anchor="middle" x="1607" y="-25.2" font-family="Noto Sans SC" font-size="11.00">元老院·执政官</text> </g> <!-- rome&#45;&gt;roman_republic --> <g id="edge21" class="edge"> <title>rome&#45;&gt;roman_republic</title> <path fill="none" stroke="#d4a574" d="M1407.73,-97.91C1445.51,-86.13 1498.23,-69.65 1553.2,-52.24"/> <polygon fill="#d4a574" stroke="#d4a574" points="1554.29,-55.57 1562.76,-49.22 1552.17,-48.9 1554.29,-55.57"/> </g> <!-- roman_engineering --> <g id="node24" class="node"> <title>roman_engineering</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1756.5,-52C1756.5,-52 1681.5,-52 1681.5,-52 1675.5,-52 1669.5,-46 1669.5,-40 1669.5,-40 1669.5,-28 1669.5,-28 1669.5,-22 1675.5,-16 1681.5,-16 1681.5,-16 1756.5,-16 1756.5,-16 1762.5,-16 1768.5,-22 1768.5,-28 1768.5,-28 1768.5,-40 1768.5,-40 1768.5,-46 1762.5,-52 1756.5,-52"/> <text text-anchor="middle" x="1719" y="-37.2" font-family="Noto Sans SC" font-size="11.00">工程与建筑</text> <text text-anchor="middle" x="1719" y="-25.2" font-family="Noto Sans SC" font-size="11.00">混凝土·拱形技术</text> </g> <!-- rome&#45;&gt;roman_engineering --> <g id="edge22" class="edge"> <title>rome&#45;&gt;roman_engineering</title> <path fill="none" stroke="#d4a574" d="M1407.5,-99.3C1410.71,-98.49 1413.89,-97.72 1417,-97 1520.87,-72.96 1551.33,-76.97 1659.21,-52.06"/> <polygon fill="#d4a574" stroke="#d4a574" points="1660.26,-55.41 1669.2,-49.72 1658.66,-48.59 1660.26,-55.41"/> </g> <!-- roman_pax --> <g id="node25" class="node"> <title>roman_pax</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1405,-52C1405,-52 1319,-52 1319,-52 1313,-52 1307,-46 1307,-40 1307,-40 1307,-28 1307,-28 1307,-22 1313,-16 1319,-16 1319,-16 1405,-16 1405,-16 1411,-16 1417,-22 1417,-28 1417,-28 1417,-40 1417,-40 1417,-46 1411,-52 1405,-52"/> <text text-anchor="middle" x="1362" y="-37.2" font-family="Noto Sans SC" font-size="11.00">五贤帝时代</text> <text text-anchor="middle" x="1362" y="-25.2" font-family="Noto Sans SC" font-size="11.00">养子继承·罗马和平</text> </g> <!-- rome&#45;&gt;roman_pax --> <g id="edge23" class="edge"> <title>rome&#45;&gt;roman_pax</title> <path fill="none" stroke="#d4a574" d="M1357.3,-96.86C1358.07,-86.71 1359.07,-73.63 1359.94,-62.12"/> <polygon fill="#d4a574" stroke="#d4a574" points="1363.43,-62.34 1360.7,-52.11 1356.45,-61.81 1363.43,-62.34"/> </g> <!-- christian_rise --> <g id="node36" class="node"> <title>christian_rise</title> <path fill="#fffaf2" stroke="#8b7355" stroke-width="1.2" d="M1137,-52C1137,-52 1051,-52 1051,-52 1045,-52 1039,-46 1039,-40 1039,-40 1039,-28 1039,-28 1039,-22 1045,-16 1051,-16 1051,-16 1137,-16 1137,-16 1143,-16 1149,-22 1149,-28 1149,-28 1149,-40 1149,-40 1149,-46 1143,-52 1137,-52"/> <text text-anchor="middle" x="1094" y="-37.2" font-family="Noto Sans SC" font-size="11.00">基督教兴起</text> <text text-anchor="middle" x="1094" y="-25.2" font-family="Noto Sans SC" font-size="11.00">君士坦丁·米兰敕令</text> </g> <!-- rome&#45;&gt;christian_rise --> <g id="edge37" class="edge"> <title>rome&#45;&gt;christian_rise</title> <path fill="none" stroke="#8b7355" d="M1304.48,-110.65C1246.35,-106.09 1156.11,-96.43 1127,-79 1119.63,-74.59 1113.36,-67.84 1108.33,-60.94"/> <polygon fill="#8b7355" stroke="#8b7355" points="1111.06,-58.72 1102.64,-52.29 1105.21,-62.57 1111.06,-58.72"/> </g> <!-- byzantium --> <g id="node37" class="node"> <title>byzantium</title> <path fill="#fffaf2" stroke="#8b7355" stroke-width="1.2" d="M1533,-52C1533,-52 1447,-52 1447,-52 1441,-52 1435,-46 1435,-40 1435,-40 1435,-28 1435,-28 1435,-22 1441,-16 1447,-16 1447,-16 1533,-16 1533,-16 1539,-16 1545,-22 1545,-28 1545,-28 1545,-40 1545,-40 1545,-46 1539,-52 1533,-52"/> <text text-anchor="middle" x="1490" y="-37.2" font-family="Noto Sans SC" font-size="11.00">拜占庭帝国</text> <text text-anchor="middle" x="1490" y="-25.2" font-family="Noto Sans SC" font-size="11.00">千年传承·政教合一</text> </g> <!-- rome&#45;&gt;byzantium --> <g id="edge38" class="edge"> <title>rome&#45;&gt;byzantium</title> <path fill="none" stroke="#8b7355" d="M1385.08,-96.86C1404.74,-85.26 1430.91,-69.84 1452.19,-57.29"/> <polygon fill="#8b7355" stroke="#8b7355" points="1454.14,-60.2 1460.98,-52.11 1450.59,-54.17 1454.14,-60.2"/> </g> <!-- persia&#45;&gt;jewish --> <g id="edge32" class="edge"> <title>persia&#45;&gt;jewish</title> <path fill="none" stroke="#5a3e3e" stroke-dasharray="5,2" d="M967.32,-178.93C975.18,-169.73 985.77,-158.7 997,-151 1004.65,-145.75 1013.22,-141.06 1021.87,-136.96"/> <polygon fill="#5a3e3e" stroke="#5a3e3e" points="1023.57,-140.03 1031.26,-132.74 1020.7,-133.65 1023.57,-140.03"/> <text text-anchor="middle" x="1030.5" y="-154.1" font-family="Noto Sans SC" font-size="8.00" fill="#5a3e3e">居鲁士释放犹太人</text> </g> <!-- persian_gov --> <g id="node26" class="node"> <title>persian_gov</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M864.5,-133C864.5,-133 793.5,-133 793.5,-133 787.5,-133 781.5,-127 781.5,-121 781.5,-121 781.5,-109 781.5,-109 781.5,-103 787.5,-97 793.5,-97 793.5,-97 864.5,-97 864.5,-97 870.5,-97 876.5,-103 876.5,-109 876.5,-109 876.5,-121 876.5,-121 876.5,-127 870.5,-133 864.5,-133"/> <text text-anchor="middle" x="829" y="-118.2" font-family="Noto Sans SC" font-size="11.00">行省制与税收</text> <text text-anchor="middle" x="829" y="-106.2" font-family="Noto Sans SC" font-size="11.00">差异化治理模式</text> </g> <!-- persia&#45;&gt;persian_gov --> <g id="edge24" class="edge"> <title>persia&#45;&gt;persian_gov</title> <path fill="none" stroke="#d4a574" d="M909.75,-192.13C886.71,-187.9 859.74,-179.13 842,-161 837.3,-156.19 834.28,-149.8 832.34,-143.34"/> <polygon fill="#d4a574" stroke="#d4a574" points="835.71,-142.36 830.11,-133.36 828.88,-143.88 835.71,-142.36"/> </g> <!-- zoroaster --> <g id="node27" class="node"> <title>zoroaster</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M751.5,-133C751.5,-133 676.5,-133 676.5,-133 670.5,-133 664.5,-127 664.5,-121 664.5,-121 664.5,-109 664.5,-109 664.5,-103 670.5,-97 676.5,-97 676.5,-97 751.5,-97 751.5,-97 757.5,-97 763.5,-103 763.5,-109 763.5,-109 763.5,-121 763.5,-121 763.5,-127 757.5,-133 751.5,-133"/> <text text-anchor="middle" x="714" y="-118.2" font-family="Noto Sans SC" font-size="11.00">拜火教/祆教</text> <text text-anchor="middle" x="714" y="-106.2" font-family="Noto Sans SC" font-size="11.00">善恶二元·救世主</text> </g> <!-- persia&#45;&gt;zoroaster --> <g id="edge25" class="edge"> <title>persia&#45;&gt;zoroaster</title> <path fill="none" stroke="#d4a574" d="M909.87,-184.48C886.31,-178.06 856.9,-169.65 831,-161 809.17,-153.71 785.41,-144.77 765.04,-136.78"/> <polygon fill="#d4a574" stroke="#d4a574" points="766.22,-133.48 755.64,-133.06 763.65,-139.99 766.22,-133.48"/> </g> <!-- silk_road --> <g id="node35" class="node"> <title>silk_road</title> <path fill="#fffaf2" stroke="#8b7355" stroke-width="1.2" d="M1001,-133C1001,-133 907,-133 907,-133 901,-133 895,-127 895,-121 895,-121 895,-109 895,-109 895,-103 901,-97 907,-97 907,-97 1001,-97 1001,-97 1007,-97 1013,-103 1013,-109 1013,-109 1013,-121 1013,-121 1013,-127 1007,-133 1001,-133"/> <text text-anchor="middle" x="954" y="-118.2" font-family="Noto Sans SC" font-size="11.00">丝绸之路</text> <text text-anchor="middle" x="954" y="-106.2" font-family="Noto Sans SC" font-size="11.00">文明交流与商业网络</text> </g> <!-- persia&#45;&gt;silk_road --> <g id="edge36" class="edge"> <title>persia&#45;&gt;silk_road</title> <path fill="none" stroke="#8b7355" d="M954,-178.64C954,-168.3 954,-154.94 954,-143.22"/> <polygon fill="#8b7355" stroke="#8b7355" points="957.5,-143.05 954,-133.05 950.5,-143.05 957.5,-143.05"/> </g> <!-- india&#45;&gt;china --> <g id="edge33" class="edge"> <title>india&#45;&gt;china</title> <path fill="none" stroke="#5a3e3e" stroke-dasharray="5,2" d="M513.68,-178.84C491.93,-166.92 462.76,-150.94 439.29,-138.07"/> <polygon fill="#5a3e3e" stroke="#5a3e3e" points="440.72,-134.87 430.27,-133.13 437.36,-141.01 440.72,-134.87"/> <text text-anchor="middle" x="498.5" y="-153.8" font-family="Noto Sans SC" font-size="9.00" fill="#5a3e3e">佛教东传</text> </g> <!-- buddhism --> <g id="node28" class="node"> <title>buddhism</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M634.5,-133C634.5,-133 581.5,-133 581.5,-133 575.5,-133 569.5,-127 569.5,-121 569.5,-121 569.5,-109 569.5,-109 569.5,-103 575.5,-97 581.5,-97 581.5,-97 634.5,-97 634.5,-97 640.5,-97 646.5,-103 646.5,-109 646.5,-109 646.5,-121 646.5,-121 646.5,-127 640.5,-133 634.5,-133"/> <text text-anchor="middle" x="608" y="-118.2" font-family="Noto Sans SC" font-size="11.00">佛教</text> <text text-anchor="middle" x="608" y="-106.2" font-family="Noto Sans SC" font-size="11.00">大乘·上座部</text> </g> <!-- india&#45;&gt;buddhism --> <g id="edge26" class="edge"> <title>india&#45;&gt;buddhism</title> <path fill="none" stroke="#d4a574" d="M558.67,-178.64C567.31,-167.66 578.63,-153.29 588.24,-141.09"/> <polygon fill="#d4a574" stroke="#d4a574" points="591.14,-143.07 594.57,-133.05 585.64,-138.74 591.14,-143.07"/> </g> <!-- hinduism --> <g id="node29" class="node"> <title>hinduism</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M539.5,-133C539.5,-133 490.5,-133 490.5,-133 484.5,-133 478.5,-127 478.5,-121 478.5,-121 478.5,-109 478.5,-109 478.5,-103 484.5,-97 490.5,-97 490.5,-97 539.5,-97 539.5,-97 545.5,-97 551.5,-103 551.5,-109 551.5,-109 551.5,-121 551.5,-121 551.5,-127 545.5,-133 539.5,-133"/> <text text-anchor="middle" x="515" y="-118.2" font-family="Noto Sans SC" font-size="11.00">印度教</text> <text text-anchor="middle" x="515" y="-106.2" font-family="Noto Sans SC" font-size="11.00">婆罗门复兴</text> </g> <!-- india&#45;&gt;hinduism --> <g id="edge27" class="edge"> <title>india&#45;&gt;hinduism</title> <path fill="none" stroke="#d4a574" d="M538.49,-178.64C534.53,-168.09 529.4,-154.39 524.94,-142.51"/> <polygon fill="#d4a574" stroke="#d4a574" points="528.18,-141.18 521.39,-133.05 521.63,-143.64 528.18,-141.18"/> </g> <!-- prophets --> <g id="node30" class="node"> <title>prophets</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M883.5,-52C883.5,-52 782.5,-52 782.5,-52 776.5,-52 770.5,-46 770.5,-40 770.5,-40 770.5,-28 770.5,-28 770.5,-22 776.5,-16 782.5,-16 782.5,-16 883.5,-16 883.5,-16 889.5,-16 895.5,-22 895.5,-28 895.5,-28 895.5,-40 895.5,-40 895.5,-46 889.5,-52 883.5,-52"/> <text text-anchor="middle" x="833" y="-37.2" font-family="Noto Sans SC" font-size="11.00">先知传统</text> <text text-anchor="middle" x="833" y="-25.2" font-family="Noto Sans SC" font-size="11.00">耶利米·以斯拉·尼希米</text> </g> <!-- jewish&#45;&gt;prophets --> <g id="edge28" class="edge"> <title>jewish&#45;&gt;prophets</title> <path fill="none" stroke="#d4a574" d="M1031.41,-98.2C992.46,-85.8 937.97,-68.44 895.95,-55.05"/> <polygon fill="#d4a574" stroke="#d4a574" points="896.96,-51.7 886.37,-52 894.83,-58.37 896.96,-51.7"/> </g> <!-- monotheism --> <g id="node31" class="node"> <title>monotheism</title> <path fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.2" d="M1008.5,-52C1008.5,-52 925.5,-52 925.5,-52 919.5,-52 913.5,-46 913.5,-40 913.5,-40 913.5,-28 913.5,-28 913.5,-22 919.5,-16 925.5,-16 925.5,-16 1008.5,-16 1008.5,-16 1014.5,-16 1020.5,-22 1020.5,-28 1020.5,-28 1020.5,-40 1020.5,-40 1020.5,-46 1014.5,-52 1008.5,-52"/> <text text-anchor="middle" x="967" y="-37.2" font-family="Noto Sans SC" font-size="11.00">一神教确立</text> <text text-anchor="middle" x="967" y="-25.2" font-family="Noto Sans SC" font-size="11.00">巴比伦之囚后转型</text> </g> <!-- jewish&#45;&gt;monotheism --> <g id="edge29" class="edge"> <title>jewish&#45;&gt;monotheism</title> <path fill="none" stroke="#d4a574" d="M1056.26,-96.86C1039.83,-85.47 1018.06,-70.39 1000.14,-57.96"/> <polygon fill="#d4a574" stroke="#d4a574" points="1001.9,-54.93 991.69,-52.11 997.91,-60.68 1001.9,-54.93"/> </g> <!-- zoroaster&#45;&gt;christian_rise --> <g id="edge40" class="edge"> <title>zoroaster&#45;&gt;christian_rise</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M763.8,-99.25C766.9,-98.45 769.99,-97.7 773,-97 882.9,-71.62 915,-76.6 1029.1,-52.09"/> <polygon fill="#8b7355" stroke="#8b7355" points="1029.89,-55.5 1038.92,-49.95 1028.4,-48.66 1029.89,-55.5"/> <text text-anchor="middle" x="948" y="-72.6" font-family="Noto Sans SC" font-size="8.00" fill="#8b7355">救世主概念</text> </g> <!-- buddhism&#45;&gt;silk_road --> <g id="edge41" class="edge"> <title>buddhism&#45;&gt;silk_road</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M646.52,-130.37C649.7,-131.35 652.89,-132.25 656,-133 703.97,-144.57 829.04,-166.08 877,-154.5 891.1,-151.09 905.52,-144.64 918.01,-137.92"/> <polygon fill="#8b7355" stroke="#8b7355" points="919.73,-140.97 926.73,-133.02 916.3,-134.86 919.73,-140.97"/> <text text-anchor="middle" x="860" y="-154.1" font-family="Noto Sans SC" font-size="8.00" fill="#8b7355">宗教传播</text> </g> <!-- hellenistic_sci --> <g id="node33" class="node"> <title>hellenistic_sci</title> <path fill="#fffaf2" stroke="#8b7355" stroke-width="1.2" d="M1942,-52C1942,-52 1856,-52 1856,-52 1850,-52 1844,-46 1844,-40 1844,-40 1844,-28 1844,-28 1844,-22 1850,-16 1856,-16 1856,-16 1942,-16 1942,-16 1948,-16 1954,-22 1954,-28 1954,-28 1954,-40 1954,-40 1954,-46 1948,-52 1942,-52"/> <text text-anchor="middle" x="1899" y="-37.2" font-family="Noto Sans SC" font-size="11.00">欧几里得·阿基米德</text> <text text-anchor="middle" x="1899" y="-25.2" font-family="Noto Sans SC" font-size="11.00">公理化体系·数学化</text> </g> <!-- hellenistic&#45;&gt;hellenistic_sci --> <g id="edge34" class="edge"> <title>hellenistic&#45;&gt;hellenistic_sci</title> <path fill="none" stroke="#8b7355" d="M1913.09,-96.86C1910.78,-86.71 1907.8,-73.63 1905.18,-62.12"/> <polygon fill="#8b7355" stroke="#8b7355" points="1908.53,-61.08 1902.9,-52.11 1901.71,-62.64 1908.53,-61.08"/> </g> <!-- hellenistic_phil --> <g id="node34" class="node"> <title>hellenistic_phil</title> <path fill="#fffaf2" stroke="#8b7355" stroke-width="1.2" d="M2085.5,-52C2085.5,-52 1984.5,-52 1984.5,-52 1978.5,-52 1972.5,-46 1972.5,-40 1972.5,-40 1972.5,-28 1972.5,-28 1972.5,-22 1978.5,-16 1984.5,-16 1984.5,-16 2085.5,-16 2085.5,-16 2091.5,-16 2097.5,-22 2097.5,-28 2097.5,-28 2097.5,-40 2097.5,-40 2097.5,-46 2091.5,-52 2085.5,-52"/> <text text-anchor="middle" x="2035" y="-37.2" font-family="Noto Sans SC" font-size="11.00">犬儒·伊壁鸠鲁·斯多葛</text> <text text-anchor="middle" x="2035" y="-25.2" font-family="Noto Sans SC" font-size="11.00">乱世中的哲学方案</text> </g> <!-- hellenistic&#45;&gt;hellenistic_phil --> <g id="edge35" class="edge"> <title>hellenistic&#45;&gt;hellenistic_phil</title> <path fill="none" stroke="#8b7355" d="M1942.6,-96.86C1959.69,-85.42 1982.35,-70.25 2000.95,-57.8"/> <polygon fill="#8b7355" stroke="#8b7355" points="2003.08,-60.58 2009.45,-52.11 1999.19,-54.76 2003.08,-60.58"/> </g> <!-- hellenistic_sci&#45;&gt;roman_engineering --> <g id="edge39" class="edge"> <title>hellenistic_sci&#45;&gt;roman_engineering</title> <path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M1843.8,-34C1823.2,-34 1799.73,-34 1778.74,-34"/> <polygon fill="#8b7355" stroke="#8b7355" points="1778.66,-30.5 1768.66,-34 1778.66,-37.5 1778.66,-30.5"/> <text text-anchor="middle" x="1806.25" y="-39.6" font-family="Noto Sans SC" font-size="8.00" fill="#8b7355">技术传承</text> </g> </g> </svg> ';
+  }
+})();
+
+// ===== FLIP CARDS =====
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx = idx; cardFlipped = false;
+  const c = concepts[idx];
+  document.getElementById('flipFront').innerHTML = '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML = '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = (idx+1) + ' / ' + concepts.length;
+  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx > 0) setCard(currentCardIdx - 1);}
+function nextCard(){if(currentCardIdx < concepts.length - 1) setCard(currentCardIdx + 1);}
+function markLearned(){
+  const id = concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards = learnedCards.filter(function(x){return x !== id;});}
+  else{learnedCards.push(id);}
+  state.learned = learnedCards; save(); updateProgress(); setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped = !cardFlipped;});
+
+function updateProgress(){
+  const pct = Math.round(learnedCards.length / concepts.length * 100);
+  document.getElementById('cardProgress').style.width = pct+'%';
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+}
+function updateOverallProgress(){
+  const pct = Math.round(learnedCards.length / concepts.length * 100);
+  const op = document.getElementById('overallProgress');
+  if(op) op.style.width = pct+'%';
+  const ol = document.getElementById('overallLearned');
+  if(ol) ol.textContent = learnedCards.length;
+}
+
+// ===== MCQ DATABASE =====
+const mcqDB = [
+  // answer:0 (A) x5
+  {q:'轴心时代是由哪位学者提出的概念？',opts:['雅斯贝尔斯','黑格尔','汤因比','斯宾格勒'],answer:0},
+  {q:'苏格拉底的教学方法被称为？',opts:['反问式教学','灌输式教学','体验式教学','项目式教学'],answer:0},
+  {q:'祖教/拜火教的核心教义是？',opts:['善恶二元论','一神论','多神崇拜','无神论'],answer:0},
+  {q:'罗马第一部成文法典是？',opts:['《十二铜表法》','《民法大全》','《万民法》','《查士丁尼法典》'],answer:0},
+  {q:'希腊化时期科学繁荣的中心城市是？',opts:['亚历山大城','雅典','罗马','君士坦丁堡'],answer:0},
+  // answer:1 (B) x5
+  {q:'老子《道德经》的核心主张是？',opts:['克己复礼','道法自然·无为而治','兼爱非攻','法术势'],answer:1},
+  {q:'亚历山大东征开启了什么时代？',opts:['古典时代','希腊化时代','罗马和平','中世纪'],answer:1},
+  {q:'古罗马工程技术的两大核心突破是？',opts:['钢铁冶炼和蒸汽机','混凝土和拱形技术','造纸术和火药','帆船和指南针'],answer:1},
+  {q:'雅典民主制度中，用于放逐潜在独裁者的制度是？',opts:['五百人议会','陶片放逐法','公民大会','陪审团制度'],answer:1},
+  {q:'秦汉帝国推行的地方行政制度是？',opts:['井田制','郡县制','三省六部制','科举制'],answer:1},
+  // answer:2 (C) x5
+  {q:'以下哪一项不属于轴心时代的思想成果？',opts:['儒家思想','佛教','基督教','古希腊哲学'],answer:2},
+  {q:'柏拉图在哪部著作中阐述了理想城邦模型？',opts:['《会饮篇》','《斐多篇》','《理想国》','《申辩篇》'],answer:2},
+  {q:'被称为\u201C逻辑学开山鼻祖\u201D的古希腊哲学家是？',opts:['苏格拉底','柏拉图','亚里士多德','毕达哥拉斯'],answer:2},
+  {q:'孔子思想的核心概念不包括？',opts:['仁','礼','法治','中庸'],answer:2},
+  {q:'周秦之变最核心的观念转变是？',opts:['从重农到重商','从法治到德治','从家先于国到国先于家','从中央集权到地方分权'],answer:2},
+  // answer:3 (D) x5
+  {q:'犹太民族确立严格一神教的关键转折点是？',opts:['出埃及','罗马统治','希腊化','巴比伦之囚'],answer:3},
+  {q:'佛教中\u201C大乘\u201D的含义是？',opts:['自我修行','苦行禁欲','密法修炼','普度众生（伟大的承载工具）'],answer:3},
+  {q:'汉武帝时期削弱诸侯王势力的制度创新是？',opts:['削薩令','盐铁官营','告缃令','推恩令'],answer:3},
+  {q:'雅典在伯罗奔尼撒战争中失败的核心原因是？',opts:['军事实力不足','经济崩溃','瘟疫爆发','不成熟的民主政治导致战略失误'],answer:3},
+  {q:'亚里士多德与柏拉图在知识方法上的主要区别是？',opts:['演绎推理 vs 归纳总结','归纳总结 vs 演绎推理','辩证法 vs 修辞学','经验观察 vs 逻辑推理'],answer:3}
+];
+
+// Verify answer distribution
+(function(){
+  var dist = {0:0,1:0,2:0,3:0};
+  mcqDB.forEach(function(m){dist[m.answer]++});
+  console.log('MCQ answer distribution:', dist);
+})();
+
+// ===== QUIZ SYSTEM =====
+let quizQuestions = [];
+let quizTimer = null;
+let quizTimeLeft = 0;
+let quizAnswered = 0;
+let quizCorrect = 0;
+
+function startQuiz(){
+  resetQuiz();
+  var shuffled = mcqDB.slice().sort(function(){return Math.random() - 0.5;});
+  quizQuestions = shuffled.slice(0, 10);
+  quizAnswered = 0; quizCorrect = 0;
+  var html = '';
+  quizQuestions.forEach(function(q, qi){
+    html += '<div style="margin-bottom:14px;text-align:left"><strong>'+(qi+1)+'. '+q.q+'</strong>';
+    q.opts.forEach(function(opt, oi){
+      html += '<div class="quiz-option" onclick="selectAnswer('+qi+','+oi+',this)" data-q="'+qi+'" data-o="'+oi+'">'+['A','B','C','D'][oi]+'. '+opt+'</div>';
+    });
+    html += '<div id="qResult'+qi+'" style="font-size:.8rem;margin-top:4px"></div></div>';
+  });
+  document.getElementById('quizContainer').innerHTML = html;
+  document.getElementById('quizScore').textContent = '';
+}
+
+function selectAnswer(qi, oi, el){
+  var q = quizQuestions[qi];
+  var opts = el.parentElement.querySelectorAll('.quiz-option');
+  var alreadyAnswered = false;
+  opts.forEach(function(o){if(o.classList.contains('correct')||o.classList.contains('wrong')) alreadyAnswered = true;});
+  if(alreadyAnswered) return;
+  opts.forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');
+  var correct = (oi === q.answer);
+  if(correct){
+    el.classList.add('correct'); quizCorrect++;
+    document.getElementById('qResult'+qi).innerHTML = '<span style="color:var(--success)">✓ 正确！</span>';
+  } else {
+    el.classList.add('wrong'); quizCorrect++;
+    // actually, wrong does NOT increase correct count
+    if(!correct) quizCorrect--;
+    document.getElementById('qResult'+qi).innerHTML = '<span style="color:var(--accent)">✗ 错误！正确答案是 '+['A','B','C','D'][q.answer]+'. '+q.opts[q.answer]+'</span>';
+    // Add to error book
+    if(!errorBook.some(function(e){return e.q === q.q;})) errorBook.push(q);
+    state.errors = errorBook; save();
+  }
+  quizAnswered++;
+  document.getElementById('quizScore').textContent = '得分：'+quizCorrect+' / '+quizAnswered;
+}
+
+function resetQuiz(){
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  quizQuestions = [];
+  quizAnswered = 0; quizCorrect = 0;
+  if(quizTimer){clearInterval(quizTimer);quizTimer = null;}
+}
+
+// ===== EXAM MODE =====
+let examQuestions = [];
+let examTimer = null;
+let examTimeLeft = 900; // 15 minutes
+let examSubmitted = false;
+
+function startExam(){
+  document.getElementById('examResult').innerHTML = '';
+  var shuffled = mcqDB.slice().sort(function(){return Math.random() - 0.5;});
+  examQuestions = shuffled.slice(0, 7);
+  examTimeLeft = 900;
+  examSubmitted = false;
+  var html = '<div class="exam-timer" id="examTimerDisplay">剩余时间：15:00</div>';
+  examQuestions.forEach(function(q, qi){
+    html += '<div style="margin-bottom:12px;text-align:left"><strong>'+(qi+1)+'. '+q.q+'</strong>';
+    q.opts.forEach(function(opt, oi){
+      html += '<div class="quiz-option" onclick="selectExam('+qi+','+oi+',this)" data-eq="'+qi+'" data-eo="'+oi+'">'+['A','B','C','D'][oi]+'. '+opt+'</div>';
+    });
+    html += '<div id="eResult'+qi+'" style="font-size:.8rem;margin-top:4px"></div></div>';
+  });
+  html += '<p style="font-size:.85rem;color:var(--text-light);margin:10px 0">简答题（请在心中作答后点击提交）：</p>';
+  html += '<div style="font-size:.85rem;line-height:1.8;margin-bottom:10px"><strong>1. </strong>简述轴心时代对当代世界的三大影响。<br><strong>2. </strong>比较孔子与苏格拉底教育方法的异同。<br><strong>3. </strong>分析周秦之变对中华文明长期发展的影响。</div>';
+  html += '<button class="btn" onclick="submitExam()">交卷</button>';
+  document.getElementById('examContainer').innerHTML = html;
+  document.getElementById('startExamBtn').style.display = 'none';
+  examTimer = setInterval(function(){
+    examTimeLeft--;
+    var m = Math.floor(examTimeLeft / 60);
+    var s = examTimeLeft % 60;
+    document.getElementById('examTimerDisplay').textContent = '剩余时间：'+m+':'+(s<10?'0':'')+s;
+    if(examTimeLeft <= 0){clearInterval(examTimer);submitExam();}
+  }, 1000);
+}
+
+function selectExam(qi, oi, el){
+  if(examSubmitted) return;
+  var opts = el.parentElement.querySelectorAll('.quiz-option');
+  opts.forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');
+  el.dataset.examSelected = oi;
+}
+
+function submitExam(){
+  if(examSubmitted) return;
+  examSubmitted = true;
+  if(examTimer){clearInterval(examTimer);examTimer = null;}
+  var correct = 0;
+  examQuestions.forEach(function(q, qi){
+    var selected = null;
+    var opts = document.querySelectorAll('[data-eq="'+qi+'"]');
+    opts.forEach(function(o){if(o.classList.contains('selected')) selected = parseInt(o.dataset.eo);});
+    if(selected === q.answer){
+      correct++;
+      document.getElementById('eResult'+qi).innerHTML = '<span style="color:var(--success)">✓ 正确</span>';
+    } else {
+      document.getElementById('eResult'+qi).innerHTML = '<span style="color:var(--accent)">✗ 错误（正确答案：'+['A','B','C','D'][q.answer]+'）</span>';
+      if(!errorBook.some(function(e){return e.q === q.q;})) errorBook.push(q);
+      state.errors = errorBook; save();
+    }
+  });
+  var score = Math.round(correct / 7 * 100);
+  state.examDone = (state.examDone||0) + 1; save();
+  document.getElementById('examResult').innerHTML = '<div class="card"><h3>考试成绩：'+score+'分（选择题 '+correct+'/7 正确）</h3><p style="color:var(--text-light)">简答题请自行对照思维导图和深度追问内容评估</p><button class="btn btn-outline btn-sm" onclick="document.getElementById(\'examContainer\').innerHTML=\'\';document.getElementById(\'examResult\').innerHTML=\'\';document.getElementById(\'startExamBtn\').style.display=\'inline-block\';">重新考试</button></div>';
+}
+
+// ===== REVIEW MODE =====
+function renderReview(){
+  if(errorBook.length === 0){
+    document.getElementById('errorList').innerHTML = '<p style="color:var(--text-light)">✨ 暂无错题，继续加油！</p>';
+  } else {
+    var html = '<h3>错题列表（'+errorBook.length+'题）</h3>';
+    errorBook.forEach(function(e, i){
+      html += '<div class="card" style="margin:6px 0"><strong>'+(i+1)+'. '+e.q+'</strong><br><span style="color:var(--success)">正确答案：'+['A','B','C','D'][e.answer]+'. '+e.opts[e.answer]+'</span></div>';
+    });
+    document.getElementById('errorList').innerHTML = html;
+  }
+  // weak concepts
+  var weakMap = {};
+  errorBook.forEach(function(e){
+    concepts.forEach(function(c){
+      if(e.q.indexOf(c.name.substring(0,2)) >= 0 || (c.def && e.q.indexOf(c.def.substring(0,4)) >= 0)){
+        weakMap[c.name] = (weakMap[c.name]||0) + 1;
+      }
+    });
+  });
+  var weakEntries = Object.entries(weakMap).sort(function(a,b){return b[1]-a[1];});
+  if(weakEntries.length > 0){
+    document.getElementById('weakConcepts').innerHTML = '<h3>薄弱概念分析</h3>'+weakEntries.map(function(e){return '<span class="tag tag-secondary" style="margin:2px">'+e[0]+' ('+e[1]+'次)</span>';}).join(' ');
+  }
+  document.getElementById('reviewStats').textContent = '总做题次数：'+(state.quizDone||0)+' | 考试次数：'+(state.examDone||0);
+}
+
+function clearErrors(){
+  if(confirm('确认清空所有错题记录？')){
+    errorBook = []; state.errors = []; save(); renderReview();
+  }
+}
+
+// ===== MINDMAP TREE =====
+function toggleTreeNode(el){
+  var node = el.parentElement;
+  node.classList.toggle('expanded');
+  var children = node.querySelector('.tree-children');
+  if(children){
+    if(children.classList.contains('show')){children.classList.remove('show');}
+    else if(children.classList.contains('open')){children.classList.remove('open');}
+    else{children.classList.add('show');}
+  }
+  // Prevent event from toggling back
+  event.stopPropagation();
+}
+
+// ===== DEEP ASK =====
+function toggleAsk(el){
+  var item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+// ===== DECISION SIMULATION =====
+function decide(round, choice){
+  var feedback = document.getElementById('feedback'+round);
+  feedback.style.display = 'block';
+  var responses = {
+    '1A':'<strong>✓ 历史最优解！</strong>伯里克利的策略基于MKS核心概念——<em>破坏力与控制力的平衡</em>。雅典商业文明依赖进口，防守反击是最经济的策略。可惜伯里克利因瘟疫去世后，这一策略被民粹推翻。<br><span style="color:var(--accent)">MKS分析：</span>长期战略需要制度保障（而非依赖单一个人），这正是雅典民主不成熟之处。',
+    '1B':'<strong>历史上被验证失败的方案。</strong>雅典陆军远不如斯巴达，正面决战几乎必败。这体现了<em>离心力</em>对决策的干扰——民众情绪主导了本该理性分析的战略选择。<br><span style="color:var(--accent)">MKS分析：</span>"多数人的暴政"的典型表现。',
+    '1C':'<strong>看似稳妥实则危险。</strong>斯巴达的目标是摧毁雅典而非获得利益，割让只会激励其进一步进攻。这体现了对<em>破坏力</em>本质的误判。<br><span style="color:var(--accent)">MKS分析：</span>对付扩张型对手，绥靖政策只会加速灭亡。',
+    '2A':'<strong>✓ 历史最优解！</strong>推恩令以制度设计而非武力解决问题，堪称"阳谋"的巅峰——诸侯明知是削弱自己，却无法拒绝（拒绝意味着否定所有儿子继承权）。<br><span style="color:var(--accent)">MKS分析：</span>这是<em>控制力</em>的经典案例——通过规则改变博弈结构，让对手在规则内自行削弱。',
+    '2B':'<strong>高风险方案。</strong>汉景帝时期的直接削藩引发了七王之乱。推恩令的巧妙之处在于将矛盾从"中央vs诸侯"转化为"诸侯内部"的分配问题。<br><span style="color:var(--accent)">MKS分析：</span>强制手段激发<em>离心力</em>，制度设计化解<em>离心力</em>。',
+    '2C':'<strong>拖延但非长久之计。</strong>匈奴外患与诸侯内患并非二选一——推恩令的核心价值在于不费一兵一卒完成中央集权，释放资源对外。<br><span style="color:var(--accent)">MKS分析：</span>资源分配需要考虑<em>四力平衡</em>，但更好的方案是同时提升控制力（内部）和抵御破坏力（外部）。',
+    '3A':'<strong>历史验证的正确方向，但执行极难。</strong>格拉古兄弟的改革最终因贵族激烈反对而失败，两人均遭杀害。这暴露了罗马共和国的核心矛盾——扩张带来的利益分配不均。<br><span style="color:var(--accent)">MKS分析：</span>当<em>离心力</em>（贵族背离公共利益）超过<em>向心力</em>（公民对共和国的认同）时，改革即使正确也难以推进。',
+    '3B':'<strong>短期保住利益，长期加速灭亡。</strong>罗马后期正是因为贵族拒绝改革，导致公民兵制崩溃（农民无地无法参军），最终不得不依赖雇佣军。<br><span style="color:var(--accent)">MKS分析：</span>拒绝变革的<em>控制力</em>最终会转化为<em>离心力</em>——历史反复验证的规律。',
+    '3C':'<strong>折中方案可能延缓爆发但不解决根本矛盾。</strong>不授予公民权的土地分配只能暂时安抚农民，同盟者的不满会持续积累。<br><span style="color:var(--accent)">MKS分析：</span>半吊子改革往往两头不讨好——既得罪既得利益者，又无法真正赢得被改革者。'
+  };
+  feedback.innerHTML = responses[round+choice] || '请做出你的选择。';
+}
+
+// ===== INIT =====
+renderConceptGrid();
+updateOverallProgress();
+updateProgress();
+renderReview();
+</script>
+</body>
+</html>

@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文明起源与早期国家 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5a5a;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+  --light: #fef9f2;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;padding-top:56px}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+.tab-bar{position:sticky;top:56px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"▸";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open,.tree-children.show{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+.back-home{text-align:center;margin:16px 0;font-size:.85rem}
+.back-home a{color:var(--text-light);text-decoration:none;border-bottom:1px dashed var(--border);padding-bottom:2px}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);color:#fdf6ec;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap;color:#fdf6ec;margin:0}
+.top-bar .home-link{color:#d4a574;font-size:13px;border:1px solid #d4a574;padding:3px 10px;border-radius:14px;white-space:nowrap;transition:all 0.2s;text-decoration:none}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f}
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:var(--light);border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--light)}
+.static-quiz{display:none}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>文明起源与早期国家 · 最小知识集</h1>
+  <a class="home-link" href="index.html">← 返回知识主板</a>
+</div>
+
+<div class="container">
+
+<p class="subtitle">世界文明史第1专题 · 人类如何从非洲走向全球文明？地理、物种与人类适应的三方博弈——种子萌发阶段的文明密码</p>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- ===== TAB 0: 知识集总览 ===== -->
+<div class="tab-panel active" id="panel0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">理解<strong>人类文明从起源到早期国家形成的完整逻辑</strong>——现代智人如何走出非洲、在何种条件下定居并发明农业、城市与国家如何从简单社会中涌现、不同大陆为何走上截然不同的文明道路。核心隐喻：<strong>种子萌发——文明的基因在最初的几千年里已经埋下</strong>。</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
+<h3>概念关系图</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span style="color:#c0392b">━━ 核心驱动</span><span style="color:#d4a574">━━ 派生/方法论</span><span style="color:#8b7355">━━ 应用/实例</span><span style="border-bottom:2px dashed #c0392b">--- 反馈回环</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（15条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>露西化石的具体发现过程（1974年埃塞俄比亚哈达尔）</td><td>讨论人类起源时引用关键考古证据</td></tr>
+<tr><td>线粒体夏娃与Y染色体亚当的遗传学原理</td><td>理解现代人类单一起源论的分子生物学基础</td></tr>
+<tr><td>纳图芬文化的考古特征（石壁炉、燧石工具）</td><td>讨论最早定居点时提供实物证据</td></tr>
+<tr><td>加泰土丘（Çatalhöyük）的建筑布局</td><td>说明早期城镇的空间组织方式</td></tr>
+<tr><td>乌鲁克金字形神塔的建造规模（1500工人×5年）</td><td>论证早期国家组织大型工程的能力</td></tr>
+<tr><td>尼安德特人的身体特征（上身长下肢短）</td><td>对比智人与尼安德特人的适应性差异</td></tr>
+<tr><td>黑死病的传播路径与人口影响（1/3欧洲人死亡）</td><td>理解微生物对文明进程的冲击</td></tr>
+<tr><td>杰里科绿洲村落的防御工事（护城河+防护墙）</td><td>说明早期定居点的安全需求</td></tr>
+<tr><td>马镫的发明时间与技术传播（4世纪中国硬质马镫）</td><td>讨论军事技术对文明扩张的影响</td></tr>
+<tr><td>印欧语系的树理论与波浪模型之争</td><td>理解历史语言学对族群迁徙研究的贡献</td></tr>
+<tr><td>新仙女木事件的地层学证据（仙女木花粉）</td><td>论证气候突变对文明进程的催化作用</td></tr>
+<tr><td>苏美尔城邦的政治结构（君主-贵族-神职人员）</td><td>对比不同文明的早期治理模式</td></tr>
+<tr><td>澳大利亚原住民基因中的西亚与东亚双重特征</td><td>说明多批次迁徙的遗传学证据</td></tr>
+<tr><td>乌鲁克时期的泥板文书记录（啤酒支付工匠劳动）</td><td>理解早期经济交换的非货币形式</td></tr>
+<tr><td>美洲大型哺乳动物灭绝与现代智人迁徙时间重合</td><td>讨论人类活动对生态系统的早期影响</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>推荐学习路径（5阶段）</h3>
+<ol style="padding-left:20px;line-height:2.2;font-size:clamp(.85rem,1.8vw,.95rem)">
+  <li><strong>第1阶段：理解人类的共同起源</strong> → 走出非洲、现代智人的迁徙路线与关键技能（火/工具/语言）</li>
+  <li><strong>第2阶段：掌握文明起源的地理逻辑</strong> → 大陆走向、可驯化物种分布、气候对农业的影响</li>
+  <li><strong>第3阶段：追踪从定居到国家的演进</strong> → 新仙女木事件→定居→农业→分工→城市→国家</li>
+  <li><strong>第4阶段：理解物种交流的隐形力量</strong> → 植物传播（小麦/水稻/马铃薯）、动物动力（马/牛）、微生物冲击（黑死病/天花）</li>
+  <li><strong>第5阶段：比较不同文明的早期路径</strong> → 美索不达米亚、古埃及、古印度、中国、美洲的并行发展</li>
+</ol>
+</div>
+</div>
+
+<!-- ===== TAB 1: 知识卡片 ===== -->
+<div class="tab-panel" id="panel1">
+<h3 style="color:var(--accent);margin-bottom:12px">翻转卡片 · 点击卡片查看四维解析</h3>
+
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- ===== TAB 2: 题库系统 ===== -->
+<div class="tab-panel" id="panel2">
+<div class="card">
+<h3>题库系统</h3>
+<p style="color:var(--text-light);margin-bottom:12px">共20道选择题，随机抽取练习。点击选项即时判分，错题自动收入错题本。</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+  <button class="btn btn-primary" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline" onclick="resetQuiz()">🔄 重置</button>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" class="static-quiz"></div>
+</div>
+</div>
+
+<!-- ===== TAB 3: 考试模式 ===== -->
+<div class="tab-panel" id="panel3">
+<div class="card">
+<h3>考试模式</h3>
+<p style="color:var(--text-light);margin-bottom:12px">从题库随机抽取10题（7道选择+3道简答），限时15分钟。提交后显示分数和错题解析。</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+  <button class="btn btn-primary" id="startExamBtn" onclick="startExam()">📝 开始考试</button>
+  <button class="btn btn-outline" id="submitExamBtn" onclick="submitExam()" style="display:none">📤 提交试卷</button>
+  <span class="timer" id="examTimer" style="display:none">15:00</span>
+</div>
+<div id="examContainer"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- ===== TAB 4: 复习模式 ===== -->
+<div class="tab-panel" id="panel4">
+<div class="card">
+<h3>错题本</h3>
+<p style="color:var(--text-light);margin-bottom:12px">历史错题回顾，可重做。错题会自动从题库系统中收集。</p>
+<div id="wrongBookContainer">
+  <p style="color:var(--text-light);text-align:center;padding:30px" id="noWrongMsg">暂无错题记录，去题库练习吧！</p>
+</div>
+</div>
+<div class="card">
+<h3>学习统计</h3>
+<div class="grid-2" style="text-align:center">
+  <div class="stat-item"><div class="stat-value" id="statCards">0</div><div class="stat-label">已学概念</div></div>
+  <div class="stat-item"><div class="stat-value" id="statCorrect">0</div><div class="stat-label">答题正确</div></div>
+  <div class="stat-item"><div class="stat-value" id="statWrong">0</div><div class="stat-label">错题数量</div></div>
+  <div class="stat-item"><div class="stat-value" id="statExams">0</div><div class="stat-label">完成考试</div></div>
+</div>
+<button class="btn btn-warning btn-sm" onclick="resetAllStats()" style="margin-top:12px">🔄 重置所有统计</button>
+</div>
+</div>
+
+<!-- ===== TAB 5: 思维导图 ===== -->
+<div class="tab-panel" id="panel5">
+<div class="card">
+<h3>文明起源与早期国家 · 思维导图</h3>
+<p style="color:var(--text-light);font-size:.82rem;margin-bottom:12px">点击 ▶ 展开/折叠节点</p>
+
+<div class="tree-node">
+  <div class="tree-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🌍 文明起源与早期国家（根节点）</div>
+  <div class="tree-children open">
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🧬 一、人类起源与全球迁徙</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.1 现代智人的非洲起源</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 露西（320万年前南方古猿）——人类远祖</div>
+          <div class="tree-leaf">· 线粒体夏娃（约20万年前）——母系共同祖先</div>
+          <div class="tree-leaf">· Y染色体亚当（12-16万年前）——父系共同祖先</div>
+          <div class="tree-leaf">· 17个人种中仅现代智人存活</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.2 两次走出非洲</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 第一次（8-10万年前）：被尼安德特人阻挡，失败</div>
+          <div class="tree-leaf">· 第二次（约5万年前）：携带弓箭+先进语言，成功</div>
+          <div class="tree-leaf">· 尼安德特人约4万年前灭绝（被智人消灭）</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">1.3 全球迁徙路线</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 南亚（约5万年前）→ 澳大利亚（约4.8-6万年前）</div>
+          <div class="tree-leaf">· 中国与欧洲（约4万年前）→ 美洲（约1.4万年前）</div>
+          <div class="tree-leaf">· 三大关键技能：火的使用、工具与武器、语言交流</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🌎 二、地理环境：文明的基底</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">2.1 大陆走向决定论</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 欧亚大陆（东西走向）：同纬度传播→文明加速</div>
+          <div class="tree-leaf">· 美洲大陆（南北走向）：跨纬度阻隔→文明滞后</div>
+          <div class="tree-leaf">· 可驯化大型哺乳动物：欧亚13种 vs 美洲1种（羊驼）</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">2.2 新月沃土：农业摇篮</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 东起美索不达米亚→西至尼罗河下游的月牙形地带</div>
+          <div class="tree-leaf">· 纳图芬文化（1.4万年前）：最早面包作坊</div>
+          <div class="tree-leaf">· 小麦驯化（1.06万年前土耳其东南部）</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🌱 三、定居革命与农业起源</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">3.1 新仙女木事件（1.29-1.17万年前）</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 全球气温骤降→大量动物死亡→狩猎部落衰退</div>
+          <div class="tree-leaf">· 农耕从边缘行为变为优势生存手段</div>
+          <div class="tree-leaf">· 选址：靠水的开阔地带（新月沃土）</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">3.2 工具革命：旧石器→新石器</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 打制石器→磨制石器：能量转换效率质变</div>
+          <div class="tree-leaf">· 石铲、石锄使农业成为主要经济来源</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">3.3 全球农业并行起源</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 美索不达米亚（前9000年）：小麦、大麦</div>
+          <div class="tree-leaf">· 中国长江（前6500年）：水稻；黄河（前5500年）：小米</div>
+          <div class="tree-leaf">· 美洲墨西哥（前4000年）：豆类、玉米</div>
+          <div class="tree-leaf">· 核心启示：非中心论史观——多中心并行发展</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🐎 四、物种交流：文明的隐形推手</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.1 植物：食物基础</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 小麦从土耳其高原传播至欧亚各地</div>
+          <div class="tree-leaf">· 马铃薯/玉米从美洲→欧亚：1700-1900人口5.3→13亿</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.2 动物：动力革命</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 马的单一起源（外高加索-中亚高原）</div>
+          <div class="tree-leaf">· 轮子+畜力=长途商贸可能（前3500年苏美尔）</div>
+          <div class="tree-leaf">· 美洲原生马灭绝→缺乏大型动力源</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">4.3 微生物：隐形杀手</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 黑死病→欧洲1/3人口死亡→动摇封建佃农制</div>
+          <div class="tree-leaf">· 天花等→美洲原住民从5000万+降至不足1000万</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🏙️ 五、城市革命与国家形成</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">5.1 社会分工：第一次大分离</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 三大核心手工业：制陶、纺织、冶金</div>
+          <div class="tree-leaf">· 冶金业：人类文明飞跃标志（前6000年首次冶炼铜）</div>
+          <div class="tree-leaf">· 第二次大分离：商业从农业和手工业中独立</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">5.2 乌鲁克：世界最早城市</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 公元前4000年建立，今伊拉克境内</div>
+          <div class="tree-leaf">· 神庙三重角色：宗教+经济（存储/税收/贷款）+司法</div>
+          <div class="tree-leaf">· "乌鲁克扩张"：城镇发展为邦国的标准模式</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">5.3 城市与城镇的本质区别</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 物理：高大建筑+围墙 vs 简单聚居</div>
+          <div class="tree-leaf">· 经济：居民大多不务农 vs 多数从事农业</div>
+          <div class="tree-leaf">· 社会：复杂社会+专职管理+社会等级 vs 简单部落</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🌐 六、文明比较：多中心并行的早期文明</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">6.1 美索不达米亚（苏美尔）</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 最早城市+最早文字（楔形文字）+最早法律</div>
+          <div class="tree-leaf">· 城邦制度：未形成大一统国家</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">6.2 古埃及</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 尼罗河定期泛滥→高度集中的中央集权</div>
+          <div class="tree-leaf">· 金字塔与神庙：神权与君权的高度统一</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">6.3 古印度（吠陀文明）</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 雅利安人迁徙（前1500年）→文化融合→吠陀文明</div>
+          <div class="tree-leaf">· 种姓制度：婆罗门-刹帝利-吠舍-首陀罗</div>
+          <div class="tree-leaf">· 精神重于物质的文化传统</div>
+        </div></div>
+        <div class="tree-node"><div class="tree-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">6.4 古代中国</div>
+        <div class="tree-children">
+          <div class="tree-leaf">· 仰韶文化（前5000-前3000年）：北方农耕领先</div>
+          <div class="tree-leaf">· 二里头文化（约前19世纪）：最早城市+冶金</div>
+          <div class="tree-leaf">· 周代商：礼制替代人祭→君权大于神权</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ===== TAB 6: 深度追问（苏格拉底问答） ===== -->
+<div class="tab-panel" id="panel6">
+<div class="card">
+<h3>深度追问 · 苏格拉底式问答</h3>
+<p style="color:var(--text-light);font-size:.82rem;margin-bottom:12px">对每个核心概念进行2-3层追问，点击问题展开答案。追问直到你"想通"为止。</p>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><div class="q-text">Q1: 为什么说"定居是文明的前提"？迁徙社会为什么无法产生文明？</div></div>
+<div class="socratic-a"><p><strong>第一层：</strong>定居是文明的前提条件，因为文明所需的生产要素都需要固定场所——复杂工具制造需要作坊、金属冶炼需要固定炉窑、知识积累需要稳定的传承场所。迁徙状态（旧石器时代）下，人类以30-50人的小群体游动，无法积累私有财产（搬运成本太高），社会结构平等简单，没有剩余产品支撑专业分工。</p><p style="margin-top:8px"><strong>第二层追问：</strong>那为什么1.35万年前人类开始尝试定居却不能持续？因为当时地球持续变暖，植被繁茂、动物丰富，狩猎采集的效率仍高于初期农耕——初期农耕的产量不稳定，没有竞争优势。真正让定居成为不可逆趋势的，是<strong>新仙女木事件</strong>（1.29-1.17万年前全球气温骤降）：大量动物死亡、狩猎部落衰退，农耕从边缘选择变为优势生存手段。这说明<strong>文明的关键转折往往不是人类主动选择，而是自然环境的逼迫</strong>。</p><p style="margin-top:8px"><strong>第三层追问：</strong>这给我们什么启示？人类文明的发展并非线性进步的必然结果，而是充满了偶然性和环境驱动。我们习惯于将文明归功于人类自身的智慧和努力，但地理和气候的"眷顾"可能扮演了更根本的角色。那些没有经历"新仙女木事件"等效应的地区，文明进程可能推迟数千年。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><div class="q-text">Q2: 为什么欧亚大陆的文明发展远超美洲和大洋洲？真的是人种差异吗？</div></div>
+<div class="socratic-a"><p><strong>第一层：</strong>绝对不是人种差异。现代基因科学已证实，不同人种在智力上差异不明显，同一种群内的个体差异远大于人种间差异。日本明治维新后通过改善饮食（引入肉蛋奶）就显著提升了全民身体和智力水平，证明外部因素远大于人种因素。</p><p style="margin-top:8px"><strong>第二层追问：</strong>那根本原因是什么？是<strong>地理环境的三大差异</strong>：（1）大陆走向——欧亚东西走向使同纬度物种和技术易于传播，美洲南北走向跨气候带阻隔传播；（2）可驯化物种分布——欧亚有牛、羊、猪、马、驴等大型家畜，美洲仅有羊驼；（3）定居农业的起始时间——欧亚公元前7400年已有定居点（加泰土丘），美洲到公元前1500年才开始，晚了近6000年。技术落后是<strong>文明发展滞后的结果而非原因</strong>。</p><p style="margin-top:8px"><strong>第三层追问：</strong>那澳大利亚原住民更早到达（5-6万年前）却未形成高级文明，又怎么解释？这恰恰证明了"单一因素不能决定文明"。南岛民族掌握先进航海技术（能航行几千海里到复活节岛），但因缺乏农业基础、可驯化动物和大陆规模的人口聚集，无法形成文明。文明需要<strong>多种要素的组合</strong>——地理条件+可驯化物种+人口规模+交流网络，单一优势不足以保证文明出现。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><div class="q-text">Q3: 物种交流（动植物+微生物）为什么比人类自身的活动对文明影响更大？</div></div>
+<div class="socratic-a"><p><strong>第一层：</strong>因为人类文明的基础是食物和能量。在工业革命前，<strong>文明发达水平取决于可调动的动力总量</strong>。植物提供食物基础（小麦、水稻支撑人口增长），动物提供动力革命（牛耕田、马运输和战争），这个"植物→动物→微生物"的三层结构决定了文明的物质上限。</p><p style="margin-top:8px"><strong>第二层追问：</strong>微生物的影响为什么被长期低估？因为微生物是"隐形"的——你看不到它们但它们的杀伤力远超战争。14世纪黑死病杀死1/3欧洲人，间接动摇了封建制度、推动了商业社会转型；欧洲人带到美洲的天花等疾病使原住民人口从5000万+骤降至不足1000万，这个数字远超任何军事征服的杀伤。微生物在不经意间改写了文明的版图。</p><p style="margin-top:8px"><strong>第三层追问：</strong>这对现代社会有什么启示？全球化时代，物种交流的速度和范围远超古代——新冠病毒的全球传播就是一个最新案例。同时，我们今天吃的马铃薯（原产美洲）、喝咖啡（原产非洲）、穿棉花（原产印度），都是历史上物种交流的结果。<strong>文明的本质是一个开放系统</strong>，越是封闭的文明越容易停滞和衰落。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><div class="q-text">Q4: 为什么城市被视为"文明的标志"？城市的出现意味着什么？</div></div>
+<div class="socratic-a"><p><strong>第一层：</strong>城市不仅仅是人口的聚集，它代表了<strong>三种能力的突破</strong>：（1）农业效率足够高，能产生余粮养活不事生产的人口；（2）社会复杂度达到需要专职管理阶层的程度；（3）经济依赖性形成——城乡之间自发产生商业交换。这三者共同标志着人类超越了"简单社会"。</p><p style="margin-top:8px"><strong>第二层追问：</strong>从城镇到城市的跨越有什么本质区别？城镇只是人口密集的聚居点，居民大多仍从事农业；城市的三个本质特征——高大建筑（神庙/宫殿）代表权力集中、居民大多不务农代表分工深化、专职管理阶层代表复杂社会的形成——这三者共同构成了<strong>国家雏形</strong>。乌鲁克在公元前4000年就完成了从村落到邦国的转型，被称为"乌鲁克扩张"。</p><p style="margin-top:8px"><strong>第三层追问：</strong>城市是否一定是进步的？从文明演进角度看是——城市是知识、技术和权力的加速器；但从个体角度看未必——汉末三国时期城市成为屠杀的焦点，中世纪早期西欧城市因战乱衰退。城市的命运与文明的兴衰同步：乌鲁克、乌尔、殷墟都曾是伟大的城市，如今仅存废墟。<strong>城市的脆弱性</strong>提醒我们：文明的成就并非不可逆转。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><div class="q-text">Q5: "文明多中心起源论"推翻了什么传统观念？为什么重要？</div></div>
+<div class="socratic-a"><p><strong>第一层：</strong>它推翻了"文明单一中心扩散"的传统史观（如"一切文明源自美索不达米亚"或"中华文明是唯一独立起源"）。考古证据清晰表明：美索不达米亚、古埃及、古印度、古代中国、中美洲的农业和文明是<strong>独立并行起源</strong>的，时间虽有先后但不存在单向传播关系。</p><p style="margin-top:8px"><strong>第二层追问：</strong>这为什么重要？因为它打破了文明等级论——没有哪个文明天然"更高级"或"更先进"。不同文明在各自的地理环境中找到了不同的适应策略：苏美尔的城邦联盟、埃及的神权大一统、中国的礼制替代人祭、印度的精神重于物质——这些都是<strong>对各自环境的合理适应</strong>，而非"先进/落后"的线性排列。</p><p style="margin-top:8px"><strong>第三层追问：</strong>后来居上的现象如何解释？文明开始早晚不重要，后续的发展变数会抵消初期优势。中国在铁器普及和官僚制度上后来居上；西欧在中世纪早期落后于拜占庭和伊斯兰世界，但通过制度创新（有限责任合伙、大学、议会）在近代全面超越。这告诉我们：<strong>文明的竞争是长跑，不是短跑</strong>。没有永远的领先者，也没有注定的落后者。</p></div>
+</div>
+</div>
+
+<!-- ===== TAB 7: 案例分析 ===== -->
+<div class="tab-panel" id="panel7">
+<div class="card">
+<h3>案例分析 · MKS四维度拆解</h3>
+<p style="color:var(--text-light);font-size:.82rem;margin-bottom:12px">用最小知识集的理论框架分析真实历史案例</p>
+
+<div class="card" style="background:var(--light)">
+<h3>案例1：为什么是新月沃土成为"人类农业的摇篮"？</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px">
+  <div><strong style="color:var(--accent)">地理环境</strong><p style="font-size:.85rem">地中海东岸的月牙形地带，冬湿夏干的地中海气候，拥有大量可驯化的野生谷物（小麦、大麦）和动物（羊、猪、牛），海拔适中、水源充足。</p></div>
+  <div><strong style="color:var(--accent)">物种基础</strong><p style="font-size:.85rem">野生小麦50万年前已生长于土耳其高原和外高加索，纳图芬人1.4万年前就开始用野生谷物做面包，1.06万年前在土耳其东南部山区完成小麦正式驯化。</p></div>
+  <div><strong style="color:var(--accent)">人类适应</strong><p style="font-size:.85rem">纳图芬文化的人类最先从狩猎转向定居——建造石壁炉、制作燧石镰刀、雕刻兽骨饰物。定居→人口增长→需要更多食物→主动驯化，形成正反馈。</p></div>
+  <div><strong style="color:var(--accent)">偶然因素</strong><p style="font-size:.85rem">新仙女木事件使狩猎部落大量消亡，农耕部落反而因储存谷物存活率更高。如果当时的气候走向不同，农业革命可能发生在完全不同的地区。</p></div>
+</div>
+<p style="margin-top:12px;font-size:.85rem;color:var(--text-light)"><strong>MKS结论：</strong>新月沃土的成功 = 地理禀赋（可驯化物种集中）+ 气候催化剂（新仙女木事件）+ 人类先行者优势（纳图芬定居点）。三者缺一不可。</p>
+</div>
+
+<div class="card" style="background:var(--light);margin-top:12px">
+<h3>案例2：苏美尔城邦为什么没能统一美索不达米亚？</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px">
+  <div><strong style="color:var(--accent)">地理因素</strong><p style="font-size:.85rem">美索不达米亚地势平坦、缺乏天然屏障，各城邦沿幼发拉底河和底格里斯河分散分布，任何城邦都难以建立压倒性的地缘优势。</p></div>
+  <div><strong style="color:var(--accent)">经济成本</strong><p style="font-size:.85rem">商贸城邦的经济模式养不起大量常备军——商人需要的是安全贸易而非征服战争。统治大疆域的军事和管理成本远超商业收益。</p></div>
+  <div><strong style="color:var(--accent)">文化惯性</strong><p style="font-size:.85rem">城邦制度已运行上千年，形成了以神庙为中心的自治传统。强大邦国仅充当联盟首领角色（类似古希腊城邦或中国春秋五霸），而非大一统君主。</p></div>
+  <div><strong style="color:var(--accent)">制度创新不足</strong><p style="font-size:.85rem">乌鲁卡基那改革（前24世纪）试图限制贵族权力，但因触及既得利益7年后中断。苏美尔未能像后来的秦朝那样建立超越城邦的官僚管理体系。</p></div>
+</div>
+<p style="margin-top:12px;font-size:.85rem;color:var(--text-light)"><strong>MKS结论：</strong>统一不是文明的必然归宿。苏美尔的"失败"恰恰证明了：<strong>地理环境+经济模式+文化传统共同决定了政治结构的可能性边界</strong>。秦朝能统一中国（中央集权+官僚制），但同样的模式在美索不达米亚缺乏经济和地理基础。</p>
+</div>
+</div>
+</div>
+
+<!-- ===== TAB 8: 实战决策 ===== -->
+<div class="tab-panel" id="panel8">
+<div class="card">
+<h3>实战决策模拟 · 3轮文明决策</h3>
+<p style="color:var(--text-light);font-size:.82rem;margin-bottom:12px">假设你是一个早期部落的首领，面对文明起源阶段的关键决策。每个决策都有MKS分析。</p>
+
+<div class="decision-scenario" id="scenario1">
+<h4 style="color:var(--accent)">第1轮：定居还是继续迁徙？</h4>
+<p style="font-size:.9rem;margin:6px 0">你是公元前11000年西亚某部落的首领。部落30人，以狩猎采集为生。最近气候开始变暖，野生谷物越来越丰富，有些族人建议在河边固定居住、尝试种植。但长老们认为迁徙更安全——"我们祖祖辈辈都是这样过来的"。</p>
+<div class="decision-options">
+  <div class="decision-opt" onclick="decide(1,'A')"><strong>A.</strong> 听从长老建议，继续迁徙——安全第一，不要冒险尝试新生活方式。</div>
+  <div class="decision-opt" onclick="decide(1,'B')"><strong>B.</strong> 折中方案：大部分时间定居种植，但保留迁徙能力作为备选。</div>
+  <div class="decision-opt" onclick="decide(1,'C')"><strong>C.</strong> 全力定居：建造固定住所，大规模种植野生谷物，放弃远距离狩猎。</div>
+</div>
+<div class="decision-result" id="result1"></div>
+</div>
+
+<div class="decision-scenario" id="scenario2">
+<h4 style="color:var(--accent)">第2轮：如何对待外来商人？</h4>
+<p style="font-size:.9rem;margin:6px 0">你的定居点已发展到500人规模，有剩余粮食。最近有来自远方部落的商人定期来访，用黑曜石和盐交换你们的粮食。但有人担心外来者会带来疾病和冲突，建议禁止贸易。</p>
+<div class="decision-options">
+  <div class="decision-opt" onclick="decide(2,'A')"><strong>A.</strong> 禁止外来商人——安全第一，自给自足才是长久之道。</div>
+  <div class="decision-opt" onclick="decide(2,'B')"><strong>B.</strong> 有限贸易：划定交易区，只允许白天交易，夜晚必须离开。</div>
+  <div class="decision-opt" onclick="decide(2,'C')"><strong>C.</strong> 积极开放：欢迎商人定居，设立市场，用贸易税收建设公共设施。</div>
+</div>
+<div class="decision-result" id="result2"></div>
+</div>
+
+<div class="decision-scenario" id="scenario3">
+<h4 style="color:var(--accent)">第3轮：如何管理日益复杂的社会？</h4>
+<p style="font-size:.9rem;margin:6px 0">你的部落已发展为2000人的城镇，出现了专职陶工、织工和金属匠。粮食来自周边农村，你需要管理复杂的城乡关系。有人建议你自封为王、建立军队；有人建议保持部落议事会制度。</p>
+<div class="decision-options">
+  <div class="decision-opt" onclick="decide(3,'A')"><strong>A.</strong> 维持部落议事会——人人平等是祖先的传统，不能破坏。</div>
+  <div class="decision-opt" onclick="decide(3,'B')"><strong>B.</strong> 任命专职管理者：选择能干的族人管理税收、贸易和公共工程，你保留最终决定权。</div>
+  <div class="decision-opt" onclick="decide(3,'C')"><strong>C.</strong> 建立王权：自封为君主，建立军队，制定法律，任命贵族协助统治。</div>
+</div>
+<div class="decision-result" id="result3"></div>
+</div>
+</div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ===== GLOBAL STATE =====
+const LS_KEY = 'mks_wenmingshi_t1';
+let learnedCards = [];
+let wrongBook = [];
+let quizHistory = [];
+let examCount = 0;
+
+function save(){
+  const d={learnedCards,wrongBook,quizHistory,examCount};
+  try{localStorage.setItem(LS_KEY,JSON.stringify(d))}catch(e){}
+}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(LS_KEY));
+    if(d){learnedCards=d.learnedCards||[];wrongBook=d.wrongBook||[];quizHistory=d.quizHistory||[];examCount=d.examCount||0}
+  }catch(e){}
+}
+load();
+
+// ===== CONCEPTS =====
+const concepts = [
+  {id:'c1',name:'走出非洲与人类迁徙',def:'现代智人约20-30万年前起源于东非，经历两次走出非洲的尝试，约5万年前第二次迁徙成功，依靠火、工具和语言三大技能遍布全球。',analogy:'像一个创业团队从"车库"出发——最初只有小群体，但凭借核心技术（火=能源、工具=生产力、语言=沟通协作）逐步扩展到全球市场。',example:'澳大利亚原住民的祖先在4.8-6万年前从印尼南部群岛渡海至少90公里抵达澳洲——没有帆船，仅靠木筏和洋流，展现了人类惊人的适应力。',counter:'不是所有迁徙群体都成功了——大量部落走进"死胡同"后无后代留存，我们今天看到的迁徙路线是"幸存者偏差"，失败者远多于成功者。'},
+  {id:'c2',name:'地理环境决定论',def:'大陆走向、气候带分布、可驯化物种的天然分布决定了不同地区文明发展的速度和路径，技术落后是文明滞后的结果而非原因。',analogy:'就像不同地段的土地决定了作物种类——欧亚大陆是"肥沃平原"（东西走向、物种丰富），美洲大陆是"梯田"（南北走向、气候阻隔），大洋洲是"沙地"（缺乏可驯化物种）。',example:'欧亚大陆拥有13种可驯化大型哺乳动物（牛、羊、猪、马等），美洲仅有羊驼1种，这直接导致了两地农业动力和运输能力的巨大差距。',counter:'但地理不是唯一的决定因素——日本的地理条件不算优越（多山、少平原），却通过文化学习和制度创新成为发达国家。地理设定了起点，但人类能动性可以改写终点。'},
+  {id:'c3',name:'定居革命',def:'约1.35万年前人类开始尝试定居，新仙女木事件（1.29-1.17万年前全球气温骤降）成为关键催化剂，使农耕从边缘选择变为优势生存手段，定居成为不可逆趋势。',analogy:'定居之于文明，就像地基之于建筑——没有地基可以搭帐篷（游猎），但建不了高楼（城市、冶金、文字）。新仙女木事件相当于一场"地震"，摧毁了帐篷区，迫使人建造永久建筑。',example:'纳图芬地区（地中海东岸）是人类最早定居点，1.4万年前就有石壁炉面包作坊，出土了燧石镰刀和兽骨饰物——饰物的存在表明他们不再整天为生存奔波，开始有余暇制作"非必需品"。',counter:'定居也带来了新问题：疾病传播更容易（人口密集）、社会不平等加剧（剩余产品催生私有制）、环境破坏（森林砍伐、土壤退化）。进步总是有代价的。'},
+  {id:'c4',name:'农业起源与驯化',def:'约1.1万年前开始，人类在全球多个地区独立驯化了小麦、水稻、玉米等主要谷物以及牛、羊、猪等家畜，从"向自然索取"转向"控制自然生产"。',analogy:'农业是人类的第一场"工业革命"——在此之前人类是"采集者"（类似野生动物），之后成为"生产者"（类似工厂）。磨制石器替代打制石器，相当于从手工工具升级到机床。',example:'小麦驯化是一个典型案例：野生小麦成熟后自然脱落，对人类无用；人类选择那些"不脱落"的突变个体反复种植，最终培育出适合收获的品种——从"有利于植物繁殖"转向"有利于人类收获"。',counter:'但农业并非在所有方面都优于狩猎采集：早期农民的工作时间更长、营养更单一（主要依赖几种谷物）、身高下降了约15厘米。农业的"胜利"很大程度上是人口数量优势，而非个体生活质量优势。'},
+  {id:'c5',name:'物种驯化与动力革命',def:'动物驯化为文明提供了关键动力——牛耕田、马运输和作战、驴驮运货物。工业革命前，文明发达水平取决于可调动的动力总量。',analogy:'家畜之于古代文明，就像石油和电力之于现代文明——它们是"能源基础设施"。没有马的文明就像没有石油的现代工业国，能动用的动力少一个数量级。',example:'现代家马全部源自外高加索-中亚高原的同一野生种群（基因研究证实）。公元前3500年苏美尔人将轮子与马结合，发明马拉车辆，使长途商贸从不可能变为可能。卡迭石战役（前1274年）中埃及与赫梯共动用5000辆战车。',counter:'美洲原生马在欧洲人到达前已灭绝，导致当地文明缺乏大型动力源。但这不是美洲人的"失败"——马在美洲灭绝可能源于气候变迁和早期人类的过度捕猎，这是环境与人的互动结果。'},
+  {id:'c6',name:'物种交流：文明的隐形推手',def:'除人类自身外，随人口流动迁徙的动物、植物和微生物对文明的影响远超想象——植物决定食物基础，动物提供动力，微生物改变人口结构。',analogy:'物种交流像"文明的物流系统"——你不一定看到物流车，但超市货架上的商品（文明成就）依赖它们。马铃薯从美洲到欧亚，相当于给旧大陆"空投"了一个高效的卡路里生产系统。',example:'1700-1900年间，马铃薯和玉米从美洲引入欧亚，推动欧亚人口从5.3亿增长到13亿。同期，欧洲人带到美洲的天花使原住民人口从5000万+降至不足1000万。物种交流同时带来创造和毁灭。',counter:'物种交流也有负面影响：外来入侵物种破坏本地生态、疾病传播（如黑死病）、经济作物替代粮食作物导致饥荒（如爱尔兰马铃薯饥荒）。开放意味着机遇与风险并存。'},
+  {id:'c7',name:'社会分工与手工业',def:'定居农业产生剩余粮食后，部分人口从食物生产中解放出来，专职从事制陶、纺织、冶金等手工业——这是人类社会第一次大分工。',analogy:'社会分工就像一家公司从"全员打杂"进化到"部门制"——有人做研发（冶金）、有人做生产（制陶）、有人做设计（纺织），效率是指数级提升的。但这也意味着没有人能独立生存——互相依赖成为文明的"黏合剂"。',example:'冶金业的出现是文明飞跃的标志——公元前6000年首次冶炼铜，公元前5000年制成工具。这需要近千度的高温炉、稳定的能量供应（农业剩余）和专职技术人才。考古学中"第一批批量产品"比"第一个样品"对历史影响更大。',counter:'分工也带来了新的不平等——掌握稀缺技能的人（如金属工匠）获得更高社会地位，性别分工也开始固化（女性从野外劳动转向家庭纺织），这为后来的等级制度埋下了伏笔。'},
+  {id:'c8',name:'城市革命与复杂社会',def:'城市区别于城镇的三个本质特征——高大权力建筑、非农业人口为主体、专职管理阶层——标志着人类社会从"简单"走向"复杂"。',analogy:'城镇是"大号村庄"，城市是"操作系统升级"——城镇运行的是部落的逻辑（血缘、平等），城市运行的是国家的逻辑（管理、等级）。乌鲁克在公元前4000年完成这个升级，比其他人早了上千年。',example:'乌鲁克是世界上最早的城市，其金字形神塔由1500名工人、每天工作10小时、耗时5年建成。神庙同时充当粮仓（存储余粮）、银行（发放贷款）和法院（仲裁纠纷）——这是最早的"多部门政府"。',counter:'不是所有大型定居点都是城市——杰里科（约1万年前）有2000人口和护城河，但仍只是一个"大城镇"，因为它没有专职管理阶层和复杂社会结构。规模不等于复杂度。'},
+  {id:'c9',name:'国家形成与管理制度',def:'当城市发展到需要管理周边农村、处理与其他城市关系、征税和维持公共工程时，国家机器开始形成——这是文明的制度化阶段。',analogy:'国家的出现就像"从集市到公司"——集市只需要摊位规则（部落习惯法），公司需要HR、财务、法务等部门（官僚体系）。苏美尔的神庙就是最早的"公司总部"，君主是CEO，祭司是CFO。',example:'苏美尔的乌鲁卡基那改革（前24世纪）是人类最早的制度化改革——禁止官员强买平民财产、禁止侵犯住宅、撤销税吏。虽然7年后因贵族反扑而失败，但展示了"通过制度约束权力"的早期尝试。',counter:'国家的出现并不总是意味着进步——汉末三国时期，国家崩溃导致人口从5000-6000万降至不足1000万。文明制度既是保护伞，也可能成为压迫工具。关键在于制度是否服务于多数人的福祉。'},
+  {id:'c10',name:'文明多中心起源论',def:'考古证据表明，农业和文明在全球多个地区独立起源——美索不达米亚、古埃及、古印度、中国、中美洲——不存在单一的"文明源头"。',analogy:'文明起源像"多个独立的实验室"——每个实验室（地理区域）用不同的"试剂"（本地物种）做类似的"实验"（定居→农业→城市→国家），得出了不同但都有效的"配方"（文明形态）。没有哪个实验室是"总部"。',example:'中国长江流域约8500年前独立驯化水稻，与美索不达米亚驯化小麦（约1.1万年前）时间接近但完全独立。二里头文化（约前19世纪）同时出现了城市和冶金——两个文明的标志性特征，与美索不达米亚的路径相似但各自独立发展。',counter:'多中心起源不等于完全隔离——欧亚大陆内部存在广泛的技术传播（如冶铁技术从赫梯传播到各地），但传播是"增量"而非"从零到一"。关键区别在于：农业和城市的基本模式是各地独立发明的，不是从一个中心扩散的。'}
+];
+const mksCoreIds = ['c2','c3','c6','c10'];
+
+// ===== MCQ =====
+const mcqPool = [
+  {q:'商鞅变法的核心内容不包括以下哪一项？',opts:['奖励耕织、抑制商业','废除世卿世禄制、以军功授爵','实行什伍连坐法','推广儒家经典教育'],answer:3},
+  {q:'欧亚大陆文明发展远超美洲大陆的根本原因是什么？',opts:['欧亚人种智力更高','欧亚大陆东西走向、拥有更多可驯化物种','欧亚大陆发现金属的时间更早','美洲大陆缺乏河流'],answer:1},
+  {q:'以下哪一项不属于人类成功迁徙的三大关键技能？',opts:['火的使用','工具与武器','造船技术','语言交流'],answer:2},
+  {q:'东亚最早的农耕文化分别起源于哪两个流域？',opts:['长江流域（水稻）和黄河流域（小米）','珠江流域和黑龙江流域','印度河流域和湄公河流域','尼罗河流域和两河流域'],answer:0},
+  {q:'冶金业最早冶炼铜发生在何时？',opts:['约公元前1000年','约公元前6000年','约公元前10000年','约公元前500年'],answer:1},
+  {q:'线粒体夏娃大约生活在多少年前？',opts:['约5000年前','约5万年前','约20万年前','约200万年前'],answer:2},
+  {q:'世界上最早的城市乌鲁克建立在什么时间？',opts:['约公元前10000年','约公元前1000年','约公元前500年','约公元前4000年'],answer:3},
+  {q:'\u300A梨俱吠陀\u300B的成书年代为？',opts:['约公元前3000年','约公元前1000年','约公元前100年','约公元前6世纪'],answer:3},
+  {q:'小麦的驯化大约发生在什么时间和地点？',opts:['约5000年前，中国黄河流域','约1.06万年前，土耳其东南部山区','约2万年前，非洲撒哈拉地区','约3000年前，欧洲地中海沿岸'],answer:1},
+  {q:'纳图芬文化出土的最重要考古证据是什么？',opts:['青铜武器','金字塔','1.4万年前的石壁炉和面包作坊','轮子和车辆'],answer:2},
+  {q:'城市区别于城镇的本质特征是什么？',opts:['人口更多、面积更大、建筑更高','有市场、有道路、有教堂','有军队、有监狱、有学校','高大权力建筑、居民大多不务农、专职管理阶层'],answer:3},
+  {q:'现代智人第二次走出非洲成功的关键因素不包括以下哪一项？',opts:['携带了弓箭等先进武器','语言能力显著提升','发明了帆船进行远洋航行','掌握了火的使用技术'],answer:2},
+  {q:'人类最早定居点纳图芬地区位于哪里？',opts:['地中海东岸的新月沃土地带','中国黄河流域','印度河流域','南美洲安第斯山区'],answer:0},
+  {q:'现代家马的共同祖先来源于哪里？',opts:['美洲大草原','中国蒙古高原','外高加索-中亚高原','非洲撒哈拉以南'],answer:2},
+  {q:'美洲大陆文明发展滞后的关键地理因素是什么？',opts:['南北走向导致跨纬度物种传播困难','美洲大陆面积太小','美洲没有可驯化植物','美洲土著智力不足'],answer:0},
+  {q:'黑死病对欧洲社会的长远影响是什么？',opts:['促进了欧洲统一国家的形成','导致欧洲人口彻底灭绝','使欧洲退回狩猎采集社会','动摇了封建佃农制，推动商业社会转型'],answer:3},
+  {q:'\u201C乌鲁克扩张\u201D在历史学中指什么？',opts:['乌鲁克军队征服周边地区','城镇发展为邦国的过程','乌鲁克文化传播到美洲','农业技术从乌鲁克向全球扩散'],answer:1},
+  {q:'吠陀文明的种姓制度中，地位最高的是哪个阶层？',opts:['刹帝利（贵族和武士）','婆罗门（僧侣和知识阶层）','吠舍（农牧民和商人）','首陀罗（农民和工匠）'],answer:1},
+  {q:'新仙女木事件对文明进程的主要影响是什么？',opts:['使农耕从边缘行为变为优势生存手段','导致恐龙灭绝','促进了海上贸易的兴起','发明了轮子'],answer:0},
+  {q:'苏美尔城邦未能统一美索不达米亚的主要原因是什么？',opts:['地理平坦缺乏屏障+经济养不起常备军+文化习惯城邦自治','苏美尔人缺乏军事技术','被外族入侵中断','苏美尔人没有文字'],answer:0}
+];
+
+// Verify MCQ answer distribution
+(function(){
+  const dist={0:0,1:0,2:0,3:0};
+  mcqPool.forEach(m=>dist[m.answer]++);
+  console.log('MCQ answer distribution:',dist);
+})();
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    this.classList.add('active');
+    const idx=parseInt(this.dataset.tab);
+    document.getElementById('panel'+idx).classList.add('active');
+  });
+});
+
+// ===== CONCEPT GRID RENDERING =====
+function renderConceptGrid(){
+  const grid=document.getElementById('conceptGrid');
+  const core=document.getElementById('mksCoreGrid');
+  if(!grid||!core)return;
+  grid.innerHTML=concepts.map(c=>'<div class="concept-card" onclick="switchToCard(\''+c.id+'\')"><strong style="color:var(--accent)">'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:6px">'+c.def.substring(0,80)+'…</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:6px">✓ 已学习</span>':'')+'</div>').join('');
+  core.innerHTML=mksCoreIds.map(id=>{
+    const c=concepts.find(x=>x.id===id);
+    return c?'<div class="concept-card mks-core" onclick="switchToCard(\''+c.id+'\')"><strong style="color:var(--accent)">★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:6px">'+c.def.substring(0,100)+'…</p></div>':'';
+  }).join('');
+}
+
+function switchToCard(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-tab="1"]').classList.add('active');
+  document.getElementById('panel1').classList.add('active');
+  const idx=concepts.findIndex(c=>c.id===id);
+  if(idx>=0)setCard(idx);
+}
+
+renderConceptGrid();
+
+// ===== SVG CONCEPT MAP =====
+(function(){
+  const svgContainer=document.getElementById('conceptMap');
+  if(!svgContainer)return;
+  svgContainer.innerHTML=`<svg width="1262pt" height="521pt"
+ viewBox="0.00 0.00 1262.00 521.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 517)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-517 1258,-517 1258,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<path fill="#fffaf2" stroke="#d4a574" stroke-dasharray="5,2" d="M1154,-176C1154,-176 1234,-176 1234,-176 1240,-176 1246,-182 1246,-188 1246,-188 1246,-493 1246,-493 1246,-499 1240,-505 1234,-505 1234,-505 1154,-505 1154,-505 1148,-505 1142,-499 1142,-493 1142,-493 1142,-188 1142,-188 1142,-182 1148,-176 1154,-176"/>
+<text text-anchor="middle" x="1194" y="-493" font-family="Times,serif" font-size="10.00" fill="#3d2f2f">图例</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2" d="M611.5,-478C611.5,-478 450.5,-478 450.5,-478 444.5,-478 438.5,-472 438.5,-466 438.5,-466 438.5,-454 438.5,-454 438.5,-448 444.5,-442 450.5,-442 450.5,-442 611.5,-442 611.5,-442 617.5,-442 623.5,-448 623.5,-454 623.5,-454 623.5,-466 623.5,-466 623.5,-472 617.5,-478 611.5,-478"/>
+<text text-anchor="middle" x="531" y="-463.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">人类从非洲走向全球文明</text>
+<text text-anchor="middle" x="531" y="-451.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">地理环境 × 物种交流 × 人类适应</text>
+</g>
+<!-- t1a -->
+<g id="node2" class="node">
+<title>t1a</title>
+<path fill="#d4a574" stroke="black" d="M319,-396C319,-396 195,-396 195,-396 189,-396 183,-390 183,-384 183,-384 183,-364 183,-364 183,-358 189,-352 195,-352 195,-352 319,-352 319,-352 325,-352 331,-358 331,-364 331,-364 331,-384 331,-384 331,-390 325,-396 319,-396"/>
+<text text-anchor="middle" x="257" y="-383.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">地理环境</text>
+<text text-anchor="middle" x="257" y="-371.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">（文明基底）</text>
+<text text-anchor="middle" x="257" y="-359.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">大陆走向·气候·可驯化物种</text>
+</g>
+<!-- root&#45;&gt;t1a -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;t1a</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M475.22,-441.9C434.91,-429.54 379.93,-412.69 335.24,-398.98"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="336.16,-395.61 325.57,-396.02 334.11,-402.3 336.16,-395.61"/>
+<text text-anchor="middle" x="420.5" y="-416.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">决定</text>
+</g>
+<!-- t1b -->
+<g id="node3" class="node">
+<title>t1b</title>
+<path fill="#d4a574" stroke="black" d="M581.5,-396C581.5,-396 480.5,-396 480.5,-396 474.5,-396 468.5,-390 468.5,-384 468.5,-384 468.5,-364 468.5,-364 468.5,-358 474.5,-352 480.5,-352 480.5,-352 581.5,-352 581.5,-352 587.5,-352 593.5,-358 593.5,-364 593.5,-364 593.5,-384 593.5,-384 593.5,-390 587.5,-396 581.5,-396"/>
+<text text-anchor="middle" x="531" y="-383.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">物种交流</text>
+<text text-anchor="middle" x="531" y="-371.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">（隐形推手）</text>
+<text text-anchor="middle" x="531" y="-359.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">植物·动物·微生物传播</text>
+</g>
+<!-- root&#45;&gt;t1b -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;t1b</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M531,-441.6C531,-431.41 531,-418.25 531,-406.32"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="534.5,-406.26 531,-396.26 527.5,-406.26 534.5,-406.26"/>
+<text text-anchor="middle" x="540.5" y="-416.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">驱动</text>
+</g>
+<!-- t1c -->
+<g id="node4" class="node">
+<title>t1c</title>
+<path fill="#d4a574" stroke="black" d="M798,-396C798,-396 704,-396 704,-396 698,-396 692,-390 692,-384 692,-384 692,-364 692,-364 692,-358 698,-352 704,-352 704,-352 798,-352 798,-352 804,-352 810,-358 810,-364 810,-364 810,-384 810,-384 810,-390 804,-396 798,-396"/>
+<text text-anchor="middle" x="751" y="-383.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">人类适应</text>
+<text text-anchor="middle" x="751" y="-371.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">（主体行动）</text>
+<text text-anchor="middle" x="751" y="-359.2" font-family="Noto Sans SC" font-size="11.00" fill="#000000">迁徙·定居·技术·组织</text>
+</g>
+<!-- root&#45;&gt;t1c -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;t1c</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M575.79,-441.9C607.48,-429.8 650.48,-413.38 685.95,-399.84"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="687.65,-402.94 695.74,-396.1 685.15,-396.4 687.65,-402.94"/>
+<text text-anchor="middle" x="657.5" y="-416.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">塑造</text>
+</g>
+<!-- t2a1 -->
+<g id="node5" class="node">
+<title>t2a1</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M352,-306C352,-306 254,-306 254,-306 248,-306 242,-300 242,-294 242,-294 242,-282 242,-282 242,-276 248,-270 254,-270 254,-270 352,-270 352,-270 358,-270 364,-276 364,-282 364,-282 364,-294 364,-294 364,-300 358,-306 352,-306"/>
+<text text-anchor="middle" x="303" y="-291.2" font-family="Noto Sans SC" font-size="11.00">欧亚大陆</text>
+<text text-anchor="middle" x="303" y="-279.2" font-family="Noto Sans SC" font-size="11.00">东西走向·同纬度传播</text>
+</g>
+<!-- t1a&#45;&gt;t2a1 -->
+<g id="edge4" class="edge">
+<title>t1a&#45;&gt;t2a1</title>
+<path fill="none" stroke="#d4a574" d="M268.61,-351.8C274.7,-340.68 282.21,-326.96 288.67,-315.18"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="291.83,-316.69 293.56,-306.23 285.69,-313.32 291.83,-316.69"/>
+<text text-anchor="middle" x="301.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">优势路径</text>
+</g>
+<!-- t2a2 -->
+<g id="node6" class="node">
+<title>t2a2</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M98,-306C98,-306 12,-306 12,-306 6,-306 0,-300 0,-294 0,-294 0,-282 0,-282 0,-276 6,-270 12,-270 12,-270 98,-270 98,-270 104,-270 110,-276 110,-282 110,-282 110,-294 110,-294 110,-300 104,-306 98,-306"/>
+<text text-anchor="middle" x="55" y="-291.2" font-family="Noto Sans SC" font-size="11.00">美洲大陆</text>
+<text text-anchor="middle" x="55" y="-279.2" font-family="Noto Sans SC" font-size="11.00">南北走向·气候阻隔</text>
+</g>
+<!-- t1a&#45;&gt;t2a2 -->
+<g id="edge5" class="edge">
+<title>t1a&#45;&gt;t2a2</title>
+<path fill="none" stroke="#8b7355" d="M206.29,-351.91C175.36,-339.05 135.99,-322.68 105.16,-309.86"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="106.47,-306.61 95.89,-306 103.78,-313.08 106.47,-306.61"/>
+<text text-anchor="middle" x="181.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#8b7355">障碍路径</text>
+</g>
+<!-- t2a3 -->
+<g id="node7" class="node">
+<title>t2a3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M211.5,-306C211.5,-306 140.5,-306 140.5,-306 134.5,-306 128.5,-300 128.5,-294 128.5,-294 128.5,-282 128.5,-282 128.5,-276 134.5,-270 140.5,-270 140.5,-270 211.5,-270 211.5,-270 217.5,-270 223.5,-276 223.5,-282 223.5,-282 223.5,-294 223.5,-294 223.5,-300 217.5,-306 211.5,-306"/>
+<text text-anchor="middle" x="176" y="-291.2" font-family="Noto Sans SC" font-size="11.00">新月沃土</text>
+<text text-anchor="middle" x="176" y="-279.2" font-family="Noto Sans SC" font-size="11.00">最早的农业摇篮</text>
+</g>
+<!-- t1a&#45;&gt;t2a3 -->
+<g id="edge6" class="edge">
+<title>t1a&#45;&gt;t2a3</title>
+<path fill="none" stroke="#d4a574" d="M236.56,-351.8C225.31,-340.13 211.28,-325.59 199.57,-313.44"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="202.08,-311 192.62,-306.23 197.04,-315.86 202.08,-311"/>
+<text text-anchor="middle" x="237.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">核心产地</text>
+</g>
+<!-- t2b1 -->
+<g id="node8" class="node">
+<title>t2b1</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M462,-306C462,-306 394,-306 394,-306 388,-306 382,-300 382,-294 382,-294 382,-282 382,-282 382,-276 388,-270 394,-270 394,-270 462,-270 462,-270 468,-270 474,-276 474,-282 474,-282 474,-294 474,-294 474,-300 468,-306 462,-306"/>
+<text text-anchor="middle" x="428" y="-291.2" font-family="Noto Sans SC" font-size="11.00">植物驯化</text>
+<text text-anchor="middle" x="428" y="-279.2" font-family="Noto Sans SC" font-size="11.00">小麦·水稻·玉米</text>
+</g>
+<!-- t1b&#45;&gt;t2b1 -->
+<g id="edge7" class="edge">
+<title>t1b&#45;&gt;t2b1</title>
+<path fill="none" stroke="#d4a574" d="M505.01,-351.8C490.43,-339.91 472.19,-325.04 457.13,-312.76"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="459.09,-309.84 449.13,-306.23 454.67,-315.27 459.09,-309.84"/>
+<text text-anchor="middle" x="501.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">食物基础</text>
+</g>
+<!-- t2b2 -->
+<g id="node9" class="node">
+<title>t2b2</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M921.5,-306C921.5,-306 872.5,-306 872.5,-306 866.5,-306 860.5,-300 860.5,-294 860.5,-294 860.5,-282 860.5,-282 860.5,-276 866.5,-270 872.5,-270 872.5,-270 921.5,-270 921.5,-270 927.5,-270 933.5,-276 933.5,-282 933.5,-282 933.5,-294 933.5,-294 933.5,-300 927.5,-306 921.5,-306"/>
+<text text-anchor="middle" x="897" y="-291.2" font-family="Noto Sans SC" font-size="11.00">动物驯化</text>
+<text text-anchor="middle" x="897" y="-279.2" font-family="Noto Sans SC" font-size="11.00">牛·马·羊·猪</text>
+</g>
+<!-- t1b&#45;&gt;t2b2 -->
+<g id="edge8" class="edge">
+<title>t1b&#45;&gt;t2b2</title>
+<path fill="none" stroke="#d4a574" d="M593.65,-364.2C638.36,-357.39 699.76,-346.94 753,-334 786.13,-325.95 822.79,-314.45 850.83,-305.1"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="852.01,-308.39 860.37,-301.88 849.78,-301.76 852.01,-308.39"/>
+<text text-anchor="middle" x="807.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">动力革命</text>
+</g>
+<!-- t2b3 -->
+<g id="node10" class="node">
+<title>t2b3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M557.5,-306C557.5,-306 504.5,-306 504.5,-306 498.5,-306 492.5,-300 492.5,-294 492.5,-294 492.5,-282 492.5,-282 492.5,-276 498.5,-270 504.5,-270 504.5,-270 557.5,-270 557.5,-270 563.5,-270 569.5,-276 569.5,-282 569.5,-282 569.5,-294 569.5,-294 569.5,-300 563.5,-306 557.5,-306"/>
+<text text-anchor="middle" x="531" y="-291.2" font-family="Noto Sans SC" font-size="11.00">微生物传播</text>
+<text text-anchor="middle" x="531" y="-279.2" font-family="Noto Sans SC" font-size="11.00">黑死病·天花</text>
+</g>
+<!-- t1b&#45;&gt;t2b3 -->
+<g id="edge9" class="edge">
+<title>t1b&#45;&gt;t2b3</title>
+<path fill="none" stroke="#8b7355" d="M531,-351.8C531,-341.12 531,-328.04 531,-316.59"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="534.5,-316.23 531,-306.23 527.5,-316.23 534.5,-316.23"/>
+<text text-anchor="middle" x="549.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#8b7355">隐形影响</text>
+</g>
+<!-- t2c1 -->
+<g id="node11" class="node">
+<title>t2c1</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1122,-306C1122,-306 1062,-306 1062,-306 1056,-306 1050,-300 1050,-294 1050,-294 1050,-282 1050,-282 1050,-276 1056,-270 1062,-270 1062,-270 1122,-270 1122,-270 1128,-270 1134,-276 1134,-282 1134,-282 1134,-294 1134,-294 1134,-300 1128,-306 1122,-306"/>
+<text text-anchor="middle" x="1092" y="-291.2" font-family="Noto Sans SC" font-size="11.00">走出非洲</text>
+<text text-anchor="middle" x="1092" y="-279.2" font-family="Noto Sans SC" font-size="11.00">智人全球迁徙</text>
+</g>
+<!-- t1c&#45;&gt;t2c1 -->
+<g id="edge10" class="edge">
+<title>t1c&#45;&gt;t2c1</title>
+<path fill="none" stroke="#d4a574" d="M810.43,-364.89C853.93,-358.32 914.14,-347.86 966,-334 990.94,-327.33 1017.97,-317.98 1040.57,-309.52"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1041.86,-312.77 1049.97,-305.96 1039.38,-306.23 1041.86,-312.77"/>
+<text text-anchor="middle" x="1016.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">生存驱动</text>
+</g>
+<!-- t2c2 -->
+<g id="node12" class="node">
+<title>t2c2</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M682.5,-306C682.5,-306 599.5,-306 599.5,-306 593.5,-306 587.5,-300 587.5,-294 587.5,-294 587.5,-282 587.5,-282 587.5,-276 593.5,-270 599.5,-270 599.5,-270 682.5,-270 682.5,-270 688.5,-270 694.5,-276 694.5,-282 694.5,-282 694.5,-294 694.5,-294 694.5,-300 688.5,-306 682.5,-306"/>
+<text text-anchor="middle" x="641" y="-291.2" font-family="Noto Sans SC" font-size="11.00">定居革命</text>
+<text text-anchor="middle" x="641" y="-279.2" font-family="Noto Sans SC" font-size="11.00">新仙女木事件转折</text>
+</g>
+<!-- t1c&#45;&gt;t2c2 -->
+<g id="edge11" class="edge">
+<title>t1c&#45;&gt;t2c2</title>
+<path fill="none" stroke="#d4a574" d="M723.24,-351.8C707.52,-339.8 687.84,-324.77 671.66,-312.42"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="673.64,-309.52 663.57,-306.23 669.39,-315.08 673.64,-309.52"/>
+<text text-anchor="middle" x="718.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">文明前提</text>
+</g>
+<!-- t2c3 -->
+<g id="node13" class="node">
+<title>t2c3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1020,-306C1020,-306 964,-306 964,-306 958,-306 952,-300 952,-294 952,-294 952,-282 952,-282 952,-276 958,-270 964,-270 964,-270 1020,-270 1020,-270 1026,-270 1032,-276 1032,-282 1032,-282 1032,-294 1032,-294 1032,-300 1026,-306 1020,-306"/>
+<text text-anchor="middle" x="992" y="-291.2" font-family="Noto Sans SC" font-size="11.00">技术进化</text>
+<text text-anchor="middle" x="992" y="-279.2" font-family="Noto Sans SC" font-size="11.00">火·工具·语言</text>
+</g>
+<!-- t1c&#45;&gt;t2c3 -->
+<g id="edge12" class="edge">
+<title>t1c&#45;&gt;t2c3</title>
+<path fill="none" stroke="#d4a574" d="M810.33,-360.73C838.53,-354.13 872.46,-345.06 902,-334 919.07,-327.61 937.18,-318.95 952.64,-310.94"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="954.68,-313.82 961.89,-306.06 951.42,-307.63 954.68,-313.82"/>
+<text text-anchor="middle" x="943.5" y="-326.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">能力基础</text>
+</g>
+<!-- t3a -->
+<g id="node14" class="node">
+<title>t3a</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="558,-224 442,-224 442,-180 564,-180 564,-218 558,-224"/>
+<polyline fill="none" stroke="#5a3e3e" points="558,-224 558,-218 "/>
+<polyline fill="none" stroke="#5a3e3e" points="564,-218 558,-218 "/>
+<text text-anchor="middle" x="503" y="-211.2" font-family="Noto Sans SC" font-size="11.00">农业文明</text>
+<text text-anchor="middle" x="503" y="-199.2" font-family="Noto Sans SC" font-size="11.00">美索不达米亚·古埃及</text>
+<text text-anchor="middle" x="503" y="-187.2" font-family="Noto Sans SC" font-size="11.00">古印度·中国·美洲</text>
+</g>
+<!-- t2a3&#45;&gt;t3a -->
+<g id="edge13" class="edge">
+<title>t2a3&#45;&gt;t3a</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.2" d="M223.54,-272.64C226.74,-271.73 229.91,-270.84 233,-270 300.22,-251.65 377.42,-232.7 432.01,-219.66"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="433.02,-223.02 441.94,-217.29 431.4,-216.21 433.02,-223.02"/>
+<text text-anchor="middle" x="346.5" y="-244.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">孕育</text>
+</g>
+<!-- t2b1&#45;&gt;t3a -->
+<g id="edge14" class="edge">
+<title>t2b1&#45;&gt;t3a</title>
+<path fill="none" stroke="#d4a574" d="M443.54,-269.6C453.28,-258.69 466.06,-244.37 477.28,-231.81"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="479.97,-234.05 484.02,-224.26 474.75,-229.38 479.97,-234.05"/>
+<text text-anchor="middle" x="477.5" y="-244.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">支撑</text>
+</g>
+<!-- t3b -->
+<g id="node15" class="node">
+<title>t3b</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="641.5,-134 522.5,-134 522.5,-90 647.5,-90 647.5,-128 641.5,-134"/>
+<polyline fill="none" stroke="#5a3e3e" points="641.5,-134 641.5,-128 "/>
+<polyline fill="none" stroke="#5a3e3e" points="647.5,-128 641.5,-128 "/>
+<text text-anchor="middle" x="585" y="-121.2" font-family="Noto Sans SC" font-size="11.00">城市与国家</text>
+<text text-anchor="middle" x="585" y="-109.2" font-family="Noto Sans SC" font-size="11.00">乌鲁克·城邦·复杂社会</text>
+<text text-anchor="middle" x="585" y="-97.2" font-family="Noto Sans SC" font-size="11.00">社会分层·管理制度</text>
+</g>
+<!-- t2b2&#45;&gt;t3b -->
+<g id="edge17" class="edge">
+<title>t2b2&#45;&gt;t3b</title>
+<path fill="none" stroke="#d4a574" d="M860.29,-280.43C822.78,-273.36 767.38,-261.81 748,-252 692.78,-224.06 640.48,-173.72 610.63,-141.9"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="612.9,-139.19 603.54,-134.23 607.76,-143.95 612.9,-139.19"/>
+<text text-anchor="middle" x="720.5" y="-199.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">动力供给</text>
+</g>
+<!-- t2c2&#45;&gt;t3a -->
+<g id="edge15" class="edge">
+<title>t2c2&#45;&gt;t3a</title>
+<path fill="none" stroke="#d4a574" d="M612.74,-269.8C593.61,-258.16 567.98,-242.55 546.29,-229.35"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="547.94,-226.26 537.58,-224.05 544.3,-232.24 547.94,-226.26"/>
+<text text-anchor="middle" x="590.5" y="-244.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">前提</text>
+</g>
+<!-- t3a&#45;&gt;t1b -->
+<g id="edge20" class="edge">
+<title>t3a&#45;&gt;t1b</title>
+<path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M564.15,-217.5C615.12,-230.64 682.57,-250.83 703,-270 721.9,-287.73 720.02,-298.57 725,-324 725.85,-328.36 727.82,-330.56 725,-334 717.08,-343.67 655.46,-354.95 603.76,-362.89"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="602.93,-359.47 593.57,-364.43 603.98,-366.39 602.93,-359.47"/>
+<text text-anchor="middle" x="758.5" y="-285.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">人工选择加速驯化</text>
+</g>
+<!-- t3a&#45;&gt;t3b -->
+<g id="edge16" class="edge">
+<title>t3a&#45;&gt;t3b</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.2" d="M522.85,-179.7C533.53,-168.24 546.84,-153.95 558.4,-141.55"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="561.08,-143.81 565.33,-134.11 555.95,-139.04 561.08,-143.81"/>
+<text text-anchor="middle" x="556.5" y="-154.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">演进</text>
+</g>
+<!-- t3b&#45;&gt;t1c -->
+<g id="edge19" class="edge">
+<title>t3b&#45;&gt;t1c</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M640.51,-134.07C693.71,-157.81 770.08,-202.18 799,-270 809.79,-295.31 794.58,-323.62 778.49,-344.14"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="775.77,-341.94 772.09,-351.88 781.16,-346.4 775.77,-341.94"/>
+<text text-anchor="middle" x="826.5" y="-244.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">制度反向塑造行为</text>
+</g>
+<!-- t3c -->
+<g id="node16" class="node">
+<title>t3c</title>
+<polygon fill="#fffaf2" stroke="#5a3e3e" points="626.5,-44 537.5,-44 537.5,0 632.5,0 632.5,-38 626.5,-44"/>
+<polyline fill="none" stroke="#5a3e3e" points="626.5,-44 626.5,-38 "/>
+<polyline fill="none" stroke="#5a3e3e" points="632.5,-38 626.5,-38 "/>
+<text text-anchor="middle" x="585" y="-31.2" font-family="Noto Sans SC" font-size="11.00">文明多样性</text>
+<text text-anchor="middle" x="585" y="-19.2" font-family="Noto Sans SC" font-size="11.00">多中心并行起源</text>
+<text text-anchor="middle" x="585" y="-7.2" font-family="Noto Sans SC" font-size="11.00">不同路径与形态</text>
+</g>
+<!-- t3b&#45;&gt;t3c -->
+<g id="edge18" class="edge">
+<title>t3b&#45;&gt;t3c</title>
+<path fill="none" stroke="#d4a574" d="M585,-89.7C585,-79.1 585,-66.09 585,-54.39"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="588.5,-54.11 585,-44.11 581.5,-54.11 588.5,-54.11"/>
+<text text-anchor="middle" x="594.5" y="-64.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">分化</text>
+</g>
+<!-- l1 -->
+<g id="node17" class="node">
+<title>l1</title>
+<path fill="lightgrey" stroke="transparent" d="M1217.5,-478C1217.5,-478 1170.5,-478 1170.5,-478 1164.5,-478 1158.5,-472 1158.5,-466 1158.5,-466 1158.5,-454 1158.5,-454 1158.5,-448 1164.5,-442 1170.5,-442 1170.5,-442 1217.5,-442 1217.5,-442 1223.5,-442 1229.5,-448 1229.5,-454 1229.5,-454 1229.5,-466 1229.5,-466 1229.5,-472 1223.5,-478 1217.5,-478"/>
+<text text-anchor="middle" x="1194" y="-457.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">核心驱动关系</text>
+</g>
+<!-- l2 -->
+<g id="node18" class="node">
+<title>l2</title>
+<path fill="lightgrey" stroke="transparent" d="M1223.5,-392C1223.5,-392 1164.5,-392 1164.5,-392 1158.5,-392 1152.5,-386 1152.5,-380 1152.5,-380 1152.5,-368 1152.5,-368 1152.5,-362 1158.5,-356 1164.5,-356 1164.5,-356 1223.5,-356 1223.5,-356 1229.5,-356 1235.5,-362 1235.5,-368 1235.5,-368 1235.5,-380 1235.5,-380 1235.5,-386 1229.5,-392 1223.5,-392"/>
+<text text-anchor="middle" x="1194" y="-371.8" font-family="Noto Sans SC" font-size="9.00" fill="#d4a574">方法论/派生关系</text>
+</g>
+<!-- l1&#45;&gt;l2 -->
+<!-- l3 -->
+<g id="node19" class="node">
+<title>l3</title>
+<path fill="lightgrey" stroke="transparent" d="M1219,-306C1219,-306 1169,-306 1169,-306 1163,-306 1157,-300 1157,-294 1157,-294 1157,-282 1157,-282 1157,-276 1163,-270 1169,-270 1169,-270 1219,-270 1219,-270 1225,-270 1231,-276 1231,-282 1231,-282 1231,-294 1231,-294 1231,-300 1225,-306 1219,-306"/>
+<text text-anchor="middle" x="1194" y="-285.8" font-family="Noto Sans SC" font-size="9.00" fill="#8b7355">应用/实例关系</text>
+</g>
+<!-- l2&#45;&gt;l3 -->
+<!-- l4 -->
+<g id="node20" class="node">
+<title>l4</title>
+<path fill="lightgrey" stroke="transparent" d="M1226.5,-220C1226.5,-220 1161.5,-220 1161.5,-220 1155.5,-220 1149.5,-214 1149.5,-208 1149.5,-208 1149.5,-196 1149.5,-196 1149.5,-190 1155.5,-184 1161.5,-184 1161.5,-184 1226.5,-184 1226.5,-184 1232.5,-184 1238.5,-190 1238.5,-196 1238.5,-196 1238.5,-208 1238.5,-208 1238.5,-214 1232.5,-220 1226.5,-220"/>
+<text text-anchor="middle" x="1194" y="-199.8" font-family="Noto Sans SC" font-size="9.00" fill="#c0392b">反馈回环（虚线）</text>
+</g>
+<!-- l3&#45;&gt;l4 -->
+</g>
+</svg>`;
+})();
+
+// ===== FLIP CARDS =====
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);renderConceptGrid();
+}
+
+// ===== PROGRESS =====
+function updateProgress(){
+  const pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('totalProgress').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct>0?'已学习 '+learnedCards.length+' / '+concepts.length+' 个概念（'+pct+'%）':'尚未开始学习';
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+  document.getElementById('statCards').textContent=learnedCards.length;
+  document.getElementById('statCorrect').textContent=quizHistory.filter(function(x){return x.correct}).length;
+  document.getElementById('statWrong').textContent=wrongBook.length;
+  document.getElementById('statExams').textContent=examCount;
+}
+updateProgress();
+
+// ===== QUIZ SYSTEM =====
+let quizTimer=null;let quizTimeLeft=0;let currentQuizQuestions=[];let quizAnswered={};
+
+function startQuiz(){
+  const container=document.getElementById('quizContainer');
+  resetQuiz();
+  const shuffled=mcqPool.slice().sort(function(){return Math.random()-0.5});
+  currentQuizQuestions=shuffled.slice(0,10);
+  quizAnswered={};
+  let html='';
+  currentQuizQuestions.forEach(function(m,i){
+    html+='<div class="quiz-card"><div class="q-num">第'+(i+1)+'题</div><div class="q-text">'+m.q+'</div>';
+    m.opts.forEach(function(o,j){
+      html+='<div class="option" onclick="selectAnswer('+i+','+j+',this)" id="opt_'+i+'_'+j+'">'+String.fromCharCode(65+j)+'. '+o+'</div>';
+    });
+    html+='<div class="feedback" id="fb_'+i+'" style="display:none"></div></div>';
+  });
+  container.innerHTML=html;
+}
+
+function selectAnswer(qi,oi,el){
+  if(quizAnswered[qi]!==undefined)return;
+  quizAnswered[qi]=oi;
+  const m=currentQuizQuestions[qi];
+  const correct=m.answer;
+  const allOpts=document.querySelectorAll('#opt_'+qi+'_0,#opt_'+qi+'_1,#opt_'+qi+'_2,#opt_'+qi+'_3');
+  allOpts.forEach(function(o){o.style.pointerEvents='none'});
+  document.getElementById('opt_'+qi+'_'+correct).classList.add('correct');
+  const fb=document.getElementById('fb_'+qi);
+  if(oi===correct){
+    el.classList.add('correct');
+    fb.className='feedback correct';
+    fb.innerHTML='✓ 正确！';
+    fb.style.display='block';
+    quizHistory.push({q:m.q,correct:true});
+  }else{
+    el.classList.add('wrong');
+    fb.className='feedback wrong';
+    fb.innerHTML='✗ 错误。正确答案是 '+String.fromCharCode(65+correct)+'. '+m.opts[correct];
+    fb.style.display='block';
+    quizHistory.push({q:m.q,correct:false});
+    if(!wrongBook.find(function(w){return w.q===m.q})){
+      wrongBook.push(m);
+    }
+  }
+  save();updateProgress();
+}
+
+function resetQuiz(){
+  document.getElementById('quizContainer').innerHTML='';
+  if(quizTimer){clearInterval(quizTimer);quizTimer=null}
+  currentQuizQuestions=[];quizAnswered={};
+}
+
+// ===== EXAM MODE =====
+let examTimer=null;let examTimeLeft=900;let examQuestions=[];
+
+function startExam(){
+  document.getElementById('examResult').style.display='none';
+  document.getElementById('examContainer').innerHTML='';
+  document.getElementById('startExamBtn').style.display='none';
+  document.getElementById('submitExamBtn').style.display='inline-block';
+  const timerEl=document.getElementById('examTimer');
+  timerEl.style.display='inline-block';
+  examTimeLeft=900;timerEl.textContent='15:00';
+  const shuffled=mcqPool.slice().sort(function(){return Math.random()-0.5});
+  examQuestions=shuffled.slice(0,7);
+  let html='';
+  examQuestions.forEach(function(m,i){
+    html+='<div class="quiz-card"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+m.q+'</div>';
+    m.opts.forEach(function(o,j){
+      html+='<div class="option" onclick="selectExamOpt('+i+','+j+',this)" id="exam_opt_'+i+'_'+j+'">'+String.fromCharCode(65+j)+'. '+o+'</div>';
+    });
+    html+='</div>';
+  });
+  for(var ei=0;ei<3;ei++){
+    html+='<div class="quiz-card"><div class="q-num">简答题 '+(ei+1)+'</div><div class="q-text" style="margin-bottom:8px">'+
+      ['简述新仙女木事件对文明起源的影响。','为什么说"地理环境是文明发展的第一驱动力"？请举例说明。','物种交流如何影响文明进程？请从植物、动物、微生物三个层面简述。'][ei]+
+      '</div><textarea class="essay-area" id="essay_'+ei+'" placeholder="请输入你的回答…"></textarea></div>';
+  }
+  document.getElementById('examContainer').innerHTML=html;
+  if(examTimer)clearInterval(examTimer);
+  examTimer=setInterval(function(){
+    examTimeLeft--;
+    var m=Math.floor(examTimeLeft/60);var s=examTimeLeft%60;
+    document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;
+    if(examTimeLeft<=0){clearInterval(examTimer);submitExam()}
+  },1000);
+}
+
+var examAnswers={};
+function selectExamOpt(qi,oi,el){
+  if(examAnswers[qi]!==undefined)return;
+  examAnswers[qi]=oi;
+  var allOpts=document.querySelectorAll('#exam_opt_'+qi+'_0,#exam_opt_'+qi+'_1,#exam_opt_'+qi+'_2,#exam_opt_'+qi+'_3');
+  allOpts.forEach(function(o){o.style.pointerEvents='none'});
+  el.classList.add('selected');
+}
+
+function submitExam(){
+  if(examTimer){clearInterval(examTimer);examTimer=null}
+  var correct=0;var total=examQuestions.length;
+  var details='';
+  examQuestions.forEach(function(m,i){
+    var userAns=examAnswers[i];
+    if(userAns===m.answer){correct++}
+    else{
+      details+='<p style="margin:4px 0"><strong>题'+(i+1)+':</strong> '+m.q+'<br>你的答案: '+(userAns!==undefined?String.fromCharCode(65+userAns)+'. '+m.opts[userAns]:'未作答')+'<br>正确答案: '+String.fromCharCode(65+m.answer)+'. '+m.opts[m.answer]+'</p>';
+    }
+  });
+  examCount++;
+  var score=Math.round(correct/total*100);
+  var resultHtml='<div class="card"><h3>考试结果</h3><div class="stat-item"><div class="stat-value">'+score+'分</div><div class="stat-label">选择题 '+correct+'/'+total+' 正确</div></div>';
+  if(details){resultHtml+='<div style="margin-top:10px"><strong style="color:var(--accent)">错题解析：</strong>'+details+'</div>'}
+  resultHtml+='<p style="margin-top:10px;color:var(--text-light)">简答题请对照以下要点自评：<br>1. 新仙女木事件是全球气温骤降→大量动物死亡→狩猎部落衰退→农耕优势显现。<br>2. 地理决定论：大陆走向影响物种传播、可驯化物种分布决定动力来源、气候影响农业起始时间。<br>3. 物种交流：植物（小麦/马铃薯支撑人口）、动物（马/牛提供动力）、微生物（黑死病/天花改变人口结构）。</p></div>';
+  document.getElementById('examResult').innerHTML=resultHtml;
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('startExamBtn').style.display='inline-block';
+  document.getElementById('submitExamBtn').style.display='none';
+  document.getElementById('examTimer').style.display='none';
+  document.getElementById('examContainer').innerHTML='';
+  examAnswers={};examQuestions=[];
+  save();updateProgress();
+}
+
+// ===== REVIEW MODE =====
+function renderWrongBook(){
+  var container=document.getElementById('wrongBookContainer');
+  if(wrongBook.length===0){
+    container.innerHTML='<p style="color:var(--text-light);text-align:center;padding:30px">暂无错题记录，去题库练习吧！</p>';
+    return;
+  }
+  var html='';
+  wrongBook.forEach(function(m,i){
+    html+='<div class="quiz-card"><div class="q-num">错题 '+(i+1)+'</div><div class="q-text">'+m.q+'</div>';
+    m.opts.forEach(function(o,j){
+      var cls=(j===m.answer)?'option correct':'option';
+      html+='<div class="'+cls+'">'+String.fromCharCode(65+j)+'. '+o+(j===m.answer?' ✓':'')+'</div>';
+    });
+    html+='</div>';
+  });
+  container.innerHTML=html;
+}
+renderWrongBook();
+
+function resetAllStats(){
+  if(confirm('确定要重置所有学习统计吗？此操作不可恢复。')){
+    learnedCards=[];wrongBook=[];quizHistory=[];examCount=0;
+    save();updateProgress();renderConceptGrid();renderWrongBook();resetQuiz();
+  }
+}
+
+// ===== DECISION SIMULATOR =====
+function decide(round,choice){
+  var results={
+    1:{A:'<p><strong style="color:var(--accent)">反馈：</strong>你们继续迁徙了几年，但在一次寒冬中损失了一半人口。与此同时，那些选择定居的部落正在蓬勃发展——你错过了文明的第一班车。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>新仙女木事件后，迁徙不再是安全选择——环境已经变了。定居虽然冒险，但符合"地理环境+气候变迁"的大趋势（概念c2/c3）。历史证明：<strong>适应环境变化比固守传统更有利于生存</strong>。</p>',
+      B:'<p><strong style="color:var(--success)">反馈：</strong>这是一个聪明的策略！你们在河边建立了半永久营地，种植野生谷物同时保留狩猎能力。当新仙女木事件来临时，你们有存粮度过寒冬，部落壮大到200人。灵活性是早期生存的关键。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>你无意中走了一条"纳图芬式"道路——渐进定居而非一刀切。这符合文明起源的规律：<strong>定居不是一次性的决定，而是一个渐进的过程</strong>（概念c3）。但注意：这种策略只在过渡期有效，长期而言专业化（全力农耕）的效率更高。</p>',
+      C:'<p><strong style="color:var(--warning)">反馈：</strong>你们"全押"了定居种植！但初期农耕产量极不稳定，第一年就遭遇了歉收。部落人口从30人减少到18人，差点灭绝。不过，幸存者积累了宝贵的种植经验，为后来奠定了基础。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>这是一个高风险高回报的选择。历史表明：<strong>早期农耕在初期确实没有竞争优势</strong>（概念c4）——农业需要几代人的积累才能超越狩猎采集的效率。你选择了一条艰辛但最终正确的道路。</p>'
+  },
+    2:{A:'<p><strong style="color:var(--accent)">反馈：</strong>你们拒绝了外来商人，保持了"纯洁"。但几十年后，你们发现邻近的部落通过贸易获得了更好的工具（黑曜石刀）和更多的资源。你们的部落逐渐落后，最终被一个贸易联盟吞并。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>商业是<strong>文明形成的重要指标</strong>（概念c7/c8）。苏美尔城邦因贸易而繁荣，乌鲁克因开放而强大。禁止贸易等于切断了技术和思想的输入渠道——在文明竞争中，<strong>封闭几乎等于慢性自杀</strong>。</p>',
+      B:'<p><strong style="color:var(--success)">反馈：</strong>明智之举！你们既享受了贸易的红利（黑曜石工具、新作物种子），又控制了风险。商人们渐渐尊重你们的规则，甚至有两位商人申请在你们部落定居，带来了冶金技术。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>这是早期文明常见的贸易管理模式——<strong>有管理的开放</strong>（概念c6/c7）。苏美尔的乌鲁克、中国的二里头都经历了从封闭到有限开放的过程。关键是在获取外部资源的同时保持对节奏的控制。</p>',
+      C:'<p><strong style="color:var(--warning)">反馈：</strong>你们部落迅速繁荣起来！市场带来了税收，你们修建了更好的住房和公共设施。但第5年，一场传染病从商人那里传入，部落失去了1/4的人口。第10年，一位富裕商人试图干预部落的政治决策。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>你重演了历史上"开放红利+开放代价"的经典剧本（概念c6微生物传播）。黑死病、天花等疾病正是通过贸易路线传播的。<strong>开放必然带来脆弱性</strong>——问题不是"要不要开放"而是"如何管理开放的风险"。</p>'
+  },
+    3:{A:'<p><strong style="color:var(--accent)">反馈：</strong>议事会制度在500人时运转良好，在2000人时彻底失效。陶工和农民之间的纠纷长期得不到解决，三个手工作坊家族威胁要离开。你的部落分裂了。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>直接民主/部落议事会在<strong>超过150人（邓巴数）后效率急剧下降</strong>。历史规律表明：简单社会的治理模式无法直接套用到复杂社会（概念c8/c9）。乌鲁克之所以成为最早的城市，正是因为发明了"神庙—官僚"管理体系。</p>',
+      B:'<p><strong style="color:var(--success)">反馈：</strong>你的管理团队干得不错！税收体系正常运转，贸易繁荣，公共水渠按时修建。一代人之后，你的城镇发展为邦国，周边三个村落主动请求加入。你既保留了传统的协商精神，又建立了现代的管理能力。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>这接近于苏美尔乌鲁克模式和美国建国时的制度设计（概念c9）。<strong>任命专业管理者+保留最终决策权</strong>是城市早期治理的合理过渡形态。但挑战在于：当管理者自身形成利益集团时（如苏美尔的祭司阶层），如何约束他们？这是下一个课题。</p>',
+      C:'<p><strong style="color:var(--warning)">反馈：</strong>军队和法律带来了秩序，但也带来了反抗。第3年，一位被夺权的旧议事会长老发动了叛乱；第7年，税赋过重引发农民暴动。你的王朝只维持了两代人。</p><p style="margin-top:6px"><strong style="color:var(--gold)">MKS分析：</strong>这是早期国家形成的典型风险（概念c9）。乌鲁卡基那改革（前24世纪苏美尔）仅7年就因贵族反扑而失败。<strong>集权需要合法性</strong>——周朝用"礼"替代商朝的人祭，建立了更广泛的统治共识。没有共识的权力就像建在沙上的城堡。</p>'
+  }
+  };
+  var r=results[round][choice];
+  var resultEl=document.getElementById('result'+round);
+  resultEl.innerHTML=r;
+  resultEl.style.display='block';
+}
+
+// ===== INIT PROGRESS =====
+updateProgress();
+renderWrongBook();
+</script>
+</body>
+</html>

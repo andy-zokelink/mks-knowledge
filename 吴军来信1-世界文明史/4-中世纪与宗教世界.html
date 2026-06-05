@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>专题4：中世纪与宗教世界 — 最小知识集学习系统</title>
+<style>
+:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--text:#3d2f2f;--text-light:#7a6a6a;--border:#e0d5c0;--success:#2d7d46;--warning:#b8860b;--shadow:0 2px 12px rgba(0,0,0,.06)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding-top:58px}
+.top-bar{position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,#5a2a1a,#8b3a2a);color:#fff;padding:0 20px;display:flex;align-items:center;height:50px;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.top-bar .logo{font-size:1.05rem;font-weight:700;white-space:nowrap}
+.top-bar .home-link{color:#ffd4a8;text-decoration:none;font-size:.82rem;white-space:nowrap;margin-left:auto;padding:4px 10px;border:1px solid rgba(255,255,255,.3);border-radius:6px;transition:all .2s}
+.top-bar .home-link:hover{background:rgba(255,255,255,.12)}
+.tab-nav{display:flex;flex-wrap:wrap;gap:4px;padding:12px 20px;background:#fffaf2;border-bottom:2px solid var(--border);position:sticky;top:50px;z-index:999}
+.tab-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--card);color:var(--text);cursor:pointer;font-size:.82rem;transition:all .2s;white-space:nowrap}
+.tab-btn:hover,.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none;padding:24px 20px;max-width:1200px;margin:0 auto;animation:fadeIn .3s}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h2{color:var(--accent);font-size:1.5rem;margin-bottom:16px;border-left:4px solid var(--accent);padding-left:12px}
+h3{color:var(--text);font-size:1.15rem;margin:16px 0 8px}
+h3.section-title{color:var(--accent);font-size:1.2rem;margin:24px 0 12px;padding-bottom:6px;border-bottom:1px dashed var(--border)}
+.card{background:var(--card);border-radius:10px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 18px rgba(0,0,0,.1);border-color:var(--accent)}
+.concept-card h4{color:var(--accent);font-size:.95rem;margin-bottom:4px}
+.concept-card .tag{display:inline-block;font-size:.7rem;background:#fef0e0;color:var(--accent);padding:2px 8px;border-radius:10px;margin-top:4px}
+.mks-star{color:#d4a017;font-size:1rem}
+.boundary-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.boundary-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+.boundary-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:rgba(192,57,43,.03)}
+.progress-bar{width:100%;height:10px;background:var(--border);border-radius:5px;margin:12px 0;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:5px;transition:width .4s}
+.btn{display:inline-block;padding:8px 18px;border:none;border-radius:8px;font-size:.88rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#a8322a}
+.btn-outline{border:1px solid var(--accent);color:var(--accent);background:transparent}
+.btn-outline:hover{background:rgba(192,57,43,.08)}
+.btn-success{background:var(--success);color:#fff}
+.btn-sm{padding:5px 12px;font-size:.78rem}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-option{padding:10px 14px;margin:6px 0;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;background:var(--card)}
+.quiz-option:hover{border-color:var(--accent);background:#fef5e7}
+.quiz-option.correct{border-color:var(--success);background:#e8f5e9}
+.quiz-option.wrong{border-color:var(--accent);background:#fde8e8}
+.quiz-option.disabled{pointer-events:none}
+.tree-node{margin-left:20px;border-left:1px dashed var(--border);padding-left:12px}
+.tree-label{cursor:pointer;padding:4px 8px;border-radius:4px;transition:all .2s;font-weight:600}
+.tree-label:hover{background:rgba(192,57,43,.08)}
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-toggle{display:inline-block;margin-right:4px;font-size:.75rem;color:var(--accent)}
+.accordion-item{margin-bottom:8px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.accordion-header{background:var(--card);padding:12px 16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.accordion-header:hover{background:#fef5e7}
+.accordion-body{display:none;padding:12px 16px;background:#fffdf7;border-top:1px solid var(--border)}
+.accordion-body.show{display:block}
+.decision-option{padding:12px 16px;margin:8px 0;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s}
+.decision-option:hover{border-color:var(--accent);background:#fef5e7}
+.decision-option.selected{border-color:var(--accent);background:#fef0e0}
+.decision-feedback{display:none;margin:12px 0;padding:14px;background:#fffdf7;border-radius:8px;border:1px solid var(--border)}
+.decision-feedback.show{display:block}
+#svgContainer{overflow-x:auto;margin:16px 0;text-align:center}
+#svgContainer svg{max-width:100%;height:auto}
+.static-quiz{display:none}
+.tag{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;margin:2px 4px}
+.tag-learned{background:#e8f5e9;color:var(--success)}
+.tag-mks{background:#fef0e0;color:#d4a017}
+.sub-section{margin:20px 0}
+path-count{color:var(--accent);font-weight:700}
+.stat-box{display:inline-block;background:var(--card);border-radius:8px;padding:12px 16px;margin:6px;text-align:center;min-width:80px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.stat-box .num{font-size:1.5rem;font-weight:700;color:var(--accent)}
+.stat-box .lab{font-size:.75rem;color:var(--text-light)}
+@media(max-width:768px){
+  .tab-nav{padding:8px 10px;gap:3px}
+  .tab-btn{padding:4px 10px;font-size:.73rem}
+  .card-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  h2{font-size:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+  <span class="logo">🏛️ 专题4：中世纪与宗教世界</span>
+  <a href="index.html" class="home-link">← 返回知识主板</a>
+</nav>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="switchTab(0)">📊 知识集总览</button>
+  <button class="tab-btn" onclick="switchTab(1)">📖 知识卡片</button>
+  <button class="tab-btn" onclick="switchTab(2)">🎲 题库系统</button>
+  <button class="tab-btn" onclick="switchTab(3)">✍️ 考试模式</button>
+  <button class="tab-btn" onclick="switchTab(4)">🔁 复习模式</button>
+  <button class="tab-btn" onclick="switchTab(5)">🧠 思维导图</button>
+  <button class="tab-btn" onclick="switchTab(6)">💬 深度追问</button>
+  <button class="tab-btn" onclick="switchTab(7)">🔍 案例分析</button>
+  <button class="tab-btn" onclick="switchTab(8)">⚔️ 实战决策</button>
+</nav>
+
+<!-- ========== TAB 0: 知识集总览 ========== -->
+<div class="tab-content active" id="tab0">
+<h2>📊 知识集总览</h2>
+<div class="card">
+  <h3 style="margin-top:0">🎯 核心目标</h3>
+  <p style="font-size:1.05rem;color:var(--accent);font-weight:600">理解中世纪「信仰与权力交织」的核心逻辑，掌握四大文明圈（西欧基督教、东亚中华、阿拉伯伊斯兰、拜占庭）如何围绕政教关系、封建契约、文明冲突三条主线，走完了从「千年长夜」到「走出中世纪」的壮阔历程。</p>
+</div>
+
+<h3 class="section-title">⭐ 10个核心概念</h3>
+<div class="card-grid" id="conceptGrid"></div>
+
+<h3 class="section-title">🔗 概念关系图</h3>
+<div class="card" id="svgContainer"></div>
+
+<h3 class="section-title">📖 学习进度</h3>
+<div class="card">
+  <div class="progress-bar"><div class="progress-fill" id="overviewProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.85rem;color:var(--text-light)">已学 <span id="overviewLearned">0</span> / 10 概念 | 已做 <span id="overviewQuiz">0</span> 题 | 正确率 <span id="overviewAccuracy">0</span>%</p>
+</div>
+
+<h3 class="section-title">📋 边界知识表（15条）</h3>
+<div class="card" style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>#</th><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>宋朝岁币政策</td><td>理解「金钱换和平」与国力关系时参考</td></tr>
+<tr><td>2</td><td>汉代文学（汉赋、五言诗）</td><td>分析中世纪早期东亚文化传承</td></tr>
+<tr><td>3</td><td>古代中国翻译制度</td><td>理解文明间交流机制的历史深度</td></tr>
+<tr><td>4</td><td>英法百年战争细节</td><td>军事技术变革（长弓→火炮）案例</td></tr>
+<tr><td>5</td><td>威尼斯贵族共和制</td><td>对比现代代议制民主的前身</td></tr>
+<tr><td>6</td><td>香槟集市与汉萨同盟</td><td>中世纪商业网络的组织形态参考</td></tr>
+<tr><td>7</td><td>伊本·白图泰旅行</td><td>文明交流中个体旅行家的作用</td></tr>
+<tr><td>8</td><td>圣方济各与方济各会</td><td>基督教内部改革的行动者范式</td></tr>
+<tr><td>9</td><td>三十年战争</td><td>主权国家概念与国际法起源</td></tr>
+<tr><td>10</td><td>葡萄牙大航海探索</td><td>欧洲走出中世纪的海洋维度</td></tr>
+<tr><td>11</td><td>南亚次大陆分裂</td><td>理解地理与统一政权的张力</td></tr>
+<tr><td>12</td><td>日本大化改新与幕府</td><td>东亚文明圈的日本独特路径</td></tr>
+<tr><td>13</td><td>萨拉丁与阿尤布王朝</td><td>跨宗教尊重的历史案例</td></tr>
+<tr><td>14</td><td>启蒙运动（狄德罗/伏尔泰）</td><td>中世纪思想遗产的近代转化</td></tr>
+<tr><td>15</td><td>中西历史观差异</td><td>理解「封建」等概念的古今之辨</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 class="section-title">📖 学习路径（5阶段）</h3>
+<div class="card">
+<ol style="padding-left:20px;line-height:2">
+<li><strong>阶段一：建立框架</strong> — 通读「概念关系图」+「核心概念」，理解四大文明圈与信仰-权力主线</li>
+<li><strong>阶段二：逐卡深读</strong> — 翻转10张知识卡片，掌握每个概念的定义/类比/示例/反例</li>
+<li><strong>阶段三：题库检验</strong> — 完成15-20道选择题，错题进入错题本</li>
+<li><strong>阶段四：深度追问</strong> — 苏格拉底式追问核心概念，逼迫自己想通底层逻辑</li>
+<li><strong>阶段五：实战应用</strong> — 完成案例分析与实战决策，检验知识迁移能力</li>
+</ol>
+</div>
+</div>
+
+<!-- ========== TAB 1: 知识卡片 ========== -->
+<div class="tab-content" id="tab1">
+<h2>📖 知识卡片</h2>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- ========== TAB 2: 题库系统 ========== -->
+<div class="tab-content" id="tab2">
+<h2>🎲 题库系统</h2>
+<div class="card" style="text-align:center">
+  <div class="btn-group" style="justify-content:center">
+    <button class="btn btn-primary" onclick="startQuiz()">🎲 随机抽题练习</button>
+    <button class="btn btn-outline" onclick="resetQuiz()">🔄 重置</button>
+  </div>
+  <div id="quizContainer" style="margin-top:16px"></div>
+</div>
+<div class="static-quiz" id="staticQuiz"></div>
+</div>
+
+<!-- ========== TAB 3: 考试模式 ========== -->
+<div class="tab-content" id="tab3">
+<h2>✍️ 考试模式</h2>
+<div class="card" style="text-align:center">
+  <p style="margin-bottom:12px">从题库随机抽取10题（7选+3简答），限时15分钟</p>
+  <button class="btn btn-primary" onclick="startExam()">📝 开始考试</button>
+  <div id="examContainer" style="margin-top:16px"></div>
+  <div id="examResult" style="margin-top:16px"></div>
+</div>
+</div>
+
+<!-- ========== TAB 4: 复习模式 ========== -->
+<div class="tab-content" id="tab4">
+<h2>🔁 复习模式</h2>
+<div class="card">
+  <h3>📝 错题本</h3>
+  <div id="wrongBook"></div>
+</div>
+<div class="card">
+  <h3>📊 学习统计</h3>
+  <div id="reviewStats"></div>
+</div>
+</div>
+
+<!-- ========== TAB 5: 思维导图 ========== -->
+<div class="tab-content" id="tab5">
+<h2>🧠 思维导图：中世纪与宗教世界</h2>
+<div class="card" style="overflow-x:auto">
+<div class="tree-node">
+  <div class="tree-label" onclick="toggleTree(event)" style="font-size:1.1rem;color:var(--accent)">⚔️ 信仰与权力交织的千年长夜</div>
+  <div class="tree-children show">
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">✝️ 一、西欧基督教文明：政教分离·封建契约</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 封建制度</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">采邑制度：土地换军事服务，查理·马特创立</div></div>
+            <div class="tree-node"><div class="tree-label">封君封臣：契约关系，非主奴关系</div></div>
+            <div class="tree-node"><div class="tree-label">骑士精神：从莽夫到绅士，三大驱动力（契约/教会/贵妇教育）</div></div>
+            <div class="tree-node"><div class="tree-label">长子继承制：爵位不可分原则</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 教会权力体系</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">罗马教宗：精神权威中心，枢机主教选举</div></div>
+            <div class="tree-node"><div class="tree-label">修道院：知识传承与教育场所</div></div>
+            <div class="tree-node"><div class="tree-label">大宪章（1215）：王在法下，贵族制衡王权</div></div>
+            <div class="tree-node"><div class="tree-label">十字军东征（1096-1271）：200年宗教战争</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 知识与城市复兴</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">加洛林文艺复兴：查理曼，典籍抢救·七艺教育·拉丁文规范</div></div>
+            <div class="tree-node"><div class="tree-label">大学起源：博洛尼亚(1088)→巴黎→牛津→剑桥</div></div>
+            <div class="tree-node"><div class="tree-label">城市复兴：贸易恢复→商人赎买特权→城市自治</div></div>
+            <div class="tree-node"><div class="tree-label">行会与汉萨同盟：商人联合力量</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 瓦解封建的力量</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">黑死病（14世纪）：1/3人口死亡→劳工地位上升→农奴解放</div></div>
+            <div class="tree-node"><div class="tree-label">百年战争（1337-1453）：火炮终结骑士时代</div></div>
+            <div class="tree-node"><div class="tree-label">三十年战争（1618-1648）：主权国家概念诞生</div></div>
+            <div class="tree-node"><div class="tree-label">启蒙运动：理性对抗愚昧，狄德罗·伏尔泰</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">🍪 二、东亚中华文明：君主集权·科举文官</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 唐宋之变：从贵族到平民政治</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">三省六部制：分权制衡取代丞相集权</div></div>
+            <div class="tree-node"><div class="tree-label">科举制度：寒门上升通道→士大夫精神</div></div>
+            <div class="tree-node"><div class="tree-label">重文轻武：唐代节度使教训的制度修正</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 科技与经济巅峰</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">四大发明之三：活字印刷·指南针·火药均成熟于宋</div></div>
+            <div class="tree-node"><div class="tree-label">冶金：异质结构钢材，铁产量≈18世纪英国</div></div>
+            <div class="tree-node"><div class="tree-label">岁币政策：以经济实力支撑和平</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 周边文明互动</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">日本：大化改新→奈良→平安→镰仓幕府</div></div>
+            <div class="tree-node"><div class="tree-label">朝鲜：高丽王朝，青瓷与铜活字</div></div>
+            <div class="tree-node"><div class="tree-label">西域：丝绸之路枢纽，粟特人商贸城邦</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">☀️ 三、阿拉伯伊斯兰文明：政教合一·商业网络</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 帝国崛起（632-1258）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">四大哈里发→倭马亚（白衣大食）→阿拔斯（黑衣大食）→多政权并立</div></div>
+            <div class="tree-node"><div class="tree-label">长者继承制：导致皇位斗争残酷，王朝短命</div></div>
+            <div class="tree-node"><div class="tree-label">宗教宽容：纳税即可保留信仰，优于同期十字军</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 黄金时代科技（8-9世纪）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">花拉子密：代数之父，Algorithm词源</div></div>
+            <div class="tree-node"><div class="tree-label">医学：首创分科体系·同行评议制度</div></div>
+            <div class="tree-node"><div class="tree-label">化学：蒸馏·酒精·硫酸·硝酸</div></div>
+            <div class="tree-node"><div class="tree-label">天文学：象限仪·六分仪·三角函数表</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 理性主义与文明传承</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">伊本·鲁世德：注释亚里士多德→传回欧洲→启蒙思想源头</div></div>
+            <div class="tree-node"><div class="tree-label">自然律思想：先于牛顿提出运动规律雏形</div></div>
+            <div class="tree-node"><div class="tree-label">生活方式西传：餐饮流程·抽水马桶源自阿拉伯</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">🏛️ 四、拜占庭文明：罗马遗产·专制延续</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-label">政教合一，皇帝兼宗教领袖</div></div>
+        <div class="tree-node"><div class="tree-label">军区制→类似藩镇→中央失控→财政枯竭</div></div>
+        <div class="tree-node"><div class="tree-label">存续1800年（从罗马建城算起），但近千年无实质进步</div></div>
+        <div class="tree-node"><div class="tree-label">1453年陷落→流亡学者促欧洲文艺复兴</div></div>
+      </div>
+    </div>
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">⚡ 五、走出中世纪：五重动力</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-label">蒙古帝国：摧毁南宋与阿拉伯→不破不立→全球化开端</div></div>
+        <div class="tree-node"><div class="tree-label">十字军东征：打破信息茧房→认识东方→刺激探索</div></div>
+        <div class="tree-node"><div class="tree-label">黑死病：教会权威动摇→人性复苏→劳动力重构</div></div>
+        <div class="tree-node"><div class="tree-label">经济文化复苏：加洛林·奥托文艺复兴→大学→商业</div></div>
+        <div class="tree-node"><div class="tree-label">贸易发展：地中海→大西洋转移→大航海时代</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ========== TAB 6: 深度追问 ========== -->
+<div class="tab-content" id="tab6">
+<h2>💬 深度追问（苏格拉底式）</h2>
+
+<h3 class="section-title">追问1：封建制度为何只在西欧走向契约化？</h3>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第一层：什么是「契约化」封建？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>中国西周的封建是「血缘分封」——周天子把土地分给同姓子弟，靠宗法血缘维系。西欧封建是「契约分封」——国王把采邑分给军事贵族，双方约定：领主提供土地和保护，封臣提供骑兵和忠诚。本质区别在于：一个是家族内部事务，一个是陌生人之间的合同。</p><p><strong>追问：</strong>契约化需要什么前提条件？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第二层：为什么西欧走上了契约道路？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>三大条件缺一不可：<strong>(1)蛮族传统</strong>——日耳曼部落有「军事首领与随从的效忠誓言」传统，这本身就是原始契约；<strong>(2)罗马法残留</strong>——罗马的合同法和财产法概念渗透进了蛮族法典；<strong>(3)教会中介</strong>——教会作为第三方见证了封建誓约的神圣化，违约者在教会的压力下面临灵魂惩罚。「臣属的臣属不是我的臣属」这句话本身就体现了契约的不可传递性——跟现代合同一样，你只能约束你的直接签约方。</p><p><strong>追问：</strong>那中国为什么没走这条路？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第三层：中国为何是「秦制」而非「封建契约」？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>秦始皇的统一是最关键的路径分叉。商鞅变法的本质是用<strong>法律-官僚体系</strong>取代了血缘-契约体系：废封建、设郡县、统一度量衡。一旦这个中央集权机器转起来，就没有回头路。中国后来的所有王朝都是在修补这台机器的零件，而不是换一台机器。西欧恰恰相反——罗马帝国崩溃后，没有任何一个政权有能力重建秦制式的官僚帝国，只能退而求其次，用契约来凑合。所以答案不是「中国选择秦制」，而是<strong>「西欧被迫接受封建契约」</strong>。</p></div></div>
+
+<h3 class="section-title">追问2：十字军东征是成功还是失败？</h3>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第一层：军事上看——彻底失败<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>九次东征，持续近200年，最终耶路撒冷还是丢了。第四次甚至打错了对象——洗劫了同是基督教的君士坦丁堡。军事目标一个都没达成。</p><p><strong>追问：</strong>那为什么历史学家说它是「欧洲觉醒的起点」？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第二层：文明视角——意外的大赢家<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>十字军遇到了一个远比欧洲先进的阿拉伯文明——香料、浴室、丝绸、大学、医院。这帮穿着盔甲的欧洲乡巴佬被震撼了。回到欧洲后，他们带回了<strong>三样东西</strong>：阿拉伯的科学知识（亚里士多德著作的阿拉伯译本）、东方的奢侈品（刺激了贸易需求）、以及对「外面世界」的好奇心。马可·波罗的父亲和叔叔就是在这样的背景下出发去东方的。可以说，<strong>没有十字军东征的「文化休克」，就没有后来欧洲对外探索的冲动</strong>。</p><p><strong>追问：</strong>那伊斯兰世界呢？十字军对它有什么影响？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第三层：伊斯兰视角——灾难的序曲<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>十字军对伊斯兰世界的直接破坏有限——真正致命的是后来的蒙古人。但十字军东征在伊斯兰世界埋下了两个隐患：(1)内部分裂加剧——逊尼派与什叶派的矛盾因为外部压力而表面化；(2)对西方的长期不信任——这种「被十字军入侵」的集体记忆至今仍在影响中东政治。更有意思的是萨拉丁——他在1187年夺回耶路撒冷后没有报复屠杀，反而允许基督徒不带武器朝圣。这种「骑士式的宽容」反而赢得了欧洲对手的尊重。所以十字军东征的结局是：军事输家（欧洲）获得了文明红利，军事赢家（伊斯兰）埋下了长期隐患。</p></div></div>
+
+<h3 class="section-title">追问3：黑死病为何是「文明加速器」？</h3>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第一层：人口灾难如何转化为社会变革？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>黑死病导致欧洲1/3-1/2人口死亡。在正常逻辑下，这应该是一场文明的倒退——劳动力锐减、经济崩溃、社会混乱。但实际结果是：<strong>劳动力的稀缺性突然暴涨</strong>。幸存的农民第一次有了讨价还价的资本——「你不给我涨工资，我就去隔壁领主的庄园」。领主被迫接受灵活地租、放弃人身控制。农奴制在一个世纪内瓦解了。这不是任何人的设计，而是一个纯粹的<strong>供需关系突变</strong>。</p><p><strong>追问：</strong>光靠供需能解释一切吗？精神层面呢？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第二层：信仰崩塌与人性觉醒<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>黑死病最深远的影响不在经济，而在<strong>心理</strong>。当虔诚的修士和放高利贷的犹太人同样病死，当教会的祈祷和圣水毫无效果，人们开始问一个致命的问题：「如果上帝既不保护好人也不惩罚坏人，那他到底存不存在？」这是中世纪信仰体系的第一道裂缝。薄伽丘的《十日谈》就是在瘟疫背景下写的——十个年轻人在郊外别墅里讲故事，故事里充满了对教会的讽刺和对世俗享乐的赞美。「活在当下」取代了「等待来世」。这就是<strong>人文主义的萌芽</strong>。</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">▶ 第三层：没有黑死病，会有文艺复兴吗？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>会有，但会晚得多。文艺复兴的种子在中世纪后期已经播下——但丁、彼得拉克、加洛林复兴、大学兴起——这些都是黑死病之前的。但黑死病扮演了<strong>催化剂的角色</strong>：它加速了旧制度的死亡，缩短了新旧交替的阵痛期。没有黑死病，封建制度可能还能苟延残喘一两百年。所以黑死病的「文明加速器」效应，正是因为它在错误的时间（不对，是正确的时间）以极端残酷的方式，杀死了已经开始腐朽的旧世界。</p></div></div>
+</div>
+
+<!-- ========== TAB 7: 案例分析 ========== -->
+<div class="tab-content" id="tab7">
+<h2>🔍 案例分析：用MKS拆解中世纪核心矛盾</h2>
+
+<h3 class="section-title">案例一：大宪章——为何国王会自己限制自己的权力？</h3>
+<div class="card">
+<h4>📋 背景速览</h4>
+<p>1215年6月15日，英格兰国王约翰（史称「失地王」）在贵族挟持下，加盖御玺确认《大宪章》。这份文件确立了「王在法下」原则，被视为英国宪政的起源。问题：一个国王为什么会签署一份限制自己权力的文件？</p>
+</div>
+<div class="card">
+<h4>🔍 MKS四维度拆解</h4>
+<p><strong>1. 定义层（What）：</strong>《大宪章》不是现代意义上的「宪法」，而是封建贵族用武力逼迫国王确认既有封建权利的契约。第61条「安全法」最具革命性——25名贵族组成的委员会有权用武力纠正国王的违约行为。这在当时是前所未有的「以下犯上」合法化条款。</p>
+<p><strong>2. 类比层（How）：</strong>好比一个大股东（国王）因为连续经营失误（失地、加税、与教宗闹翻），被其他股东（贵族）联合起来要求签一份「对赌协议」——如果你不好好经营，我们有权接管公司。区别在于，现代对赌协议是商业行为，而《大宪章》是武力威胁下的城下之盟。</p>
+<p><strong>3. 示例层（Proof）：</strong>约翰签署后仅4天就宣布废弃《大宪章》，引发内战，后病逝。但继任者亨利三世（9岁即位）为了稳定局势，三次修改后重新发布。这说明了一个关键规律：<strong>一旦权力契约被「发明」出来，它就很难被彻底抹除——继任者会发现，遵守别人的契约比重新打天下更容易。</strong></p>
+<p><strong>4. 反例/边界层（Counter）：</strong>同时代中国的皇权从未面临过《大宪章》式的约束。不是因为中国皇帝更聪明，而是因为科举制提供了一条不用打仗就能换官员的路径——社会精英的怨气通过考场排出，不需要通过战场。所以《大宪章》的「反例」恰好说明了一个关键区别：<strong>西欧的权力分散来自「谁都没有绝对优势」的僵局，中国的权力集中来自「谁上台都得用科举」的共识。</strong></p>
+</div>
+
+<h3 class="section-title">案例二：蒙古帝国——毁灭者还是全球化先驱？</h3>
+<div class="card">
+<h4>📋 背景速览</h4>
+<p>13世纪，成吉思汗及其子孙建立的蒙古帝国，疆域达3300万平方公里，东起朝鲜半岛、西至多瑙河。蒙古人摧毁了南宋、阿拔斯王朝、基辅罗斯，但也建立了人类历史上第一次欧亚大陆一体化。问题：蒙古帝国对世界文明究竟是破坏大于建设，还是建设大于破坏？</p>
+</div>
+<div class="card">
+<h4>🔍 MKS四维度拆解</h4>
+<p><strong>1. 定义层（What）：</strong>蒙古帝国是人类历史上最大的陆上帝国，也是第一个从东到西打通了整个欧亚大陆的政治实体。它的核心逻辑是：用军事暴力统一一切，再用统一的秩序促进贸易。</p>
+<p><strong>2. 类比层（How）：</strong>蒙古帝国就像一个超级防火墙——它把你电脑里的所有程序都关掉了（摧毁现有文明），但是重装了一个新的操作系统（统一的贸易和法律体系），让不同程序之间第一次可以互通数据。问题是，重装系统的过程中，你丢失了很多宝贵的数据。</p>
+<p><strong>3. 示例层（Proof）：</strong>蒙古人保护商人过境（丝绸之路达到历史最繁荣期）、建立了从北京到巴格达的驿站系统（相当于中世纪的互联网）、推动了中国与西欧的首次直接贸易。马可·波罗之所以能到达中国，正是因为蒙古帝国让欧亚大陆内部的旅行变得安全。</p>
+<p><strong>4. 反例/边界层（Counter）：</strong>蒙古人带来的全球化有一个致命缺陷：它是建立在军事征服和恐惧之上的，而非建立在自愿交换和信任之上。蒙古帝国一分裂，这套系统就崩溃了。相比之下，后来的西欧大航海时代，虽然也有殖民暴力，但核心驱动力是<strong>商业利润</strong>，而非军事征服——所以它更持久。蒙古的全球化是一次性的，而欧洲的全球化是可自我延续的。</p>
+</div>
+</div>
+
+<!-- ========== TAB 8: 实战决策 ========== -->
+<div class="tab-content" id="tab8">
+<h2>⚔️ 实战决策：三回合历史模拟</h2>
+<p style="color:var(--text-light);margin-bottom:16px">你将扮演中世纪的关键决策者。每轮3个选项，选择后查看MKS分析。</p>
+
+<!-- Round 1 -->
+<div class="card" id="decision1">
+<h3>🎯 第一回合：你是一支十字军的指挥官</h3>
+<p>1099年，你的军队刚刚攻下耶路撒冷。圣城之内有大量穆斯林平民。你的士兵们满腔怒火、渴望复仇和战利品。你面临一个选择：</p>
+<div class="decision-option" onclick="chooseDecision(1,0)">A. 默许士兵屠城——这是「圣战」，敌人不值得怜悯</div>
+<div class="decision-option" onclick="chooseDecision(1,1)">B. 约束军队，保护平民——我们号称是基督的战士，应该展现仁慈</div>
+<div class="decision-option" onclick="chooseDecision(1,2)">C. 把平民集中起来，要求他们改宗基督教——不改的再处理</div>
+<div class="decision-feedback" id="feedback1"></div>
+</div>
+
+<!-- Round 2 -->
+<div class="card" id="decision2" style="display:none">
+<h3>🎯 第二回合：你是南宋末年的宰相</h3>
+<p>1275年，蒙古大军已攻破襄阳，顺长江而下。你的选择：</p>
+<div class="decision-option" onclick="chooseDecision(2,0)">A. 集中全部兵力与蒙古决一死战——宁为玉碎不为瓦全</div>
+<div class="decision-option" onclick="chooseDecision(2,1)">B. 向南撤退，依托海洋建立流亡政权，等待时机</div>
+<div class="decision-option" onclick="chooseDecision(2,2)">C. 派遣使臣谈判求和，以称臣纳贡换取南宋存续</div>
+<div class="decision-feedback" id="feedback2"></div>
+</div>
+
+<!-- Round 3 -->
+<div class="card" id="decision3" style="display:none">
+<h3>🎯 第三回合：你是14世纪中叶一个意大利城邦的执政官</h3>
+<p>1348年，黑死病正在肆虐你的城市。每天数百人死亡。贵族和富人纷纷逃离，教会束手无策。你的选择：</p>
+<div class="decision-option" onclick="chooseDecision(3,0)">A. 封锁城市，禁止任何人出入——用极端方式防止扩散</div>
+<div class="decision-option" onclick="chooseDecision(3,1)">B. 维持基本秩序，保障粮食供应，建立临时医疗点——尽力而为</div>
+<div class="decision-option" onclick="chooseDecision(3,2)">C. 自己也撤离城市，把管理权交给教会——专业的事交给专业的人</div>
+<div class="decision-feedback" id="feedback3"></div>
+</div>
+</div>
+
+<script>
+// ========== GLOBAL STATE ==========
+const LS_KEY = 'mks_topic4';
+let store = {learned:[], wrongAnswers:[], quizHistory:[], examHistory:[]};
+try{var d=JSON.parse(localStorage.getItem(LS_KEY));if(d){store.learned=d.learned||[];store.wrongAnswers=d.wrongAnswers||[];store.quizHistory=d.quizHistory||[];store.examHistory=d.examHistory||[]}}catch(e){}
+function save(){localStorage.setItem(LS_KEY,JSON.stringify(store))}
+
+// ========== CONCEPTS ==========
+var concepts = [
+  {id:'c1',name:'⚔️ 封建制度',def:'基于土地分封和契约关系的政治-军事-经济体系。核心公式：领主提供土地与保护，封臣提供骑兵与忠诚。本质是「没有强大中央政府的替代治理方案」。',analogy:'好比现代加盟连锁——总部（国王）把品牌授权给加盟商（贵族），加盟商自负盈亏但必须听总部的。区别在于加盟商可以拒绝不符合「合同精神」的要求。',example:'查理·马特的采邑改革：将无条件赠送土地改为有条件分封，贵族需提供骑兵服务。11世纪后演变为世袭封建制——「臣属的臣属不是我的臣属」。',counter:'中国西周封建是「血缘分封」，靠宗法维系；西欧封建是「契约分封」，靠互惠维系。秦以后中国抛弃封建走向郡县制，正是因为没有教会作为第三方仲裁者。'},
+  {id:'c2',name:'✝️ 政教博弈',def:'中世纪政治权力与宗教权力之间持续的张力与平衡。西欧形成了「政教分离」——国王管世俗、教宗管灵魂；拜占庭和阿拉伯则形成了不同形态的「政教合一」。',analogy:'好比公司里的CEO（国王）和董事会主席（教宗）——西欧是两人分权、经常吵架但谁也离不开谁；拜占庭是CEO兼董事会主席；阿拉伯是董事会主席（哈里发）权力大于CEO（苏丹）。',example:'「凯撒的归凯撒，上帝的归上帝」——《圣经》这句话奠定了政教分离的理论基础。但实践远比理论复杂：1077年神圣罗马帝国皇帝亨利四世在卡诺莎城堡雪中跪了三天请求教宗原谅——这是教权对王权的最强压制。',counter:'中华文明几乎没有政教博弈——儒家不是宗教，佛教不干政。皇权没有教权制衡的结果是：任何势力都可以通过「天命」宣称挑战皇权，导致了更频繁的改朝换代。'},
+  {id:'c3',name:'⚔️ 十字军东征',def:'1096-1271年间，罗马教宗号召的以收复圣地耶路撒冷为目标的系列宗教战争，共9-12次。军事上彻底失败，但文明上意外推动了欧洲的觉醒。',analogy:'好比一个封闭小镇的年轻人集体去大城市「远征」——路上被打得鼻青脸肿，但回来后眼界大开，开始嫌弃小镇的落后，推动了小镇的改革。',example:'第四次十字军（1202年）甚至攻打了同是基督教的君士坦丁堡并洗劫了它——威尼斯商人借十字军的刀干掉商业竞争对手。萨拉丁1187年夺回耶路撒冷后允许基督徒不带武器朝圣——他的宽容赢得了对手的尊重。',counter:'与蒙古征服对比：两者都是跨文明的大规模军事行动，但十字军是有明确宗教目标的「圣战」，蒙古征服是纯粹的军事扩张。十字军的长期影响是间接的（文化冲击+贸易刺激），蒙古的影响是直接的（摧毁旧秩序+建立新贸易网络）。'},
+  {id:'c4',name:'📜 大宪章',def:'1215年英格兰国王约翰在贵族武力逼迫下确认的法律文件，确立了「王在法下」原则。核心条款第61条允许25名贵族委员会以武力纠正国王违约。',analogy:'好比租客（贵族）联合起来逼房东（国王）签了一份「租房合同」——规定了房东不能随意涨房租、不能随便进房间。虽然房东签完就想撕毁，但合同已经公示，以后的房东也得遵守。',example:'约翰签署后仅4天就宣布废弃，引发内战。但继任者亨利三世三次修改后重新发布——「权力契约」一旦被发明，就很难被彻底抹除。这份文件至今仍被英国司法引用，被视为不成文宪法的基石。',counter:'同时代中国的金朝、南宋也有「限制皇权」的言官传统，但从未形成法律文件层面上的「王在法下」。区别在于：英国的贵族有独立的军事力量（骑士）和土地收入，可以实际威胁国王；中国的言官只有笔杆子，没有枪杆子。'},
+  {id:'c5',name:'🔥 加洛林文艺复兴',def:'8-9世纪查理曼大帝主导的文化复兴运动，被称为「欧洲的第一次觉醒」。核心成就：抢救古籍（抄录超10万卷）、重建教育（七艺体系）、规范拉丁文（发明标点符号和加洛林小楷）。',analogy:'好比一个经历过火灾（蛮族入侵）的图书馆，馆长（查理曼）虽然自己不太识字，但明白书的重要性，于是拼命找幸存的书、雇人抄书、办学校教人读书——这个图书馆后来成了整条街的文化源头。',example:'从英格兰找回李维的《罗马史》抄本；要求每座修道院建学校和图书馆；发明了现代字母语言的标点符号系统；开创女性教育（利奥巴修女任女修院院长）。',counter:'对比同时期的唐宋：唐朝有科举、算学馆、太医署——教育体系远超西欧。但加洛林文艺复兴的意义不在于水平高低，而在于它是「从零到一」的突破。西欧在此之前的文化水平几乎归零，所以任何进步都是「觉醒」。'},
+  {id:'c6',name:'☀️ 阿拉伯理性主义',def:'阿拉伯帝国黄金时代（8-9世纪）形成的以理性方法研究自然与神学的思想传统，以花拉子密（数学）、伊本·鲁世德（哲学）为代表，是人类理性主义火炬在中世纪的传递者。',analogy:'好比在两条大河（古希腊→欧洲）之间挖了一条运河——希腊的科学和哲学通过阿拉伯学者的翻译和注释，绕过了中世纪的断流期，最终流回了文艺复兴的欧洲。',example:'花拉子密确立代数作为独立学科，Algorithm（算法）一词即源自其名；伊本·鲁世德注释亚里士多德著作后传回欧洲，托马斯·阿奎那尊称他为「注释者」；阿拉伯帝国率先实行医学同行评议制度——医生的诊疗记录无论成败均需接受评审。',counter:'相较于同期西欧的「信仰压倒理性」，阿拉伯的优势恰好在于「信仰与理性可以共存」。鲁世德提出：哲学与宗教本质无矛盾——神的创造通过自然律实现。这个观点后来启发了欧洲的自然神论者。但11世纪后突厥和蒙古入侵打断了这一进程。'},
+  {id:'c7',name:'☄️ 蒙古帝国与文明冲击',def:'13世纪成吉思汗建立的横跨欧亚的超级帝国，是人类历史上最大的陆上帝国。双重角色：文明的毁灭者（摧毁南宋和阿拔斯王朝）与全球化的开创者（第一次实现欧亚大陆一体化）。',analogy:'好比一场森林大火——烧毁了大量老树（旧文明），但火烧后的灰烬成了新树（新秩序）的养分。欧洲（未着火区域）趁机长成了参天大树。',example:'蒙古保护商人过境使丝绸之路达到历史最繁荣期；驿站系统（中世纪的互联网）让信息从北京传到巴格达只需两周；1241年窝阔台去世导致西征欧洲的蒙古军东还——这是欧洲避免被征服的偶然关键事件。',counter:'与大航海时代的全球化对比：蒙古的全球化是「军事征服驱动的一体化」，依赖恐惧与暴力，帝国一分裂就崩溃；欧洲的全球化是「商业利润驱动的一体化」，依赖贸易互利，更具可持续性。前者是短跑冲刺，后者是马拉松。'},
+  {id:'c8',name:'🦠 黑死病与文明加速',def:'14世纪中叶席卷欧洲的鼠疫大流行，导致1/3至1/2人口死亡。表面是文明灾难，实际上充当了瓦解封建制度、催生人文主义的「文明加速器」。',analogy:'好比化疗——杀死大量细胞（包括好的），但消灭了癌细胞（封建制度）。病人在化疗后极度虚弱，但一旦恢复，就获得了新生。',example:'劳动力稀缺→农民谈判力暴涨→领主被迫接受灵活地租→农奴制瓦解；教会对瘟疫无能为力→信仰动摇→「活在当下」观念兴起→薄伽丘《十日谈》赞美世俗享乐；人口锐减→城市劳动力需求增加→工资上涨→中产阶级萌芽。',counter:'对比同时期的东亚：中国也遭受瘟疫，但中央集权制度提供了更强的组织应对能力，社会结构没有被颠覆。这说明同样的外部冲击，落在不同制度土壤上，会产生截然不同的结果——所以黑死病是「西欧封建制的特有催化剂」，不是普适规律。'},
+  {id:'c9',name:'🌆 城市复兴与封建瓦解',def:'中世纪中后期，被遗弃的罗马城市重新兴起，成为独立于王权与教权之外的「第三种力量」。核心机制：贸易恢复→商人阶层壮大→赎买城市特权→城市自治→瓦解封建。',analogy:'好比在公司（封建庄园）旁边开了自由市场（城市）——在公司的员工开始偷偷去市场做生意，赚了钱后跟老板谈判：「我付你固定费用，你别管我干什么。」老板发现收固定费比自己经营更省心，就同意了。久而久之，市场上的自由人越来越多，公司的员工越来越少，公司就开不下去了。',example:'「一年零一天」法则——农奴在城市居住满一年零一天即获得自由；威尼斯发展为独立城市共和国，人口超10万；汉萨同盟最多160个加盟城市，垄断波罗的海贸易；行会制度规范了手工业生产和从业者权益。',counter:'阿拉伯帝国的大城市（巴格达、大马士革）虽然更繁荣，但它们是农耕文明的延伸——财富来自农业和贸易利润，市民没有挑战政权的动力。西欧城市之所以成为「第三力量」，正是因为它们是「在封建体系之外」生长出来的。'},
+  {id:'c10',name:'⚡ 走出中世纪',def:'人类文明如何突破中世纪瓶颈、进入近代进程。五大动力：蒙古征服（不破不立）、十字军（文明冲击）、黑死病（社会重构）、欧洲经济文化复苏（文艺复兴准备）、贸易发展（大航海前夜）。',analogy:'好比一个人要离开一个住了很久但已经破败的房子——他不是有一天突然推门出去的，而是先有裂缝（黑死病）、有人敲门（十字军）、有人拆了一面墙（蒙古）、有人装修了几间屋（文艺复兴）、最后发现外面的世界更精彩（大航海），才终于搬了出去。',example:'1453年君士坦丁堡陷落是一个标志——拜占庭学者带着古希腊文献和阿拉伯科学知识流亡西欧，直接推动了意大利文艺复兴。大航海时代（迪亚士、达伽马、哥伦布）开辟了绕过伊斯兰世界直达东方的航线。',counter:'对比四大文明的结局：西欧从最低点崛起（由低走高），中华和阿拉伯从高点被摧毁后复苏但路径改变（由高走低→另起炉灶），拜占庭从高点一路下滑直至灭亡（由高走低→终结）。这说明文明的「活力」比「水平」更重要——起点低的文明如果有开放的制度，可能后来居上。'}
+];
+
+var learnedCards = store.learned || [];
+var currentCardIdx = 0;
+var cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px;background:#e8f5e9;color:var(--success)">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  store.learned=learnedCards;save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+function updateProgress(){
+  var pct=(learnedCards.length/concepts.length)*100;
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+  document.getElementById('overviewProgress').style.width=pct+'%';
+  document.getElementById('overviewLearned').textContent=learnedCards.length;
+  var total=store.quizHistory.length;
+  var correct=store.quizHistory.filter(function(x){return x.correct}).length;
+  document.getElementById('overviewQuiz').textContent=total;
+  document.getElementById('overviewAccuracy').textContent=total>0?Math.round(correct/total*100):0;
+}
+updateProgress();
+
+// ========== SVG RENDER (Graphviz dot -Tsvg generated) ==========
+(function renderSVG(){
+document.getElementById('svgContainer').innerHTML = `
+
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="1455pt" height="580pt"
+ viewBox="0.00 0.00 1455.00 580.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 576)">
+<title>G</title>
+<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-576 1451,-576 1451,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<path fill="#fffaf2" stroke="#8b7355" stroke-dasharray="5,2" d="M1365,-8C1365,-8 1427,-8 1427,-8 1433,-8 1439,-14 1439,-20 1439,-20 1439,-552 1439,-552 1439,-558 1433,-564 1427,-564 1427,-564 1365,-564 1365,-564 1359,-564 1353,-558 1353,-552 1353,-552 1353,-20 1353,-20 1353,-14 1359,-8 1365,-8"/>
+<text text-anchor="middle" x="1396" y="-552" font-family="Times,serif" font-size="10.00" fill="#3d2f2f">图例 Legend</text>
+</g>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="#c0392b" stroke="black" stroke-width="2.5" d="M747,-537C747,-537 665,-537 665,-537 659,-537 653,-531 653,-525 653,-525 653,-513 653,-513 653,-507 659,-501 665,-501 665,-501 747,-501 747,-501 753,-501 759,-507 759,-513 759,-513 759,-525 759,-525 759,-531 753,-537 747,-537"/>
+<text text-anchor="middle" x="706" y="-522.6" font-family="Noto Sans SC" font-size="13.00" fill="#ffffff">信仰与权力交织</text>
+<text text-anchor="middle" x="706" y="-508.6" font-family="Noto Sans SC" font-size="13.00" fill="#ffffff">千年长夜</text>
+</g>
+<!-- t1_west -->
+<g id="node2" class="node">
+<title>t1_west</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.2" d="M299,-455C299,-455 213,-455 213,-455 207,-455 201,-449 201,-443 201,-443 201,-431 201,-431 201,-425 207,-419 213,-419 213,-419 299,-419 299,-419 305,-419 311,-425 311,-431 311,-431 311,-443 311,-443 311,-449 305,-455 299,-455"/>
+<text text-anchor="middle" x="256" y="-440.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">西欧基督教文明</text>
+<text text-anchor="middle" x="256" y="-428.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">政教分离·封建契约</text>
+</g>
+<!-- root&#45;&gt;t1_west -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;t1_west</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M652.61,-508.51C569.78,-493.78 410.55,-465.48 321.1,-449.57"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="321.53,-446.1 311.08,-447.79 320.31,-452.99 321.53,-446.1"/>
+<text text-anchor="middle" x="535.5" y="-475.8" font-family="Noto Sans SC" font-size="9.00">教权约束王权</text>
+</g>
+<!-- t1_east -->
+<g id="node3" class="node">
+<title>t1_east</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.2" d="M644,-455C644,-455 558,-455 558,-455 552,-455 546,-449 546,-443 546,-443 546,-431 546,-431 546,-425 552,-419 558,-419 558,-419 644,-419 644,-419 650,-419 656,-425 656,-431 656,-431 656,-443 656,-443 656,-449 650,-455 644,-455"/>
+<text text-anchor="middle" x="601" y="-440.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">东亚中华文明</text>
+<text text-anchor="middle" x="601" y="-428.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">君主集权·科举文官</text>
+</g>
+<!-- root&#45;&gt;t1_east -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;t1_east</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M683.47,-500.84C668.39,-489.34 648.34,-474.07 631.78,-461.45"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="633.56,-458.41 623.49,-455.13 629.32,-463.98 633.56,-458.41"/>
+<text text-anchor="middle" x="687.5" y="-475.8" font-family="Noto Sans SC" font-size="9.00">科举打破门阀</text>
+</g>
+<!-- t1_arab -->
+<g id="node4" class="node">
+<title>t1_arab</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.2" d="M954,-455C954,-455 868,-455 868,-455 862,-455 856,-449 856,-443 856,-443 856,-431 856,-431 856,-425 862,-419 868,-419 868,-419 954,-419 954,-419 960,-419 966,-425 966,-431 966,-431 966,-443 966,-443 966,-449 960,-455 954,-455"/>
+<text text-anchor="middle" x="911" y="-440.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">阿拉伯伊斯兰文明</text>
+<text text-anchor="middle" x="911" y="-428.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">政教合一·商业网络</text>
+</g>
+<!-- root&#45;&gt;t1_arab -->
+<g id="edge3" class="edge">
+<title>root&#45;&gt;t1_arab</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M749.73,-500.94C781.3,-488.62 824.11,-471.91 857.69,-458.81"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="859.3,-461.93 867.34,-455.04 856.75,-455.41 859.3,-461.93"/>
+<text text-anchor="middle" x="848.5" y="-475.8" font-family="Noto Sans SC" font-size="9.00">教义驱动扩张</text>
+</g>
+<!-- t1_byz -->
+<g id="node5" class="node">
+<title>t1_byz</title>
+<path fill="#d4a574" stroke="black" stroke-width="1.2" d="M1207,-455C1207,-455 1121,-455 1121,-455 1115,-455 1109,-449 1109,-443 1109,-443 1109,-431 1109,-431 1109,-425 1115,-419 1121,-419 1121,-419 1207,-419 1207,-419 1213,-419 1219,-425 1219,-431 1219,-431 1219,-443 1219,-443 1219,-449 1213,-455 1207,-455"/>
+<text text-anchor="middle" x="1164" y="-440.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">拜占庭文明</text>
+<text text-anchor="middle" x="1164" y="-428.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">罗马遗产·专制延续</text>
+</g>
+<!-- root&#45;&gt;t1_byz -->
+<g id="edge4" class="edge">
+<title>root&#45;&gt;t1_byz</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.5" d="M759.43,-508.67C843.82,-493.93 1007.68,-465.31 1098.83,-449.38"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1099.52,-452.82 1108.77,-447.65 1098.32,-445.92 1099.52,-452.82"/>
+<text text-anchor="middle" x="990.5" y="-475.8" font-family="Noto Sans SC" font-size="9.00">政教合一传承</text>
+</g>
+<!-- t2_feud -->
+<g id="node6" class="node">
+<title>t2_feud</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M234,-373C234,-373 144,-373 144,-373 138,-373 132,-367 132,-361 132,-361 132,-349 132,-349 132,-343 138,-337 144,-337 144,-337 234,-337 234,-337 240,-337 246,-343 246,-349 246,-349 246,-361 246,-361 246,-367 240,-373 234,-373"/>
+<text text-anchor="middle" x="189" y="-358.2" font-family="Noto Sans SC" font-size="11.00">封建制度</text>
+<text text-anchor="middle" x="189" y="-346.2" font-family="Noto Sans SC" font-size="11.00">采邑·封君封臣·骑士</text>
+</g>
+<!-- t1_west&#45;&gt;t2_feud -->
+<g id="edge5" class="edge">
+<title>t1_west&#45;&gt;t2_feud</title>
+<path fill="none" stroke="#d4a574" d="M233.01,-418.74C226.76,-413.44 220.27,-407.33 215,-401 210.27,-395.32 205.9,-388.66 202.15,-382.23"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="205.02,-380.19 197.13,-373.13 198.89,-383.57 205.02,-380.19"/>
+<text text-anchor="middle" x="247" y="-393.8" font-family="Noto Sans SC" font-size="9.00">土地换军事服务</text>
+</g>
+<!-- t2_church -->
+<g id="node7" class="node">
+<title>t2_church</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M355.5,-373C355.5,-373 276.5,-373 276.5,-373 270.5,-373 264.5,-367 264.5,-361 264.5,-361 264.5,-349 264.5,-349 264.5,-343 270.5,-337 276.5,-337 276.5,-337 355.5,-337 355.5,-337 361.5,-337 367.5,-343 367.5,-349 367.5,-349 367.5,-361 367.5,-361 367.5,-367 361.5,-373 355.5,-373"/>
+<text text-anchor="middle" x="316" y="-358.2" font-family="Noto Sans SC" font-size="11.00">罗马教会</text>
+<text text-anchor="middle" x="316" y="-346.2" font-family="Noto Sans SC" font-size="11.00">教宗·修道院·大学</text>
+</g>
+<!-- t1_west&#45;&gt;t2_church -->
+<g id="edge6" class="edge">
+<title>t1_west&#45;&gt;t2_church</title>
+<path fill="none" stroke="#d4a574" d="M269.02,-418.64C277.25,-407.66 288.03,-393.29 297.18,-381.09"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="300.01,-383.15 303.21,-373.05 294.41,-378.95 300.01,-383.15"/>
+<text text-anchor="middle" x="317.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">精神权威中心</text>
+</g>
+<!-- t2_city -->
+<g id="node8" class="node">
+<title>t2_city</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M102,-373C102,-373 12,-373 12,-373 6,-373 0,-367 0,-361 0,-361 0,-349 0,-349 0,-343 6,-337 12,-337 12,-337 102,-337 102,-337 108,-337 114,-343 114,-349 114,-349 114,-361 114,-361 114,-367 108,-373 102,-373"/>
+<text text-anchor="middle" x="57" y="-358.2" font-family="Noto Sans SC" font-size="11.00">城市复兴</text>
+<text text-anchor="middle" x="57" y="-346.2" font-family="Noto Sans SC" font-size="11.00">行会·汉萨同盟·市民</text>
+</g>
+<!-- t1_west&#45;&gt;t2_city -->
+<g id="edge7" class="edge">
+<title>t1_west&#45;&gt;t2_city</title>
+<path fill="none" stroke="#8b7355" stroke-dasharray="5,2" d="M200.84,-425.92C176.34,-420.33 147.55,-412.2 123,-401 110.36,-395.23 97.5,-387.09 86.53,-379.31"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="88.32,-376.28 78.18,-373.2 84.18,-381.93 88.32,-376.28"/>
+<text text-anchor="middle" x="164" y="-393.8" font-family="Noto Sans SC" font-size="9.00">瓦解封建的第三力量</text>
+</g>
+<!-- t2_keju -->
+<g id="node9" class="node">
+<title>t2_keju</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M617,-373C617,-373 519,-373 519,-373 513,-373 507,-367 507,-361 507,-361 507,-349 507,-349 507,-343 513,-337 519,-337 519,-337 617,-337 617,-337 623,-337 629,-343 629,-349 629,-349 629,-361 629,-361 629,-367 623,-373 617,-373"/>
+<text text-anchor="middle" x="568" y="-358.2" font-family="Noto Sans SC" font-size="11.00">科举制度</text>
+<text text-anchor="middle" x="568" y="-346.2" font-family="Noto Sans SC" font-size="11.00">寒门上升通道·士大夫</text>
+</g>
+<!-- t1_east&#45;&gt;t2_keju -->
+<g id="edge8" class="edge">
+<title>t1_east&#45;&gt;t2_keju</title>
+<path fill="none" stroke="#d4a574" d="M593.84,-418.64C589.49,-408.09 583.84,-394.39 578.93,-382.51"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="582.08,-380.96 575.03,-373.05 575.61,-383.63 582.08,-380.96"/>
+<text text-anchor="middle" x="605.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">选拔文官</text>
+</g>
+<!-- t2_tech -->
+<g id="node10" class="node">
+<title>t2_tech</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M749,-373C749,-373 659,-373 659,-373 653,-373 647,-367 647,-361 647,-361 647,-349 647,-349 647,-343 653,-337 659,-337 659,-337 749,-337 749,-337 755,-337 761,-343 761,-349 761,-349 761,-361 761,-361 761,-367 755,-373 749,-373"/>
+<text text-anchor="middle" x="704" y="-358.2" font-family="Noto Sans SC" font-size="11.00">唐宋科技</text>
+<text text-anchor="middle" x="704" y="-346.2" font-family="Noto Sans SC" font-size="11.00">四大发明·冶金·天文</text>
+</g>
+<!-- t1_east&#45;&gt;t2_tech -->
+<g id="edge9" class="edge">
+<title>t1_east&#45;&gt;t2_tech</title>
+<path fill="none" stroke="#d4a574" d="M623.1,-418.84C637.9,-407.34 657.57,-392.07 673.81,-379.45"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="676.19,-382.03 681.94,-373.13 671.9,-376.5 676.19,-382.03"/>
+<text text-anchor="middle" x="686.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">稳定促进创新</text>
+</g>
+<!-- t2_trade_east -->
+<g id="node11" class="node">
+<title>t2_trade_east</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M476.5,-373C476.5,-373 397.5,-373 397.5,-373 391.5,-373 385.5,-367 385.5,-361 385.5,-361 385.5,-349 385.5,-349 385.5,-343 391.5,-337 397.5,-337 397.5,-337 476.5,-337 476.5,-337 482.5,-337 488.5,-343 488.5,-349 488.5,-349 488.5,-361 488.5,-361 488.5,-367 482.5,-373 476.5,-373"/>
+<text text-anchor="middle" x="437" y="-358.2" font-family="Noto Sans SC" font-size="11.00">丝绸之路东段</text>
+<text text-anchor="middle" x="437" y="-346.2" font-family="Noto Sans SC" font-size="11.00">西域·市舶司·朝贡</text>
+</g>
+<!-- t1_east&#45;&gt;t2_trade_east -->
+<g id="edge10" class="edge">
+<title>t1_east&#45;&gt;t2_trade_east</title>
+<path fill="none" stroke="#8b7355" d="M565.82,-418.84C541.07,-406.76 507.75,-390.51 481.21,-377.56"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="482.65,-374.37 472.12,-373.13 479.58,-380.66 482.65,-374.37"/>
+<text text-anchor="middle" x="547.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">商路延伸</text>
+</g>
+<!-- t2_science -->
+<g id="node12" class="node">
+<title>t2_science</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M958,-373C958,-373 864,-373 864,-373 858,-373 852,-367 852,-361 852,-361 852,-349 852,-349 852,-343 858,-337 864,-337 864,-337 958,-337 958,-337 964,-337 970,-343 970,-349 970,-349 970,-361 970,-361 970,-367 964,-373 958,-373"/>
+<text text-anchor="middle" x="911" y="-358.2" font-family="Noto Sans SC" font-size="11.00">黄金时代科技</text>
+<text text-anchor="middle" x="911" y="-346.2" font-family="Noto Sans SC" font-size="11.00">代数·医学·天文·化学</text>
+</g>
+<!-- t1_arab&#45;&gt;t2_science -->
+<g id="edge11" class="edge">
+<title>t1_arab&#45;&gt;t2_science</title>
+<path fill="none" stroke="#d4a574" d="M911,-418.64C911,-408.3 911,-394.94 911,-383.22"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="914.5,-383.05 911,-373.05 907.5,-383.05 914.5,-383.05"/>
+<text text-anchor="middle" x="938.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">翻译运动驱动</text>
+</g>
+<!-- t2_trade_arab -->
+<g id="node13" class="node">
+<title>t2_trade_arab</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1086,-373C1086,-373 1000,-373 1000,-373 994,-373 988,-367 988,-361 988,-361 988,-349 988,-349 988,-343 994,-337 1000,-337 1000,-337 1086,-337 1086,-337 1092,-337 1098,-343 1098,-349 1098,-349 1098,-361 1098,-361 1098,-367 1092,-373 1086,-373"/>
+<text text-anchor="middle" x="1043" y="-358.2" font-family="Noto Sans SC" font-size="11.00">贸易网络</text>
+<text text-anchor="middle" x="1043" y="-346.2" font-family="Noto Sans SC" font-size="11.00">丝绸之路·季风航线</text>
+</g>
+<!-- t1_arab&#45;&gt;t2_trade_arab -->
+<g id="edge12" class="edge">
+<title>t1_arab&#45;&gt;t2_trade_arab</title>
+<path fill="none" stroke="#d4a574" d="M940.17,-418.83C949.7,-413.18 960.32,-406.86 970,-401 981.98,-393.76 995.01,-385.76 1006.7,-378.55"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="1008.67,-381.44 1015.34,-373.21 1004.99,-375.49 1008.67,-381.44"/>
+<text text-anchor="middle" x="1014.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">地理枢纽优势</text>
+</g>
+<!-- t2_rational -->
+<g id="node14" class="node">
+<title>t2_rational</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1241.5,-373C1241.5,-373 1128.5,-373 1128.5,-373 1122.5,-373 1116.5,-367 1116.5,-361 1116.5,-361 1116.5,-349 1116.5,-349 1116.5,-343 1122.5,-337 1128.5,-337 1128.5,-337 1241.5,-337 1241.5,-337 1247.5,-337 1253.5,-343 1253.5,-349 1253.5,-349 1253.5,-361 1253.5,-361 1253.5,-367 1247.5,-373 1241.5,-373"/>
+<text text-anchor="middle" x="1185" y="-358.2" font-family="Noto Sans SC" font-size="11.00">理性主义</text>
+<text text-anchor="middle" x="1185" y="-346.2" font-family="Noto Sans SC" font-size="11.00">伊本·鲁世德·亚里士多德</text>
+</g>
+<!-- t1_arab&#45;&gt;t2_rational -->
+<g id="edge13" class="edge">
+<title>t1_arab&#45;&gt;t2_rational</title>
+<path fill="none" stroke="#8b7355" d="M966.05,-422.52C990.61,-416.3 1019.85,-408.62 1046,-401 1072.12,-393.39 1100.76,-384.26 1125.21,-376.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="1126.32,-379.54 1134.71,-373.08 1124.12,-372.89 1126.32,-379.54"/>
+<text text-anchor="middle" x="1095.5" y="-393.8" font-family="Noto Sans SC" font-size="9.00">注释传承</text>
+</g>
+<!-- t3_crusade -->
+<g id="node16" class="node">
+<title>t3_crusade</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="477.5,-291 390.5,-291 390.5,-255 483.5,-255 483.5,-285 477.5,-291"/>
+<polyline fill="none" stroke="#8b7355" points="477.5,-291 477.5,-285 "/>
+<polyline fill="none" stroke="#8b7355" points="483.5,-285 477.5,-285 "/>
+<text text-anchor="middle" x="437" y="-276.2" font-family="Noto Sans SC" font-size="11.00">十字军东征</text>
+<text text-anchor="middle" x="437" y="-264.2" font-family="Noto Sans SC" font-size="11.00">200年宗教战争</text>
+</g>
+<!-- t1_arab&#45;&gt;t3_crusade -->
+<g id="edge18" class="edge">
+<title>t1_arab&#45;&gt;t3_crusade</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="5,2" d="M877.96,-418.92C856.58,-407.22 828.62,-390.66 806,-373 788.16,-359.07 790.13,-347.34 770,-337 661.44,-281.21 616.2,-317.81 493.44,-291.12"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="494.22,-287.71 483.69,-288.9 492.66,-294.53 494.22,-287.71"/>
+<text text-anchor="middle" x="824.5" y="-352.8" font-family="Noto Sans SC" font-size="9.00">圣城争夺</text>
+</g>
+<!-- t1_byz&#45;&gt;t3_crusade -->
+<g id="edge19" class="edge">
+<title>t1_byz&#45;&gt;t3_crusade</title>
+<path fill="none" stroke="#c0392b" stroke-dasharray="5,2" d="M1201.68,-418.91C1239.85,-399.37 1289.61,-366.31 1262,-337 1205.07,-276.56 614.95,-304.43 493.84,-290.71"/>
+<polygon fill="#c0392b" stroke="#c0392b" points="494.01,-287.2 483.62,-289.24 493.02,-294.12 494.01,-287.2"/>
+<text text-anchor="middle" x="1297.5" y="-352.8" font-family="Noto Sans SC" font-size="9.00">求援反遭洗劫</text>
+</g>
+<!-- t3_magna -->
+<g id="node15" class="node">
+<title>t3_magna</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="232,-291 152,-291 152,-255 238,-255 238,-285 232,-291"/>
+<polyline fill="none" stroke="#8b7355" points="232,-291 232,-285 "/>
+<polyline fill="none" stroke="#8b7355" points="238,-285 232,-285 "/>
+<text text-anchor="middle" x="195" y="-276.2" font-family="Noto Sans SC" font-size="11.00">大宪章(1215)</text>
+<text text-anchor="middle" x="195" y="-264.2" font-family="Noto Sans SC" font-size="11.00">王在法下</text>
+</g>
+<!-- t2_feud&#45;&gt;t3_magna -->
+<g id="edge14" class="edge">
+<title>t2_feud&#45;&gt;t3_magna</title>
+<path fill="none" stroke="#8b7355" d="M190.3,-336.64C191.08,-326.3 192.08,-312.94 192.96,-301.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="196.46,-301.28 193.72,-291.05 189.48,-300.76 196.46,-301.28"/>
+<text text-anchor="middle" x="220.5" y="-311.8" font-family="Noto Sans SC" font-size="9.00">贵族制衡王权</text>
+</g>
+<!-- t2_church&#45;&gt;t3_crusade -->
+<g id="edge15" class="edge">
+<title>t2_church&#45;&gt;t3_crusade</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.2" d="M352.87,-336.96C363.22,-331.66 374.29,-325.5 384,-319 393.28,-312.79 402.76,-305.2 411.1,-298.03"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="413.5,-300.58 418.7,-291.35 408.88,-295.33 413.5,-300.58"/>
+<text text-anchor="middle" x="424.5" y="-311.8" font-family="Noto Sans SC" font-size="9.00">教宗号召圣战</text>
+</g>
+<!-- t3_renaissance -->
+<g id="node17" class="node">
+<title>t3_renaissance</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="366,-291 258,-291 258,-255 372,-255 372,-285 366,-291"/>
+<polyline fill="none" stroke="#8b7355" points="366,-291 366,-285 "/>
+<polyline fill="none" stroke="#8b7355" points="372,-285 366,-285 "/>
+<text text-anchor="middle" x="315" y="-276.2" font-family="Noto Sans SC" font-size="11.00">加洛林文艺复兴</text>
+<text text-anchor="middle" x="315" y="-264.2" font-family="Noto Sans SC" font-size="11.00">典籍抢救·七艺·大学</text>
+</g>
+<!-- t2_church&#45;&gt;t3_renaissance -->
+<g id="edge16" class="edge">
+<title>t2_church&#45;&gt;t3_renaissance</title>
+<path fill="none" stroke="#8b7355" d="M315.78,-336.64C315.65,-326.3 315.49,-312.94 315.34,-301.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="318.84,-301.01 315.21,-291.05 311.84,-301.09 318.84,-301.01"/>
+<text text-anchor="middle" x="348" y="-311.8" font-family="Noto Sans SC" font-size="9.00">修道院保存典籍</text>
+</g>
+<!-- t3_plague -->
+<g id="node19" class="node">
+<title>t3_plague</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="124,-291 2,-291 2,-255 130,-255 130,-285 124,-291"/>
+<polyline fill="none" stroke="#8b7355" points="124,-291 124,-285 "/>
+<polyline fill="none" stroke="#8b7355" points="130,-285 124,-285 "/>
+<text text-anchor="middle" x="66" y="-276.2" font-family="Noto Sans SC" font-size="11.00">黑死病</text>
+<text text-anchor="middle" x="66" y="-264.2" font-family="Noto Sans SC" font-size="11.00">1/3人口死亡·社会重构</text>
+</g>
+<!-- t2_city&#45;&gt;t3_plague -->
+<g id="edge17" class="edge">
+<title>t2_city&#45;&gt;t3_plague</title>
+<path fill="none" stroke="#8b7355" d="M58.95,-336.64C60.12,-326.3 61.62,-312.94 62.94,-301.22"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="66.44,-301.38 64.08,-291.05 59.49,-300.6 66.44,-301.38"/>
+<text text-anchor="middle" x="90.5" y="-311.8" font-family="Noto Sans SC" font-size="9.00">城市密集传播</text>
+</g>
+<!-- t4_modern -->
+<g id="node21" class="node">
+<title>t4_modern</title>
+<path fill="#c0392b" stroke="transparent" d="M355,-209C355,-209 275,-209 275,-209 269,-209 263,-203 263,-197 263,-197 263,-174 263,-174 263,-168 269,-162 275,-162 275,-162 355,-162 355,-162 361,-162 367,-168 367,-174 367,-174 367,-197 367,-197 367,-203 361,-209 355,-209"/>
+<text text-anchor="middle" x="315" y="-195.4" font-family="Noto Sans SC" font-size="12.00" fill="#ffffff">走出中世纪</text>
+<text text-anchor="middle" x="315" y="-182.4" font-family="Noto Sans SC" font-size="12.00" fill="#ffffff">文艺复兴·大航海</text>
+<text text-anchor="middle" x="315" y="-169.4" font-family="Noto Sans SC" font-size="12.00" fill="#ffffff">主权国家</text>
+</g>
+<!-- t3_magna&#45;&gt;t4_modern -->
+<g id="edge20" class="edge">
+<title>t3_magna&#45;&gt;t4_modern</title>
+<path fill="none" stroke="#8b7355" d="M219,-254.9C235.01,-243.49 256.45,-228.21 275.01,-214.99"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="277.2,-217.73 283.31,-209.08 273.13,-212.03 277.2,-217.73"/>
+<text text-anchor="middle" x="273.5" y="-229.8" font-family="Noto Sans SC" font-size="9.00">宪政起源</text>
+</g>
+<!-- t3_crusade&#45;&gt;t4_modern -->
+<g id="edge21" class="edge">
+<title>t3_crusade&#45;&gt;t4_modern</title>
+<path fill="none" stroke="#8b7355" d="M412.6,-254.9C396.32,-243.49 374.52,-228.21 355.65,-214.99"/>
+<polygon fill="#8b7355" stroke="#8b7355" points="357.42,-211.95 347.22,-209.08 353.4,-217.69 357.42,-211.95"/>
+<text text-anchor="middle" x="414.5" y="-229.8" font-family="Noto Sans SC" font-size="9.00">打破信息茧房</text>
+</g>
+<!-- t3_renaissance&#45;&gt;t4_modern -->
+<g id="edge22" class="edge">
+<title>t3_renaissance&#45;&gt;t4_modern</title>
+<path fill="none" stroke="#d4a574" d="M315,-254.7C315,-244.58 315,-231.48 315,-219.47"/>
+<polygon fill="#d4a574" stroke="#d4a574" points="318.5,-219.29 315,-209.29 311.5,-219.29 318.5,-219.29"/>
+<text text-anchor="middle" x="333.5" y="-229.8" font-family="Noto Sans SC" font-size="9.00">文化奠基</text>
+</g>
+<!-- t3_mongol -->
+<g id="node18" class="node">
+<title>t3_mongol</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="628.5,-291 501.5,-291 501.5,-255 634.5,-255 634.5,-285 628.5,-291"/>
+<polyline fill="none" stroke="#8b7355" points="628.5,-291 628.5,-285 "/>
+<polyline fill="none" stroke="#8b7355" points="634.5,-285 628.5,-285 "/>
+<text text-anchor="middle" x="568" y="-276.2" font-family="Noto Sans SC" font-size="11.00">蒙古帝国</text>
+<text text-anchor="middle" x="568" y="-264.2" font-family="Noto Sans SC" font-size="11.00">摧毁旧秩序·全球化开端</text>
+</g>
+<!-- t3_mongol&#45;&gt;t4_modern -->
+<g id="edge23" class="edge">
+<title>t3_mongol&#45;&gt;t4_modern</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.2" d="M523.59,-254.97C500.54,-246.3 471.87,-235.76 446,-227 423.61,-219.42 398.88,-211.62 377,-204.92"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="377.75,-201.49 367.16,-201.93 375.71,-208.19 377.75,-201.49"/>
+<text text-anchor="middle" x="491.5" y="-229.8" font-family="Noto Sans SC" font-size="9.00">不破不立</text>
+</g>
+<!-- t3_plague&#45;&gt;t4_modern -->
+<g id="edge24" class="edge">
+<title>t3_plague&#45;&gt;t4_modern</title>
+<path fill="none" stroke="#c0392b" stroke-width="1.2" d="M109.68,-254.97C132.34,-246.29 160.54,-235.76 186,-227 207.75,-219.51 231.75,-211.82 253.09,-205.18"/>
+<polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="254.17,-208.51 262.69,-202.21 252.1,-201.83 254.17,-208.51"/>
+<text text-anchor="middle" x="213.5" y="-229.8" font-family="Noto Sans SC" font-size="9.00">封建瓦解加速</text>
+</g>
+<!-- t3_ottomans -->
+<g id="node20" class="node">
+<title>t3_ottomans</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="1151.5,-537 1064.5,-537 1064.5,-501 1157.5,-501 1157.5,-531 1151.5,-537"/>
+<polyline fill="none" stroke="#8b7355" points="1151.5,-537 1151.5,-531 "/>
+<polyline fill="none" stroke="#8b7355" points="1157.5,-531 1151.5,-531 "/>
+<text text-anchor="middle" x="1111" y="-522.2" font-family="Noto Sans SC" font-size="11.00">突厥崛起</text>
+<text text-anchor="middle" x="1111" y="-510.2" font-family="Noto Sans SC" font-size="11.00">塞尔柱→奥斯曼</text>
+</g>
+<!-- l1 -->
+<g id="node22" class="node">
+<title>l1</title>
+<polygon fill="#c0392b" stroke="black" points="1427,-537 1365,-537 1365,-501 1427,-501 1427,-537"/>
+<text text-anchor="middle" x="1396" y="-516.8" font-family="Noto Sans SC" font-size="9.00" fill="#ffffff">核心驱动力</text>
+</g>
+<!-- l2 -->
+<g id="node23" class="node">
+<title>l2</title>
+<polygon fill="#d4a574" stroke="black" points="1423,-455 1369,-455 1369,-419 1423,-419 1423,-455"/>
+<text text-anchor="middle" x="1396" y="-434.8" font-family="Noto Sans SC" font-size="9.00" fill="#ffffff">文明圈层</text>
+</g>
+<!-- l1&#45;&gt;l2 -->
+<!-- l3 -->
+<g id="node24" class="node">
+<title>l3</title>
+<path fill="#fffaf2" stroke="#5a3e3e" d="M1412,-373C1412,-373 1380,-373 1380,-373 1374,-373 1368,-367 1368,-361 1368,-361 1368,-349 1368,-349 1368,-343 1374,-337 1380,-337 1380,-337 1412,-337 1412,-337 1418,-337 1424,-343 1424,-349 1424,-349 1424,-361 1424,-361 1424,-367 1418,-373 1412,-373"/>
+<text text-anchor="middle" x="1396" y="-352.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">制度/机构</text>
+</g>
+<!-- l2&#45;&gt;l3 -->
+<!-- l4 -->
+<g id="node25" class="node">
+<title>l4</title>
+<polygon fill="#fef5e7" stroke="#8b7355" points="1418,-291 1368,-291 1368,-255 1424,-255 1424,-285 1418,-291"/>
+<polyline fill="none" stroke="#8b7355" points="1418,-291 1418,-285 "/>
+<polyline fill="none" stroke="#8b7355" points="1424,-285 1418,-285 "/>
+<text text-anchor="middle" x="1396" y="-270.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">事件/转折</text>
+</g>
+<!-- l3&#45;&gt;l4 -->
+<!-- le1 -->
+<g id="node26" class="node">
+<title>le1</title>
+<path fill="lightgrey" stroke="transparent" d="M1418.5,-203.5C1418.5,-203.5 1373.5,-203.5 1373.5,-203.5 1367.5,-203.5 1361.5,-197.5 1361.5,-191.5 1361.5,-191.5 1361.5,-179.5 1361.5,-179.5 1361.5,-173.5 1367.5,-167.5 1373.5,-167.5 1373.5,-167.5 1418.5,-167.5 1418.5,-167.5 1424.5,-167.5 1430.5,-173.5 1430.5,-179.5 1430.5,-179.5 1430.5,-191.5 1430.5,-191.5 1430.5,-197.5 1424.5,-203.5 1418.5,-203.5"/>
+<text text-anchor="middle" x="1396" y="-183.6" font-family="Noto Sans SC" font-size="8.00" fill="#c0392b">权力张力/冲突</text>
+</g>
+<!-- l4&#45;&gt;le1 -->
+<!-- le2 -->
+<g id="node27" class="node">
+<title>le2</title>
+<path fill="lightgrey" stroke="transparent" d="M1411,-125C1411,-125 1381,-125 1381,-125 1375,-125 1369,-119 1369,-113 1369,-113 1369,-101 1369,-101 1369,-95 1375,-89 1381,-89 1381,-89 1411,-89 1411,-89 1417,-89 1423,-95 1423,-101 1423,-101 1423,-113 1423,-113 1423,-119 1417,-125 1411,-125"/>
+<text text-anchor="middle" x="1396" y="-105.1" font-family="Noto Sans SC" font-size="8.00" fill="#d4a574">派生/发展</text>
+</g>
+<!-- le1&#45;&gt;le2 -->
+<!-- le3 -->
+<g id="node28" class="node">
+<title>le3</title>
+<path fill="lightgrey" stroke="transparent" d="M1411,-52C1411,-52 1381,-52 1381,-52 1375,-52 1369,-46 1369,-40 1369,-40 1369,-28 1369,-28 1369,-22 1375,-16 1381,-16 1381,-16 1411,-16 1411,-16 1417,-16 1423,-22 1423,-28 1423,-28 1423,-40 1423,-40 1423,-46 1417,-52 1411,-52"/>
+<text text-anchor="middle" x="1396" y="-32.1" font-family="Noto Sans SC" font-size="8.00" fill="#8b7355">应用/结果</text>
+</g>
+<!-- le2&#45;&gt;le3 -->
+</g>
+</svg>
+`;
+})();
+
+// ========== MCQ DATA (20 questions, answer distribution {0:5,1:5,2:5,3:5}) ==========
+var mcqBank=[
+  {q:'西欧封建制度的核心纽带是什么？',opts:['血缘关系','土地与契约','宗教信仰','货币交易'],"answer":1},
+  {q:'「臣属的臣属不是我的臣属」体现了什么？',opts:['契约关系不具传递性','中央集权原则','长子继承制','政教合一制度'],"answer":0},
+  {q:'加洛林文艺复兴的推动者是？',opts:['教皇英诺森三世','奥托一世','腓特烈一世','查理曼大帝'],"answer":3},
+  {q:'世界上最早的现代意义大学是哪所？',opts:['巴黎大学(1170)','博洛尼亚大学(1088)','牛津大学(1167)','剑桥大学(1209)'],"answer":1},
+  {q:'十字军东征的直接导火索是什么？',opts:['拜占庭皇帝向教宗求援','蒙古西征威胁','黑死病在欧洲爆发','大航海时代开启'],"answer":0},
+  {q:'《大宪章》签署于哪一年？',opts:['1066年','1187年','1215年','1453年'],"answer":2},
+  {q:'阿拉伯黄金时代的核心科学代表人物是谁？',opts:['伊本·白图泰','花拉子密','萨拉丁','穆罕默德'],"answer":1},
+  {q:'蒙古帝国对文明最重要的正面贡献是什么？',opts:['发明火药','推广佛教','创立科举制度','实现欧亚大陆首次一体化'],"answer":3},
+  {q:'黑死病导致欧洲人口的比例变化是？',opts:['约减少5%-10%','约减少1/3到1/2','约减少80%','几乎无影响'],"answer":1},
+  {q:'中世纪城市复兴的首要因素是什么？',opts:['教会推动城市建设','国王发布建城法令','贸易恢复与商人流动','十字军东征失败'],"answer":2},
+  {q:'伊本·鲁世德最重要的思想贡献是什么？',opts:['注释并保存亚里士多德著作','发明了代数学','创立了伊斯兰教','发现了美洲大陆'],"answer":0},
+  {q:'拜占庭帝国最终灭亡于哪一年？',opts:['1204年','1347年','1453年','1492年'],"answer":2},
+  {q:'采邑制度的创立者是？',opts:['查理曼大帝','克洛维一世','腓力二世','查理·马特（铁锤查理）'],"answer":3},
+  {q:'英语"Algorithm"源自谁的名字？',opts:['亚里士多德','阿尔·花拉子密','阿尔伯特·爱因斯坦','阿基米德'],"answer":1},
+  {q:'唐宋之变的核心制度创新是什么？',opts:['科举打破门阀垄断','府兵制改为募兵制','三省六部制','岁币换和平'],"answer":0},
+  {q:'三十年战争结束的标志性条约是？',opts:['《凡尔登条约》','《巴黎和约》','《威斯特伐利亚和约》','《大宪章》'],"answer":2},
+  {q:'萨拉丁夺取耶路撒冷后的政策是？',opts:['允许基督徒不带武器朝圣','下令屠城报复','驱逐全部基督徒','焚毁圣墓大教堂'],"answer":0},
+  {q:'骑士从莽夫变绅士，哪项不是驱动力？',opts:['封建契约约束','教会的管束','贵妇人的礼仪教育','十字军东征的军事训练'],"answer":3},
+  {q:'黑死病瓦解农奴制的根本经济机制是？',opts:['国王下诏书废除','教会呼吁解放农奴','劳动力稀缺→农民谈判力上升','商人阶层武力推翻'],"answer":2},
+  {q:'「走出中世纪」五个动力中不属于直接原因的是？',opts:['游牧民族打破僵化格局','十字军东征推动觉醒','黑死病引发社会变革','大航海时代开启'],"answer":3}
+];
+
+// ========== QUIZ SYSTEM ==========
+var currentQuiz=[];
+var quizTimer=null;
+var quizAnswered=0;
+var quizCorrect=0;
+
+function startQuiz(){
+  clearInterval(quizTimer);
+  document.getElementById('staticQuiz').style.display='none';
+  var shuffled=mcqBank.slice().sort(function(){return Math.random()-0.5});
+  currentQuiz=shuffled.slice(0,10);
+  quizAnswered=0;quizCorrect=0;
+  renderQuiz();
+}
+
+function renderQuiz(){
+  var html='<div style="text-align:left">';
+  for(var i=0;i<currentQuiz.length;i++){
+    var q=currentQuiz[i];
+    html+='<div style="margin:12px 0;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border)" id="qDiv'+i+'"><strong>Q'+(i+1)+'. '+q.q+'</strong><div style="margin-top:6px">';
+    for(var j=0;j<q.opts.length;j++){
+      html+='<div class="quiz-option" onclick="checkAnswer('+i+','+j+',this)" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+q.opts[j]+'</div>';
+    }
+    html+='<div id="result'+i+'" style="margin-top:5px;font-size:.85rem"></div></div></div>';
+  }
+  html+='</div><p style="margin-top:10px;color:var(--text-light);font-size:.85rem">已答: <span id="ansCount">0</span>/'+currentQuiz.length+' | 正确: <span id="corCount">0</span></p>';
+  document.getElementById('quizContainer').innerHTML=html;
+}
+
+function checkAnswer(qIdx,optIdx,el){
+  var qDiv=document.getElementById('qDiv'+qIdx);
+  if(qDiv.classList.contains('answered')) return;
+  qDiv.classList.add('answered');
+  var q=currentQuiz[qIdx];
+  var correct=q["answer"];
+  var allOpts=qDiv.querySelectorAll('.quiz-option');
+  for(var i=0;i<allOpts.length;i++){
+    allOpts[i].classList.add('disabled');
+    if(i===correct) allOpts[i].classList.add('correct');
+    if(i===optIdx && optIdx!==correct) allOpts[i].classList.add('wrong');
+  }
+  quizAnswered++;
+  if(optIdx===correct) quizCorrect++;
+  document.getElementById('ansCount').textContent=quizAnswered;
+  document.getElementById('corCount').textContent=quizCorrect;
+  var isCorrect=(optIdx===correct);
+  document.getElementById('result'+qIdx).innerHTML=isCorrect?'<span style="color:var(--success)">✓ 正确</span>':'<span style="color:var(--accent)">✗ 错误 → 正确答案: '+'ABCD'[correct]+'. '+q.opts[correct]+'</span>';
+  store.quizHistory.push({q:q.q,correct:isCorrect});
+  if(!isCorrect) store.wrongAnswers.push({q:q.q,opts:q.opts,correct:correct,your:optIdx});
+  save();updateProgress();
+}
+
+function resetQuiz(){
+  clearInterval(quizTimer);
+  document.getElementById('quizContainer').innerHTML='';
+  document.getElementById('staticQuiz').style.display='none';
+}
+
+// ========== EXAM MODE ==========
+var examAnswered={};
+var examCorrectC=0;
+
+function startExam(){
+  clearInterval(quizTimer);
+  var shuffled=mcqBank.slice().sort(function(){return Math.random()-0.5});
+  var examQ=shuffled.slice(0,7);
+  examAnswered={};examCorrectC=0;
+  var html='<div style="text-align:left"><p style="color:var(--accent);font-weight:600">⏱ 剩余时间: <span id="examTimer">15:00</span></p>';
+  for(var i=0;i<examQ.length;i++){
+    var q=examQ[i];
+    html+='<div style="margin:12px 0;padding:12px;background:var(--card);border-radius:8px" id="exDiv'+i+'"><strong>Q'+(i+1)+'. '+q.q+'</strong><div style="margin-top:6px">';
+    for(var j=0;j<q.opts.length;j++){
+      html+='<div class="quiz-option" onclick="examAnswer('+i+','+j+','+q["answer"]+',this)" id="exOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+q.opts[j]+'</div>';
+    }
+    html+='</div></div>';
+  }
+  html+='<div id="examResultArea"></div><button class="btn btn-primary" onclick="submitExam()" style="margin-top:12px">提交考试</button></div>';
+  document.getElementById('examContainer').innerHTML=html;
+  document.getElementById('examResult').innerHTML='';
+  var totalSec=900;
+  quizTimer=setInterval(function(){
+    totalSec--;
+    if(totalSec<=0){clearInterval(quizTimer);submitExam()}
+    var min=Math.floor(totalSec/60);
+    var sec=totalSec%60;
+    var el=document.getElementById('examTimer');if(el)el.textContent=min+':'+(sec<10?'0':'')+sec;
+  },1000);
+}
+
+function examAnswer(qIdx,optIdx,correct,el){
+  if(examAnswered[qIdx]!==undefined) return;
+  examAnswered[qIdx]=optIdx;
+  if(optIdx===correct) examCorrectC++;
+  var qDiv=document.getElementById('exDiv'+qIdx);
+  var allOpts=qDiv.querySelectorAll('.quiz-option');
+  for(var i=0;i<allOpts.length;i++){
+    allOpts[i].classList.add('disabled');
+    if(i===correct) allOpts[i].classList.add('correct');
+    if(i===optIdx && optIdx!==correct) allOpts[i].classList.add('wrong');
+  }
+}
+
+function submitExam(){
+  clearInterval(quizTimer);
+  var total=7;
+  var score=examCorrectC;
+  document.getElementById('examResult').innerHTML='<div class="card" style="text-align:center"><h3>✅ 考试结果</h3><p style="font-size:1.5rem;color:var(--accent);font-weight:700">'+score+' / '+total+'</p><p>'+(score>=5?'⭐ 优秀！概念掌握较好':score>=3?'👍 良好，基础牢固可复习错题':'📚 继续加油，建议重新浏览知识卡片')+'</p></div>';
+  store.examHistory.push({score:score,total:total,date:new Date().toISOString()});
+  save();updateProgress();
+}
+
+// ========== REVIEW MODE ==========
+function renderReview(){
+  var wrong=store.wrongAnswers||[];
+  var html='';
+  if(wrong.length===0){
+    html='<p style="color:var(--success)">✨ 暂无错题，继续保持！</p>';
+  }else{
+    var recent=wrong.slice(-10).reverse();
+    for(var i=0;i<recent.length;i++){
+      var w=recent[i];
+      html+='<div class="card" style="margin:8px 0"><p><strong>'+w.q+'</strong></p><p style="color:var(--accent);font-size:.82rem">✗ 你的答案: '+'ABCD'[w.your]+'. '+w.opts[w.your]+'</p><p style="color:var(--success);font-size:.82rem">✓ 正确答案: '+'ABCD'[w.correct]+'. '+w.opts[w.correct]+'</p></div>';
+    }
+  }
+  document.getElementById('wrongBook').innerHTML=html;
+  var totalQ=store.quizHistory.length;
+  var correct=store.quizHistory.filter(function(x){return x.correct}).length;
+  var accuracy=totalQ>0?Math.round(correct/totalQ*100):0;
+  document.getElementById('reviewStats').innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">'+
+    '<div class="stat-box"><div class="num">'+totalQ+'</div><div class="lab">总答题数</div></div>'+
+    '<div class="stat-box"><div class="num">'+accuracy+'%</div><div class="lab">正确率</div></div>'+
+    '<div class="stat-box"><div class="num">'+learnedCards.length+'</div><div class="lab">已学概念</div></div>'+
+    '<div class="stat-box"><div class="num">'+wrong.length+'</div><div class="lab">错题数</div></div>'+
+    '</div>';
+}
+renderReview();
+
+// ========== TAB SWITCH ==========
+function switchTab(idx){
+  var tabs=document.querySelectorAll('.tab-content');
+  var btns=document.querySelectorAll('.tab-btn');
+  for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active')}
+  for(var j=0;j<btns.length;j++){btns[j].classList.remove('active')}
+  tabs[idx].classList.add('active');
+  btns[idx].classList.add('active');
+  if(idx===4) renderReview();
+  if(idx===0) updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ========== TREE TOGGLE ==========
+function toggleTree(e){
+  e.stopPropagation();
+  var children=e.target.parentElement.querySelector('.tree-children');
+  if(children){
+    if(children.classList.contains('show')||children.classList.contains('open')){
+      children.classList.remove('show');children.classList.remove('open');
+    }else{
+      children.classList.add('show');
+    }
+  }
+}
+
+// ========== CONCEPT GRID ==========
+(function(){
+  var grid=document.getElementById('conceptGrid');
+  var stars=['c1','c4','c7','c8'];
+  var html='';
+  for(var i=0;i<concepts.length;i++){
+    var c=concepts[i];
+    var star=stars.includes(c.id)?' <span class="mks-star">★</span>':'';
+    var learned=learnedCards.includes(c.id)?' <span class="tag tag-learned">✓</span>':'';
+    html+='<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><h4>'+c.name+star+learned+'</h4><p style="font-size:.78rem;color:var(--text-light)">'+c.def.substring(0,40)+'...</p></div>';
+  }
+  grid.innerHTML=html;
+})();
+
+// ========== DECISION SIMULATION ==========
+function chooseDecision(round, choice){
+  var feedbacks={
+    1:{0:'<p style="color:var(--accent)">✅ 历史还原：第一次十字军确实屠杀了耶路撒冷的穆斯林和犹太人——但这成了伊斯兰世界与西方长达千年的仇恨根源之一。</p><p><strong>MKS分析：</strong>短期满足士兵战利品需求；长期看暴行强化了「十字军=野蛮人」叙事，巩固了伊斯兰团结。萨拉丁之所以能号召圣战，很大程度用「十字军暴行」做动员。你的选择获得短期收益，付出长期信誉成本。</p>',
+       1:'<p style="color:var(--success)">⭐ 历史对照：萨拉丁1187年夺回耶路撒冷时选择了约束军队、允许基督徒不带武器朝圣。你的选择与萨拉丁一致——在文明冲突中，克制是最稀缺的军事资源。</p><p><strong>MKS分析：</strong>减少了长期仇恨积累，为未来和平谈判保留可能。但代价：士兵可能不满，需其他方式补偿。</p>',
+       2:'<p style="color:var(--warning)">⚠ MKS分析：强制改宗历史上多次尝试，几乎从未真正成功——人们可假装改宗保命但内心信仰不变。既不能让被征服者真心归附，又会在内部引发神学争议。</p>'},
+    2:{0:'<p style="color:var(--accent)">✅ 历史还原：南宋选择决一死战——崖山海战陆秀夫负帝投海，十万军民殉国。中国历史上最悲壮的时刻之一。</p><p><strong>MKS分析：</strong>「荣誉最大化」选择——用生命捍卫文明尊严。但荣誉的代价是文明彻底灭亡。</p>',
+       1:'<p style="color:var(--success)">⭐ MKS分析：保存火种的策略——南宋实际上部分这样做了。只要文明火种还在就有复兴可能。但现实困难：航海技术不足以支持远海生存；追兵会持续追击；流亡政权合法性会衰减。最佳效果是拖延时间而非逆转结局。</p>',
+       2:'<p style="color:var(--warning)">⚠ MKS分析：谈判求和最务实，但蒙古帝国当时战略目标就是完全征服南宋，忽必烈需要灭宋来巩固大汗地位。谈判可能延缓攻势但不改变最终结果。内部反对派会认为「皇帝都投降了」而丧失斗志。</p>'},
+    3:{0:'<p style="color:var(--accent)">❌ MKS分析：封锁城市在历史上不仅无效反而加速传播——被困的人互相感染更严重。黑死病是鼠疫，通过跳蚤老鼠传播，封锁只能减缓不能阻止。而且封锁意味着放弃最基本的执政责任。</p>',
+       1:'<p style="color:var(--success)">⭐ MKS分析：历史上最有效的应对方式。维持秩序、保障粮食、建立隔离区——这些措施后来被证明是唯一有效的方案。你的存在传递信号「政府没有崩溃」。灾难中积累的信任在危机后转化为政治资本。</p>',
+       2:'<p style="color:var(--warning)">⚠ MKS分析：把管理权交给教会看似合理——教会负责灵魂事务。但现实：教士死亡率甚至高于普通民众。正是教会对黑死病的无能为力导致了信仰危机。如果你也逃离就和教会一起成了「失败的权威」——短期最安全、长期最危险。</p>'}
+  };
+  var fbDiv=document.getElementById('feedback'+round);
+  fbDiv.innerHTML=feedbacks[round][choice];
+  fbDiv.classList.add('show');
+  var opts=document.querySelectorAll('#decision'+round+' .decision-option');
+  for(var i=0;i<opts.length;i++){opts[i].style.pointerEvents='none'}
+  opts[choice].classList.add('selected');
+  if(round<3){
+    var next=document.getElementById('decision'+(round+1));
+    if(next) next.style.display='block';
+  }
+}
+
+// ========== INIT ==========
+updateProgress();
+</script>
+
+</body>
+</html>

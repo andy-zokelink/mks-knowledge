@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>专题5：近现代文明转型 — MKS学习系统</title>
+<style>
+:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--text:#3d2f2f;--text-light:#7a6a6a;--border:#e0d5c0;--success:#2d7d46;--warning:#b8860b;--shadow:0 2px 12px rgba(0,0,0,.06)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding-top:58px}
+.top-bar{position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,#5a2a1a,#8b3a2a);color:#fff;padding:0 20px;display:flex;align-items:center;height:50px;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.top-bar .logo{font-size:1.05rem;font-weight:700;white-space:nowrap}
+.top-bar .home-link{color:#ffd4a8;text-decoration:none;font-size:.82rem;white-space:nowrap;margin-left:auto;padding:4px 10px;border:1px solid rgba(255,255,255,.3);border-radius:6px;transition:all .2s}
+.top-bar .home-link:hover{background:rgba(255,255,255,.12)}
+.tab-nav{display:flex;flex-wrap:wrap;gap:4px;padding:12px 20px;background:#fffaf2;border-bottom:2px solid var(--border);position:sticky;top:50px;z-index:999}
+.tab-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--card);color:var(--text);cursor:pointer;font-size:.82rem;transition:all .2s;white-space:nowrap}
+.tab-btn:hover,.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none;padding:24px 20px;max-width:1200px;margin:0 auto;animation:fadeIn .3s}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h2{color:var(--accent);font-size:1.5rem;margin-bottom:16px;border-left:4px solid var(--accent);padding-left:12px}
+h3{color:var(--text);font-size:1.15rem;margin:16px 0 8px}
+h3.section-title{color:var(--accent);font-size:1.2rem;margin:24px 0 12px;padding-bottom:6px;border-bottom:1px dashed var(--border)}
+.card{background:var(--card);border-radius:10px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 18px rgba(0,0,0,.1);border-color:var(--accent)}
+.concept-card h4{color:var(--accent);font-size:.95rem;margin-bottom:4px}
+.concept-card .tag{display:inline-block;font-size:.7rem;background:#fef0e0;color:var(--accent);padding:2px 8px;border-radius:10px;margin-top:4px}
+.mks-star{color:#d4a017;font-size:1rem}
+.boundary-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.boundary-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+.boundary-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:rgba(192,57,43,.03)}
+.progress-bar{width:100%;height:10px;background:var(--border);border-radius:5px;margin:12px 0;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:5px;transition:width .4s}
+.btn{display:inline-block;padding:8px 18px;border:none;border-radius:8px;font-size:.88rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#a8322a}
+.btn-outline{border:1px solid var(--accent);color:var(--accent);background:transparent}
+.btn-outline:hover{background:rgba(192,57,43,.08)}
+.btn-success{background:var(--success);color:#fff}
+.btn-sm{padding:5px 12px;font-size:.78rem}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-option{padding:10px 14px;margin:6px 0;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;background:var(--card)}
+.quiz-option:hover{border-color:var(--accent);background:#fef5e7}
+.quiz-option.correct{border-color:var(--success);background:#e8f5e9}
+.quiz-option.wrong{border-color:var(--accent);background:#fde8e8}
+.quiz-option.disabled{pointer-events:none}
+.tree-node{margin-left:20px;border-left:1px dashed var(--border);padding-left:12px}
+.tree-label{cursor:pointer;padding:4px 8px;border-radius:4px;transition:all .2s;font-weight:600}
+.tree-label:hover{background:rgba(192,57,43,.08)}
+.tree-children{display:none}
+.tree-children.show,.tree-children.open{display:block}
+.tree-toggle{display:inline-block;margin-right:4px;font-size:.75rem;color:var(--accent)}
+.accordion-item{margin-bottom:8px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.accordion-header{background:var(--card);padding:12px 16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.accordion-header:hover{background:#fef5e7}
+.accordion-body{display:none;padding:12px 16px;background:#fffdf7;border-top:1px solid var(--border)}
+.accordion-body.show{display:block}
+.decision-option{padding:12px 16px;margin:8px 0;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s}
+.decision-option:hover{border-color:var(--accent);background:#fef5e7}
+.decision-option.selected{border-color:var(--accent);background:#fef0e0}
+.decision-feedback{display:none;margin:12px 0;padding:14px;background:#fffdf7;border-radius:8px;border:1px solid var(--border)}
+.decision-feedback.show{display:block}
+#svgContainer{overflow-x:auto;margin:16px 0;text-align:center}
+#svgContainer svg{max-width:100%;height:auto}
+.static-quiz{display:none}
+.tag{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;margin:2px 4px}
+.tag-learned{background:#e8f5e9;color:var(--success)}
+.tag-mks{background:#fef0e0;color:#d4a017}
+.sub-section{margin:20px 0}
+.path-count{color:var(--accent);font-weight:700}
+.stat-box{display:inline-block;background:var(--card);border-radius:8px;padding:12px 16px;margin:6px;text-align:center;min-width:80px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.stat-box .num{font-size:1.5rem;font-weight:700;color:var(--accent)}
+.stat-box .lab{font-size:.75rem;color:var(--text-light)}
+@media(max-width:768px){
+  .tab-nav{padding:8px 10px;gap:3px}
+  .tab-btn{padding:4px 10px;font-size:.73rem}
+  .card-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  h2{font-size:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+  <span class="logo">\u2728 专题5：近现代文明转型 — 理性之光照亮传统，技术之轮碾过旧世界</span>
+  <a href="index.html" class="home-link">\u2190 返回知识主板</a>
+</nav>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="switchTab(0)">\U0001f4ca 总览</button>
+  <button class="tab-btn" onclick="switchTab(1)">\U0001f4d6 卡片</button>
+  <button class="tab-btn" onclick="switchTab(2)">\U0001f3b2 题库</button>
+  <button class="tab-btn" onclick="switchTab(3)">\u270d\ufe0f 考试</button>
+  <button class="tab-btn" onclick="switchTab(4)">\U0001f501 复习</button>
+  <button class="tab-btn" onclick="switchTab(5)">\U0001f9e0 思维导图</button>
+  <button class="tab-btn" onclick="switchTab(6)">\U0001f4ac 深度追问</button>
+  <button class="tab-btn" onclick="switchTab(7)">\U0001f50d 案例分析</button>
+  <button class="tab-btn" onclick="switchTab(8)">\u2694\ufe0f 实战决策</button>
+</nav>
+
+<!-- ========== TAB 0: 知识集总览 ========== -->
+<div class="tab-content active" id="tab0">
+<h2>\U0001f4ca 知识集总览</h2>
+<div class="card">
+  <h3 style="margin-top:0">\U0001f3af 核心目标</h3>
+  <p style="font-size:1.05rem;color:var(--accent);font-weight:600">理解近现代文明如何通过文艺复兴、宗教改革、科学革命、大航海时代、启蒙运动、工业革命、政治革命七大引擎，实现从\u201C传统\u201D到\u201C现代\u201D的深刻转型，掌握\u201C理性之光与技术之轮\u201D如何重塑人类文明。</p>
+</div>
+
+<h3 class="section-title">\u2b50 10个核心概念</h3>
+<div class="card-grid" id="conceptGrid"></div>
+
+<h3 class="section-title">\U0001f517 概念关系图</h3>
+<div class="card" id="svgContainer"></div>
+
+<h3 class="section-title">\U0001f4d6 学习进度</h3>
+<div class="card">
+  <div class="progress-bar"><div class="progress-fill" id="overviewProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.85rem;color:var(--text-light)">已学 <span id="overviewLearned">0</span> / 10 概念 | 已做 <span id="overviewQuiz">0</span> 题 | 正确率 <span id="overviewAccuracy">0</span>%</p>
+</div>
+
+<h3 class="section-title">\U0001f4cb 边界知识表（15条）</h3>
+<div class="card" style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>#</th><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>东方造纸术与印刷术传入欧洲时间线</td><td>辨别\u201C技术决定论\u201D的逻辑陷阱</td></tr>
+<tr><td>2</td><td>德尔斐神谕的运作机制</td><td>理解古希腊宗教与社会的关系</td></tr>
+<tr><td>3</td><td>文坛三杰与艺术三杰的区别</td><td>区分文艺复兴文学与艺术两条线索</td></tr>
+<tr><td>4</td><td>圣母百花大教堂拱顶技术</td><td>理解文艺复兴时期的工程创新</td></tr>
+<tr><td>5</td><td>四十二行本《圣经》印刷史</td><td>分析技术对思想传播的加速作用</td></tr>
+<tr><td>6</td><td>扬·胡斯火刑事件（1415年）</td><td>理解马丁·路德拒绝赴罗马的历史教训</td></tr>
+<tr><td>7</td><td>香料在欧洲的多重价值</td><td>大航海时代经济动机的分析基础</td></tr>
+<tr><td>8</td><td>哥德堡号沉船（1745年）</td><td>评估早期全球贸易的利润率</td></tr>
+<tr><td>9</td><td>巴伦支北极航海的契约精神</td><td>商业信誉的历史典范案例</td></tr>
+<tr><td>10</td><td>郑和下西洋与民间海盗</td><td>中华文明在大航海中的双重角色</td></tr>
+<tr><td>11</td><td>西班牙白银与中国明代货币</td><td>早期全球化的联动效应分析</td></tr>
+<tr><td>12</td><td>伊丽莎白一世基础教育普及</td><td>理解\u201C黄金时代\u201D的社会基础</td></tr>
+<tr><td>13</td><td>月光社（Lunar Society）</td><td>工业革命中创新社群的作用</td></tr>
+<tr><td>14</td><td>雅各宾俱乐部</td><td>法国大革命政治派别的起源</td></tr>
+<tr><td>15</td><td>维也纳会议（1815年）</td><td>革命后国际秩序重建的典范</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 class="section-title">\U0001f4d6 学习路径（5阶段）</h3>
+<div class="card">
+<ol style="padding-left:20px;line-height:2">
+<li><strong>阶段一：建立框架</strong> — 通读「概念关系图」+「核心概念」，理解七大转型引擎与\u201C理性-技术\u201D主线</li>
+<li><strong>阶段二：逐卡深读</strong> — 翻转10张知识卡片，掌握每个概念的定义/类比/示例/反例</li>
+<li><strong>阶段三：题库检验</strong> — 完成20道选择题，错题进入错题本</li>
+<li><strong>阶段四：深度追问</strong> — 苏格拉底式追问核心概念，逼迫自己想通底层逻辑</li>
+<li><strong>阶段五：实战应用</strong> — 完成案例分析与实战决策，检验知识迁移能力</li>
+</ol>
+</div>
+</div>
+
+<!-- ========== TAB 1: 知识卡片 ========== -->
+<div class="tab-content" id="tab1">
+<h2>\U0001f4d6 知识卡片</h2>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">\u2190 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 \u2192</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">\u2713 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- ========== TAB 2: 题库系统 ========== -->
+<div class="tab-content" id="tab2">
+<h2>\U0001f3b2 题库系统</h2>
+<div class="card" style="text-align:center">
+  <div class="btn-group" style="justify-content:center">
+    <button class="btn btn-primary" onclick="startQuiz()">\U0001f3b2 随机抽题练习</button>
+    <button class="btn btn-outline" onclick="resetQuiz()">\U0001f504 重置</button>
+  </div>
+  <div id="quizContainer" style="margin-top:16px"></div>
+</div>
+<div class="static-quiz" id="staticQuiz"></div>
+</div>
+
+<!-- ========== TAB 3: 考试模式 ========== -->
+<div class="tab-content" id="tab3">
+<h2>\u270d\ufe0f 考试模式</h2>
+<div class="card" style="text-align:center">
+  <p style="margin-bottom:12px">从题库随机抽取7题选择题，检验核心概念掌握程度</p>
+  <button class="btn btn-primary" onclick="startExam()">\U0001f4dd 开始考试</button>
+  <div id="examContainer" style="margin-top:16px"></div>
+  <div id="examResult" style="margin-top:16px"></div>
+</div>
+</div>
+
+<!-- ========== TAB 4: 复习模式 ========== -->
+<div class="tab-content" id="tab4">
+<h2>\U0001f501 复习模式</h2>
+<div class="card">
+  <h3>\U0001f4dd 错题本</h3>
+  <div id="wrongBook"></div>
+</div>
+<div class="card">
+  <h3>\U0001f4ca 学习统计</h3>
+  <div id="reviewStats"></div>
+</div>
+</div>
+
+<!-- ========== TAB 5: 思维导图 ========== -->
+<div class="tab-content" id="tab5">
+<h2>\U0001f9e0 思维导图：近现代文明转型</h2>
+<div class="card" style="overflow-x:auto">
+<div class="tree-node">
+  <div class="tree-label" onclick="toggleTree(event)" style="font-size:1.1rem;color:var(--accent)">\u2728 理性之光照亮传统，技术之轮碾过旧世界</div>
+  <div class="tree-children show">
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\U0001f3a8 一、文艺复兴：人文主义的觉醒（14-16世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 佛罗伦萨：文艺复兴摇篮</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">经济基础：金融业（教廷货币兑换中心）+ 手工业（丝绸中心）+ 农业</div></div>
+            <div class="tree-node"><div class="tree-label">政治变革：商人阶层崛起 → 行会主导城市治理 → 摆脱王权教权</div></div>
+            <div class="tree-node"><div class="tree-label">思想解放：经济繁荣 → 从禁欲转向追求现世生活享乐</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 文坛三杰：文学奠基</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">但丁：《神曲》→ 人的价值取决于对文明的贡献，而非教会地位</div></div>
+            <div class="tree-node"><div class="tree-label">彼特拉克：十四行诗革新者，\u201C桂冠诗人\u201D，表达世俗情感</div></div>
+            <div class="tree-node"><div class="tree-label">薄伽丘：《十日谈》→ 赞美现世生活，讽刺教会虚伪</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 美第奇家族：关键推手</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">科西莫·美第奇：资助圣母百花大教堂拱顶（文艺复兴开始标志），获\u201C祖国之父\u201D</div></div>
+            <div class="tree-node"><div class="tree-label">\u201C豪华者\u201D洛伦佐：发现培养达·芬奇、米开朗基罗，建设艺术中心</div></div>
+            <div class="tree-node"><div class="tree-label">赞助资金=同期佛罗伦萨税收的六倍，家族图书馆=全欧洲最大藏书库</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 艺术风格四阶段演进：天上→天上人间→人间天上→人间</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">艺术三杰：达·芬奇（《蒙娜丽莎》）、米开朗基罗（《大卫》《创世纪》）、拉斐尔（《雅典学院》）</div></div>
+            <div class="tree-node"><div class="tree-label">核心转变：神\u2192人的凡人化（《圣家族》神的光环消失，如普通全家福）</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">5. 文艺复兴的扩散：佛罗伦萨→罗马→威尼斯→北欧（尼德兰）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">罗马：尤里乌斯二世+利奥十世（美第奇家族）赞助，圣彼得大教堂（120年）</div></div>
+            <div class="tree-node"><div class="tree-label">威尼斯画派：提香、深邃天蓝色、人间生活化场景</div></div>
+            <div class="tree-node"><div class="tree-label">北欧尼德兰：凡·艾克（油画之父）、市场机制驱动、市民肖像画</div></div>
+            <div class="tree-node"><div class="tree-label">南北差异：南欧=王公教会赞助·宏大主题 / 北欧=市场驱动·市民生活</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\u271d\ufe0f 二、宗教改革：信仰权威的瓦解（16世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 导火索：赎罪券 + 教廷财政危机（利奥十世修建圣彼得教堂）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">赎罪券定义：教会出售的羊皮纸，承诺减少炼狱赎罪时间</div></div>
+            <div class="tree-node"><div class="tree-label">历史背景：中世纪常见敛财手段，依赖教廷对《圣经》解释权垄断</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 马丁·路德与核心主张</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">因信称义（1513-16）：\u201C义人必因信得生\u201D，否定赎罪券必要性</div></div>
+            <div class="tree-node"><div class="tree-label">《九十五条论纲》（1517）：张贴于维滕贝格大门，印刷术大量传播</div></div>
+            <div class="tree-node"><div class="tree-label">翻译德文《圣经》：打破教廷垄断，德语区民众可直接阅读</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 对抗与结果</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">沃尔姆斯会议（1521）：查理五世宣布剥夺路德公民权</div></div>
+            <div class="tree-node"><div class="tree-label">《奥格斯堡宗教和约》（1555）：路德新教与天主教在德意志并存</div></div>
+            <div class="tree-node"><div class="tree-label">印刷术关键作用：路德称印刷术为\u201C上帝至高无上的恩赐\u201D</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 深远影响：破除权威盲从 → 恢复思辨传统 → 为哲学科学发展奠基</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\U0001f52c 三、科学革命：理性方法的建立（16-18世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 哥白尼与日心说</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">《天体运行论》：去世前出版，将坐标系原点移至太阳</div></div>
+            <div class="tree-node"><div class="tree-label">布鲁诺事件：将日心说作为攻击基督教武器，火刑主因是神学错误</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 伽利略：实验科学奠基者</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">物理学：单摆周期原理、物体运动惯性、绝对时空观、加速度/自由落体</div></div>
+            <div class="tree-node"><div class="tree-label">发明：空气温度计、天文望远镜</div></div>
+            <div class="tree-node"><div class="tree-label">天文发现：木星4颗卫星（证伪地心说）、金星盈亏周期</div></div>
+            <div class="tree-node"><div class="tree-label">霍金评价：\u201C近代自然科学诞生要归功于伽利略\u201D（逻辑+实验方法）</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 牛顿：经典力学体系</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">万有引力定律+三大运动定律，统一天上与地上物理学</div></div>
+            <div class="tree-node"><div class="tree-label">与莱布尼茨各自独立发明微积分</div></div>
+            <div class="tree-node"><div class="tree-label">1687年《自然哲学的数学原理》，标志近代科学正式确立</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 其他科学进展</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">数学：笛卡尔解析几何、微积分、概率论</div></div>
+            <div class="tree-node"><div class="tree-label">化学：波义耳→拉瓦锡，炼金术→科学化学</div></div>
+            <div class="tree-node"><div class="tree-label">仪器：显微镜（列文虎克）、温度计（华氏/摄氏）</div></div>
+            <div class="tree-node"><div class="tree-label">科学方法论：培根经验主义+笛卡尔理性主义的综合</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\U0001f30d 四、大航海时代：全球化的开端（15-18世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 驱动力：香料利润 + 奥斯曼阻断商路（1453年君士坦丁堡陷落）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">香料多重价值：饮食刚需、医疗用途、宗教仪式、实物货币、投资品</div></div>
+            <div class="tree-node"><div class="tree-label">阿拉伯+威尼斯中间商垄断 → 推高欧洲进口成本</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 葡萄牙与西班牙的先发优势</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">葡萄牙：迪亚士→达伽马（1498年抵达印度），香料利润达成本60倍</div></div>
+            <div class="tree-node"><div class="tree-label">西班牙：哥伦布（1492年发现美洲）、麦哲伦（1519-22年环球航行）</div></div>
+            <div class="tree-node"><div class="tree-label">教皇子午线（1493/94年）：西葡瓜分世界</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 荷兰：现代商业制度的创新</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">东印度公司（1602）：股份制、所有权与管理权分离</div></div>
+            <div class="tree-node"><div class="tree-label">阿姆斯特丹银行（1609）+股票交易所：现代金融体系四大支柱</div></div>
+            <div class="tree-node"><div class="tree-label">商业信誉：独立战争期间仍为西班牙存款服务，信托责任典范</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 伊丽莎白时代：英国黄金时代（1558-1603年）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">宗教宽容→中央集权→击败无敌舰队（1588）→莎士比亚与培根</div></div>
+            <div class="tree-node"><div class="tree-label">基础教育普及：普通男孩4岁入学，为牛顿等寒门子弟提供上升通道</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">5. 西班牙白银帝国与产业空心化</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">财富来源：美洲金银矿（非掠夺）> 三角贸易 > 尼德兰税收（占国库50%）</div></div>
+            <div class="tree-node"><div class="tree-label">衰因：金银涌入→产业空心化→制造业停滞→财富外流→帝国衰落</div></div>
+            <div class="tree-node"><div class="tree-label">核心教训：文明发展靠创造产生，而非钱买来</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\U0001f4a1 五、启蒙运动：理性照亮传统（17-18世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 英国起源：洛克与经验主义</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">约翰·洛克：《政府论》→社会契约、自然权利（生命·自由·财产）</div></div>
+            <div class="tree-node"><div class="tree-label">《人类理解论》：白板说（tabula rasa），知识来自经验</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 法国启蒙运动</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">孟德斯鸠：《论法的精神》→三权分立（立法·行政·司法）</div></div>
+            <div class="tree-node"><div class="tree-label">卢梭：《社会契约论》→公意（general will）、人民主权</div></div>
+            <div class="tree-node"><div class="tree-label">伏尔泰与狄德罗：百科全书派，批判教会与专制</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 苏格兰启蒙运动</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">亚当·斯密：《国富论》→看不见的手、分工理论、自由贸易</div></div>
+            <div class="tree-node"><div class="tree-label">大卫·休谟：经验主义哲学、因果关系的怀疑论分析</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 法苏差异：法国=激进政治变革 / 苏格兰=经济社会渐进改良</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\u2699\ufe0f 六、工业革命：机械时代的来临（18-19世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 助推力量：月光社（伯明翰创新社群）+ 科学方法论 + 专利制度</div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 第一次工业革命：蒸汽时代</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">瓦特改良蒸汽机（1769）：从矿山抽水到通用动力</div></div>
+            <div class="tree-node"><div class="tree-label">机械思维：将世界看作可拆解、可优化的机器系统</div></div>
+            <div class="tree-node"><div class="tree-label">纺织→铁路→轮船，彻底改变人类生产生活方式</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 第二次工业革命：电力时代</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">法拉第电磁感应 → 发电机 → 电力普及</div></div>
+            <div class="tree-node"><div class="tree-label">内燃机革命：汽车（奔驰/戴姆勒）→飞机（莱特兄弟）</div></div>
+            <div class="tree-node"><div class="tree-label">通讯革命：电报→电话→无线电</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 全球贸易转型：重商主义（零和博弈）→自由贸易（比较优势）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\U0001f5fa\ufe0f 七、政治革命：民主制度的确立（18-19世纪）</div>
+      <div class="tree-children">
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">1. 美国独立革命（1776-1783）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">前因：七年战争后英国加税+北美殖民地地方自治传统</div></div>
+            <div class="tree-node"><div class="tree-label">《独立宣言》（1776）：\u201C人人生而平等\u201D，天赋人权制度化</div></div>
+            <div class="tree-node"><div class="tree-label">1787年宪法：联邦制+三权分立，世界上第一部成文宪法</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">2. 法国大革命（1789-1799）</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">起因：三级会议→财政危机→启蒙思想→民众不满</div></div>
+            <div class="tree-node"><div class="tree-label">雅各宾派专政→恐怖统治→热月政变→拿破仑崛起</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">3. 伯克的保守主义批判</div>
+          <div class="tree-children">
+            <div class="tree-node"><div class="tree-label">《反思法国大革命》：反对激进颠覆，主张渐进改良</div></div>
+            <div class="tree-node"><div class="tree-label">核心思想：社会是有机体，不可随意拆解重建</div></div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div class="tree-label" onclick="toggleTree(event)">4. 拉美独立运动+拿破仑战争+维也纳会议（1815）→现代国际秩序</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <div class="tree-label" onclick="toggleTree(event)">\U0001f504 八、文明转型的底层逻辑</div>
+      <div class="tree-children">
+        <div class="tree-node"><div class="tree-label">印刷术：知识民主化→思想传播加速→宗教改革+科学革命</div></div>
+        <div class="tree-node"><div class="tree-label">大航海：地理突破→全球贸易→财富积累→工业革命资本</div></div>
+        <div class="tree-node"><div class="tree-label">科学方法论：逻辑+实验→技术加速→生产力爆炸</div></div>
+        <div class="tree-node"><div class="tree-label">商业制度：股份制+银行+交易所→资本聚集→规模化创新</div></div>
+        <div class="tree-node"><div class="tree-label">启蒙思想：天赋人权+社会契约→政治革命→现代民主</div></div>
+        <div class="tree-node"><div class="tree-label" style="color:var(--accent);font-weight:700">终极密码：开放竞争×制度创新×思想自由=文明跃迁</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ========== TAB 6: 深度追问 ========== -->
+<div class="tab-content" id="tab6">
+<h2>\U0001f4ac 深度追问（苏格拉底式）</h2>
+
+<h3 class="section-title">追问1：文艺复兴真的是\u201C复兴\u201D吗？还是\u201C创新\u201D？</h3>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第一层：什么是\u201C复兴\u201D？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>\u201C文艺复兴\u201D（Renaissance）字面意思是\u201C再生\u201D，指古希腊罗马文化的\u201C复活\u201D。但需要注意的是：这并非简单的\u201C翻新古籍\u201D——中世纪的欧洲从未完全遗忘古典文化（加洛林文艺复兴、奥托文艺复兴都是例子）。区别在于：<strong>这次\u201C复兴\u201D不是复制，而是用古典文化作为跳板，创造了一种全新的文化形态。</strong></p><p><strong>追问：</strong>那为什么这次\u201C复兴\u201D不同于以往？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第二层：与加洛林文艺复兴的本质区别是什么？<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>加洛林文艺复兴的目标是<strong>保存</strong>——查理曼大帝抢救古籍、规范拉丁文，是为了维持教会的文化统治。意大利文艺复兴的目标是<strong>超越</strong>——美第奇家族和艺术家们不是在复制古希腊，而是在古希腊的基础上创造\u201C从未有过的\u201D新文化。洛伦佐·美第奇与同时代君主的区别就是最好的证据：其他君主搜集古物是为了<strong>占有</strong>，洛伦佐用古物是为了<strong>培养新艺术家</strong>。这就是\u201C占有型\u201D与\u201C创造型\u201D赞助的本质区别。</p><p><strong>追问：</strong>复兴还是创新，这重要吗？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第三层：这个区分的深层意义<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>非常重要。如果你认为文艺复兴只是\u201C复兴\u201D，那你会得出结论：欧洲是靠\u201C抄古希腊作业\u201D才进步的——这暗示欧洲自己没有创造力。但历史事实恰恰相反：<strong>文艺复兴的核心不是\u201C回头看\u201D，而是\u201C用古典资源创造新东西\u201D。</strong>达·芬奇的《蒙娜丽莎》不是任何古希腊作品的复制品；米开朗基罗的《大卫》也不是模仿菲迪亚斯的雕塑。理解这一点，才能真正理解为什么文艺复兴开创了\u201C现代\u201D——它第一次让\u201C创新\u201D本身成为一种文化价值。这在人类历史上是前所未有的。</p></div></div>
+
+<h3 class="section-title">追问2：古腾堡印刷术为何比中国雕版印刷更具革命性？</h3>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第一层：技术层面的本质差异<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>中国雕版印刷是<strong>雕刻整版</strong>——每页书需要刻一块完整的木板，汉字数量庞大（常用字数千个），印一本新书等于重新刻一套版。古腾堡活字印刷是<strong>模块化生产</strong>——拉丁文只需几十个字母的模具，可以无限排列组合。一个比喻：雕版印刷像手写（每页都是定制的），活字印刷像键盘打字（字母可以重复使用）。但仅此不足以解释其革命性。</p><p><strong>追问：</strong>生产效率的差异有多大？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第二层：从工具到系统的跃迁<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>古腾堡的突破不在于\u201C活字\u201D本身（中国宋代毕昇早已发明活字），而在于三大技术整合：(1)<strong>字母库+合金浇注</strong>——标准化铅字大规模生产；(2)<strong>手摇印刷机</strong>——机械压力替代手工刷印；(3)<strong>流水线分工</strong>——排字、上墨、压印、干燥等工序由不同工人协作。这三者结合将印刷变成了<strong>工业</strong>。15世纪欧洲图书总量约千万册，16世纪增至<strong>两亿册</strong>——这是20倍的爆炸性增长。中国雕版印刷从未实现这种工业级规模。</p><p><strong>追问：</strong>那为什么是中国先发明了活字，却是欧洲实现了印刷革命？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第三层：文字体系决定技术路径<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>汉字是表意文字，常用字数千个，活字印刷的经济性远不如雕版——管理几千个铅字的成本和排字效率，抵消了活字的灵活性优势。拉丁字母只有26个，加上大小写和标点也不过几十个字符，活字印刷天然适合。所以不是中国人\u201C笨\u201D，而是<strong>文字体系本身决定了最优技术路径不同</strong>。这带来一个发人深省的结论：技术革命的发生，不仅取决于\u201C有没有发明\u201D，还取决于\u201C发明是否适合该文明的基础设施\u201D。古腾堡的幸运在于：字母文字天然是他的盟友。</p></div></div>
+
+<h3 class="section-title">追问3：大航海时代的真正动力是什么——冒险精神还是利润驱动？</h3>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第一层：教科书vs真实历史<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>教科书常常强调\u201C探索未知的冒险精神\u201D。但真实历史的主导因素是<strong>利润</strong>。哥伦布向西航行的直接诉求是找到到达东方的新航线以获取香料利润；葡萄牙王室资助达伽马是为了绕过阿拉伯和威尼斯中间商；麦哲伦申请西班牙赞助时，王室开出的条件是<strong>航道垄断权+殖民地总督+5%利润分成</strong>。这不是慈善，这是风险投资。</p><p><strong>追问：</strong>但利润驱动自古就有，为什么15世纪才引爆大航海？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第二层：奥斯曼帝国的阻断效应<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>1453年是一个关键转折点——奥斯曼攻陷君士坦丁堡，切断了欧洲通往亚洲的传统陆上贸易路线。这不是\u201C突然没了香料\u201D，而是<strong>成本暴增</strong>——阿拉伯中间商+威尼斯商人层层加价，奥斯曼征收繁重转运税。欧洲最西端的伊比利亚半岛受害最深——他们的香料价格比威尼斯贵好几倍。所以他们最有动力寻找\u201C绕过中间商\u201D的新航线。此外，托勒密地理学\u201C地球是圆的\u201D的观点提供了理论基础——既然地球是圆的，向西航行应该也能到达东方。</p><p><strong>追问：</strong>那哥伦布算错地球大小反而是好运？</p></div></div>
+<div class="accordion-item"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('show')">\u25b6 第三层：错误认知的积极历史作用<span style="font-size:.75rem;color:var(--text-light)">点击展开</span></div><div class="accordion-body"><p>这是个极具讽刺的历史事实。哥伦布依据托勒密对地球直径的<strong>偏小估计</strong>，计算向西航行到亚洲只需约3000英里——实际距离超过12000英里。如果他知道真实距离，绝对不会出发。同样，麦哲伦是被一个错误情报（南纬40度存在海峡）误导才开始环球航行的。两个改变世界历史的大事件，都建立在<strong>错误的知识基础</strong>之上。这告诉我们：在探索未知时，<strong>胆量和行动力</strong>可能比精确的知识更重要。精确的知识只会告诉哥伦布\u201C这不可能\u201D，但历史奖赏了那个\u201C算错了还敢去\u201D的人。</p></div></div>
+
+</div>
+
+<!-- ========== TAB 7: 案例分析 ========== -->
+<div class="tab-content" id="tab7">
+<h2>\U0001f50d 案例分析：用MKS拆解近现代转型关键节点</h2>
+
+<h3 class="section-title">案例一：圣母百花大教堂——一座建筑如何成为文艺复兴的起点？</h3>
+<div class="card">
+<h4>\U0001f4cb 背景速览</h4>
+<p>佛罗伦萨大教堂始建于1296年，80多年只完成了四围墙壁——因为没有人知道如何建造跨度110多米的哥特式尖顶。直到科西莫·美第奇资助菲利波·布鲁内莱斯基，采用受古罗马万神殿启发的<strong>内外双层拱顶</strong>设计，用400多万块红砖完成建造。1436年落成时教宗亲自主持典礼，科西莫获\u201C祖国之父\u201D称号。这座教堂的落成被普遍认为是<strong>文艺复兴开始的标志</strong>。</p>
+</div>
+<div class="card">
+<h4>\U0001f50d MKS四维度拆解</h4>
+<p><strong>1. 定义层（What）：</strong>圣母百花大教堂不只是宗教建筑——它是\u201C用古代技术解决当代问题\u201D的宣言。布鲁内莱斯基没有从零发明，他从古罗马万神殿获取灵感，但创造了一个史无前例的结构（至今仍是世界最大砖结构拱顶）。这就是文艺复兴的本质：<strong>以古典为师，但不做古典的奴隶</strong>。</p>
+<p><strong>2. 类比层（How）：</strong>好比一个现代城市的标志性建筑（比如迪拜哈利法塔或北京鸟巢）——它不仅是一个物理结构，更是一个文明的\u201C能力声明\u201D。圣母百花大教堂向欧洲宣告：我们不仅可以\u201C修复\u201D古代的伟大，还可以\u201C超越\u201D它。</p>
+<p><strong>3. 示例层（Proof）：</strong>科西莫要求布鲁内莱斯基先为圣洛伦佐教堂（美第奇家祠）修建立柱回廊作为实验——这是古罗马之后第一次实现\u201C无墙承重\u201D结构。工程在科西莫遭流放期间停工，但佛罗伦萨财富外流迫使市政府召回他并流放政敌——<strong>这说明艺术赞助已经成为政治博弈的筹码，而不仅仅是个人爱好。</strong></p>
+<p><strong>4. 反例/边界层（Counter）：</strong>同时代的中国明代正在修建紫禁城（1406-1420年），规模宏大但完全沿用传统木结构体系，没有产生\u201C用古代技术创造新结构\u201D的突破。区别不在于技术能力——中国早在宋代就有《营造法式》——而在于<strong>建筑被赋予的文化使命不同</strong>：紫禁城是皇权巩固的工具，圣母百花大教堂是市民文化的宣言。</p>
+</div>
+
+<h3 class="section-title">案例二：西班牙帝国的崛起与衰落——财富的双刃剑</h3>
+<div class="card">
+<h4>\U0001f4cb 背景速览</h4>
+<p>16世纪西班牙通过美洲金银矿（一个多世纪带走数百吨黄金和数万吨白银）成为欧洲最富有国家，建立\u201C日不落帝国\u201D。但到了17世纪，西班牙却迅速衰落——制造业停滞、财富外流、无敌舰队被英国击败。问题：为什么最富有的国家反而最先衰落？</p>
+</div>
+<div class="card">
+<h4>\U0001f50d MKS四维度拆解</h4>
+<p><strong>1. 定义层（What）：</strong>西班牙的衰落是经典的\u201C资源诅咒\u201D（Resource Curse）现象——大量金银涌入导致社会心态从\u201C我们靠生产赚钱\u201D转变为\u201C我们靠挖矿赚钱\u201D。当\u201C直接挖金银\u201D比\u201C生产经营\u201D更有利可图时，制造业必然萎缩。西班牙用这些白银去购买外国商品，等于<strong>把自己的财富转化成了别人的产业升级资金</strong>。</p>
+<p><strong>2. 类比层（How）：</strong>好比一个中彩票的人——如果他把奖金全部用来消费（买豪车、旅游、吃大餐），十年后可能比中奖前更穷。但如果他把奖金投资于教育、创业、资产配置，就可能实现阶层跃迁。西班牙选择了\u201C消费\u201D路径，荷兰和英国选择了\u201C投资\u201D路径。</p>
+<p><strong>3. 示例层（Proof）：</strong>荷兰用东印度公司和证券交易所把贸易利润转化为基础设施（码头、仓库、船坞）和船队扩张——成立头5年每年派出商船超过50只，超过西葡总和。英国用伊丽莎白时代的教育改革培养人才——牛顿这样的穷苦农民孩子得以进入剑桥。两国的共同点是<strong>把财富变成了\u201C可产生更多财富的制度\u201D</strong>。</p>
+<p><strong>4. 反例/边界层（Counter）：</strong>中国的明代也接收了大量西班牙白银（通过马尼拉大帆船贸易），同样没有爆发工业革命。但中国的逻辑不同——白银流入后主要用于<strong>税收货币化和土地兼并</strong>，而不是制造业投资。这说明\u201C钱多\u201D不是衰落的充分条件，\u201C钱怎么用\u201D才是关键。<strong>吴军的核心洞见：文明发展\u201C靠创造产生，而非钱买来\u201D。</strong></p>
+</div>
+
+</div>
+
+<!-- ========== TAB 8: 实战决策 ========== -->
+<div class="tab-content" id="tab8">
+<h2>\u2694\ufe0f 实战决策：三回合历史模拟</h2>
+<p style="color:var(--text-light);margin-bottom:16px">你将在近现代文明转型的关键节点上扮演决策者。每轮3个选项，选择后查看MKS分析。</p>
+
+<!-- Round 1 -->
+<div class="card" id="decision1">
+<h3>\U0001f3af 第一回合：你是科西莫·美第奇（1430年代的佛罗伦萨）</h3>
+<p>你刚刚被政敌阿尔比齐家族陷害，被判20年流放。佛罗伦萨的财富在你离开后大量外流，市民和商人要求你回来。与此同时，圣母百花大教堂的拱顶工程已停工——没有你的资金支持，布鲁内莱斯基无法继续。你的选择：</p>
+<div class="decision-option" onclick="chooseDecision(1,0)">A. 立即返回佛罗伦萨，集结支持者发动武装政变，彻底消灭政敌</div>
+<div class="decision-option" onclick="chooseDecision(1,1)">B. 接受召回但保持低调，优先恢复大教堂工程，暂不报复政敌</div>
+<div class="decision-option" onclick="chooseDecision(1,2)">C. 拒绝返回佛罗伦萨，把资金转移到威尼斯，在新城市重新开始</div>
+<div class="decision-feedback" id="feedback1"></div>
+</div>
+
+<!-- Round 2 -->
+<div class="card" id="decision2" style="display:none">
+<h3>\U0001f3af 第二回合：你是马丁·路德（1521年，沃尔姆斯会议后）</h3>
+<p>查理五世皇帝在沃尔姆斯会议上宣布剥夺你的公民权，你成了\u201C法外之人\u201D——任何人都可以合法地杀死你。萨克森选帝侯腓特烈三世暗中保护了你，将你安置在瓦特堡城堡。你现在面临选择：</p>
+<div class="decision-option" onclick="chooseDecision(2,0)">A. 继续公开对抗教廷，回到维滕贝格领导群众运动</div>
+<div class="decision-option" onclick="chooseDecision(2,1)">B. 隐居城堡，将《圣经》翻译成德文，让普通民众能直接阅读</div>
+<div class="decision-option" onclick="chooseDecision(2,2)">C. 与查理五世谈判，以收回部分主张为代价换取人身安全</div>
+<div class="decision-feedback" id="feedback2"></div>
+</div>
+
+<!-- Round 3 -->
+<div class="card" id="decision3" style="display:none">
+<h3>\U0001f3af 第三回合：你是18世纪末一个英国工厂主</h3>
+<p>瓦特的蒸汽机已经商业化，你的纺织工厂面临机械化转型的选择。现有的手工织布工人技术熟练但效率有限，一台蒸汽动力织机可以替代20个工人。工人们威胁如果引入机器就罢工。你的选择：</p>
+<div class="decision-option" onclick="chooseDecision(3,0)">A. 强行引入蒸汽机，开除所有反对的工人——技术进步不可阻挡</div>
+<div class="decision-option" onclick="chooseDecision(3,1)">B. 逐步引入机器，培训部分工人成为机器操作员，为被替代者提供转岗补偿</div>
+<div class="decision-option" onclick="chooseDecision(3,2)">C. 维持现状，继续使用熟练手工工人——质量比效率更重要</div>
+<div class="decision-feedback" id="feedback3"></div>
+</div>
+</div>
+
+<script>
+// ========== GLOBAL STATE ==========
+var LS_KEY = 'mks_topic5';
+var store = {learned:[], wrongAnswers:[], quizHistory:[], examHistory:[]};
+try{var d=JSON.parse(localStorage.getItem(LS_KEY));if(d){store.learned=d.learned||[];store.wrongAnswers=d.wrongAnswers||[];store.quizHistory=d.quizHistory||[];store.examHistory=d.examHistory||[]}}catch(e){}
+function save(){localStorage.setItem(LS_KEY,JSON.stringify(store))}
+
+// ========== CONCEPTS ==========
+var concepts = [
+  {id:'c1',name:'\U0001f3a8 文艺复兴',def:'14-16世纪起源于意大利、以人文主义为核心的思想文化运动。本质不是\u201C复兴\u201D古代而是\u201C以古典为资源创造新文化\u201D。四大革命（艺术·思想·科学·工业）的第一环，标志着人类从\u201C神本\u201D走向\u201C人本\u201D。',analogy:'好比一个年轻人翻出祖父的日记——不是为了模仿祖父的生活方式，而是从祖父的经历中获得灵感，去开创自己的事业。文艺复兴不是\u201C回到古希腊\u201D，而是\u201C借助古希腊超越中世纪\u201D。',example:'圣母百花大教堂拱顶：布鲁内莱斯基从古罗马万神殿获取灵感，但创造了史无前例的双层砖结构拱顶——至今仍是世界最大砖结构拱顶。达·芬奇《蒙娜丽莎》不是任何古希腊作品的复制品，而是全新的人类情感表达。',counter:'与加洛林文艺复兴（8-9世纪）对比：加洛林的目标是\u201C保存\u201D古籍以维持教会统治；意大利文艺复兴的目标是\u201C超越\u201D古代以创造新文化。前者是\u201C抄作业\u201D，后者是\u201C写新作业\u201D。'},
+  {id:'c2',name:'\u271d\ufe0f 宗教改革',def:'16世纪以马丁·路德\u201C因信称义\u201D为神学基础、以《九十五条论纲》为导火索、以印刷术为传播工具的基督教会改革运动。打破了罗马教廷对信仰的垄断，确立\u201C个人可直接与上帝对话\u201D的原则。',analogy:'好比互联网打破了传统媒体的信息垄断——以前只有电视台（教会）能发布新闻（解读《圣经》），突然每个人都可以开博客（自己读《圣经》）。电视台说你不能开博客因为你是\u201C非专业人士\u201D，但大家发现读原著（《圣经》）并不需要中介。',example:'路德在瓦特堡隐居期间将《圣经》翻译成德文——这是第一次普通德语民众可以自己读经。印刷术使德文《圣经》大量传播，教廷对教义的解释权垄断被瓦解。《奥格斯堡和约》（1555年）允许路德新教与天主教并存——从此\u201C一个教会\u201D变成\u201C多个教派\u201D。',counter:'对比扬·胡斯（1415年被火刑）：胡斯早路德100年提出类似主张，但死于火刑。区别不在思想而在\u201C技术生态\u201D——胡斯时代没有印刷术，他的思想无法快速传播；路德时代印刷术已成熟，《九十五条论纲》被迅速翻译并传遍全欧洲。技术改变了思想的命运。'},
+  {id:'c3',name:'\U0001f52c 科学革命',def:'16-18世纪由哥白尼、伽利略、牛顿等推动的自然科学范式变革。核心突破：用\u201C逻辑+实验\u201D的科学方法取代中世纪经院哲学的权威论证，将自然界从神的意志领域转变为可被数学描述的客观规律体系。',analogy:'好比从\u201C看菜谱做菜\u201D（经院哲学：亚里士多德怎么说我们就怎么做）变成\u201C自己进实验室做菜\u201D（科学方法：提出假设→做实验→观察结果→修改理论）。经院哲学家争论\u201C一根针尖上能站几个天使\u201D，伽利略则去测量单摆的周期——这就是范式的转换。',example:'伽利略：观察吊灯摆动→发现单摆周期与幅度无关→钟表理论基础；发明望远镜→发现木星4颗卫星→证伪\u201C所有天体都绕地球转\u201D。牛顿：1687年《自然哲学的数学原理》→万有引力+三大运动定律→统一天上与地上物理学。霍金评价：\u201C近代自然科学的诞生要归功于伽利略\u201D。',counter:'对比阿拉伯黄金时代的科学：阿拉伯科学家也做实验和观察，但缺乏\u201C将数学与实验系统结合\u201D的方法论自觉。花拉子密发明了代数但未将其与物理实验结合。科学革命的独特之处在于：培根的经验主义+笛卡尔的理性主义=完整的科学方法论，这是此前任何文明都未达到的整合。'},
+  {id:'c4',name:'\U0001f30d 大航海时代',def:'15-18世纪欧洲通过远洋航行发现新大陆、建立全球贸易网络的历史时期。核心驱动力是香料利润和奥斯曼阻断传统商路带来的经济压力，而非单纯\u201C探索未知\u201D的精神。结果：人类首次将各大洲连为一体。',analogy:'好比一个住在大陆深处的小镇居民，突然有人骑着摩托车说\u201C外面的世界大得很\u201D——然后大家纷纷修路、造车、去远方做生意。大航海就是欧洲人从\u201C大陆居民\u201D变成\u201C海洋居民\u201D的过程。最有趣的是，第一批\u201C摩托车手\u201D（哥伦布、麦哲伦）手里的地图都是错的，但他们还是出发了。',example:'哥伦布1492年\u201C发现\u201D美洲（他至死不承认那是新大陆）；达伽马首航印度利润约为成本的60倍；麦哲伦环球航行（1519-22年）首次实证地球是圆的；教皇子午线（1493/94年）是人类首次对全球势力范围的划分。',counter:'对比郑和下西洋（1405-1433年）：规模远超哥伦布（宝船是哥伦布旗舰的5倍），但本质不同——郑和是\u201C朝贡外交+政治宣示\u201D，哥伦布是\u201C商业探险+利润驱动\u201D。前者可以随时叫停（皇帝下诏即可），后者一旦启动就由商业利益自我驱动无法停止。所以\u201C郑和之后再无郑和\u201D，而哥伦布之后有无数个哥伦布。'},
+  {id:'c5',name:'\U0001f4f0 古腾堡印刷术',def:'15世纪中叶由约翰内斯·古腾堡在德意志发明的活字印刷系统，包含三大技术突破：标准化铅字字母库、手摇机械印刷机、流水线分工生产。使欧洲图书产量从15世纪的约千万册爆炸式增长到16世纪的约两亿册。',analogy:'好比从\u201C手抄本时代\u201D（每本书都是定制的奢侈品）跨越到\u201C印刷时代\u201D（书变成了大众消费品）。古腾堡做的事情相当于把\u201C手工绣花\u201D变成了\u201C纺织工厂\u201D——不是发明了\u201C线\u201D（知识），而是发明了\u201C织布机\u201D（知识传播系统）。',example:'四十二行本《圣经》：世界上第一套印刷版《圣经》，78万字，历时四年多完成160-180部。教宗庇护二世夸赞其质量可与最好手抄本匹敌。现存48套，拍卖价可建一座大型现代图书馆。路德称印刷术为\u201C上帝至高无上的恩赐\u201D。',counter:'对比中国雕版印刷和毕昇活字：中国最早发明了印刷术和活字，但汉字表意文字体系（常用字数千个）使活字印刷经济性不如雕版，未能实现工业级规模生产。拉丁字母仅26个，天然适合活字印刷。这说明技术革命不仅取决于\u201C有没有发明\u201D，还取决于\u201C发明是否适配文明基础设施\u201D。'},
+  {id:'c6',name:'\U0001f4a1 启蒙运动',def:'17-18世纪欧洲以理性为核心的思想解放运动，提出天赋人权、社会契约、三权分立等现代政治核心理念。分为英国经验主义（洛克）、法国激进启蒙（卢梭、孟德斯鸠、伏尔泰）、苏格兰启蒙（斯密、休谟）三条路径。',analogy:'好比一个长期住在\u201C权威之家\u201D的孩子（国王是父亲、教会是母亲），突然读到一本书说\u201C你和父亲在人格上是平等的\u201D（天赋人权），\u201C家里的规矩应该全家一起定\u201D（社会契约），\u201C不能什么事都父亲一个人说了算\u201D（三权分立）。启蒙运动就是把\u201C君权神授\u201D变成了\u201C主权在民\u201D的思想革命。',example:'洛克《政府论》：生命、自由、财产是不可剥夺的自然权利；政府权力来自被统治者的同意。孟德斯鸠《论法的精神》：立法、行政、司法三权分立以防止暴政。卢梭《社会契约论》：公意（general will）是政治合法性的唯一基础。亚当·斯密《国富论》：看不见的手、分工创造财富。',counter:'法苏启蒙差异：法国启蒙导向激进政治革命（1789年大革命），苏格兰启蒙导向经济社会渐进改良（没有发生暴力革命）。原因：法国旧制度压迫性更强（三级会议1614年后未召开），苏格兰已有大学体系和市民社会作为缓冲。\u201C同样的启蒙思想，落在不同的社会土壤上，结出截然不同的果实。\u201D'},
+  {id:'c7',name:'\u2699\ufe0f 工业革命',def:'18世纪末至19世纪从英国开始的以机器生产替代手工劳动的变革。第一次以蒸汽机为核心（瓦特1769年改良），第二次以电力为核心（19世纪末）。根本改变了人类生产方式、社会结构和生活形态——人类第一次摆脱了对自然动力的依赖。',analogy:'好比人类的\u201C动力外挂\u201D——在此之前，我们能用的动力只有人力、畜力、风力和水力（都是\u201C自然速度\u201D）。蒸汽机给了我们一个\u201C人造心脏\u201D，电力给了我们一个\u201C人造神经系统\u201D。工业革命后，人类的生产力不再受制于肌肉的力量和天气的脾气。',example:'月光社：伯明翰的科学家、工程师、企业家每月月圆之夜聚会交流——瓦特、博尔顿、普里斯特利都是成员。这种\u201C创新社群\u201D模式是工业革命的重要助推力。瓦特的蒸汽机从矿山抽水扩展到纺织、铁路、轮船——通用动力改变了所有行业。',counter:'对比荷兰：荷兰17世纪商业极盛但未率先发生工业革命——因为荷兰的优势在贸易（低买高卖）而非制造。英国的优势在于：煤铁资源丰富+专利制度保护创新+月光社等知识交流网络+殖民地为工业品提供市场。工业革命需要的不是\u201C做生意的聪明\u201D，而是\u201C把科学变成机器的能力\u201D。'},
+  {id:'c8',name:'\U0001f3db\ufe0f 美第奇家族',def:'文艺复兴时期佛罗伦萨的实际统治者家族，通过金融业崛起，以巨额资金赞助艺术、建筑和科学。科西莫·美第奇被称为\u201C祖国之父\u201D，其孙洛伦佐发现培养了达·芬奇和米开朗基罗。核心原则：赞助不是为了占有古代作品，而是为了创造超越古代的新作品。',analogy:'好比硅谷的风险投资家——他们不自己做产品（不画画、不雕刻），但他们识别有潜力的人才（达·芬奇、米开朗基罗）、提供启动资金（赞助）、建立创新生态（美第奇图书馆+人文主义圈子）。科西莫的投资回报不是金钱，而是\u201C文艺复兴\u201D这个人类历史上最伟大的文化IP。',example:'科西莫资助布鲁内莱斯基修建圣母百花大教堂拱顶——这项工程是文艺复兴开始的标志。洛伦佐将十几岁的米开朗基罗接入家中，让他参与人文主义交流圈——可以说没有美第奇家族就没有米开朗基罗。美第奇家族图书馆是当时全欧洲最大藏书库。',counter:'对比同时代其他赞助者（如欧洲王室和土耳其苏丹）：他们搜集古代艺术品是为了<strong>占有和炫耀</strong>（\u201C看我的收藏多丰富\u201D），美第奇家族用古代艺术品是为了<strong>培养新艺术家</strong>（\u201C看看古人怎么做的，然后创造你自己的\u201D）。前者是收藏家思维，后者是孵化器思维。'},
+  {id:'c9',name:'\U0001f3e6 现代商业制度',def:'17世纪荷兰首创的四大商业制度创新：股份制公司（东印度公司1602年）、股票交易所（阿姆斯特丹1609年）、现代银行（阿姆斯特丹银行1609年）、信托责任体系。实现了所有权与管理权分离、全民参与商业利益分配，奠定了现代资本主义的制度基础。',analogy:'好比从\u201C个体户时代\u201D（单次航行独立核算，风险个人承担）到\u201C上市公司时代\u201D（发行股票集资，风险全民共担，利润全民共享）。东印度公司的股东甚至包括富裕家庭的仆人——这是历史上第一次，普通人的积蓄可以变成远洋贸易的资本。',example:'东印度公司首次融资达600多万荷兰盾（当时巨款）；荷兰人口不足300万却占据全球贸易额近半；阿姆斯特丹银行的信托责任极端案例：独立战争期间仍为敌方（西班牙）存款提供服务，成为\u201C信誉比战争更重要\u201D的典范。华尔街的起源：荷兰人在北美建立的新阿姆斯特丹=今天的纽约。',counter:'对比西班牙/葡萄牙的殖民模式：西葡是王室+贵族+冒险家的\u201C精英俱乐部\u201D模式，每次航行独立核算（这次赚下次赔）。荷兰是\u201C全民股份制\u201D模式，利润再投资基础设施（码头、仓库、船坞），实现长期增长。结果：荷兰成立头5年每年派出的商船数量就超过了西葡总和。'},
+  {id:'c10',name:'\U0001f504 文明转型底层逻辑',def:'近现代文明转型的五大核心驱动力：印刷术（知识民主化）、科学方法（技术加速器）、商业制度（资本聚集器）、全球贸易（财富放大器）、启蒙思想（政治合法性的重构）。终极密码：开放竞争×制度创新×思想自由=文明跃迁。',analogy:'好比一个文明的操作系统升级——中世纪是\u201C信仰OS 1.0\u201D（一切通过教会解释），近现代是\u201C理性OS 2.0\u201D（一切通过逻辑和证据验证）。升级不是一次完成的：文艺复兴=UI改版，宗教改革=权限系统重构，科学革命=计算引擎重写，大航海=网络连接开启，启蒙运动=用户协议改写，工业革命=硬件性能爆炸。',example:'西班牙的衰落和荷兰的崛起证明了同一个道理：文明发展\u201C靠创造产生，而非钱买来\u201D。西班牙拥有最多的金银，但把钱花在了消费上；荷兰拥有最先进的制度，把钱再投资于生产。两个世纪后，荷兰的制度遗产（华尔街、股市、公司制）仍在影响世界，西班牙的金银早已花光。',counter:'对比同时代的明清中国：拥有最大的人口和GDP，但未能自发产生工业革命。不是因为\u201C落后\u201D，而是因为制度激励方向不同——科举制把最聪明的人导向了经书背诵和官场竞争，而不是科学实验和商业创新。\u201C制度决定聪明人做什么，聪明人做什么决定文明的走向。\u201D'}
+];
+
+var learnedCards = store.learned || [];
+var currentCardIdx = 0;
+var cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx; cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px;background:#e8f5e9;color:var(--success)">\u2713 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'\u2713 已学习':'\u2713 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  store.learned=learnedCards;save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+function updateProgress(){
+  var pct=(learnedCards.length/concepts.length)*100;
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+  document.getElementById('overviewProgress').style.width=pct+'%';
+  document.getElementById('overviewLearned').textContent=learnedCards.length;
+  var total=store.quizHistory.length;
+  var correct=store.quizHistory.filter(function(x){return x.correct}).length;
+  document.getElementById('overviewQuiz').textContent=total;
+  document.getElementById('overviewAccuracy').textContent=total>0?Math.round(correct/total*100):0;
+}
+updateProgress();
+
+// ========== SVG RENDER ==========
+(function renderSVG(){
+document.getElementById('svgContainer').innerHTML = `<svg width="3205pt" height="710pt"
+         viewBox="0.00 0.00 3205.00 710.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 706)">
+        <title>G</title>
+        <polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-706 3201,-706 3201,4 -4,4"/>
+        <g id="clust1" class="cluster">
+        <title>cluster_legend</title>
+        <polygon fill="#fffaf2" stroke="#8b7355" stroke-dasharray="5,2" points="8,-8 8,-694 98,-694 98,-8 8,-8"/>
+        <text text-anchor="middle" x="53" y="-682" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">图例 Legend</text>
+        </g>
+        <!-- l1 -->
+        <g id="node1" class="node">
+        <title>l1</title>
+        <polygon fill="#c0392b" stroke="black" points="84,-667 22,-667 22,-631 84,-631 84,-667"/>
+        <text text-anchor="middle" x="53" y="-646.8" font-family="Noto Sans SC" font-size="9.00" fill="#ffffff">核心驱动力</text>
+        </g>
+        <!-- l2 -->
+        <g id="node2" class="node">
+        <title>l2</title>
+        <polygon fill="#d4a574" stroke="black" points="80,-563 26,-563 26,-527 80,-527 80,-563"/>
+        <text text-anchor="middle" x="53" y="-542.8" font-family="Noto Sans SC" font-size="9.00" fill="#ffffff">文明领域</text>
+        </g>
+        <!-- l1&#45;&gt;l2 -->
+        <!-- l3 -->
+        <g id="node3" class="node">
+        <title>l3</title>
+        <polygon fill="#fffaf2" stroke="black" points="90,-459 16,-459 16,-423 90,-423 90,-459"/>
+        <text text-anchor="middle" x="53" y="-438.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">关键事件/人物</text>
+        </g>
+        <!-- l2&#45;&gt;l3 -->
+        <!-- l4 -->
+        <g id="node4" class="node">
+        <title>l4</title>
+        <polygon fill="#fef5e7" stroke="black" points="81,-355 25,-355 25,-319 81,-319 81,-355"/>
+        <text text-anchor="middle" x="53" y="-334.8" font-family="Noto Sans SC" font-size="9.00" fill="#3d2f2f">变革/转向</text>
+        </g>
+        <!-- l3&#45;&gt;l4 -->
+        <!-- le1 -->
+        <g id="node5" class="node">
+        <title>le1</title>
+        <text text-anchor="middle" x="53" y="-231.1" font-family="Noto Sans SC" font-size="8.00" fill="#c0392b">推动/因果</text>
+        </g>
+        <!-- l4&#45;&gt;le1 -->
+        <!-- le2 -->
+        <g id="node6" class="node">
+        <title>le2</title>
+        <text text-anchor="middle" x="53" y="-127.1" font-family="Noto Sans SC" font-size="8.00" fill="#d4a574">派生/发展</text>
+        </g>
+        <!-- le1&#45;&gt;le2 -->
+        <!-- le3 -->
+        <g id="node7" class="node">
+        <title>le3</title>
+        <text text-anchor="middle" x="53" y="-32.1" font-family="Noto Sans SC" font-size="8.00" fill="#8b7355">相互作用</text>
+        </g>
+        <!-- le2&#45;&gt;le3 -->
+        <!-- root -->
+        <g id="node8" class="node">
+        <title>root</title>
+        <polygon fill="#c0392b" stroke="black" stroke-width="2.5" points="1935.5,-667 1812.5,-667 1812.5,-631 1935.5,-631 1935.5,-667"/>
+        <text text-anchor="middle" x="1874" y="-652.6" font-family="Noto Sans SC" font-size="13.00" fill="#ffffff">近现代文明转型</text>
+        <text text-anchor="middle" x="1874" y="-638.6" font-family="Noto Sans SC" font-size="13.00" fill="#ffffff">理性之光·技术之轮</text>
+        </g>
+        <!-- t1_renaissance -->
+        <g id="node9" class="node">
+        <title>t1_renaissance</title>
+        <polygon fill="#d4a574" stroke="black" points="899.5,-563 804.5,-563 804.5,-527 899.5,-527 899.5,-563"/>
+        <text text-anchor="middle" x="852" y="-548.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">一、文艺复兴</text>
+        <text text-anchor="middle" x="852" y="-536.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">人文主义的觉醒</text>
+        </g>
+        <!-- root&#45;&gt;t1_renaissance -->
+        <g id="edge7" class="edge">
+        <title>root&#45;&gt;t1_renaissance</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1812.34,-643.55C1652.48,-632 1237,-602 1237,-602 1237,-602 1017.02,-570 909.63,-554.38"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="909.99,-550.9 899.59,-552.92 908.99,-557.83 909.99,-550.9"/>
+        <text text-anchor="middle" x="1255.5" y="-594.8" font-family="Noto Sans SC" font-size="9.00">以人为本</text>
+        </g>
+        <!-- t2_reform -->
+        <g id="node10" class="node">
+        <title>t2_reform</title>
+        <polygon fill="#d4a574" stroke="black" points="379.5,-355 284.5,-355 284.5,-319 379.5,-319 379.5,-355"/>
+        <text text-anchor="middle" x="332" y="-340.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">二、宗教改革</text>
+        <text text-anchor="middle" x="332" y="-328.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">信仰权威的瓦解</text>
+        </g>
+        <!-- root&#45;&gt;t2_reform -->
+        <g id="edge8" class="edge">
+        <title>root&#45;&gt;t2_reform</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1812.46,-644.02C1639.73,-632.84 1163,-602 1163,-602 1163,-602 783,-563 783,-563 783,-563 326,-459 326,-459 326,-459 326,-423 326,-423 326,-423 328.32,-390.11 330.08,-365.25"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="333.57,-365.42 330.79,-355.2 326.59,-364.93 333.57,-365.42"/>
+        <text text-anchor="middle" x="516.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">因信称义</text>
+        </g>
+        <!-- t3_science -->
+        <g id="node11" class="node">
+        <title>t3_science</title>
+        <polygon fill="#d4a574" stroke="black" points="1353.5,-355 1258.5,-355 1258.5,-319 1353.5,-319 1353.5,-355"/>
+        <text text-anchor="middle" x="1306" y="-340.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">三、科学革命</text>
+        <text text-anchor="middle" x="1306" y="-328.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">理性方法的建立</text>
+        </g>
+        <!-- root&#45;&gt;t3_science -->
+        <g id="edge9" class="edge">
+        <title>root&#45;&gt;t3_science</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1826.57,-630.89C1697.59,-584.37 1350,-459 1350,-459 1350,-459 1328.74,-400.54 1315.78,-364.89"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1318.92,-363.28 1312.21,-355.08 1312.34,-365.67 1318.92,-363.28"/>
+        <text text-anchor="middle" x="1476" y="-490.8" font-family="Noto Sans SC" font-size="9.00">逻辑+实验</text>
+        </g>
+        <!-- t4_voyage -->
+        <g id="node12" class="node">
+        <title>t4_voyage</title>
+        <polygon fill="#d4a574" stroke="black" points="1921.5,-563 1826.5,-563 1826.5,-527 1921.5,-527 1921.5,-563"/>
+        <text text-anchor="middle" x="1874" y="-548.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">四、大航海时代</text>
+        <text text-anchor="middle" x="1874" y="-536.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">全球化的开端</text>
+        </g>
+        <!-- root&#45;&gt;t4_voyage -->
+        <g id="edge10" class="edge">
+        <title>root&#45;&gt;t4_voyage</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1874,-630.7C1874,-614.92 1874,-591.36 1874,-573.09"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="1877.5,-573.05 1874,-563.05 1870.5,-573.05 1877.5,-573.05"/>
+        <text text-anchor="middle" x="1892.5" y="-594.8" font-family="Noto Sans SC" font-size="9.00">香料利润</text>
+        </g>
+        <!-- t5_enlight -->
+        <g id="node13" class="node">
+        <title>t5_enlight</title>
+        <polygon fill="#d4a574" stroke="black" points="2645,-563 2561,-563 2561,-527 2645,-527 2645,-563"/>
+        <text text-anchor="middle" x="2603" y="-548.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">五、启蒙运动</text>
+        <text text-anchor="middle" x="2603" y="-536.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">理性照亮传统</text>
+        </g>
+        <!-- root&#45;&gt;t5_enlight -->
+        <g id="edge11" class="edge">
+        <title>root&#45;&gt;t5_enlight</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1935.53,-639.39C2076.23,-619.7 2419.45,-571.68 2550.74,-553.31"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="2551.52,-556.74 2560.94,-551.89 2550.55,-549.81 2551.52,-556.74"/>
+        <text text-anchor="middle" x="2278.5" y="-594.8" font-family="Noto Sans SC" font-size="9.00">天赋人权</text>
+        </g>
+        <!-- t6_industry -->
+        <g id="node14" class="node">
+        <title>t6_industry</title>
+        <polygon fill="#d4a574" stroke="black" points="2337,-251 2253,-251 2253,-215 2337,-215 2337,-251"/>
+        <text text-anchor="middle" x="2295" y="-236.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">六、工业革命</text>
+        <text text-anchor="middle" x="2295" y="-224.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">机械时代来临</text>
+        </g>
+        <!-- root&#45;&gt;t6_industry -->
+        <g id="edge12" class="edge">
+        <title>root&#45;&gt;t6_industry</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1935.59,-643.11C2191.82,-622.79 3160,-546 3160,-546 3160,-546 3160,-546 3160,-336 3160,-336 3116,-319 3116,-319 3116,-319 2527.89,-258.11 2347.18,-239.4"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="2347.43,-235.91 2337.13,-238.36 2346.71,-242.87 2347.43,-235.91"/>
+        <text text-anchor="middle" x="3178.5" y="-438.8" font-family="Noto Sans SC" font-size="9.00">蒸汽动力</text>
+        </g>
+        <!-- t7_democracy -->
+        <g id="node15" class="node">
+        <title>t7_democracy</title>
+        <polygon fill="#d4a574" stroke="black" points="2966,-459 2882,-459 2882,-423 2966,-423 2966,-459"/>
+        <text text-anchor="middle" x="2924" y="-444.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">七、政治革命</text>
+        <text text-anchor="middle" x="2924" y="-432.2" font-family="Noto Sans SC" font-size="11.00" fill="#ffffff">民主制度确立</text>
+        </g>
+        <!-- root&#45;&gt;t7_democracy -->
+        <g id="edge13" class="edge">
+        <title>root&#45;&gt;t7_democracy</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.5" d="M1935.58,-641.46C2055.12,-628.76 2307,-602 2307,-602 2307,-602 2667,-563 2667,-563 2667,-563 2849,-498 2849,-498 2849,-498 2872.41,-480.52 2893.07,-465.1"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.5" points="2895.17,-467.89 2901.09,-459.11 2890.98,-462.28 2895.17,-467.89"/>
+        <text text-anchor="middle" x="2785.5" y="-542.8" font-family="Noto Sans SC" font-size="9.00">自由平等</text>
+        </g>
+        <!-- s1_medici -->
+        <g id="node16" class="node">
+        <title>s1_medici</title>
+        <polygon fill="#fffaf2" stroke="black" points="589,-459 511,-459 511,-423 589,-423 589,-459"/>
+        <text text-anchor="middle" x="550" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">美第奇家族</text>
+        <text text-anchor="middle" x="550" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">建筑·艺术赞助</text>
+        </g>
+        <!-- t1_renaissance&#45;&gt;s1_medici -->
+        <g id="edge14" class="edge">
+        <title>t1_renaissance&#45;&gt;s1_medici</title>
+        <path fill="none" stroke="#8b7355" d="M804.48,-527.95C748.38,-509 655.57,-477.66 598.88,-458.51"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="599.67,-455.08 589.08,-455.2 597.43,-461.71 599.67,-455.08"/>
+        <text text-anchor="middle" x="729.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">赞助推动</text>
+        </g>
+        <!-- s1_dante -->
+        <g id="node17" class="node">
+        <title>s1_dante</title>
+        <polygon fill="#fffaf2" stroke="black" points="742,-459 632,-459 632,-423 742,-423 742,-459"/>
+        <text text-anchor="middle" x="687" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">文坛三杰</text>
+        <text text-anchor="middle" x="687" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">但丁·彼特拉克·薄伽丘</text>
+        </g>
+        <!-- t1_renaissance&#45;&gt;s1_dante -->
+        <g id="edge15" class="edge">
+        <title>t1_renaissance&#45;&gt;s1_dante</title>
+        <path fill="none" stroke="#8b7355" d="M824.38,-526.93C796.66,-509.79 753.81,-483.3 723.34,-464.47"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="725.05,-461.41 714.71,-459.13 721.37,-467.36 725.05,-461.41"/>
+        <text text-anchor="middle" x="793.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">思想奠基</text>
+        </g>
+        <!-- s1_art -->
+        <g id="node18" class="node">
+        <title>s1_art</title>
+        <polygon fill="#fffaf2" stroke="black" points="918.5,-459 785.5,-459 785.5,-423 918.5,-423 918.5,-459"/>
+        <text text-anchor="middle" x="852" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">艺术三杰</text>
+        <text text-anchor="middle" x="852" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">达·芬奇·米开朗基罗·拉斐尔</text>
+        </g>
+        <!-- t1_renaissance&#45;&gt;s1_art -->
+        <g id="edge16" class="edge">
+        <title>t1_renaissance&#45;&gt;s1_art</title>
+        <path fill="none" stroke="#8b7355" d="M852,-526.7C852,-510.92 852,-487.36 852,-469.09"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="855.5,-469.05 852,-459.05 848.5,-469.05 855.5,-469.05"/>
+        <text text-anchor="middle" x="870.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">艺术巅峰</text>
+        </g>
+        <!-- s1_spread -->
+        <g id="node19" class="node">
+        <title>s1_spread</title>
+        <polygon fill="#fffaf2" stroke="black" points="1110.5,-459 961.5,-459 961.5,-423 1110.5,-423 1110.5,-459"/>
+        <text text-anchor="middle" x="1036" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">文艺复兴扩散</text>
+        <text text-anchor="middle" x="1036" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">佛罗伦萨→罗马→威尼斯→北欧</text>
+        </g>
+        <!-- t1_renaissance&#45;&gt;s1_spread -->
+        <g id="edge17" class="edge">
+        <title>t1_renaissance&#45;&gt;s1_spread</title>
+        <path fill="none" stroke="#8b7355" d="M882.8,-526.93C913.98,-509.64 962.32,-482.84 996.35,-463.98"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="998.05,-467.04 1005.1,-459.13 994.66,-460.92 998.05,-467.04"/>
+        <text text-anchor="middle" x="968.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">空间传播</text>
+        </g>
+        <!-- s1_galileo -->
+        <g id="node20" class="node">
+        <title>s1_galileo</title>
+        <polygon fill="#fffaf2" stroke="black" points="1241,-459 1153,-459 1153,-423 1241,-423 1241,-459"/>
+        <text text-anchor="middle" x="1197" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">伽利略与哥白尼</text>
+        <text text-anchor="middle" x="1197" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">日心说·实验科学</text>
+        </g>
+        <!-- t1_renaissance&#45;&gt;s1_galileo -->
+        <g id="edge18" class="edge">
+        <title>t1_renaissance&#45;&gt;s1_galileo</title>
+        <path fill="none" stroke="#8b7355" d="M899.61,-529.92C963.34,-511.08 1076.11,-477.74 1142.96,-457.98"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1144.28,-461.24 1152.88,-455.04 1142.3,-454.52 1144.28,-461.24"/>
+        <text text-anchor="middle" x="1053.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">科学萌芽</text>
+        </g>
+        <!-- s1_gutenberg -->
+        <g id="node21" class="node">
+        <title>s1_gutenberg</title>
+        <polygon fill="#fffaf2" stroke="black" points="468,-459 348,-459 348,-423 468,-423 468,-459"/>
+        <text text-anchor="middle" x="408" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">古腾堡印刷术</text>
+        <text text-anchor="middle" x="408" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">活字·流水线·知识民主化</text>
+        </g>
+        <!-- t1_renaissance&#45;&gt;s1_gutenberg -->
+        <g id="edge19" class="edge">
+        <title>t1_renaissance&#45;&gt;s1_gutenberg</title>
+        <path fill="none" stroke="#8b7355" d="M804.25,-533.39C743.12,-519.8 645,-498 645,-498 645,-498 548.09,-475.1 478.21,-458.59"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="478.65,-455.1 468.11,-456.2 477.04,-461.91 478.65,-455.1"/>
+        <text text-anchor="middle" x="663.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">技术支撑</text>
+        </g>
+        <!-- s2_luther -->
+        <g id="node22" class="node">
+        <title>s2_luther</title>
+        <polygon fill="#fffaf2" stroke="black" points="390.5,-251 273.5,-251 273.5,-215 390.5,-215 390.5,-251"/>
+        <text text-anchor="middle" x="332" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">马丁·路德</text>
+        <text text-anchor="middle" x="332" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">九十五条论纲·因信称义</text>
+        </g>
+        <!-- t2_reform&#45;&gt;s2_luther -->
+        <g id="edge20" class="edge">
+        <title>t2_reform&#45;&gt;s2_luther</title>
+        <path fill="none" stroke="#8b7355" d="M332,-318.7C332,-302.92 332,-279.36 332,-261.09"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="335.5,-261.05 332,-251.05 328.5,-261.05 335.5,-261.05"/>
+        <text text-anchor="middle" x="350.5" y="-282.8" font-family="Noto Sans SC" font-size="9.00">核心人物</text>
+        </g>
+        <!-- s2_indul -->
+        <g id="node23" class="node">
+        <title>s2_indul</title>
+        <polygon fill="#fef5e7" stroke="black" points="532,-251 434,-251 434,-215 532,-215 532,-251"/>
+        <text text-anchor="middle" x="483" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">赎罪券危机</text>
+        <text text-anchor="middle" x="483" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">利奥十世·教廷财政</text>
+        </g>
+        <!-- t2_reform&#45;&gt;s2_indul -->
+        <g id="edge21" class="edge">
+        <title>t2_reform&#45;&gt;s2_indul</title>
+        <path fill="none" stroke="#8b7355" d="M357.27,-318.93C382.43,-301.94 421.19,-275.75 449.02,-256.95"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="451.32,-259.63 457.64,-251.13 447.4,-253.83 451.32,-259.63"/>
+        <text text-anchor="middle" x="427" y="-282.8" font-family="Noto Sans SC" font-size="9.00">导火索</text>
+        </g>
+        <!-- s2_augsburg -->
+        <g id="node24" class="node">
+        <title>s2_augsburg</title>
+        <polygon fill="#fef5e7" stroke="black" points="230.5,-251 123.5,-251 123.5,-215 230.5,-215 230.5,-251"/>
+        <text text-anchor="middle" x="177" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">奥格斯堡和约(1555)</text>
+        <text text-anchor="middle" x="177" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">天主教与新教并存</text>
+        </g>
+        <!-- t2_reform&#45;&gt;s2_augsburg -->
+        <g id="edge22" class="edge">
+        <title>t2_reform&#45;&gt;s2_augsburg</title>
+        <path fill="none" stroke="#8b7355" d="M306.06,-318.93C280.13,-301.86 240.11,-275.53 211.51,-256.71"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="213.31,-253.7 203.03,-251.13 209.46,-259.55 213.31,-253.7"/>
+        <text text-anchor="middle" x="278.5" y="-282.8" font-family="Noto Sans SC" font-size="9.00">制度成果</text>
+        </g>
+        <!-- t3_science&#45;&gt;t6_industry -->
+        <g id="edge50" class="edge">
+        <title>t3_science&#45;&gt;t6_industry</title>
+        <path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M1353.7,-331.08C1519.51,-313.98 2070.07,-257.2 2242.73,-239.39"/>
+        <polygon fill="#d4a574" stroke="#d4a574" points="2243.25,-242.86 2252.84,-238.35 2242.53,-235.89 2243.25,-242.86"/>
+        <text text-anchor="middle" x="1847" y="-283.1" font-family="Noto Sans SC" font-size="8.00">技术转化</text>
+        </g>
+        <!-- s3_newton -->
+        <g id="node25" class="node">
+        <title>s3_newton</title>
+        <polygon fill="#fef5e7" stroke="black" points="1106,-251 1008,-251 1008,-215 1106,-215 1106,-251"/>
+        <text text-anchor="middle" x="1057" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">牛顿</text>
+        <text text-anchor="middle" x="1057" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">力学体系·万有引力</text>
+        </g>
+        <!-- t3_science&#45;&gt;s3_newton -->
+        <g id="edge23" class="edge">
+        <title>t3_science&#45;&gt;s3_newton</title>
+        <path fill="none" stroke="#8b7355" d="M1264.32,-318.93C1221.41,-301.35 1154.48,-273.93 1108.33,-255.03"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1109.39,-251.68 1098.81,-251.13 1106.74,-258.16 1109.39,-251.68"/>
+        <text text-anchor="middle" x="1207.5" y="-282.8" font-family="Noto Sans SC" font-size="9.00">物理巅峰</text>
+        </g>
+        <!-- s3_method -->
+        <g id="node26" class="node">
+        <title>s3_method</title>
+        <polygon fill="#fef5e7" stroke="black" points="1301,-251 1149,-251 1149,-215 1301,-215 1301,-251"/>
+        <text text-anchor="middle" x="1225" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">科学方法论</text>
+        <text text-anchor="middle" x="1225" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">培根经验主义+笛卡尔理性主义</text>
+        </g>
+        <!-- t3_science&#45;&gt;s3_method -->
+        <g id="edge24" class="edge">
+        <title>t3_science&#45;&gt;s3_method</title>
+        <path fill="none" stroke="#8b7355" d="M1292.26,-318.7C1279.26,-302.33 1259.62,-277.59 1244.91,-259.07"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1247.5,-256.7 1238.54,-251.05 1242.02,-261.06 1247.5,-256.7"/>
+        <text text-anchor="middle" x="1282" y="-282.8" font-family="Noto Sans SC" font-size="9.00">元方法</text>
+        </g>
+        <!-- s3_math -->
+        <g id="node27" class="node">
+        <title>s3_math</title>
+        <polygon fill="#fef5e7" stroke="black" points="1432,-251 1344,-251 1344,-215 1432,-215 1432,-251"/>
+        <text text-anchor="middle" x="1388" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">近代数学</text>
+        <text text-anchor="middle" x="1388" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">微积分·解析几何</text>
+        </g>
+        <!-- t3_science&#45;&gt;s3_math -->
+        <g id="edge25" class="edge">
+        <title>t3_science&#45;&gt;s3_math</title>
+        <path fill="none" stroke="#8b7355" d="M1319.91,-318.7C1333.07,-302.33 1352.96,-277.59 1367.85,-259.07"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1370.76,-261.03 1374.3,-251.05 1365.3,-256.65 1370.76,-261.03"/>
+        <text text-anchor="middle" x="1368.5" y="-282.8" font-family="Noto Sans SC" font-size="9.00">工具革命</text>
+        </g>
+        <!-- s3_chem -->
+        <g id="node28" class="node">
+        <title>s3_chem</title>
+        <polygon fill="#fef5e7" stroke="black" points="1568.5,-251 1475.5,-251 1475.5,-215 1568.5,-215 1568.5,-251"/>
+        <text text-anchor="middle" x="1522" y="-236" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">化学确立</text>
+        <text text-anchor="middle" x="1522" y="-225" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">炼金术→科学化学</text>
+        </g>
+        <!-- t3_science&#45;&gt;s3_chem -->
+        <g id="edge26" class="edge">
+        <title>t3_science&#45;&gt;s3_chem</title>
+        <path fill="none" stroke="#8b7355" d="M1342.15,-318.93C1379.07,-301.5 1436.47,-274.39 1476.47,-255.5"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1478.18,-258.56 1485.73,-251.13 1475.19,-252.23 1478.18,-258.56"/>
+        <text text-anchor="middle" x="1439.5" y="-282.8" font-family="Noto Sans SC" font-size="9.00">学科分化</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;t6_industry -->
+        <g id="edge48" class="edge">
+        <title>t4_voyage&#45;&gt;t6_industry</title>
+        <path fill="none" stroke="#d4a574" stroke-dasharray="5,2" d="M1921.58,-533.68C1984.08,-520.11 2086,-498 2086,-498 2086,-498 2251,-459 2251,-459 2251,-459 2277.98,-321.03 2289.69,-261.17"/>
+        <polygon fill="#d4a574" stroke="#d4a574" points="2293.14,-261.77 2291.62,-251.28 2286.27,-260.42 2293.14,-261.77"/>
+        <text text-anchor="middle" x="2286" y="-387.1" font-family="Noto Sans SC" font-size="8.00">殖民地市场</text>
+        </g>
+        <!-- s4_columbus -->
+        <g id="node29" class="node">
+        <title>s4_columbus</title>
+        <polygon fill="#fef5e7" stroke="black" points="1456.5,-459 1371.5,-459 1371.5,-423 1456.5,-423 1456.5,-459"/>
+        <text text-anchor="middle" x="1414" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">哥伦布(1492)</text>
+        <text text-anchor="middle" x="1414" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">发现美洲新大陆</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;s4_columbus -->
+        <g id="edge27" class="edge">
+        <title>t4_voyage&#45;&gt;s4_columbus</title>
+        <path fill="none" stroke="#8b7355" d="M1826.23,-533.75C1720.91,-511.14 1478,-459 1478,-459 1478,-459 1473.27,-457.74 1466.38,-455.91"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1467.25,-452.52 1456.69,-453.34 1465.46,-459.29 1467.25,-452.52"/>
+        <text text-anchor="middle" x="1670.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">向西探索</text>
+        </g>
+        <!-- s4_magellan -->
+        <g id="node30" class="node">
+        <title>s4_magellan</title>
+        <polygon fill="#fef5e7" stroke="black" points="1632,-459 1500,-459 1500,-423 1632,-423 1632,-459"/>
+        <text text-anchor="middle" x="1566" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">麦哲伦环球航行(1519&#45;22)</text>
+        <text text-anchor="middle" x="1566" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">地球是圆的实证</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;s4_magellan -->
+        <g id="edge28" class="edge">
+        <title>t4_voyage&#45;&gt;s4_magellan</title>
+        <path fill="none" stroke="#8b7355" d="M1826.21,-528.17C1772.7,-510.45 1685.84,-481.69 1627.35,-462.32"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1628.09,-458.88 1617.5,-459.05 1625.89,-465.52 1628.09,-458.88"/>
+        <text text-anchor="middle" x="1747.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">环球实证</text>
+        </g>
+        <!-- s4_tordesillas -->
+        <g id="node31" class="node">
+        <title>s4_tordesillas</title>
+        <polygon fill="#fef5e7" stroke="black" points="1772.5,-459 1675.5,-459 1675.5,-423 1772.5,-423 1772.5,-459"/>
+        <text text-anchor="middle" x="1724" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">教皇子午线(1493)</text>
+        <text text-anchor="middle" x="1724" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">世界的首次划分</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;s4_tordesillas -->
+        <g id="edge29" class="edge">
+        <title>t4_voyage&#45;&gt;s4_tordesillas</title>
+        <path fill="none" stroke="#8b7355" d="M1848.89,-526.93C1823.91,-509.94 1785.4,-483.75 1757.75,-464.95"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1759.43,-461.86 1749.19,-459.13 1755.49,-467.65 1759.43,-461.86"/>
+        <text text-anchor="middle" x="1821.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">秩序建立</text>
+        </g>
+        <!-- s4_dutch -->
+        <g id="node32" class="node">
+        <title>s4_dutch</title>
+        <polygon fill="#fef5e7" stroke="black" points="1932,-459 1816,-459 1816,-423 1932,-423 1932,-459"/>
+        <text text-anchor="middle" x="1874" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">荷兰东印度公司(1602)</text>
+        <text text-anchor="middle" x="1874" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">现代股份制雏形</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;s4_dutch -->
+        <g id="edge30" class="edge">
+        <title>t4_voyage&#45;&gt;s4_dutch</title>
+        <path fill="none" stroke="#8b7355" d="M1874,-526.7C1874,-510.92 1874,-487.36 1874,-469.09"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="1877.5,-469.05 1874,-459.05 1870.5,-469.05 1877.5,-469.05"/>
+        <text text-anchor="middle" x="1892.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">制度创新</text>
+        </g>
+        <!-- s4_stock -->
+        <g id="node33" class="node">
+        <title>s4_stock</title>
+        <polygon fill="#fef5e7" stroke="black" points="2101,-459 1975,-459 1975,-423 2101,-423 2101,-459"/>
+        <text text-anchor="middle" x="2038" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">阿姆斯特丹交易所(1609)</text>
+        <text text-anchor="middle" x="2038" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">全球首个股票市场</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;s4_stock -->
+        <g id="edge31" class="edge">
+        <title>t4_voyage&#45;&gt;s4_stock</title>
+        <path fill="none" stroke="#8b7355" d="M1901.45,-526.93C1929,-509.79 1971.6,-483.3 2001.88,-464.47"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2003.82,-467.38 2010.46,-459.13 2000.12,-461.44 2003.82,-467.38"/>
+        <text text-anchor="middle" x="1978.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">金融革命</text>
+        </g>
+        <!-- s4_silver -->
+        <g id="node34" class="node">
+        <title>s4_silver</title>
+        <polygon fill="#fef5e7" stroke="black" points="2229.5,-459 2144.5,-459 2144.5,-423 2229.5,-423 2229.5,-459"/>
+        <text text-anchor="middle" x="2187" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">西班牙白银帝国</text>
+        <text text-anchor="middle" x="2187" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">全球货币流通</text>
+        </g>
+        <!-- t4_voyage&#45;&gt;s4_silver -->
+        <g id="edge32" class="edge">
+        <title>t4_voyage&#45;&gt;s4_silver</title>
+        <path fill="none" stroke="#8b7355" d="M1921.54,-528.51C1978.89,-509.82 2074.98,-478.5 2134.48,-459.12"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2135.63,-462.42 2144.06,-455.99 2133.47,-455.76 2135.63,-462.42"/>
+        <text text-anchor="middle" x="2057.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">财富流动</text>
+        </g>
+        <!-- t5_enlight&#45;&gt;t7_democracy -->
+        <g id="edge49" class="edge">
+        <title>t5_enlight&#45;&gt;t7_democracy</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="5,2" d="M2645.08,-532.75C2696,-519.13 2775,-498 2775,-498 2775,-498 2829.15,-477.65 2872.16,-461.48"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="2873.57,-464.69 2881.7,-457.9 2871.11,-458.14 2873.57,-464.69"/>
+        <text text-anchor="middle" x="2819" y="-491.1" font-family="Noto Sans SC" font-size="8.00">思想→行动</text>
+        </g>
+        <!-- s5_locke -->
+        <g id="node35" class="node">
+        <title>s5_locke</title>
+        <polygon fill="#fef5e7" stroke="black" points="2839,-459 2751,-459 2751,-423 2839,-423 2839,-459"/>
+        <text text-anchor="middle" x="2795" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">约翰·洛克</text>
+        <text text-anchor="middle" x="2795" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">社会契约·政府论</text>
+        </g>
+        <!-- t5_enlight&#45;&gt;s5_locke -->
+        <g id="edge33" class="edge">
+        <title>t5_enlight&#45;&gt;s5_locke</title>
+        <path fill="none" stroke="#8b7355" d="M2636.51,-526.87C2662.1,-513.79 2693,-498 2693,-498 2693,-498 2726.26,-479.74 2754.79,-464.07"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2756.76,-466.99 2763.84,-459.11 2753.39,-460.85 2756.76,-466.99"/>
+        <text text-anchor="middle" x="2737.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">经验主义基础</text>
+        </g>
+        <!-- s5_rousseau -->
+        <g id="node36" class="node">
+        <title>s5_rousseau</title>
+        <polygon fill="#fef5e7" stroke="black" points="2458,-459 2360,-459 2360,-423 2458,-423 2458,-459"/>
+        <text text-anchor="middle" x="2409" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">卢梭与孟德斯鸠</text>
+        <text text-anchor="middle" x="2409" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">社会契约·三权分立</text>
+        </g>
+        <!-- t5_enlight&#45;&gt;s5_rousseau -->
+        <g id="edge34" class="edge">
+        <title>t5_enlight&#45;&gt;s5_rousseau</title>
+        <path fill="none" stroke="#8b7355" d="M2570.23,-526.87C2545.21,-513.79 2515,-498 2515,-498 2515,-498 2480.14,-479.58 2450.4,-463.87"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2451.86,-460.68 2441.38,-459.11 2448.59,-466.87 2451.86,-460.68"/>
+        <text text-anchor="middle" x="2533.5" y="-490.8" font-family="Noto Sans SC" font-size="9.00">政治哲学</text>
+        </g>
+        <!-- s5_scotland -->
+        <g id="node37" class="node">
+        <title>s5_scotland</title>
+        <polygon fill="#fef5e7" stroke="black" points="2586.5,-459 2501.5,-459 2501.5,-423 2586.5,-423 2586.5,-459"/>
+        <text text-anchor="middle" x="2544" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">苏格兰启蒙运动</text>
+        <text text-anchor="middle" x="2544" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">亚当·斯密·休谟</text>
+        </g>
+        <!-- t5_enlight&#45;&gt;s5_scotland -->
+        <g id="edge35" class="edge">
+        <title>t5_enlight&#45;&gt;s5_scotland</title>
+        <path fill="none" stroke="#8b7355" d="M2589.22,-526.87C2578.7,-513.79 2566,-498 2566,-498 2566,-498 2560.18,-483.2 2554.53,-468.81"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2557.63,-467.13 2550.72,-459.11 2551.12,-469.69 2557.63,-467.13"/>
+        <text text-anchor="middle" x="2589" y="-490.8" font-family="Noto Sans SC" font-size="9.00">经济学奠基</text>
+        </g>
+        <!-- s5_french -->
+        <g id="node38" class="node">
+        <title>s5_french</title>
+        <polygon fill="#fef5e7" stroke="black" points="2708,-459 2630,-459 2630,-423 2708,-423 2708,-459"/>
+        <text text-anchor="middle" x="2669" y="-444" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">法国启蒙运动</text>
+        <text text-anchor="middle" x="2669" y="-433" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">伏尔泰·狄德罗</text>
+        </g>
+        <!-- t5_enlight&#45;&gt;s5_french -->
+        <g id="edge36" class="edge">
+        <title>t5_enlight&#45;&gt;s5_french</title>
+        <path fill="none" stroke="#8b7355" d="M2614.2,-526.7C2624.69,-510.48 2640.51,-486.04 2652.45,-467.57"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2655.48,-469.34 2657.97,-459.05 2649.6,-465.54 2655.48,-469.34"/>
+        <text text-anchor="middle" x="2660" y="-490.8" font-family="Noto Sans SC" font-size="9.00">百科全书派</text>
+        </g>
+        <!-- s6_lunar -->
+        <g id="node39" class="node">
+        <title>s6_lunar</title>
+        <polygon fill="#fef5e7" stroke="black" points="2149.5,-147 2054.5,-147 2054.5,-111 2149.5,-111 2149.5,-147"/>
+        <text text-anchor="middle" x="2102" y="-132" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">月光社</text>
+        <text text-anchor="middle" x="2102" y="-121" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">工业革命助推社群</text>
+        </g>
+        <!-- t6_industry&#45;&gt;s6_lunar -->
+        <g id="edge37" class="edge">
+        <title>t6_industry&#45;&gt;s6_lunar</title>
+        <path fill="none" stroke="#8b7355" d="M2262.7,-214.93C2229.99,-197.64 2179.28,-170.84 2143.59,-151.98"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2144.89,-148.71 2134.41,-147.13 2141.62,-154.9 2144.89,-148.71"/>
+        <text text-anchor="middle" x="2222.5" y="-178.8" font-family="Noto Sans SC" font-size="9.00">创新社群</text>
+        </g>
+        <!-- s6_steam -->
+        <g id="node40" class="node">
+        <title>s6_steam</title>
+        <polygon fill="#fef5e7" stroke="black" points="2271,-147 2193,-147 2193,-111 2271,-111 2271,-147"/>
+        <text text-anchor="middle" x="2232" y="-132" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">蒸汽时代</text>
+        <text text-anchor="middle" x="2232" y="-121" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">瓦特·机械思维</text>
+        </g>
+        <!-- t6_industry&#45;&gt;s6_steam -->
+        <g id="edge38" class="edge">
+        <title>t6_industry&#45;&gt;s6_steam</title>
+        <path fill="none" stroke="#8b7355" d="M2284.31,-214.7C2274.3,-198.48 2259.2,-174.04 2247.79,-155.57"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2250.76,-153.72 2242.53,-147.05 2244.81,-157.39 2250.76,-153.72"/>
+        <text text-anchor="middle" x="2283.5" y="-178.8" font-family="Noto Sans SC" font-size="9.00">动力革命</text>
+        </g>
+        <!-- s6_electric -->
+        <g id="node41" class="node">
+        <title>s6_electric</title>
+        <polygon fill="#fef5e7" stroke="black" points="2399.5,-147 2314.5,-147 2314.5,-111 2399.5,-111 2399.5,-147"/>
+        <text text-anchor="middle" x="2357" y="-132" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">第二次工业革命</text>
+        <text text-anchor="middle" x="2357" y="-121" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">电力改变世界</text>
+        </g>
+        <!-- t6_industry&#45;&gt;s6_electric -->
+        <g id="edge39" class="edge">
+        <title>t6_industry&#45;&gt;s6_electric</title>
+        <path fill="none" stroke="#8b7355" d="M2305.52,-214.7C2315.33,-198.55 2330.1,-174.26 2341.3,-155.82"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2344.43,-157.41 2346.64,-147.05 2338.45,-153.77 2344.43,-157.41"/>
+        <text text-anchor="middle" x="2345.5" y="-178.8" font-family="Noto Sans SC" font-size="9.00">能源升级</text>
+        </g>
+        <!-- s6_trade -->
+        <g id="node42" class="node">
+        <title>s6_trade</title>
+        <polygon fill="#fef5e7" stroke="black" points="2545.5,-147 2442.5,-147 2442.5,-111 2545.5,-111 2545.5,-147"/>
+        <text text-anchor="middle" x="2494" y="-132" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">全球贸易转型</text>
+        <text text-anchor="middle" x="2494" y="-121" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">重商主义→自由贸易</text>
+        </g>
+        <!-- t6_industry&#45;&gt;s6_trade -->
+        <g id="edge40" class="edge">
+        <title>t6_industry&#45;&gt;s6_trade</title>
+        <path fill="none" stroke="#8b7355" d="M2328.31,-214.93C2362.17,-197.57 2414.76,-170.62 2451.58,-151.74"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2453.28,-154.8 2460.58,-147.13 2450.09,-148.57 2453.28,-154.8"/>
+        <text text-anchor="middle" x="2418.5" y="-178.8" font-family="Noto Sans SC" font-size="9.00">贸易转型</text>
+        </g>
+        <!-- s7_america -->
+        <g id="node43" class="node">
+        <title>s7_america</title>
+        <polygon fill="#fef5e7" stroke="black" points="3094.5,-355 3019.5,-355 3019.5,-319 3094.5,-319 3094.5,-355"/>
+        <text text-anchor="middle" x="3057" y="-340" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">美国独立革命</text>
+        <text text-anchor="middle" x="3057" y="-329" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">1776&#45;1783</text>
+        </g>
+        <!-- t7_democracy&#45;&gt;s7_america -->
+        <g id="edge41" class="edge">
+        <title>t7_democracy&#45;&gt;s7_america</title>
+        <path fill="none" stroke="#8b7355" d="M2946.26,-422.93C2968.22,-406.08 3001.97,-380.21 3026.43,-361.44"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="3028.86,-363.99 3034.67,-355.13 3024.6,-358.44 3028.86,-363.99"/>
+        <text text-anchor="middle" x="3017" y="-386.8" font-family="Noto Sans SC" font-size="9.00">第一次成功</text>
+        </g>
+        <!-- s7_french_rev -->
+        <g id="node44" class="node">
+        <title>s7_french_rev</title>
+        <polygon fill="#fef5e7" stroke="black" points="2563,-355 2495,-355 2495,-319 2563,-319 2563,-355"/>
+        <text text-anchor="middle" x="2529" y="-340" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">法国大革命</text>
+        <text text-anchor="middle" x="2529" y="-329" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">1789&#45;1799</text>
+        </g>
+        <!-- t7_democracy&#45;&gt;s7_french_rev -->
+        <g id="edge42" class="edge">
+        <title>t7_democracy&#45;&gt;s7_french_rev</title>
+        <path fill="none" stroke="#8b7355" d="M2881.98,-428.66C2870.42,-425.54 2861,-423 2861,-423 2861,-423 2728,-394 2728,-394 2728,-394 2585,-355 2585,-355 2585,-355 2579.98,-353.48 2572.95,-351.34"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2573.77,-347.93 2563.19,-348.38 2571.74,-354.63 2573.77,-347.93"/>
+        <text text-anchor="middle" x="2746.5" y="-386.8" font-family="Noto Sans SC" font-size="9.00">激进革命</text>
+        </g>
+        <!-- s7_latin -->
+        <g id="node45" class="node">
+        <title>s7_latin</title>
+        <polygon fill="#fef5e7" stroke="black" points="2681.5,-355 2606.5,-355 2606.5,-319 2681.5,-319 2681.5,-355"/>
+        <text text-anchor="middle" x="2644" y="-340" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">拉美独立</text>
+        <text text-anchor="middle" x="2644" y="-329" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">推翻殖民统治</text>
+        </g>
+        <!-- t7_democracy&#45;&gt;s7_latin -->
+        <g id="edge43" class="edge">
+        <title>t7_democracy&#45;&gt;s7_latin</title>
+        <path fill="none" stroke="#8b7355" d="M2881.78,-424.62C2830.58,-405.97 2744.53,-374.62 2691.19,-355.19"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2692.22,-351.84 2681.62,-351.71 2689.82,-358.42 2692.22,-351.84"/>
+        <text text-anchor="middle" x="2810.5" y="-386.8" font-family="Noto Sans SC" font-size="9.00">连锁反应</text>
+        </g>
+        <!-- s7_burke -->
+        <g id="node46" class="node">
+        <title>s7_burke</title>
+        <polygon fill="#fef5e7" stroke="black" points="2829,-355 2725,-355 2725,-319 2829,-319 2829,-355"/>
+        <text text-anchor="middle" x="2777" y="-340" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">英美保守主义</text>
+        <text text-anchor="middle" x="2777" y="-329" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">伯克批判法国大革命</text>
+        </g>
+        <!-- t7_democracy&#45;&gt;s7_burke -->
+        <g id="edge44" class="edge">
+        <title>t7_democracy&#45;&gt;s7_burke</title>
+        <path fill="none" stroke="#8b7355" d="M2899.4,-422.93C2874.91,-405.94 2837.18,-379.75 2810.08,-360.95"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2811.9,-357.95 2801.68,-355.13 2807.91,-363.7 2811.9,-357.95"/>
+        <text text-anchor="middle" x="2872.5" y="-386.8" font-family="Noto Sans SC" font-size="9.00">保守反思</text>
+        </g>
+        <!-- s7_napoleon -->
+        <g id="node47" class="node">
+        <title>s7_napoleon</title>
+        <polygon fill="#fef5e7" stroke="black" points="2976,-355 2872,-355 2872,-319 2976,-319 2976,-355"/>
+        <text text-anchor="middle" x="2924" y="-340" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">拿破仑与维也纳会议</text>
+        <text text-anchor="middle" x="2924" y="-329" font-family="Noto Sans SC" font-size="10.00" fill="#3d2f2f">革命后的秩序重建</text>
+        </g>
+        <!-- t7_democracy&#45;&gt;s7_napoleon -->
+        <g id="edge45" class="edge">
+        <title>t7_democracy&#45;&gt;s7_napoleon</title>
+        <path fill="none" stroke="#8b7355" d="M2924,-422.7C2924,-406.92 2924,-383.36 2924,-365.09"/>
+        <polygon fill="#8b7355" stroke="#8b7355" points="2927.5,-365.05 2924,-355.05 2920.5,-365.05 2927.5,-365.05"/>
+        <text text-anchor="middle" x="2942.5" y="-386.8" font-family="Noto Sans SC" font-size="9.00">国际秩序</text>
+        </g>
+        <!-- s1_galileo&#45;&gt;t3_science -->
+        <g id="edge46" class="edge">
+        <title>s1_galileo&#45;&gt;t3_science</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="5,2" d="M1205.25,-422.89C1213.19,-406.43 1224,-384 1224,-384 1224,-384 1245.55,-371.91 1266.56,-360.12"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="1268.46,-363.07 1275.47,-355.13 1265.03,-356.97 1268.46,-363.07"/>
+        <text text-anchor="middle" x="1249" y="-387.1" font-family="Noto Sans SC" font-size="8.00">实验科学先驱</text>
+        </g>
+        <!-- s1_gutenberg&#45;&gt;t2_reform -->
+        <g id="edge47" class="edge">
+        <title>s1_gutenberg&#45;&gt;t2_reform</title>
+        <path fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="5,2" d="M395.11,-422.7C382.91,-406.33 364.48,-381.59 350.68,-363.07"/>
+        <polygon fill="#c0392b" stroke="#c0392b" stroke-width="1.2" points="353.48,-360.98 344.7,-355.05 347.87,-365.16 353.48,-360.98"/>
+        <text text-anchor="middle" x="398" y="-387.1" font-family="Noto Sans SC" font-size="8.00">印刷传播论纲</text>
+        </g>
+        </g>
+        </svg>
+        `;
+})();
+
+// ========== MCQ DATA (20 questions, answer distribution {0:5,1:5,2:5,3:5}) ==========
+var mcqBank=[
+  {q:'文艺复兴发源于哪个城市？',opts:['罗马','威尼斯','佛罗伦萨','米兰'],answer:2},
+  {q:'谁是\u201C文坛三杰\u201D之一？',opts:['达·芬奇','米开朗基罗','拉斐尔','但丁'],answer:3},
+  {q:'圣母百花大教堂拱顶的设计者是谁？',opts:['米开罗佐','多纳泰罗','布鲁内莱斯基','拉斐尔'],answer:2},
+  {q:'马丁·路德提出的核心神学观点是什么？',opts:['君权神授','因信称义','三位一体','预定论'],answer:1},
+  {q:'《奥格斯堡宗教和约》签署于哪一年？',opts:['1521年','1546年','1555年','1600年'],answer:2},
+  {q:'哥白尼的《天体运行论》核心突破是什么？',opts:['发现木星卫星','将坐标系原点移至太阳','发明望远镜','发现万有引力'],answer:1},
+  {q:'伽利略确立的科学方法论核心是什么？',opts:['数学+哲学','逻辑+实验','观察+归纳','假设+辩论'],answer:1},
+  {q:'牛顿的《自然哲学的数学原理》发表于哪一年？',opts:['1666年','1687年','1704年','1727年'],answer:1},
+  {q:'推动大航海时代的最主要经济动因是什么？',opts:['传播基督教','寻找黄金国','香料贸易利润','证明地球是圆的'],answer:2},
+  {q:'哥伦布首航美洲发生在哪一年？',opts:['1488年','1492年','1498年','1502年'],answer:1},
+  {q:'教皇子午线最初划定于哪一年？',opts:['1492年','1493年','1494年','1500年'],answer:1},
+  {q:'荷兰东印度公司成立于哪一年？',opts:['1595年','1600年','1602年','1609年'],answer:2},
+  {q:'阿姆斯特丹股票交易所的成立年份是？',opts:['1600年','1602年','1609年','1620年'],answer:2},
+  {q:'约翰·洛克认为不可剥夺的自然权利不包括？',opts:['统治权','生命权','自由权','财产权'],answer:0},
+  {q:'孟德斯鸠在《论法的精神》中提出什么原则？',opts:['人民主权','三权分立','社会契约','看不见的手'],answer:1},
+  {q:'法国大革命爆发的年份是？',opts:['1776年','1783年','1789年','1799年'],answer:2},
+  {q:'瓦特对蒸汽机的关键改进是什么？',opts:['发明蒸汽机','分离式冷凝器','高压蒸汽设计','蒸汽轮机'],answer:1},
+  {q:'伊丽莎白一世时代（1558-1603年）的文学巨匠是？',opts:['培根','笛卡尔','莎士比亚','弥尔顿'],answer:2},
+  {q:'西班牙从美洲大量获取的白银最重要的长期影响是？',opts:['西班牙成为永久霸主','推动全球货币流通','导致西班牙产业空心化','促成了英西同盟'],answer:2},
+  {q:'以下哪个不是美第奇家族的贡献？',opts:['赞助建造圣母百花大教堂','发现并培养米开朗基罗','创立世界上第一所大学','建设全欧洲最大藏书库'],answer:2}
+];
+
+// ========== QUIZ SYSTEM ==========
+var currentQuiz=[];
+var quizTimer=null;
+var quizAnswered=0;
+var quizCorrect=0;
+
+function startQuiz(){
+  clearInterval(quizTimer);
+  document.getElementById('staticQuiz').style.display='none';
+  var shuffled=mcqBank.slice().sort(function(){return Math.random()-0.5});
+  currentQuiz=shuffled.slice(0,10);
+  quizAnswered=0;quizCorrect=0;
+  renderQuiz();
+}
+
+function renderQuiz(){
+  var html='<div style="text-align:left">';
+  for(var i=0;i<currentQuiz.length;i++){
+    var q=currentQuiz[i];
+    html+='<div style="margin:12px 0;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border)" id="qDiv'+i+'"><strong>Q'+(i+1)+'. '+q.q+'</strong><div style="margin-top:6px">';
+    for(var j=0;j<q.opts.length;j++){
+      html+='<div class="quiz-option" onclick="checkAnswer('+i+','+j+',this)" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+q.opts[j]+'</div>';
+    }
+    html+='<div id="result'+i+'" style="margin-top:5px;font-size:.85rem"></div></div></div>';
+  }
+  html+='</div><p style="margin-top:10px;color:var(--text-light);font-size:.85rem">已答: <span id="ansCount">0</span>/'+currentQuiz.length+' | 正确: <span id="corCount">0</span></p>';
+  document.getElementById('quizContainer').innerHTML=html;
+}
+
+function checkAnswer(qIdx,optIdx,el){
+  var qDiv=document.getElementById('qDiv'+qIdx);
+  if(qDiv.classList.contains('answered')) return;
+  qDiv.classList.add('answered');
+  var q=currentQuiz[qIdx];
+  var correct=q.answer;
+  var allOpts=qDiv.querySelectorAll('.quiz-option');
+  for(var i=0;i<allOpts.length;i++){
+    allOpts[i].classList.add('disabled');
+    if(i===correct) allOpts[i].classList.add('correct');
+    if(i===optIdx && optIdx!==correct) allOpts[i].classList.add('wrong');
+  }
+  quizAnswered++;
+  if(optIdx===correct) quizCorrect++;
+  document.getElementById('ansCount').textContent=quizAnswered;
+  document.getElementById('corCount').textContent=quizCorrect;
+  var isCorrect=(optIdx===correct);
+  document.getElementById('result'+qIdx).innerHTML=isCorrect?'<span style="color:var(--success)">\u2713 正确</span>':'<span style="color:var(--accent)">\u2717 错误 \u2192 正确答案: '+'ABCD'[correct]+'. '+q.opts[correct]+'</span>';
+  store.quizHistory.push({q:q.q,correct:isCorrect});
+  if(!isCorrect) store.wrongAnswers.push({q:q.q,opts:q.opts,correct:correct,your:optIdx});
+  save();updateProgress();
+}
+
+function resetQuiz(){
+  clearInterval(quizTimer);
+  document.getElementById('quizContainer').innerHTML='';
+  document.getElementById('staticQuiz').style.display='none';
+}
+
+// ========== EXAM MODE ==========
+var examAnswered={};
+var examCorrectC=0;
+
+function startExam(){
+  clearInterval(quizTimer);
+  var shuffled=mcqBank.slice().sort(function(){return Math.random()-0.5});
+  var examQ=shuffled.slice(0,7);
+  examAnswered={};examCorrectC=0;
+  var html='<div style="text-align:left"><p style="color:var(--accent);font-weight:600">答题中：请选择正确答案</p>';
+  for(var i=0;i<examQ.length;i++){
+    var q=examQ[i];
+    html+='<div style="margin:12px 0;padding:12px;background:var(--card);border-radius:8px" id="exDiv'+i+'"><strong>Q'+(i+1)+'. '+q.q+'</strong><div style="margin-top:6px">';
+    for(var j=0;j<q.opts.length;j++){
+      html+='<div class="quiz-option" onclick="examAnswer('+i+','+j+','+q.answer+',this)" id="exOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+q.opts[j]+'</div>';
+    }
+    html+='</div></div>';
+  }
+  html+='<button class="btn btn-primary" onclick="submitExam()" style="margin-top:12px">提交考试</button></div>';
+  document.getElementById('examContainer').innerHTML=html;
+  document.getElementById('examResult').innerHTML='';
+}
+
+function examAnswer(qIdx,optIdx,correct,el){
+  if(examAnswered[qIdx]!==undefined) return;
+  examAnswered[qIdx]=optIdx;
+  if(optIdx===correct) examCorrectC++;
+  var qDiv=document.getElementById('exDiv'+qIdx);
+  var allOpts=qDiv.querySelectorAll('.quiz-option');
+  for(var i=0;i<allOpts.length;i++){
+    allOpts[i].classList.add('disabled');
+    if(i===correct) allOpts[i].classList.add('correct');
+    if(i===optIdx && optIdx!==correct) allOpts[i].classList.add('wrong');
+  }
+}
+
+function submitExam(){
+  clearInterval(quizTimer);
+  var total=7;
+  var score=examCorrectC;
+  document.getElementById('examResult').innerHTML='<div class="card" style="text-align:center"><h3>\u2705 考试结果</h3><p style="font-size:1.5rem;color:var(--accent);font-weight:700">'+score+' / '+total+'</p><p>'+(score>=5?'\u2b50 优秀！核心概念掌握牢固':score>=3?'\U0001f44d 良好，建议回顾错题对应概念':'\U0001f4da 继续加油，建议重新浏览知识卡片')+'</p></div>';
+  store.examHistory.push({score:score,total:total,date:new Date().toISOString()});
+  save();updateProgress();
+}
+
+// ========== REVIEW MODE ==========
+function renderReview(){
+  var wrong=store.wrongAnswers||[];
+  var html='';
+  if(wrong.length===0){
+    html='<p style="color:var(--success)">\u2728 暂无错题，继续保持！</p>';
+  }else{
+    var recent=wrong.slice(-10).reverse();
+    for(var i=0;i<recent.length;i++){
+      var w=recent[i];
+      html+='<div class="card" style="margin:8px 0"><p><strong>'+w.q+'</strong></p><p style="color:var(--accent);font-size:.82rem">\u2717 你的答案: '+'ABCD'[w.your]+'. '+w.opts[w.your]+'</p><p style="color:var(--success);font-size:.82rem">\u2713 正确答案: '+'ABCD'[w.correct]+'. '+w.opts[w.correct]+'</p></div>';
+    }
+  }
+  document.getElementById('wrongBook').innerHTML=html;
+  var totalQ=store.quizHistory.length;
+  var correct=store.quizHistory.filter(function(x){return x.correct}).length;
+  var accuracy=totalQ>0?Math.round(correct/totalQ*100):0;
+  document.getElementById('reviewStats').innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">'+
+    '<div class="stat-box"><div class="num">'+totalQ+'</div><div class="lab">总答题数</div></div>'+
+    '<div class="stat-box"><div class="num">'+accuracy+'%</div><div class="lab">正确率</div></div>'+
+    '<div class="stat-box"><div class="num">'+learnedCards.length+'</div><div class="lab">已学概念</div></div>'+
+    '<div class="stat-box"><div class="num">'+wrong.length+'</div><div class="lab">错题数</div></div>'+
+    '</div>';
+}
+renderReview();
+
+// ========== TAB SWITCH ==========
+function switchTab(idx){
+  var tabs=document.querySelectorAll('.tab-content');
+  var btns=document.querySelectorAll('.tab-btn');
+  for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active')}
+  for(var j=0;j<btns.length;j++){btns[j].classList.remove('active')}
+  tabs[idx].classList.add('active');
+  btns[idx].classList.add('active');
+  if(idx===4) renderReview();
+  if(idx===0) updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ========== TREE TOGGLE ==========
+function toggleTree(e){
+  e.stopPropagation();
+  var children=e.target.parentElement.querySelector('.tree-children');
+  if(children){
+    if(children.classList.contains('show')||children.classList.contains('open')){
+      children.classList.remove('show');children.classList.remove('open');
+    }else{
+      children.classList.add('show');
+    }
+  }
+}
+
+// ========== CONCEPT GRID ==========
+(function(){
+  var grid=document.getElementById('conceptGrid');
+  var stars=['c1','c4','c7','c10'];
+  var html='';
+  for(var i=0;i<concepts.length;i++){
+    var c=concepts[i];
+    var star=stars.includes(c.id)?' <span class="mks-star">\u2605</span>':'';
+    var learned=learnedCards.includes(c.id)?' <span class="tag tag-learned">\u2713</span>':'';
+    html+='<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><h4>'+c.name+star+learned+'</h4><p style="font-size:.78rem;color:var(--text-light)">'+c.def.substring(0,40)+'...</p></div>';
+  }
+  grid.innerHTML=html;
+})();
+
+// ========== DECISION SIMULATION ==========
+function chooseDecision(round, choice){
+  var feedbacks={
+    1:{0:'<p style="color:var(--accent)">\u26a0\ufe0f MKS分析：暴力复仇虽然痛快，但会消耗你的政治资本并开启佛罗伦萨内战的循环。历史上科西莫被流放但最终被召回——不是靠武力，而是靠\u201C没有美第奇的钱，佛罗伦萨的经济会崩溃\u201D这个事实。武装政变成功后你将成为\u201C暴君\u201D而非\u201C祖国之父\u201D。</p><p><strong>历史教训：</strong>科西莫选择了B——接受召回、低调行事、优先完成大教堂。这不仅给了他道德制高点，也让教宗亲自为他站台（教宗主持了落成典礼）。\u201C让工程说话\u201D比\u201C让刀剑说话\u201D更具长期影响力。</p>',
+       1:'<p style="color:var(--success)">\u2b50 科西莫的选择！历史上科西莫正是这样做的：接受召回但不搞政治清算，将精力投入圣母百花大教堂工程。1436年大教堂落成时，教宗亲自出席典礼，科西莫获得了\u201C祖国之父\u201D的称号——这比任何政治报复都更有力量。</p><p><strong>MKS分析：</strong>你选择了\u201C用建设替代报复\u201D——不仅稳固了个人声望，更将\u201C艺术赞助\u201D确立为美第奇家族的品牌。此后几代人，\u201C美第奇=佛罗伦萨的文化荣耀\u201D成为不朽的政治资产。</p>',
+       2:'<p style="color:var(--warning)">\u26a0 MKS分析：逃到威尼斯重新开始看似理性，但会丧失你在佛罗伦萨积累的所有社会资本——\u201C美第奇银行\u201D的品牌价值与其扎根佛罗伦萨的关系网络密不可分。更重要的是，离开意味着放弃圣母百花大教堂——这座建筑一旦被他人完成，美第奇家族的最大荣耀将归于他人。历史上科西莫深知这一点。</p>'},
+    2:{0:'<p style="color:var(--accent)">\u26a0\ufe0f MKS分析：回到维滕贝格领导群众运动看似勇敢，但路德面临的是帝国层面的军事镇压——查理五世的军队不是一群愤怒市民能对抗的。历史上扬·胡斯在康斯坦茨会议后正是选择了公开对抗，结果被火刑处死。路德记取了这个教训。</p><p><strong>关键洞察：</strong>有时候\u201C战略性撤退\u201D比\u201C壮烈牺牲\u201D更有效——活着的路德能继续改革，死了的路德只是一个符号。</p>',
+       1:'<p style="color:var(--success)">\u2b50 历史还原：路德在瓦特堡隐居期间完成了德文《圣经》的翻译——这是宗教改革中最具深远影响的行动。从此普通德语民众可以自己阅读《圣经》，不再需要教会作为\u201C中介\u201D。路德自己评价印刷术是\u201C上帝至高无上的恩赐\u201D，但他的翻译工作同样至关重要——\u201C内容+技术\u201D的结合才是真正的革命。</p><p><strong>MKS分析：</strong>你选择了一条\u201C思想胜于武力\u201D的道路——用翻译和传播替代公开对抗，用文化武器替代政治武器。这一选择证明：<strong>真正的革命不在街头，在每个人的书桌上。</strong></p>',
+       2:'<p style="color:var(--warning)">\u26a0 MKS分析：与查理五世谈判看起来务实，但历史证明路德的对手们从不想妥协——教宗在1520年就发布了开除教籍的敕令，路德当众烧毁了它。谈判不仅可能失败（扬·胡斯的先例：1415年胡斯持皇帝的安全通行证赴会，仍被火刑），而且如果路德收回主张，他将在支持者心中从\u201C先知\u201D变成\u201C叛徒\u201D。某些立场上的妥协，代价比坚持更高。</p>'},
+    3:{0:'<p style="color:var(--accent)">\u274c MKS分析：强行引入机器+开除工人是早期工业革命中许多工厂主的实际做法——这导致了卢德运动（工人砸毁机器）和长期的阶级对立。马克思正是观察了这种\u201C资本对劳动的赤裸裸的压迫\u201D才写出了《资本论》。短期你获得了效率，但长期看：愤怒的工人可能破坏机器、罢工频发、社会冲突消耗巨大成本。</p><p><strong>边界思考：</strong>技术进步的阵痛是真实的——但\u201C如何管理阵痛\u201D决定了你的工厂是成为产业升级的先锋还是阶级斗争的战场。</p>',
+       1:'<p style="color:var(--success)">\u2b50 MKS分析：最优策略！逐步引入机器+培训+补偿不仅减少阻力，更重要的是<strong>将工人从\u201C技术的敌人\u201D转变为\u201C技术的使用者\u201D</strong>。历史上实现平稳转型的企业都采取了类似策略——工人一旦学会操作机器，他们的利益就与新技术绑定在一起。</p><p><strong>深层逻辑：</strong>工业革命的最大挑战不是技术本身，而是\u201C技术与社会关系的重新协调\u201D。你不仅是一个工厂主，你也在定义\u201C技术进步应该如何管理\u201D这一后世将反复出现的问题的答案。</p>',
+       2:'<p style="color:var(--warning)">\u26a0 MKS分析：维持现状在短期内避免冲突，但历史洪流不可阻挡——你的竞争对手会采用蒸汽机，成本比你低30%，最终把你挤出市场。吴军讲的西班牙教训在此适用：\u201C靠现有优势吃老本\u201D最终必然被\u201C靠创新获得新优势\u201D的竞争者取代。你可以选择\u201C不改变\u201D，但市场会替你选择\u201C被淘汰\u201D。</p>'}
+  };
+  var fbDiv=document.getElementById('feedback'+round);
+  fbDiv.innerHTML=feedbacks[round][choice];
+  fbDiv.classList.add('show');
+  var opts=document.querySelectorAll('#decision'+round+' .decision-option');
+  for(var i=0;i<opts.length;i++){opts[i].style.pointerEvents='none'}
+  opts[choice].classList.add('selected');
+  if(round<3){
+    var next=document.getElementById('decision'+(round+1));
+    if(next) next.style.display='block';
+  }
+}
+
+// ========== INIT ==========
+updateProgress();
+</script>
+
+</body>
+</html>
