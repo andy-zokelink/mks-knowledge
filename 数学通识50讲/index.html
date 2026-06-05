@@ -1,74 +1,118 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>吴军·数学通识50讲 — 最小知识集</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>数学通识50讲 · 数学圣殿</title>
 <style>
-:root {
-  --bg: #fdf6ec;
-  --card: #fffaf2;
-  --accent: #c0392b;
-  --text: #3d2f2f;
-  --text-light: #6b5b5b;
-  --border: #e8d5c4;
-  --shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text); font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif; line-height: 1.7; min-height: 100vh; }
-.top-bar { position: sticky; top: 0; background: #2c1810; color: #fdf6ec; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-.top-bar h1 { font-size: 1.2rem; font-weight: 600; }
-.top-bar a { color: #e8c9a0; text-decoration: none; font-size: 0.9rem; }
-.top-bar a:hover { color: #fff; }
-.container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
-.hero { text-align: center; margin-bottom: 48px; }
-.hero h2 { font-size: 2rem; color: var(--accent); margin-bottom: 12px; }
-.hero p { color: var(--text-light); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
-.topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin-bottom: 48px; }
-.topic-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; display: block; text-decoration: none; color: inherit; }
-.topic-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
-.topic-card .num { font-size: 0.85rem; color: var(--text-light); margin-bottom: 8px; }
-.topic-card h3 { font-size: 1.3rem; color: var(--accent); margin-bottom: 8px; }
-.topic-card .subtitle { font-size: 0.92rem; color: var(--text-light); margin-bottom: 16px; }
-.topic-card .meta { font-size: 0.82rem; color: #baa89a; }
-.topic-card .arrow { float: right; font-size: 1.2rem; color: var(--accent); }
-.footer { text-align: center; padding: 24px; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 48px; }
-.footer a { color: var(--accent); text-decoration: none; }
-@media (max-width: 400px) {
-  .topic-grid { grid-template-columns: 1fr; }
-  .hero h2 { font-size: 1.5rem; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC','STSong',serif;background:#0d0d14;color:#d4c8b0;min-height:100vh;overflow-x:hidden}
+
+/* 星空粒子 */
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.star{position:absolute;background:#c8b060;border-radius:50%;animation:twinkle ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.6}}
+
+main{max-width:860px;margin:0 auto;padding:60px 24px 80px;position:relative;z-index:1}
+
+/* 标题区 */
+.hero{text-align:center;padding:40px 0 60px}
+.hero .icon{font-size:56px;margin-bottom:16px;animation:float 4s ease-in-out infinite}
+.hero h1{font-size:36px;font-weight:700;color:#e0d0a0;margin-bottom:12px;letter-spacing:2px}
+.hero .sub{color:#8a7a5a;font-size:15px}
+.hero .symbols{font-size:13px;color:#5a4a3a;margin-top:16px;letter-spacing:6px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* 黄金分割线 */
+.divider{display:flex;align-items:center;gap:16px;margin:0 auto 48px;max-width:400px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(200,170,100,.3),transparent)}
+.divider span{color:rgba(200,170,100,.4);font-size:20px}
+
+/* 数学圣殿 - 两柱 */
+.temple{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px}
+.pillar{background:linear-gradient(180deg,rgba(30,25,18,.95),rgba(40,35,25,.9));border:1px solid rgba(180,140,80,.12);border-radius:16px;padding:32px;text-decoration:none;color:inherit;transition:all .35s;position:relative;overflow:hidden}
+.pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:0 0 2px 2px}
+.pillar:nth-child(1)::before{background:linear-gradient(90deg,#6b4c30,#c8a060,#6b4c30)}
+.pillar:nth-child(2)::before{background:linear-gradient(90deg,#405060,#70a0c0,#405060)}
+.pillar:hover{transform:translateY(-4px);border-color:rgba(200,160,100,.3);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.pillar .pillar-icon{font-size:36px;margin-bottom:16px}
+.pillar h2{font-size:20px;font-weight:700;color:#d0b870;margin-bottom:4px}
+.pillar .subtitle{font-size:13px;color:#7a6a4a;margin-bottom:14px}
+.pillar .desc{font-size:14px;color:#a09078;line-height:1.7}
+.pillar .num{font-size:12px;color:#5a4a30;letter-spacing:2px;margin-bottom:10px}
+
+/* 底层横梁 - 从具体到抽象 */
+.beam{text-align:center;padding:32px;margin-bottom:48px;position:relative}
+.beam .track{display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap}
+.beam .step{padding:10px 20px;font-size:13px;color:#6a5a40;position:relative}
+.beam .step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:#4a3a20;font-size:16px}
+.beam .step:last-child::after{content:none}
+.beam .step.active{color:#c8a060;font-weight:600}
+.beam .label{font-size:11px;color:#4a3a20;letter-spacing:3px;margin-bottom:16px}
+
+.footer{text-align:center;padding:20px;border-top:1px solid rgba(80,60,30,.2)}
+.footer a{color:rgba(160,140,100,.4);font-size:12px;text-decoration:none;transition:color .3s}
+.footer a:hover{color:rgba(200,170,120,.7)}
+
+@media(max-width:640px){
+  .temple{grid-template-columns:1fr}
+  .hero h1{font-size:26px}
 }
 </style>
-</head>
-<body>
-<div class="top-bar">
-  <h1>📐 吴军·数学通识50讲</h1>
-  <a href="../index.html">← 知识主板</a>
-</div>
-<div class="container">
+
+<div class="stars" id="stars"></div>
+
+<main>
   <div class="hero">
-    <h2>数学通识50讲 · 最小知识集</h2>
-    <p>吴军博士的数学通识课——从初等数学的静态认知，跃迁到高等数学的动态思维。两卷最小知识集，提炼50讲的核心骨架。</p>
+    <div class="icon">📐</div>
+    <h1>数学圣殿</h1>
+    <p class="sub">吴军 · 数学通识50讲 · 最小知识集</p>
+    <p class="symbols">π ∞ Σ ∫ √ ≈ Δ ∂ ∏</p>
   </div>
 
-  <div class="topic-grid">
-    <a href="1-数学思维-数与几何.html" class="topic-card">
+  <div class="divider"><span>◎</span></div>
+
+  <div class="temple">
+    <a class="pillar" href="1-数学思维-数与几何.html">
+      <div class="pillar-icon">🔢</div>
       <div class="num">专题一</div>
-      <h3>数学思维、数与几何 <span class="arrow">→</span></h3>
-      <div class="subtitle">从具体数字到抽象工具的认知跃迁——公理化思维、数的扩展与几何的空间法则</div>
-      <div class="meta">34 篇笔记 · 9 个核心概念</div>
+      <h2>数学思维、数与几何</h2>
+      <div class="subtitle">左柱 · 静态世界的秩序</div>
+      <div class="desc">从勾股定理到公理化体系，从自然数到复数——人类如何用数字和图形为混沌世界建立第一套精确语言。</div>
     </a>
-
-    <a href="2-微积分-概率与数学应用.html" class="topic-card">
+    <a class="pillar" href="2-微积分-概率与数学应用.html">
+      <div class="pillar-icon">∫</div>
       <div class="num">专题二</div>
-      <h3>微积分、概率与数学应用 <span class="arrow">→</span></h3>
-      <div class="subtitle">把握动态变化规律与不确定性世界——微积分思维、概率统计与数学的跨学科力量</div>
-      <div class="meta">21 篇笔记 · 9 个核心概念</div>
+      <h2>微积分、概率与数学应用</h2>
+      <div class="subtitle">右柱 · 动态世界的法则</div>
+      <div class="desc">从瞬时变化到累积效应，从随机性到统计推断——数学如何从描述不变之物，跃迁到驾驭变化与不确定性。</div>
     </a>
   </div>
-</div>
-<div class="footer">
-  基于吴军《数学通识50讲》© 得到App · <a href="https://andy-zokelink.github.io/mks-knowledge/">MKS 知识体系</a>
-</div>
-</body>
+
+  <div class="beam">
+    <div class="label">── 从具体到抽象的认知跃迁 ──</div>
+    <div class="track">
+      <span class="step active">数字</span>
+      <span class="step">方程</span>
+      <span class="step">几何</span>
+      <span class="step">函数</span>
+      <span class="step">微积分</span>
+      <span class="step">概率</span>
+      <span class="step">公理体系</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="../index.html">← 返回知识主板</a>
+  </div>
+</main>
+
+<script>
+// 星空
+const s=document.getElementById('stars');
+for(let i=0;i<80;i++){
+  const d=document.createElement('div');d.className='star';
+  d.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-duration:${2+Math.random()*5}s;animation-delay:${Math.random()*4}s`;
+  s.appendChild(d);
+}
+</script>
 </html>

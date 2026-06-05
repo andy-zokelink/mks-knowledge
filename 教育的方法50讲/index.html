@@ -1,62 +1,120 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>教育的方法50讲 · 最小知识集</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>教育的方法50讲 · 教育金字塔</title>
 <style>
-:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;--text:#3d2f2f;--text2:#6b5555;--border:#e8d5c0;--radius:12px;--shadow:0 2px 12px rgba(60,30,20,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
-.top-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#3d2f2f,#5a3e3e);color:#fdf6ec;padding:16px 24px;text-align:center}
-.top-bar h1{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:600}
-.top-bar p{font-size:.85rem;color:var(--accent2);margin-top:4px}
-.home-link{display:inline-block;margin-top:8px;color:var(--accent2);font-size:.8rem;border:1px solid var(--accent2);padding:3px 12px;border-radius:14px;text-decoration:none}
-.home-link:hover{background:var(--accent2);color:#3d2f2f}
-.container{max-width:800px;margin:0 auto;padding:24px clamp(16px,4vw,32px)}
-.topic-card{display:block;background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px;text-decoration:none;color:var(--text);transition:transform .2s,box-shadow .2s;border-left:5px solid var(--accent)}
-.topic-card:hover{transform:translateY(-3px);box-shadow:0 4px 20px rgba(60,30,20,.15)}
-.topic-card h2{font-size:1.2rem;color:var(--accent);margin-bottom:8px}
-.topic-card .meta{font-size:.82rem;color:var(--text2)}
-.topic-card .desc{font-size:.9rem;color:var(--text2);margin-top:8px;line-height:1.6}
-.metaphor{text-align:center;padding:32px 16px;margin-bottom:20px}
-.metaphor .stage{display:inline-block;padding:8px 18px;margin:4px;border-radius:20px;font-size:.85rem;font-weight:600}
-.metaphor .s1{background:#fde8e8;color:var(--accent)}
-.metaphor .s2{background:#fef3cd;color:#b8860b}
-footer{text-align:center;padding:32px;font-size:.78rem;color:var(--text2)}
-</style>
-</head>
-<body>
-<div class="top-bar">
-  <h1>教育的方法50讲 · 最小知识集</h1>
-  <p>吴军 · 64篇笔记提炼 | 母隐喻：教育金字塔——从理念筑基到职场登顶的四级跃迁</p>
-  <a class="home-link" href="../index.html">← 返回知识主板</a>
-</div>
+body{font-family:'Noto Serif SC','STSong',serif;background:linear-gradient(180deg,#1a1410 0%,#2a1f16 30%,#3a2a1c 60%,#4a3520 100%);color:#d4c4a8;min-height:100vh;overflow-x:hidden}
 
-<div class="container">
-  <div class="metaphor">
-    <span class="stage s1">理念筑基</span>
-    <span style="color:var(--accent2);font-size:1.2rem">→</span>
-    <span class="stage s1">方法落地</span>
-    <span style="color:var(--accent2);font-size:1.2rem">→</span>
-    <span class="stage s2">大学淬炼</span>
-    <span style="color:var(--accent2);font-size:1.2rem">→</span>
-    <span class="stage s2">职场跃迁</span>
+/* 星光 */
+.sparks{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.spark{position:absolute;background:#d4a050;border-radius:50%;animation:rise ease-in infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}20%{opacity:.7}80%{opacity:.3}100%{transform:translateY(-120px);opacity:0}}
+
+main{max-width:760px;margin:0 auto;padding:60px 24px 80px;position:relative;z-index:1}
+
+.hero{text-align:center;padding:40px 0 40px}
+.hero .icon{font-size:48px;margin-bottom:14px}
+.hero h1{font-size:36px;font-weight:700;color:#e0c890;margin-bottom:8px}
+.hero .sub{color:#9a8050;font-size:15px}
+
+.divider{display:flex;align-items:center;gap:16px;margin:0 auto 48px;max-width:360px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(200,160,100,.25),transparent)}
+.divider span{color:rgba(200,160,100,.3);font-size:18px}
+
+/* 金字塔 */
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:48px}
+.tier{width:100%;max-width:640px;padding:28px 32px;text-decoration:none;color:inherit;transition:all .35s;position:relative;border:1px solid transparent;display:block}
+.tier:hover{transform:scale(1.02)}
+
+/* 塔顶 - 最窄 */
+.tier-top{max-width:420px;background:linear-gradient(180deg,rgba(50,35,20,.9),rgba(45,30,18,.85));border-color:rgba(200,160,100,.2);border-radius:12px 12px 0 0;text-align:center}
+.tier-top h2{font-size:22px;color:#e0c080}
+.tier-top .desc{color:#b09060}
+
+/* 塔身 */
+.tier-mid{max-width:540px;background:linear-gradient(180deg,rgba(40,28,16,.9),rgba(38,26,15,.85));border-color:rgba(180,130,80,.15)}
+.tier-mid h2{font-size:20px;color:#d0b070}
+
+/* 塔基 - 最宽 */
+.tier-base{max-width:640px;background:linear-gradient(180deg,rgba(35,22,12,.9),rgba(30,20,10,.85));border-color:rgba(160,110,60,.12);border-radius:0 0 12px 12px}
+.tier-base h2{font-size:20px;color:#c0a060}
+
+.tier .stage-num{font-size:11px;font-weight:700;letter-spacing:3px;margin-bottom:6px}
+.tier h2{margin-bottom:4px}
+.tier .meta{font-size:12px;color:#7a6040;margin-bottom:6px}
+.tier .desc{font-size:14px;color:#a08868;line-height:1.7}
+
+/* 阶梯连接线 */
+.step-connector{width:1px;height:20px;background:rgba(180,130,80,.18);position:relative}
+.step-connector::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:8px;height:8px;border-right:1px solid rgba(180,130,80,.3);border-bottom:1px solid rgba(180,130,80,.3)}
+
+/* 四级标签 */
+.tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:48px}
+.tags span{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:1px}
+.tag1{background:rgba(200,150,80,.08);color:#c09040;border:1px solid rgba(200,150,80,.2)}
+.tag2{background:rgba(180,130,70,.06);color:#b08030;border:1px solid rgba(180,130,70,.15)}
+.tag3{background:rgba(160,140,100,.06);color:#a07840;border:1px solid rgba(160,140,100,.15)}
+.tag4{background:rgba(140,120,80,.06);color:#906830;border:1px solid rgba(140,120,80,.15)}
+
+.footer{text-align:center;padding:20px;border-top:1px solid rgba(100,70,30,.2)}
+.footer a{color:rgba(140,110,70,.4);font-size:12px;text-decoration:none;transition:color .3s}
+.footer a:hover{color:rgba(180,140,90,.6)}
+
+@media(max-width:500px){
+  .hero h1{font-size:26px}
+  .tier{padding:20px}
+}
+</style>
+
+<div class="sparks" id="sparks"></div>
+
+<main>
+  <div class="hero">
+    <div class="icon">🏛️</div>
+    <h1>教育金字塔</h1>
+    <p class="sub">吴军 · 教育的方法50讲 · 最小知识集</p>
   </div>
 
-  <a class="topic-card" href="1-理念筑基.html">
-    <h2>教育金字塔·基石——理念筑基与方法落地</h2>
-    <div class="meta">第01-22讲 + 发刊词 · 24篇笔记 · 109KB</div>
-    <div class="desc">普娃定位、教育目的、AI时代方向、早教、快乐教育 → 育儿认知、年龄规律、天赋发掘、考试策略、教育分流</div>
-  </a>
+  <div class="tags">
+    <span class="tag1">理念筑基</span>
+    <span class="tag2">方法落地</span>
+    <span class="tag3">大学淬炼</span>
+    <span class="tag4">职场跃迁</span>
+  </div>
 
-  <a class="topic-card" href="2-大学职场.html">
-    <h2>教育金字塔·登顶——大学淬炼与职场跃迁</h2>
-    <div class="meta">第23-52讲 + 加餐 · 40篇笔记 · 119KB</div>
-    <div class="desc">关键能力、选校选专业、哈佛/Mudd案例、通识教育本质 → 求职、晋升、领导力、有效做功、未来展望</div>
-  </a>
-</div>
+  <div class="divider"><span>◎</span></div>
 
-<footer>吴军·教育的方法50讲 最小知识集 · GitHub Pages</footer>
-</body>
+  <div class="pyramid">
+    <a class="tier tier-top" href="1-理念筑基.html">
+      <div class="stage-num">塔尖 · 基石</div>
+      <h2>理念筑基 与 方法落地</h2>
+      <div class="meta">24 篇笔记 · 第01–22讲</div>
+      <div class="desc">普娃定位、教育目的、AI时代方向——先想清楚为什么教、教什么，再谈怎么教。育儿认知、天赋发掘、考试策略、教育分流。</div>
+    </a>
+
+    <div class="step-connector"></div>
+
+    <a class="tier tier-base" href="2-大学职场.html">
+      <div class="stage-num">塔基 · 登顶</div>
+      <h2>大学淬炼 与 职场跃迁</h2>
+      <div class="meta">40 篇笔记 · 第23–52讲 + 加餐</div>
+      <div class="desc">哈佛/Mudd案例、通识教育实践 → 求职策略、晋升逻辑、领导力修炼、有效做功——从象牙塔到真实世界的最后一跃。</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <a href="../index.html">← 返回知识主板</a>
+  </div>
+</main>
+
+<script>
+const sp=document.getElementById('sparks');
+for(let i=0;i<40;i++){
+  const d=document.createElement('div');d.className='spark';
+  d.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*60}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-duration:${3+Math.random()*6}s;animation-delay:${Math.random()*5}s`;
+  sp.appendChild(d);
+}
+</script>
 </html>
