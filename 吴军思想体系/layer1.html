@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一层：认知底座 — 怎么看世界 | 吴军思想体系</title>
+<style>
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+    background: #fdf6f0;
+    color: #3a2a1a;
+    line-height: 1.75;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== COLOR SYSTEM ========== */
+  :root {
+    --bg: #fdf6f0;
+    --bg-alt: #f8efe4;
+    --surface: #fffbf6;
+    --surface-border: #e8d5c0;
+    --text: #3a2a1a;
+    --text-muted: #8a7560;
+    --text-light: #b8a590;
+
+    --copper: #b87333;
+    --copper-dark: #9a5a28;
+    --copper-light: #f0dcc8;
+    --copper-bg: #fdf3e8;
+    --copper-glow: rgba(184,115,51,0.12);
+
+    --logic: #c06040;
+    --logic-light: #f5d8cc;
+    --logic-bg: #fdf0ea;
+
+    --math: #d4a030;
+    --math-light: #faf0d8;
+    --math-bg: #fef9f0;
+
+    --info: #4a8c6f;
+    --info-light: #d8efe4;
+    --info-bg: #f0faf5;
+
+    --cs: #5a7a9a;
+    --cs-light: #d8e8f5;
+    --cs-bg: #f0f5fb;
+
+    --connection: #a05060;
+    --connection-light: #f5e0e5;
+
+    --shadow-sm: 0 1px 3px rgba(58,42,26,0.06);
+    --shadow-md: 0 4px 16px rgba(58,42,26,0.1);
+    --shadow-lg: 0 12px 40px rgba(58,42,26,0.12);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  /* ========== NAV BAR ========== */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253,246,240,0.88); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--surface-border);
+    padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--copper); text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--copper-dark); }
+  .nav-back svg { width: 16px; height: 16px; }
+  .nav-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+  .nav-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none; font-size: 0.82rem;
+    transition: color 0.2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--copper); }
+
+  /* ========== HERO ========== */
+  .hero {
+    text-align: center; padding: 56px 24px 40px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(184,115,51,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--copper-light); color: var(--copper-dark);
+    padding: 5px 18px; border-radius: 20px; font-size: 0.85rem;
+    font-weight: 600; margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    font-weight: 800; color: var(--text);
+    letter-spacing: 0.02em; line-height: 1.3;
+    position: relative; z-index: 1;
+  }
+  .hero h1 .accent { color: var(--copper); }
+  .hero .subtitle {
+    margin-top: 14px; font-size: 1.05rem; color: var(--text-muted);
+    max-width: 640px; margin-left: auto; margin-right: auto;
+    position: relative; z-index: 1;
+  }
+  .hero .big-question {
+    margin-top: 24px; font-size: 1.15rem; font-weight: 600;
+    color: var(--copper-dark);
+    background: var(--copper-bg);
+    display: inline-block; padding: 10px 28px; border-radius: 24px;
+    position: relative; z-index: 1;
+    border: 1px solid var(--copper-light);
+  }
+
+  /* ========== SECTION COMMONS ========== */
+  .section {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px 48px;
+  }
+  .section-header {
+    text-align: center; margin-bottom: 36px;
+  }
+  .section-header h2 {
+    font-size: 1.5rem; font-weight: 700; color: var(--text);
+    margin-bottom: 6px;
+  }
+  .section-header p {
+    font-size: 0.9rem; color: var(--text-muted);
+    max-width: 600px; margin: 0 auto;
+  }
+  .section-divider {
+    width: 60px; height: 3px; border-radius: 2px;
+    background: var(--copper-light); margin: 8px auto 0;
+  }
+
+  /* ========== WHY THESE FOUR ========== */
+  .why-four-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; margin-bottom: 32px;
+  }
+  .why-card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 24px 20px;
+    border: 1px solid var(--surface-border);
+    text-align: center;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .why-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .why-card .why-icon {
+    font-size: 2.4rem; margin-bottom: 10px; display: block;
+  }
+  .why-card h4 {
+    font-size: 1.05rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .why-card .why-role {
+    font-size: 0.8rem; font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .why-card.logic-card .why-role { color: var(--logic); }
+  .why-card.math-card .why-role { color: var(--math); }
+  .why-card.info-card .why-role { color: var(--info); }
+  .why-card.cs-card .why-role { color: var(--cs); }
+  .why-card p {
+    font-size: 0.84rem; color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .why-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .why-card.logic-card::after { background: var(--logic); }
+  .why-card.math-card::after { background: var(--math); }
+  .why-card.info-card::after { background: var(--info); }
+  .why-card.cs-card::after { background: var(--cs); }
+
+  .unity-box {
+    background: linear-gradient(135deg, var(--copper-bg) 0%, #fdf6f0 100%);
+    border: 1px solid var(--copper-light);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    text-align: center;
+    margin-top: 24px;
+  }
+  .unity-box h3 {
+    font-size: 1.15rem; font-weight: 700; color: var(--copper-dark);
+    margin-bottom: 8px;
+  }
+  .unity-box p {
+    font-size: 0.9rem; color: var(--text-muted);
+    max-width: 700px; margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ========== FOUR TOOL SECTIONS ========== */
+  .tool-section {
+    margin-bottom: 40px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+  }
+  .tool-header {
+    display: flex; align-items: center; gap: 18px;
+    padding: 22px 28px;
+    cursor: pointer;
+    transition: background 0.3s;
+    user-select: none;
+  }
+  .tool-header:hover {
+    filter: brightness(0.98);
+  }
+  .tool-section.logic-tool .tool-header { background: linear-gradient(135deg, #fdf0ea 0%, #fdf5f2 100%); }
+  .tool-section.math-tool .tool-header { background: linear-gradient(135deg, #fef9f0 0%, #fdf6ea 100%); }
+  .tool-section.info-tool .tool-header { background: linear-gradient(135deg, #f0faf5 0%, #f5faf7 100%); }
+  .tool-section.cs-tool .tool-header { background: linear-gradient(135deg, #f0f5fb 0%, #f5f8fc 100%); }
+
+  .tool-number {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .logic-tool .tool-number { background: var(--logic); }
+  .math-tool .tool-number { background: var(--math); }
+  .info-tool .tool-number { background: var(--info); }
+  .cs-tool .tool-number { background: var(--cs); }
+
+  .tool-title-area { flex: 1; min-width: 0; }
+  .tool-title-area .tool-label {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 2px;
+  }
+  .logic-tool .tool-label { color: var(--logic); }
+  .math-tool .tool-label { color: var(--math); }
+  .info-tool .tool-label { color: var(--info); }
+  .cs-tool .tool-label { color: var(--cs); }
+
+  .tool-title-area h3 {
+    font-size: 1.25rem; font-weight: 700; color: var(--text);
+  }
+  .tool-title-area .tool-subtitle {
+    font-size: 0.84rem; color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .tool-expand-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; color: var(--text-muted);
+    transition: transform 0.35s;
+    flex-shrink: 0;
+  }
+  .tool-section.open .tool-expand-icon { transform: rotate(180deg); }
+
+  .tool-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.35s;
+  }
+  .tool-section.open .tool-body {
+    max-height: 4000px;
+  }
+  .tool-body-inner {
+    padding: 0 28px 28px;
+  }
+  .tool-section.open .tool-body-inner {
+    /* padding applied */
+  }
+
+  /* Concept cards inside tools */
+  .concept-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px; margin-top: 20px;
+  }
+  .concept-card {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    border: 1px solid rgba(58,42,26,0.06);
+    transition: all 0.25s;
+    cursor: default;
+  }
+  .concept-card:hover {
+    background: #fff;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .concept-card .concept-name {
+    font-size: 0.95rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .concept-card .concept-icon {
+    font-size: 1.1rem;
+  }
+  .concept-card .concept-def {
+    font-size: 0.82rem; color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .concept-card .concept-apply {
+    font-size: 0.78rem; color: var(--copper-dark);
+    background: var(--copper-light);
+    display: inline-block; padding: 2px 10px; border-radius: 10px;
+    font-weight: 500;
+  }
+  .concept-card .concept-apply::before {
+    content: '💡 ';
+  }
+
+  /* Tool tip box */
+  .tool-tip {
+    background: linear-gradient(135deg, var(--copper-bg) 0%, rgba(253,246,240,0.5) 100%);
+    border-left: 3px solid var(--copper);
+    padding: 14px 18px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: 16px;
+    font-size: 0.84rem; color: var(--text-muted);
+  }
+  .tool-tip strong { color: var(--copper-dark); }
+
+  /* ========== CROSS CONNECTIONS ========== */
+  .connections-section {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--surface-border);
+    padding: 32px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-sm);
+  }
+  .connection-item {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(58,42,26,0.06);
+  }
+  .connection-item:last-child { border-bottom: none; }
+  .connection-visual {
+    width: 120px; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px;
+  }
+  .connection-line-box {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 8px;
+    font-size: 0.75rem; font-weight: 600;
+  }
+  .conn-source { background: var(--copper-light); color: var(--copper-dark); }
+  .conn-target { background: var(--connection-light); color: var(--connection); }
+  .conn-arrow { font-size: 1.2rem; color: var(--text-light); }
+  .connection-body { flex: 1; }
+  .connection-body h4 {
+    font-size: 1rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .connection-body p {
+    font-size: 0.84rem; color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .connection-tag {
+    display: inline-block; font-size: 0.72rem; padding: 2px 8px;
+    border-radius: 8px; margin-top: 6px;
+    background: var(--bg-alt); color: var(--text-muted);
+    margin-right: 4px;
+  }
+
+  /* ========== TOOL RELATIONSHIP MAP ========== */
+  .relation-map {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 24px; margin: 32px 0;
+  }
+  .relation-row {
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .relation-node {
+    padding: 14px 22px; border-radius: var(--radius-sm);
+    font-weight: 700; font-size: 0.9rem; text-align: center;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  .relation-node:hover {
+    transform: scale(1.04);
+    box-shadow: var(--shadow-md);
+  }
+  .node-foundation {
+    background: var(--logic-bg); color: var(--logic); border-color: var(--logic-light);
+    font-size: 1rem; padding: 18px 28px;
+  }
+  .node-structure {
+    background: var(--math-bg); color: var(--math); border-color: var(--math-light);
+  }
+  .node-flow {
+    background: var(--info-bg); color: var(--info); border-color: var(--info-light);
+  }
+  .node-strategy {
+    background: var(--cs-bg); color: var(--cs); border-color: var(--cs-light);
+  }
+  .relation-arrow-down {
+    font-size: 1.5rem; color: var(--text-light);
+  }
+  .relation-label {
+    font-size: 0.75rem; color: var(--text-light);
+    text-align: center; max-width: 400px;
+  }
+
+  /* ========== QUIZ SECTION ========== */
+  .quiz-section {
+    background: linear-gradient(135deg, var(--copper-bg) 0%, #fdf6f0 100%);
+    border-radius: var(--radius);
+    border: 1px solid var(--copper-light);
+    padding: 32px;
+    margin-bottom: 40px;
+  }
+  .quiz-question {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--surface-border);
+  }
+  .quiz-question h4 {
+    font-size: 0.95rem; font-weight: 600; color: var(--text);
+    margin-bottom: 10px;
+  }
+  .quiz-options {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .quiz-option {
+    padding: 8px 14px; border-radius: 6px;
+    cursor: pointer; font-size: 0.84rem;
+    border: 1px solid var(--surface-border);
+    background: var(--bg);
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .quiz-option:hover {
+    border-color: var(--copper-light);
+    background: var(--copper-bg);
+  }
+  .quiz-option.selected {
+    border-color: var(--copper);
+    background: var(--copper-light);
+    font-weight: 500;
+  }
+  .quiz-option.correct {
+    border-color: var(--info) !important;
+    background: var(--info-light) !important;
+    color: #2a6040 !important;
+  }
+  .quiz-option.wrong {
+    border-color: var(--logic) !important;
+    background: var(--logic-light) !important;
+    color: #803030 !important;
+  }
+  .quiz-feedback {
+    margin-top: 8px; font-size: 0.82rem; font-weight: 500;
+    min-height: 20px;
+  }
+  .quiz-btn {
+    display: inline-block; padding: 8px 20px;
+    border-radius: 20px; border: none;
+    background: var(--copper); color: #fff;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .quiz-btn:hover { background: var(--copper-dark); }
+  .quiz-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ========== UPPER LAYERS PREVIEW ========== */
+  .upper-preview {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px; margin-top: 24px;
+  }
+  .upper-card {
+    padding: 24px; border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    transition: all 0.3s;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .upper-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .upper-card .upper-icon {
+    font-size: 2rem; margin-bottom: 8px; display: block;
+  }
+  .upper-card h4 {
+    font-size: 1.05rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .upper-card p {
+    font-size: 0.84rem; color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .upper-card .bridge-list {
+    margin-top: 10px; font-size: 0.8rem; color: var(--copper-dark);
+    list-style: none; padding: 0;
+  }
+  .upper-card .bridge-list li {
+    padding: 3px 0;
+  }
+  .upper-card .bridge-list li::before {
+    content: '→ ';
+    color: var(--copper);
+    font-weight: 700;
+  }
+
+  /* ========== GLOSSARY STRIP ========== */
+  .glossary-strip {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 24px;
+  }
+  .glossary-chip {
+    padding: 6px 14px; border-radius: 16px;
+    font-size: 0.8rem; font-weight: 500;
+    background: var(--bg-alt); color: var(--text-muted);
+    border: 1px solid var(--surface-border);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .glossary-chip:hover {
+    background: var(--copper-light); color: var(--copper-dark);
+    border-color: var(--copper-light);
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    text-align: center; padding: 48px 24px 40px;
+    border-top: 1px solid var(--surface-border);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer p {
+    font-size: 0.85rem; color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .footer-links {
+    display: flex; justify-content: center; gap: 20px; margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--copper); text-decoration: none; font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--copper-dark); }
+
+  /* ========== BACK TO TOP ========== */
+  .back-to-top {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--copper); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s;
+    opacity: 0; transform: translateY(12px);
+    pointer-events: none;
+    font-size: 1.2rem; z-index: 50;
+  }
+  .back-to-top.visible {
+    opacity: 1; transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-to-top:hover {
+    background: var(--copper-dark);
+    transform: translateY(-2px);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .hero { padding: 40px 16px 28px; }
+    .hero h1 { font-size: 1.5rem; }
+    .tool-header { padding: 16px; gap: 12px; }
+    .tool-number { width: 40px; height: 40px; border-radius: 10px; font-size: 1.1rem; }
+    .tool-title-area h3 { font-size: 1.05rem; }
+    .tool-body-inner { padding: 0 16px 20px; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .why-four-grid { grid-template-columns: 1fr 1fr; }
+    .connection-item { flex-direction: column; gap: 10px; }
+    .connection-visual { flex-direction: row; width: auto; }
+    .nav-bar { padding: 8px 12px; }
+    .nav-links { gap: 10px; }
+    .section { padding: 0 16px 36px; }
+    .connections-section { padding: 20px; }
+    .quiz-section { padding: 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 1.3rem; }
+    .why-four-grid { grid-template-columns: 1fr; }
+    .hero .big-question { font-size: 0.95rem; padding: 8px 18px; }
+    .relation-row { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== NAVIGATION ====== -->
+<nav class="nav-bar">
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    思想体系全景
+  </a>
+  <span class="nav-title">第一层：认知底座</span>
+  <span class="nav-links">
+    <a href="#why-four">为何是这四个</a>
+    <a href="#toolbox">认知工具箱</a>
+    <a href="#connections">跨课连线</a>
+    <a href="#quiz">知识测试</a>
+    <a href="#bridge">通往上层</a>
+  </span>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-badge">Layer 1 · Kernel Space</div>
+  <h1>认知底座：吴军的<span class="accent">「怎么看世界」</span></h1>
+  <p class="subtitle">
+    不是四门课的简单堆砌，而是一个整合的认知操作系统内核——逻辑为骨、数学为眼、信息论为血、计算机思维为魂
+  </p>
+  <div class="big-question">
+    吴军所说的「底层逻辑」到底是什么？他用什么工具看世界？
+  </div>
+</section>
+
+<!-- ====== WHY THESE FOUR ====== -->
+<section class="section" id="why-four">
+  <div class="section-header">
+    <h2>为什么是这四个？—— 一个完整的认知框架</h2>
+    <p>四个学科不是随意拼凑，它们各自回答了认知世界的不同维度问题，组合在一起才完整</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="why-four-grid">
+    <div class="why-card logic-card">
+      <span class="why-icon">🦴</span>
+      <h4>逻辑思维训练 50 讲</h4>
+      <div class="why-role">认知之骨 · 推理的骨架</div>
+      <p>回答「怎么正确地想」——命题、三段论、谓词逻辑、证伪。区分事实与意见，识别归纳与演绎的边界，让思维不走形。</p>
+    </div>
+
+    <div class="why-card math-card">
+      <span class="why-icon">👁️</span>
+      <h4>数学通识 50 讲</h4>
+      <div class="why-role">认知之眼 · 模式的视力</div>
+      <p>回答「世界有什么规律」——公理体系、概率、微积分、向量。用量化语言描述世界，用极限思维理解变化。</p>
+    </div>
+
+    <div class="why-card info-card">
+      <span class="why-icon">🩸</span>
+      <h4>信息论 40 讲</h4>
+      <div class="why-role">认知之血 · 信息的流动</div>
+      <p>回答「不确定性如何被消除」——信息熵、信道容量、编码。信息的本质是消除不确定性，比特是认知世界的基本单位。</p>
+    </div>
+
+    <div class="why-card cs-card">
+      <span class="why-icon">🧠</span>
+      <h4>谷歌方法论</h4>
+      <div class="why-role">认知之魂 · 解题的策略</div>
+      <p>回答「如何系统地解决问题」——递归、分治、抽象、迭代、缓存。计算机思维是解决任何复杂问题的元策略。</p>
+    </div>
+  </div>
+
+  <div class="unity-box">
+    <h3>🔗 四者合一 = 完整的认知操作系统</h3>
+    <p>
+      <strong>逻辑</strong>保证推理不出错（正确性），<strong>数学</strong>提供量化和建模的语言（精确性），
+      <strong>信息论</strong>度量不确定性并指导如何消除它（信息效率），
+      <strong>计算机思维</strong>提供系统化解决问题的策略（可执行性）。
+      四个维度覆盖了从「看清问题」到「推理分析」到「量化验证」到「系统解决」的完整认知闭环。
+    </p>
+  </div>
+</section>
+
+<!-- ====== COGNITIVE TOOLBOX ====== -->
+<section class="section" id="toolbox">
+  <div class="section-header">
+    <h2>🧰 认知工具箱：逐个打开看</h2>
+    <p>点击每个工具展开，查看其核心概念、原理与应用</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- TOOL 1: LOGIC -->
+  <div class="tool-section logic-tool" id="tool-logic">
+    <div class="tool-header" onclick="toggleTool('tool-logic')">
+      <div class="tool-number">1</div>
+      <div class="tool-title-area">
+        <div class="tool-label">认知之骨</div>
+        <h3>逻辑工具：让思维不走形</h3>
+        <div class="tool-subtitle">57篇 · 从命题到证伪，推理的骨架结构</div>
+      </div>
+      <div class="tool-expand-icon">▾</div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">📝</span>命题逻辑</div>
+            <div class="concept-def">一切推理的最小单位。每个命题有真值（真/假），复合命题通过「与」「或」「非」「蕴含」连接。吴军强调：<strong>先分清事实命题和价值命题</strong>——前者可验证，后者不可。</div>
+            <span class="concept-apply">辩论前先问：这是一个可以判定真假的命题吗？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🔗</span>三段论</div>
+            <div class="concept-def">大前提 → 小前提 → 结论。亚里士多德的伟大发明——但前提错误则结论无效。吴军指出：<strong>大多数争论的根源不在推理过程，而在隐藏的前提假设不同。</strong></div>
+            <span class="concept-apply">听到一个论断时，追问它的「大前提」是什么。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">∀</span>谓词逻辑</div>
+            <div class="concept-def">比三段论更精确的工具——引入量词（∀所有、∃存在）和谓词（性质/关系）。吴军用它解释：<strong>「所有天鹅是白的」需要一个全称量词，一个黑天鹅就够了。</strong></div>
+            <span class="concept-apply">全称命题只需一个反例即可推翻。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">⚡</span>证伪主义</div>
+            <div class="concept-def">波普尔的革命：科学命题不是「可证实的」，而是<strong>「可证伪的」</strong>。一个理论如果不能被任何可能的观察推翻，它就不是科学。吴军反复强调：科学进步靠证伪，不靠证实。</div>
+            <span class="concept-apply">判断一个说法是否科学：问「什么证据能推翻它？」</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">⚠️</span>逻辑谬误</div>
+            <div class="concept-def">诉诸权威、诉诸大众、假两难、稻草人、滑坡谬误……吴军梳理了最常见的逻辑陷阱。<strong>识别谬误不是为了赢了辩论，而是为了保护自己不被误导。</strong></div>
+            <span class="concept-apply">遇到煽动性言论时，逐条检查：这里用了什么逻辑谬误？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🔄</span>归纳 vs 演绎</div>
+            <div class="concept-def">演绎：从一般到特殊，结论必然为真（前提真则结论真）。归纳：从特殊到一般，结论只是<strong>概率性的</strong>。吴军提醒：混淆两者是大多数错误判断的来源。</div>
+            <span class="concept-apply">问自己：这个结论是必然的还是大概率的？</span>
+          </div>
+        </div>
+        <div class="tool-tip">
+          <strong>🧭 吴军金句：</strong>「逻辑不告诉你什么是真理，但它告诉你，从某些前提出发，什么必然成立，什么不可能成立。这已经极其强大了。」
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL 2: MATH -->
+  <div class="tool-section math-tool" id="tool-math">
+    <div class="tool-header" onclick="toggleTool('tool-math')">
+      <div class="tool-number">2</div>
+      <div class="tool-title-area">
+        <div class="tool-label">认知之眼</div>
+        <h3>数学思维：让世界可度量</h3>
+        <div class="tool-subtitle">54篇 · 从公理到概率，模式的量化语言</div>
+      </div>
+      <div class="tool-expand-icon">▾</div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🏛️</span>公理体系</div>
+            <div class="concept-def">欧几里得的伟大创造：从少数不证自明的公理出发，推导出整个几何学。吴军认为这是<strong>人类最强大的思维方式之一</strong>——任何知识体系都需要找到它的「公理」，即不可再追问的第一性原理。</div>
+            <span class="concept-apply">构建自己的知识体系：你的「公理」是什么？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🎲</span>概率思维</div>
+            <div class="concept-def">世界本质上是随机的，概率是应对不确定性的唯一正确语言。吴军特别强调<strong>贝叶斯更新</strong>：先验概率 × 新证据 → 后验概率。这是理性人更新信念的唯一正确方式。</div>
+            <span class="concept-apply">做决策时问：这件事的概率分布是什么样的？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">∫</span>微积分思维</div>
+            <div class="concept-def">牛顿和莱布尼茨的发明不仅是数学工具，更是<strong>一种世界观</strong>：大的变化由无穷小的增量累积而成。理解复利、理解技术进步、理解个人成长——都需要微积分的「增量思维」。</div>
+            <span class="concept-apply">大成果 = 无数小改进的积分。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">➡️</span>向量方向性</div>
+            <div class="concept-def">向量有大小也有方向。功的公式 W = F × D × cosθ 告诉我们：<strong>如果方向错了，力再大做功也是零</strong>。吴军把这一数学概念变成了人生哲学——方向比努力更重要。</div>
+            <span class="concept-apply">选择之前先问：我的cosθ是多少？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">∞</span>极限思维</div>
+            <div class="concept-def">极限概念是微积分的基础：无限接近但永不抵达。吴军用它解释：<strong>完美是永远达不到的极限，但无限逼近已经足够好</strong>。这也是工程思维的数学基础。</div>
+            <span class="concept-apply">不求完美，求无限逼近。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">📐</span>量化验证</div>
+            <div class="concept-def">数学思维的核心习惯：<strong>能用数字就不用形容词</strong>。吴军反复强调：没有量化就没有科学，没有量化就没有真正的理解。「大概」「差不多」是思维的敌人。</div>
+            <span class="concept-apply">听到「很多」「很快」时，追问具体数字。</span>
+          </div>
+        </div>
+        <div class="tool-tip">
+          <strong>🧭 吴军金句：</strong>「数学不是关于计算，数学是关于结构和模式。它教会你从混乱中看到秩序，从表象中看到本质。」
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL 3: INFORMATION THEORY -->
+  <div class="tool-section info-tool" id="tool-info">
+    <div class="tool-header" onclick="toggleTool('tool-info')">
+      <div class="tool-number">3</div>
+      <div class="tool-title-area">
+        <div class="tool-label">认知之血</div>
+        <h3>信息论框架：让不确定性可消除</h3>
+        <div class="tool-subtitle">42篇 · 从信息熵到香农定律，信息的科学</div>
+      </div>
+      <div class="tool-expand-icon">▾</div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">📊</span>信息熵</div>
+            <div class="concept-def">香农的天才定义：<strong>信息熵 H 度量不确定性的大小</strong>。一个事件越不确定（可能性越多、分布越均匀），其信息熵越大。信息的作用就是消除熵——消除不确定性。</div>
+            <span class="concept-apply">面对一个模糊问题，先度量你有多不确定。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🎯</span>不确定性消除</div>
+            <div class="concept-def">信息的本质不是「有意义的内容」，而是<strong>「消除不确定性的能力」</strong>。一条消息的信息量 = 收到消息前的不确定性 − 收到消息后的不确定性。吴军用这个框架分析一切「信息行为」。</div>
+            <span class="concept-apply">读完一篇文章问：它消除了我什么不确定性？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">📡</span>信道容量</div>
+            <div class="concept-def">任何信道传输信息的能力都有<strong>理论上限</strong>——香农第二定理。超过这个上限，无论怎么编码都会出错。吴军借此解释：人的注意力、组织的沟通效率、教育的信息传递——都有信道容量。</div>
+            <span class="concept-apply">你的「注意力信道」容量是多少？别超载。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🔢</span>编码效率</div>
+            <div class="concept-def">同样的信息，不同的编码方式效率天差地别。香农第一定理告诉我们存在最优编码。<strong>表达的本质是编码——把思想编码成语言、文字、图表。</strong>好的编码让信息无损传输。</div>
+            <span class="concept-apply">你的表达编码效率高吗？冗余多吗？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🔗</span>信息 × 能量</div>
+            <div class="concept-def">吴军在信息论中提出，在科技史纲中展开：<strong>信息可以替代能量，也可以放大能量</strong>。知道怎么做（信息）常常比有更多资源（能量）更重要。这是整个文明史的双螺旋。</div>
+            <span class="concept-apply">面对问题时：缺的是能量（资源）还是信息（方法）？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🧪</span>最大熵原理</div>
+            <div class="concept-def">在没有额外信息的情况下，<strong>最合理的假设是熵最大的那个</strong>——即所有可能性均等。吴军警告：人们常常在信息不足时做出过度确定的判断，这是认知偏误的根源之一。</div>
+            <span class="concept-apply">信息不足时，承认自己不知道反而是最理性的。</span>
+          </div>
+        </div>
+        <div class="tool-tip">
+          <strong>🧭 吴军金句：</strong>「信息论最深刻的洞见：信息不是关于意义，是关于选择。当你面对不确定性时，每一点信息都在帮你缩小可能性空间。」
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL 4: CS THINKING -->
+  <div class="tool-section cs-tool" id="tool-cs">
+    <div class="tool-header" onclick="toggleTool('tool-cs')">
+      <div class="tool-number">4</div>
+      <div class="tool-title-area">
+        <div class="tool-label">认知之魂</div>
+        <h3>计算机思维：让问题可求解</h3>
+        <div class="tool-subtitle">384篇 · 从递归到缓存，系统化解决问题的元策略</div>
+      </div>
+      <div class="tool-expand-icon">▾</div>
+    </div>
+    <div class="tool-body">
+      <div class="tool-body-inner">
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🔄</span>递归</div>
+            <div class="concept-def">大问题可以被拆解为<strong>同构的、更小的子问题</strong>，直到子问题简单到可以直接解决。吴军指出递归是「自相似」思维的体现——从文明演进到个人成长，许多模式在不同尺度上重复。</div>
+            <span class="concept-apply">遇到复杂问题：它的「递归结构」是什么？</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">✂️</span>分治</div>
+            <div class="concept-def">把一个大问题分成<strong>多个独立的小问题</strong>，分别解决后合并。吴军认为这是工程思维的核心——没有一个工程师试图一次解决整个问题。分治的前提是正确的「抽象」。</div>
+            <span class="concept-apply">大项目：先找到可以独立处理的子模块。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🎭</span>抽象</div>
+            <div class="concept-def"><strong>忽略细节，抓住本质结构</strong>。图灵把「计算」抽象成图灵机，吴军把「文明演进」抽象成能量×信息双螺旋。抽象能力决定了一个人能处理多大复杂度的问题。</div>
+            <span class="concept-apply">面对混乱信息：它的本质结构是什么？忽略细节。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">🔄</span>迭代优化</div>
+            <div class="concept-def">没有一个复杂系统是一次设计完成的。<strong>先有一个能运行的基础版本，然后不断迭代改进</strong>。吴军将此应用于个人成长——「可叠加的进步」本质就是迭代优化。</div>
+            <span class="concept-apply">不求一步到位，求每步都比上一步更好。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">💾</span>缓存思维</div>
+            <div class="concept-def"><strong>把计算结果存起来，下次直接用，不要重新算</strong>。吴军将其扩展到认知领域：学习就是知识缓存，经验就是决策缓存，笔记就是记忆缓存。善用缓存的人效率高一个数量级。</div>
+            <span class="concept-apply">你做了什么值得缓存的事情？写下来就是缓存。</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-name"><span class="concept-icon">📈</span>大O思维</div>
+            <div class="concept-def">算法复杂度分析的核心：<strong>关注增长趋势而不是常数因子</strong>。O(n²)和O(n log n)在n变大时是天壤之别。吴军用这个框架分析一切「规模化」问题——从投资回报到个人效率。</div>
+            <span class="concept-apply">你的方法在大规模下还能工作吗？复杂度是多少？</span>
+          </div>
+        </div>
+        <div class="tool-tip">
+          <strong>🧭 吴军金句：</strong>「计算机思维不是让你像计算机一样思考，而是让你学会系统性地拆解和解决任何复杂问题。这是谷歌方法论最核心的贡献。」
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CROSS CONNECTIONS ====== -->
+<section class="section" id="connections">
+  <div class="section-header">
+    <h2>🔗 跨课连线：概念不是孤岛</h2>
+    <p>吴军思想体系最独特之处：同一个概念在不同课程中以不同形式出现，互相印证、层层深化</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="connections-section">
+
+    <div class="connection-item">
+      <div class="connection-visual">
+        <span class="connection-line-box conn-source">逻辑课</span>
+        <span class="conn-arrow">⟷</span>
+        <span class="connection-line-box conn-target">科技史纲</span>
+      </div>
+      <div class="connection-body">
+        <h4>连线一：证伪主义——从理论到案例</h4>
+        <p>
+          逻辑课系统讲授波普尔的<strong>证伪主义理论</strong>：什么是反例，为什么一个反例比一百个支持案例更有力，科学与非科学的划界标准是「可证伪性」。
+          科技史纲则用大量历史案例展示：<strong>青霉素不是从0到1的发明</strong>——弗莱明之前已有多人观察到青霉素的杀菌现象，真正的突破在于弗莱明<strong>注意到了反常（证伪了"细菌总是能生长"的预期）</strong>并系统记录。
+          同一原理在理论层面（逻辑课）和实证层面（科技史纲）的两面呈现，让「证伪」不再是抽象概念。
+        </p>
+        <span class="connection-tag">证伪主义</span>
+        <span class="connection-tag">理论 vs 案例</span>
+        <span class="connection-tag">Layer 1 → Layer 2</span>
+      </div>
+    </div>
+
+    <div class="connection-item">
+      <div class="connection-visual">
+        <span class="connection-line-box conn-source">数学课</span>
+        <span class="conn-arrow">⟷</span>
+        <span class="connection-line-box conn-target">谷歌方法论</span>
+      </div>
+      <div class="connection-body">
+        <h4>连线二：公理体系——从欧几里得到「止于公理」</h4>
+        <p>
+          数学通识课讲欧几里得的<strong>公理体系</strong>：五点公设 → 整个几何学大厦。不证自明的起点，严格推导的过程，任何定理都可以追溯回公理。
+          谷歌方法论将这一思想提炼为<strong>「止于公理」原则</strong>：任何论证都应该能追到不可再追问的基础假设。如果双方在「公理」层面不一致，继续争论推导过程没有意义。
+          这构成了吴军「底层逻辑」方法论的核心——<strong>永远追问到不可再追问的那一层</strong>。
+        </p>
+        <span class="connection-tag">公理体系</span>
+        <span class="connection-tag">止于公理</span>
+        <span class="connection-tag">第一性原理</span>
+        <span class="connection-tag">Layer 1 → Layer 3</span>
+      </div>
+    </div>
+
+    <div class="connection-item">
+      <div class="connection-visual">
+        <span class="connection-line-box conn-source">信息论</span>
+        <span class="conn-arrow">⟷</span>
+        <span class="connection-line-box conn-target">科技史纲</span>
+      </div>
+      <div class="connection-body">
+        <h4>连线三：信息 × 能量——同一个框架的两面</h4>
+        <p>
+          信息论从数学角度定义：信息消除不确定性，信息的获取和传输需要消耗能量（兰道尔原理——擦除1比特信息至少消耗kT·ln2的能量）。
+          科技史纲从历史角度展示：人类文明史就是<strong>能量转化效率提升 × 信息编码能力提升</strong>的双螺旋。从火的利用（能量）到语言（信息），从蒸汽机（能量）到印刷术（信息），从电力（能量）到互联网（信息）——每一次文明跃迁都是这个公式在起作用。
+          这是吴军思想体系中最核心的<strong>元模型</strong>：信息和能量是可以互相转化的两种「通货」。
+        </p>
+        <span class="connection-tag">信息×能量</span>
+        <span class="connection-tag">双螺旋模型</span>
+        <span class="connection-tag">元模型</span>
+        <span class="connection-tag">Layer 1 → Layer 2</span>
+      </div>
+    </div>
+
+    <div class="connection-item">
+      <div class="connection-visual">
+        <span class="connection-line-box conn-source">数学课</span>
+        <span class="conn-arrow">⟷</span>
+        <span class="connection-line-box conn-target">教育方法</span>
+      </div>
+      <div class="connection-body">
+        <h4>连线四：向量 cosθ——从数学公式到人生哲学</h4>
+        <p>
+          数学课讲向量的<strong>点积公式</strong>：W = F × D × cosθ。如果力的方向和位移方向不一致，有效功等于力的大小乘以位移再乘以夹角的余弦。
+          教育方法课将这个数学概念转化为核心教育理念——<strong>「方向比努力更重要」</strong>：孩子的努力是F，投入的时间是D，但如果方向（cosθ）错了，大部分努力都是无效做功。
+          硅谷来信进一步推广到职业发展：选择比努力更重要——不是否定努力，而是说<strong>cosθ ≈ 0 时，F再大也被浪费了</strong>。
+          这就是吴军式的「概念迁移」：从数学原理 → 教育原则 → 人生哲学，一以贯之。
+        </p>
+        <span class="connection-tag">向量</span>
+        <span class="connection-tag">有效做功</span>
+        <span class="connection-tag">cosθ</span>
+        <span class="connection-tag">Layer 1 → Layer 2 → Layer 3</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====== TOOL RELATIONSHIP ====== -->
+<section class="section" id="relationships">
+  <div class="section-header">
+    <h2>🏗️ 工具之间的关系：哪个是基础，哪个是进阶？</h2>
+    <p>四个认知工具不是并列关系，而有清晰的层次依赖</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="relation-map">
+    <div class="relation-node node-foundation">
+      🦴 逻辑工具 — 最底层基础
+    </div>
+    <div style="text-align:center">
+      <div class="relation-arrow-down">↓</div>
+      <div class="relation-label">逻辑是所有推理的基础——没有逻辑，数学无法定义公理和证明</div>
+    </div>
+
+    <div class="relation-row">
+      <div class="relation-node node-structure">
+        👁️ 数学思维 — 结构化层
+      </div>
+      <span style="font-size:1.5rem;color:var(--text-light)">⇄</span>
+      <div class="relation-node node-flow">
+        🩸 信息论 — 信息流动层
+      </div>
+    </div>
+    <div class="relation-label">数学提供量化结构（静态），信息论提供不确定性消除（动态）——两者互相补充</div>
+
+    <div style="text-align:center; margin-top: 8px;">
+      <div class="relation-arrow-down">↓</div>
+      <div class="relation-label">前三者提供了「分析框架」，计算机思维提供了「执行策略」</div>
+    </div>
+
+    <div class="relation-node node-strategy">
+      🧠 计算机思维 — 策略执行层
+    </div>
+
+    <div style="text-align:center; margin-top: 20px;">
+      <div class="relation-label" style="max-width: 600px; font-size: 0.82rem; line-height: 1.7;">
+        <strong>递进逻辑：</strong>逻辑保证推理正确 → 数学提供量化语言 → 信息论度量不确定性 → 计算机思维提供系统化解法。<br>
+        就像盖房子：逻辑是地基，数学和信息论是框架和管道，计算机思维是施工方案。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== QUIZ ====== -->
+<section class="section" id="quiz">
+  <div class="section-header">
+    <h2>🧪 知识测试：检查你的认知工具</h2>
+    <p>以下问题来自四门课程的核心概念，试试看你掌握了多少</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="quiz-section" id="quiz-container">
+    <div class="quiz-question" data-q="0">
+      <h4>Q1 · 逻辑工具：以下哪个命题是「可证伪的」科学命题？</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" data-a="0">「上帝存在」</div>
+        <div class="quiz-option" data-a="1">「所有金属加热后都会膨胀」</div>
+        <div class="quiz-option" data-a="2">「这幅画很美」</div>
+        <div class="quiz-option" data-a="3">「做人应该诚实」</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question" data-q="1">
+      <h4>Q2 · 数学思维：向量公式 W = F × D × cosθ 中，cosθ 在吴军思想体系中代表什么？</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" data-a="0">努力的程度</div>
+        <div class="quiz-option" data-a="1">时间的投入</div>
+        <div class="quiz-option" data-a="2">方向与目标的匹配度</div>
+        <div class="quiz-option" data-a="3">天赋的系数</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <h4>Q3 · 信息论：信息的本质是什么？</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" data-a="0">有意义的内容</div>
+        <div class="quiz-option" data-a="1">数据的存储</div>
+        <div class="quiz-option" data-a="2">消除不确定性的能力</div>
+        <div class="quiz-option" data-a="3">知识的传递</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <h4>Q4 · 计算机思维：以下哪个不是计算机思维的核心策略？</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" data-a="0">递归</div>
+        <div class="quiz-option" data-a="1">分治</div>
+        <div class="quiz-option" data-a="2">联想</div>
+        <div class="quiz-option" data-a="3">抽象</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <h4>Q5 · 跨课连线：吴军的「信息×能量」双螺旋框架出现在哪两门课中？</h4>
+      <div class="quiz-options">
+        <div class="quiz-option" data-a="0">逻辑课 和 数学课</div>
+        <div class="quiz-option" data-a="1">信息论 和 科技史纲</div>
+        <div class="quiz-option" data-a="2">谷歌方法论 和 硅谷来信</div>
+        <div class="quiz-option" data-a="3">数学课 和 谷歌方法论</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div style="text-align:center; margin-top: 16px;">
+      <button class="quiz-btn" onclick="checkAllQuiz()">提交全部答案</button>
+      <button class="quiz-btn" onclick="resetQuiz()" style="background: var(--text-muted); margin-left: 8px;">重新测试</button>
+    </div>
+    <div id="quiz-score" style="text-align:center; margin-top: 12px; font-weight: 700; font-size: 1rem;"></div>
+  </div>
+</section>
+
+<!-- ====== BRIDGE TO UPPER LAYERS ====== -->
+<section class="section" id="bridge">
+  <div class="section-header">
+    <h2>🌉 通往上层：认知工具如何被应用</h2>
+    <p>第一层的每一个工具都在第二层和第三层找到了自己的应用场景——这就是思想操作系统的编译过程</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="upper-preview">
+    <a href="layer2.html" class="upper-card" style="border-top: 3px solid #c06040;">
+      <span class="upper-icon">🏛️</span>
+      <h4>→ 第二层：文明与方法论</h4>
+      <p>第一层的认知工具在第二层被「编译」成理解文明兴衰的框架和方法论</p>
+      <ul class="bridge-list">
+        <li>信息熵 → 能量×信息双螺旋模型</li>
+        <li>证伪主义 → 从0到N的科技史案例</li>
+        <li>公理体系 → 文明比较的底层假设</li>
+        <li>向量cosθ → 教育的有效做功原理</li>
+      </ul>
+    </a>
+
+    <a href="layer3a.html" class="upper-card" style="border-top: 3px solid #d4a030;">
+      <span class="upper-icon">🧭</span>
+      <h4>→ 第三层A：人生操作系统（硅谷来信）</h4>
+      <p>认知工具最终被「执行」为具体的人生策略和决策框架</p>
+      <ul class="bridge-list">
+        <li>概率思维 → 投资决策框架</li>
+        <li>迭代优化 → 可叠加的职业进步</li>
+        <li>大O思维 → 人生策略的规模化</li>
+        <li>缓存思维 → 知识管理与经验积累</li>
+      </ul>
+    </a>
+  </div>
+</section>
+
+<!-- ====== CONCEPT GLOSSARY ====== -->
+<section class="section">
+  <div class="section-header">
+    <h2>📇 核心概念索引</h2>
+    <p>快速跳转到本文档中的关键概念</p>
+    <div class="section-divider"></div>
+  </div>
+  <div class="glossary-strip">
+    <span class="glossary-chip" onclick="scrollToTool('tool-logic')">命题逻辑</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-logic')">三段论</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-logic')">证伪主义</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-logic')">逻辑谬误</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-math')">公理体系</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-math')">概率思维</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-math')">贝叶斯更新</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-math')">向量cosθ</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-math')">微积分思维</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-info')">信息熵</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-info')">信道容量</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-info')">编码效率</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-info')">信息×能量</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-cs')">递归</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-cs')">分治</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-cs')">抽象</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-cs')">迭代优化</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-cs')">缓存</span>
+    <span class="glossary-chip" onclick="scrollToTool('tool-cs')">大O思维</span>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <p>吴军思想体系 · Thought OS — Layer 1: 认知底座</p>
+  <p>逻辑思维训练50讲 · 数学通识50讲 · 信息论40讲 · 谷歌方法论 — 跨课重组</p>
+  <div class="footer-links">
+    <a href="index.html">← 返回思想体系全景</a>
+    <a href="layer2.html">第二层：文明与方法论 →</a>
+    <a href="layer3a.html">第三层A：人生操作系统 →</a>
+    <a href="layer3b.html">第三层B：吴军来信2 →</a>
+  </div>
+</footer>
+
+<!-- ====== BACK TO TOP ====== -->
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+  // ========== TOGGLE TOOL SECTIONS ==========
+  function toggleTool(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const wasOpen = el.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.tool-section.open').forEach(t => t.classList.remove('open'));
+    // Toggle clicked
+    if (!wasOpen) {
+      el.classList.add('open');
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 150);
+    }
+  }
+
+  function scrollToTool(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    // Close all tools first
+    document.querySelectorAll('.tool-section.open').forEach(t => t.classList.remove('open'));
+    // Open target
+    el.classList.add('open');
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  }
+
+  // ========== QUIZ LOGIC ==========
+  const correctAnswers = {0: 1, 1: 2, 2: 2, 3: 2, 4: 1};
+  const explanations = {
+    0: {
+      correct: '✅ 正确！「所有金属加热后都会膨胀」是可证伪的——只要找到一个加热后不膨胀的金属，命题就被推翻了。这就是科学的划界标准。',
+      wrong: '❌ 正确答案是「所有金属加热后都会膨胀」。可证伪意味着存在可能的观察能推翻它。价值判断（美、应该）和超验命题（上帝）都不具备可证伪性。'
+    },
+    1: {
+      correct: '✅ 正确！cosθ 代表方向和目标的匹配度。如果方向（θ=90°），cosθ=0，无论多大的努力（F）和多长的时间（D），有效功都是零。',
+      wrong: '❌ 正确答案是「方向与目标的匹配度」。F是努力，D是位移（投入），cosθ才是关键——方向不对，努力白费。'
+    },
+    2: {
+      correct: '✅ 正确！香农的信息论核心洞察：信息的本质是消除不确定性。一条消息的信息量用它消除了多少不确定性来度量，而不是内容是否「有意义」。',
+      wrong: '❌ 正确答案是「消除不确定性的能力」。这是香农信息论最革命性的定义——信息不关乎意义，关乎选择。'
+    },
+    3: {
+      correct: '✅ 正确！「联想」不是计算机思维的核心策略。递归、分治、抽象、迭代、缓存才是吴军在谷歌方法论中提炼的五大核心思维范式。',
+      wrong: '❌ 正确答案是「联想」。联想是人类思维的特点，不是计算机思维的系统化策略。计算机思维的核心是递归、分治、抽象、迭代。'
+    },
+    4: {
+      correct: '✅ 正确！信息论（第一层）和科技史纲（第二层）共享「信息×能量」框架。信息论提供数学定义，科技史纲提供历史验证——这就是跨层连线的典型案例。',
+      wrong: '❌ 正确答案是「信息论 和 科技史纲」。信息论从数学角度定义信息与能量的关系，科技史纲从历史角度展开，是同一框架的两面。'
+    }
+  };
+
+  // Add click handlers to quiz options
+  document.querySelectorAll('.quiz-option').forEach(opt => {
+    opt.addEventListener('click', function() {
+      const qDiv = this.closest('.quiz-question');
+      // Deselect all in this question
+      qDiv.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+      // Select this
+      this.classList.add('selected');
+      // Clear feedback
+      qDiv.querySelector('.quiz-feedback').textContent = '';
+      qDiv.querySelectorAll('.quiz-option').forEach(o => {
+        o.classList.remove('correct', 'wrong');
+      });
+    });
+  });
+
+  function checkAllQuiz() {
+    let score = 0;
+    const questions = document.querySelectorAll('.quiz-question');
+    questions.forEach(q => {
+      const qIdx = parseInt(q.dataset.q);
+      const selected = q.querySelector('.quiz-option.selected');
+      const feedback = q.querySelector('.quiz-feedback');
+      if (!selected) {
+        feedback.textContent = '⚠️ 请选择一个答案';
+        feedback.style.color = 'var(--text-muted)';
+        return;
+      }
+      const aIdx = parseInt(selected.dataset.a);
+      if (aIdx === correctAnswers[qIdx]) {
+        score++;
+        selected.classList.add('correct');
+        feedback.textContent = explanations[qIdx].correct;
+        feedback.style.color = '#2a6040';
+      } else {
+        selected.classList.add('wrong');
+        // Also highlight the correct one
+        q.querySelectorAll('.quiz-option').forEach(o => {
+          if (parseInt(o.dataset.a) === correctAnswers[qIdx]) {
+            o.classList.add('correct');
+          }
+        });
+        feedback.textContent = explanations[qIdx].wrong;
+        feedback.style.color = '#803030';
+      }
+    });
+
+    const total = questions.length;
+    const scoreDiv = document.getElementById('quiz-score');
+    if (score === total) {
+      scoreDiv.textContent = `🏆 ${score}/${total} — 完美！你已掌握吴军认知工具箱的核心概念。`;
+      scoreDiv.style.color = '#2a6040';
+    } else if (score >= total * 0.6) {
+      scoreDiv.textContent = `👍 ${score}/${total} — 不错！回顾上面标红的题目，加深理解。`;
+      scoreDiv.style.color = 'var(--copper)';
+    } else {
+      scoreDiv.textContent = `📚 ${score}/${total} — 建议回到上方，逐个展开四个认知工具，重新阅读核心概念。`;
+      scoreDiv.style.color = 'var(--logic)';
+    }
+  }
+
+  function resetQuiz() {
+    document.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('selected', 'correct', 'wrong');
+    });
+    document.querySelectorAll('.quiz-feedback').forEach(f => {
+      f.textContent = '';
+    });
+    document.getElementById('quiz-score').textContent = '';
+  }
+
+  // ========== BACK TO TOP ==========
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backTop');
+    if (window.scrollY > 600) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  });
+
+  // ========== KEYBOARD ==========
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.tool-section.open').forEach(t => t.classList.remove('open'));
+    }
+  });
+
+  // ========== ENTRY ANIMATION ==========
+  document.addEventListener('DOMContentLoaded', () => {
+    // Animate why-cards
+    document.querySelectorAll('.why-card').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 80 + i * 80);
+    });
+
+    // Animate connection items
+    document.querySelectorAll('.connection-item').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(-12px)';
+      el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateX(0)';
+      }, 500 + i * 100);
+    });
+  });
+</script>
+
+</body>
+</html>

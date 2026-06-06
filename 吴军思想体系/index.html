@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吴军思想体系全景图 — 思想操作系统 Thought OS</title>
+<style>
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+    background: #fdf6f0;
+    color: #3a2a1a;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== COLOR SYSTEM (Warm Palette) ========== */
+  :root {
+    --bg: #fdf6f0;
+    --bg-alt: #f8efe4;
+    --surface: #fffbf6;
+    --surface-border: #e8d5c0;
+    --text: #3a2a1a;
+    --text-muted: #8a7560;
+    --text-light: #b8a590;
+
+    --layer1: #b87333;       /* copper/bronze — kernel */
+    --layer1-light: #f0dcc8;
+    --layer1-bg: #fdf3e8;
+    --layer1-glow: rgba(184,115,51,0.15);
+
+    --layer2: #c06040;       /* terracotta — middleware */
+    --layer2-light: #f5d8cc;
+    --layer2-bg: #fdf0ea;
+    --layer2-glow: rgba(192,96,64,0.15);
+
+    --layer3: #d4a030;       /* gold — user space */
+    --layer3-light: #faf0d8;
+    --layer3-bg: #fef9f0;
+    --layer3-glow: rgba(212,160,48,0.15);
+
+    --thread-1: #e07050;
+    --thread-2: #c88840;
+    --thread-3: #a06060;
+    --thread-4: #b09050;
+
+    --shadow-sm: 0 1px 3px rgba(58,42,26,0.06);
+    --shadow-md: 0 4px 16px rgba(58,42,26,0.1);
+    --shadow-lg: 0 12px 40px rgba(58,42,26,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  /* ========== TOP NAV BAR ========== */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253,246,240,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--surface-border);
+    padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--layer1); text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--layer2); }
+  .nav-back svg { width: 16px; height: 16px; }
+  .nav-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+  .nav-links { display: flex; gap: 16px; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--layer1); }
+
+  /* ========== HERO ========== */
+  .hero {
+    text-align: center; padding: 64px 24px 48px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(184,115,51,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--layer1-light); color: var(--layer1);
+    padding: 4px 16px; border-radius: 20px; font-size: 0.85rem;
+    font-weight: 500; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800; color: var(--text);
+    letter-spacing: 0.02em; line-height: 1.3;
+    position: relative;
+  }
+  .hero h1 .accent { color: var(--layer1); }
+  .hero .subtitle {
+    margin-top: 16px; font-size: 1.1rem; color: var(--text-muted);
+    max-width: 600px; margin-left: auto; margin-right: auto;
+  }
+  .hero .stats {
+    display: flex; justify-content: center; gap: 32px; margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .hero .stat {
+    text-align: center;
+  }
+  .hero .stat-num {
+    font-size: 2rem; font-weight: 800; color: var(--layer1);
+    line-height: 1.2;
+  }
+  .hero .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* ========== OS DIAGRAM AREA ========== */
+  .os-diagram {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px 24px;
+  }
+  .os-title {
+    text-align: center; margin-bottom: 40px;
+  }
+  .os-title h2 {
+    font-size: 1.5rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .os-title p { color: var(--text-muted); font-size: 0.9rem; }
+
+  /* The OS stack */
+  .os-stack {
+    display: flex; flex-direction: column; gap: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .os-layer {
+    position: relative;
+    padding: 28px 32px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  .os-layer::before {
+    content: ''; position: absolute; inset: 0;
+    opacity: 0; transition: opacity 0.35s;
+    pointer-events: none;
+  }
+
+  /* Layer 1 — Kernel */
+  .os-layer.layer-1 {
+    background: linear-gradient(135deg, #f8ece0 0%, #fdf3e8 100%);
+    border-left: 4px solid var(--layer1);
+  }
+  .os-layer.layer-1::before {
+    background: radial-gradient(ellipse at 20% 50%, rgba(184,115,51,0.08) 0%, transparent 70%);
+  }
+  .os-layer.layer-1:hover { background: linear-gradient(135deg, #f5e4d4 0%, #fcecdd 100%); }
+  .os-layer.layer-1:hover::before { opacity: 1; }
+
+  /* Layer 2 — Middleware */
+  .os-layer.layer-2 {
+    background: linear-gradient(135deg, #f8e8e0 0%, #fdf0ea 100%);
+    border-left: 4px solid var(--layer2);
+  }
+  .os-layer.layer-2::before {
+    background: radial-gradient(ellipse at 20% 50%, rgba(192,96,64,0.08) 0%, transparent 70%);
+  }
+  .os-layer.layer-2:hover { background: linear-gradient(135deg, #f5ddd0 0%, #fce8e0 100%); }
+  .os-layer.layer-2:hover::before { opacity: 1; }
+
+  /* Layer 3 — User Space */
+  .os-layer.layer-3 {
+    background: linear-gradient(135deg, #faf2e4 0%, #fef9f0 100%);
+    border-left: 4px solid var(--layer3);
+  }
+  .os-layer.layer-3::before {
+    background: radial-gradient(ellipse at 20% 50%, rgba(212,160,48,0.08) 0%, transparent 70%);
+  }
+  .os-layer.layer-3:hover { background: linear-gradient(135deg, #f7e9d4 0%, #fdf5e8 100%); }
+  .os-layer.layer-3:hover::before { opacity: 1; }
+
+  .layer-header {
+    display: flex; align-items: flex-start; gap: 20px;
+    position: relative; z-index: 1;
+  }
+  .layer-icon {
+    width: 56px; height: 56px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .layer-1 .layer-icon {
+    background: var(--layer1); color: #fff;
+  }
+  .layer-2 .layer-icon {
+    background: var(--layer2); color: #fff;
+  }
+  .layer-3 .layer-icon {
+    background: var(--layer3); color: #fff;
+  }
+
+  .layer-info { flex: 1; min-width: 0; }
+  .layer-label {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 2px;
+  }
+  .layer-1 .layer-label { color: var(--layer1); }
+  .layer-2 .layer-label { color: var(--layer2); }
+  .layer-3 .layer-label { color: var(--layer3); }
+
+  .layer-name {
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .layer-desc {
+    font-size: 0.9rem; color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .layer-courses {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 6px;
+  }
+  .layer-course-tag {
+    font-size: 0.78rem; padding: 2px 10px; border-radius: 12px;
+    background: rgba(58,42,26,0.06); color: var(--text-muted);
+  }
+  .layer-1 .layer-course-tag { background: var(--layer1-light); color: var(--layer1); }
+  .layer-2 .layer-course-tag { background: var(--layer2-light); color: var(--layer2); }
+  .layer-3 .layer-course-tag { background: var(--layer3-light); color: #8a7020; }
+
+  .layer-expand-hint {
+    font-size: 0.78rem; color: var(--text-light);
+    display: flex; align-items: center; gap: 4px;
+    margin-top: 4px;
+  }
+  .layer-expand-hint .arrow {
+    display: inline-block; transition: transform 0.3s;
+  }
+  .os-layer.expanded .layer-expand-hint .arrow { transform: rotate(180deg); }
+
+  .layer-detail-link {
+    position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+    z-index: 2;
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    background: rgba(255,255,255,0.7); color: var(--layer1);
+    font-size: 0.85rem; font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s;
+  }
+  .layer-1 .layer-detail-link { color: var(--layer1); }
+  .layer-2 .layer-detail-link { color: var(--layer2); }
+  .layer-3 .layer-detail-link { color: var(--layer3); }
+  .layer-detail-link:hover {
+    background: #fff; box-shadow: var(--shadow-md);
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  /* Expanded sub-topics */
+  .layer-subtopics {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin 0.35s, opacity 0.35s;
+    opacity: 0;
+  }
+  .os-layer.expanded .layer-subtopics {
+    max-height: 800px; opacity: 1; margin-top: 20px;
+  }
+  .subtopic-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .subtopic-card {
+    background: rgba(255,255,255,0.6); border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    border: 1px solid rgba(58,42,26,0.06);
+    transition: all 0.2s;
+  }
+  .subtopic-card:hover {
+    background: #fff;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .subtopic-card h4 {
+    font-size: 0.95rem; font-weight: 600; color: var(--text);
+    margin-bottom: 6px;
+  }
+  .subtopic-card p {
+    font-size: 0.82rem; color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .subtopic-card .concept-tags {
+    display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;
+  }
+  .subtopic-card .concept-tag {
+    font-size: 0.72rem; padding: 1px 8px; border-radius: 10px;
+    background: var(--bg-alt); color: var(--text-muted);
+  }
+
+  /* ========== CROSS THREADS SECTION ========== */
+  .cross-threads-section {
+    max-width: 1100px; margin: 48px auto; padding: 0 24px;
+  }
+  .threads-title {
+    text-align: center; margin-bottom: 32px;
+  }
+  .threads-title h2 {
+    font-size: 1.4rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .threads-title p { color: var(--text-muted); font-size: 0.9rem; }
+
+  .threads-visual {
+    position: relative;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .thread-line {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .thread-line:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+  }
+  .thread-line::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .thread-1 {
+    background: linear-gradient(90deg, rgba(224,112,80,0.08) 0%, rgba(224,112,80,0.02) 100%);
+  }
+  .thread-1::before { background: var(--thread-1); }
+  .thread-2 {
+    background: linear-gradient(90deg, rgba(200,136,64,0.08) 0%, rgba(200,136,64,0.02) 100%);
+  }
+  .thread-2::before { background: var(--thread-2); }
+  .thread-3 {
+    background: linear-gradient(90deg, rgba(160,96,96,0.08) 0%, rgba(160,96,96,0.02) 100%);
+  }
+  .thread-3::before { background: var(--thread-3); }
+  .thread-4 {
+    background: linear-gradient(90deg, rgba(176,144,80,0.08) 0%, rgba(176,144,80,0.02) 100%);
+  }
+  .thread-4::before { background: var(--thread-4); }
+
+  .thread-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; color: #fff;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .thread-1 .thread-num { background: var(--thread-1); }
+  .thread-2 .thread-num { background: var(--thread-2); }
+  .thread-3 .thread-num { background: var(--thread-3); }
+  .thread-4 .thread-num { background: var(--thread-4); }
+
+  .thread-content { flex: 1; min-width: 0; }
+  .thread-content h4 {
+    font-size: 0.95rem; font-weight: 700; color: var(--text);
+    margin-bottom: 2px;
+  }
+  .thread-content p {
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  .thread-layers {
+    display: flex; gap: 6px; flex-shrink: 0;
+  }
+  .thread-layer-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    opacity: 0.5;
+  }
+  .thread-layer-dot.l1 { background: var(--layer1); }
+  .thread-layer-dot.l2 { background: var(--layer2); }
+  .thread-layer-dot.l3 { background: var(--layer3); }
+
+  /* ========== PYRAMID VISUAL ========== */
+  .pyramid-section {
+    max-width: 900px; margin: 56px auto; padding: 0 24px;
+    text-align: center;
+  }
+  .pyramid {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+    max-width: 600px; margin: 0 auto;
+  }
+  .pyramid-row {
+    display: flex; align-items: stretch; justify-content: center;
+    width: 100%;
+  }
+  .pyramid-block {
+    padding: 20px 16px; text-align: center;
+    font-weight: 600; font-size: 0.9rem;
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+  .pyramid-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 2;
+  }
+  .pyramid-block a {
+    color: #fff; text-decoration: none;
+  }
+  .pyramid-top {
+    width: 180px;
+    background: linear-gradient(180deg, var(--layer3) 0%, #c8952a 100%);
+    border-radius: 10px 10px 0 0;
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+    padding: 28px 16px 20px;
+  }
+  .pyramid-mid {
+    width: 340px;
+    background: linear-gradient(180deg, var(--layer2) 0%, #a05030 100%);
+    border-radius: 0;
+  }
+  .pyramid-base {
+    width: 500px;
+    background: linear-gradient(180deg, var(--layer1) 0%, #9a5a28 100%);
+    border-radius: 0 0 10px 10px;
+    padding: 20px 16px;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    text-align: center; padding: 48px 24px 40px;
+    border-top: 1px solid var(--surface-border);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer p {
+    font-size: 0.85rem; color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .footer-links {
+    display: flex; justify-content: center; gap: 20px; margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--layer1); text-decoration: none; font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--layer2); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .hero { padding: 40px 16px 32px; }
+    .hero h1 { font-size: 1.6rem; }
+    .hero .stats { gap: 20px; }
+    .hero .stat-num { font-size: 1.5rem; }
+
+    .os-layer { padding: 20px 16px; }
+    .layer-header { gap: 12px; }
+    .layer-icon { width: 44px; height: 44px; border-radius: 10px; font-size: 1.3rem; }
+    .layer-name { font-size: 1.1rem; }
+    .layer-detail-link { right: 16px; width: 34px; height: 34px; font-size: 0.75rem; }
+
+    .subtopic-grid { grid-template-columns: 1fr; }
+
+    .pyramid-base { width: 100%; }
+    .pyramid-mid { width: 85%; }
+    .pyramid-top { width: 60%; }
+
+    .thread-line { flex-wrap: wrap; }
+    .thread-layers { width: 100%; justify-content: flex-end; }
+
+    .nav-bar { padding: 8px 12px; }
+    .nav-links { gap: 8px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 1.35rem; }
+    .hero .stats { gap: 12px; }
+    .hero .stat-num { font-size: 1.2rem; }
+    .layer-name { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== NAVIGATION ====== -->
+<nav class="nav-bar">
+  <a href="../index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    知识主板
+  </a>
+  <span class="nav-title">吴军思想体系全景图</span>
+  <span class="nav-links">
+    <a href="#os-stack">三层架构</a>
+    <a href="#cross-threads">贯穿线索</a>
+    <a href="#pyramid">思想金字塔</a>
+  </span>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-badge">Thought OS</div>
+  <h1>吴军<span class="accent">思想体系</span>全景图</h1>
+  <p class="subtitle">
+    从 2,132 篇笔记中提炼的完整思想操作系统 —— 不是按课拆解，是按思想线索跨课重组，三层金字塔 + 四条贯穿线索
+  </p>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">2,132</div>
+      <div class="stat-label">篇笔记</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">13</div>
+      <div class="stat-label">门课程</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">层架构</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">条贯穿线索</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== OS ARCHITECTURE DIAGRAM ====== -->
+<section class="os-diagram" id="os-stack">
+  <div class="os-title">
+    <h2>思想操作系统 · 三层架构</h2>
+    <p>点击每一层展开子主题 — 从认知内核到人生应用，每层都是上一层思想的编译结果</p>
+  </div>
+
+  <div class="os-stack">
+
+    <!-- LAYER 3: User Space — 人生操作系统 -->
+    <div class="os-layer layer-3" id="layer3" onclick="toggleLayer('layer3')">
+      <div class="layer-header">
+        <div class="layer-icon">🧭</div>
+        <div class="layer-info">
+          <div class="layer-label">User Space · 用户空间</div>
+          <div class="layer-name">第三层：人生操作系统 — 怎么活得好</div>
+          <div class="layer-desc">将底层认知和文明洞察编译成可执行的人生策略</div>
+          <div class="layer-courses">
+            <span class="layer-course-tag">硅谷来信 1/3</span>
+            <span class="layer-course-tag">吴军来信 2</span>
+            <span class="layer-course-tag">GPT 专题</span>
+            <span class="layer-course-tag">5G 专题</span>
+          </div>
+          <div class="layer-expand-hint">
+            点击展开 5 个子主题 <span class="arrow">▾</span>
+          </div>
+        </div>
+      </div>
+      <a href="layer3a.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第三层A面：硅谷来信">→ A</a>
+      <a href="layer3b.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第三层B面：吴军来信2">→ B</a>
+
+      <div class="layer-subtopics">
+        <div class="subtopic-grid">
+
+          <div class="subtopic-card">
+            <h4>💰 财富的底层逻辑</h4>
+            <p>自由现金流是真正的财富度量；风险与回报永远相伴；长期主义的数学本质是复利</p>
+            <div class="concept-tags">
+              <span class="concept-tag">自由现金流</span>
+              <span class="concept-tag">风险×回报</span>
+              <span class="concept-tag">复利思维</span>
+              <span class="concept-tag">资产vs负债</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🚀 职业发展</h4>
+            <p>可叠加的进步是职业选择的第一性原理；方向远比努力重要；一流水准来自持续的有效做功</p>
+            <div class="concept-tags">
+              <span class="concept-tag">可叠加进步</span>
+              <span class="concept-tag">方向>努力</span>
+              <span class="concept-tag">有效做功</span>
+              <span class="concept-tag">护城河</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🤝 关系与边界</h4>
+            <p>信息屏蔽是保护深度思考的必修课；代际沟通需要理解不同的操作系统；关系中的边界意识</p>
+            <div class="concept-tags">
+              <span class="concept-tag">信息屏蔽</span>
+              <span class="concept-tag">代际沟通</span>
+              <span class="concept-tag">边界感</span>
+              <span class="concept-tag">朋友选择</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🧠 决策框架</h4>
+            <p>底层逻辑优于表层现象；少即是多的奥卡姆剃刀；卡尼曼的行为经济学启示</p>
+            <div class="concept-tags">
+              <span class="concept-tag">底层逻辑</span>
+              <span class="concept-tag">少即是多</span>
+              <span class="concept-tag">前景理论</span>
+              <span class="concept-tag">概率思维</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🤖 时代判断</h4>
+            <p>GPT 与 AI 时代的个人策略；5G 的本质是什么；如何在技术浪潮中定位自己</p>
+            <div class="concept-tags">
+              <span class="concept-tag">GPT革命</span>
+              <span class="concept-tag">AI策略</span>
+              <span class="concept-tag">技术判断</span>
+              <span class="concept-tag">时代红利</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYER 2: Middleware — 文明与方法论 -->
+    <div class="os-layer layer-2" id="layer2" onclick="toggleLayer('layer2')">
+      <div class="layer-header">
+        <div class="layer-icon">🏛️</div>
+        <div class="layer-info">
+          <div class="layer-label">Middleware · 系统服务层</div>
+          <div class="layer-name">第二层：文明与方法论 — 世界怎么运转</div>
+          <div class="layer-desc">连接底层认知与上层人生——理解文明兴衰的规律，掌握输入输出方法论</div>
+          <div class="layer-courses">
+            <span class="layer-course-tag">科技史纲 60 讲</span>
+            <span class="layer-course-tag">世界文明史</span>
+            <span class="layer-course-tag">教育的方法 50 讲</span>
+            <span class="layer-course-tag">阅读与写作 50 讲</span>
+          </div>
+          <div class="layer-expand-hint">
+            点击展开 5 个子主题 <span class="arrow">▾</span>
+          </div>
+        </div>
+      </div>
+      <a href="layer2.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第二层详情">→</a>
+
+      <div class="layer-subtopics">
+        <div class="subtopic-grid">
+
+          <div class="subtopic-card">
+            <h4>⚡ 能量 × 信息双螺旋</h4>
+            <p>科技史的核心框架：能量与信息是人类文明的两条主线，从火的利用到 GPT 都在这条轴上</p>
+            <div class="concept-tags">
+              <span class="concept-tag">能量转化</span>
+              <span class="concept-tag">信息编码</span>
+              <span class="concept-tag">双螺旋模型</span>
+              <span class="concept-tag">文明加速</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🏗️ 文明的兴衰</h4>
+            <p>农耕文明 vs 商业文明的根本差异；轴心时代的思维突破；工业革命的本质不是技术而是制度</p>
+            <div class="concept-tags">
+              <span class="concept-tag">轴心时代</span>
+              <span class="concept-tag">工业革命本质</span>
+              <span class="concept-tag">商业文明</span>
+              <span class="concept-tag">制度>技术</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🔬 科技演化规律</h4>
+            <p>产业公式揭示技术如何变成产业；从0到N 才是真正的创新——青霉素和计算机都证明了这一点</p>
+            <div class="concept-tags">
+              <span class="concept-tag">从0到N</span>
+              <span class="concept-tag">产业公式</span>
+              <span class="concept-tag">技术扩散</span>
+              <span class="concept-tag">正循环</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>📐 教育的方法</h4>
+            <p>有效做功 W=F×D×cosθ：努力的效果取决于方向与力夹角的余弦值；暗夜猫头鹰的警示</p>
+            <div class="concept-tags">
+              <span class="concept-tag">有效做功</span>
+              <span class="concept-tag">暗夜猫头鹰</span>
+              <span class="concept-tag">教育避坑</span>
+              <span class="concept-tag">W=F×D×cosθ</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>📖 阅读与写作</h4>
+            <p>信息的输入与输出是人最基础的能力——阅读是解码，写作是编码，两者构成认知闭环</p>
+            <div class="concept-tags">
+              <span class="concept-tag">信息输入</span>
+              <span class="concept-tag">信息输出</span>
+              <span class="concept-tag">阅读理解</span>
+              <span class="concept-tag">表达结构</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYER 1: Kernel — 认知底座 -->
+    <div class="os-layer layer-1" id="layer1" onclick="toggleLayer('layer1')">
+      <div class="layer-header">
+        <div class="layer-icon">⚙️</div>
+        <div class="layer-info">
+          <div class="layer-label">Kernel Space · 内核空间</div>
+          <div class="layer-name">第一层：认知底座 — 怎么看世界</div>
+          <div class="layer-desc">思想的操作系统内核：逻辑为骨、数学为眼、信息论为血、计算机思维为魂</div>
+          <div class="layer-courses">
+            <span class="layer-course-tag">逻辑思维训练 50 讲</span>
+            <span class="layer-course-tag">数学通识 50 讲</span>
+            <span class="layer-course-tag">信息论 40 讲</span>
+            <span class="layer-course-tag">谷歌方法论</span>
+          </div>
+          <div class="layer-expand-hint">
+            点击展开 5 个子主题 <span class="arrow">▾</span>
+          </div>
+        </div>
+      </div>
+      <a href="layer1.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第一层详情">→</a>
+
+      <div class="layer-subtopics">
+        <div class="subtopic-grid">
+
+          <div class="subtopic-card">
+            <h4>🔍 逻辑工具</h4>
+            <p>命题、三段论、谓词逻辑、证伪——区分事实与意见，识别归纳与演绎的边界</p>
+            <div class="concept-tags">
+              <span class="concept-tag">命题逻辑</span>
+              <span class="concept-tag">三段论</span>
+              <span class="concept-tag">证伪主义</span>
+              <span class="concept-tag">逻辑谬误</span>
+              <span class="concept-tag">归纳vs演绎</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>📊 数学思维</h4>
+            <p>公理体系是一切推理的起点；概率是应对不确定性的语言；微积分教会我们增量思维</p>
+            <div class="concept-tags">
+              <span class="concept-tag">公理体系</span>
+              <span class="concept-tag">概率论</span>
+              <span class="concept-tag">微积分思维</span>
+              <span class="concept-tag">向量空间</span>
+              <span class="concept-tag">极限思维</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>📡 信息论框架</h4>
+            <p>信息熵度量不确定性；比特是认知世界的基本单位；信道容量决定了一切传输的上限</p>
+            <div class="concept-tags">
+              <span class="concept-tag">信息熵</span>
+              <span class="concept-tag">不确定性消除</span>
+              <span class="concept-tag">信道容量</span>
+              <span class="concept-tag">编码效率</span>
+              <span class="concept-tag">香农定律</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>🧪 科学方法</h4>
+            <p>假设检验是验证的工具；双盲实验排除主观偏差；相关性不等于因果；量化是科学的前提</p>
+            <div class="concept-tags">
+              <span class="concept-tag">假设检验</span>
+              <span class="concept-tag">双盲实验</span>
+              <span class="concept-tag">相关性≠因果</span>
+              <span class="concept-tag">量化验证</span>
+              <span class="concept-tag">幸存者偏差</span>
+            </div>
+          </div>
+
+          <div class="subtopic-card">
+            <h4>💻 计算机思维</h4>
+            <p>递归、分治、抽象、迭代——谷歌方法论提炼的思维范式，也是解决任何复杂问题的元策略</p>
+            <div class="concept-tags">
+              <span class="concept-tag">递归</span>
+              <span class="concept-tag">分治</span>
+              <span class="concept-tag">抽象</span>
+              <span class="concept-tag">迭代优化</span>
+              <span class="concept-tag">大O思维</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====== FOUR CROSS THREADS ====== -->
+<section class="cross-threads-section" id="cross-threads">
+  <div class="threads-title">
+    <h2>四条贯穿线索 · 跨层连接</h2>
+    <p>这些思想线索像操作系统中的系统调用，贯穿三层，连接认知底座到人生实践</p>
+  </div>
+
+  <div class="threads-visual">
+
+    <div class="thread-line thread-1">
+      <div class="thread-num">1</div>
+      <div class="thread-content">
+        <h4>可叠加的进步</h4>
+        <p>从文明演进到个人成长的第一性原理——每步都建立在上一步之上，避免归零重启。底层是公理体系的积累性，上层是职业生涯的方向选择</p>
+      </div>
+      <div class="thread-layers">
+        <span class="thread-layer-dot l1" title="认知底座"></span>
+        <span class="thread-layer-dot l2" title="文明与方法论"></span>
+        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+      </div>
+    </div>
+
+    <div class="thread-line thread-2">
+      <div class="thread-num">2</div>
+      <div class="thread-content">
+        <h4>能量 × 信息双螺旋</h4>
+        <p>科技史的主轴分析框架，渗透到信息论（香农熵）、GPT（信息生成能量消耗）、文明史（能量革命→信息革命）——理解世界运转的元模型</p>
+      </div>
+      <div class="thread-layers">
+        <span class="thread-layer-dot l1" title="认知底座"></span>
+        <span class="thread-layer-dot l2" title="文明与方法论"></span>
+        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+      </div>
+    </div>
+
+    <div class="thread-line thread-3">
+      <div class="thread-num">3</div>
+      <div class="thread-content">
+        <h4>底层逻辑 &gt; 表层现象</h4>
+        <p>不讲怎么做，讲怎么想。从逻辑课的公理推演到投资的自由现金流分析到教育的有效做功——一切回到第一性原理</p>
+      </div>
+      <div class="thread-layers">
+        <span class="thread-layer-dot l1" title="认知底座"></span>
+        <span class="thread-layer-dot l2" title="文明与方法论"></span>
+        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+      </div>
+    </div>
+
+    <div class="thread-line thread-4">
+      <div class="thread-num">4</div>
+      <div class="thread-content">
+        <h4>少即是多</h4>
+        <p>奥卡姆剃刀贯穿全局：从数学证明的简洁性到投资组合的集中策略到教育方法的聚焦——做减法才是真正的智慧</p>
+      </div>
+      <div class="thread-layers">
+        <span class="thread-layer-dot l1" title="认知底座"></span>
+        <span class="thread-layer-dot l2" title="文明与方法论"></span>
+        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====== PYRAMID VISUAL ====== -->
+<section class="pyramid-section" id="pyramid">
+  <div class="threads-title" style="margin-bottom: 28px;">
+    <h2>思想金字塔</h2>
+    <p>另一种视角：从底座到塔尖的递进</p>
+  </div>
+  <div class="pyramid">
+    <div class="pyramid-row">
+      <div class="pyramid-block pyramid-top">
+        <a href="layer3a.html">人生操作系统 A<br><small style="opacity:0.8">硅谷来信1+3</small></a>
+        <a href="layer3b.html" style="font-size:.85rem">人生操作系统 B<br><small style="opacity:0.8">吴军来信2</small></a>
+      </div>
+    </div>
+    <div class="pyramid-row">
+      <div class="pyramid-block pyramid-mid">
+        <a href="layer2.html">文明与方法论<br><small style="opacity:0.8">世界怎么运转</small></a>
+      </div>
+    </div>
+    <div class="pyramid-row">
+      <div class="pyramid-block pyramid-base">
+        <a href="layer1.html">认知底座 — 怎么看世界</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <p>吴军思想体系全景图 · Thought OS</p>
+  <p>基于 2,132 篇笔记 · 13 门课程 · 跨课重组</p>
+  <div class="footer-links">
+    <a href="../index.html">← 返回知识主板</a>
+    <a href="layer1.html">第一层：认知底座</a>
+    <a href="layer2.html">第二层：文明与方法论</a>
+    <a href="layer3a.html">第三层A：硅谷来信</a>
+    <a href="layer3b.html">第三层B：吴军来信2</a>
+  </div>
+</footer>
+
+<script>
+  // Expand/collapse layers on click
+  function toggleLayer(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const wasExpanded = el.classList.contains('expanded');
+
+    // Close all
+    document.querySelectorAll('.os-layer').forEach(l => l.classList.remove('expanded'));
+
+    // Toggle clicked
+    if (!wasExpanded) {
+      el.classList.add('expanded');
+      // Scroll into better view
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.os-layer.expanded').forEach(l => l.classList.remove('expanded'));
+    }
+  });
+
+  // Entry animation
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.os-layer').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 100 + i * 150);
+    });
+
+    document.querySelectorAll('.thread-line').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(-20px)';
+      el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateX(0)';
+      }, 400 + i * 120);
+    });
+  });
+</script>
+
+</body>
+</html>

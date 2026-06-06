@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二层：文明与方法论 — 世界怎么运转 · 吴军思想体系</title>
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+  background: #fdf6f0;
+  color: #3a2a1a;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== COLOR SYSTEM ========== */
+:root {
+  --bg: #fdf6f0;
+  --bg-alt: #f8efe4;
+  --surface: #fffbf6;
+  --surface-border: #e8d5c0;
+  --text: #3a2a1a;
+  --text-muted: #8a7560;
+  --text-light: #b8a590;
+
+  --layer2: #c06040;
+  --layer2-light: #f5d8cc;
+  --layer2-bg: #fdf0ea;
+  --layer2-glow: rgba(192,96,64,0.15);
+  --layer2-dark: #a05030;
+
+  --energy: #e87830;
+  --energy-light: #fce0cc;
+  --energy-glow: rgba(232,120,48,0.2);
+
+  --info: #4a90b8;
+  --info-light: #d8ecf8;
+  --info-glow: rgba(74,144,184,0.2);
+
+  --shadow-sm: 0 1px 3px rgba(58,42,26,0.06);
+  --shadow-md: 0 4px 16px rgba(58,42,26,0.1);
+  --shadow-lg: 0 12px 40px rgba(58,42,26,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+/* ========== NAVIGATION ========== */
+.nav-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(253,246,240,0.88); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+.nav-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--layer2); text-decoration: none; font-size: 0.9rem;
+  font-weight: 500; transition: color 0.2s;
+  flex-shrink: 0;
+}
+.nav-back:hover { color: var(--layer2-dark); }
+.nav-back svg { width: 16px; height: 16px; }
+.nav-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.nav-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none; font-size: 0.82rem;
+  transition: color 0.2s; white-space: nowrap;
+}
+.nav-links a:hover { color: var(--layer2); }
+
+/* ========== HERO ========== */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+}
+.hero-bg::before {
+  content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, var(--layer2-glow) 0%, transparent 65%);
+}
+.hero-bg::after {
+  content: ''; position: absolute; bottom: -60px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(74,144,184,0.06) 0%, transparent 65%);
+}
+#helix-canvas {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 800px; }
+.hero-badge {
+  display: inline-block;
+  background: var(--layer2-light); color: var(--layer2);
+  padding: 5px 18px; border-radius: 20px; font-size: 0.85rem;
+  font-weight: 500; margin-bottom: 20px;
+  letter-spacing: 0.04em;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5.5vw, 3.6rem);
+  font-weight: 800; color: var(--text);
+  letter-spacing: 0.02em; line-height: 1.25;
+}
+.hero h1 .hl-energy { color: var(--energy); }
+.hero h1 .hl-info { color: var(--info); }
+.hero .subtitle {
+  margin-top: 18px; font-size: 1.15rem; color: var(--text-muted);
+  max-width: 620px; margin-left: auto; margin-right: auto;
+  line-height: 1.8;
+}
+.hero .subtitle strong { color: var(--layer2); }
+.hero-scroll-hint {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  animation: floatHint 2.5s ease-in-out infinite;
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: 0.78rem;
+}
+@keyframes floatHint {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+.hero-scroll-hint svg { width: 20px; height: 20px; }
+
+/* ========== SECTION COMMONS ========== */
+.section {
+  max-width: 1100px; margin: 0 auto; padding: 64px 24px;
+  position: relative;
+}
+.section-header {
+  text-align: center; margin-bottom: 48px;
+}
+.section-header .section-label {
+  font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--layer2); margin-bottom: 8px;
+}
+.section-header h2 {
+  font-size: 1.8rem; font-weight: 700; color: var(--text);
+  margin-bottom: 8px; line-height: 1.4;
+}
+.section-header p {
+  font-size: 0.95rem; color: var(--text-muted);
+  max-width: 600px; margin: 0 auto;
+}
+
+/* ========== FOUR COURSES GRID ========== */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.course-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  border: 1px solid var(--surface-border);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative; overflow: hidden;
+  cursor: default;
+}
+.course-card::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: var(--radius);
+  opacity: 0; transition: opacity 0.35s;
+  pointer-events: none;
+}
+.course-card.card-tech::after {
+  background: radial-gradient(ellipse at 80% 20%, var(--energy-glow) 0%, transparent 60%);
+}
+.course-card.card-civ::after {
+  background: radial-gradient(ellipse at 80% 20%, var(--layer2-glow) 0%, transparent 60%);
+}
+.course-card.card-edu::after {
+  background: radial-gradient(ellipse at 80% 20%, rgba(192,96,64,0.12) 0%, transparent 60%);
+}
+.course-card.card-rw::after {
+  background: radial-gradient(ellipse at 80% 20%, var(--info-glow) 0%, transparent 60%);
+}
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+.course-card:hover::after { opacity: 1; }
+.course-card .card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.card-tech .card-icon { background: var(--energy-light); }
+.card-civ .card-icon { background: var(--layer2-light); }
+.card-edu .card-icon { background: var(--layer2-light); }
+.card-rw .card-icon { background: var(--info-light); }
+.course-card h3 {
+  font-size: 1.15rem; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.course-card .card-meta {
+  font-size: 0.78rem; color: var(--text-light); margin-bottom: 10px;
+}
+.course-card .card-desc {
+  font-size: 0.88rem; color: var(--text-muted);
+  line-height: 1.7; margin-bottom: 12px;
+}
+.course-card .card-concepts {
+  display: flex; flex-wrap: wrap; gap: 5px;
+}
+.course-card .concept-chip {
+  font-size: 0.72rem; padding: 2px 10px; border-radius: 10px;
+  background: var(--bg-alt); color: var(--text-muted);
+  border: 1px solid var(--surface-border);
+}
+.card-tech .concept-chip { background: var(--energy-light); color: #b06020; border-color: transparent; }
+.card-civ .concept-chip { background: var(--layer2-light); color: var(--layer2); border-color: transparent; }
+.card-edu .concept-chip { background: var(--layer2-light); color: var(--layer2-dark); border-color: transparent; }
+.card-rw .concept-chip { background: var(--info-light); color: #306888; border-color: transparent; }
+
+/* Card connector — how courses interrelate */
+.course-connector {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin-top: 20px; padding: 16px 24px;
+  background: rgba(192,96,64,0.04); border-radius: var(--radius);
+  border: 1px dashed var(--surface-border);
+  font-size: 0.85rem; color: var(--text-muted);
+}
+.course-connector .connector-line {
+  width: 40px; height: 1px; background: var(--layer2);
+  opacity: 0.3;
+}
+.course-connector strong { color: var(--layer2); }
+
+/* ========== DOUBLE HELIX EXPLAINER ========== */
+.helix-explainer {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: center;
+}
+.helix-explainer .explainer-visual {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px;
+}
+.helix-explainer .mini-helix {
+  width: 280px; height: 280px;
+  position: relative;
+}
+.helix-explainer .strand-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; font-weight: 600;
+}
+.strand-label.energy-label { color: var(--energy); }
+.strand-label.info-label { color: var(--info); }
+.strand-label .strand-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  display: inline-block;
+}
+.strand-label.energy-label .strand-dot { background: var(--energy); box-shadow: 0 0 12px var(--energy-glow); }
+.strand-label.info-label .strand-dot { background: var(--info); box-shadow: 0 0 12px var(--info-glow); }
+
+.helix-explainer .explainer-text h2 {
+  font-size: 1.5rem; font-weight: 700; color: var(--text);
+  margin-bottom: 12px;
+}
+.helix-explainer .explainer-text p {
+  font-size: 0.92rem; color: var(--text-muted);
+  margin-bottom: 16px; line-height: 1.8;
+}
+.helix-explainer .explainer-text .highlight-box {
+  background: var(--surface); border-left: 3px solid var(--layer2);
+  padding: 14px 18px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.88rem; color: var(--text);
+  margin-bottom: 12px;
+}
+.highlight-box strong { color: var(--layer2); }
+
+/* ========== TIMELINE ========== */
+.timeline-container {
+  position: relative;
+}
+.timeline-nav {
+  display: flex; justify-content: center; gap: 6px; margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.timeline-nav-btn {
+  padding: 8px 16px; border-radius: 20px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.82rem; cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.timeline-nav-btn:hover {
+  border-color: var(--layer2);
+  color: var(--layer2);
+}
+.timeline-nav-btn.active {
+  background: var(--layer2); color: #fff;
+  border-color: var(--layer2);
+}
+
+.timeline-track {
+  position: relative;
+  padding: 20px 0;
+}
+.timeline-line {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--energy) 0%, var(--layer2) 30%, var(--layer2) 70%, var(--info) 100%);
+  transform: translateX(-50%);
+}
+.timeline-entries {
+  display: flex; flex-direction: column; gap: 32px;
+}
+.timeline-entry {
+  display: grid; grid-template-columns: 1fr 40px 1fr;
+  gap: 16px; align-items: start;
+  opacity: 0.3; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.timeline-entry.active {
+  opacity: 1;
+}
+.timeline-entry:hover { opacity: 0.8; }
+.timeline-entry.active:hover { opacity: 1; }
+
+.timeline-entry .entry-content {
+  padding: 20px 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-border);
+  transition: all 0.35s;
+  text-align: right;
+}
+.timeline-entry:nth-child(even) .entry-content { text-align: left; }
+.timeline-entry.active .entry-content {
+  box-shadow: var(--shadow-md);
+  border-color: var(--layer2);
+}
+.timeline-entry .entry-era {
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--layer2); margin-bottom: 4px;
+  letter-spacing: 0.06em;
+}
+.timeline-entry .entry-title {
+  font-size: 1.05rem; font-weight: 700; color: var(--text);
+  margin-bottom: 6px;
+}
+.timeline-entry .entry-desc {
+  font-size: 0.82rem; color: var(--text-muted);
+  line-height: 1.6;
+}
+.timeline-entry .entry-dual {
+  display: flex; gap: 8px; margin-top: 10px;
+  justify-content: flex-end;
+}
+.timeline-entry:nth-child(even) .entry-dual { justify-content: flex-start; }
+.entry-dual .dual-bar {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.7rem; font-weight: 600; padding: 2px 10px;
+  border-radius: 10px;
+}
+.dual-bar.bar-energy {
+  background: var(--energy-light); color: #b06020;
+}
+.dual-bar.bar-info {
+  background: var(--info-light); color: #306888;
+}
+.dual-bar .bar-fill {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.bar-energy .bar-fill { background: var(--energy); }
+.bar-info .bar-fill { background: var(--info); }
+
+.timeline-entry .entry-marker {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.8rem; color: #fff;
+  position: relative; z-index: 2;
+  background: var(--text-light);
+  transition: all 0.35s;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+.timeline-entry.active .entry-marker {
+  background: var(--layer2);
+  box-shadow: 0 0 20px var(--layer2-glow);
+  transform: scale(1.15);
+}
+
+.timeline-detail-panel {
+  margin-top: 40px; padding: 32px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--shadow-md);
+  display: none;
+  animation: fadeSlideIn 0.4s ease;
+}
+.timeline-detail-panel.visible { display: block; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.timeline-detail-panel h3 {
+  font-size: 1.3rem; font-weight: 700; color: var(--text);
+  margin-bottom: 8px;
+}
+.timeline-detail-panel .detail-era {
+  font-size: 0.82rem; color: var(--layer2); font-weight: 600;
+  margin-bottom: 16px;
+}
+.timeline-detail-panel .detail-body {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.detail-body .detail-energy,
+.detail-body .detail-info {
+  padding: 18px; border-radius: var(--radius-sm);
+}
+.detail-energy {
+  background: var(--energy-light);
+  border-left: 3px solid var(--energy);
+}
+.detail-info {
+  background: var(--info-light);
+  border-left: 3px solid var(--info);
+}
+.detail-energy h4 { color: #b06020; font-size: 0.9rem; margin-bottom: 6px; }
+.detail-info h4 { color: #306888; font-size: 0.9rem; margin-bottom: 6px; }
+.detail-energy p, .detail-info p {
+  font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;
+}
+
+/* ========== INDUSTRIAL REVOLUTION ========== */
+.ir-section-inner {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-border);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+}
+.ir-argument {
+  display: flex; flex-direction: column; gap: 20px;
+  margin-top: 24px;
+}
+.ir-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  background: rgba(192,96,64,0.03);
+  transition: all 0.3s;
+  border-left: 3px solid transparent;
+}
+.ir-step:hover {
+  background: rgba(192,96,64,0.06);
+  border-left-color: var(--layer2);
+}
+.ir-step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--layer2); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.9rem;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+.ir-step-content h4 {
+  font-size: 0.95rem; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.ir-step-content p {
+  font-size: 0.82rem; color: var(--text-muted);
+  line-height: 1.7;
+}
+.ir-data-point {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 24px;
+}
+.ir-data-card {
+  text-align: center; padding: 20px 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--surface-border);
+}
+.ir-data-card .data-num {
+  font-size: 1.8rem; font-weight: 800;
+  margin-bottom: 4px;
+}
+.ir-data-card:nth-child(1) .data-num { color: var(--energy); }
+.ir-data-card:nth-child(2) .data-num { color: var(--layer2); }
+.ir-data-card:nth-child(3) .data-num { color: var(--info); }
+.ir-data-card .data-label {
+  font-size: 0.78rem; color: var(--text-muted);
+}
+
+/* ========== FORMULAS SECTION ========== */
+.formulas-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.formula-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  border: 1px solid var(--surface-border);
+  text-align: center;
+  transition: all 0.35s;
+  position: relative; overflow: hidden;
+}
+.formula-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.formula-card:nth-child(1)::before { background: var(--energy); }
+.formula-card:nth-child(2)::before { background: var(--layer2); }
+.formula-card:nth-child(3)::before { background: var(--info); }
+.formula-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.formula-card .formula-icon {
+  font-size: 2rem; margin-bottom: 12px;
+}
+.formula-card h3 {
+  font-size: 1.05rem; font-weight: 700; color: var(--text);
+  margin-bottom: 6px;
+}
+.formula-card .formula-math {
+  font-size: 1.3rem; font-weight: 700; color: var(--layer2);
+  margin: 12px 0; font-family: "Georgia", "Noto Serif SC", serif;
+  letter-spacing: 0.04em;
+}
+.formula-card p {
+  font-size: 0.82rem; color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ========== LAYER 1 CONNECTIONS ========== */
+.connections-section {
+  background: linear-gradient(180deg, rgba(184,115,51,0.04) 0%, rgba(192,96,64,0.04) 100%);
+  border-top: 1px solid var(--surface-border);
+  border-bottom: 1px solid var(--surface-border);
+}
+.connection-block {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 24px; align-items: start;
+  padding: 28px 32px; margin-bottom: 20px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-border);
+  transition: all 0.35s;
+  position: relative;
+}
+.connection-block:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+.connection-block .conn-badge {
+  background: #b87333; color: #fff;
+  padding: 6px 14px; border-radius: 16px;
+  font-size: 0.75rem; font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+.connection-block .conn-body h3 {
+  font-size: 1.05rem; font-weight: 700; color: var(--text);
+  margin-bottom: 6px;
+}
+.connection-block .conn-body .conn-from {
+  font-size: 0.8rem; color: #b87333; font-weight: 500;
+  margin-bottom: 8px;
+}
+.connection-block .conn-body .conn-to {
+  font-size: 0.85rem; color: var(--layer2); font-weight: 500;
+  margin-bottom: 8px;
+}
+.connection-block .conn-body p {
+  font-size: 0.85rem; color: var(--text-muted);
+  line-height: 1.7;
+}
+.connection-block .conn-arrow {
+  position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+  font-size: 1.5rem; color: var(--layer2);
+  opacity: 0.3;
+}
+
+/* ========== CROSS-LINK HIGHLIGHTS ========== */
+.cross-link-banner {
+  text-align: center; padding: 32px 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 2px dashed var(--surface-border);
+  margin-top: 32px;
+}
+.cross-link-banner p {
+  font-size: 0.9rem; color: var(--text-muted);
+  max-width: 640px; margin: 0 auto;
+  line-height: 1.8;
+}
+.cross-link-banner .link-pair {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--layer2); font-weight: 600;
+}
+.cross-link-banner .link-pair.l1-link { color: #b87333; }
+
+/* ========== BACK TO TOP & FOOTER ========== */
+.back-to-top {
+  position: fixed; bottom: 28px; right: 28px; z-index: 50;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--layer2); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none;
+  box-shadow: var(--shadow-md);
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.3s;
+  pointer-events: none;
+  font-size: 1.2rem;
+}
+.back-to-top.visible {
+  opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover { background: var(--layer2-dark); transform: translateY(-2px); }
+
+.footer {
+  text-align: center; padding: 48px 24px 40px;
+  border-top: 1px solid var(--surface-border);
+  max-width: 1100px; margin: 0 auto;
+}
+.footer p {
+  font-size: 0.85rem; color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.footer-links {
+  display: flex; justify-content: center; gap: 20px; margin-top: 16px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  color: var(--layer2); text-decoration: none; font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--layer2-dark); }
+
+/* ========== REVEAL ANIMATION ========== */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .courses-grid { grid-template-columns: 1fr; }
+  .helix-explainer { grid-template-columns: 1fr; }
+  .helix-explainer .mini-helix { margin: 0 auto; }
+  .timeline-entry { grid-template-columns: 1fr 32px 1fr; gap: 8px; }
+  .timeline-entry .entry-content { padding: 14px 16px; }
+  .formulas-grid { grid-template-columns: 1fr; }
+  .ir-data-point { grid-template-columns: 1fr; }
+  .connection-block { grid-template-columns: 1fr; }
+  .connection-block .conn-arrow { display: none; }
+  .timeline-detail-panel .detail-body { grid-template-columns: 1fr; }
+  .section { padding: 40px 16px; }
+  .ir-section-inner { padding: 24px 20px; }
+}
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.6rem; }
+  .hero .subtitle { font-size: 1rem; }
+  .nav-bar { padding: 8px 12px; }
+  .nav-links { gap: 10px; }
+  .section-header h2 { font-size: 1.4rem; }
+  .timeline-entry { grid-template-columns: 1fr; }
+  .timeline-entry .entry-marker { display: none; }
+  .timeline-line { left: 16px; }
+  .timeline-entry .entry-content { text-align: left !important; }
+  .timeline-entry .entry-dual { justify-content: flex-start !important; }
+  .timeline-entry { padding-left: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== NAVIGATION ====== -->
+<nav class="nav-bar">
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    思想体系全景
+  </a>
+  <span class="nav-title">第二层：文明与方法论</span>
+  <span class="nav-links">
+    <a href="#courses">四门课程</a>
+    <a href="#helix">双螺旋</a>
+    <a href="#timeline">文明时间轴</a>
+    <a href="#industrial">工业革命</a>
+    <a href="#formulas">核心公式</a>
+    <a href="#connections">层级连接</a>
+  </span>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <canvas id="helix-canvas"></canvas>
+  <div class="hero-content reveal">
+    <div class="hero-badge">Layer 2 · Middleware</div>
+    <h1><span class="hl-energy">能量</span> × <span class="hl-info">信息</span> 双螺旋</h1>
+    <p class="subtitle">
+      吴军思想体系的<strong>中间层</strong>——用能量与信息的双螺旋框架，<br>
+      解释从古埃及到 GPT 的整个人类文明史。<br>
+      这是「<strong>世界怎么运转</strong>」的完整答案。
+    </p>
+  </div>
+  <div class="hero-scroll-hint" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+    <span>探索文明的双螺旋</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+  </div>
+</section>
+
+<!-- ====== FOUR COURSES OVERVIEW ====== -->
+<section class="section" id="courses">
+  <div class="section-header reveal">
+    <div class="section-label">Four Courses · 跨课重组</div>
+    <h2>四门课程的逻辑拼图</h2>
+    <p>每门课在「能量×信息」框架中各司其职，共同构成理解文明运转的完整方法论</p>
+  </div>
+
+  <div class="courses-grid">
+    <!-- 科技史纲 -->
+    <div class="course-card card-tech reveal">
+      <div class="card-icon">⚡</div>
+      <h3>科技史纲 60 讲</h3>
+      <div class="card-meta">62 篇 · 框架层</div>
+      <div class="card-desc">
+        提出<strong>「能量×信息双螺旋」</strong>这个核心分析框架，用能量转化效率和信息编码效率两条主线串起整个人类科技史。
+      </div>
+      <div class="card-concepts">
+        <span class="concept-chip">能量×信息</span>
+        <span class="concept-chip">机械思维</span>
+        <span class="concept-chip">产业公式</span>
+        <span class="concept-chip">发明≠创新</span>
+      </div>
+    </div>
+
+    <!-- 世界文明史 -->
+    <div class="course-card card-civ reveal">
+      <div class="card-icon">🏛️</div>
+      <h3>世界文明史</h3>
+      <div class="card-meta">317 篇 · 案例层</div>
+      <div class="card-desc">
+        用双螺旋框架解释文明兴衰——<strong>农耕文明</strong>受限于土地能量密度，<strong>商业文明</strong>通过信息流通带动能量重组。
+      </div>
+      <div class="card-concepts">
+        <span class="concept-chip">农耕vs商业</span>
+        <span class="concept-chip">轴心时代</span>
+        <span class="concept-chip">工业革命本质</span>
+        <span class="concept-chip">文明兴衰律</span>
+      </div>
+    </div>
+
+    <!-- 教育的方法 -->
+    <div class="course-card card-edu reveal">
+      <div class="card-icon">📐</div>
+      <h3>教育的方法 50 讲</h3>
+      <div class="card-meta">63 篇 · 应用层</div>
+      <div class="card-desc">
+        将第一层的<strong>向量模型</strong>转化为教育的<strong>「有效做功」公式</strong>：W=F×D×cosθ——努力的效果取决于方向与力的夹角。
+      </div>
+      <div class="card-concepts">
+        <span class="concept-chip">有效做功</span>
+        <span class="concept-chip">暗夜猫头鹰</span>
+        <span class="concept-chip">职场避坑</span>
+        <span class="concept-chip">留学选择</span>
+      </div>
+    </div>
+
+    <!-- 阅读与写作 -->
+    <div class="course-card card-rw reveal">
+      <div class="card-icon">📖</div>
+      <h3>阅读与写作 50 讲</h3>
+      <div class="card-meta">52 篇 · 应用层</div>
+      <div class="card-desc">
+        本质是<strong>信息论在个人层面的应用</strong>——阅读是信息解码，写作是信息编码，两者构成个人认知的信息闭环。
+      </div>
+      <div class="card-concepts">
+        <span class="concept-chip">信息输入</span>
+        <span class="concept-chip">信息输出</span>
+        <span class="concept-chip">经典阅读</span>
+        <span class="concept-chip">表达结构</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector between courses -->
+  <div class="course-connector reveal">
+    <span>科技史纲<br><small>提供框架</small></span>
+    <span class="connector-line"></span>
+    <span>→</span>
+    <span class="connector-line"></span>
+    <span>文明史<br><small>提供案例</small></span>
+    <span class="connector-line"></span>
+    <span>→</span>
+    <span class="connector-line"></span>
+    <span>教育+阅读写作<br><small>个人应用</small></span>
+  </div>
+</section>
+
+<!-- ====== DOUBLE HELIX DEEP DIVE ====== -->
+<section class="section" id="helix" style="background: linear-gradient(180deg, transparent 0%, rgba(192,96,64,0.03) 50%, transparent 100%);">
+  <div class="section-header reveal">
+    <div class="section-label">Core Framework</div>
+    <h2>「能量 × 信息」双螺旋</h2>
+    <p>吴军整个体系中最独特的原创贡献——理解文明运作的元模型</p>
+  </div>
+
+  <div class="helix-explainer reveal">
+    <div class="explainer-visual">
+      <canvas id="mini-helix-canvas" class="mini-helix" width="280" height="280"></canvas>
+      <div style="display:flex;gap:24px;">
+        <span class="strand-label energy-label"><span class="strand-dot"></span>能量线</span>
+        <span class="strand-label info-label"><span class="strand-dot"></span>信息线</span>
+      </div>
+    </div>
+    <div class="explainer-text">
+      <h2>文明的 DNA 双螺旋</h2>
+      <p>如果第一层的数学和逻辑告诉你<strong>「怎么想」</strong>，这一层展示吴军如何用这套思维工具解释<strong>整个人类文明和科技演进</strong>。</p>
+      <div class="highlight-box">
+        <strong>核心命题：</strong>人类文明的每一次跃升，都是能量转化效率和信息编码效率的双重突破——这两条线像 DNA 一样互相缠绕、交替领先、共同演进。
+      </div>
+      <p>农耕文明→工业革命→信息时代→AI 时代，每个拐点都对应着能量或信息的一次巨变。而今天，这两条线正在以前所未有的方式交汇——GPT 既消耗巨大的能量，又创造了全新的信息生成方式。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CIVILIZATION TIMELINE ====== -->
+<section class="section" id="timeline">
+  <div class="section-header reveal">
+    <div class="section-label">Civilization Timeline</div>
+    <h2>从古埃及到 GPT：双螺旋视角下的文明史</h2>
+    <p>点击每个节点，查看能量与信息在那一刻的纠缠状态</p>
+  </div>
+
+  <div class="timeline-container reveal">
+    <!-- Timeline era navigation -->
+    <div class="timeline-nav" id="timeline-nav">
+      <button class="timeline-nav-btn active" data-era="0">古代文明</button>
+      <button class="timeline-nav-btn" data-era="1">轴心时代</button>
+      <button class="timeline-nav-btn" data-era="2">罗马帝国</button>
+      <button class="timeline-nav-btn" data-era="3">伊斯兰黄金</button>
+      <button class="timeline-nav-btn" data-era="4">文艺复兴</button>
+      <button class="timeline-nav-btn" data-era="5">工业革命</button>
+      <button class="timeline-nav-btn" data-era="6">信息时代</button>
+      <button class="timeline-nav-btn" data-era="7">AI 时代</button>
+    </div>
+
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      <div class="timeline-entries" id="timeline-entries">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- Detail panel -->
+    <div class="timeline-detail-panel" id="timeline-detail"></div>
+  </div>
+</section>
+
+<!-- ====== WHY INDUSTRIAL REVOLUTION ====== -->
+<section class="section" id="industrial">
+  <div class="section-header reveal">
+    <div class="section-label">The Greatest Event</div>
+    <h2>为什么工业革命是人类历史上最伟大的事件？</h2>
+    <p>吴军的论证逻辑——不是技术、不是发明，而是能量利用方式的根本性变革</p>
+  </div>
+
+  <div class="ir-section-inner reveal">
+    <div class="ir-data-point">
+      <div class="ir-data-card">
+        <div class="data-num">~2000 年</div>
+        <div class="data-label">工业革命前，人均 GDP 基本不变</div>
+      </div>
+      <div class="ir-data-card">
+        <div class="data-num">10×+</div>
+        <div class="data-label">工业革命后 200 年，人均 GDP 增长</div>
+      </div>
+      <div class="ir-data-card">
+        <div class="data-num">10³→10⁹ W</div>
+        <div class="data-label">从人力到核能的能量跃升</div>
+      </div>
+    </div>
+
+    <div class="ir-argument">
+      <div class="ir-step">
+        <div class="ir-step-num">1</div>
+        <div class="ir-step-content">
+          <h4>打破马尔萨斯陷阱</h4>
+          <p>在此之前，人类历史上任何生产效率的提升都会被人口增长吞噬（马尔萨斯陷阱）。工业革命第一次让生产效率的增速超过了人口增速——人均收入开始持续增长。</p>
+        </div>
+      </div>
+      <div class="ir-step">
+        <div class="ir-step-num">2</div>
+        <div class="ir-step-content">
+          <h4>能量密度的量级跃迁</h4>
+          <p>从人力（~100W）到蒸汽机（~10kW），从有机能源（木材、畜力）到化石能源（煤、石油），能量密度提升了 2-3 个数量级。这是「能量×信息」框架中能量线的一次垂直跃升。</p>
+        </div>
+      </div>
+      <div class="ir-step">
+        <div class="ir-step-num">3</div>
+        <div class="ir-step-content">
+          <h4>制度创新比技术创新更关键</h4>
+          <p>吴军的独特观点：工业革命的本质不是瓦特的蒸汽机，而是<strong>专利制度、有限责任公司和资本市场</strong>——这些制度创新让「发明」变成了「产业」。荷兰和英国领先，不是因为技术更先进，而是制度更有利于创新的扩散。</p>
+        </div>
+      </div>
+      <div class="ir-step">
+        <div class="ir-step-num">4</div>
+        <div class="ir-step-content">
+          <h4>正反馈循环的启动</h4>
+          <p>工业革命开启了「科技进步→生产效率提升→财富积累→教育投入→更多科技进步」的正循环。在此之前，这个循环从未真正启动。工业革命之后，文明进入了持续加速的模式。</p>
+        </div>
+      </div>
+      <div class="ir-step">
+        <div class="ir-step-num">5</div>
+        <div class="ir-step-content">
+          <h4>信息线的同步爆发</h4>
+          <p>几乎同时发生的印刷术普及、科学期刊的出现、邮政系统的建立——信息流通效率的大幅提升，使得技术知识能够快速传播和积累。能量爆炸和信息爆炸是一体两面。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CORE FORMULAS ====== -->
+<section class="section" id="formulas">
+  <div class="section-header reveal">
+    <div class="section-label">Core Models</div>
+    <h2>这一层的核心公式与模型</h2>
+    <p>从科技演化到个人教育，共通的是可量化的思维模型</p>
+  </div>
+
+  <div class="formulas-grid">
+    <div class="formula-card reveal">
+      <div class="formula-icon">🏭</div>
+      <h3>产业公式</h3>
+      <div class="formula-math">原有产业 + 新技术 = 新产业</div>
+      <p>技术不等于产业。从 0 到 1 是发明，从 1 到 N 才是创新。蒸汽机+纺织=现代纺织业，互联网+零售=电商，GPT+搜索=新一代信息获取——技术只有嫁接到原有产业上才能创造价值。</p>
+    </div>
+
+    <div class="formula-card reveal">
+      <div class="formula-icon">📐</div>
+      <h3>有效做功</h3>
+      <div class="formula-math">W = F × D × cos θ</div>
+      <p>努力(F)乘以距离(D)再乘以方向的余弦——如果方向错了(θ=90°)，再大的力也是零做功。教育如此，职业亦如此。方向的选择比努力的大小更重要。</p>
+    </div>
+
+    <div class="formula-card reveal">
+      <div class="formula-icon">💡</div>
+      <h3>发明 ≠ 创新</h3>
+      <div class="formula-math" style="font-size:1.1rem;">发明→扩散→产业→正循环</div>
+      <p>青霉素从 1928 年发现到 1943 年量产用了 15 年；计算机从图灵到 IBM PC 走了 40 年。真正的创新是「从 0 到 N」——把发明变成产业、让技术惠及大众的能力。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== LAYER 1 CONNECTIONS ====== -->
+<section class="section connections-section" id="connections">
+  <div class="section-header reveal">
+    <div class="section-label">Layer 1 → Layer 2</div>
+    <h2>第一层工具在本层的关键应用</h2>
+    <p>中间层的每个核心概念都不是凭空而来——它们直接编译自第一层的认知工具</p>
+  </div>
+
+  <div class="connection-block reveal">
+    <div class="conn-badge">应用实例 ①</div>
+    <div class="conn-body">
+      <h3>向量模型 → 有效做功公式</h3>
+      <div class="conn-from">第一层工具：数学通识 50 讲 · 向量空间</div>
+      <div class="conn-to">第二层应用：教育的方法 · W = F × D × cosθ</div>
+      <p>数学课教授「向量」的抽象概念——有大小、有方向的量。吴军直接把这个模型「编译」到教育领域：努力是向量，方向与目标夹角的余弦决定了有效成分。<strong>这不是一个比喻，而是严格的数学模型迁移。</strong>同样的框架也适用于职业选择：选错方向的努力，做功为零。</p>
+    </div>
+    <div class="conn-arrow">→</div>
+  </div>
+
+  <div class="connection-block reveal">
+    <div class="conn-badge">应用实例 ②</div>
+    <div class="conn-body">
+      <h3>递归分解 → 产业公式</h3>
+      <div class="conn-from">第一层工具：谷歌方法论 · 递归与分治</div>
+      <div class="conn-to">第二层应用：科技史纲 · 原有产业 + 新技术 = 新产业</div>
+      <p>谷歌方法论中的「递归分解」——把大问题拆成小问题、逐层解决——和科技史的「产业公式」是同一种思维方式。产业公式本质上是对「技术如何改变社会」的递归分解：新技术注入原有产业，产生新产业，新产业再成为下一轮迭代的「原有产业」。<strong>这是计算机思维在历史分析中的直接投射。</strong></p>
+    </div>
+    <div class="conn-arrow">→</div>
+  </div>
+
+  <div class="connection-block reveal">
+    <div class="conn-badge">应用实例 ③</div>
+    <div class="conn-body">
+      <h3>信息论 → 阅读与写作</h3>
+      <div class="conn-from">第一层工具：信息论 40 讲 · 信息熵与信道容量</div>
+      <div class="conn-to">第二层应用：阅读与写作 50 讲 · 信息输入输出方法论</div>
+      <p>信息论中「信息熵」度量不确定性、「信道容量」决定传输上限——这些概念在个人层面直接对应：阅读是<strong>解码</strong>（从文字中提取信息、降低认知熵），写作是<strong>编码</strong>（把思想压缩成最有效的表达）。好的写作追求高「信噪比」——用最少的文字传递最多的信息，这正是香农信息论的基本原则。</p>
+    </div>
+    <div class="conn-arrow">→</div>
+  </div>
+
+  <div class="connection-block reveal">
+    <div class="conn-badge">应用实例 ④</div>
+    <div class="conn-body">
+      <h3>概率思维 → 文明兴衰分析</h3>
+      <div class="conn-from">第一层工具：数学通识 50 讲 · 概率论与统计</div>
+      <div class="conn-to">第二层应用：世界文明史 · 文明兴衰规律</div>
+      <p>为什么有些文明兴、有些文明衰？吴军不用「天命」或「民族性」来解释，而是用概率和统计思维：文明是一个<strong>概率系统</strong>——能量和信息条件好的文明，成功的概率更高，但没有什么是必然的。历史不是确定性的，而是在特定约束条件下概率分布的展开。</p>
+    </div>
+    <div class="conn-arrow">→</div>
+  </div>
+
+  <div class="cross-link-banner reveal">
+    <p>
+      <strong>核心洞察：</strong>第二层不是新知识的堆砌，而是第一层工具的<strong>「实例化」</strong>。<br>
+      <span class="link-pair l1-link">向量模型</span> → <span class="link-pair">有效做功</span>，
+      <span class="link-pair l1-link">递归分解</span> → <span class="link-pair">产业公式</span>，
+      <span class="link-pair l1-link">信息熵</span> → <span class="link-pair">阅读写作</span>，<br>
+      <span class="link-pair l1-link">概率论</span> → <span class="link-pair">文明兴衰</span>——
+      每一组都是第一层抽象工具在具体领域的<strong>编译结果</strong>。
+    </p>
+  </div>
+</section>
+
+<!-- ====== WHY EDUCATION & READING IN THIS LAYER ====== -->
+<section class="section" id="why-here">
+  <div class="section-header reveal">
+    <div class="section-label">Layer Placement</div>
+    <h2>教育方法和阅读写作为什么放在这一层？</h2>
+    <p>它们不是随意的搭配——与科技史和文明史有着深层的内在联系</p>
+  </div>
+
+  <div class="ir-section-inner reveal">
+    <div class="ir-argument">
+      <div class="ir-step">
+        <div class="ir-step-num">1</div>
+        <div class="ir-step-content">
+          <h4>教育是文明传递的「能量转化」</h4>
+          <p>在「能量×信息」框架中，教育本质上是一种<strong>信息能量的传递</strong>——将人类积累的知识（信息）转化为下一代的认知能力。教育的方法讨论的是「如何让这种转化效率最大化」——这正是 W=F×D×cosθ 公式的意义所在。</p>
+        </div>
+      </div>
+      <div class="ir-step">
+        <div class="ir-step-num">2</div>
+        <div class="ir-step-content">
+          <h4>阅读写作是个人层面的「信息论」</h4>
+          <p>科技史讨论的是文明级别的信息编码（文字→印刷→互联网），阅读写作讨论的是<strong>个人级别的信息输入输出</strong>。二者的底层逻辑完全一致——都是信息论在不同尺度上的应用。理解文明级的信息演化，有助于理解个人应该如何高效处理信息。</p>
+        </div>
+      </div>
+      <div class="ir-step">
+        <div class="ir-step-num">3</div>
+        <div class="ir-step-content">
+          <h4>方法论层 = 连接抽象与具体的桥梁</h4>
+          <p>第一层提供了抽象认知工具（数学、逻辑、信息论），第三层要求具体的人生决策。中间层必须提供一个<strong>「编译层」</strong>——把抽象工具转化为具体领域的方法论。科技史用双螺旋解释历史，教育方法用向量模型解释学习，阅读写作用信息论解释表达——它们都是「编译」的产物。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== BACK TO TOP ====== -->
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">
+  ↑
+</button>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <p>吴军思想体系 · 第二层：文明与方法论</p>
+  <p>核心框架：能量 × 信息双螺旋 · 四门课程跨课重组</p>
+  <div class="footer-links">
+    <a href="index.html">← 返回思想体系全景图</a>
+    <a href="layer1.html">第一层：认知底座</a>
+    <a href="layer2.html">第二层：文明与方法论</a>
+    <a href="layer3a.html">第三层A：硅谷来信</a>
+    <a href="layer3b.html">第三层B：吴军来信2</a>
+  </div>
+</footer>
+
+<script>
+// ========== CANVAS: HERO DOUBLE HELIX ==========
+(function() {
+  const canvas = document.getElementById('helix-canvas');
+  const ctx = canvas.getContext('2d');
+  let animFrame;
+  let time = 0;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+  }
+
+  function drawHelix(t) {
+    const w = canvas.width / (window.devicePixelRatio || 1);
+    const h = canvas.height / (window.devicePixelRatio || 1);
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w * 0.5;
+    const amplitude = Math.min(w * 0.22, 180);
+    const frequency = 0.008;
+    const startY = h * 0.08;
+    const endY = h * 0.92;
+    const steps = 300;
+
+    // Draw energy strand (warm orange)
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const y = startY + (endY - startY) * (i / steps);
+      const x = cx + Math.sin(y * frequency + t * 0.0008) * amplitude;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    const energyGrad = ctx.createLinearGradient(cx - amplitude, 0, cx + amplitude, 0);
+    energyGrad.addColorStop(0, 'rgba(232,120,48,0.15)');
+    energyGrad.addColorStop(0.5, 'rgba(232,120,48,0.55)');
+    energyGrad.addColorStop(1, 'rgba(232,120,48,0.15)');
+    ctx.strokeStyle = energyGrad;
+    ctx.lineWidth = 3;
+    ctx.shadowColor = 'rgba(232,120,48,0.3)';
+    ctx.shadowBlur = 18;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Draw information strand (cool blue)
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const y = startY + (endY - startY) * (i / steps);
+      const x = cx + Math.sin(y * frequency + Math.PI + t * 0.0008) * amplitude;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    const infoGrad = ctx.createLinearGradient(cx - amplitude, 0, cx + amplitude, 0);
+    infoGrad.addColorStop(0, 'rgba(74,144,184,0.15)');
+    infoGrad.addColorStop(0.5, 'rgba(74,144,184,0.55)');
+    infoGrad.addColorStop(1, 'rgba(74,144,184,0.15)');
+    ctx.strokeStyle = infoGrad;
+    ctx.lineWidth = 3;
+    ctx.shadowColor = 'rgba(74,144,184,0.3)';
+    ctx.shadowBlur = 18;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Draw crossover nodes
+    for (let i = 0; i <= steps; i++) {
+      const y = startY + (endY - startY) * (i / steps);
+      const x1 = cx + Math.sin(y * frequency + t * 0.0008) * amplitude;
+      const x2 = cx + Math.sin(y * frequency + Math.PI + t * 0.0008) * amplitude;
+      const dist = Math.abs(x1 - x2);
+
+      if (dist < 16 && i % 25 < 6) {
+        const alpha = 1 - dist / 16;
+        const mx = (x1 + x2) / 2;
+        ctx.beginPath();
+        ctx.arc(mx, y, 3 + alpha * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(192,96,64,${0.3 + alpha * 0.7})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(mx, y, 6 + alpha * 4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(192,96,64,${0.08 + alpha * 0.12})`;
+        ctx.fill();
+      }
+    }
+  }
+
+  function animate(ts) {
+    time = ts;
+    drawHelix(ts);
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  resize();
+  animFrame = requestAnimationFrame(animate);
+  window.addEventListener('resize', () => { resize(); });
+
+  // Slow down animation when not in viewport
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) {
+      // Still animate but we can't easily pause, just let it run
+    }
+  });
+  observer.observe(canvas.parentElement);
+})();
+
+// ========== CANVAS: MINI HELIX IN EXPLAINER ==========
+(function() {
+  const canvas = document.getElementById('mini-helix-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = 280, h = 280;
+  let t = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2;
+    const amp = 70;
+    const freq = 0.025;
+
+    // Energy strand
+    ctx.beginPath();
+    for (let y = 30; y <= 250; y += 2) {
+      const x = cx + Math.sin(y * freq + t * 0.02) * amp;
+      if (y === 30) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = '#e87830';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = 'rgba(232,120,48,0.4)';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+
+    // Info strand
+    ctx.beginPath();
+    for (let y = 30; y <= 250; y += 2) {
+      const x = cx + Math.sin(y * freq + Math.PI + t * 0.02) * amp;
+      if (y === 30) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = '#4a90b8';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = 'rgba(74,144,184,0.4)';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ========== TIMELINE DATA & RENDERING ==========
+const timelineData = [
+  {
+    era: '约公元前 3000 年',
+    title: '古代文明的曙光',
+    short: '农业革命让人类第一次拥有了能量剩余——尼罗河、两河流域、印度河、黄河流域',
+    energy: '太阳能→农作物→人力/畜力，能量密度约 0.1W/m²',
+    energyLevel: 2,
+    info: '文字发明（楔形文字、象形文字），信息可以跨越时空存储',
+    infoLevel: 1,
+    detail: '农耕文明的核心是土地——土地的能量密度决定了人口上限。当能量密度达到一定阈值，出现了剩余粮食 → 社会分工 → 专职的祭司和书记员 → 文字系统。这是人类历史上第一次「能量剩余催生信息突破」。'
+  },
+  {
+    era: '约公元前 800–200 年',
+    title: '轴心时代的思维突破',
+    short: '中国百家争鸣、希腊哲学、印度佛教——人类思想的第一次大爆炸',
+    energy: '铁器普及提升农业效率，能量利用小幅进步',
+    energyLevel: 3,
+    info: '哲学、逻辑、数学、宗教体系的建立——信息编码史上一次巨大飞跃',
+    infoLevel: 5,
+    detail: '雅斯贝尔斯提出的「轴心时代」——在几乎相同的历史窗口期，欧亚大陆两端独立出现了系统化的思想体系。从能量×信息角度看：文字成熟带来了信息编码能力的质变，这种质变反过来指导了能量利用（铁器、水利）的提升。信息线在这个时代第一次显著领先于能量线。'
+  },
+  {
+    era: '约公元前 100–公元 400 年',
+    title: '罗马帝国的能量网络',
+    short: '罗马大道和地中海贸易网——用信息（法律、道路系统）整合能量（粮食、矿产）',
+    energy: '大规模奴隶制+贸易网络，能量通过征服和流通实现集中',
+    energyLevel: 5,
+    info: '罗马法、拉丁语、道路系统——标准化本身就是一种信息效率',
+    infoLevel: 4,
+    detail: '罗马帝国的真正创新不是技术，而是「系统」。罗马大道不仅是军事通道，更是信息高速公路——标准化的道路系统让命令、商品和税收得以高效流动。用吴军的框架看：罗马用信息（法律、道路、语言）来组织和放大能量（粮食生产、矿产开采），这是双螺旋协同的早期典范。'
+  },
+  {
+    era: '约公元 800–1200 年',
+    title: '伊斯兰黄金时代',
+    short: '巴格达智慧宫——当欧洲陷入中世纪，伊斯兰世界成为知识和贸易的枢纽',
+    energy: '跨洲贸易路线（丝绸之路），商业能量流动',
+    energyLevel: 4,
+    info: '翻译运动保存希腊经典，代数和实验科学的萌芽',
+    infoLevel: 6,
+    detail: '伊斯兰黄金时代是信息线领先能量线的典型时期。阿拉伯学者不仅保存了希腊罗马的知识遗产，还创造了代数、算法、实验方法等全新知识。同时，阿拉伯商人的贸易网络横跨欧亚非——信息（知识+商业网络）的流通远超能量利用的进步。但最终因未能将知识转化为产业（发明→创新的链条断裂）而衰落。'
+  },
+  {
+    era: '约公元 1450–1600 年',
+    title: '文艺复兴与印刷革命',
+    short: '古腾堡印刷术——信息复制的成本断崖式下降，知识不再是少数人的特权',
+    energy: '风能（帆船）、水能（磨坊）——可再生能源的精细利用',
+    energyLevel: 5,
+    info: '印刷术使书籍从手抄本的奢侈品变成大众商品，信息传播速度提升百倍',
+    infoLevel: 8,
+    detail: '古腾堡印刷术是人类信息史上仅次于文字发明的第二次飞跃。此前，一本《圣经》需要修士手抄一年。印刷术后，一天可以印出上百本。信息的边际成本趋近于零——这触发了宗教改革、科学革命等一系列连锁反应。吴军的洞察：信息成本的下降往往是后续能量革命的先导——没有印刷术的知识传播，就没有后来工业革命的人才储备。'
+  },
+  {
+    era: '约公元 1760–1840 年',
+    title: '工业革命：能量大爆炸 ⚡',
+    short: '人类历史上最伟大的事件——化石能源让人类第一次摆脱了对土地的能量依赖',
+    energy: '煤炭→蒸汽机→铁路，能量密度从 ~100W/人 跃升至 ~10kW/机器',
+    energyLevel: 10,
+    info: '专利制度、科学期刊、邮政系统——信息基础设施支撑能量革命',
+    infoLevel: 7,
+    detail: '这是整个人类历史的拐点。此前 2000 年，人均 GDP 基本不变。工业革命后 200 年，人均 GDP 增长超过 10 倍。吴军的独特论证：本质不是蒸汽机，而是①化石能源的利用（能量的量级跃迁），②专利制度和有限责任公司（让发明能变成产业），③正反馈循环的启动（技术进步→财富→教育→更多技术进步）。能量线第一次以压倒性优势领先信息线——但信息线也在制度创新的推动下快速追赶。'
+  },
+  {
+    era: '约公元 1950–2000 年',
+    title: '信息时代的爆发',
+    short: '计算机、互联网——信息处理从人脑扩展到硅基，信息成为最重要的生产要素',
+    energy: '核能、电网——能量基础设施的高度成熟',
+    energyLevel: 8,
+    info: '计算机→互联网→移动互联网，信息处理和传输效率提升百万倍',
+    infoLevel: 10,
+    detail: '香农 1948 年的信息论为这个时代提供了理论基础。从第一台计算机到互联网到智能手机，信息线在这个时代实现了对能量线的反超。吴军的框架中，信息时代的本质是：信息处理成本断崖式下降 → 信息成为独立于能量和物质的生产要素 → 商业模式从「制造产品」转向「处理信息」。'
+  },
+  {
+    era: '约公元 2020–至今',
+    title: 'AI 时代：双螺旋的终极交汇',
+    short: 'GPT 同时消耗巨大能量和创造全新信息——能量和信息的边界正在模糊',
+    energy: 'AI 训练消耗巨量电力，一个 GPT 模型的训练能耗相当于一个小城市的用电',
+    energyLevel: 9,
+    info: '生成式 AI 重新定义了「信息创造」——机器首次能够生成有意义的新信息',
+    infoLevel: 10,
+    detail: 'GPT 的出现是「能量×信息」双螺旋的终极交汇点。一方面，训练大模型需要天文数字的能量；另一方面，GPT 生成的信息是全新的——不是检索、不是复制，而是真正的「信息创造」。能量和信息不再是两条平行线，而是在同一个系统中深度耦合。吴军早在科技史纲中就预见到了这个趋势：能量和信息的边界从来不是绝对的——每一次能量突破都需要信息的配合，反之亦然。GPT 时代，这两者终于在一个系统中共生。'
+  }
+];
+
+function renderTimeline() {
+  const container = document.getElementById('timeline-entries');
+  container.innerHTML = timelineData.map((d, i) => `
+    <div class="timeline-entry ${i === 0 ? 'active' : ''}" data-index="${i}" onclick="selectTimelineEra(${i})">
+      <div class="entry-content">
+        <div class="entry-era">${d.era}</div>
+        <div class="entry-title">${d.title}</div>
+        <div class="entry-desc">${d.short}</div>
+        <div class="entry-dual">
+          <span class="dual-bar bar-energy"><span class="bar-fill"></span>能量 ${'▮'.repeat(d.energyLevel)}</span>
+          <span class="dual-bar bar-info"><span class="bar-fill"></span>信息 ${'▮'.repeat(d.infoLevel)}</span>
+        </div>
+      </div>
+      <div class="entry-marker">${i + 1}</div>
+      <div></div>
+    </div>
+  `).join('');
+
+  showTimelineDetail(0);
+}
+
+function selectTimelineEra(index) {
+  // Update entries
+  document.querySelectorAll('.timeline-entry').forEach((el, i) => {
+    el.classList.toggle('active', i === index);
+  });
+  // Update nav buttons
+  document.querySelectorAll('.timeline-nav-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+  showTimelineDetail(index);
+}
+
+function showTimelineDetail(index) {
+  const d = timelineData[index];
+  const panel = document.getElementById('timeline-detail');
+  panel.innerHTML = `
+    <h3>${d.title}</h3>
+    <div class="detail-era">${d.era}</div>
+    <div class="detail-body">
+      <div class="detail-energy">
+        <h4>⚡ 能量维度</h4>
+        <p>${d.energy}</p>
+      </div>
+      <div class="detail-info">
+        <h4>📡 信息维度</h4>
+        <p>${d.info}</p>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:0.9rem;color:var(--text-muted);line-height:1.8;">${d.detail}</p>
+  `;
+  panel.classList.add('visible');
+}
+
+// Timeline nav buttons
+document.getElementById('timeline-nav').addEventListener('click', (e) => {
+  if (e.target.classList.contains('timeline-nav-btn')) {
+    selectTimelineEra(parseInt(e.target.dataset.era));
+  }
+});
+
+renderTimeline();
+
+// ========== SCROLL REVEAL ==========
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Auto-reveal hero content
+document.querySelector('.hero-content').classList.add('visible');
+
+// ========== BACK TO TOP ==========
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  backToTop.classList.toggle('visible', window.scrollY > 600);
+});
+
+// ========== KEYBOARD NAVIGATION ==========
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('timeline-detail').classList.remove('visible');
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    const activeEntry = document.querySelector('.timeline-entry.active');
+    if (!activeEntry) return;
+    const idx = parseInt(activeEntry.dataset.index);
+    const delta = e.key === 'ArrowRight' ? 1 : -1;
+    const newIdx = Math.max(0, Math.min(timelineData.length - 1, idx + delta));
+    selectTimelineEra(newIdx);
+  }
+});
+</script>
+
+</body>
+</html>

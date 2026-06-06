@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吴军来信2 — 思想家的底层逻辑课 | Layer 3B</title>
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+  background: #fdf6f0;
+  color: #3a2a1a;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== COLOR SYSTEM ========== */
+:root {
+  --bg: #fdf6f0;
+  --bg-alt: #f8efe4;
+  --surface: #fffbf6;
+  --surface-border: #e8d5c0;
+  --text: #3a2a1a;
+  --text-muted: #8a7560;
+  --text-light: #b8a590;
+
+  --layer1: #b87333;
+  --layer1-light: #f0dcc8;
+  --layer1-bg: #fdf3e8;
+
+  --layer2: #c06040;
+  --layer2-light: #f5d8cc;
+  --layer2-bg: #fdf0ea;
+
+  --layer3: #d4a030;
+  --layer3-light: #faf0d8;
+  --layer3-bg: #fef9f0;
+
+  /* Layer 3B specific — deeper, richer gold-amber */
+  --l3b: #b8860b;
+  --l3b-dark: #8b6508;
+  --l3b-light: #fef5e1;
+  --l3b-glow: rgba(184,134,11,0.12);
+  --l3b-accent: #c6951b;
+
+  --dao: #8b4513;
+  --dao-light: #f5e6d3;
+  --shu: #708090;
+  --shu-light: #e8ecf0;
+
+  --shadow-sm: 0 1px 3px rgba(58,42,26,0.06);
+  --shadow-md: 0 4px 16px rgba(58,42,26,0.1);
+  --shadow-lg: 0 12px 40px rgba(58,42,26,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+/* ========== TOP NAV ========== */
+.nav-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(253,246,240,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--layer1); text-decoration: none; font-size: 0.9rem;
+  font-weight: 500; transition: color 0.2s;
+}
+.nav-back:hover { color: var(--l3b); }
+.nav-back svg { width: 16px; height: 16px; }
+.nav-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.nav-links { display: flex; gap: 16px; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--l3b); }
+
+/* ========== HERO ========== */
+.hero {
+  text-align: center; padding: 72px 24px 56px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, var(--l3b-glow) 0%, rgba(184,134,11,0.03) 40%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--l3b-light); color: var(--l3b);
+  padding: 5px 18px; border-radius: 20px; font-size: 0.85rem;
+  font-weight: 600; margin-bottom: 20px;
+  letter-spacing: 0.03em;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800; color: var(--text);
+  letter-spacing: 0.02em; line-height: 1.3;
+}
+.hero h1 .accent { color: var(--l3b); }
+.hero .subtitle {
+  margin-top: 16px; font-size: 1.1rem; color: var(--text-muted);
+  max-width: 640px; margin-left: auto; margin-right: auto;
+}
+.hero .positioning-tagline {
+  margin-top: 20px; font-size: 1.05rem; color: var(--dao);
+  font-weight: 600;
+  background: var(--dao-light); display: inline-block;
+  padding: 8px 24px; border-radius: 24px;
+}
+.hero .stats {
+  display: flex; justify-content: center; gap: 36px; margin-top: 36px;
+  flex-wrap: wrap;
+}
+.hero .stat { text-align: center; }
+.hero .stat-num {
+  font-size: 2rem; font-weight: 800; color: var(--l3b);
+  line-height: 1.2;
+}
+.hero .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+
+/* ========== SECTION COMMON ========== */
+.section {
+  max-width: 1040px; margin: 0 auto; padding: 48px 24px;
+}
+.section-header {
+  text-align: center; margin-bottom: 40px;
+}
+.section-header h2 {
+  font-size: 1.5rem; font-weight: 700; color: var(--text);
+  margin-bottom: 6px;
+}
+.section-header p { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; margin: 0 auto; }
+
+/* ========== POSITIONING: 术 vs 道 ========== */
+.positioning-dual {
+  display: grid; grid-template-columns: 1fr 1px 1fr;
+  gap: 32px; align-items: start;
+}
+.positioning-divider {
+  background: linear-gradient(180deg, transparent, var(--surface-border), transparent);
+  width: 1px;
+}
+.positioning-card {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 32px 28px;
+  border: 1px solid var(--surface-border);
+  transition: all 0.35s;
+}
+.positioning-card:hover {
+  box-shadow: var(--shadow-lg); transform: translateY(-2px);
+}
+.positioning-card.shu-card { border-top: 3px solid var(--shu); }
+.positioning-card.dao-card { border-top: 3px solid var(--l3b); }
+.pos-label {
+  display: inline-block; font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 3px 12px; border-radius: 12px; margin-bottom: 16px;
+}
+.shu-card .pos-label { background: var(--shu-light); color: var(--shu); }
+.dao-card .pos-label { background: var(--l3b-light); color: var(--l3b); }
+.pos-card-title {
+  font-size: 1.2rem; font-weight: 700; color: var(--text);
+  margin-bottom: 8px;
+}
+.pos-card-subtitle {
+  font-size: 0.85rem; color: var(--text-muted);
+  margin-bottom: 20px; line-height: 1.6;
+}
+.pos-features {
+  list-style: none; display: flex; flex-direction: column; gap: 10px;
+}
+.pos-features li {
+  font-size: 0.85rem; color: var(--text-muted);
+  padding-left: 20px; position: relative;
+  line-height: 1.5;
+}
+.pos-features li::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.shu-card .pos-features li::before { background: var(--shu); }
+.dao-card .pos-features li::before { background: var(--l3b); }
+.pos-highlight {
+  margin-top: 20px; padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem; font-weight: 600;
+  text-align: center;
+}
+.shu-card .pos-highlight { background: var(--shu-light); color: var(--shu); }
+.dao-card .pos-highlight {
+  background: var(--l3b-light); color: var(--l3b-dark);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .positioning-dual {
+    grid-template-columns: 1fr;
+  }
+  .positioning-divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--surface-border), transparent);
+  }
+}
+
+/* ========== ENGINE VISUALIZATION ========== */
+.engine-wrapper {
+  background: var(--surface); border-radius: var(--radius);
+  border: 2px solid var(--surface-border);
+  padding: 40px 28px; position: relative; overflow: hidden;
+}
+.engine-wrapper::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--l3b), var(--layer2), var(--layer1));
+}
+.engine-flow {
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; flex-wrap: wrap;
+}
+.engine-node {
+  text-align: center; flex-shrink: 0;
+}
+.engine-node .node-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; margin: 0 auto 10px;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+.engine-node .node-icon:hover { transform: scale(1.1); }
+.engine-node.input .node-icon { background: var(--shu-light); }
+.engine-node.process .node-icon {
+  background: linear-gradient(135deg, var(--l3b), var(--l3b-accent));
+  color: #fff; width: 88px; height: 88px;
+}
+.engine-node.output .node-icon { background: var(--dao-light); }
+.engine-node .node-title {
+  font-size: 0.85rem; font-weight: 600; color: var(--text);
+  margin-bottom: 4px;
+}
+.engine-node .node-desc {
+  font-size: 0.75rem; color: var(--text-muted);
+  max-width: 140px;
+}
+.engine-arrow {
+  font-size: 1.5rem; color: var(--l3b);
+  flex-shrink: 0;
+}
+.engine-examples {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin-top: 32px;
+}
+.engine-example {
+  background: var(--bg-alt); border-radius: 20px;
+  padding: 8px 16px; font-size: 0.8rem; color: var(--text-muted);
+  cursor: pointer; transition: all 0.25s;
+  border: 1px solid transparent;
+}
+.engine-example:hover, .engine-example.active {
+  background: var(--l3b-light); color: var(--l3b);
+  border-color: var(--l3b);
+}
+.engine-output-panel {
+  margin-top: 24px; padding: 20px 24px;
+  background: var(--dao-light); border-radius: var(--radius-sm);
+  min-height: 80px; display: none;
+  animation: fadeSlideIn 0.4s ease;
+}
+.engine-output-panel.show { display: block; }
+.engine-output-panel h4 {
+  font-size: 0.9rem; color: var(--dao); margin-bottom: 8px;
+}
+.engine-output-panel p {
+  font-size: 0.85rem; color: var(--text-muted);
+  line-height: 1.7;
+}
+.engine-output-panel .trace {
+  margin-top: 10px; font-size: 0.78rem; color: var(--layer1);
+  display: flex; align-items: center; gap: 6px;
+}
+.engine-output-panel .trace svg { width: 14px; height: 14px; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .engine-flow { flex-direction: column; gap: 12px; }
+  .engine-arrow { transform: rotate(90deg); }
+}
+
+/* ========== FOUR DOMAINS QUADRANT ========== */
+.domains-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  background: var(--surface-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.domain-cell {
+  background: var(--surface); padding: 32px 28px;
+  cursor: pointer; transition: all 0.35s;
+  position: relative; overflow: hidden;
+}
+.domain-cell:hover { background: #fffdf7; }
+.domain-cell::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  opacity: 0; transition: opacity 0.35s;
+}
+.domain-cell:hover::after { opacity: 1; }
+.domain-cell.wealth::after { background: linear-gradient(90deg, #d4a030, #e8c550); }
+.domain-cell.relations::after { background: linear-gradient(90deg, #c06040, #e08060); }
+.domain-cell.decision::after { background: linear-gradient(90deg, #b87333, #d49353); }
+.domain-cell.tech::after { background: linear-gradient(90deg, #8b6508, #b8860b); }
+
+.domain-icon { font-size: 2rem; margin-bottom: 12px; }
+.domain-cell h3 {
+  font-size: 1.1rem; font-weight: 700; color: var(--text);
+  margin-bottom: 6px;
+}
+.domain-surface {
+  font-size: 0.82rem; color: var(--shu); margin-bottom: 10px;
+  font-weight: 500;
+}
+.domain-depth {
+  font-size: 0.85rem; color: var(--l3b); font-weight: 600;
+  margin-bottom: 12px; display: none;
+  animation: fadeSlideIn 0.4s ease;
+}
+.domain-cell.expanded .domain-depth { display: block; }
+.domain-cell.expanded .domain-surface { color: var(--text-light); }
+.domain-concepts {
+  display: flex; flex-wrap: wrap; gap: 5px;
+}
+.domain-tag {
+  font-size: 0.72rem; padding: 2px 10px; border-radius: 10px;
+  background: var(--bg-alt); color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  .domains-grid { grid-template-columns: 1fr; }
+}
+
+/* ========== TRACE BACK SECTION ========== */
+.trace-section {
+  background: linear-gradient(180deg, var(--layer1-bg) 0%, var(--l3b-light) 100%);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  position: relative; overflow: hidden;
+}
+.trace-section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(184,115,51,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(184,134,11,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.trace-flow {
+  display: flex; flex-direction: column; gap: 28px;
+  position: relative; z-index: 1;
+}
+.trace-item {
+  display: flex; align-items: flex-start; gap: 20px;
+  background: rgba(255,255,255,0.7); border-radius: var(--radius-sm);
+  padding: 20px 24px; cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.trace-item:hover {
+  background: #fff; box-shadow: var(--shadow-md);
+}
+.trace-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.95rem; color: #fff;
+  flex-shrink: 0;
+  background: var(--l3b);
+}
+.trace-item:nth-child(2) .trace-num { background: var(--layer2); }
+.trace-content { flex: 1; min-width: 0; }
+.trace-content h4 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.trace-content .trace-path {
+  font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;
+  line-height: 1.6;
+}
+.trace-layers-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.trace-layer-badge {
+  font-size: 0.7rem; padding: 3px 10px; border-radius: 10px;
+  font-weight: 600;
+}
+.trace-layer-badge.l1 { background: var(--layer1-light); color: var(--layer1); }
+.trace-layer-badge.l2 { background: var(--layer2-light); color: var(--layer2); }
+.trace-layer-badge.l3b { background: var(--l3b-light); color: var(--l3b); }
+.trace-connector {
+  font-size: 0.7rem; color: var(--text-light);
+}
+.trace-expand {
+  display: none; margin-top: 12px; padding: 14px 18px;
+  background: var(--bg-alt); border-radius: var(--radius-sm);
+  font-size: 0.83rem; color: var(--text-muted); line-height: 1.7;
+  animation: fadeSlideIn 0.4s ease;
+}
+.trace-item.expanded .trace-expand { display: block; }
+.trace-toggle-hint {
+  font-size: 0.75rem; color: var(--text-light);
+  margin-top: 8px; display: flex; align-items: center; gap: 4px;
+}
+
+@media (max-width: 640px) {
+  .trace-item { flex-direction: column; gap: 10px; }
+}
+
+/* ========== GPT/5G WHY HERE SECTION ========== */
+.why-here-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.why-card {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 28px 24px; border: 1px solid var(--surface-border);
+  transition: all 0.3s;
+}
+.why-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.why-card-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.why-card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+.why-card-icon.gpt { background: #e8f5e9; }
+.why-card-icon.fiveg { background: #e3f2fd; }
+.why-card h4 {
+  font-size: 1rem; font-weight: 700; color: var(--text);
+}
+.why-card .why-surface {
+  font-size: 0.82rem; color: var(--text-muted);
+  margin-bottom: 14px; line-height: 1.6;
+}
+.why-card .why-deep {
+  font-size: 0.85rem; color: var(--l3b); font-weight: 600;
+  padding: 12px 16px;
+  background: var(--l3b-light); border-radius: var(--radius-sm);
+  line-height: 1.6;
+}
+.why-card .why-trace {
+  margin-top: 12px; font-size: 0.78rem; color: var(--layer2);
+  display: flex; align-items: center; gap: 4px;
+}
+
+@media (max-width: 640px) {
+  .why-here-grid { grid-template-columns: 1fr; }
+}
+
+/* ========== METHOD COMPARISON TABS ========== */
+.compare-tabs {
+  display: flex; justify-content: center; gap: 8px;
+  margin-bottom: 32px; flex-wrap: wrap;
+}
+.compare-tab {
+  padding: 10px 24px; border-radius: 24px;
+  font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.25s;
+  border: 2px solid var(--surface-border);
+  background: var(--surface); color: var(--text-muted);
+}
+.compare-tab:hover { border-color: var(--l3b); color: var(--l3b); }
+.compare-tab.active {
+  background: var(--l3b); color: #fff; border-color: var(--l3b);
+}
+.compare-content {
+  display: none; animation: fadeSlideIn 0.4s ease;
+}
+.compare-content.active { display: block; }
+.compare-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: var(--surface); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow-md);
+  border: 1px solid var(--surface-border);
+}
+.compare-table th {
+  background: var(--l3b-light); color: var(--l3b-dark);
+  padding: 14px 18px; text-align: left;
+  font-size: 0.85rem; font-weight: 700;
+}
+.compare-table th:first-child { width: 30%; }
+.compare-table td {
+  padding: 14px 18px; font-size: 0.85rem; color: var(--text-muted);
+  border-bottom: 1px solid var(--bg-alt);
+  line-height: 1.6;
+}
+.compare-table td:first-child {
+  font-weight: 600; color: var(--text);
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: #fffdf7; }
+
+/* ========== PRINCIPLE PATH ========== */
+.principle-path {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.principle-item {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--surface); border-radius: var(--radius);
+  padding: 20px 24px; border: 1px solid var(--surface-border);
+  transition: all 0.3s; cursor: pointer;
+}
+.principle-item:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--l3b);
+}
+.principle-icon {
+  width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+  background: var(--l3b-light);
+}
+.principle-main { flex: 1; min-width: 0; }
+.principle-main h4 {
+  font-size: 0.95rem; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.principle-main p {
+  font-size: 0.82rem; color: var(--text-muted);
+  line-height: 1.5;
+}
+.principle-sources {
+  display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap;
+}
+
+/* ========== CTA FOOTER ========== */
+.cta-section {
+  text-align: center; padding: 56px 24px 64px;
+  position: relative;
+}
+.cta-section::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--l3b-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section h2 {
+  font-size: 1.5rem; font-weight: 700; color: var(--text);
+  margin-bottom: 12px; position: relative;
+}
+.cta-section p {
+  color: var(--text-muted); font-size: 0.9rem;
+  margin-bottom: 28px; position: relative;
+}
+.cta-links {
+  display: flex; justify-content: center; gap: 16px;
+  flex-wrap: wrap; position: relative;
+}
+.cta-btn {
+  display: inline-block; padding: 12px 28px; border-radius: 24px;
+  font-size: 0.9rem; font-weight: 600;
+  text-decoration: none; transition: all 0.3s;
+}
+.cta-btn.primary {
+  background: var(--l3b); color: #fff;
+  box-shadow: 0 4px 16px rgba(184,134,11,0.3);
+}
+.cta-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(184,134,11,0.4);
+}
+.cta-btn.secondary {
+  background: var(--surface); color: var(--layer1);
+  border: 2px solid var(--surface-border);
+}
+.cta-btn.secondary:hover {
+  border-color: var(--layer1); transform: translateY(-1px);
+}
+
+/* ========== FOOTER ========== */
+.footer {
+  text-align: center; padding: 48px 24px 40px;
+  border-top: 1px solid var(--surface-border);
+  max-width: 1040px; margin: 0 auto;
+}
+.footer p {
+  font-size: 0.85rem; color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.footer-links {
+  display: flex; justify-content: center; gap: 20px; margin-top: 12px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  color: var(--layer1); text-decoration: none; font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--l3b); }
+
+/* ========== ANIMATIONS ========== */
+.fade-in {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .hero { padding: 48px 16px 36px; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero .stats { gap: 20px; }
+  .hero .stat-num { font-size: 1.5rem; }
+  .section { padding: 32px 16px; }
+  .nav-bar { padding: 8px 12px; }
+  .nav-links { gap: 8px; }
+  .compare-table th, .compare-table td { padding: 10px 12px; font-size: 0.78rem; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.35rem; }
+  .hero .stats { gap: 12px; }
+  .hero .stat-num { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== NAVIGATION ====== -->
+<nav class="nav-bar">
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    思想体系全景图
+  </a>
+  <span class="nav-title">Layer 3B · 吴军来信2</span>
+  <span class="nav-links">
+    <a href="#positioning">术道之分</a>
+    <a href="#engine">底层逻辑引擎</a>
+    <a href="#domains">四域框架</a>
+    <a href="#trace">溯源</a>
+  </span>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-badge">Layer 3B · 顶层 B 面</div>
+  <h1>吴军来信<span class="accent">2</span></h1>
+  <p class="subtitle">
+    2023–2026 年度日更 · 325 篇底层逻辑课<br>
+    吴军最新、最成熟的思想输出
+  </p>
+  <p class="positioning-tagline">不讲怎么做，讲怎么想 —— 思想家的底层逻辑课</p>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">325</div>
+      <div class="stat-label">篇来信</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">大核心域</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">13</div>
+      <div class="stat-label">篇 GPT 专题</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">篇 5G 专题</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== POSITIONING: 术 vs 道 ====== -->
+<section class="section" id="positioning">
+  <div class="section-header">
+    <h2>第三层的两面：术与道</h2>
+    <p>硅谷来信和吴军来信2虽然都在第三层「怎么活得好」，但一个讲操作，一个讲原理</p>
+  </div>
+
+  <div class="positioning-dual">
+    <!-- SHU: 硅谷来信 -->
+    <div class="positioning-card shu-card">
+      <span class="pos-label">Layer 3A · 术</span>
+      <h3 class="pos-card-title">硅谷来信 1/3</h3>
+      <p class="pos-card-subtitle">硅谷工程师的观察笔记 —— <br>在具体场景中告诉你「怎么做」</p>
+      <ul class="pos-features">
+        <li>职场晋升的具体策略和谈判技巧</li>
+        <li>投资组合的配置方法和工具选择</li>
+        <li>子女教育的实操建议和避坑指南</li>
+        <li>硅谷科技公司的运作内幕与商业逻辑</li>
+        <li>艺术品的欣赏方法与品味培养</li>
+      </ul>
+      <div class="pos-highlight">侧重：具体场景 × 操作方法</div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="positioning-divider"></div>
+
+    <!-- DAO: 吴军来信2 -->
+    <div class="positioning-card dao-card">
+      <span class="pos-label">Layer 3B · 道</span>
+      <h3 class="pos-card-title">吴军来信 2</h3>
+      <p class="pos-card-subtitle">思想家的底层逻辑课 —— <br>从具体问题中提取可迁移的思维模型</p>
+      <ul class="pos-features">
+        <li>不教投资技巧，剖析「自由现金流」的底层原理</li>
+        <li>不讲沟通话术，揭示「信息屏蔽」与「边界管理」的本质</li>
+        <li>不列决策清单，阐释「少即是多」的奥卡姆剃刀</li>
+        <li>不聊技术参数，提炼技术趋势的判断方法论</li>
+        <li>所有问题回到第一性原理，形成可迁移的认知框架</li>
+      </ul>
+      <div class="pos-highlight">侧重：底层原理 × 可迁移思维模型</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== BOTTOM-LAYER LOGIC ENGINE ====== -->
+<section class="section" id="engine">
+  <div class="section-header">
+    <h2>底层逻辑引擎：吴军如何「提取」底层逻辑</h2>
+    <p>点击具体问题，观察吴军如何从表象中剥离出可迁移的底层原理</p>
+  </div>
+
+  <div class="engine-wrapper">
+    <div class="engine-flow">
+      <div class="engine-node input">
+        <div class="node-icon">📋</div>
+        <div class="node-title">具体问题</div>
+        <div class="node-desc">财富 / 关系 / 决策 / 技术判断中的具体场景</div>
+      </div>
+      <div class="engine-arrow">→</div>
+      <div class="engine-node process" id="engineCore">
+        <div class="node-icon">⚙️</div>
+        <div class="node-title">底层逻辑引擎</div>
+        <div class="node-desc">剥离表象 → 找到不变的结构</div>
+      </div>
+      <div class="engine-arrow">→</div>
+      <div class="engine-node output">
+        <div class="node-icon">🧭</div>
+        <div class="node-title">可迁移原则</div>
+        <div class="node-desc">跨领域通用的思维模型</div>
+      </div>
+    </div>
+
+    <div class="engine-examples">
+      <span class="engine-example active" data-example="wealth">💰 财富自由</span>
+      <span class="engine-example" data-example="relations">🤝 关系边界</span>
+      <span class="engine-example" data-example="decision">🧠 人生决策</span>
+      <span class="engine-example" data-example="tech">🔮 技术判断</span>
+    </div>
+
+    <div class="engine-output-panel show" id="engineOutput">
+      <h4 id="engineOutputTitle">财富自由 → 自由现金流原理</h4>
+      <p id="engineOutputDesc">
+        <strong>表层问题：</strong>如何实现财富自由？买什么股票？投什么项目？<br><br>
+        <strong>吴军的底层逻辑提取：</strong>财富自由的核心不是「有多少钱」，而是「自由现金流能否覆盖生活支出」。一个年薪百万但花掉九十万的人，和一个年薪三十万但被动收入已覆盖支出的投资者——谁更自由？<br><br>
+        <strong>可迁移结论：</strong>追求「资本产生的自由现金流 > 生活所需」这个不等式，而非追求绝对数字。这个逻辑从投资延伸到职业选择（选择能产生持续价值的领域）、教育（培养可叠加的能力而非刷分数）。
+      </p>
+      <div class="trace">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        溯源：第一层「公理体系」（从最少的假设推导最多的结论）+ 第一层「信息论」（不确定性消除 = 价值的度量）
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOUR DOMAINS ====== -->
+<section class="section" id="domains">
+  <div class="section-header">
+    <h2>同一个框架，四个领域</h2>
+    <p>吴军把财富、关系、决策、技术判断放在同一框架里——它们的共同底层是什么？点击每个域查看</p>
+  </div>
+
+  <div class="domains-grid">
+    <!-- Wealth -->
+    <div class="domain-cell wealth" onclick="toggleDomain(this)" id="domainWealth">
+      <div class="domain-icon">💰</div>
+      <h3>财富的底层逻辑</h3>
+      <div class="domain-surface">表面：投资技巧、资产配置、理财方法</div>
+      <div class="domain-depth">底层：自由现金流是真正的财富度量。风险与回报永远相伴——没有「低风险高回报」的好事。长期主义的数学本质是复利（指数函数）。资产 vs 负债的区分不在于物品，在于现金流的流向。</div>
+      <div class="domain-concepts">
+        <span class="domain-tag">自由现金流</span>
+        <span class="domain-tag">风险×回报</span>
+        <span class="domain-tag">复利本质</span>
+        <span class="domain-tag">资产vs负债</span>
+        <span class="domain-tag">第一性原理</span>
+      </div>
+    </div>
+
+    <!-- Relations -->
+    <div class="domain-cell relations" onclick="toggleDomain(this)" id="domainRelations">
+      <div class="domain-icon">🤝</div>
+      <h3>关系的底层逻辑</h3>
+      <div class="domain-surface">表面：沟通技巧、社交策略、人脉经营</div>
+      <div class="domain-depth">底层：信息屏蔽是保护深度思考的必修课——高质量关系的前提是管理好自己的信息环境。代际沟通的根本差异不是「观念」，而是不同的「操作系统」（成长环境塑造的默认配置）。边界感不是冷漠，是对彼此独立性的尊重。</div>
+      <div class="domain-concepts">
+        <span class="domain-tag">信息屏蔽</span>
+        <span class="domain-tag">代际OS差异</span>
+        <span class="domain-tag">边界管理</span>
+        <span class="domain-tag">选择性社交</span>
+        <span class="domain-tag">朋友质量</span>
+      </div>
+    </div>
+
+    <!-- Decision -->
+    <div class="domain-cell decision" onclick="toggleDomain(this)" id="domainDecision">
+      <div class="domain-icon">🧠</div>
+      <h3>决策的底层逻辑</h3>
+      <div class="domain-surface">表面：决策模型、SWOT分析、利弊清单</div>
+      <div class="domain-depth">底层：少即是多——奥卡姆剃刀：如无必要，勿增实体。绝大多数「选择困难」源于选项太多而非信息不足。卡尼曼的前景理论揭示了人类在不确定性中的系统性偏差——认识偏差本身就是最好的决策工具。在重大决策上，只保留2-3个核心变量。</div>
+      <div class="domain-concepts">
+        <span class="domain-tag">奥卡姆剃刀</span>
+        <span class="domain-tag">前景理论</span>
+        <span class="domain-tag">概率思维</span>
+        <span class="domain-tag">核心变量</span>
+        <span class="domain-tag">认知偏差</span>
+      </div>
+    </div>
+
+    <!-- Tech -->
+    <div class="domain-cell tech" onclick="toggleDomain(this)" id="domainTech">
+      <div class="domain-icon">🔮</div>
+      <h3>技术判断的底层逻辑</h3>
+      <div class="domain-surface">表面：GPT参数、5G速率、技术路线图</div>
+      <div class="domain-depth">底层：不关心技术细节，关心「技术如何改变信息与能量的流动结构」。GPT的本质是信息熵压缩——将海量文本压缩成可对话的概率模型。5G的本质是信道容量的又一次跃升——从香农定律看，每次信道升级都会催生新的信息形态。判断技术趋势的方法：回到「能量×信息」框架。</div>
+      <div class="domain-concepts">
+        <span class="domain-tag">信息熵压缩</span>
+        <span class="domain-tag">信道革命</span>
+        <span class="domain-tag">能量×信息</span>
+        <span class="domain-tag">趋势判断</span>
+        <span class="domain-tag">个人策略</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== TRACE BACK: 少即是多溯源 ====== -->
+<section class="section" id="trace">
+  <div class="section-header">
+    <h2>「少即是多」的三层溯源</h2>
+    <p>为什么「少即是多」贯穿吴军的所有建议？它在第一层和第二层有怎样的思想源头？点击每条展开</p>
+  </div>
+
+  <div class="trace-section">
+    <div class="trace-flow">
+
+      <!-- Trace 1: 奥卡姆剃刀 -->
+      <div class="trace-item" onclick="this.classList.toggle('expanded')">
+        <div class="trace-num">1</div>
+        <div class="trace-content">
+          <h4>奥卡姆剃刀：从逻辑工具到人生策略</h4>
+          <div class="trace-path">
+            <strong>源头：</strong>第一层「逻辑思维训练」中的奥卡姆剃刀——「如无必要，勿增实体」，是科学推理的基本原则
+          </div>
+          <div class="trace-layers-row">
+            <span class="trace-layer-badge l1">Layer 1 · 逻辑工具</span>
+            <span class="trace-connector">→</span>
+            <span class="trace-layer-badge l2">Layer 2 · 科学方法论</span>
+            <span class="trace-connector">→</span>
+            <span class="trace-layer-badge l3b">Layer 3B · 人生决策</span>
+          </div>
+          <div class="trace-toggle-hint">点击展开完整溯源路径 ▾</div>
+          <div class="trace-expand">
+            <strong>Layer 1（认知底座）：</strong>在逻辑思维训练中，奥卡姆剃刀是区分好理论与坏理论的核心工具——一个需要太多假设的解释，大概率是错的。波普尔的证伪主义进一步强化了它：越简洁的理论越容易被证伪，因此也越接近真理。<br><br>
+            <strong>Layer 2（文明与方法论）：</strong>科学史上最伟大的发现几乎都是「少即是多」的胜利——牛顿用三条定律统一了天地运动，麦克斯韦用四个方程统一了电磁学。在文明史中，制度设计的简洁性往往决定其生命力（罗马法 vs 繁冗的习惯法）。<br><br>
+            <strong>Layer 3B（吴军来信2）：</strong>吴军将奥卡姆剃刀从理论工具变成了人生策略——投资上，少持有几支真正懂的股票比分散投资更有效；关系上，少而深的友谊比广而浅的社交更有价值；职业上，聚焦一个方向比同时追逐多个机会更可能达到一流水准。
+          </div>
+        </div>
+      </div>
+
+      <!-- Trace 2: 信息熵与不确定性消除 -->
+      <div class="trace-item" onclick="this.classList.toggle('expanded')">
+        <div class="trace-num">2</div>
+        <div class="trace-content">
+          <h4>信息熵：从香农公式到「什么值得知道」</h4>
+          <div class="trace-path">
+            <strong>源头：</strong>第一层「信息论40讲」中的信息熵——信息量 = 不确定性的消除量，不是所有「消息」都包含信息
+          </div>
+          <div class="trace-layers-row">
+            <span class="trace-layer-badge l1">Layer 1 · 信息论</span>
+            <span class="trace-connector">→</span>
+            <span class="trace-layer-badge l2">Layer 2 · 阅读与写作</span>
+            <span class="trace-connector">→</span>
+            <span class="trace-layer-badge l3b">Layer 3B · 信息屏蔽</span>
+          </div>
+          <div class="trace-toggle-hint">点击展开完整溯源路径 ▾</div>
+          <div class="trace-expand">
+            <strong>Layer 1（认知底座）：</strong>香农的信息论定义了一个反直觉的真理——一条消息的信息量，等于它消除了多少不确定性。因此，重复已知信息的信息量为零；噪音的信息量为负（因为它增加困惑）。比特是信息的基本单位，而信道容量是有限的。<br><br>
+            <strong>Layer 2（文明与方法论）：</strong>在阅读与写作50讲中，吴军将信息论应用到认知输入输出——阅读的本质是高效解码信息（从文本中提取信息熵），写作的本质是高效编码信息（用最少的文字传递最多的不确定性消除）。好的表达接近于「无损压缩」：信息密度极高但又完全不丢失含义。<br><br>
+            <strong>Layer 3B（吴军来信2）：</strong>吴军提出了「信息屏蔽」作为现代人最必要的防御策略——既然信息量 = 不确定性消除，那么社交媒体上90%的内容信息量为零甚至为负。在信息过载时代，「屏蔽什么」比「获取什么」更重要。这解释了为什么吴军建议少刷手机、少看新闻、保护深度思考的时间。
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====== WHY GPT/5G IN LAYER 3 ====== -->
+<section class="section">
+  <div class="section-header">
+    <h2>GPT 和 5G：为什么放在第三层而不是第二层？</h2>
+    <p>吴军对 GPT 和 5G 的讨论，探讨的是「个人如何应对」而非「技术本身」</p>
+  </div>
+
+  <div class="why-here-grid">
+    <div class="why-card">
+      <div class="why-card-header">
+        <div class="why-card-icon gpt">🤖</div>
+        <h4>GPT 专题（13篇）</h4>
+      </div>
+      <div class="why-surface">
+        <strong>如果放在第二层：</strong>会讲 GPT 的技术架构、Transformer 原理、参数规模、训练方法——这些都是「技术本身」。
+      </div>
+      <div class="why-deep">
+        <strong>在第三层讲的是：</strong>GPT 对个人意味着什么？你的工作会被替代还是增强？如何利用大语言模型提升自己的认知效率？技术浪潮中个人如何定位？
+      </div>
+      <div class="why-trace">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        但仍追溯到第二层的「能量×信息」框架——GPT 的本质是信息压缩与生成的革命
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-card-header">
+        <div class="why-card-icon fiveg">📡</div>
+        <h4>5G 专题（12篇）</h4>
+      </div>
+      <div class="why-surface">
+        <strong>如果放在第二层：</strong>会讲 5G 的技术标准、频谱分配、基站部署、网络架构——这些都是「技术细节」。
+      </div>
+      <div class="why-deep">
+        <strong>在第三层讲的是：</strong>5G 对普通人的影响是什么？哪些行业会被重塑？在技术趋势中如何判断真机会和伪风口？如何用信息论的框架理解每一次通信革命？
+      </div>
+      <div class="why-trace">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        但仍追溯到第一层的「信道容量」和第二层的「科技演化规律」
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== COMPARISON: 术道对比 ====== -->
+<section class="section">
+  <div class="section-header">
+    <h2>同一问题，两种回答方式</h2>
+    <p>面对同一个问题，硅谷来信（3A·术）和吴军来信2（3B·道）给出完全不同的答案</p>
+  </div>
+
+  <div class="compare-tabs">
+    <div class="compare-tab active" data-tab="wealth">💰 财富</div>
+    <div class="compare-tab" data-tab="career">🚀 职业</div>
+    <div class="compare-tab" data-tab="relations">🤝 关系</div>
+    <div class="compare-tab" data-tab="education">📚 教育</div>
+  </div>
+
+  <!-- Wealth comparison -->
+  <div class="compare-content active" id="tab-wealth">
+    <table class="compare-table">
+      <thead>
+        <tr><th></th><th>硅谷来信（3A·术）</th><th>吴军来信2（3B·道）</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>核心问题</td>
+          <td>如何通过投资实现财富增长？</td>
+          <td>财富的本质是什么？</td>
+        </tr>
+        <tr>
+          <td>回答方式</td>
+          <td>资产配置方法、指数基金选择、房地产投资逻辑、税务优化</td>
+          <td>自由现金流才是财富的真正度量；区分资产与负债的底层标准（现金流的流向）</td>
+        </tr>
+        <tr>
+          <td>思维层级</td>
+          <td>告诉你「买什么」和「怎么配」</td>
+          <td>让你理解「为什么这样配」——理解后可以自己推导</td>
+        </tr>
+        <tr>
+          <td>可迁移性</td>
+          <td>投资场景内可用</td>
+          <td>从投资延伸到职业选择（选择能产生持续现金流的领域）、教育投入（计算教育的NPV）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Career comparison -->
+  <div class="compare-content" id="tab-career">
+    <table class="compare-table">
+      <thead>
+        <tr><th></th><th>硅谷来信（3A·术）</th><th>吴军来信2（3B·道）</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>核心问题</td>
+          <td>如何在职场中晋升和成功？</td>
+          <td>职业选择的第一性原理是什么？</td>
+        </tr>
+        <tr>
+          <td>回答方式</td>
+          <td>向上管理技巧、跨部门协作、薪资谈判策略、跳槽时机</td>
+          <td>「可叠加的进步」——每步建立在之前的基础上。方向 > 努力：在错误的轨道上加速只会更快偏离</td>
+        </tr>
+        <tr>
+          <td>思维层级</td>
+          <td>告诉你「怎么做」能晋升</td>
+          <td>让你理解「选择什么方向」比「怎么做」重要100倍</td>
+        </tr>
+        <tr>
+          <td>可迁移性</td>
+          <td>职场场景内可用</td>
+          <td>从职业选择延伸到学习规划（建立可叠加的知识体系）、人生重大决策的评估框架</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Relations comparison -->
+  <div class="compare-content" id="tab-relations">
+    <table class="compare-table">
+      <thead>
+        <tr><th></th><th>硅谷来信（3A·术）</th><th>吴军来信2（3B·道）</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>核心问题</td>
+          <td>如何建立和维护有价值的人脉？</td>
+          <td>关系的本质是什么？</td>
+        </tr>
+        <tr>
+          <td>回答方式</td>
+          <td>社交场合的行为准则、人脉经营的具体方法、代际沟通话术</td>
+          <td>「信息屏蔽」与「边界管理」——保护深度思考的能力是关系管理的第一优先级。真正的朋友是信息熵为正的人</td>
+        </tr>
+        <tr>
+          <td>思维层级</td>
+          <td>告诉你「怎么和别人相处」</td>
+          <td>让你理解「和谁相处」以及「为什么大多数社交可以省略」</td>
+        </tr>
+        <tr>
+          <td>可迁移性</td>
+          <td>社交场景内可用</td>
+          <td>从关系管理延伸到信息管理（你接触的信息决定了你的认知质量）、时间管理（注意力是最稀缺的资源）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Education comparison -->
+  <div class="compare-content" id="tab-education">
+    <table class="compare-table">
+      <thead>
+        <tr><th></th><th>硅谷来信（3A·术）</th><th>吴军来信2（3B·道）</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>核心问题</td>
+          <td>如何为孩子提供最好的教育？</td>
+          <td>教育的底层逻辑是什么？</td>
+        </tr>
+        <tr>
+          <td>回答方式</td>
+          <td>择校策略、学科选择、课外活动平衡、留学规划</td>
+          <td>「有效做功」W=F×D×cosθ——大多数教育努力因为「方向与力的夹角」而无效。暗夜猫头鹰的警示：过度教育比不教育更可怕</td>
+        </tr>
+        <tr>
+          <td>思维层级</td>
+          <td>告诉你「给孩子选什么」</td>
+          <td>让你理解「教育中什么真正重要」——做减法比做加法更需要智慧</td>
+        </tr>
+        <tr>
+          <td>可迁移性</td>
+          <td>子女教育场景内可用</td>
+          <td>从教育延伸到自我成长（成人学习同样适用有效做功公式）、企业培训设计（聚焦关键能力而非堆砌课程）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ====== PRINCIPLE PATH: 七条底层逻辑 ====== -->
+<section class="section">
+  <div class="section-header">
+    <h2>吴军来信2 · 七大底层逻辑路径</h2>
+    <p>从具体建议中提取的可迁移思维模型——每条都可以追溯到第一层或第二层的智慧</p>
+  </div>
+
+  <div class="principle-path">
+    <div class="principle-item">
+      <div class="principle-icon">1</div>
+      <div class="principle-main">
+        <h4>自由现金流 > 账面财富</h4>
+        <p>财富的本质不是资产规模，而是持续产生正现金流的能力。用在职业上：选择能为你持续增值的领域，而非一次性高薪的工作。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l1">Layer 1 · 公理体系</span>
+      </div>
+    </div>
+
+    <div class="principle-item">
+      <div class="principle-icon">2</div>
+      <div class="principle-main">
+        <h4>信息屏蔽 = 认知防火墙</h4>
+        <p>在信息过载时代，「不接收什么」比「接收什么」更决定认知质量。来自信息论的核心洞察：信息量 = 不确定性消除。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l1">Layer 1 · 信息熵</span>
+        <span class="trace-layer-badge l2">Layer 2 · 阅读与写作</span>
+      </div>
+    </div>
+
+    <div class="principle-item">
+      <div class="principle-icon">3</div>
+      <div class="principle-main">
+        <h4>方向 × 做功 × cosθ = 有效进步</h4>
+        <p>努力本身不产生价值——力的方向与目标方向的夹角决定了有效做功。大多数「努力了但没有结果」源于cosθ接近于零。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l2">Layer 2 · 教育的方法</span>
+        <span class="trace-layer-badge l1">Layer 1 · 数学思维</span>
+      </div>
+    </div>
+
+    <div class="principle-item">
+      <div class="principle-icon">4</div>
+      <div class="principle-main">
+        <h4>少即是多 · 奥卡姆剃刀</h4>
+        <p>投资上集中持有真正懂的标的；关系上维护少数深度友谊；决策上只关注2-3个核心变量；学习上聚焦一个方向而非四处出击。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l1">Layer 1 · 逻辑工具</span>
+        <span class="trace-layer-badge l2">Layer 2 · 科学方法论</span>
+      </div>
+    </div>
+
+    <div class="principle-item">
+      <div class="principle-icon">5</div>
+      <div class="principle-main">
+        <h4>可叠加的进步 × 复利效应</h4>
+        <p>每次进步都建立在之前的基础上——知识、能力、财富、关系都是复利函数。避免「归零重启」是人生策略的最高优先级。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l1">Layer 1 · 数学思维</span>
+        <span class="trace-layer-badge l2">Layer 2 · 文明演进</span>
+      </div>
+    </div>
+
+    <div class="principle-item">
+      <div class="principle-icon">6</div>
+      <div class="principle-main">
+        <h4>概率思维 · 接受不确定性</h4>
+        <p>世界上没有「确定的好结果」，只有「更高概率的好结果」。决策的质量不取决于结果，而取决于决策时是否使用了最佳概率判断。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l1">Layer 1 · 概率论</span>
+        <span class="trace-layer-badge l1">Layer 1 · 科学方法</span>
+      </div>
+    </div>
+
+    <div class="principle-item">
+      <div class="principle-icon">7</div>
+      <div class="principle-main">
+        <h4>技术趋势 = 能量×信息的结构变迁</h4>
+        <p>不追逐具体技术，而是判断每次技术浪潮如何改变能量和信息的流动结构——GPT改变了信息的生成方式，5G改变了信息的传输上限。</p>
+      </div>
+      <div class="principle-sources">
+        <span class="trace-layer-badge l2">Layer 2 · 科技史纲</span>
+        <span class="trace-layer-badge l1">Layer 1 · 信息论</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CTA ====== -->
+<section class="cta-section">
+  <h2>从「知道怎么做」到「理解怎么想」</h2>
+  <p>底层逻辑让你不依赖别人的答案，自己推导出适合自己的选择</p>
+  <div class="cta-links">
+    <a href="index.html" class="cta-btn primary">← 返回思想体系全景图</a>
+    <a href="../吴军来信2/index.html" class="cta-btn secondary">进入吴军来信2 知识库 →</a>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <p>吴军思想体系 · Layer 3B · 吴军来信2</p>
+  <p>从 325 篇来信中提炼的底层逻辑框架</p>
+  <div class="footer-links">
+    <a href="../index.html">← 返回知识主板</a>
+    <a href="index.html">思想体系全景图</a>
+    <a href="layer3a.html">第三层 A 面：硅谷来信</a>
+    <a href="../吴军来信2/index.html">吴军来信2 知识库</a>
+  </div>
+</footer>
+
+<script>
+// ====== ENGINE INTERACTION ======
+const engineData = {
+  wealth: {
+    title: '财富自由 → 自由现金流原理',
+    desc: `<strong>表层问题：</strong>如何实现财富自由？买什么股票？投什么项目？<br><br>
+<strong>吴军的底层逻辑提取：</strong>财富自由的核心不是「有多少钱」，而是「自由现金流能否覆盖生活支出」。一个年薪百万但花掉九十万的人，和一个年薪三十万但被动收入已覆盖支出的投资者——谁更自由？<br><br>
+<strong>可迁移结论：</strong>追求「资本产生的自由现金流 > 生活所需」这个不等式，而非追求绝对数字。这个逻辑从投资延伸到职业选择（选择能产生持续价值的领域）、教育（培养可叠加的能力而非刷分数）。`,
+    trace: '溯源：第一层「公理体系」（从最少的假设推导最多的结论）+ 第一层「信息论」（不确定性消除 = 价值的度量）'
+  },
+  relations: {
+    title: '关系边界 → 信息屏蔽原理',
+    desc: `<strong>表层问题：</strong>如何建立高质量的人际关系？要不要参加这个饭局？怎么和不同代际的人沟通？<br><br>
+<strong>吴军的底层逻辑提取：</strong>关系的质量不取决于你认识多少人，取决于你是否有「信息屏蔽」的能力——保护自己的深度思考时间，只让信息熵为正的人进入你的认知环境。代际沟通的本质不是「代沟」，而是不同的操作系统在尝试交互。<br><br>
+<strong>可迁移结论：</strong>「信息屏蔽」不只用于关系管理——它延伸到信息摄入（不看新闻、不刷社交媒体）、时间管理（保护深度工作时段）、甚至投资决策（屏蔽噪音，只看核心变量）。`,
+    trace: '溯源：第一层「信息熵」（信息量 = 不确定性消除——大多数社交信息的信息量为零）+ 第二层「阅读与写作」（高效信息输入输出的方法论）'
+  },
+  decision: {
+    title: '人生决策 → 少即是多的奥卡姆剃刀',
+    desc: `<strong>表层问题：</strong>面对重要选择时如何做出最优决定？用什么决策框架？列多少因素？<br><br>
+<strong>吴军的底层逻辑提取：</strong>决策困难不是因为「信息太少」，而是因为「选项太多」。奥卡姆剃刀告诉我们：如无必要，勿增实体。在重大决策上，找到2-3个核心变量就够了。前景理论进一步揭示：人类在损失区会过度冒险，在收益区会过度保守——认识这个偏差本身就是最好的决策工具。<br><br>
+<strong>可迁移结论：</strong>「少即是多」不只是决策技巧，而是人生哲学——投资上集中持有，关系上深度而非广度，学习上聚焦一个方向，职业上选择可叠加的赛道。`,
+    trace: '溯源：第一层「逻辑工具」（奥卡姆剃刀 + 证伪主义）+ 第二层「科学方法论」（最简洁的理论往往最正确）'
+  },
+  tech: {
+    title: '技术判断 → 能量×信息框架',
+    desc: `<strong>表层问题：</strong>GPT 会取代我的工作吗？5G 是风口还是泡沫？下一个技术浪潮是什么？<br><br>
+<strong>吴军的底层逻辑提取：</strong>不关心技术参数，只关心「技术如何改变能量与信息的流动结构」。GPT 的本质是信息熵的压缩与生成——将海量文本压缩为可对话的概率模型，这改变了信息的生产成本。5G 的本质是信道容量的又一次跃升——历史证明，每次信道升级都会催生全新的信息形态（文字→图片→视频→?）。<br><br>
+<strong>可迁移结论：</strong>用「能量×信息」框架可以判断任何技术浪潮对个人的影响——问自己：这个技术改变了信息的生产、传输、还是处理成本？它对你的工作是替代还是增强？`,
+    trace: '溯源：第二层「能量×信息双螺旋」（科技史纲的核心框架）+ 第一层「信息论」（香农定律·信道容量决定传输上限）'
+  }
+};
+
+document.querySelectorAll('.engine-example').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.engine-example').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const key = this.dataset.example;
+    const data = engineData[key];
+    const panel = document.getElementById('engineOutput');
+    document.getElementById('engineOutputTitle').textContent = data.title;
+    document.getElementById('engineOutputDesc').innerHTML = data.desc;
+    panel.querySelector('.trace').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> ${data.trace}`;
+    panel.classList.add('show');
+  });
+});
+
+// ====== DOMAIN EXPANSION ======
+function toggleDomain(cell) {
+  const wasExpanded = cell.classList.contains('expanded');
+  // Close all
+  document.querySelectorAll('.domain-cell').forEach(c => c.classList.remove('expanded'));
+  // Toggle
+  if (!wasExpanded) cell.classList.add('expanded');
+}
+
+// ====== COMPARISON TABS ======
+document.querySelectorAll('.compare-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.compare-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.compare-content').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+  });
+});
+
+// ====== SCROLL ANIMATIONS ======
+const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.section, .cta-section, .positioning-card, .why-card, .principle-item').forEach(el => {
+  el.classList.add('fade-in');
+  fadeObserver.observe(el);
+});
+
+// ====== KEYBOARD ======
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.domain-cell.expanded').forEach(c => c.classList.remove('expanded'));
+    document.querySelectorAll('.trace-item.expanded').forEach(c => c.classList.remove('expanded'));
+  }
+});
+
+// ====== ENGINE CORE PULSE ======
+const engineCore = document.getElementById('engineCore');
+let pulseCount = 0;
+const pulseInterval = setInterval(() => {
+  pulseCount++;
+  engineCore.querySelector('.node-icon').style.transform = 'scale(1.08)';
+  setTimeout(() => {
+    engineCore.querySelector('.node-icon').style.transform = 'scale(1)';
+  }, 200);
+  if (pulseCount > 3) clearInterval(pulseInterval);
+}, 1500);
+</script>
+
+</body>
+</html>
