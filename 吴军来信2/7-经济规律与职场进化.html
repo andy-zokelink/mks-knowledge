@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>经济规律与职场进化 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"\25B8";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.back-home{text-align:center;margin:16px 0;font-size:.85rem}
+.back-home a{color:var(--text-light);text-decoration:none;border-bottom:1px dashed var(--border);padding-bottom:2px}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+/* Quiz container */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:var(--bg);border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>经济规律与职场进化 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<div class="container">
+
+<p class="subtitle">吴军来信2 · 认知操作系统之经济透镜——用经济学底层逻辑（牛顿、香农、奥卡姆）拆解内卷、裁员、创业、移民、行业趋势，不讲“做什么”，讲“怎么想”</p>
+
+<!-- Tab Bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- Tab 0: Dashboard -->
+<div class="tab-panel active" id="panel0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">用<strong>经济学底层逻辑</strong>作为认知透镜，跨域重建职场与人生的思考方式。不讲“职场实操”（那是硅谷来信1的任务），讲“职场现象背后的经济理性”——为什么内卷必然发生？裁员是个人无能还是结构必然？移民决策的理性框架是什么？创业成功的底层法则有哪些？</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
+<h3>概念关系图</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span style="color:#c0392b">━━ 顶层驱动力</span><span style="color:#d4a574">━━ 中层机制</span><span style="color:#b8860b">━━ 企业/个人现象</span><span style="color:#27ae60">━━ 应对策略</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（12条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>万国邮联规则漏洞与跨境电商直邮</td><td>理解跨境物流成本结构与政策博弈</td></tr>
+<tr><td>美国小额豁免政策（de minimis）调整</td><td>分析跨境电商政策风险</td></tr>
+<tr><td>碳税机制与欧盟CBAM碳边境调节</td><td>评估制造业出口竞争力与成本结构</td></tr>
+<tr><td>德国“机会卡”积分移民制度</td><td>比较各国技术移民政策差异</td></tr>
+<tr><td>巴菲特“烟屁股”投资比喻</td><td>区分短期投机与长期复利思维</td></tr>
+<tr><td>合成生物学市场规模（2023年154亿美元）</td><td>职业选择中的行业前景评估</td></tr>
+<tr><td>全球化工材料年产值4万多亿美元</td><td>判断“夕阳行业”是否真的夕阳</td></tr>
+<tr><td>美国服务业就业结构（1.13亿人，83.7%）</td><td>理解发达国家产业结构必然规律</td></tr>
+<tr><td>亚马逊1997年IPO融资仅4800万美元</td><td>对比当下创业融资环境</td></tr>
+<tr><td>基尼系数与第二次工业革命</td><td>技术革命加剧不平等的历史参照</td></tr>
+<tr><td>约翰·霍普金斯大学在职硕士超全日制</td><td>终身学习与在职教育趋势</td></tr>
+<tr><td>IPv4地址枯竭与虚拟化技术</td><td>理解“信息换能量”的技术案例</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径（5阶段推荐顺序）</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立元框架：</strong>先学“内卷本质”+“刘易斯拐点”，理解一切职场现象的结构性根源</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>职场现象拆解：</strong>依次学“35岁危机”→“分母牺牲”→“企业忠诚”，用经济学透镜看透职场博弈</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>人生重大决策：</strong>学习“移民理性框架”+“创业长期回报”，建立重大决策的评估方法论</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>宏观趋势判断：</strong>学习“服务经济”+“知本家”+“虚拟经济”，建立产业趋势的前瞻判断力</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>融会贯通：</strong>用10个概念组成“经济透镜”，独立分析任何职业/产业/人生决策问题</div></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 1: Knowledge Cards -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: Quiz System -->
+<div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card"><h3>选择题（共20题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p>
+<div id="choiceQuiz"></div>
+</div>
+<div class="card"><h3>简答题（共10题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p>
+<div id="shortQuiz"></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 3: Exam Mode -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- Tab 4: Review Mode -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+
+<!-- Tab 5: Mind Map (inline HTML) -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>经济规律与职场进化 · 思维导图</h3>
+<div id="mindmap">
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">经济规律与职场进化</div>
+<div class="tree-children open">
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">结构性力量（底层）</div>
+<div class="tree-children">
+<div class="tree-leaf">内卷：非零和游戏的双输困局 — 博弈结构不变则个体努力无效</div>
+<div class="tree-leaf">刘易斯拐点：劳动力从过剩到短缺的结构性转折</div>
+<div class="tree-leaf">服务经济：经济越发达，服务业占比越高（美78% vs 中54%）</div>
+<div class="tree-leaf">知本家：信息革命中技术精英的财富掌控力</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">职场现象（中层）</div>
+<div class="tree-children">
+<div class="tree-leaf">35岁危机：经济放缓+经验边际递减+法律缺位</div>
+<div class="tree-leaf">裁员逻辑：技术突变期多数人被当作分母牺牲</div>
+<div class="tree-leaf">企业忠诚：共同利益>个人义气，制度>情感</div>
+<div class="tree-leaf">平庸领导：大企业需要稳定执行而非天才颠覆</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">人生决策（应用层）</div>
+<div class="tree-children">
+<div class="tree-leaf">移民理性框架：愿景×路径×决心，非时机是匹配</div>
+<div class="tree-leaf">创业长期回报：烟屁股vs复利，10年无变化则未来难爆发</div>
+<div class="tree-leaf">职业方向：个人喜好/特长/行业前景，至少一个匹配</div>
+<div class="tree-leaf">中间人价值：降低交易成本，信息不对称是护城河</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle" onclick="toggleMindmap(this)">宏观趋势（展望层）</div>
+<div class="tree-children">
+<div class="tree-leaf">虚拟经济：信息换能量，虚实边界模糊化</div>
+<div class="tree-leaf">AI时代：利用技术≠掌握技术，门槛决定价值</div>
+<div class="tree-leaf">企业出海：品牌化>平台化，差异化>价格战</div>
+<div class="tree-leaf">蓝领价值重估：可贸易性低的技能反而最安全</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+
+<!-- Tab 6: Socratic Dialogue (inline HTML) -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p>
+<div id="socratic">
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">Q1: 内卷的本质是什么？为什么说它是“非零和游戏中的双输”？</span></div>
+<div class="socratic-a"><p>内卷（involution）是博弈论中的“囚徒困境”在现实中的投影。在蛋糕不再增长的零和或负和博弈中，所有参与者被迫投入更多资源（时间、精力、金钱）来维持原有份额，结果每个人都更累了，但整体福利却没有提升——甚至下降。</p>
+<p><strong>为什么是“非零和”却“双输”？</strong>因为竞争本可以创造增量（非零和），但制度设计使得竞争方式变成了存量争夺。比如中国电商的“仅退款”大战——每家都增加了客服和审核成本，消费者被培养出不诚信习惯，最终平台、商家、消费者三方受损。</p>
+<p><strong>深层追问：如何跳出内卷？</strong>个人层面：找到不可替代的差异化价值（安克做品牌不做价格战）。制度层面：改变博弈规则，让合作而非竞争成为最优策略。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">Q2: 为什么说“35岁危机”本质上是一个经济学问题而非年龄歧视？</span></div>
+<div class="socratic-a"><p>拆解35岁危机的三层经济学逻辑：</p>
+<p><strong>第一层：供需关系。</strong>互联网行业从高速增长转为平稳发展，管理岗位（经理/总监）的创造速度远低于35岁员工的增长速度。一个萝卜一个坑，坑不够了。</p>
+<p><strong>第二层：边际产出递减。</strong>大学毕业5年完全胜任工作（27岁），再发展3-5年达天花板。之后经验增长对产出的边际贡献极小——15年经验者未必优于10年经验者。</p>
+<p><strong>第三层：制度差异。</strong>欧美有严格的反年龄歧视法，中国企业无此约束；欧美年轻人就业选择多、跳槽频繁，企业倾向于用更稳定的年长员工。</p>
+<p><strong>所以：</strong>不是35岁就被歧视了，而是在没有制度保护、劳动力供过于求、经验边际价值低这三个条件同时成立时，35岁就成了企业“理性”的淘汰线。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">Q3: 移民决策应该基于什么理性框架？什么是大多数移民后悔的根源？</span></div>
+<div class="socratic-a"><p>吴军提出的“移民三维框架”：</p>
+<p><strong>① 可实现的长期愿景</strong>——不是逃避现状，而是对新生活方式的主动选择。习惯“大包大揽”体制环境的人到了需要自主性的社会会非常痛苦。</p>
+<p><strong>② 清晰的目标与路径</strong>——具体到“去硅谷当工程师”而非“出国发展”这个模糊概念。留学、跨国企业外派、技术移民各有门槛。</p>
+<p><strong>③ 深思熟虑的决心</strong>——放弃已有利益（职位/人脉/资产）的意愿。“东食西宿”心态（既想经济增长红利又想要低竞争环境）在逻辑上不可能成立。</p>
+<p><strong>后悔的根源：</strong>约70%后悔案例源于决策依据是“他人想法”而非“自身愿景”。后悔三大触发点：税高（实得仅40%）、寂寞（缺乏集体生活）、安全感知错位。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">Q4: 为什么技术革命中“最早被淘汰的是放弃原有特长抢风口的人”？</span></div>
+<div class="socratic-a"><p>吴军引用一个3000年前的类比：农民放弃田庄去神庙打杂——以为靠近权力中心，实际上失去了安身立命的根本。</p>
+<p><strong>现代映射：</strong>AI热潮中，真正钻研AI技术的人不足千分之一。绝大多数人只是在“关注AI”、“谈论AI”、“报AI培训班”——本质是用消费行为替代学习行为。</p>
+<p><strong>深层机制：</strong>技术突变期存在“分母效应”——新范式确立前，旧体系崩塌先于新体系建成，这个过渡期多数人被牺牲。能穿越周期的不是最会追风口的人，而是在原有领域有深度积累+能将新技术嫁接进来的人。</p>
+<p><strong>判断标准：</strong>你是“利用技术”还是“掌握技术”？开车vs造车。利用技术的门槛极低，随时可被替代；掌握技术的门槛极高，穿越周期的概率最大。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">Q5: “看不见的手”如何解释服务经济的价值创造？</span></div>
+<div class="socratic-a"><p>核心反驳一个常见误解：“服务业只是GDP统计游戏，不创造实质财富”。</p>
+<p><strong>吴军的论证逻辑：</strong></p>
+<p>① <strong>财富=调动资源的能力</strong>，最稀缺的资源是他人为你投入的时间。你花钱请人做头发，调动了理发师的时间；理发师用收入请人修车，调动了修车师傅的时间——服务交换网络就是财富创造网络。</p>
+<p>② <strong>思想实验：</strong>模型A（少数人生产必需品+多数人互相服务）= 所有人参与价值创造；模型B（少数人生产必需品+其余人躺平）= 大部分人不创造价值。模型A的财富总量远超模型B。</p>
+<p>③ <strong>历史数据：</strong>美国人均GDP 8.17万美元，服务业占78%；中国人均GDP 1.26万美元，服务业占54%。这不是巧合——服务业占比是最精准的经济发达程度标尺。</p>
+<p>④ <strong>单位时间价值可无限提升：</strong>同样一小时的餐饮服务，家常便饭和米其林三星的价值差异可达百倍。服务业增长天花板不在时间，在价值密度。</p></div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">Q6: 为什么企业要求忠诚在经济学上是矛盾的？</span></div>
+<div class="socratic-a"><p>经济学的核心洞察：<strong>企业要求员工单向忠诚，但同时保留随时裁员的权力——这是单边契约，本质是用道德话语掩盖利益不对等。</strong></p>
+<p><strong>吴军的分析：</strong></p>
+<p>① “禁止越级上报”：本质上是一种信息控制机制，降低管理层被绕过的威胁感，但以牺牲组织信息效率为代价。</p>
+<p>② “忠诚”的真实含义：在企业语境下往往是“服从”的同义词。真正的职场关系应该基于<strong>共同利益</strong>而非个人义气——按规矩做事、不损人利己。</p>
+<p>③ <strong>历史教训：</strong>以“张总的人”自居者，上级一旦离职或被调走，立即面临清算风险（曾国藩被当作穆彰阿党遭冷落的教训）。</p>
+<p>④ <strong>替代方案：</strong>建立基于共同利益的合作关系——考察对方的支付能力和诚信记录，从小合作开始验证，坚持合规（收取定金、签合同），拒绝“赔本赚吆喝”。</p></div>
+
+</div></div>
+</div>
+
+<!-- Tab 7: Case Study (inline HTML) -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解“大厂裁员潮”</h3>
+<div id="caseStudy">
+<div class="card" style="background:#fef9f2">
+<h4 style="color:var(--accent)">案例背景</h4>
+<p>2023-2025年，全球科技巨头（Google、Meta、Amazon、Microsoft、国内BAT等）在业绩并未大幅下滑的情况下持续大规模裁员。Google裁员1.2万人同时给留任CEO大幅加薪；Meta在“效率年”裁员2万+人后股价翻倍。公众困惑：为什么赚钱的公司还要裁员？</p>
+</div>
+
+<div class="card" style="background:#fffdf5">
+<h4 style="color:var(--gold)">MKS拆解框架</h4>
+
+<div style="margin:12px 0"><strong style="color:var(--accent)">概念1【内卷：非零和的双输】应用：</strong>
+<p>科技行业从增量竞争转为存量竞争。Google搜索广告份额被AI搜索（ChatGPT/Perplexity）侵蚀；Meta面临TikTok的用户时长争夺。当行业增长率从20%+降至个位数，企业从“抢增量”转为“保利润”——裁员是最快见效的利润提升手段。</p></div>
+
+<div style="margin:12px 0"><strong style="color:var(--accent)">概念2【刘易斯拐点】应用：</strong>
+<p>互联网“人口红利”已过刘易斯拐点。全球网民增速见顶，新获客成本飙升。劳动力从供不应求（工程师薪资飞涨）转向供过于求（裁员后市场迅速消化）。企业不需要那么多“增长型”工程师了。</p></div>
+
+<div style="margin:12px 0"><strong style="color:var(--accent)">概念3【分母牺牲】应用：</strong>
+<p>AI时代属于技术突变期。企业需要从“移动互联网”切换到“AI优先”的范式，大量旧技能栈的工程师（传统推荐系统、常规前端、一般后端）成为分母。不是他们不优秀，而是他们擅长的技术正在被AI工具化。</p></div>
+
+<div style="margin:12px 0"><strong style="color:var(--accent)">概念4【企业忠诚的经济学】应用：</strong>
+<p>裁员决策完全基于股东利益最大化（资本逻辑），而非员工忠诚度或历史贡献。“公司不是家”——这是企业本质决定的。员工若以“忠诚”作为职业安全策略，必然在裁员中受伤最深。</p></div>
+
+<div style="margin:12px 0"><strong style="color:var(--accent)">概念5【35岁危机的供需逻辑】应用：</strong>
+<p>资深工程师薪资是新人2-3倍，但边际产出可能仅为1.2倍。当企业从“扩张期”（需要经验丰富的架构师设计新系统）进入“维护期”（需要大量中初级工程师维护现有系统），高薪老员工成为“性价比最低”的群体。</p></div>
+</div>
+
+<div class="card" style="background:#eafaf1">
+<h4 style="color:var(--success)">综合结论与启示</h4>
+<p>裁员不是企业“变坏了”，而是经济规律在技术突变期的自然表达。</p>
+<p><strong>个人的理性应对：</strong>① 选择核心业务+盈利部门（非边缘创新部门）；② 提升不可替代性（掌握特殊业务而非通用技能）；③ 建立行业人脉与信息网络（“打听安全部门”）；④ 在技术平稳期深耕，在突变期保持学习；⑤ 永远不要以“忠诚”作为职业安全的锚——以“不可替代性”为锚。</p>
+</div>
+</div></div>
+</div>
+
+<!-- Tab 8: Decision Simulation (inline HTML) -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3>
+<p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3-4个选项，选择后查看经济透镜分析</p>
+<div id="decisionSim">
+
+<!-- Decision 1 -->
+<div class="decision-scenario">
+<h4 style="color:var(--gold)">决策一：职业十字路口</h4>
+<p>你32岁，国内一线互联网公司高级工程师，年薪80万。AI方向火热，但你的专长是后端基础设施（数据库优化、分布式系统）。公司内部AI部门向你伸出橄榄枝，但需要降级（从高级→普通），薪资不变但职业路径重置。与此同时，一家传统制造企业出价120万挖你做技术总监，负责数字化转型。你会怎么选？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d1a')">A. 转AI部门 — 学习最热门技术，降级但保留科技行业身份</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d1b')">B. 去传统企业做总监 — 升职加薪，但离开科技圈</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d1c')">C. 留在原岗位深耕 — 专注分布式系统，成为不可替代的专家</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d1d')">D. 辞职创业 — 用后端技术做AI infra startup</div>
+</div>
+<div class="decision-result" id="d1a"><strong>MKS分析：</strong>这是典型的“分母牺牲”陷阱。放弃9年专长去新手赛道，你立即从top 20%变成bottom 50%——这正是吴军警告的“放弃田庄去神庙打杂”。AI部门需要的是算法研究员而非后端工程师，你的降级可能只是开始。建议：不选。</div>
+<div class="decision-result" id="d1b"><strong>MKS分析：</strong>符合“中间人价值”概念。传统企业缺的不是技术而是懂技术的人——你的跨界价值极高。120万+总监头衔是实实在在的资源。风险：制造业的节奏和文化可能与互联网差异巨大。建议：考察企业数字化决心再做决定。</div>
+<div class="decision-result" id="d1c"><strong>MKS分析：</strong>符合“不可替代性”策略和“烟屁股vs复利”法则。后端基础设施永远不会过时（AI也需要分布式系统！），你的技能积累是复利型而非折旧型。你不需要“追上AI”，AI需要追上你的基础设施。建议：强烈推荐。</div>
+<div class="decision-result" id="d1d"><strong>MKS分析：</strong>检查创业三维能力：你是技术专家（✓），有无销售能力（?），有无融资能力（?）。缺少后两项时创业风险极高。AI infra赛道已有大量竞争者。建议：除非有已验证的客户需求，否则不选。</div>
+</div>
+
+<!-- Decision 2 -->
+<div class="decision-scenario">
+<h4 style="color:var(--gold)">决策二：移民决策</h4>
+<p>你38岁，国内三甲医院主治医生，已婚有一子。配偶是国企中层。你们有约500万存款。配偶被公司外派到德国工作3年，全家可以一起过去。孩子如果去德国可以享受免费公立教育，但你需要通过德国医生资格考试才能在德行医（通过率低，平均需2年准备）。你会怎么选？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d2a')">A. 全家移民 — 抓住机会让孩子接受更好的教育</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d2b')">B. 配偶单独赴任 — 你留在国内继续从医，寒暑假探亲</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d2c')">C. 配偶放弃外派 — 家庭完整优于职业机会</div>
+</div>
+<div class="decision-result" id="d2a"><strong>MKS分析：</strong>检查移民三维框架：愿景（你愿意从“受人尊敬的医生”变成“重新考试的医学生”吗？这是巨大的身份落差）；路径（医生是高壁垒职业，通过德国资格考试是硬门槛）；决心（38岁重新学德语+医学，放弃国内执业资格和患者资源）。三个维度都有显著障碍。孩子教育是加分项但不足以覆盖你的职业牺牲。建议：谨慎。</div>
+<div class="decision-result" id="d2b"><strong>MKS分析：</strong>这是最理性的折衷方案。获得德国3年的部分体验（探亲期间可了解当地生活），同时保留你的职业连续性和国内收入。孩子将来留学也有家庭经验铺垫。符合“从小合作开始验证”的原则。建议：推荐。</div>
+<div class="decision-result" id="d2c"><strong>MKS分析：</strong>代价是配偶失去重大职业机会，且家庭失去了一个低成本的国际化体验窗口。3年外派是“可逆转”的试验，不是永久移民。建议：不推荐完全放弃。</div>
+</div>
+
+<!-- Decision 3 -->
+<div class="decision-scenario">
+<h4 style="color:var(--gold)">决策三：创业判断</h4>
+<p>你45岁，在消费品行业工作20年，熟悉供应链和渠道。朋友邀请你合伙做一个D2C健康食品品牌。你有行业资源但需要投入200万（占你总资产的60%）。该品类年增长率15%，已有3-4个头部品牌占据60%份额。你会怎么决策？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d3a')">A. 加入 — 行业高增长+你有20年经验，条件完美</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d3b')">B. 先做副业试水 — 用业余时间做小规模验证，不辞职不投入全部资金</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d3c')">C. 拒绝 — 创业风险太大，守住安稳</div>
+</div>
+<div class="decision-result" id="d3a"><strong>MKS分析：</strong>检查创业三大核心能力：你是行业专家（✓），但销售能力（品牌从零开始不同于渠道分销）和融资能力（200万只是启动资金，后续需要更多）都是未知数。15%增长率是品类红利但不是你的品牌红利——品类增长不代表你能分到。60%资产all-in违反“从小合作开始验证”原则。建议：不推荐。</div>
+<div class="decision-result" id="d3b"><strong>MKS分析：</strong>完美对应“烟屁股vs复利”和“从小合作验证”两条法则。用业余时间和少量资金验证核心假设（你的产品是否有真实需求？你能否以合理成本获客？），数据驱动决策而非激情驱动。如果小规模验证成功，再逐步加大投入。建议：强烈推荐。</div>
+<div class="decision-result" id="d3c"><strong>MKS分析：</strong>完全拒绝可能错失一个低风险的学习机会。B方案需要的资金和时间成本都很低，但学习价值极高——即使失败，你也获得了创业认知，这对45岁的职场人是珍贵的“第二曲线”保险。建议：至少做B，不要选C。</div>
+</div>
+
+</div></div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ===== DATA STORE =====
+const concepts = [
+  {id:'c1',name:'内卷：非零和的双输',def:'在蛋糕不再增长的博弈中，所有参与者被迫投入更多资源维持原有份额，最终每个人都更累但整体福利没有提升甚至下降。本质是囚徒困境的现实投影——制度设计使竞争方式成为存量争夺而非增量创造。',analogy:'如同电影院里的观众：第一排站起来看，后面的被迫也站起来，最终所有人都站着看——但没有人比原来坐着看得更清楚。不同的是电影院有人维持秩序，而真实的经济博弈中往往缺乏有效的协调机制。',example:'中国电商“仅退款”大战：每家平台增加客服和审核成本，商家利润被压缩，消费者被培养出不诚信习惯。Temu/Shein的低价内卷导致产品质量下降，法国已出台限制措施。',counter:'不是所有激烈竞争都是内卷。芯片行业的台积电vs三星竞争推动制程进步，创造了增量价值——这是“良性竞争”。区分标准：是否创造了更大的总价值。'},
+  {id:'c2',name:'刘易斯拐点',def:'经济发展中劳动力从无限供给（农村剩余劳动力）转向短缺的转折点。拐点前工资不涨但经济高增长（人口红利），拐点后劳动力短缺推动工资上涨但经济增长放缓。中国的拐点约在2010-2015年间到来。',analogy:'如同水库蓄水——改革开放前30年，水库（农村劳动力）持续放水，水价（工资）稳定。拐点后水库见底，水价开始上涨。工厂要么提高水价，要么搬到水还多的地方（越南/印度），要么改造设备少用水（自动化）。',example:'中国制造业工资从2000年的月均800元涨到2023年的月均6000+元；富士康同时在中国、越南、印度布局产能；珠三角“用工荒”持续10年以上。',counter:'拐点不是一夜之间的突变——它是渐进的。而且某些行业（如高端服务业）可能在总量拐点前就已面临人才短缺。技术进步（AI/自动化）可能推迟拐点的效应。'},
+  {id:'c3',name:'服务经济的价值创造',def:'服务业不是GDP统计游戏，而是真正的财富创造。经济越发达，服务业占GDP比重越高（美国78%，中国54%）。核心逻辑：财富=调动他人时间的能力，服务交换网络就是财富创造网络。',analogy:'物质生产如同硬件，服务业如同软件和生态系统。一台iPhone的硬件成本约200美元，但售价1000美元——多出的800美元是设计、品牌、生态、服务等“软价值”。没有软件的硬件是一块砖。',example:'美第奇家族资助米开朗基罗和伽利略——这些“虚”的投资产出的人类文明价值远超任何实物资产。高端餐饮的价格可以是家常菜的数倍到数十倍，价值来源于体验和社交而非食材成本。',counter:'服务业的“虚”不等于金融泡沫。过度金融化（次贷危机）确实可以摧毁实体经济的价值。区分标准：是否调动了真实的劳动力资源参与价值交换。'},
+  {id:'c4',name:'知本家与信息不平等',def:'信息革命中通过掌握核心技术（而非传统资本）积累巨额财富的群体。从诺伊斯/摩尔到贝佐斯/马斯克，技术精英的财富从百万→十亿→千亿美元跃迁，而普通民众收入增长有限。技术成为新时代的不平等根源。',analogy:'如同3000年前掌握读写能力的神庙僧侣——他们通过垄断信息通道成为社会顶层。今天的“知本家”通过垄断算法、数据和平台规则，获得了远超传统资本家的财富控制力。不同的是：古代僧侣靠神秘化，今天知本家靠技术壁垒。',example:'谷歌前无人驾驶负责人莱万多夫斯基6年收入1.2亿美元；马斯克收购推特后恢复特朗普账号、限制CNN发声；谷歌前CEO施密特领导委员会制定美国“小院高墙”科技战略。',counter:'知本家≠所有科技从业者。大部分程序员只是“利用技术”而非“掌握技术”——前者可被替代，后者定义了技术方向。信息时代的阶梯也是金字塔形的。'},
+  {id:'c5',name:'35岁危机的供需逻辑',def:'互联网行业从高速增长转向平稳发展，管理岗位创造速度低于资深员工增长速度，加上经验边际产出递减和法律缺位，共同导致企业“理性地”偏好年轻员工。本质是劳动力市场的结构性失衡而非单纯年龄歧视。',analogy:'如同电梯超载——电梯（行业）从满载上行变成平层运行，新进的人找不到位置，已经在里面的人如果不具备“不可替代性”可能被要求出去。但欧美日的电梯有“安全阀”（反歧视法），中国的电梯暂时没有。',example:'毕业生5年完全胜任→27岁，再发展3-5年达天花板→35岁。但企业老员工薪酬是新人2-3倍，边际产出仅1.2倍。当企业从扩张期进入维护期，性价比成为裁员决策的第一变量。',counter:'35岁危机在不同行业差异巨大。医生、律师、高级技工的经验随时间增值（复利型），互联网工程师的经验可能随时间贬值（过时型）。选择复利型职业是对冲35岁危机最根本的策略。'},
+  {id:'c6',name:'移民决策的理性框架',def:'移民不是时间窗口问题，而是个人处境与目标国环境的匹配问题。吴军提出三维框架：可实现的长期愿景（主动选择非被动逃避）、清晰的目标与路径（具体到城市和职业）、深思熟虑的决心（愿意放弃已有利益）。',analogy:'不是“哪里更好”的问题，而是“哪里更适合你”的问题。如同买鞋——不是越贵越好，是越合脚越好。别人穿着舒服的鞋（加拿大技术移民好），到你脚上可能磨出血（你的职业在当地无需求）。',example:'专业人士（工程师/护士/厨师/电工）最容易移民且收入显著提升；国内高管最难找到同等职位且心理落差最大；简单劳动者经济收益绝对值最大但社会地位可能下降。70%后悔案例源于决策依据是“别人都去了”而非“我自己想去”。',counter:'三维框架不是永远不能移民——它说的是“在三个维度都准备好之前不要匆忙决策”。可以先从“可逆转的试验”开始（如短期工作/留学），逐步验证匹配度。'},
+  {id:'c7',name:'技术突变期的分母牺牲',def:'技术范式切换时（如从移动互联网到AI），旧体系崩塌先于新体系建成，过渡期中的多数人被当作“分母”牺牲。最早被淘汰的往往不是最不努力的人，而是放弃原有特长追风口的人。',analogy:'如同地震时跑错方向的人——不是因为他们跑得慢，而是因为他们在向倒塌的方向跑。放弃自己深耕多年的领域（坚固的建筑）冲向不熟悉的新领域（正在建设中的工地），结果两边都没站稳。',example:'吴军3000年前的类比：农民放弃田庄去神庙打杂；今天的映射：大量非AI背景的工程师报培训班“转型AI”，但真正钻研技术的不足千分之一。大厂裁员中，转岗AI“成功”者往往仍是原AI背景的人。',counter:'不是说永远不要转型——而是要在原有深度积累的基础上嫁接新技术。安克从充电器到智能家居是新品类但同一核心能力（品牌化+供应链管理）。真正的“分子”是在旧领域有深度+能将新技术整合进来的人。'},
+  {id:'c8',name:'烟屁股vs复利：长期回报',def:'巴菲特“烟屁股”比喻：投资劣质资产只能获得短期小利，无法带来长期收益。对应的创业/职业法则：20年无增长的领域未来5年爆发的概率极低；个人赚钱风格决定财富上限，风格不变财富不变。',analogy:'如同种树——烟屁股投资是折一根别人丢掉的树枝插土里，可能冒两片绿叶但不可能长成大树。复利投资是在合适的土壤里种一棵好树苗，前几年看不到变化，第10年突然高过屋顶。',example:'巴菲特早期买伯克希尔纺织厂是烟屁股投资，至今后悔；后来买可口可乐/苹果是复利投资。安克从充电器起步，一个品类赚钱后再拓品类，15年做成全球化品牌。与之对比：追风口的创业项目3年换了4个方向。',counter:'有时“捡烟屁股”在特定条件下是理性的——如果你极度缺资源且这个机会能帮你活下去。但如果一直只捡烟屁股，就永远没有自己的烟。关键是在活下来之后，要有意识地切换到复利轨道。'},
+  {id:'c9',name:'信息换能量：虚拟经济',def:'人类文明的底层驱动力是用信息（知识/技术/组织）换取能量（资源/效率）。元宇宙/虚拟经济的本质是这一趋势的终极表达——通过足够逼真的虚拟体验替代物理世界的资源消耗，突破物质有限性的约束。',analogy:'电话→视频通话→VR会议：同样的沟通需求，消耗的物质资源越来越少（不需要出差、不需要会议室、不需要打印材料），但信息密度越来越高。每一代技术的本质都是用更多的信息处理能力换取更少的物理资源消耗。',example:'腾讯卖《阿凡达》虚拟头像收入上亿元，成本几乎为零；高老板雇5个人24小时轮班维护QQ农场第一名；日本二次元年轻人将角色扮演餐厅体验与线上游戏深度融合。超级碗现场4万人vs电视观众数亿——虚拟体验的规模天花板远高于物理体验。',counter:'信息换能量不是免费的——数据中心消耗大量电力，训练一个GPT模型相当于几百个家庭的年用电量。当前阶段“信息换能量”的效率还不够高，但方向是明确的：每单位信息处理的能耗在指数级下降。'},
+  {id:'c10',name:'企业忠诚的经济学',def:'企业要求员工单向忠诚，但保留随时裁员的权力——这是单边契约。健康的职场关系应基于共同利益而非个人义气。识别标准：考察支付能力和诚信记录、从小合作开始验证、按规矩做事（签合同/收定金）、拒绝赔本赚吆喝。',analogy:'公司不是家庭——公司是球队。球队的目标是赢球（利润），球员因表现被选入或交易。你可以热爱这支球队、全力以赴，但不能假设球队会因为你“忠诚”就留下你。当更好的球员出现或你的表现下滑，交易是球队的理性行为。',example:'《凡人歌》那伟对老板/同事/下属都讲义气，老板跑路后被开除，无人为其出头，创业后又因“哥们义气”不签合同导致现金流断裂。曾国藩被当作“穆彰阿党”遭咸丰冷落的教训：以某人标签自居者，上级一倒就被清算。',counter:'共同利益和忠诚不是完全对立的——在小型团队（初创公司、特种部队）中，忠诚确实影响团队效能和生存概率。但即使是这种场景，忠诚也是双向的（团队不放弃你，你也不放弃团队），而非单向索取。'}
+];
+
+const mksCoreIds = ['c1','c5','c7','c8'];
+
+// ===== QUIZ QUESTIONS =====
+const choiceQuestions = [
+  {q:'内卷的本质是什么？',o:['竞争太激烈','所有参与者被迫投入更多但整体福利无提升的非零和双输困局','中国人太多','企业太贪心'],answer:1},
+  {q:'刘易斯拐点到来后，以下哪项最可能发生？',o:['劳动力无限供给','工资保持不变','农村人口持续向城市迁移','劳动力短缺推动工资上涨'],answer:3},
+  {q:'吴军认为服务业占GDP比重最高的国家通常具备什么特征？',o:['制造业最强大','农业最发达','经济最发达','人口最多'],answer:2},
+  {q:'“知本家”是指什么？',o:['掌握核心技术的富豪','所有科技从业者','写代码的程序员','投资科技股的股民'],answer:0},
+  {q:'35岁危机在中国IT行业格外突出的根本原因是什么？',o:['IT行业歧视严重','经济放缓+经验边际递减+反歧视法缺位','35岁的人都不努力了','中国IT行业太小'],answer:1},
+  {q:'吴军提出的移民决策三维框架不包括以下哪一项？',o:['可实现的长期愿景','清晰的目标与路径','深思熟虑的决心','超过100万美元的资产'],answer:3},
+  {q:'“技术突变期的分母牺牲”中，最先被淘汰的是谁？',o:['放弃原有特长抢风口的人','最懒的人','年纪最大的人','学历最低的人'],answer:0},
+  {q:'巴菲特的“烟屁股”比喻在创业中对应什么？',o:['长期深耕一个领域','追求短期小利无法带来长期回报的投资','投资烟草公司','只做不赚钱的项目'],answer:1},
+  {q:'亚马逊成立于1994年，首次季度盈利是在哪一年？',o:['2001年Q4','从未盈利过','1999年Q1','2010年Q2'],answer:0},
+  {q:'以下哪类人最适合移民？',o:['习惯“大包大揽”体制环境的人','国内大公司高管','有具体技能且对新生活方式有主动愿景的专业人士','不愿意学外语的人'],answer:2},
+  {q:'吴军认为企业忠诚的本质问题是什么？',o:['企业要求单向忠诚但保留随时裁员权——单边契约','员工不够忠诚','员工工资太低','企业文化不好'],answer:0},
+  {q:'“信息换能量”在以下哪个案例中体现最明显？',o:['用更快的汽车送信','腾讯售卖虚拟头像——成本几乎为零但收入上亿','开更多实体店','建更大的工厂'],answer:1},
+  {q:'美国人均GDP约8.17万美元，服务业占GDP约多少？',o:['54%','60%','78%','90%'],answer:2},
+  {q:'面对裁员风险，吴军建议的“事前选择三优先”不包括哪项？',o:['总部优先于分公司','核心业务优先于辅助部门','盈利部门优先于烧钱部门','高薪岗位优先于低薪岗位'],answer:3},
+  {q:'安克(Anker)的商业模式属于什么类型？',o:['低价内卷型','平台补贴型','品牌化+高溢价+复利增长型','广告驱动型'],answer:2},
+  {q:'吴军认为真正的吃苦是什么？',o:['爬5000米高山','体验农村生活','参加短期慈善扶贫','为生存必需的付出（如童年省下7分钱车费步行半小时）'],answer:3},
+  {q:'“禁止越级上报”在经济学上的本质是什么？',o:['信息控制机制——以牺牲组织信息效率为代价降低管理层威胁感','维护管理秩序','提高工作效率','保护员工隐私'],answer:0},
+  {q:'哪个国家的GDP数据显示服务业占比与人均GDP正相关最强？',o:['印度（人均2484美元，服务业50%）','越南（人均4346美元，服务业43%）','美国（人均81700美元，服务业78%）','中国（人均12600美元，服务业54%）'],answer:2},
+  {q:'吴军认为“中间人的价值”来自什么？',o:['人脉关系','社交能力','回扣和提成','信息不对称和降低交易成本'],answer:3},
+  {q:'以下关于创业的说法最符合吴军观点的是？',o:['只要有热情就可以创业','20年无增长的市场，未来5年爆发的概率极低','风口来了必须All-in','创业者最重要的是管理能力'],answer:1}
+];
+
+const shortQuestions = [
+  {q:'为什么说服务经济不是“虚”的？用吴军的逻辑回答。',a:'财富=调动资源的能力，其中最值钱的资源是他人为你投入的时间。你花钱请人理发调动了理发师的时间，理发师用收入请人修车调动了修车师傅的时间——服务交换网络就是财富创造网络。思想实验证明：一个多数人互相服务的社会比一个多数人躺平仅消费基本物资的社会要富裕得多。物质生产是硬件，服务业是软件和生态系统，两者缺一不可。'},
+  {q:'内卷的囚徒困境如何破解？从个人和制度两个层面回答。',a:'个人层面：找到不可替代的差异化价值（如安克做品牌而非价格战），跳出同质化竞争维度。制度层面：改变博弈规则，让合作而非竞争成为最优策略（如专利制度保护创新者免于立即被模仿）。核心认知：在一个错误设计的博弈中，个体的“努力”可能适得其反——先确认博弈结构再决定策略。'},
+  {q:'35岁危机的三层经济学逻辑是什么？',a:'第一层供需关系：互联网从高速增长转平稳发展，管理岗位创造速度低于资深员工增长速度。第二层边际产出递减：5年胜任+3-5年天花板后，经验增长的边际贡献极小，15年经验者未必优于10年经验者。第三层制度差异：欧美有严格反年龄歧视法，中国企业无此约束；且欧美年轻人跳槽频繁，企业倾向用稳定的年长者。'},
+  {q:'吴军认为移民最常见的后悔原因是什么？如何避免？',a:'约70%后悔案例源于决策依据是“他人想法”而非“自身愿景”。后悔三大触发点：① 税高（美国高收入者实得仅40%）；② 寂寞（缺乏集体生活、公私分明）；③ 安全感知错位（新移民易成为犯罪目标）。避免方法：使用三维框架在决策前验证——愿景（我真的想要这种生活方式？）、路径（有具体可行的路径？）、决心（愿意放弃什么？）。'},
+  {q:'为什么“放弃原有特长抢风口的人最早被淘汰”？',a:'这是“分母牺牲”效应的典型表现。技术突变期旧体系崩塌先于新体系建成——当你放弃深耕多年的领域冲向不熟悉的新领域时，你从旧领域的top 20%变成新领域的bottom 50%，同时失去了在过渡期立足的根据地。吴军类比3000年前农民放弃田庄去神庙打杂：以为靠近权力中心，实际失去了安身立命的根本。安全策略：在原有深度积累基础上嫁接新技术。'},
+  {q:'企业“忠诚”的经济学本质是什么？与什么概念对比？',a:'企业忠诚在职场语境下往往是“服从”的同义词。它与“共同利益”对比：忠诚是单向契约（企业保留随时裁员的权力但要员工单向忠诚），共同利益是双向契约（双方基于对等利益合作）。吴军用“球队模型”替代“家庭模型”——公司是球队，目标是赢球，球员因表现被交易是正常的。识别共同利益的标准：对方支付能力、诚信记录、从小合作验证、按规矩做事。'},
+  {q:'用美第奇家族的例子说明“虚经济”如何创造比“实经济”更大的价值。',a:'美第奇家族资助米开朗基罗创作雕塑和绘画、支持伽利略进行科学研究——这些投资在当时的实物价值远不及宫殿和珠宝，但几百年后，米开朗基罗的作品成为无价之宝，伽利略的科学贡献改变了人类文明进程。对比：同一时期的欧洲王公贵族修建的宫殿城堡多数已破产或成为负资产（维护费用高昂）。“虚”经济（科学、艺术、技术）的复利效应远超实物资产。'},
+  {q:'如何用“刘易斯拐点”理解中国的产业升级压力？',a:'拐点前（~1980-2010）：农村剩余劳动力“无限供给”，工资不涨但经济高增长，低端制造业可以靠廉价劳动力生存。拐点后（2010-）：劳动力从过剩转短缺，工资被迫上涨，低端制造业要么外迁（越南/印度）要么升级（自动化/品牌化）。拐点是中国制造业必须从“量的扩张”转向“质的提升”的结构性推手。'},
+  {q:'“烟屁股”投资和“复利”投资在职业选择上如何应用？',a:'“烟屁股”职业：追短期热点（2021年NFT、2022年Web3、2023年AIGC培训师），红利消退后不留任何积累。“复利”职业：选一个20年持续增长的领域（医疗、教育、底层技术），每年积累的经验和资源会叠加产生复利。判断标准：你的10年经验是否比你的3年经验值钱得多？如果是，就是复利型职业；如果差不多，就是烟屁股型。'},
+  {q:'吴军认为企业裁员的真实逻辑是什么？个人应如何应对？',a:'裁员不是企业“变坏了”而是经济规律在技术突变期的自然表达。企业从增量竞争转存量竞争时，利润优先于增长——裁员是最快见效的利润提升手段。个人应对：事前选择（总部/核心业务/盈利部门优先）→事中巩固（提升不可替代性/处理人际关系/警惕性价比陷阱）→临近裁员（内部打听安全部门/不在关键期度假/与猎头保持联系）。核心认知：永远不以“忠诚”作为职业安全的锚——以“不可替代性”为锚。'}
+];
+
+// ===== STATE =====
+let learnedCards = JSON.parse(localStorage.getItem('mks7_learned')||'[]');
+let wrongAnswers = JSON.parse(localStorage.getItem('mks7_wrong')||'[]');
+let currentCardIdx = 0;
+let cardFlipped = false;
+let examInterval = null;
+let examSeconds = 0;
+let examActive = false;
+let examQuestions = [];
+let examAnswers = [];
+let quizAnswered = JSON.parse(localStorage.getItem('mks7_quiz_answered')||'[]');
+let shortRevealed = JSON.parse(localStorage.getItem('mks7_short_revealed')||'[]');
+
+function save(){localStorage.setItem('mks7_learned',JSON.stringify(learnedCards));localStorage.setItem('mks7_wrong',JSON.stringify(wrongAnswers));localStorage.setItem('mks7_quiz_answered',JSON.stringify(quizAnswered));localStorage.setItem('mks7_short_revealed',JSON.stringify(shortRevealed));}
+
+function switchTab(n){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  var btn=document.querySelector('.tab-btn[data-tab="'+n+'"]');
+  if(btn)btn.classList.add('active');
+  var panel=document.getElementById('panel'+n);
+  if(panel)panel.classList.add('active');
+  if(n===4) renderReview();
+}
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');
+  document.getElementById('panel'+this.dataset.tab).classList.add('active');
+  if(this.dataset.tab==='4') renderReview();
+}));
+
+// ===== SVG CONCEPT MAP =====
+function renderSVG() {
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" width="960" height="660">'+
+    '<defs><marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c0392b"/></marker>'+
+    '<marker id="arrowGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b8860b"/></marker>'+
+    '<marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#27ae60"/></marker>'+
+    '<marker id="arrowTan" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d4a574"/></marker></defs>'+
+    '<rect width="960" height="660" fill="#fdf6ec" rx="8"/>'+
+    '<!-- Layer 1: Root - Top -->'+
+    '<rect x="355" y="18" width="250" height="42" rx="8" fill="#c0392b"/>'+
+    '<text x="480" y="45" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">经济规律—职场进化</text>'+
+    '<!-- Layer 2: Driving Forces -->'+
+    '<rect x="68" y="110" width="190" height="40" rx="8" fill="#d4a574"/>'+
+    '<text x="163" y="135" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">结构性驱动力</text>'+
+    '<rect x="308" y="110" width="155" height="40" rx="8" fill="#d4a574"/>'+
+    '<text x="385" y="135" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">技术变革驱动</text>'+
+    '<rect x="513" y="110" width="175" height="40" rx="8" fill="#d4a574"/>'+
+    '<text x="600" y="135" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">制度环境约束</text>'+
+    '<rect x="738" y="110" width="160" height="40" rx="8" fill="#d4a574"/>'+
+    '<text x="818" y="135" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">全球化博弈</text>'+
+    '<!-- Edges root->L2 -->'+
+    '<line x1="430" y1="60" x2="190" y2="110" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowRed)"/>'+
+    '<text x="290" y="82" text-anchor="middle" fill="#c0392b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">驱动</text>'+
+    '<line x1="460" y1="60" x2="400" y2="110" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowRed)"/>'+
+    '<text x="435" y="82" text-anchor="middle" fill="#c0392b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">驱动</text>'+
+    '<line x1="510" y1="60" x2="590" y2="110" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowRed)"/>'+
+    '<text x="555" y="82" text-anchor="middle" fill="#c0392b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">塑造</text>'+
+    '<line x1="550" y1="60" x2="790" y2="110" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowRed)"/>'+
+    '<text x="690" y="82" text-anchor="middle" fill="#c0392b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">博弈</text>'+
+    '<!-- Layer 3: Core Concepts -->'+
+    '<rect x="40" y="200" width="130" height="52" rx="6" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5"/>'+
+    '<text x="105" y="220" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">内卷双输</text>'+
+    '<text x="105" y="238" text-anchor="middle" fill="#6b5b5b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">囚徒困境·存量博弈</text>'+
+    '<rect x="195" y="200" width="130" height="52" rx="6" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5"/>'+
+    '<text x="260" y="220" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">刘易斯拐点</text>'+
+    '<text x="260" y="238" text-anchor="middle" fill="#6b5b5b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">劳动力·产业转型</text>'+
+    '<rect x="350" y="200" width="140" height="52" rx="6" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5"/>'+
+    '<text x="420" y="220" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">知本家</text>'+
+    '<text x="420" y="238" text-anchor="middle" fill="#6b5b5b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">信息不平等·技术垄断</text>'+
+    '<rect x="515" y="200" width="155" height="52" rx="6" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5"/>'+
+    '<text x="592" y="220" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">35岁危机</text>'+
+    '<text x="592" y="238" text-anchor="middle" fill="#6b5b5b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">供需·边际递减</text>'+
+    '<rect x="695" y="200" width="155" height="52" rx="6" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5"/>'+
+    '<text x="772" y="220" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">服务经济</text>'+
+    '<text x="772" y="238" text-anchor="middle" fill="#6b5b5b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">价值创造·GDP结构</text>'+
+    '<!-- Edges L2->L3 -->'+
+    '<line x1="120" y1="150" x2="110" y2="200" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrowGold)"/>'+
+    '<text x="130" y="178" fill="#b8860b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">产生</text>'+
+    '<line x1="230" y1="150" x2="250" y2="200" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrowGold)"/>'+
+    '<text x="250" y="178" fill="#b8860b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">产生</text>'+
+    '<line x1="370" y1="150" x2="410" y2="200" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrowGold)"/>'+
+    '<text x="400" y="178" fill="#b8860b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">放大</text>'+
+    '<line x1="490" y1="150" x2="560" y2="200" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrowGold)"/>'+
+    '<text x="535" y="178" fill="#b8860b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">结合产生</text>'+
+    '<line x1="650" y1="150" x2="750" y2="200" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrowGold)"/>'+
+    '<text x="710" y="178" fill="#b8860b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">推动</text>'+
+    '<!-- Layer 4: Application Phenomena -->'+
+    '<rect x="35" y="302" width="145" height="52" rx="6" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="107" y="322" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">裁员潮</text>'+
+    '<text x="107" y="340" text-anchor="middle" fill="#6b5b5b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">分母牺牲·性价比筛选</text>'+
+    '<rect x="205" y="302" width="145" height="52" rx="6" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="277" y="322" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">职业瓶颈</text>'+
+    '<text x="277" y="340" text-anchor="middle" fill="#6b5b5b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">经验贬值·增长停滞</text>'+
+    '<rect x="375" y="302" width="145" height="52" rx="6" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="447" y="322" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">平台垄断</text>'+
+    '<text x="447" y="340" text-anchor="middle" fill="#6b5b5b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">二选一·政策干预</text>'+
+    '<rect x="545" y="302" width="155" height="52" rx="6" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="622" y="322" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">虚假忠诚</text>'+
+    '<text x="622" y="340" text-anchor="middle" fill="#6b5b5b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">单边契约·义气陷阱</text>'+
+    '<rect x="725" y="302" width="155" height="52" rx="6" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="802" y="322" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">盲目追风口</text>'+
+    '<text x="802" y="340" text-anchor="middle" fill="#6b5b5b" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">放弃专长·分母牺牲</text>'+
+    '<!-- Edges L3->L4 -->'+
+    '<line x1="100" y1="252" x2="105" y2="302" stroke="#27ae60" stroke-width="1.2" marker-end="url(#arrowGreen)"/>'+
+    '<text x="120" y="280" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">表现为</text>'+
+    '<line x1="270" y1="252" x2="275" y2="302" stroke="#27ae60" stroke-width="1.2" marker-end="url(#arrowGreen)"/>'+
+    '<text x="290" y="280" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">导致</text>'+
+    '<line x1="430" y1="252" x2="440" y2="302" stroke="#27ae60" stroke-width="1.2" marker-end="url(#arrowGreen)"/>'+
+    '<text x="455" y="280" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">催生</text>'+
+    '<line x1="600" y1="252" x2="610" y2="302" stroke="#27ae60" stroke-width="1.2" marker-end="url(#arrowGreen)"/>'+
+    '<text x="625" y="280" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">表现为</text>'+
+    '<line x1="780" y1="252" x2="790" y2="302" stroke="#27ae60" stroke-width="1.2" marker-end="url(#arrowGreen)"/>'+
+    '<text x="805" y="280" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">表现为</text>'+
+    '<!-- Layer 5: Response Strategies -->'+
+    '<rect x="60" y="410" width="155" height="52" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="137" y="430" text-anchor="middle" fill="#155724" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">不可替代性策略</text>'+
+    '<text x="137" y="450" text-anchor="middle" fill="#155724" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">核心业务·特殊技能</text>'+
+    '<rect x="250" y="410" width="155" height="52" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="327" y="430" text-anchor="middle" fill="#155724" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">移民理性框架</text>'+
+    '<text x="327" y="450" text-anchor="middle" fill="#155724" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">愿景×路径×决心</text>'+
+    '<rect x="440" y="410" width="155" height="52" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="517" y="430" text-anchor="middle" fill="#155724" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">复利职业选择</text>'+
+    '<text x="517" y="450" text-anchor="middle" fill="#155724" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">长期深耕·经验增值</text>'+
+    '<rect x="630" y="410" width="170" height="52" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>'+
+    '<text x="715" y="430" text-anchor="middle" fill="#155724" font-size="11" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">共同利益合作</text>'+
+    '<text x="715" y="450" text-anchor="middle" fill="#155724" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">诚信·合规·从小验证</text>'+
+    '<!-- Edges L4->L5 -->'+
+    '<line x1="110" y1="354" x2="130" y2="410" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>'+
+    '<text x="140" y="385" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">应对</text>'+
+    '<line x1="280" y1="354" x2="310" y2="410" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>'+
+    '<text x="310" y="385" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">应对</text>'+
+    '<line x1="450" y1="354" x2="490" y2="410" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>'+
+    '<text x="490" y="385" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">应对</text>'+
+    '<line x1="630" y1="354" x2="690" y2="410" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>'+
+    '<text x="680" y="385" fill="#27ae60" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">应对</text>'+
+    '<!-- Feedback loops (dashed) -->'+
+    '<path d="M160,462 Q160,530 480,530 Q800,530 800,462" fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#arrowRed)"/>'+
+    '<text x="480" y="552" text-anchor="middle" fill="#c0392b" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">个体应对策略反馈至经济结构（如移民改变劳动力供给、复利选择改变人才分布）</text>'+
+    '<!-- Cross connections dashed -->'+
+    '<line x1="170" y1="252" x2="520" y2="252" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,3"/>'+
+    '<text x="345" y="268" text-anchor="middle" fill="#d4a574" font-size="8" font-family="PingFang SC,Microsoft YaHei,sans-serif">共同作用</text>'+
+    '<!-- Legend -->'+
+    '<rect x="730" y="520" width="210" height="128" rx="6" fill="#fffaf2" stroke="#e8d5c4" stroke-width="1"/>'+
+    '<text x="835" y="538" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold" font-family="PingFang SC,Microsoft YaHei,sans-serif">图例</text>'+
+    '<rect x="742" y="548" width="14" height="10" rx="2" fill="#c0392b"/>'+
+    '<text x="762" y="557" fill="#3d2f2f" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">顶层驱动力（元框架）</text>'+
+    '<rect x="742" y="565" width="14" height="10" rx="2" fill="#d4a574"/>'+
+    '<text x="762" y="574" fill="#3d2f2f" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">中层机制（结构因素）</text>'+
+    '<rect x="742" y="582" width="14" height="10" rx="2" fill="#fffaf2" stroke="#b8860b"/>'+
+    '<text x="762" y="591" fill="#3d2f2f" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">核心概念（分析工具）</text>'+
+    '<rect x="742" y="599" width="14" height="10" rx="2" fill="#fffaf2" stroke="#27ae60"/>'+
+    '<text x="762" y="608" fill="#3d2f2f" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">应用层（现象+策略）</text>'+
+    '<line x1="742" y1="621" x2="762" y2="621" stroke="#c0392b" stroke-dasharray="6,4" stroke-width="1"/>'+
+    '<text x="768" y="625" fill="#3d2f2f" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">虚线=回环反馈</text>'+
+    '<line x1="742" y1="638" x2="762" y2="638" stroke="#b8860b" stroke-width="1"/>'+
+    '<text x="768" y="642" fill="#3d2f2f" font-size="9" font-family="PingFang SC,Microsoft YaHei,sans-serif">实线=直接关系</text>'+
+    '</svg>';
+  document.getElementById('conceptMap').innerHTML = svg;
+}
+renderSVG();
+
+// ===== DASHBOARD CONCEPTS =====
+function renderConcepts(){
+  var grid=document.getElementById('conceptGrid');
+  grid.innerHTML=concepts.map(function(c,i){return '<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><strong>'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,60)+'...</p></div>';}).join('');
+  var mks=document.getElementById('mksCoreGrid');
+  mks.innerHTML=mksCoreIds.map(function(id){
+    var c=concepts.find(function(x){return x.id===id;});
+    return '<div class="concept-card mks-core"><strong>★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,80)+'...</p></div>';
+  }).join('');
+}
+
+// ===== FLIP CARDS =====
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1);}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1);}
+
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id;});}
+  else{learnedCards.push(id);}
+  save();updateProgress();setCard(currentCardIdx);
+}
+
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped;});
+
+// ===== PROGRESS =====
+function updateProgress(){
+  var pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+  document.getElementById('totalProgress').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct>0?'已学习 '+learnedCards.length+'/'+concepts.length+' 个概念':'尚未开始学习';
+}
+
+// ===== QUIZ SYSTEM =====
+function startQuiz(){
+  document.getElementById('staticQuiz').style.display='none';
+  var shuffled=choiceQuestions.slice().sort(function(){return Math.random()-0.5;});
+  var pickedMC=shuffled.slice(0,10);
+  var shuffledSA=shortQuestions.slice().sort(function(){return Math.random()-0.5;});
+  var pickedSA=shuffledSA.slice(0,3);
+  var container=document.getElementById('quizContainer');
+  var html='';
+  var correctCount=0;
+  var answeredCount=0;
+  var total=pickedMC.length+pickedSA.length;
+  pickedMC.forEach(function(q,i){
+    html+='<div class="quiz-card"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+    q.o.forEach(function(opt,j){
+      html+='<div class="option" onclick="checkQuizOption(this,'+j+','+q.answer+',this.parentElement)" data-idx="'+j+'">'+String.fromCharCode(65+j)+'. '+opt+'</div>';
+    });
+    html+='<div class="feedback"></div></div>';
+  });
+  pickedSA.forEach(function(q,i){
+    html+='<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+    html+='<textarea class="essay-area" placeholder="请写下你的思考..."></textarea>';
+    html+='<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="this.nextElementSibling?this.nextElementSibling.classList.toggle(\'open\'):null;var fb=this.parentElement.querySelector(\'.feedback\');if(fb){fb.classList.remove(\'feedback\',\'wrong\');fb.classList.add(\'feedback\',\'correct\');fb.style.display=\'block\';fb.innerHTML=\'<strong>参考：</strong>'+q.a.replace(/'/g,'\\\'')+'\'}">查看参考</button>';
+    html+='<div class="feedback" style="display:none"></div></div>';
+  });
+  container.innerHTML=html;
+  document.getElementById('quizScore').textContent='';
+  document.getElementById('quizTimer').textContent='';
+  // Timer
+  var sec=0;
+  if(window.quizTimerInterval)clearInterval(window.quizTimerInterval);
+  window.quizTimerInterval=setInterval(function(){
+    sec++;
+    var m=Math.floor(sec/60);
+    var s=sec%60;
+    document.getElementById('quizTimer').textContent=(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
+  },1000);
+}
+
+function checkQuizOption(el,idx,answer,card){
+  if(el.parentElement.querySelector('.option.correct')||el.parentElement.querySelector('.option.wrong'))return;
+  var options=el.parentElement.querySelectorAll('.option');
+  options.forEach(function(o){o.style.pointerEvents='none';});
+  if(idx===answer){
+    el.classList.add('correct');
+    var fb=card.querySelector('.feedback');
+    fb.textContent='✓ 正确！';
+    fb.className='feedback correct';
+    fb.style.display='block';
+  }else{
+    el.classList.add('wrong');
+    options[answer].classList.add('correct');
+    var fb=card.querySelector('.feedback');
+    fb.textContent='✗ 错误，正确答案是 '+String.fromCharCode(65+answer);
+    fb.className='feedback wrong';
+    fb.style.display='block';
+  }
+}
+
+function resetQuiz(){
+  document.getElementById('quizContainer').innerHTML='';
+  if(window.quizTimerInterval)clearInterval(window.quizTimerInterval);
+  document.getElementById('quizTimer').textContent='';
+  document.getElementById('quizScore').textContent='';
+}
+
+// ===== EXAM =====
+function startExam(){
+  if(examActive)return;
+  examActive=true;
+  examSeconds=900;
+  examAnswers=[];
+  var shuffledMC=choiceQuestions.slice().sort(function(){return Math.random()-0.5;});
+  examQuestions=shuffledMC.slice(0,7);
+  var shuffledSA=shortQuestions.slice().sort(function(){return Math.random()-0.5;});
+  examQuestions=examQuestions.concat(shuffledSA.slice(0,3));
+  document.getElementById('startExamBtn').style.display='none';
+  var area=document.getElementById('examArea');
+  area.style.display='block';
+  area.innerHTML='';
+  examQuestions.forEach(function(q,i){
+    var isMC=!!q.o;
+    var html='<div class="quiz-card"><div class="q-num">'+(i+1)+'. '+(isMC?'选择题':'简答题')+'</div><div class="q-text">'+q.q+'</div>';
+    if(isMC){
+      q.o.forEach(function(opt,j){
+        html+='<div class="option" onclick="selectExamOption(this,'+i+','+j+')" data-exam="'+i+'" data-idx="'+j+'">'+String.fromCharCode(65+j)+'. '+opt+'</div>';
+      });
+    }else{
+      html+='<textarea class="essay-area" onchange="examAnswers['+i+']=this.value" placeholder="请作答..."></textarea>';
+    }
+    html+='</div>';
+    area.innerHTML+=html;
+  });
+  area.innerHTML+='<button class="btn btn-primary" onclick="submitExam()" style="margin-top:12px">提交答卷</button>';
+  document.getElementById('examResult').style.display='none';
+  if(examInterval)clearInterval(examInterval);
+  examInterval=setInterval(function(){
+    examSeconds--;
+    var m=Math.floor(examSeconds/60);
+    var s=examSeconds%60;
+    document.getElementById('examTimer').textContent=(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
+    if(examSeconds<=0){submitExam();}
+  },1000);
+}
+
+function selectExamOption(el,qIdx,optIdx){
+  var siblings=el.parentElement.querySelectorAll('.option');
+  siblings.forEach(function(s){s.classList.remove('selected');});
+  el.classList.add('selected');
+  examAnswers[qIdx]=optIdx;
+}
+
+function submitExam(){
+  examActive=false;
+  if(examInterval)clearInterval(examInterval);
+  var score=0;
+  for(var i=0;i<Math.min(7,examQuestions.length);i++){
+    if(examAnswers[i]===examQuestions[i].answer)score++;
+  }
+  var used=900-examSeconds;
+  var m=Math.floor(used/60);
+  var s=used%60;
+  document.getElementById('examArea').style.display='none';
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML='<h3>考试结果</h3><div class="stat-item"><div class="stat-value">'+score+'/'+Math.min(7,examQuestions.length)+'</div><div class="stat-label">选择题正确</div></div><p style="color:var(--text-light);margin-top:8px">用时 '+(m<10?'0'+m:m)+':'+(s<10?'0'+s:s)+'（简答题请自行对照参考答案）</p><p style="color:var(--text-light);font-size:.85rem">'+('简答题请对照题库系统或重新随机抽题查看参考答案。')+'</p><button class="btn btn-outline" onclick="resetExam()" style="margin-top:10px">重新开始</button>';
+}
+
+function resetExam(){
+  examActive=false;
+  if(examInterval)clearInterval(examInterval);
+  examSeconds=900;
+  document.getElementById('examTimer').textContent='15:00';
+  document.getElementById('startExamBtn').style.display='inline-block';
+  document.getElementById('examArea').style.display='none';
+  document.getElementById('examArea').innerHTML='';
+  document.getElementById('examResult').style.display='none';
+}
+
+// ===== REVIEW =====
+function renderReview(){
+  var stats=document.getElementById('statsGrid');
+  var pct=Math.round(learnedCards.length/concepts.length*100);
+  stats.innerHTML='<div class="stat-item"><div class="stat-value">'+learnedCards.length+'/'+concepts.length+'</div><div class="stat-label">概念掌握</div></div><div class="stat-item"><div class="stat-value">'+pct+'%</div><div class="stat-label">学习进度</div></div><div class="stat-item"><div class="stat-value">'+wrongAnswers.length+'</div><div class="stat-label">错题数</div></div>';
+  var wb=document.getElementById('wrongBook');
+  if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--text-light)">暂无错题，继续保持！</p>';return;}
+  wb.innerHTML=wrongAnswers.map(function(w,i){return '<div class="card" style="padding:10px"><strong>'+(i+1)+'. '+w.q+'</strong><p style="color:var(--text-light);margin-top:4px;font-size:.85rem">你的答案：'+w.given+' → 正确：'+w.correct+'</p></div>';}).join('');
+  var wc=document.getElementById('weakConcepts');
+  wc.innerHTML='<p style="color:var(--text-light)">尚未掌握的概念：'+(learnedCards.length<concepts.length?concepts.filter(function(c){return !learnedCards.includes(c.id);}).map(function(c){return c.name;}).join('、'):'全部已掌握！')+'</p>';
+}
+
+// ===== MINDMAP TOGGLE =====
+function toggleMindmap(el){
+  if(typeof el==='string'){el=document.getElementById(el);}
+  if(!el)return;
+  el.classList.toggle('open');
+  var children=el.nextElementSibling;
+  if(children&&children.classList.contains('tree-children')){children.classList.toggle('open');}
+}
+
+// ===== DECISION SIM =====
+function showDecisionResult(el,resultId){
+  var container=el.parentElement.parentElement;
+  var results=container.querySelectorAll('.decision-result');
+  results.forEach(function(r){r.style.display='none';});
+  var target=document.getElementById(resultId);
+  if(target)target.style.display='block';
+}
+
+// ===== INIT =====
+function init(){
+  renderConcepts();
+  setCard(0);
+  updateProgress();
+  // Render static quizzes
+  var cq=document.getElementById('choiceQuiz');
+  cq.innerHTML=choiceQuestions.map(function(q,i){
+    return '<div class="quiz-card"><div class="q-num">'+(i+1)+'. '+q.q+'</div>'+q.o.map(function(opt,j){
+      return '<div class="option" onclick="checkQuizOption(this,'+j+','+q.answer+',this.parentElement)" data-idx="'+j+'">'+String.fromCharCode(65+j)+'. '+opt+'</div>';
+    }).join('')+'<div class="feedback"></div></div>';
+  }).join('');
+  var sq=document.getElementById('shortQuiz');
+  sq.innerHTML=shortQuestions.map(function(q,i){
+    return '<div class="quiz-card"><div class="q-num">'+(i+1)+'. '+q.q+'</div><textarea class="essay-area" placeholder="请写下你的思考..."></textarea><button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="var fb=this.parentElement.querySelector(\'.feedback\');if(fb){fb.classList.remove(\'feedback\',\'wrong\');fb.classList.add(\'feedback\',\'correct\');fb.style.display=\'block\';fb.innerHTML=\'<strong>参考：</strong>'+q.a.replace(/'/g,'\\\'')+'\'}">查看参考</button><div class="feedback" style="display:none"></div></div>';
+  }).join('');
+}
+init();
+</script>
+
+</body>
+</html>

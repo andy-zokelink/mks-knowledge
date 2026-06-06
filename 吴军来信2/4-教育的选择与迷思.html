@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育的选择与迷思 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+
+/* Flip Card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Quiz */
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+
+/* Tree */
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"▸";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+
+/* Socratic */
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+
+/* Decision */
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+
+/* Table */
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+
+/* SVG */
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto}
+
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+
+/* Quiz container */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--bg)}
+
+.back-home{text-align:center;margin:16px 0;font-size:.85rem}
+.back-home a{color:var(--text-light);text-decoration:none;border-bottom:1px dashed var(--border);padding-bottom:2px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+}
+@media(max-width:375px){
+  .tab-btn{padding:5px 6px;font-size:.65rem}
+  .flip-card{height:clamp(200px,50vw,260px)}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>教育的选择与迷思 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<div class="container">
+
+<p class="subtitle">吴军来信2 · 认知操作系统 — 用底层逻辑框架（控制论、四维时空、系统论）重新审视教育：选校、留学、通才vs专才、教育公平、父母角色</p>
+
+<!-- Tab Bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- Tab 0: 知识集总览 -->
+<div class="tab-panel active" id="panel0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">不讲「教育该怎么做」，而讲「如何思考教育问题」。用科学原理（控制论、四维时空、系统论、认知心理学、奥卡姆剃刀）作为<strong>认知透镜</strong>，跨域重建对选校、留学、通才vs专才、教育公平、父母角色等教育迷思的底层理解。与硅谷来信1/3「教育与成长」互补：前作讲教养方法（学习习惯、阅读写作、家庭教育技巧），本专题讲教育决策背后的底层逻辑。</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>概念关系图</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+  <span>━━ 认知透镜层（底层逻辑）</span><span style="color:var(--accent)">━━ 教育问题层</span><span style="color:var(--gold)">━━ 决策实践层</span><span style="color:var(--success)">━━ 结果层</span>
+</div>
+</div>
+
+<div class="card">
+<h3>边界知识表（15条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>C9高校联盟9所成员名单</td><td>讨论名校择校时的基础参照</td></tr>
+<tr><td>洪堡式vs纽曼式教育历史起源</td><td>理解通才vs专才之争的思想源头</td></tr>
+<tr><td>美国Big Ten大学联盟成员</td><td>评估美国中西部公立大学时引用</td></tr>
+<tr><td>赫希曼《欲望与利益》核心论点</td><td>讨论教育动机与私欲驯化时引用</td></tr>
+<tr><td>爱因斯坦四维时空距离方程D=√[(x²+y²+z²)-(v·t)²]</td><td>解释时间维度权重时的理论基础</td></tr>
+<tr><td>亚当·斯密“看不见的手”理论</td><td>理解私欲→公益的转化机制</td></tr>
+<tr><td>控制论反馈系数概念（>1放大/<1衰减）</td><td>分析教育内卷的系统论工具</td></tr>
+<tr><td>齐夫定律（Zipf's Law）</td><td>理解教育资源的自然不均衡分布</td></tr>
+<tr><td>涓滴效应（Trickle-down）经济理论</td><td>讨论教育投资的代际溢出效应</td></tr>
+<tr><td>J形幸福曲线模型</td><td>解释求知求真与幸福感的关系</td></tr>
+<tr><td>《瓦尔登湖》梭罗隐居真实背景</td><td>讨论“逃离教育内卷”的可行性</td></tr>
+<tr><td>梁建章《人口战略》核心数据</td><td>分析人口结构对教育需求的影响</td></tr>
+<tr><td>哈佛课程总数约6000门</td><td>评估“哈佛砍文科课程”新闻的真实性</td></tr>
+<tr><td>马斯克政府效率部改革方案</td><td>控制论封闭系统分析的当代案例</td></tr>
+<tr><td>维柯“私欲→公共秩序”转化论</td><td>理解教育动机设计的哲学渊源</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径（5阶段推荐顺序）</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立认知透镜：</strong>先学「四维时空中的教育决策」+「控制论视角下的教育焦虑」——掌握时间维度和系统反馈两个核心思维工具</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>理解教育结构：</strong>学习「选拔机制的三体论」+「教育平等的根源」——看清教育系统的结构性约束</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>个体决策层面：</strong>学习「父母作为教育天花板」+「资源匹配而非资源最大化」——从个体视角做明智选择</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>未来趋势判断：</strong>学习「通才vs专才」+「STEM崛起与人文素养」+「天坑专业的认知错位」——为AI时代教育选择建立方向感</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>动机与人性：</strong>学习「私欲驯化与教育动机」——理解教育动力的底层人性基础，将认知框架转化为行动</div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+</div>
+
+<!-- Tab 1: 知识卡片 -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: 题库系统 -->
+<div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:block">
+<div class="card"><h3>选择题（共20题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p>
+<div id="choiceQuiz"></div>
+</div>
+<div class="card"><h3>简答题（共10题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p>
+<div id="shortQuiz"></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 3: 考试模式 -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- Tab 4: 复习模式 -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+
+<!-- Tab 5: 思维导图 -->
+<div class="tab-panel" id="panel5">
+<div class="card" id="mindmap-card"><h3>教育的选择与迷思 · 思维导图</h3>
+<div class="tree-node"><span class="tree-toggle open">认知操作系统：底层逻辑→教育问题→决策实践</span>
+<div class="tree-children open">
+
+<div class="tree-node"><span class="tree-toggle open">一、认知透镜层（底层逻辑框架）</span>
+<div class="tree-children open">
+  <div class="tree-node"><span class="tree-toggle">四维时空思维（c3）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">时间是不可逆维度：错过特定年龄的教育需求无法弥补</div>
+    <div class="tree-leaf">40岁斯坦福访问学者无法找回20岁的求学满足感</div>
+    <div class="tree-leaf">按阶段完成核心任务：每个年龄做每个年龄的事</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">控制论系统思维（c8）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">封闭系统反馈系数<1时输出持续衰减→内卷本质</div>
+    <div class="tree-leaf">家长过度干预=正反馈过强→系统振荡→教育焦虑</div>
+    <div class="tree-leaf">需要外部输入（新信息、新视角）打破封闭循环</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">系统论公平思维（c2）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">教育不公本质是职业不公的映射</div>
+    <div class="tree-leaf">社会平等是教育平等的前提条件</div>
+    <div class="tree-leaf">齐夫定律：少数占多数的自然分布不可强行拉平</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">认知心理学（c10）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">赫希曼：以欲望对抗欲望→利益驱动替代道德压制</div>
+    <div class="tree-leaf">私欲不可消灭只能驯化：看不见的手转化机制</div>
+    <div class="tree-leaf">教育动机设计：利用而非压制人的自然趋利倾向</div>
+  </div></div>
+</div></div>
+
+<div class="tree-node"><span class="tree-toggle open">二、教育结构层（系统性问题）</span>
+<div class="tree-children open">
+  <div class="tree-node"><span class="tree-toggle">选拔机制的三体论（c1）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">一刀切（高考）：成本低、相对公平但忽视长期潜力</div>
+    <div class="tree-leaf">全面评估（美国）：成本高、主观性强、未必更公平</div>
+    <div class="tree-leaf">抽签制（欧洲部分国家）：被认为最不公平</div>
+    <div class="tree-leaf">中国现有制度：在有限资源下最适合国情的方案</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">教育公平的根源（c2→c1）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">职业不平等→教育竞争→优质教育资源的零和博弈</div>
+    <div class="tree-leaf">宋代南北榜案→明代南北卷→清代按省分配：历史必然</div>
+    <div class="tree-leaf">日本教师轮岗制：牺牲教学质量换公平的反面案例</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">天坑专业的认知错位（c7）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">定义：学生/学校认为有前景，市场需求不匹配</div>
+    <div class="tree-leaf">三类：夕阳专业/超前专业/认知差异专业</div>
+    <div class="tree-leaf">本科生择校：学校名气>地域>专业</div>
+  </div></div>
+</div></div>
+
+<div class="tree-node"><span class="tree-toggle open">三、个体决策层（家庭与个人）</span>
+<div class="tree-children open">
+  <div class="tree-node"><span class="tree-toggle">父母作为教育天花板（c5）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">300案例研究：父母认知边界=子女发展上限</div>
+    <div class="tree-leaf">成功的父母特征：保障投入+不干涉选择+自身为榜样</div>
+    <div class="tree-leaf">过度干预→子女缺乏主动性→二代发展水平下降</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">资源匹配而非最大化（c4）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">多数情况无需追求“最好资源”，核心是需求匹配度</div>
+    <div class="tree-leaf">普通学生+顶级资源=边际效益有限</div>
+    <div class="tree-leaf">阶段适配：初期便利性优先→后期逐步升级资源</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">名校vs城市vs专业（c7延伸）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">本科：学校名气>地域>专业</div>
+    <div class="tree-leaf">硕士：专业名气>学校/地域</div>
+    <div class="tree-leaf">博士：导师名气>专业>学校/地域</div>
+    <div class="tree-leaf">C9高校及专业领域顶尖院校优先于城市</div>
+  </div></div>
+</div></div>
+
+<div class="tree-node"><span class="tree-toggle open">四、未来趋势层（AI时代的教育方向）</span>
+<div class="tree-children open">
+  <div class="tree-node"><span class="tree-toggle">通才vs专才之争（c6）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">梁建章通才派：AI替代标准化工作→人类价值在多角度提问</div>
+    <div class="tree-leaf">陈先生专才派：天才自发专注STEM→人类聚焦知识创造</div>
+    <div class="tree-leaf">核心差异：避免被AI替代vs最大化人类独特价值</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">STEM崛起与人文素养（c9）</span>
+  <div class="tree-children">
+    <div class="tree-leaf">“造机器者不被机器取代”——MIT学生核心信念</div>
+    <div class="tree-leaf">文科转型：从专业方向回归为素养补充</div>
+    <div class="tree-leaf">少儿编程：核心是培养计算机思维，非技能本身</div>
+  </div></div>
+  <div class="tree-node"><span class="tree-toggle">人口结构与教育需求</span>
+  <div class="tree-children">
+    <div class="tree-leaf">中国2022年生育率<1.1→未来教育规模收缩</div>
+    <div class="tree-leaf">年轻人口是创业创新核心驱动力</div>
+    <div class="tree-leaf">国家创造力=Log(人口)×人均能力×国际交流强度</div>
+  </div></div>
+</div></div>
+
+</div></div>
+</div>
+</div>
+
+<!-- Tab 6: 深度追问 -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">对每个核心概念2-3层追问，点击问题展开答案，逐层深入思考</p>
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">1. 既然三种选拔机制各有缺陷，中国高考制度为什么是“最适合国情”的？</span></div>
+<div class="socratic-a">中国考生数量是古代举子的近万倍，统一阅卷在技术上不可行，统一分数线的前提不成立。一刀切的高考虽然牺牲了个体化评估，但在超大规模人口下实现了最低成本、可操作的相对公平。美国式全面评估的成本（申请顾问、课外活动、推荐信）对普通家庭是隐性门槛——研究表明“并不像有的人想得那么公平”。抽签制则完全否定努力的价值，被认为是最不公平的方式。三种坏选项中，高考是坏得最轻的那个。
+<div class="socratic-q" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" style="margin-top:8px"><span class="q-text">↳ 那特长加分为什么成为争议焦点？</span></div>
+<div class="socratic-sub">特长加分的初衷是帮助发现有专长的人才，但被过度利用成为走捷径的工具。这不是制度设计本身的问题，而是执行的异化——任何灵活性窗口都会被利益驱动的参与者最大化利用。奥卡姆剃刀原则：在无法杜绝滥用的前提下，减少灵活性窗口可能是更优解。</div>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">2. “教育平等只能来自社会平等”——那是不是意味着在教育本身做改革是徒劳的？</span></div>
+<div class="socratic-a">不是徒劳，而是需要重新定位教育改革的期望值。教育改革可以在微观层面改善机会分配（如增加农村地区的优质师资），但无法在宏观层面消除由职业不平等驱动的教育竞争。这就像治水和治源的关系：教育改革是疏通河道，但洪水的根源是社会分工的回报差异。短期策略是在现有不公平中为孩子找到最优路径，长期策略是为更公平的社会环境努力。
+<div class="socratic-q" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" style="margin-top:8px"><span class="q-text">↳ 中国服务行业价格低廉与教育公平有什么关联？</span></div>
+<div class="socratic-sub">快递、外卖、出租车等行业的低价反映了从业者劳动价值未被充分认可。当蓝领工作的经济回报和社会尊重不足时，所有家庭都会涌向“唯有读书高”的单行道，教育竞争自然白热化。德国职业教育之所以成功，很大程度上是因为技术工人的收入和社会地位不输白领。</div>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">3. 四维时空思维如何改变我们对“起跑线焦虑”的认知？</span></div>
+<div class="socratic-a">爱因斯坦时空距离方程D=√[(x²+y²+z²)-(v·t)²]的社会学含义是：在快速变化的社会中，时间维度对人的影响远大于空间维度（学校排名、城市位置等）。起跑线焦虑本质是用空间思维（抢跑、占位）解决时间问题（孩子的成长节奏）——这是认知错位。错过的特定年龄窗口（如小学的好奇心保护期、中学的自主探索期）具有不可逆性，而“抢跑”获得的短期优势在四维时空中会被时间维度稀释。
+<div class="socratic-q" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" style="margin-top:8px"><span class="q-text">↳ 那“别让孩子输在起跑线上”到底错在哪里？</span></div>
+<div class="socratic-sub">它把教育假设为一次短跑而非终身马拉松。短跑看起跑速度，马拉松看配速策略和耐力。更致命的是，中国古代皇子皇孙的案例证明：最好的物质条件和教育资源并不保证产出——父母提供的“起跑优势”在代际传递中会衰减。真正决定长期发展的，是孩子是否被允许过自己想要的生活。</div>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">4. 控制论如何解释中国家长的教育焦虑是一个“系统性问题”而非“个体问题”？</span></div>
+<div class="socratic-a">控制论的核心概念是反馈回路。当所有家长都加大教育投入（正反馈），系统进入军备竞赛模式——每个家庭的努力被其他家庭的努力抵消，整体输出（孩子的实际竞争力提升）远小于总投入。这就是反馈系数<1的封闭系统特征：投入不断放大但边际产出递减。打破循环需要外部输入——要么改变评价标准（多元录取），要么改变回报结构（提高非学术路径的社会回报）。单个家长的“理性选择”（报更多班）恰好是系统非理性的根源。
+<div class="socratic-q" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" style="margin-top:8px"><span class="q-text">↳ 马斯克改革美国政府与控制论有什么关系？</span></div>
+<div class="socratic-sub">美国政府是一个典型的封闭系统：反馈系数<1（每投入1元产出<1元价值），依赖借债（恒定外部输入）维持运转。马斯克试图通过外部干预将反馈系数从0.5提升至0.9，但面临双输出系统的权衡——经济效率提升可能以社会代价（失业率上升）为代价。教育系统同理：提高“效率”（如淘汰差生）可能损害“公平”这个社会目标。</div>
+</div>
+
+<div class="socratic-q" onclick="this.nextElementSibling.classList.toggle('open')"><span class="q-text">5. “造机器者不被机器取代”——在AI时代，这句话对教育选择意味着什么？</span></div>
+<div class="socratic-a">MIT学生的核心信念揭示了AI时代的权力结构：掌握技术创造能力的人处于价值链顶端，被技术替代的人处于底端。这意味着教育需要从“使用工具”升级为“创造工具”。但这不等于所有人都该学编程——核心是培养计算机思维（将复杂问题分解为可计算步骤的能力），这种思维方式可迁移到任何领域。同时，批判性思维、沟通表达能力等人文素养虽然不直接创造经济价值，却是“造机器者”理解人类需求、设计可用产品的必备能力。
+<div class="socratic-q" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" style="margin-top:8px"><span class="q-text">↳ 少儿编程热是理性的还是盲目的？</span></div>
+<div class="socratic-sub">如果目标是培养计算机思维（分解问题、抽象建模、算法设计），理性。如果目标是“让孩子掌握未来必备技能以防被AI淘汰”，盲目——因为具体的编程语法可能被AI替代，但思维方式不会。关键区分：技能导向=功利=容易被替代；思维导向=底层能力=长期保值。</div>
+</div>
+</div>
+</div>
+
+<!-- Tab 7: 案例分析 -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解“中产家庭的留学决策困境”</h3>
+<p style="color:var(--text-light);margin-bottom:16px">综合运用四维时空、资源匹配、父母天花板三个核心概念，分析一个典型的家庭决策案例</p>
+
+<div class="card" style="border-left:4px solid var(--accent)">
+<h3>案例背景</h3>
+<p style="font-size:.85rem">张先生家庭年收入50万，北京有一套按揭房。独生子初三，成绩中等偏上。张先生计划卖房筹集300万送孩子去美国读高中+大学，期望孩子“逃离内卷”。但他同时担心：留学生回国月薪8000的新闻越来越多，300万投入是否值得？妻子则主张孩子留在国内走高考路线，认为“上好学校未必能找到好工作”。</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>MKS四维度拆解</h3>
+<p style="font-size:.85rem">
+<strong>1. 四维时空分析：</strong>初三（15岁）是教育决策的关键时间节点——此阶段的核心任务不是决定“去哪所学校”，而是保护孩子的自主学习动力和探索兴趣。送孩子出国的时间窗口和“适应能力窗口”需要匹配：过早出国可能导致文化断根，过晚则语言适应成本高。四维时空提醒我们：不是“去不去”的问题，而是“什么时间去”的问题——不同的时间选择，同样的空间移动（出国）会产生截然不同的结果。<br><br>
+<strong>2. 资源匹配而非最大化：</strong>300万卖房留学是典型的“资源错配”。对于成绩中等偏上的学生，美国高中+大学的资源远超其当前发展需求——就像给一个初学者配高尔夫世界冠军教练，边际收益极低。更优策略是高中阶段在国内打好基础，大学阶段根据孩子的实际发展方向（本科/硕士/博士）匹配合适的资源层级。<br><br>
+<strong>3. 父母作为教育天花板：</strong>张先生的决策反映了父母认知的两个天花板：一是用经济账（回国月薪8000）来衡量教育的全部价值——忽略了教育给予孩子的选择权和自我实现能力；二是在“卖房留学”和“留守高考”之间做非此即彼的二元选择——忽略了中间路径（如大学阶段出国、交换项目、中外合作办学等）。父母认知的边界就是孩子选择的边界。<br><br>
+<strong>4. 控制论视角：</strong>“逃离内卷”的动机本身就是内卷思维的产物——试图通过改变空间位置（出国）来解决系统性问题（教育竞争），忽略了全球教育竞争的本质趋同。真正的破局不是“逃离”，而是重新定义孩子的成功标准——这需要父母提升自身的认知天花板。
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--success)">
+<h3>替代方案建议</h3>
+<p style="font-size:.85rem">
+1. <strong>初中阶段：</strong>保持现有教育路径，重点投入在保护好奇心、培养阅读习惯和数学思维上（成本几乎为零，效果远超补习班）。<br>
+2. <strong>高中阶段：</strong>以高考为主要目标，但不排斥通过在线课程（Coursera/edX）接触美国大学的通识课程，低成本拓展视野。<br>
+3. <strong>大学阶段：</strong>根据孩子高三时的实际能力和兴趣决定——如考取C9则优先国内本科+海外硕士路径；如专业方向明确（如计算机），优先专业强校而非盲目追求综合排名。<br>
+4. <strong>300万的更优配置：</strong>保留房产作为家庭安全垫，每年拨出10-15万用于孩子的拓展性学习（夏令营、学术竞赛、在线课程），剩余资金做稳健投资。这样既保留了教育投入的灵活性，又不以牺牲家庭财务安全为代价。
+</p>
+</div>
+</div>
+</div>
+
+<!-- Tab 8: 实战决策 -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p>
+
+<div class="decision-scenario">
+  <strong>第1轮：</strong>你的孩子小学五年级，对编程表现出浓厚兴趣，已经自学Python一年。同时，你注意到AI编程工具（如GitHub Copilot）越来越成熟。你是否继续支持孩子学编程？
+  <div class="decision-options">
+    <div class="decision-opt" onclick="showDecision(0,0,this)">A. 继续支持，编程培养的是计算机思维，不是具体的语法技能</div>
+    <div class="decision-opt" onclick="showDecision(0,1,this)">B. 转向数学和逻辑训练，编程语法未来AI都能生成</div>
+    <div class="decision-opt" onclick="showDecision(0,2,this)">C. 减少编程时间，让孩子多尝试不同领域，小学阶段不宜过早专精</div>
+  </div>
+  <div class="decision-result" id="decisionResult0"></div>
+</div>
+
+<div class="decision-scenario">
+  <strong>第2轮：</strong>你的孩子被一所C9大学和一所非C9但位于上海核心区域的财经类强校同时录取，专业都是金融相关。你如何选择？
+  <div class="decision-options">
+    <div class="decision-opt" onclick="showDecision(1,0,this)">A. 选C9大学——名校的品牌溢价和校友网络终身受益</div>
+    <div class="decision-opt" onclick="showDecision(1,1,this)">B. 选上海财经类强校——地处金融中心，实习和就业机会碾压</div>
+    <div class="decision-opt" onclick="showDecision(1,2,this)">C. 看孩子偏好——让孩子到两个城市实地感受后再决定</div>
+  </div>
+  <div class="decision-result" id="decisionResult1"></div>
+</div>
+
+<div class="decision-scenario">
+  <strong>第3轮：</strong>你的孩子大学毕业，同时收到两个offer：A公司（行业头部公司）基础岗位月薪8000，B公司（创业公司）核心岗位月薪15000+期权。孩子倾向于去B公司“搏一把”。你的态度是？
+  <div class="decision-options">
+    <div class="decision-opt" onclick="showDecision(2,0,this)">A. 支持去B——尊重孩子的选择是“不做天花板”父母的底线</div>
+    <div class="decision-opt" onclick="showDecision(2,1,this)">B. 建议去A——第一份工作重成长不重薪资，大厂的训练体系是无价资产</div>
+    <div class="decision-opt" onclick="showDecision(2,2,this)">C. 分享分析框架让孩子自己判断——什么样的创业公司值得加入</div>
+  </div>
+  <div class="decision-result" id="decisionResult2"></div>
+</div>
+
+</div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ===== DATA STORE =====
+const concepts = [
+  {id:'c1',name:'选拔机制的三体论',def:'教育的两大功能是培养和选拔。选拔机制只有三种：客观标准一刀切（高考）、主观全面评估（美国）、抽签制（欧洲部分国家）——三者各有缺陷，但一刀切在大规模人口下成本最低、相对最公平。底层逻辑：在无法实现完美的世界里，选择坏得最轻的方案（奥卡姆剃刀原则）。',analogy:'如同企业招聘——笔试统一阅卷（一刀切）成本低但漏掉偏才；多轮面试+背景调查（全面评估）更精准但成本高且面试官主观偏见不可避免；随机抽简历（抽签）最省事但最不公平。大厂校招选笔试正是因为在超大申请量下，其他方案不可操作。',example:'宋代南北榜案（51名进士全为南方人→朱元璋重阅录取61名北方人）→明代南北卷（南六北四）→清代按省分配名额。分地区招生古来有之，根因是各地教育水平参差不齐——统一分数线前提不成立。',counter:'全面评估并非更公平——美国研究表明，SAT成绩与家庭收入正相关，课外活动质量取决于家庭资源。所谓“综合素质”背后是金钱堆出来的简历。一刀切的缺陷显而易见，但替代方案可能更糟。'},
+  {id:'c2',name:'教育平等的根源',def:'教育不公的本质是职业不平等——人们追求名校不是为了知识本身，而是为了更好的工作机会。只要社会分工的回报差异存在，教育竞争就是零和博弈。底层逻辑：教育是职业分配的中介变量，不是自变量。改革教育而不改革职业回报结构，等于治标不治本。',analogy:'如同一场音乐会——人人争抢前排座位不是因为前排的音质更好，而是因为前排离舞台更近、更容易被经纪人发现。如果后排也能被看到、被签约，座位之争自然会缓解。教育竞争同理：不是教室不够大，是出教室后的回报差距太大。',example:'中国快递/外卖/出租车价格低廉（仅为日本1/5），反映从业者劳动价值未被充分认可→所有家庭挤向“唯有读书高”的单行道。德国技工收入不输白领→职业教育受尊重→高考压力远小于中国。沃尔玛收银员住房医疗有保障→美国社区学院有人选择不读。',counter:'教育平等不可能绝对实现——齐夫定律指出少数排名靠前的个体占据大部分资源，这是自然规律。强行拉平（如日本教师轮岗制）会牺牲整体教学质量。目标不应是消除差距，而是在可接受范围内控制差距。'},
+  {id:'c3',name:'四维时空中的教育决策',def:'时间是与空间（学校排名、地理位置）并列的第四维度。爱因斯坦时空距离方程D=√[(x²+y²+z²)-(v·t)²]的社会学含义：在快速变化的社会中，时间对人的影响远大于空间距离。底层逻辑：特定年龄的教育需求和资源具有不可逆的匹配性——错过的时机永远无法用后来的资源弥补。',analogy:'如同农产品——清明前的龙井和清明后的龙井是两种茶，不是质量差异而是本质差异。20岁在斯坦福读书和40岁以访问学者身份去斯坦福，就像清明前和清明后的龙井——看起来是同一所学校，但时间维度已经改变了体验的本质。',example:'小梅案例：中学未入名校，40岁通过变相捐赠成为斯坦福访问学者，初期晒身份，后期自我厌恶——“40岁的自己无法找回20岁时的求学满足感”。小常案例：大学情侣分手，十年后重逢结婚，一年后离婚——十年间两人都已不是原来的人。',counter:'不是所有错过都不可挽回——人文素养可以在博士期间通过旁听课程弥补，AI时代的知识获取也不受年龄限制。关键在于区分“知识获取”（可弥补）和“体验性需求”（如20岁的求学感受、青年时期的社交圈建立），前者时间弹性大，后者时间窗口窄。'},
+  {id:'c4',name:'资源匹配而非资源最大化',def:'多数情况下无需追求“最好的教育资源”，核心是资源与学生当前发展阶段的匹配度。过度配置（给普通学生顶级资源）的边际效益有限，甚至有害。底层逻辑：资源的效果不是绝对值函数，而是匹配度函数——就像用药，剂量不足无效，过量中毒。',analogy:'如同看病——普通感冒去社区医院开药即可，挂专家号排队3小时结果开的是一样的药。专家资源应该留给疑难杂症。教育同理：普通学生需要的不是金牌教练，而是能发现其闪光点的有耐心的老师。',example:'吴军大女儿从普通学校逐步升级，匹配能力增长节奏；二女儿过早进入顶级学校导致资源浪费，后期开窍后学校资源才发挥作用。高尔夫启蒙阶段随便找一个教练培养兴趣即可，进阶时才需要专业教练。美国多数家庭高中阶段才更换学校。',counter:'在信息不对称的环境下，家长很难准确判断孩子的“真实潜力”——保守估计可能低估孩子，过度乐观则可能浪费资源。实践中，“随行就市”（跟随同龄人的普遍资源水平）可能比精确匹配更可操作。而且有些资源（如安全的学习环境、不霸凌的校园）是底线需求，不应“匹配”而应“保障”。'},
+  {id:'c5',name:'父母作为教育天花板',def:'父母认知边界决定子女发展上限——吴军基于300个案例的研究发现：在父母“关不关心子女教育”的前提条件下，父母允许孩子过自己想要的生活的程度，显著影响孩子最终能达到的高度。底层逻辑：父母的见识、价值观和干预方式构成孩子的认知天花板——不是物质天花板，是精神天花板。',analogy:'如同操作系统版本——孩子是应用软件，父母的认知是操作系统。操作系统版本太低，再好的应用也跑不起来。父母观念从“孩子要听我的”升级为“孩子要成为他自己”，相当于操作系统从DOS升级到Windows——不是小修小补，是架构革命。',example:'正面：出身贫寒的母亲坚持供三个子女上大学——“不是为了挣大钱，而是让孩子有机会过自己想过的生活”，最终三个孩子分别进入斯坦福、哈佛。反面：北京两套房的金融家庭从国际学校转入普通高中备战高考——“上好学校未必能找到好工作”，选择攒钱而非投资教育。年收入百万家庭卖房不留学买房买车——“留学回国月薪8000，300万可保孩子30年不工作”。',counter:'父母的认知天花板不是宿命——出身贫寒但认知超前的父母大量存在。反之，高学历高收入父母也可能成为“高档天花板”。关键在于父母的开放性和自我迭代意愿，而不是学历或财富本身。同时，父母的“不干预”不等于“不关心”——完全不参与子女教育的父母不在天花板讨论范围内。'},
+  {id:'c6',name:'通才vs专才：AI时代的人类价值',def:'关于AI时代教育方向的两种对立观点：通才派（梁建章）认为AI替代标准化工作，人类价值在于从多角度提出问题的能力→需要纽曼式通才教育；专才派（陈先生）认为天才自发专注STEM，人类应聚焦知识创造深度→需要洪堡式专才训练。底层逻辑：不是“广度vs深度”的二选一，而是“在哪个层次上融合两者”。',analogy:'如同手术团队——主刀医生需要极端专精（专才），麻醉师需要跨学科知识（通才），护士需要全面的患者管理能力（通才）。一台手术的成功不取决于某一种人才类型，而取决于团队的互补协作。AI时代的竞争力也如此：不是个人层面的通vs专，而是如何找到你在协作网络中的最佳位置。',example:'翻译职业转型：基础翻译被AI替代→转型高端文化导游（语言+历史+文化+服务=通才能力包）。MIT博士生：半数只有STEM背景无文科经历，通过AI快速获取非核心领域知识→聚焦专业深度+AI辅助广度。天才少年计划：300名智商140+青少年自发专注STEM，对通识教育兴趣低。',counter:'通才教育可能流于浅尝辄止——知道很多但什么都不深入，在AI可以记住所有知识的时代，浅层知识没有竞争力。专才教育可能陷入“隧道视野”——深度专家在领域范式转换时最容易被淘汰。真正的难题不是选择哪条路，而是找到深度和广度的个人最优配比——这取决于每个人的能力特质和所处行业阶段。'},
+  {id:'c7',name:'天坑专业的认知错位',def:'天坑专业的本质不是“专业不好”，而是供给侧（学生/学校的投入预期）与需求侧（劳动力市场的实际需要）之间的认知错配。底层的认知心理学机制：人们倾向于根据当前热点线性外推未来需求，忽略滞后效应和供需动态平衡。',analogy:'如同餐饮业的“网红店陷阱”——看到一家奶茶店排队，半年后开了一家同样的店，但彼时消费者已经去排新的网红店了。大学专业的4年学制放大了这种滞后效应：入学时热门的专业，毕业时可能供过于求。冷门专业≠天坑专业，真正的天坑是“大家都觉得好但实际上已经过剩”的专业。',example:'三大类型：①夕阳专业（传统工科衰退领域，较易识别）②超前专业（核聚变能源——商业应用“永远50年后”）③认知差异专业（国际贸易、企业管理等——本科阶段理论与实践脱节，需要经验积累）。识别方法：警惕“容易学、容易拿学位”的专业，参考近年毕业生就业数据而非入学时的风口。',counter:'专业不是命运的判决书——本科专业与最终职业可以不一致（美国雇主重视基础扎实度和学习能力而非专业名称）。但研究生阶段专业基本决定职业方向。所以“天坑”的破坏力在本科生阶段有限，在研究生阶段显著。另外，“认知错位”也可能双向：有些看起来“天坑”的专业（如哲学、历史学）培养了可迁移的核心思维能力，长期职业回报并不低。'},
+  {id:'c8',name:'控制论视角下的教育焦虑',def:'教育内卷的本质是封闭系统的反馈失效——每个家庭的“理性”投入（报更多班、买学区房）通过正反馈放大后，系统整体进入军备竞赛：投入不断加码但产出（孩子的实际竞争力）几乎不变。底层逻辑：反馈系数<1的系统中，外部输入（政策干预、评价标准改革）是打破循环的唯一途径。',analogy:'如同剧院的“起立效应”——前排观众站起来看，后排为了看到也必须站起来，最终全场都站着，观看体验和原来坐着一样，但所有人都更累了。教育军备竞赛同理：每个家庭的投入增量被其他家庭的增量抵消，结果是所有家庭都更累但相对排名不变。',example:'政府作为封闭系统类比：美国政府依赖借债输血维持（反馈系数<1），马斯克试图通过外部干预提升至0.9。教育系统类似：需要多元评价标准（艺术/体育/技能路径）作为“外部输入”打破纯分数的正反馈闭环。家长过度干预=正反馈过强→系统振荡→焦虑加剧→更过度干预→恶性循环。马斯克F类职位计划（可随意解雇）vs教育中的“淘汰机制”争议——双输出权衡：效率vs社会代价。',counter:'控制论框架可能过于悲观——历史上教育系统确实发生过范式转变（如从精英教育到大众教育的转变）。关键区分：控制论描述的是“在现有评价标准不变”条件下的系统行为。如果评价标准本身发生改变（如从分数唯一到多元录取），系统的反馈结构也会改变。但评价标准改革本身受到既得利益者的阻碍——这也是反馈回路的一部分。'},
+  {id:'c9',name:'STEM崛起与人文素养',def:'哈佛砍掉30多门文科课程（占6000门课程的不足1%）被媒体放大报道，深层趋势是STEM专业的市场需求驱动学生自发选择。44%哈佛新生选计算机科学，33%选应用数学。底层逻辑：“造机器者不被机器取代”——掌握技术创造能力的人处于价值链顶端，但人文素养作为软技能补充仍有不可替代的价值。',analogy:'如同建筑物的“钢结构+室内设计”——STEM是钢框架，决定了能建多高、能承受多大压力；人文素养是室内设计，决定了住起来是否舒适、看起来是否有品味。只有钢结构可以住人但冰冷，只有软装不能承重。好的建筑两者都需要，但钢结构的投入产出比更可量化。',example:'哈佛被砍课程特征：小众化（全球跨性别历史、在购物中心的马克思）+低实用性。MIT学生认可文科的非职业价值：批判性思维训练、沟通表达能力提升——但认为科研灵感主要来自专业知识深度和教授启发。英语文学学位毕业生因纸质媒体衰退转行调酒师——纯文科路径的就业风险。',counter:'人文素养不是文科专业的专利——理工科学生通过阅读、写作、团队协作同样可以培养。将人文教育等同于文科专业是范畴错误。斯坦福大学和华盛顿大学的研究表明：在已有模型基础上做一次迭代成本可能只有50美元——但如果原始模型是别人花数亿美元训练的，结论完全相反。这个逻辑同样适用于教育：基础能力（STEM）是昂贵的原始训练，软技能（人文）是相对廉价的微调。'},
+  {id:'c10',name:'私欲驯化与教育动机',def:'赫希曼《欲望与利益》的核心洞见：人无法做到大公无私，强制压制私欲有害无益。正确策略是以欲望对抗欲望——用对利益（包括长期利益）的追求来驯化原始冲动。应用在教育领域：与其用道德说教要求孩子“努力学习”，不如设计让孩子看到学习与自身利益的关联。底层逻辑：善用而非压制人性。',analogy:'如同驯马——你不能靠说教让野马听话，但可以通过喂食和引导让它自愿配合。商人的“诚信”不是因为道德高尚，而是因为欺诈会损失长期客户——这是“利益驯化贪婪”的经典案例。教育动机设计同理：让孩子看到学习能带给自己什么（好奇心满足、掌控感、未来选择权），而不是告诉孩子“你应该努力”。',example:'培根：“让一种欲望对抗另一种欲望，如同在政府中以一派制约另一派”。斯宾诺莎：“关于善恶的正确知识，只有被视为一种欲望时，才能抑制欲望”。维柯：“社会利用残暴、贪婪和野心三种罪恶，创造出国防、商业和政治，带来国家强大、财富和智慧”。反面：王莽式强制改革——以道德理想强制重新分配利益，结果遭到所有利益受损方的联合抵抗。',counter:'以利益驱动的教育动机可能有副作用——当学习的动力完全是外部回报（分数、文凭、薪资），学生会丧失内在的好奇心和探索欲。赫希曼框架最适用于“尚未建立内在动机”的阶段，最终目标是让内在动机（求知欲）接手外部动机（利益）。这也是通识教育的核心价值之一：培养对知识本身的热爱，不依赖外部激励。'}
+];
+
+const mksCoreIds = ['c1','c3','c5','c8'];
+
+// ===== MCQ DATA (20 questions, answer distribution 0:5,1:5,2:5,3:5) =====
+const choiceQuestions = [
+  // answer=0: 5 questions
+  {q:'吴军认为中国高考制度的核心优势是什么？',opts:['在现有资源下实现了最大规模的相对公平','全面评估学生的综合素质','选拔出最优秀的人才','完全消除了地区和家庭差异'],"answer":0},
+  {q:'天坑专业的本质是什么？',opts:['供给侧与需求侧的认知错配','专业内容太难','就业薪资太低','报考人数太少'],"answer":0},
+  {q:'控制论视角下，打破教育内卷的根本途径是什么？',opts:['改变评价标准或回报结构等外部输入','家长减少教育投入','增加考试难度','政府禁止课外辅导'],"answer":0},
+  {q:'哈佛2024年砍掉30多门课程引发热议。被砍课程的真实特征是什么？',opts:['小众化、低实用性的文科课程','全部文科课程','所有非STEM课程','本科通识教育核心课程'],"answer":0},
+  {q:'吴军认为教育不公的本质源头是什么？',opts:['职业之间的不公平','考试制度的设计缺陷','学校质量的不均衡','教师水平的差异'],"answer":0},
+
+  // answer=1: 5 questions
+  {q:'关于“通才vs专才”的争论，梁建章的核心主张是什么？',opts:['所有人都应该成为STEM专家','AI替代标准化工作，人类价值在多角度提问能力','通识教育应该完全取消','中小学阶段就应该确定专业方向'],"answer":1},
+  {q:'择校优先级中，本科阶段的核心排序是什么？',opts:['专业名气>学校名气>地域','学校名气>地域>专业','导师名气>学校名气>地域','城市>学校>专业'],"answer":1},
+  {q:'吴军关于“父母是子女教育天花板”的研究基于多少个案例？',opts:['约50个','两三百个案例','约1000个','约20个深度访谈'],"answer":1},
+  {q:'“四维时空”中时间维度的核心启示是什么？',opts:['所有的错过都可以用更多资源弥补','错过的特定时间窗口具有不可逆性','时间维度比空间维度更不重要','未来比过去和现在都重要'],"answer":1},
+  {q:'关于少儿编程教育，吴军的核心建议是什么？',opts:['所有孩子都应该尽早学习编程','核心是培养计算机思维而非技能本身','AI时代学编程没有意义','编程应该完全替代数学教育'],"answer":1},
+
+  // answer=2: 5 questions
+  {q:'吴军认为哪种人才选拔机制是“最不公平”的？',opts:['主观全面评估','客观标准一刀切','抽签制','高考制度'],"answer":2},
+  {q:'赫希曼《欲望与利益》的核心观点是什么？',opts:['人天生是大公无私的','私欲必须被彻底消灭','以利益追求驯化原始欲望，而非压制欲望','道德说教是管理社会的最有效方式'],"answer":2},
+  {q:'马斯克政府效率部改革的目标是什么？',opts:['增加联邦雇员数量','扩大政府开支','将政府反馈系数从约0.5提升至0.9','推行抽签制公务员选拔'],"answer":2},
+  {q:'关于教育资源匹配，吴军用哪个类比说明“无需追求最好资源”？',opts:['买车要买顶配','投资要选独角兽','看病挂专家号vs社区医院——常见病无需专家','健身要找奥运教练'],"answer":2},
+  {q:'天坑专业的三大类型不包括哪一项？',opts:['夕阳专业（传统工科衰退领域）','超前专业（技术成熟周期过长）','过热专业（报考人数超过招生计划）','认知差异专业（本科理论与实践脱节）'],"answer":2},
+
+  // answer=3: 5 questions
+  {q:'宋代“南北榜案”中，洪武三十年51名进士全为南方人，朱元璋采取什么措施？',opts:['取消当年科举成绩','从此禁止南方人参加科举','改为按省分配名额','亲自重阅试卷并补录取61名北方人'],"answer":3},
+  {q:'吴军300案例研究中，成功子女的家庭共性不包括哪项？',opts:['不缺钱但更看重知识','通情达理，尊重孩子决定','家长曾通过努力改变命运，子女继承奋斗精神','家长为孩子详细规划了每一步职业发展路径'],"answer":3},
+  {q:'“造机器者不被机器取代”出自哪所大学学生的观点？',opts:['哈佛大学','斯坦福大学','加州理工学院','麻省理工学院（MIT）'],"answer":3},
+  {q:'吴军在三孩生育补贴讨论中，对梁建章“国家创造力公式”做了什么修正？',opts:['人口应该是线性关系','人均能力应该用平方','国际交流强度不重要','人口应该用对数——Log(人口)而非人口本身'],"answer":3},
+  {q:'“绝对公平本身可能是一种灾难”——吴军用什么原理支撑这一观点？',opts:['牛顿第三定律','彼得原理','墨菲定律','齐夫定律——少数占多数的自然分布不可强行拉平'],"answer":3}
+];
+
+const shortQuestions = [
+  {q:'为什么说“教育平等最终只能来自整个社会的平等”？请用职业平等与教育竞争的关系说明。',a:'教育不公的根源是职业不平等——人们追求名校不是为了知识而是为了更好的工作机会。当蓝领和白领的收入和社会地位差距悬殊时，所有家庭都会涌向“唯有读书高”的单行道，教育竞争白热化。要缓解教育内卷，必须从缩小职业回报差距入手。德国之所以职业教育成功，不是因为教育制度设计巧妙，而是因为技术工人的收入和社会地位不输白领——这让“不上大学”成为可行的替代路径。反之，中国部分服务行业价格低廉，反映从业者劳动价值未被充分认可，这反过来加剧了教育竞争。教育改革不触及职业回报结构，等于治标不治本。'},
+  {q:'简述三种人才选拔机制（一刀切、全面评估、抽签制）各自的优劣势。',a:'①一刀切（高考）：优势是成本低、操作简便、在超大规模人口下实现相对公平——核心是标准统一、不可人为操纵。劣势是忽视学生的长期潜力和非学术能力。②全面评估（美国大学申请）：优势是可以考察综合素质和长期潜力。劣势是成本极高（申请顾问、课外活动、推荐信都是金钱堆出来的），研究表明“不像有的人想得那么公平”——家庭资源差异被包装成了“综合素质”差异。③抽签制：理论上最平等（运气面前人人平等），但被认为是“最不公平”的方式——因为它完全否定努力的价值，打击奋斗动力。结论：在三个都有缺陷的选项中，中国现有制度在现有资源下是最适配的。'},
+  {q:'用四维时空思维分析：为什么“40岁的斯坦福访问学者无法找回20岁的求学满足感”？',a:'爱因斯坦时空距离方程D=√[(x²+y²+z²)-(v·t)²]揭示了时间的权重。20岁的求学需求是：在好奇心最旺盛的年龄，与同龄的全球最聪明的人一起学习、争论、成长——这是一种体验性需求，而非知识性需求。40岁的访问学者虽然获得了同样的空间位置（斯坦福校园），但时间维度已经完全改变：你已经不是20岁的你，同龄同学也不是20岁的同龄人。知识可以后来补，但体验的不可替代性在于：它需要特定年龄的认知状态、情感敏感度和社会关系网络的共同作用。就像清明前的龙井和清明后的龙井——不是品质差异，是本质差异。'},
+  {q:'吴军300案例研究中关于“父母是教育天花板”的核心发现是什么？列举成功子女家庭的三个共性特征。',a:'核心发现：在父母关心子女教育的前提下，父母是否允许孩子“过自己想过的生活”显著影响孩子的最终发展高度。父母的认知边界直接限制孩子的选择空间——不是物质天花板（买不起学区房），而是精神天花板（“留学有什么用”/“好学校未必有好工作”）。三个共性特征：①不缺钱但更看重知识——优先保障教育投入而非优先投资房产；②通情达理，尊重孩子决定——不干涉职业选择和婚姻等个人事务；③家长曾吃苦并通过努力改变命运——子女继承了奋斗精神而非依赖父母资源。反面特征：频繁为孩子托关系、干涉人生决策→子女缺乏主动性→二代发展水平全面下降。'},
+  {q:'为什么哈佛砍掉30多门文科课程不代表“文科无用论”？请用数据和逻辑说明。',a:'第一，数据透视：哈佛课程总数约6000门，被砍的30多门占比不足1%——这是一个常规的课程新陈代谢过程，每年都会淘汰旧课、引入新课。第二，被砍课程特征：均属于小众化、低实用性的课程（如“全球跨性别历史”“在购物中心的马克思”），不代表主流文科被否定。第三，文科的真实价值被重新定位：从“专业方向”回归“素养补充”——批判性思维和沟通表达能力是任何领域的底层能力，但作为独立的就业路径风险大（英语文学毕业生因纸质媒体衰退转行调酒师）。第四，STEM崛起的真正驱动力是学生用脚投票——44%哈佛新生选计算机科学——市场需求的自然表达，不是学校自上而下的强制。'},
+  {q:'赫希曼“以欲望对抗欲望”的思想如何应用到教育动机设计中？',a:'核心原则：利用而非压制孩子的自然趋利倾向。具体而言：①短期：让孩子看到学习与其自身利益的关联——喜欢玩游戏的孩子可以引导其学习编程逻辑，喜欢社交的孩子可以引导其学习心理学——把学习嵌入孩子已有的欲望结构。②中期：利用“对未来的欲望”（向往更好的生活、更强的自主权）来抑制“当下的欲望”（贪玩、偷懒）——这不是道德说教，是让孩子自己看见因果关系。③长期：当内在动机（求知本身的乐趣）建立后，外部动机自然退位。培根的公式：让一种欲望对抗另一种欲望。斯宾诺莎的补充：关于善恶的正确知识，只有被视为一种欲望时，才能抑制欲望。最终目标是让孩子因为“想知道”而学习，不是因为“应该学”而学习。'},
+  {q:'对比普娃和天才的教育策略差异，为什么说“越是普娃越需要技能培养”？',a:'过去40年中国处于工业化扩张期，三次工业革命叠加，各教育水平人群均能受益——即使教育水平不高也能获得体面工作。但这个窗口正在关闭。越是普娃（不在前2%的天赋/资源/家庭背景群体），越不能指望“通识教育+综合素质”的红利——因为通识教育的回报高度依赖平台质量（名校品牌、校友网络、城市资源），而这些往往是普娃最缺乏的。普娃需要的是可验证、可转移的技能——一项别人夺不走的硬本领（编程、护理、电工、烹饪等）。技能是普娃的护身符：通识教育给予的是选择空间（适合前2%），技能培养给予的是生存底线（适合前98%）。这不是贬低通识教育，而是根据资源约束的理性匹配。'},
+  {q:'用吴军的择校框架分析：一个确定要学计算机的学生，应该选C9综合大学还是非C9的理工强校？',a:'根据吴军的三阶段择校框架：①本科生：学校名气>地域>专业——但“确定专业且不变更”是例外情况，此时优先选择该专业强校。如果该非C9理工强校的计算机专业在全国排名前5-10，师资和设施可能优于某些C9的综合大学（尤其是偏文科的C9）。②硕士生：专业名气>学校/地域——如果该理工强校的计算机专业全国知名，国内计算机大厂的校招会专程前往，用人单位期望“即插即用”。③综合考量：就业数据是最终的验证——如果该理工强校计算机系的毕业生进入BAT/字节/华为的比例与C9相当甚至更高，选它有经济理性。但如果考虑转行或读博的可能性，C9大学的品牌弹性和校友网络更优。结论：如果目标是就业且该理工强校的计算机专业实力突出→优先选专业强校；如果目标是深造或保留转行选项→C9的品牌溢价更高。'},
+  {q:'控制论如何解释“剧场效应”与教育内卷的关系？',a:'“剧场效应”（前排观众起立→后排被迫起立→全场站着但观看体验不变）是控制论中正反馈过度导致系统振荡的经典隐喻。在教育系统中：①触发：部分家长加码投入（补习班、学区房、国际学校），短期获得竞争优势。②放大：其他家长看到差距后被迫跟进，投入加码。③饱和：当所有家庭都达到投入上限（时间、金钱、精力的极限），任何单一家庭的额外投入不再产生竞争优势。④结果：所有家庭都更累了，但相对排名几乎不变——这就是反馈系数<1的封闭系统特征。打破闭环需要改变系统的“评价函数”——如果成功标准从“分数排名”扩展为“多元成就”，正反馈的效度就会下降。这也是为什么芬兰等国的低竞争教育体系之所以成立，是因为社会对“成功”的多元定义吸收了单一排名的压力。'},
+  {q:'吴军来信2的教育观与硅谷来信1“教育与成长”专题的根本差异是什么？',a:'硅谷来信1的“教育与成长”讲的是教养方法层面：如何培养阅读习惯、如何提高写作能力、如何营造家庭学习氛围——是“怎么做”的操作手册。吴军来信2的“教育的选择与迷思”讲的是教育决策的底层逻辑：用控制论解释内卷、用四维时空分析决策时机、用系统论看教育公平——是“怎么想”的认知框架。打个比方：来信1教你怎么开车（方向盘、油门、刹车技巧），来信2教你怎么导航（看懂地图、预判路况、选择路线）。一个孩子最终能走多远，驾驶技术固然重要，但方向判断和路径选择的影响更大——后者正是认知操作系统的核心价值。'}
+];
+
+// ===== STATE =====
+let learnedCards = JSON.parse(localStorage.getItem('mks_edu_learned')||'[]');
+let wrongAnswers = JSON.parse(localStorage.getItem('mks_edu_wrong')||'[]');
+let currentCardIdx = 0;
+let cardFlipped = false;
+let examInterval = null;
+let examSeconds = 0;
+let examActive = false;
+let examQuestions = [];
+let examAnswers = [];
+let quizAnswered = JSON.parse(localStorage.getItem('mks_edu_quiz_answered')||'[]');
+let shortRevealed = JSON.parse(localStorage.getItem('mks_edu_short_revealed')||'[]');
+
+function save(){localStorage.setItem('mks_edu_learned',JSON.stringify(learnedCards));localStorage.setItem('mks_edu_wrong',JSON.stringify(wrongAnswers));localStorage.setItem('mks_edu_quiz_answered',JSON.stringify(quizAnswered));localStorage.setItem('mks_edu_short_revealed',JSON.stringify(shortRevealed));}
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');
+  document.getElementById('panel'+this.dataset.tab).classList.add('active');
+  if(this.dataset.tab==='4') renderReview();
+}));
+
+// ===== SVG CONCEPT MAP =====
+function renderSVG() {
+  var svg = '<svg viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg">'+
+  '<defs><marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>'+
+  '<marker id="arrowGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#b8860b"/></marker>'+
+  '<marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#27ae60"/></marker>'+
+  '<marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2471a3"/></marker>'+
+  '<filter id="sh"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter></defs>'+
+
+  // Background
+  '<rect width="900" height="580" fill="#fdf6ec" rx="8"/>'+
+
+  // Layer 1: Root - 认知操作系统
+  '<rect x="320" y="15" width="260" height="44" rx="22" fill="#c0392b" filter="url(#sh)"/>'+
+  '<text x="450" y="43" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">认知操作系统：底层逻辑→教育决策</text>'+
+
+  // Edges from root to Layer 2 (Cognitive Lenses)
+  '<line x1="370" y1="59" x2="145" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowRed)"/>'+
+  '<text x="210" y="80" font-size="9" fill="#c0392b">透镜1</text>'+
+  '<line x1="420" y1="59" x2="350" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowRed)"/>'+
+  '<text x="370" y="80" font-size="9" fill="#c0392b">透镜2</text>'+
+  '<line x1="480" y1="59" x2="555" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowRed)"/>'+
+  '<text x="530" y="80" font-size="9" fill="#c0392b">透镜3</text>'+
+  '<line x1="530" y1="59" x2="755" y2="110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowRed)"/>'+
+  '<text x="660" y="80" font-size="9" fill="#c0392b">透镜4</text>'+
+
+  // Layer 2: Four cognitive lenses
+  '<rect x="30" y="112" width="180" height="44" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#sh)"/>'+
+  '<text x="120" y="132" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">c3 四维时空思维</text>'+
+  '<text x="120" y="148" text-anchor="middle" fill="#6b5b5b" font-size="9">时间不可逆·阶段性任务</text>'+
+
+  '<rect x="250" y="112" width="180" height="44" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#sh)"/>'+
+  '<text x="340" y="132" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">c8 控制论系统思维</text>'+
+  '<text x="340" y="148" text-anchor="middle" fill="#6b5b5b" font-size="9">反馈系数·封闭系统</text>'+
+
+  '<rect x="470" y="112" width="180" height="44" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#sh)"/>'+
+  '<text x="560" y="132" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">c2 系统论公平思维</text>'+
+  '<text x="560" y="148" text-anchor="middle" fill="#6b5b5b" font-size="9">职业平等→教育平等</text>'+
+
+  '<rect x="690" y="112" width="180" height="44" rx="8" fill="#fffaf2" stroke="#c0392b" stroke-width="2" filter="url(#sh)"/>'+
+  '<text x="780" y="132" text-anchor="middle" fill="#c0392b" font-size="11" font-weight="bold">c10 认知心理学</text>'+
+  '<text x="780" y="148" text-anchor="middle" fill="#6b5b5b" font-size="9">欲望驯化·利益驱动</text>'+
+
+  // Edges from lenses to Layer 3 (Education problems)
+  '<line x1="80" y1="156" x2="50" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="35" y="185" font-size="8" fill="#b8860b">应用于</text>'+
+  '<line x1="160" y1="156" x2="230" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="195" y="185" font-size="8" fill="#b8860b">应用于</text>'+
+
+  '<line x1="300" y1="156" x2="270" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="255" y="185" font-size="8" fill="#b8860b">解释</text>'+
+  '<line x1="380" y1="156" x2="440" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="420" y="185" font-size="8" fill="#b8860b">解释</text>'+
+
+  '<line x1="520" y1="156" x2="490" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="465" y="185" font-size="8" fill="#b8860b">溯源</text>'+
+  '<line x1="600" y1="156" x2="660" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="640" y="185" font-size="8" fill="#b8860b">溯源</text>'+
+
+  '<line x1="740" y1="156" x2="720" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="700" y="185" font-size="8" fill="#b8860b">驱动</text>'+
+  '<line x1="820" y1="156" x2="800" y2="215" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>'+
+  '<text x="790" y="185" font-size="8" fill="#b8860b">驱动</text>'+
+
+  // Layer 3: Education problems
+  '<rect x="15" y="217" width="170" height="50" rx="8" fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="100" y="238" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold">c3→择校时机决策</text>'+
+  '<text x="100" y="256" text-anchor="middle" fill="#6b5b5b" font-size="8">按年龄做每个年龄的事</text>'+
+
+  '<rect x="200" y="217" width="170" height="50" rx="8" fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="285" y="238" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold">c8→教育内卷解释</text>'+
+  '<text x="285" y="256" text-anchor="middle" fill="#6b5b5b" font-size="8">剧场效应·反馈失效</text>'+
+
+  '<rect x="390" y="217" width="170" height="50" rx="8" fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="475" y="238" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold">c1 选拔机制三体论</text>'+
+  '<text x="475" y="256" text-anchor="middle" fill="#6b5b5b" font-size="8">一刀切/全面评估/抽签</text>'+
+
+  '<rect x="580" y="217" width="140" height="50" rx="8" fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="650" y="238" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold">c2 教育公平根源</text>'+
+  '<text x="650" y="256" text-anchor="middle" fill="#6b5b5b" font-size="8">职业不平等→教育竞争</text>'+
+
+  '<rect x="735" y="217" width="145" height="50" rx="8" fill="#fffaf2" stroke="#5a3e3e" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="808" y="238" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold">c10→教育动机设计</text>'+
+  '<text x="808" y="256" text-anchor="middle" fill="#6b5b5b" font-size="8">利益驱动替代道德压制</text>'+
+
+  // Edges to Layer 4 (Individual decisions)
+  '<line x1="100" y1="267" x2="100" y2="330" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>'+
+  '<line x1="285" y1="267" x2="285" y2="330" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>'+
+  '<line x1="475" y1="267" x2="475" y2="330" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>'+
+  '<line x1="650" y1="267" x2="650" y2="330" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>'+
+  '<line x1="810" y1="267" x2="810" y2="330" stroke="#2471a3" stroke-width="1.5" marker-end="url(#arrowBlue)"/>'+
+
+  // Layer 4: Individual decisions
+  '<rect x="15" y="332" width="170" height="50" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="100" y="353" text-anchor="middle" fill="#2471a3" font-size="10" font-weight="bold">c5 父母作为天花板</text>'+
+  '<text x="100" y="371" text-anchor="middle" fill="#5a6a7a" font-size="8">认知边界=发展上限</text>'+
+
+  '<rect x="200" y="332" width="170" height="50" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="285" y="353" text-anchor="middle" fill="#2471a3" font-size="10" font-weight="bold">c4 资源匹配非最大化</text>'+
+  '<text x="285" y="371" text-anchor="middle" fill="#5a6a7a" font-size="8">阶段适配·需求匹配</text>'+
+
+  '<rect x="390" y="332" width="170" height="50" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="475" y="353" text-anchor="middle" fill="#2471a3" font-size="10" font-weight="bold">c7 天坑专业识别</text>'+
+  '<text x="475" y="371" text-anchor="middle" fill="#5a6a7a" font-size="8">供需错配·择校框架</text>'+
+
+  '<rect x="580" y="332" width="170" height="50" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="665" y="353" text-anchor="middle" fill="#2471a3" font-size="10" font-weight="bold">c6 通才vs专才选择</text>'+
+  '<text x="665" y="371" text-anchor="middle" fill="#5a6a7a" font-size="8">AI时代人类价值定位</text>'+
+
+  '<rect x="765" y="332" width="120" height="50" rx="8" fill="#eaf2f8" stroke="#2471a3" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="825" y="353" text-anchor="middle" fill="#2471a3" font-size="10" font-weight="bold">c9 STEMvs人文</text>'+
+  '<text x="825" y="371" text-anchor="middle" fill="#5a6a7a" font-size="8">素养配置</text>'+
+
+  // Edges to Layer 5 (Outcomes)
+  '<line x1="100" y1="382" x2="100" y2="430" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>'+
+  '<text x="108" y="410" font-size="8" fill="#27ae60">产出</text>'+
+  '<line x1="285" y1="382" x2="285" y2="430" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>'+
+  '<text x="293" y="410" font-size="8" fill="#27ae60">产出</text>'+
+  '<line x1="475" y1="382" x2="475" y2="430" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>'+
+  '<text x="483" y="410" font-size="8" fill="#27ae60">产出</text>'+
+  '<line x1="665" y1="382" x2="665" y2="430" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>'+
+  '<text x="673" y="410" font-size="8" fill="#27ae60">产出</text>'+
+  '<line x1="825" y1="382" x2="760" y2="430" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>'+
+
+  // Layer 5: Outcomes
+  '<ellipse cx="100" cy="450" rx="85" ry="22" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="100" y="454" text-anchor="middle" fill="#27ae60" font-size="9" font-weight="bold">不被父母限定的发展</text>'+
+
+  '<ellipse cx="285" cy="450" rx="85" ry="22" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="285" y="454" text-anchor="middle" fill="#27ae60" font-size="9" font-weight="bold">有限资源的最优利用</text>'+
+
+  '<ellipse cx="475" cy="450" rx="85" ry="22" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="475" y="454" text-anchor="middle" fill="#27ae60" font-size="9" font-weight="bold">避免天坑的理性择校</text>'+
+
+  '<ellipse cx="665" cy="450" rx="85" ry="22" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="665" y="454" text-anchor="middle" fill="#27ae60" font-size="9" font-weight="bold">AI时代的个人定位</text>'+
+
+  '<ellipse cx="760" cy="450" rx="85" ry="22" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" filter="url(#sh)"/>'+
+  '<text x="760" y="454" text-anchor="middle" fill="#27ae60" font-size="9" font-weight="bold">科技+人文均衡发展</text>'+
+
+  // Feedback loop (dashed)
+  '<path d="M 760 460 Q 880 460 880 300 Q 880 43 590 37" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowRed)"/>'+
+  '<text x="870" y="280" font-size="8" fill="#c0392b" transform="rotate(90,870,280)">结果反馈至认知升级（闭环）</text>'+
+
+  // Cross connection: c1<->c2
+  '<path d="M 475 267 Q 562 295 650 267" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,3" fill="none"/>'+
+  '<text x="540" y="292" font-size="7" fill="#c0392b">互为因果</text>'+
+
+  // Legend
+  '<rect x="650" y="490" width="230" height="80" rx="8" fill="#fef9f2" stroke="#e8d5c4" stroke-width="1"/>'+
+  '<text x="765" y="508" text-anchor="middle" fill="#3d2f2f" font-size="10" font-weight="bold">图例</text>'+
+  '<rect x="660" y="516" width="18" height="10" rx="2" fill="#c0392b"/>'+
+  '<text x="684" y="525" font-size="8" fill="#3d2f2f">认知透镜（底层逻辑）</text>'+
+  '<rect x="770" y="516" width="18" height="10" rx="2" fill="#fffaf2" stroke="#5a3e3e" stroke-width="1"/>'+
+  '<text x="794" y="525" font-size="8" fill="#3d2f2f">教育问题层</text>'+
+  '<rect x="660" y="534" width="18" height="10" rx="2" fill="#eaf2f8" stroke="#2471a3" stroke-width="1"/>'+
+  '<text x="684" y="543" font-size="8" fill="#3d2f2f">个体决策层</text>'+
+  '<ellipse cx="779" cy="539" rx="12" ry="6" fill="#e8f8f0" stroke="#27ae60" stroke-width="1"/>'+
+  '<text x="796" y="543" font-size="8" fill="#3d2f2f">结果层（椭圆）</text>'+
+  '<line x1="660" y1="555" x2="690" y2="555" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,3"/>'+
+  '<text x="694" y="559" font-size="8" fill="#3d2f2f">反馈闭环（虚线）</text>'+
+
+  '</svg>';
+  document.getElementById('conceptMap').innerHTML = svg;
+}
+renderSVG();
+
+// ===== DASHBOARD =====
+function renderConcepts(){
+  var grid=document.getElementById('conceptGrid');
+  grid.innerHTML=concepts.map(function(c,i){return '<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><strong>'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,60)+'...</p></div>';}).join('');
+  var mks=document.getElementById('mksCoreGrid');
+  mks.innerHTML=mksCoreIds.map(function(id){
+    var c=concepts.find(function(x){return x.id===id;});
+    return '<div class="concept-card mks-core"><strong>★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,80)+'...</p></div>';
+  }).join('');
+}
+renderConcepts();
+
+function updateProgress(){
+  var pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('totalProgress').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct>0?'学习进度 '+pct+'%（'+learnedCards.length+'/'+concepts.length+'）':'尚未开始学习';
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+}
+updateProgress();
+
+// ===== TAB 1: KNOWLEDGE FLIP CARDS =====
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业/生活场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ===== TAB 2: QUIZ SYSTEM =====
+var currentQuestions = [];
+var userAnswers = {};
+var quizTimeLeft = 900;
+var quizTimerInterval = null;
+
+function startQuiz(){
+  document.getElementById('staticQuiz').style.display = 'none';
+  var shuffled = [].concat(choiceQuestions).sort(function(){return Math.random()-0.5});
+  var essayShuffled = [].concat(shortQuestions).sort(function(){return Math.random()-0.5});
+  currentQuestions = shuffled.slice(0,10).concat(essayShuffled.slice(0,3));
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(function(){
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuizPractice();
+    }
+  },1000);
+}
+
+function updateQuizTimerDisplay(elemId){
+  var m = Math.floor(quizTimeLeft/60);
+  var s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuizPractice(){
+  var container = document.getElementById('quizContainer');
+  var html = '';
+  currentQuestions.forEach(function(q,i){
+    var opts = q.opts;
+    if(opts){
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+      opts.forEach(function(o,j){
+        var sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    }else{
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  var q = currentQuestions[qIdx];
+  var correctIdx = q.answer;
+  var isCorrect = optIdx === correctIdx;
+  var allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach(function(el,j){
+    el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  var fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' '+(q.explain||'');
+  var correctCount = Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!qi.opts) return false;
+    return v===qi.answer;
+  }).length;
+  var totalChoice = currentQuestions.filter(function(q){return q.opts}).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuizPractice(){
+  var correctCount = Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!qi.opts) return false;
+    return v===qi.answer;
+  }).length;
+  var totalChoice = currentQuestions.filter(function(q){return q.opts}).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
+}
+
+// ===== TAB 2: STATIC QUIZ =====
+function renderChoiceQuiz(){
+  var div=document.getElementById('choiceQuiz');
+  div.innerHTML=choiceQuestions.map(function(q,i){
+    var answered=quizAnswered.includes(i);
+    var correct=q.answer;
+    var opts=q.opts.map(function(o,j){
+      var cls='quiz-option';
+      if(answered){
+        if(j===correct)cls+=' correct';
+        else cls+=' wrong';
+      }
+      return '<div class="'+cls+'" onclick="'+((answered)?'':'answerChoice('+i+','+j+',this)')+'">'+'ABCD'[j]+'. '+o+(answered&&j===correct?' ✓':'')+'</div>';
+    }).join('');
+    return '<div style="margin-bottom:14px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+  }).join('');
+}
+renderChoiceQuiz();
+
+function answerChoice(qIdx,choice,el){
+  if(quizAnswered.includes(qIdx))return;
+  var correct=choiceQuestions[qIdx].answer;
+  quizAnswered.push(qIdx);
+  if(choice!==correct){
+    wrongAnswers.push({type:'choice',idx:qIdx,question:choiceQuestions[qIdx].q,userAnswer:choiceQuestions[qIdx].opts[choice],correctAnswer:choiceQuestions[qIdx].opts[correct]});
+  }
+  save();
+  renderChoiceQuiz();
+}
+
+function renderShortQuiz(){
+  var div=document.getElementById('shortQuiz');
+  div.innerHTML=shortQuestions.map(function(q,i){
+    var revealed=shortRevealed.includes(i);
+    return '<div style="margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+(revealed?'<div style="margin-top:6px;padding:10px;background:#fef9f2;border-radius:6px;color:var(--text-light);font-size:.88rem">'+q.a+'</div>':'<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="revealShort('+i+')">查看参考思路</button>')+'</div>';
+  }).join('');
+}
+renderShortQuiz();
+
+function revealShort(i){if(!shortRevealed.includes(i)){shortRevealed.push(i);save();renderShortQuiz()}}
+
+// ===== TAB 3: EXAM MODE =====
+function startExam(){
+  if(examActive)return;
+  examActive=true;
+  examSeconds=15*60;
+  document.getElementById('startExamBtn').style.display='none';
+  document.getElementById('examResult').style.display='none';
+  var cIdx=[],sIdx=[];
+  while(cIdx.length<7){var r=Math.floor(Math.random()*choiceQuestions.length);if(!cIdx.includes(r))cIdx.push(r)}
+  while(sIdx.length<3){var r2=Math.floor(Math.random()*shortQuestions.length);if(!sIdx.includes(r2))sIdx.push(r2)}
+  examQuestions={choice:cIdx,short:sIdx};
+  examAnswers=new Array(7).fill(-1);
+  renderExam();
+  document.getElementById('examArea').style.display='block';
+  examInterval=setInterval(updateExamTimer,1000);
+}
+
+function updateExamTimer(){
+  examSeconds--;
+  var m=Math.floor(examSeconds/60),s=examSeconds%60;
+  document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;
+  if(examSeconds<=0){submitExam()}
+}
+
+function renderExam(){
+  var div=document.getElementById('examArea');
+  var html='';
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var opts=q.opts.map(function(o,j){return '<div class="quiz-option" onclick="selectExam('+i+','+j+')" id="examOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';}).join('');
+    html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+  });
+  examQuestions.short.forEach(function(idx,i){
+    html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+8)+'. '+shortQuestions[idx].q+'</strong><p style="color:var(--text-light);font-size:.82rem;margin-top:4px">（简答题，请在心中作答后点击"提交"查看参考思路）</p></div>';
+  });
+  html+='<button class="btn btn-primary" onclick="submitExam()">提交答卷</button>';
+  div.innerHTML=html;
+}
+
+function selectExam(i,j){
+  examAnswers[i]=j;
+  for(var k=0;k<4;k++){var el=document.getElementById('examOpt'+i+'_'+k);if(el){el.classList.remove('selected');if(k===j)el.classList.add('selected')}}
+}
+
+function submitExam(){
+  clearInterval(examInterval);
+  examActive=false;
+  document.getElementById('examTimer').textContent='00:00';
+  var score=0;
+  var detail='';
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var user=examAnswers[i];
+    var correct=q.answer;
+    var isCorrect=user===correct;
+    if(isCorrect)score++;
+    else{wrongAnswers.push({type:'exam',idx:idx,question:q.q,userAnswer:user>=0?q.opts[user]:'未作答',correctAnswer:q.opts[correct]})}
+    detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:'+(isCorrect?'#eafaf1':'#fdecea')+'"><strong>'+(i+1)+'. '+q.q+'</strong><br>你的答案：'+(user>=0?q.opts[user]:'未作答')+' '+(isCorrect?'✓':'✗')+'<br>正确答案：'+q.opts[correct]+'</div>';
+  });
+  examQuestions.short.forEach(function(idx,i){
+    var q=shortQuestions[idx];
+    detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2"><strong>'+(i+8)+'. '+q.q+'</strong><br>'+q.a+'</div>';
+  });
+  save();
+  var pct=Math.round(score/7*100);
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML='<h3 style="color:'+(pct>=70?'var(--success)':'var(--accent)')+'">得分：'+score+'/7（'+pct+'%）</h3>'+detail+'<button class="btn btn-outline" onclick="document.getElementById(\'startExamBtn\').style.display=\'inline-block\';document.getElementById(\'examResult\').style.display=\'none\';document.getElementById(\'examArea\').style.display=\'none\';document.getElementById(\'examTimer\').textContent=\'15:00\'">重新考试</button>';
+  document.getElementById('examArea').style.display='none';
+}
+
+// ===== TAB 4: REVIEW =====
+function renderReview(){
+  var totalQ=quizAnswered.length;
+  var correctQ=quizAnswered.length-wrongAnswers.filter(function(w){return w.type==='choice'}).length;
+  var pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+  var days=Math.max(1,Math.ceil((Date.now()-new Date('2026-05-01').getTime())/86400000));
+  document.getElementById('statsGrid').innerHTML='<div class="card stat-item"><div class="stat-value">'+totalQ+'</div><div class="stat-label">总答题数</div></div><div class="card stat-item"><div class="stat-value">'+pct+'%</div><div class="stat-label">正确率</div></div><div class="card stat-item"><div class="stat-value">'+days+'</div><div class="stat-label">学习天数</div></div>';
+  var wb=document.getElementById('wrongBook');
+  if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--success)">暂无错题，继续保持！</p>';}
+  else{wb.innerHTML=wrongAnswers.map(function(w,i){return '<div style="margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0"><strong>'+w.question+'</strong><br><span style="color:var(--accent)">你的答案：'+w.userAnswer+'</span><br><span style="color:var(--success)">正确答案：'+w.correctAnswer+'</span></div>';}).join('');}
+  var conceptMap2={};
+  wrongAnswers.forEach(function(w){
+    var qIdx=w.idx;
+    if(choiceQuestions[qIdx]){
+      var topic=choiceQuestions[qIdx].q.slice(0,8);
+      conceptMap2[topic]=conceptMap2[topic]||{topic:topic,count:0,questions:[]};
+      conceptMap2[topic].count++;
+      conceptMap2[topic].questions.push(w.question);
+    }
+  });
+  var sorted=Object.values(conceptMap2).sort(function(a,b){return b.count-a.count});
+  document.getElementById('weakConcepts').innerHTML=sorted.length>0?sorted.map(function(c){return '<div style="margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px"><strong>错'+c.count+'题：</strong>'+c.questions[0].slice(0,40)+'...</div>';}).join(''):'<p style="color:var(--success)">暂无薄弱概念</p>';
+}
+
+// ===== TAB 5: MINDMAP (inline HTML, click handlers) =====
+(function initMindmap(){
+  var toggles = document.querySelectorAll('#panel5 .tree-toggle');
+  toggles.forEach(function(el){
+    el.addEventListener('click',function(){
+      this.classList.toggle('open');
+      var children = this.nextElementSibling;
+      if(children && children.classList.contains('tree-children')) children.classList.toggle('open');
+    });
+  });
+})();
+
+// ===== TAB 8: DECISION SIMULATION =====
+function showDecision(round, choice, el){
+  var results = [
+    [
+      {feedback:'✓ 明智之选。编程学习的核心价值是培养计算机思维（分解问题、抽象建模、算法设计）而非具体语法。计算机思维是底层认知能力，不受具体编程语言的兴衰影响——Python可能被新语言替代，但计算思维不会。同时注意：避免功利化（不因“技能是否重要”而决定学不学），关注孩子的兴趣和热情。',mks:'c9 STEM素养：“造机器者不被机器取代”。计算机思维=底层操作系统，具体编程语言=上层应用。'},
+      {feedback:'⚠️ 过度焦虑AI替代。数学和逻辑训练确实重要，但它们与编程是互补关系而非替代关系。编程是数学思维的“可视化实验场”——孩子通过编程验证数学概念，这本身就是最高效的数学学习方式之一。完全转向纯数学训练会让孩子失去动手验证的乐趣。',mks:'c4 资源匹配：在兴趣萌芽阶段，匹配的是“保持热情”而非“最优路径”。过早功利化计算“什么对未来有用”反而扼杀探索动力。'},
+      {feedback:'⚠️ 值得考虑但不必非此即彼。小学阶段确实不宜过早专精——但“继续学编程”和“尝试更多领域”可以并行。关键不是减少编程时间，而是确保编程不挤占其他探索空间。如果编程是孩子主动选择的兴趣（而非家长安排的），持续投入带来的专注力培养本身就是宝贵收获。',mks:'c3 四维时空：小学阶段的核心任务不是技能积累，而是保护好奇心和探索欲。只要编程是“玩”而非“学”，它就是好奇心的朋友而非敌人。'}
+    ],
+    [
+      {feedback:'✓ 符合吴军的择校框架：本科是“学校名气>地域>专业”。C9品牌在校招市场的溢价效应显著——大企业（全球500强、咨询公司、投行）重视的是基础扎实度和学习能力而非具体专业。但需额外评估：C9的金融专业实力和校友在该领域的分布。',mks:'c7 择校框架：本科阶段雇主对专业要求宽泛——C9的品牌弹性在转行或深造时价值凸显。上海财经虽有地利但品牌天花板较低。'},
+      {feedback:'⚠️ 地理位置确实重要但不应成为本科阶段的首要决策因素。上海的实习资源可以通过暑期实习获取——C9学生申请上海暑期实习的竞争力不输本地院校学生。而且金融行业的校招通常在毕业季集中进行，地域优势主要在“日常实习”而非“毕业校招”环节发挥。',mks:'c4 资源匹配：地域是加分项不是决定项。本科4年是最适合建立品牌背书的阶段——牺牲品牌换地利，短期实习便利但长期职业天花板受限。'},
+      {feedback:'✓ 这是最负责任的做法但需警惕“孩子偏好的可靠性”。17-18岁的高中毕业生的偏好可能基于对城市的表面印象（如“上海更繁华”）而非对学校质量的理性判断。建议：家长做品牌-专业维度的分析，孩子做城市-校园氛围的体验判断，两方权重均衡。',mks:'c5 父母天花板：既不能替孩子决定（干预过度），也不能完全放权（信息不对称）。父母提供分析框架，孩子做最终决策——这是“不做天花板”的正确姿势。'}
+    ],
+    [
+      {feedback:'⚠️ 尊重孩子的选择是“不当天花板”父母的底线——但尊重的边界不是无条件支持，而是提供分析框架。如果孩子能清楚回答“创业公司核心岗位具体做什么？这个经验3年后在招聘市场上值多少钱？公司还剩多少现金？”，说明是有思考的选择。如果回答是“感觉有前途”，需要帮他补认知。',mks:'c5 父母天花板：尊重选择≠放弃引导。最高级的支持是“我理解你的理由，你理解了风险，然后我仍然支持你”。'},
+      {feedback:'✓ 符合“第一份工作重成长不重薪资”原则。大厂的训练体系（代码规范、项目管理、导师制度、跨团队协作）是无形资产——3年大厂经验的市场价值远超3年小公司的15000月薪差价。但有一个前提：孩子在大厂不能成为螺丝钉——需要主动争取有挑战性的项目。',mks:'c4 资源匹配：职业早期的核心需求是“系统性成长”而非“最大化短期现金回报”——大厂的训练体系是加速成长的复利机器。'},
+      {feedback:'✓ 这是最明智的家长角色。分享分析框架（而非给结论）：①创业公司能给你什么：试错自由、全栈视角、快速决策权？②你不能失去什么：大厂的系统性训练、行业标准能力认证？③3年后你最差的结果是什么（可以接受吗）？让孩子带着这些问题去和创业公司创始人深入沟通，回来后自己做判断。',mks:'c5 父母天花板：最好的父母不是给孩子答案而是给孩子提问的框架——让孩子从“听你的”升级为“用你的方法论自己判断”。这是认知操作系统的代际传承。'}
+    ]
+  ];
+  var r = results[round][choice];
+  var resultEl = document.getElementById('decisionResult'+round);
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = '<div style="margin-bottom:6px"><strong>反馈：</strong>'+r.feedback+'</div><div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>'+r.mks+'</div>';
+  var opts = resultEl.parentElement.querySelectorAll('.decision-opt');
+  opts.forEach(function(o){o.style.pointerEvents='none';});
+  el.style.borderColor='var(--gold)';
+  el.style.background='#fffdf5';
+}
+
+// ===== UTILITY =====
+function switchTab(idx){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelector('[data-tab="'+idx+'"].tab-btn').classList.add('active');
+  document.getElementById('panel'+idx).classList.add('active');
+  if(idx===4)renderReview();
+}
+</script>
+</body>
+</html>

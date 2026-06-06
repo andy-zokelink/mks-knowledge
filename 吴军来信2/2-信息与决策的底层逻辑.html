@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息与决策的底层逻辑 — 最小知识集</title>
+<style>
+:root{
+--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--accent2:#d4a574;
+--text:#3d2f2f;--text2:#6b5555;--text-light:#6b5b5b;--border:#e8d5c4;
+--gold:#b8860b;--success:#27ae60;--warning:#e67e22;
+--shadow:0 2px 12px rgba(60,30,20,.08);--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:clamp(14px,1.2vw,17px);scroll-behavior:smooth}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;padding-top:52px}
+.container{max-width:960px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);color:#fdf6ec;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap}
+.top-bar .home-link{color:#d4a574;font-size:13px;border:1px solid #d4a574;padding:3px 10px;border-radius:14px;white-space:nowrap;transition:all .2s;text-decoration:none}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f}
+.tab-bar{position:sticky;top:52px;z-index:99;display:flex;flex-wrap:wrap;gap:4px;padding:8px clamp(4px,1vw,12px);background:rgba(253,246,236,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);justify-content:center}
+.tab-btn{padding:7px 14px;border:none;border-radius:18px;background:var(--card);color:var(--text2);font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent}
+.tab-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff}
+.tab-content{display:none;animation:fadeIn .35s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+h2{font-size:clamp(1.2rem,2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent2)}
+h3{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text);margin:16px 0 8px}
+.card{background:var(--card);border-radius:var(--radius);padding:clamp(14px,2.5vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.concept-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent);transition:transform .2s}
+.concept-card:hover{transform:translateY(-2px)}
+.concept-card.mks{border-left-color:var(--gold);position:relative}
+.concept-card.mks::after{content:'\2605';position:absolute;top:8px;right:12px;color:var(--gold);font-size:1.2rem}
+.concept-card h4{font-size:.95rem;color:var(--accent);margin-bottom:6px}
+.concept-card p{font-size:.82rem;color:var(--text2);line-height:1.5}
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700}
+.badge-core{background:#fde8e8;color:var(--accent)}
+.badge-mks{background:#fef3cd;color:var(--gold)}
+.badge-boundary{background:#e8f0fe;color:#3a6ea5}
+.progress-wrap{margin:16px 0}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s}
+.progress-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+.svg-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);background:var(--card);padding:16px;-webkit-overflow-scrolling:touch}
+.svg-wrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#a93226}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-card .q-tag{font-size:.75rem;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
+.q-mc{background:#fde8e8;color:var(--accent)}
+.q-sa{background:#e8f0fe;color:#3a6ea5}
+.quiz-card .q-text{font-weight:700;margin-bottom:12px}
+.quiz-card .q-option{padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid var(--border);font-size:.85rem}
+.quiz-card .q-option:hover{border-color:var(--accent2);background:#fef9f4}
+.quiz-card .q-option.selected{border-color:var(--accent);background:#fde8e8}
+.quiz-card .q-option.correct{border-color:#4caf50;background:#e8f5e9}
+.quiz-card .q-option.wrong{border-color:var(--accent);background:#ffebee}
+.quiz-card .q-feedback{margin-top:8px;font-size:.82rem;padding:8px;border-radius:8px;display:none}
+.quiz-card .q-feedback.show{display:block}
+.quiz-card .q-feedback.right{background:#e8f5e9;color:#2e7d32}
+.quiz-card .q-feedback.wrong-msg{background:#ffebee;color:var(--accent)}
+.quiz-card .sa-input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:.85rem;resize:vertical;min-height:80px;background:#fff}
+.quiz-card .sa-reveal{margin-top:8px;padding:10px;background:#fef9f4;border-radius:8px;font-size:.82rem;display:none}
+.quiz-card .sa-reveal.show{display:block}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:'\25B8';display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+@media(max-width:600px){
+.grid2{grid-template-columns:1fr}
+.grid3{grid-template-columns:1fr 1fr}
+.tab-bar{flex-wrap:nowrap}
+.tab-btn{padding:5px 8px;font-size:.7rem}
+.flip-card{height:clamp(200px,55vw,260px)}
+}
+@media(max-width:375px){
+.tab-btn{font-size:.65rem;padding:4px 6px}
+.boundary-table{font-size:.7rem}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+<h1>🧠 信息与决策的底层逻辑</h1>
+<a href="index.html" class="home-link">← 返回知识主板</a>
+</div>
+
+<div class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="0">知识集总览</button>
+<button class="tab-btn" data-tab="1">知识卡片</button>
+<button class="tab-btn" data-tab="2">题库系统</button>
+<button class="tab-btn" data-tab="3">考试模式</button>
+<button class="tab-btn" data-tab="4">复习模式</button>
+<button class="tab-btn" data-tab="5">思维导图</button>
+<button class="tab-btn" data-tab="6">深度追问</button>
+<button class="tab-btn" data-tab="7">案例分析</button>
+<button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<div class="container">
+
+<!-- Tab 0: 知识集总览 -->
+<div class="tab-content active" id="tab0">
+
+<!-- 核心目标 -->
+<h2>🎯 核心目标</h2>
+<div class="card">
+<p style="font-size:1.05rem;line-height:1.8">本专题解决的核心问题：<strong>如何在信息泛滥的时代，建立从接收信息到做出决策的完整认知框架</strong>——不讲「怎么做决策」，讲「决策背后的信息原理」。用香农信息论、逻辑学、认知科学作为透镜，重建信息素养、真假辨别、保密表达、逻辑谬误的底层思维体系。</p>
+</div>
+
+<!-- 核心概念 -->
+<h2>💡 核心概念</h2>
+<div class="grid2" id="conceptGrid0"></div>
+
+<!-- 最小知识集 -->
+<h2>⭐ 最小知识集（骨架中的骨架）</h2>
+<div class="card" style="background:linear-gradient(135deg,#fffdf5,#fff9e6);border:1px solid var(--gold)">
+<p style="margin-bottom:12px">以下 5 个概念构成整个专题的认知骨架——掌握它们，其余概念可由此推导：</p>
+<div id="mksGrid0" class="grid2"></div>
+</div>
+
+<!-- 概念关系图 -->
+<h2>🔗 概念关系图</h2>
+<div class="svg-wrap" id="svgWrap"></div>
+
+<!-- 边界知识表 -->
+<h2>📋 边界知识表</h2>
+<div class="card" style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>戈培尔恐惧营销闭环</td><td>识别短视频/社交媒体操纵——唤起恐惧→激发焦虑→渴望安慰→获得解决</td></tr>
+<tr><td>罗斯巴德产权三原则</td><td>理解自由市场经济的逻辑基础：自我所有权、先占先得、互不侵犯产权</td></tr>
+<tr><td>维特根斯坦语言图像论</td><td>分析沟通中「词不达意」的根源——语言是对现实的图像再现</td></tr>
+<tr><td>维特根斯坦语言游戏论</td><td>理解夫妻争吵、职场矛盾的深层——双方未进入同一个语言游戏</td></tr>
+<tr><td>齐夫定律</td><td>认识世界分布的不均匀性——少数城市占多数人口，少数词汇占多数文本</td></tr>
+<tr><td>ΛCDM标准宇宙模型</td><td>理解科学理论的暂时性——再权威的理论都可能被新证据推翻</td></tr>
+<tr><td>韦伯望远镜三大发现</td><td>训练事实优先思维——当理论与观测冲突时，事实永远正确</td></tr>
+<tr><td>暗能量衰减理论</td><td>理解科学前沿的动态性——4.2σ置信度即99.993%可信</td></tr>
+<tr><td>《独立宣言》翻译误读</td><td>警惕中文翻译陷阱——&#8220;self-evident&#8221;应译「不证自明」而非「不言而喻」</td></tr>
+<tr><td>辩证法 vs 诡辩术</td><td>职场中被要求「辩证看问题」时辨别是否被PUA</td></tr>
+<tr><td>成人筛选原则</td><td>合作/招聘/交友——成年人靠筛选不靠教化</td></tr>
+<tr><td>蝴蝶效应识别误区</td><td>复杂决策中区分真正决定因素与媒体炒作的微小事件</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 学习路径 -->
+<h2>📈 学习路径</h2>
+<div class="card">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:flex-start;gap:12px">
+<div style="background:var(--accent);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">1</div>
+<div><strong>信息接收层</strong>——先学香农第二定律（c1）+ 信息茧房（c5）+ 恐惧营销闭环（c10），建立信息摄入的「免疫系统」</div>
+</div>
+<div style="display:flex;align-items:flex-start;gap:12px">
+<div style="background:var(--accent);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">2</div>
+<div><strong>信息处理层</strong>——掌握前提真实性（c4）+ 概念清晰化（c8）+ 概率思维（c2），学会从信息中提取可靠命题</div>
+</div>
+<div style="display:flex;align-items:flex-start;gap:12px">
+<div style="background:var(--accent);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">3</div>
+<div><strong>信息输出层</strong>——学习编码解码一致性（c6）+ 奥卡姆剃刀（c3），确保表达简洁、准确、对方能理解</div>
+</div>
+<div style="display:flex;align-items:flex-start;gap:12px">
+<div style="background:var(--accent);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">4</div>
+<div><strong>信息决策层</strong>——综合运用事实优先（c9）+ 滑坡谬误识别（c7），在复杂信息环境中做出理性决策</div>
+</div>
+</div>
+</div>
+
+<!-- 学习进度 -->
+<h2>📊 学习进度</h2>
+<div class="card">
+<div class="progress-bar"><div class="progress-fill" id="overviewProgress" style="width:0%"></div></div>
+<p class="progress-label">整体掌握度：<span id="overviewPercent">0</span>%（<span id="overviewLearned">0</span>/10 概念已学习，<span id="overviewMcq">0</span>/20 选择题通过）</p>
+</div>
+</div>
+
+<!-- Tab 1: 知识卡片 -->
+<div class="tab-content" id="tab1">
+<h2>🏃 知识卡片</h2>
+<p style="color:var(--text-light);margin-bottom:12px;font-size:.85rem">点击卡片翻转查看完整内容，学习后标记掌握</p>
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+<button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+<span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+<button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+<button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: 题库系统 -->
+<div class="tab-content" id="tab2">
+<h2>📝 题库系统</h2>
+<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+<button class="btn btn-primary" onclick="startQuiz()">🎲 随机抽题练习</button>
+<button class="btn btn-outline" onclick="resetQuiz()">🔄 重置</button>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<h3>📊 选择题（20题）</h3>
+<div id="mcqStatic"></div>
+<h3 style="margin-top:24px">✍️ 简答题（10题）</h3>
+<div id="saqStatic"></div>
+</div>
+</div>
+
+<!-- Tab 3: 考试模式 -->
+<div class="tab-content" id="tab3">
+<h2>⏱️ 考试模式</h2>
+<p style="color:var(--text-light);margin-bottom:12px">限时完成全部 20 道选择题，模拟真实考试环境</p>
+<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+<button class="btn btn-primary" id="examStartBtn" onclick="startExam()">▶️ 开始考试</button>
+<button class="btn btn-outline" id="examSubmitBtn" onclick="submitExam()" style="display:none">✅ 提交答卷</button>
+<span class="timer" id="examTimer" style="display:none">20:00</span>
+</div>
+<div id="examContainer"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+
+<!-- Tab 4: 复习模式 -->
+<div class="tab-content" id="tab4">
+<h2>🔄 复习模式</h2>
+<p style="color:var(--text-light);margin-bottom:12px">针对性复习错题和薄弱概念</p>
+<div class="card">
+<h3>📉 薄弱概念</h3>
+<div id="weakConcepts" style="padding:8px 0">
+<p style="color:var(--text-light)">完成考试后，系统将自动标记需要重点复习的概念</p>
+</div>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>❌ 错题本</h3>
+<div id="wrongQuestions" style="padding:8px 0">
+<p style="color:var(--text-light)">完成考试后，错题将自动收集到此区域</p>
+</div>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>📈 学习统计</h3>
+<div id="reviewStats" class="grid3">
+<div class="stat-item"><div class="stat-value" id="rsTotal">0</div><div class="stat-label">总答题数</div></div>
+<div class="stat-item"><div class="stat-value" id="rsCorrect">0</div><div class="stat-label">正确数</div></div>
+<div class="stat-item"><div class="stat-value" id="rsRate">0%</div><div class="stat-label">正确率</div></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 5: 思维导图（内联HTML） -->
+<div class="tab-content" id="tab5">
+<h2>🧠 思维导图</h2>
+<p style="color:var(--text-light);margin-bottom:16px;font-size:.85rem">点击节点展开/折叠</p>
+
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">🌐 信息与决策底层逻辑</div>
+<div class="tree-children open">
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">📥 信息接收层：获取真实信息</div>
+<div class="tree-children open">
+<div class="tree-leaf">➡ 信息信道容量（香农第二定律）：超速接收=100%错误</div>
+<div class="tree-leaf">➡ 信息茧房：算法推荐构建认知牢笼</div>
+<div class="tree-leaf">➡ 恐惧营销闭环：唤起恐惧→激发焦虑→渴望安慰→获得解决</div>
+<div class="tree-leaf">➡ 打破信息茧房：主动搜索替代被动推荐</div>
+<div class="tree-leaf">➡ 警惕思想高度一致的群体环境</div>
+<div class="tree-leaf">➡ 多渠道交叉验证：如同双眼定位建立立体认知</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">🔍 信息辨别层：识别真假与谬误</div>
+<div class="tree-children open">
+<div class="tree-leaf">➡ 谎言六大特征：逻辑矛盾 / 统计不可能 / 难以证伪 / 虚构同盟 / 定义模糊 / 以偏概全</div>
+<div class="tree-leaf">➡ 前提真实性：错误前提→任何逻辑结论均无意义</div>
+<div class="tree-leaf">➡ 概念清晰化：理性思维的基石，模糊概念导致无效争论</div>
+<div class="tree-leaf">➡ 诉诸权威/大众谬误：权威在高度不确定领域不优于普通人</div>
+<div class="tree-leaf">➡ 滑坡谬误：多步假设推理，每步降低可靠性</div>
+<div class="tree-leaf">➡ 奥卡姆剃刀：最简单的解释往往最正确</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">📤 信息输出层：有效表达与保密</div>
+<div class="tree-children open">
+<div class="tree-leaf">➡ 编码解码一致性：共用&#8220;码本&#8221;，用对方能理解的语言</div>
+<div class="tree-leaf">➡ 简洁性+适度冗余：去除废话但保留关键重复</div>
+<div class="tree-leaf">➡ 语言图像论：语言是对现实的图像再现</div>
+<div class="tree-leaf">➡ 语言游戏论：沟通需进入共同语境和意图</div>
+<div class="tree-leaf">➡ 保密本质：不仅是美德，更需刻意练习的能力</div>
+<div class="tree-leaf">➡ 保密四法：书写销毁/宠物倾诉/平常心/时效解密</div>
+</div>
+</div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">🏹 信息决策层：理性判断与行动</div>
+<div class="tree-children open">
+<div class="tree-leaf">➡ 概率思维：所有判断本质是概率选择+价值判断补充</div>
+<div class="tree-leaf">➡ 四步决策流程：自主判断→遵循常识→权威优先→接受无解</div>
+<div class="tree-leaf">➡ 事实优先原则：理论与观测冲突时，事实永远正确</div>
+<div class="tree-leaf">➡ 深入归因法：列出所有原因→估算相关性排序</div>
+<div class="tree-leaf">➡ 识别伪辩证法：就事论事，拒绝被「大局」绑架</div>
+<div class="tree-leaf">➡ 成年人靠筛选不靠教化：选对人比改变人更高效</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Tab 6: 深度追问（内联HTML） -->
+<div class="tab-content" id="tab6">
+<h2>🤔 深度追问</h2>
+<p style="color:var(--text-light);margin-bottom:12px;font-size:.85rem">苏格拉底式追问——点击问题展开回答</p>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q1: 为什么说&#8220;信息超速接收的错误率是100%而非50%&#8221;？这对学习有什么颠覆性启示？</span></div>
+<div class="socratic-a">
+<p>香农第二定律的数学本质是：当信息传输速率超过信道容量时，错误概率不是线性增长，而是突变到100%。类比高速公路：单车道容量是每分钟通过60辆车，若硬塞入120辆，结果不是60辆通过+60辆等待，而是全部堵死——没有一辆能正常通过。同理，人脑信息接收带宽约每秒几十比特，若短时间内灌入大量信息（如2倍速听课），大脑不是「听懂一半」，而是「完全没编码进去」。<strong>颠覆性启示</strong>：学习的关键不是速度而是时间——用1万小时学完《大英百科全书》是可能的，但试图1千小时学完必然失败。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q2: 为什么&#8220;从错误前提出发&#8221;能得出任何逻辑自洽的结论？这和日常生活有什么关系？</span></div>
+<div class="socratic-a">
+<p>逻辑学的核心定理：如果前提为假，则任何命题都可以被「证明」为真（爆炸原理）。因为假前提蕴含一切——从「1+1=3」可以推导出任何结论。日常生活中，最大的危险不是逻辑错误，而是<strong>你基于错误前提推导出的结论在逻辑上自洽</strong>——这让你对自己的错误结论深信不疑。例如：假设「美元霸权决定美国科技领先」（错误前提）→ 推导出「去美元化后美国科技将崩溃」（逻辑自洽但完全错误）。破解方法：<strong>任何推理前先问「前提是否为真」，而非先欣赏逻辑的优美</strong>。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q3: 为什么奥卡姆剃刀原理说「简单解释更可能正确」？这不违反世界的复杂性吗？</span></div>
+<div class="socratic-a">
+<p>奥卡姆剃刀不是说「世界很简单」，而是说<strong>在同等解释力下，简单假设正确的概率更高</strong>。原因：复杂解释需要更多假设同时为真，而每个假设都有独立的出错概率——假设越多，联合概率越低（乘法原理）。例如：地球光环假说需要(1)陨石撞击赤道(2)形成万亿碎片(3)碎片聚成光环(4)光环遮挡阳光(5)导致冰河期——五个假设若每个70%可信，联合可信度仅16.8%。而「陨石尘埃直接遮光」只需两个假设。奥卡姆剃刀不是说复杂解释一定错，而是<strong>警惕它出错概率更高</strong>。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q4: 信息茧房最危险的地方在哪里？大多数人对它的认知有什么盲区？</span></div>
+<div class="socratic-a">
+<p>最危险的不是「处在茧房中」，而是<strong>「身处茧房而不自知」</strong>。戈培尔的恐怖在于：他只用数年就让具有康德、黑格尔、尼采哲学传统的德意志民族陷入集体无脑。现代算法比戈培尔更高效——它不需要国家机器，只需要持续推送你喜欢的内容。<strong>最大的认知盲区</strong>：人们以为「我只看我喜欢的内容」是自由选择，但实际上算法已经替你决定了「你能看到什么」。破解的关键不是逃离互联网，而是<strong>主动搜索替代被动推荐 + 固定访问多个立场不同的信源</strong>。正如吴军所说：「别人上当，你不上当」就是信息时代的相对优势。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q5: &#8220;编码解码一致性&#8221;和维特根斯坦的&#8220;语言游戏论&#8221;有什么联系？为什么「共用码本」在亲密关系中更重要？</span></div>
+<div class="socratic-a">
+<p>香农的「共用码本」是工程概念：发送方用码本A编码，接收方用码本B解码，若A≠B则信息完全丢失。维特根斯坦将其升级为哲学概念：语言不仅是编码工具，更是「游戏」——夫妻吵架「你从来不收拾家里」的实质不是事实陈述（她可能昨天刚收拾过），而是<strong>寻求情感认同的邀请</strong>。如果丈夫按字面解码为「指控」并反驳「我上周才收拾过」，他就「没进入同一个语言游戏」。<strong>亲密关系中更重要的原因</strong>：关系越近，语言游戏的默认假设越多，双方自以为「共用码本」的概率越大——而误解恰恰源于这种「自以为共用」。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q6: 为什么「成年人靠筛选不靠教化」是一条被普遍低估的社交法则？</span></div>
+<div class="socratic-a">
+<p>从信息论角度：一个人的价值观和行为模式是几十年「训练数据」（经历、教育、环境）训练出来的神经网络权重——这些权重已经高度固化。试图通过几次谈话改变对方，相当于用几个样本重新训练一个已经收敛的模型——<strong>计算成本极高而成功率极低</strong>。吴军的观察：处长级干部对简单道理的理解效率低于部长级——这不是智商问题，是「认知筛选」的结果：能升到部长的人本身就具备高效理解力，处长停留在那个级别本身就是某种认知过滤的结果。应用：<strong>选合作伙伴像选股票——花时间研究选谁，而不是花时间改造已经选错的人</strong>。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q7: 如何判断职场中对方是在用「辩证法」帮你还是在用「诡辩术」压榨你？</span></div>
+<div class="socratic-a">
+<p>五条判别标准：(1)<strong>利益流向</strong>：辩证法中你的合理利益最终会实现，诡辩术中你是被永久牺牲的那个。(2)<strong>是否就事论事</strong>：对方是否引入无关变量扩大讨论范围？如果是，警惕。(3)<strong>透明度</strong>：对方是否愿意公开标准和流程？高考凭分数录取是透明的，公司凭「综合考虑」晋升是不透明的。(4)<strong>时间承诺</strong>：「年轻人多吃亏将来会感谢」——给具体时间节点，不接受的画饼。(5)<strong>最终裁决</strong>：<strong>以自身合理利益为准</strong>——如果「顾全大局」长期损害你的利益，「大局」就是对你个人的掠夺。</p>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">Q8: &#8220;事实优先原则&#8221;在日常生活中有哪些容易被忽视的应用场景？</span></div>
+<div class="socratic-a">
+<p>韦伯望远镜的案例给出了最极致的示范：当观测数据与公认了50年的理论冲突时，科学家不维护理论而是修正理论。日常应用：(1)<strong>投资</strong>：你对某公司的「信念」 vs 连续下跌的股价——事实优先。(2)<strong>人际关系</strong>：你对某人的「印象」 vs 他反复让你失望的行为——事实优先。(3)<strong>自我认知</strong>：「我觉得自己很努力」 vs 实际产出低于平均水平——事实优先。(4)<strong>信息判断</strong>：「这个消息听起来很合理」 vs 查不到任何可靠信源——事实优先。核心训练：<strong>当你的观点和可验证的事实冲突时，练习说「我之前的判断错了」</strong>。</p>
+</div>
+</div>
+
+<!-- Tab 7: 案例分析（内联HTML） -->
+<div class="tab-content" id="tab7">
+<h2>📖 案例分析</h2>
+<p style="color:var(--text-light);margin-bottom:16px;font-size:.85rem">将概念框架应用于真实场景</p>
+
+<div class="card">
+<h3>🌍 案例一：地球曾有过光环吗？——滑坡谬误的教科书级案例</h3>
+<p style="margin-bottom:8px"><strong>背景</strong>：2024年，澳大利亚莫纳许大学汤姆金斯教授发表论文，声称地球在4.66亿年前曾有一个光环。</p>
+<p style="margin-bottom:8px"><strong>推理链条</strong>：陨石撞击赤道 → 小行星解体 → 万亿碎片形成光环 → 光环遮挡阳光 → 全球降温导致冰河期 → 光环消失温度回升。</p>
+<p style="margin-bottom:8px"><strong>逻辑缺陷</strong>：从「陨石撞击」到「冰河期」经历了5步推理，每一步都基于前一步的假设。(1)只发现21个陨石坑，但光环需要万亿碎片——证据差9个数量级；(2)板块漂移模型回推误差约20-30%；(3)冰河期本身有多种更简单的解释（太阳活动变化）。</p>
+<p style="margin-bottom:8px"><strong>奥卡姆剃刀对比</strong>：恐龙灭绝的主流解释是「陨石尘埃直接遮光」——只需两步推理，不需要光环假设。两种解释的联合概率差异可达数十倍。</p>
+<p><strong>应用启示</strong>：当你读到「通过XX技术，人类有望活到120岁」这样的标题时，追溯原文会发现：这可能只是果蝇实验的结果。从果蝇到人类，每一步推理都在削弱结论的可靠性。</p>
+</div>
+
+<div class="card">
+<h3>💰 案例二：薪酬为什么不公开？——信息保密的三层分析</h3>
+<p style="margin-bottom:8px"><strong>问题</strong>：公司不公开员工薪酬，是否属于「管理者独享信息」？未来会公开吗？</p>
+<p style="margin-bottom:8px"><strong>第一层·隐私权</strong>：个人薪酬是隐私信息，这与公共人物的履历有本质区别。现代社会对隐私的重视远超30年前。</p>
+<p style="margin-bottom:8px"><strong>第二层·人性弱点</strong>：嫉妒心（&#8220;笑人无，恨人有&#8221;）难以消除。薪酬公开可能引发同事间的心理失衡，破坏团队协作。</p>
+<p style="margin-bottom:8px"><strong>第三层·商业博弈</strong>：信息差是薪酬谈判的工具——如果全员薪酬透明，企业将失去议价弹性，可能面临全员要求涨薪的管理困境。</p>
+<p><strong>结论</strong>：未来薪酬<strong>更不可能</strong>公开。这个分析展示了如何用三层递进框架（隐私→人性→商业）解构一个看似简单的管理问题。</p>
+</div>
+
+<div class="card">
+<h3>📱 案例三：小天才手表——复杂决策中的蝴蝶效应识别</h3>
+<p style="margin-bottom:8px"><strong>困境</strong>：家长面临「买则孩子接触社交网络，不买则引发情绪问题」的两难。</p>
+<p style="margin-bottom:8px"><strong>奥卡姆剃刀切入</strong>：核心问题不是手表本身，而是家长对孩子能力的判断存在逻辑矛盾——认为孩子能成为学业前10%（高要求），却认为孩子无法控制电子产品使用（低要求）。这不自洽。</p>
+<p style="margin-bottom:8px"><strong>正态分布思维</strong>：若目标是超过84%的同龄人（前16%），必须严格控制电子产品；若接受二本水平，可以适度放松。选择取决于真实的期望值。</p>
+<p style="margin-bottom:8px"><strong>蝴蝶效应识别</strong>：在「儿童教育」这个复杂系统中，真正决定性的因素不是「有没有手表」这个微小变量，而是「是否从小培养了自控力」这个结构性因素。</p>
+<p><strong>决策建议</strong>：澳大利亚已立法禁止16岁以下儿童使用社交网络——采用「一刀切」策略应对儿童辨别能力不足的问题。</p>
+</div>
+
+<div class="card">
+<h3>🗣️ 案例四：巴麦尊名言的翻译陷阱</h3>
+<p style="margin-bottom:8px"><strong>常见引用</strong>：&#8220;没有永远的朋友，也没有永远的敌人，只有永远的利益&#8221;——被理解为「不择手段、只看利益」。</p>
+<p style="margin-bottom:8px"><strong>原文</strong>：英国首相巴麦尊（Palmerston）在下议院说：&#8220;We have no eternal allies, and we have no perpetual enemies. Our interests are eternal and perpetual, and those interests it is our duty to follow.&#8221;</p>
+<p style="margin-bottom:8px"><strong>真实含义</strong>：是在要求<strong>国会议员尽职尽责</strong>，而不是教唆人「不讲究原则只讲私利」。核心词是「duty」（责任），而非「selfish interest」（私利）。</p>
+<p><strong>认知启示</strong>：「不准确翻译」+「断章取义」= 制造伪名言。同样，《独立宣言》的「all men are created equal」被误译为「人人生而平等」——杰斐逊本人蓄奴，他从未认同人人生而平等，原文仅指生命权、自由权、追求幸福的权利由造物主平等赋予。理解原文+看上下文+结合历史背景=文本理解三原则。</p>
+</div>
+</div>
+
+<!-- Tab 8: 实战决策（内联HTML） -->
+<div class="tab-content" id="tab8">
+<h2>🎯 实战决策</h2>
+<p style="color:var(--text-light);margin-bottom:16px;font-size:.85rem">模拟真实决策场景，点击选项查看分析</p>
+
+<div class="decision-scenario">
+<h3>🔍 场景一：你看到一条标题为「颠覆三观！科学家发现每天喝咖啡能延长寿命20年」的推送</h3>
+<p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">你会怎么做？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d1r1')">A. 赶紧转发给家人朋友，这是好消息</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d1r2')">B. 点开文章快速浏览，觉得有理有据就相信</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d1r3')">C. 追溯原文出处，检查研究是相关性还是因果性，关注样本量和发表期刊</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d1r4')">D. 直接忽略所有健康类新闻，反正都是标题党</div>
+</div>
+<div class="decision-result" id="d1r1">
+<p><strong>❌ 错误</strong>：直接转发未经验证的信息，可能成为谣言的传播节点。应用<strong>滑坡谬误识别</strong>：从实验室发现到「延长寿命20年」之间有多步推理——可能只是小鼠实验，且「相关性」不等于「因果性」。</p>
+</div>
+<div class="decision-result" id="d1r2">
+<p><strong>⚠️ 不够</strong>：「看起来有理有据」不构成验证。应用<strong>谎言特征三（难以证伪）</strong>：这类健康声明的验证成本极高（需要数十年追踪实验），而你的快速浏览无法消解这个信息不对称。</p>
+</div>
+<div class="decision-result" id="d1r3">
+<p><strong>✅ 最佳</strong>：符合<strong>事实优先原则</strong>和<strong>信息来源可靠性评估</strong>。查原始论文（不是二手报道）、区分相关性vs因果性（喝咖啡的人可能整体健康习惯更好）、检查样本量（n=20和n=20000的可信度天差地别）、确认发表期刊级别（正规同行评审 vs 掠夺性期刊）。</p>
+</div>
+<div class="decision-result" id="d1r4">
+<p><strong>⚠️ 过度防御</strong>：全部忽略会导致错过有效信息。应用<strong>概率思维</strong>：不是每条健康信息都是假的——关键是建立有效的筛选机制，而非一刀切拒绝。</p>
+</div>
+</div>
+
+<div class="decision-scenario">
+<h3>💼 场景二：领导对你说「小张这次虽然业绩不如你，但家庭困难需要照顾，这次晋升给他，你要辩证看待，这也是对你格局的锻炼」</h3>
+<p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">你的判断和行动是？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d2r1')">A. 接受领导安排，毕竟领导说了「辩证看待」，可能确实有道理</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d2r2')">B. 愤怒辞职，这种公司不值得待</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d2r3')">C. 先冷静分析：这是辩证法还是诡辩术？要求明确下次晋升的标准和时间节点</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d2r4')">D. 私下去找小张谈，让他主动让出晋升名额</div>
+</div>
+<div class="decision-result" id="d2r1">
+<p><strong>❌ 被操控</strong>：这正是伪辩证法的典型应用——用「格局」「辩证看待」等大词掩盖利益转移。应用<strong>就事论事原则</strong>：晋升的标准是业绩还是家庭困难？如果是后者，为什么不在招聘时就写明？</p>
+</div>
+<div class="decision-result" id="d2r2">
+<p><strong>⚠️ 情绪化</strong>：愤怒辞职可能正中对方下怀。应用<strong>概率思维+价值判断</strong>：冷静评估离开vs留下的成本收益，而非被情绪驱动。</p>
+</div>
+<div class="decision-result" id="d2r3">
+<p><strong>✅ 最佳</strong>：应用了<strong>辨别伪辩证法的五条标准</strong>：(1)利益流向——你的合理利益被牺牲；(2)是否就事论事——引入「家庭困难」这个无关变量；(3)透明度——要求明确下次标准；(4)时间承诺——要具体节点；(5)以自身利益为准。同时为后续行动（内部争取/外部寻找）留出时间窗口。</p>
+</div>
+<div class="decision-result" id="d2r4">
+<p><strong>❌ 方向错误</strong>：问题不在小张而在制度。应用<strong>前提真实性检查</strong>：你的前提假设是「小张主动争夺了你的晋升」——更可能他根本不知情。找错对手会浪费精力且恶化同事关系。</p>
+</div>
+</div>
+
+<div class="decision-scenario">
+<h3>📱 场景三：你是一个8岁孩子的家长，班上其他孩子都有了电话手表，你的孩子天天闹着要</h3>
+<p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">你如何决策？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d3r1')">A. 既然别人都有就买吧，不能让孩子在同学面前没面子</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d3r2')">B. 坚决不买，电子产品对孩子百害无一利</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d3r3')">C. 先明确对孩子的真实期望（学业水平+习惯培养），再决定电子产品管控力度</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d3r4')">D. 买一个功能最基础的手表，只保留通话功能</div>
+</div>
+<div class="decision-result" id="d3r1">
+<p><strong>⚠️ 诉诸大众谬误</strong>：应用<strong>信息茧房</strong>识别——家长群的「别人都有」是一种局部信息放大。且违背了逻辑一致性：认为孩子能成为学业前10%，却认为孩子无法控制电子产品——这个矛盾需要先解决。</p>
+</div>
+<div class="decision-result" id="d3r2">
+<p><strong>⚠️ 过于绝对</strong>：忽略了社交需求和实际沟通需求。应用<strong>概率思维</strong>：不是所有电子产品使用都会导致成瘾——关键在于「如何使用」而非「是否使用」。</p>
+</div>
+<div class="decision-result" id="d3r3">
+<p><strong>✅ 最佳</strong>：应用了<strong>正态分布思维</strong>和<strong>奥卡姆剃刀</strong>。核心问题不是手表本身，而是：(1)你对孩子的真实期望是什么？(2)自控力培养是否已先行？(3)如果目标是前16%，就必须对孩子「与众不同」有信心——&#8220;如果在玩手机这件事上做不到和其他孩子不同，凭什么其他孩子做不出来的题，你家孩子能做出来？&#8221;</p>
+</div>
+<div class="decision-result" id="d3r4">
+<p><strong>✅ 可行折中</strong>：在C的基础上，如果决定购买，限制功能是最小化风险的方式。澳大利亚已立法禁止16岁以下使用社交网络——连国家都在用「一刀切」策略。</p>
+</div>
+</div>
+
+<div class="decision-scenario">
+<h3>📢 场景四：你所在的公司群里有人转发了一篇「某知名企业即将倒闭」的文章，引发恐慌</h3>
+<p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">你作为团队负责人，如何处理？</p>
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecisionResult(this,'d4r1')">A. 立即在群里驳斥，说这是假消息</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d4r2')">B. 不做任何回应，消息自然会平息</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d4r3')">C. 先验证信息来源（是否有可靠出处），再给出基于事实的回应，并说明判断依据</div>
+<div class="decision-opt" onclick="showDecisionResult(this,'d4r4')">D. 私聊转发者让他撤回，不在群里公开处理</div>
+</div>
+<div class="decision-result" id="d4r1">
+<p><strong>⚠️ 不够</strong>：在没有验证的情况下武断定性，如果消息后来被证伪，你的信誉受损；如果消息部分属实，你的驳斥反而被视为掩盖。应用<strong>概率思维</strong>：在不确定时先验证再表达。</p>
+</div>
+<div class="decision-result" id="d4r2">
+<p><strong>❌ 失职</strong>：信息真空会被更夸张的猜测填满——戈培尔的教训：不回应=把信息场拱手让人。应用<strong>信息茧房原理</strong>：沉默不会消除信息，只会让错误信息在茧房内回声放大。</p>
+</div>
+<div class="decision-result" id="d4r3">
+<p><strong>✅ 最佳</strong>：应用了<strong>信息来源可靠性评估</strong>和<strong>编码解码一致性</strong>。三步法：(1)验证——查原文、查信源、查数据；(2)沟通——用大家能理解的语言说明判断依据，不是只给结论；(3)建设性——不仅辟谣，还说明从哪些可靠渠道获取信息。这既破除恐慌，又建立了你的信息权威。</p>
+</div>
+<div class="decision-result" id="d4r4">
+<p><strong>⚠️ 治标不治本</strong>：撤回原文不影响已经看到的人，且私下操作可能被解读为「有什么不可告人的」。应用<strong>保密原则</strong>的边界——负面信息的处理更需要透明度而非秘密操作。</p>
+</div>
+</div>
+</div>
+
+</div><!-- .container end -->
+
+<script>
+// ===== 全局数据 =====
+const STORAGE_KEY = 'mks_wj2_topic2';
+
+const concepts = [
+  {
+    id: 'c1',
+    name: '信息信道容量',
+    def: '香农第二定律：当信息传输速率超过信道容量时，错误概率为100%（非50%或80%）。人脑信息接收带宽约每秒几十比特，超速学习必然完全失败。',
+    analogy: '高速公路单车道每分钟容量60辆车——塞入120辆的结果不是60辆通过+60辆等待，而是全部堵死，没有一辆能正常通行。',
+    example: '演唱会现场多人同时发信息全部失败；课堂讨论需轮流发言；\u201C一字一字地学\u201D——用1万小时可学完《大英百科全书》全部信息。',
+    counter: '并非所有信息传输都受此严格限制——面对面交流因多通道（语言+肢体+表情+语气）可提升有效容量，但上限依然存在。'
+  },
+  {
+    id: 'c2',
+    name: '概率思维',
+    def: '所有判断本质上都是概率选择——不存在100%确定的结论。当结论成立概率接近50%时，需引入价值判断（损益分析）作为补充决策依据。',
+    analogy: '气象预报说「明天70%概率下雨」——你不会因为它不是100%就不带伞。人生决策同理：在不确定性中寻找最优解，而非等待绝对确定性。',
+    example: '全球变暖假设正确率约50%，但「相信并采取行动」的潜在收益是避免人类灭顶之灾，远大于节能减排的经济成本——因此理性选择是相信。',
+    counter: '概率思维不是「什么都有可能所以不做判断」——高概率结论（如工业化导致全球变暖约95%可信）应果断采纳，只有50%左右才需价值判断补充。'
+  },
+  {
+    id: 'c3',
+    name: '奥卡姆剃刀',
+    def: '在两种解释力相同的理论中，最简单、假设最少的那个更可能正确。复杂解释需要更多假设同时为真，联合概率随假设数量指数级下降。',
+    analogy: '听到马蹄声，先想「马」而非「斑马」——不是斑马不可能，而是需要更多假设（斑马为何出现在这里？）。简单解释错的概率更低。',
+    example: '恐龙灭绝的主流解释是「陨石尘埃直接遮光」——只需两步推理。地球光环假说需要「陨石撞击→小行星解体→万亿碎片形成光环→遮挡阳光→冰河期」五步，联合可信度仅约16.8%。',
+    counter: '奥卡姆剃刀不是说复杂解释一定错——它说「同等解释力下简单者更优」。如果简单解释无法覆盖所有证据，必须接受更复杂的解释。'
+  },
+  {
+    id: 'c4',
+    name: '前提真实性',
+    def: '逻辑学核心定理：从错误前提出发，可以推导出任何逻辑自洽但毫无意义的结论。推理的价值完全取决于前提的真实性——\u201C垃圾进，垃圾出\u201D。',
+    analogy: 'GPS导航——如果你的起点定位错了（错误前提），导航计算出的最短路径再精确（逻辑完美）也无法带你到目的地。',
+    example: '中国部分观点认为「美元霸权决定美国科技领先」（错误前提）→推导出「去美元化后美国科技将崩溃」（逻辑自洽但完全错误）。历史反证：19世纪英镑霸权时代，科技最强的却是德国。',
+    counter: '前提真实性不是要求「100%确定」——绝大多数现实决策的前提是概率性的。关键是从已知为真的最简单事实出发，最多推一步。'
+  },
+  {
+    id: 'c5',
+    name: '信息茧房',
+    def: '推荐算法通过「你喜欢什么就推送什么」构建认知牢笼——屏蔽相反意见，重复同类内容，使用户身处茧房而不自知，最终丧失独立判断能力。',
+    analogy: '一个人从小只吃甜食——不是他「选择」只吃甜食，而是他的味觉经验从未被告知还有酸、苦、辣、咸。久而久之，他甚至不知道自己的味觉是残缺的。',
+    example: '纳粹德国只用数年就让具有康德、黑格尔、尼采哲学传统的德意志民族陷入集体无脑——通过收音机垄断信息渠道+屏蔽外部信源+压制不同声音。现代算法比戈培尔更高效。',
+    counter: '不代表所有的算法推荐都有害——关键是你的信息食谱中是否有足够的「非算法推荐」来源。主动搜索+固定多个不同立场的信源可以有效破茧。'
+  },
+  {
+    id: 'c6',
+    name: '编码解码一致性',
+    def: '有效沟通的前提是发送方和接收方共用同一套「码本」——包括语言符号的共识、语境假设的共享、意图识别的对齐。码本不匹配=信息完全丢失。',
+    analogy: '用中文密码本编码的信息，给一个只懂英文的人解码——不是「理解一半」，而是「完全无法解码」。沟通中的术语、隐喻、语境假设同样是「密码本」。',
+    example: '维特根斯坦的「语言游戏论」：夫妻吵架「你从来不收拾家里」——实质是寻求情感认同的邀请，而非事实陈述。若对方按字面解码为「指控」并反驳，就没进入同一个语言游戏。',
+    counter: '完全共用的码本不存在——每个人基于独特经历构建的语言图像都有差异。关键是在沟通前先对齐核心概念的定义，减少而非消除码本差异。'
+  },
+  {
+    id: 'c7',
+    name: '滑坡谬误',
+    def: '通过一连串「如果A则B，如果B则C，如果C则D」的多步假设推理链得出结论——每一步都基于前一步的假设，假设累积导致结论可靠性极低。',
+    analogy: '多米诺骨牌——第一块推倒第二块的假设概率是80%→第二块推倒第三块也是80%→到第五块时，全部倒下的联合概率仅32.8%。而滑坡谬误往往连80%的可靠性都没有。',
+    example: '「机器人工作→人类不用劳动→所有人躺平→社会崩溃」——每一步都有巨大逻辑断层。实际上，技术从来不会自动创造财富或导致毁灭，就业在任何时代都是富裕的前提。',
+    counter: '不是所有连锁推理都是谬误——如果每步都有物理学意义上的必然性（如化学反应链），多步推理仍然可靠。滑坡谬误专指每步仅有概率性关联的推理链。'
+  },
+  {
+    id: 'c8',
+    name: '概念清晰化',
+    def: '理性思维的基石——模糊或未定义的概念导致思维混乱和无效争论。在进行任何推理前，必须先确保所有参与方的核心概念定义一致。',
+    analogy: '建筑的地基——如果「一米」在设计师、工程师、施工队心中是不同的长度，再精美的图纸也建不出稳固的房子。',
+    example: '儒家「仁」的定义分歧导致千年无结论争论；日常中「取其精华，去其糟粕」的模糊性——文革中传统艺术品被当作「糟粕」毁坏，因为没人定义过什么是「糟粕」。',
+    counter: '不是所有概念都需要精确定义——日常交流中大部分概念靠语境即可理解。但一旦进入辩论、决策、学术领域，概念清晰化就是最低门槛。'
+  },
+  {
+    id: 'c9',
+    name: '事实优先原则',
+    def: '当理论与可验证的观测事实发生冲突时，需要修正的是理论而非事实。科学的本质是获取正确结论的方法，而非结论本身——所有理论都是暂时的。',
+    analogy: '地图与地形——当地图（理论）显示前方是平原但你脚下是悬崖（事实），你不会质疑自己的眼睛，而是会换一张更准确的地图。',
+    example: '韦伯望远镜的三大发现（早期星系光线穿透迷雾、星系旋转不对称、早期盘状星系存在）直接挑战了\ u039BCDM标准宇宙模型——科学家选择修正模型而非否认观测数据。',
+    counter: '「事实」本身也需要验证——一次观测不是事实，可重复的观测才是。单篇论文的结论不应被视为「事实」，需等待独立验证和同行评审。'
+  },
+  {
+    id: 'c10',
+    name: '恐惧营销闭环',
+    def: '社交媒体操控用户的核心机制：唤起恐惧→激发焦虑→渴望安慰→获得解决。先制造虚假危机，再提供伪解决方案，完成对用户认知的闭环操控。',
+    analogy: '街头骗子先告诉你「你的钱包要丢了」（制造恐惧），然后说「交给我保管最安全」（提供方案）——你会感激他。社交媒体做的是同一件事，只是规模大了一万倍。',
+    example: '短视频标题「颠覆三观！你之所以很穷，是因为你怀疑一切」——先用「你很穷」制造焦虑，再用「因为你怀疑」制造自责，最后「关注我获得解决方法」完成闭环。戈培尔在1930年代已用同样的策略。',
+    counter: '不是所有激发情感的营销都是恐惧闭环——真正的公益宣传（如戒烟广告展示肺癌风险）基于真实数据和善意目的。区别在于：信息是否真实？解决方案是否有效？目的是牟利还是帮助？'
+  }
+];
+
+const mcqBank = [
+  {id:1, q:'\u9999\u519c\u7b2c\u4e8c\u5b9a\u5f8b\u7684\u6838\u5fc3\u7ed3\u8bba\u662f\u4ec0\u4e48\uff1f', opts:['\u5f53\u4fe1\u606f\u4f20\u8f93\u901f\u7387\u8d85\u8fc7\u4fe1\u9053\u5bb9\u91cf\u65f6\uff0c\u9519\u8bef\u6982\u7387\u4e3a100%','\u5f53\u4fe1\u606f\u4f20\u8f93\u901f\u7387\u8d85\u8fc7\u4fe1\u9053\u5bb9\u91cf\u65f6\uff0c\u9519\u8bef\u6982\u7387\u4e3a50%','\u4fe1\u606f\u4f20\u8f93\u901f\u7387\u6c38\u8fdc\u65e0\u6cd5\u8d85\u8fc7\u4fe1\u9053\u5bb9\u91cf','\u4fe1\u9053\u5bb9\u91cf\u4e0e\u4f20\u8f93\u901f\u7387\u65e0\u5173'], answer:0},
+  {id:2, q:'\u6839\u636e\u5434\u519b\u7684\u5206\u6790\uff0c\u4e3a\u4ec0\u4e48\u5168\u7403\u53d8\u6696\u5047\u8bbe\u5373\u4f7f\u6b63\u786e\u7387\u4ec5\u7ea650%\uff0c\u7406\u6027\u9009\u62e9\u4ecd\u662f\u201c\u76f8\u4fe1\u5e76\u91c7\u53d6\u884c\u52a8\u201d\uff1f', opts:['\u56e0\u4e3a\u6f5c\u5728\u6536\u76ca\u662f\u907f\u514d\u4eba\u7c7b\u706d\u9876\u4e4b\u707e\uff0c\u8fdc\u8d85\u884c\u52a8\u6210\u672c','\u56e0\u4e3a\u79d1\u5b66\u754c99%\u90fd\u652f\u6301','\u56e0\u4e3a\u5168\u7403\u53d8\u6696\u5df2\u7ecf100%\u88ab\u8bc1\u5b9e','\u56e0\u4e3a\u4e0d\u76f8\u4fe1\u4f1a\u6709\u7ecf\u6d4e\u635f\u5931'], answer:0},
+  {id:3, q:'\u5965\u5361\u59c6\u5243\u5200\u539f\u7406\u4e3b\u5f20\u4ec0\u4e48\uff1f', opts:['\u4e16\u754c\u672c\u8d28\u4e0a\u662f\u7b80\u5355\u7684','\u5728\u540c\u7b49\u89e3\u91ca\u529b\u4e0b\uff0c\u6700\u7b80\u5355\u7684\u89e3\u91ca\u66f4\u53ef\u80fd\u6b63\u786e','\u6240\u6709\u590d\u6742\u7406\u8bba\u90fd\u662f\u9519\u8bef\u7684','\u6c38\u8fdc\u9009\u62e9\u6700\u7b80\u5355\u7684\u89e3\u91ca'], answer:1},
+  {id:4, q:'\u5434\u519b\u6307\u51fa\u201c\u4ece\u9519\u8bef\u524d\u63d0\u51fa\u53d1\u201d\u7684\u63a8\u7406\u6709\u4ec0\u4e48\u7279\u5f81\uff1f', opts:['\u7ed3\u8bba\u5fc5\u7136\u9519\u8bef','\u53ef\u4ee5\u63a8\u5bfc\u51fa\u4efb\u4f55\u903b\u8f91\u81ea\u6d3d\u4f46\u6beb\u65e0\u610f\u4e49\u7684\u7ed3\u8bba','\u7ed3\u8bba\u4e00\u5b9a\u662f\u6b63\u786e\u7684','\u65e0\u6cd5\u8fdb\u884c\u4efb\u4f55\u63a8\u7406'], answer:1},
+  {id:5, q:'\u4ee5\u4e0b\u54ea\u4e2a\u4e0d\u662f\u5434\u519b\u6240\u63cf\u8ff0\u7684\u8c0e\u8a00\u7279\u5f81\uff1f', opts:['\u5b58\u5728\u903b\u8f91\u77db\u76fe','\u7edf\u8ba1\u610f\u4e49\u4e0a\u7684\u4e0d\u53ef\u80fd','\u6765\u6e90\u4e0d\u6743\u5a01','\u6709\u4e00\u4e2a\u65e0\u6240\u4e0d\u80fd\u7684\u540c\u76df\u519b'], answer:2},
+  {id:6, q:'\u793e\u4ea4\u5a92\u4f53\u7b97\u6cd5\u6784\u5efa\u4fe1\u606f\u8327\u623f\u7684\u6838\u5fc3\u673a\u5236\u662f\u4ec0\u4e48\uff1f', opts:['\u53ea\u63a8\u9001\u7528\u6237\u559c\u6b22\u7684\u5185\u5bb9\uff0c\u5c4f\u853d\u76f8\u53cd\u610f\u89c1','\u968f\u673a\u63a8\u9001\u5185\u5bb9','\u63a8\u9001\u6240\u6709\u65b0\u95fb','\u7531\u7f16\u8f91\u4eba\u5de5\u7b5b\u9009'], answer:0},
+  {id:7, q:'\u6208\u57f9\u5c14\u7684\u6050\u60e7\u8425\u9500\u95ed\u73af\u5305\u62ec\u54ea\u56db\u4e2a\u6b65\u9aa4\uff1f', opts:['\u5ba3\u4f20\u2192\u6d17\u8111\u2192\u63a7\u5236\u2192\u670d\u4ece','\u5524\u8d77\u6050\u60e7\u2192\u6fc0\u53d1\u7126\u8651\u2192\u6e34\u671b\u5b89\u6170\u2192\u83b7\u5f97\u89e3\u51b3','\u5236\u9020\u95ee\u9898\u2192\u63d0\u4f9b\u65b9\u6848\u2192\u6536\u53d6\u8d39\u7528\u2192\u6301\u7eed\u6d88\u8d39','\u5438\u5f15\u6ce8\u610f\u2192\u5efa\u7acb\u4fe1\u4efb\u2192\u4fc3\u6210\u4ea4\u6613\u2192\u53e3\u7891\u4f20\u64ad'], answer:1},
+  {id:8, q:'\u5728\u5434\u519b\u7684\u56db\u6b65\u51b3\u7b56\u6d41\u7a0b\u4e2d\uff0c\u5f53\u5927\u4f17\u548c\u6743\u5a01\u610f\u89c1\u51b2\u7a81\u65f6\uff0c\u5e94\u4f18\u5148\u76f8\u4fe1\u8c01\uff1f', opts:['\u6c38\u8fdc\u76f8\u4fe1\u5927\u4f17','\u6c38\u8fdc\u76f8\u4fe1\u6743\u5a01','\u5728\u6ee1\u8db3\u201c\u65e0\u5229\u76ca\u51b2\u7a81+\u5224\u65ad\u5bf9\u8c61\u786e\u5b9a\u6027\u9ad8\u201d\u6761\u4ef6\u4e0b\u76f8\u4fe1\u6743\u5a01','\u629b\u786c\u5e01\u51b3\u5b9a'], answer:2},
+  {id:9, q:'\u4e3a\u4ec0\u4e48\u5434\u519b\u8ba4\u4e3a\u85aa\u916c\u4fe1\u606f\u672a\u6765\u66f4\u4e0d\u53ef\u80fd\u516c\u5f00\uff1f', opts:['\u56e0\u4e3a\u6280\u672f\u9650\u5236','\u56e0\u4e3a\u9690\u79c1\u4fdd\u62a4+\u4eba\u6027\u5f31\u70b9+\u5546\u4e1a\u535a\u5f08\u4e09\u5c42\u539f\u56e0','\u56e0\u4e3a\u6cd5\u5f8b\u89c4\u5b9a','\u56e0\u4e3a\u5458\u5de5\u4e0d\u559c\u6b22'], answer:1},
+  {id:10, q:'\u6ed1\u5761\u8c2c\u8bef\u7684\u672c\u8d28\u662f\u4ec0\u4e48\uff1f', opts:['\u5355\u4e00\u5047\u8bbe\u5bfc\u81f4\u9519\u8bef','\u4ece\u4e8b\u5b9e\u51fa\u53d1\u7684\u63a8\u7406','\u591a\u6b65\u5047\u8bbe\u63a8\u7406\uff0c\u6bcf\u6b65\u4ec5\u6982\u7387\u76f8\u5173\uff0c\u8054\u5408\u53ef\u9760\u6027\u6781\u4f4e','\u6240\u6709\u63a8\u7406\u90fd\u662f\u8c2c\u8bef'], answer:2},
+  {id:11, q:'\u6839\u636e\u5434\u519b\u7684\u5206\u6790\uff0c2024\u5e74\u7f8e\u56fd\u5927\u9009\u5171\u548c\u515a\u80dc\u9009\u7684\u6838\u5fc3\u539f\u56e0\u662f\u4ec0\u4e48\uff1f', opts:['\u677e\u9f20\u4e8b\u4ef6\u5f15\u53d1\u9009\u6c11\u6124\u6012','\u62c9\u7968\u7b56\u7565\u66f4\u4f18\u79c0','\u4e4c\u514b\u5170\u653f\u7b56\u5f97\u4eba\u5fc3','\u73b0\u4efb\u653f\u5e9c\u7ecf\u6d4e\u6ca1\u641e\u597d\uff08\u6cb9\u4ef7\u3001\u7269\u4ef7\u7b49\u6c11\u751f\u95ee\u9898\uff09'], answer:3},
+  {id:12, q:'\u7ef4\u7279\u6839\u65af\u5766\u7684\u201c\u8bed\u8a00\u6e38\u620f\u8bba\u201d\u5bf9\u6709\u6548\u6c9f\u901a\u7684\u6838\u5fc3\u542f\u793a\u662f\u4ec0\u4e48\uff1f', opts:['\u8bed\u8a00\u4e0d\u91cd\u8981\uff0c\u884c\u52a8\u624d\u91cd\u8981','\u8bf4\u8bdd\u8d8a\u5c11\u8d8a\u597d','\u6240\u6709\u8bed\u8a00\u90fd\u662f\u6e38\u620f','\u6c9f\u901a\u53cc\u65b9\u9700\u8fdb\u5165\u5171\u540c\u8bed\u5883\uff0c\u7406\u89e3\u5bf9\u65b9\u7684\u771f\u5b9e\u610f\u56fe'], answer:3},
+  {id:13, q:'\u5173\u4e8e\u4fdd\u5b88\u79d8\u5bc6\uff0c\u5434\u519b\u63d0\u51fa\u7684\u56db\u79cd\u758f\u5bfc\u65b9\u6cd5\u4e0d\u5305\u62ec\u54ea\u9879\uff1f', opts:['\u4e66\u5199\u9500\u6bc1\u6cd5','\u5ba0\u7269\u503e\u8bc9\u6cd5','\u516c\u5f00\u6cc4\u5bc6\u6cd5','\u65f6\u6548\u89e3\u5bc6\u6cd5'], answer:2},
+  {id:14, q:'\u7f57\u65af\u5df4\u5fb7\u4ea7\u6743\u4e09\u539f\u5219\u4e2d\u7684\u4e24\u4e2a\u516c\u7406\u662f\u4ec0\u4e48\uff1f', opts:['\u81ea\u6211\u6240\u6709\u6743+\u5148\u5360\u5148\u5f97','\u6309\u9700\u5206\u914d+\u6309\u52b3\u5206\u914d','\u516c\u6709\u5236+\u96c6\u4f53\u51b3\u7b56','\u7ee7\u627f\u6743+\u4ea4\u6613\u6743'], answer:0},
+  {id:15, q:'\u300a\u72ec\u7acb\u5ba3\u8a00\u300b\u4e2d\u201call men are created equal\u201d\u7684\u51c6\u786e\u7406\u89e3\u662f\u4ec0\u4e48\uff1f', opts:['\u6240\u6709\u4eba\u51fa\u751f\u540e\u7684\u793e\u4f1a\u5730\u4f4d\u5b8c\u5168\u5e73\u7b49','\u6240\u6709\u4eba\u667a\u5546\u548c\u80fd\u529b\u76f8\u540c','\u6240\u6709\u8d22\u5bcc\u5e94\u5e73\u5747\u5206\u914d','\u751f\u547d\u6743\u3001\u81ea\u7531\u6743\u548c\u8ffd\u6c42\u5e78\u798f\u7684\u6743\u5229\u7531\u9020\u7269\u4e3b\u5e73\u7b49\u8d4b\u4e88'], answer:3},
+  {id:16, q:'\u5434\u519b\u8ba4\u4e3a\u6210\u5e74\u4eba\u9760\u4ec0\u4e48\u800c\u4e0d\u662f\u9760\u6559\u5316\uff1f', opts:['\u7b5b\u9009','\u57f9\u517b','\u60e9\u7f5a','\u5956\u52b1'], answer:0},
+  {id:17, q:'\u5728\u8bc6\u522b\u8c0e\u8a00\u65f6\uff0c\u4ee5\u4e0b\u54ea\u4e2a\u60c5\u51b5\u5c5e\u4e8e\u201c\u7edf\u8ba1\u610f\u4e49\u4e0a\u7684\u4e0d\u53ef\u80fd\u201d\uff1f', opts:['\u67d0\u4eba\u58f0\u79f0\u81ea\u5df1\u80fd\u9884\u6d4b\u5929\u6c14','\u4e00\u7bc7\u8bba\u6587\u7684\u6570\u636e\u6709\u5c0f\u6570\u70b9\u9519\u8bef','\u5019\u9009\u4ebaA\u548cB\u5f97\u7968\u5dee1%\uff0c\u6700\u540e2%\u9009\u7968\u4e2dB\u5f97\u7968\u738790%','\u4e00\u6761\u65b0\u95fb\u6807\u9898\u6709\u9519\u522b\u5b57'], answer:2},
+  {id:18, q:'\u4e3a\u4ec0\u4e48\u4eba\u7c7b\u63a5\u6536\u4fe1\u606f\u7684\u901f\u7387\u53ea\u6709\u6bcf\u79d2\u51e0\u5341\u6bd4\u7279\uff0c\u4f46\u4e00\u751f\u53ef\u4ee5\u638c\u63e1\u300a\u5927\u82f1\u767e\u79d1\u5168\u4e66\u300b\u5168\u90e8\u4fe1\u606f\uff1f', opts:['\u56e0\u4e3a\u53ef\u4ee5\u540c\u65f6\u5904\u7406\u591a\u7ebf\u7a0b\u4fe1\u606f','\u56e0\u4e3a\u9605\u8bfb\u53ef\u4ee5\u8d85\u901f','\u56e0\u4e3a\u77e5\u8bc6\u53ef\u4ee5\u538b\u7f29','\u56e0\u4e3a\u5927\u8111\u7684\u603b\u5b66\u4e60\u65f6\u95f4\u8db3\u591f\u957f\uff08\u7ea61\u4e07\u5c0f\u65f6\uff09'], answer:3},
+  {id:19, q:'\u9762\u5bf9\u88ab\u51a0\u4ee5\u201c\u8fa9\u8bc1\u6cd5\u201d\u540d\u4e49\u7684\u538b\u69a8\uff0c\u5434\u519b\u5efa\u8bae\u7684\u5e94\u5bf9\u7b56\u7565\u4e0d\u5305\u62ec\u54ea\u9879\uff1f', opts:['\u5c31\u4e8b\u8bba\u4e8b\uff0c\u62d2\u7edd\u590d\u6742\u5316','\u4ee5\u5927\u5c40\u4e3a\u91cd\uff0c\u727a\u7272\u5c0f\u6211','\u4ee5\u81ea\u8eab\u5229\u76ca\u4e3a\u51c6','\u589e\u5f3a\u900f\u660e\u6027'], answer:1},
+  {id:20, q:'\u97e6\u4f2f\u671b\u8fdc\u955c\u7684\u53d1\u73b0\u5bf9\u79d1\u5b66\u65b9\u6cd5\u8bba\u7684\u6700\u5927\u542f\u793a\u662f\u4ec0\u4e48\uff1f', opts:['\u79d1\u5b66\u7ed3\u8bba\u662f\u4e0d\u53ef\u6539\u53d8\u7684','\u79d1\u5b66\u5bb6\u603b\u662f\u9519\u7684','\u671b\u8fdc\u955c\u662f\u6700\u91cd\u8981\u7684\u4eea\u5668','\u5f53\u7406\u8bba\u4e0e\u89c2\u6d4b\u4e8b\u5b9e\u51b2\u7a81\u65f6\uff0c\u4e8b\u5b9e\u6c38\u8fdc\u6b63\u786e\uff0c\u9700\u4fee\u6b63\u7684\u662f\u7406\u8bba'], answer:3}
+];
+
+const shortAnswerBank = [
+  {id:1, q:'简述香农第二定律对个人学习的三个核心启示。', hint:'能力边界——容量提升三大维度（带宽/信噪比/传输距离）——慢即是快的信息传递原则'},
+  {id:2, q:'什么是\u201C概率思维\u201D？何时需要引入价值判断来补充概率判断？', hint:'所有判断本质是概率选择——当概率接近50%时——比较相信的成本与不相信的风险'},
+  {id:3, q:'奥卡姆剃刀原理为什么说「简单解释更可能正确」？举一个例子说明。', hint:'联合概率=各假设概率的乘积——假设越多出错概率越高——地球光环假说vs陨石直接遮光'},
+  {id:4, q:'如何辨别职场中的「伪辩证法」（诡辩术）？列出至少三条判断标准。', hint:'利益流向——是否就事论事——透明度——时间承诺——以自身利益为准'},
+  {id:5, q:'维特根斯坦的「语言游戏论」如何解释日常沟通中的误解？', hint:'语言不仅是编码工具——沟通需进入共同语境和意图——\u201C你从来不收拾家里\u201D的案例'},
+  {id:6, q:'社交媒体如何利用戈培尔的恐惧营销闭环操控用户？', hint:'唤起恐惧（标题党）→激发焦虑（你很穷）→渴望安慰（怎么办）→获得解决（关注我）'},
+  {id:7, q:'保守秘密为什么那么难？从心理学角度给出解释并列出两种科学疏导方法。', hint:'虚荣心+信息交换需求+生理心理负担——书写销毁法+宠物倾诉法+平常心+时效解密'},
+  {id:8, q:'什么是「诉诸大众谬误」和「诉诸权威谬误」？分别举一个现实例子。', hint:'诉诸大众：多数人认为即正确（ChatGPT认知极端化）——诉诸权威：权威永远正确（金融机构连续误判经济）'},
+  {id:9, q:'吴军提出的「四步决策流程」是什么？每一步的触发条件是什么？', hint:'自主判断→遵循常识→权威优先→接受无解。每步对应不同的信息可获取性条件'},
+  {id:10, q:'为什么说「从错误前提出发得出的结论毫无意义」？结合历史或现实案例说明。', hint:'爆炸原理——逻辑自洽≠结论正确——美元霸权论案例——英镑时代的德国科技领先'}
+];
+
+// ===== 持久化 =====
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {learnedCards:[],mcqAnswered:{},examHistory:[],wrongIds:[]};
+  }catch(e){return {learnedCards:[],mcqAnswered:{},examHistory:[],wrongIds:[]};}
+}
+function saveState(s){localStorage.setItem(STORAGE_KEY, JSON.stringify(s));}
+let state = loadState();
+let learnedCards = state.learnedCards || [];
+let mcqAnswered = state.mcqAnswered || {};
+let examHistory = state.examHistory || [];
+let wrongIds = state.wrongIds || [];
+function save(){
+  state.learnedCards = learnedCards;
+  state.mcqAnswered = mcqAnswered;
+  state.examHistory = examHistory;
+  state.wrongIds = wrongIds;
+  saveState(state);
+}
+
+// ===== Tab切换 =====
+let currentTab = 0;
+function switchTab(idx){
+  currentTab = idx;
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-content').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  if(idx===1) updateCardDisplay();
+  if(idx===0) updateOverview();
+  if(idx===4) updateReview();
+}
+document.getElementById('tabBar').addEventListener('click',function(e){
+  const btn = e.target.closest('.tab-btn');
+  if(!btn) return;
+  switchTab(parseInt(btn.dataset.tab));
+});
+
+// ===== 知识集总览渲染 =====
+function renderOverviewConcepts(){
+  const grid = document.getElementById('conceptGrid0');
+  const mksGrid = document.getElementById('mksGrid0');
+  const mksIds = ['c1','c4','c3','c5','c9'];
+  grid.innerHTML = concepts.map(c=>{
+    const isMKS = mksIds.includes(c.id);
+    return '<div class="concept-card'+(isMKS?' mks':'')+'"><h4>'+c.name+' '+(isMKS?'<span class="badge badge-mks">骨架</span>':'')+'</h4><p>'+c.def+'</p></div>';
+  }).join('');
+  mksGrid.innerHTML = concepts.filter(c=>mksIds.includes(c.id)).map(c=>
+    '<div class="concept-card mks"><h4>'+c.name+' <span class="badge badge-mks">骨架</span></h4><p>'+c.def.substring(0,80)+'...</p><p style="margin-top:4px;font-size:.78rem;color:var(--gold);font-style:italic">骨架理由：'+({c1:'所有信息处理的物理上限——超速=无用',c4:'一切推理的根基——前提错全盘错',c3:'复杂世界中筛选解释的第一过滤器',c5:'信息时代的核心生存挑战——不自知的认知牢笼',c9:'科学精神的灵魂——理论服从事实而非相反'}[c.id])+'</p></div>'
+  ).join('');
+}
+function updateOverview(){
+  const total = concepts.length;
+  const learned = concepts.filter(c=>learnedCards.includes(c.id)).length;
+  const mcqDone = Object.keys(mcqAnswered).length;
+  const pct = Math.round((learned/total)*50 + (Math.min(mcqDone,20)/20)*50);
+  document.getElementById('overviewProgress').style.width = pct+'%';
+  document.getElementById('overviewPercent').textContent = pct;
+  document.getElementById('overviewLearned').textContent = learned;
+  document.getElementById('overviewMcq').textContent = mcqDone;
+}
+renderOverviewConcepts();
+updateOverview();
+
+// ===== SVG概念关系图 =====
+(function renderSVG(){
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 820" width="1100" height="820">
+<defs>
+  <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+  <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#3a6ea5"/></marker>
+  <marker id="arrowGold" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#b8860b"/></marker>
+  <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#27ae60"/></marker>
+</defs>
+
+<!-- 图例 -->
+<rect x="820" y="20" width="260" height="200" rx="10" fill="#fffaf2" stroke="#e8d5c4" stroke-width="1.5"/>
+<text x="950" y="48" text-anchor="middle" font-size="14" font-weight="bold" fill="#3d2f2f">图例</text>
+<rect x="838" y="62" width="20" height="14" rx="3" fill="#c0392b"/>
+<text x="866" y="74" font-size="12" fill="#3d2f2f">信息接收层（入口）</text>
+<rect x="838" y="86" width="20" height="14" rx="3" fill="#3a6ea5"/>
+<text x="866" y="98" font-size="12" fill="#3d2f2f">信息辨别层（处理）</text>
+<rect x="838" y="110" width="20" height="14" rx="3" fill="#b8860b"/>
+<text x="866" y="122" font-size="12" fill="#3d2f2f">信息输出层（表达）</text>
+<rect x="838" y="134" width="20" height="14" rx="3" fill="#27ae60"/>
+<text x="866" y="146" font-size="12" fill="#3d2f2f">信息决策层（行动）</text>
+<line x1="838" y1="160" x2="1068" y2="160" stroke="#c0392b" stroke-width="2"/>
+<text x="866" y="175" font-size="11" fill="#c0392b">─ 驱动关系</text>
+<line x1="838" y1="190" x2="1068" y2="190" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="6,3"/>
+<text x="866" y="205" font-size="11" fill="#b8860b">--- 回环反馈</text>
+
+<!-- 第一层：根节点 -->
+<rect x="400" y="60" width="220" height="50" rx="12" fill="#3d2f2f"/>
+<text x="510" y="91" text-anchor="middle" font-size="16" font-weight="bold" fill="#fdf6ec">信息与决策底层逻辑</text>
+
+<!-- 第二层：四大模块 -->
+<path d="M510,110 L510,160 L160,160 L160,195" fill="none" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowRed)"/>
+<text x="300" y="152" text-anchor="middle" font-size="11" fill="#c0392b">驱动</text>
+
+<rect x="60" y="200" width="200" height="60" rx="10" fill="#fde8e8" stroke="#c0392b" stroke-width="2"/>
+<text x="160" y="226" text-anchor="middle" font-size="13" font-weight="bold" fill="#c0392b">📥 信息接收层</text>
+<text x="160" y="246" text-anchor="middle" font-size="10" fill="#6b5555">信道容量 / 信息茧房 / 恐惧闭环</text>
+
+<path d="M510,110 L510,160 L360,160 L360,195" fill="none" stroke="#3a6ea5" stroke-width="2" marker-end="url(#arrowBlue)"/>
+<text x="440" y="152" text-anchor="middle" font-size="11" fill="#3a6ea5">处理后流入</text>
+
+<rect x="260" y="200" width="200" height="60" rx="10" fill="#e8f0fe" stroke="#3a6ea5" stroke-width="2"/>
+<text x="360" y="226" text-anchor="middle" font-size="13" font-weight="bold" fill="#3a6ea5">🔍 信息辨别层</text>
+<text x="360" y="246" text-anchor="middle" font-size="10" fill="#6b5555">前提验证 / 概念清晰 / 滑坡识别</text>
+
+<path d="M510,110 L510,160 L560,160 L560,195" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#arrowGold)"/>
+<text x="540" y="152" text-anchor="middle" font-size="11" fill="#b8860b">驱动</text>
+
+<rect x="460" y="200" width="200" height="60" rx="10" fill="#fef9f2" stroke="#b8860b" stroke-width="2"/>
+<text x="560" y="226" text-anchor="middle" font-size="13" font-weight="bold" fill="#b8860b">📤 信息输出层</text>
+<text x="560" y="246" text-anchor="middle" font-size="10" fill="#6b5555">编码解码 / 保密原则 / 简洁冗余</text>
+
+<path d="M510,110 L510,160 L760,160 L760,195" fill="none" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowGreen)"/>
+<text x="640" y="152" text-anchor="middle" font-size="11" fill="#27ae60">输出后进入</text>
+
+<rect x="660" y="200" width="200" height="60" rx="10" fill="#e8f5e9" stroke="#27ae60" stroke-width="2"/>
+<text x="760" y="226" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">🏹 信息决策层</text>
+<text x="760" y="246" text-anchor="middle" font-size="10" fill="#6b5555">概率思维 / 事实优先 / 奥卡姆剃刀</text>
+
+<!-- 第三层：具体概念节点 -->
+<path d="M160,260 L140,300 L90,300 L90,330" fill="none" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowRed)"/>
+<text x="120" y="295" font-size="10" fill="#c0392b">约束</text>
+
+<rect x="20" y="335" width="150" height="48" rx="8" fill="#fff5f5" stroke="#c0392b" stroke-width="1.5"/>
+<text x="95" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">信息信道容量</text>
+<text x="95" y="374" text-anchor="middle" font-size="9" fill="#6b5555">超速=100%错误</text>
+
+<path d="M160,260 L200,300 L230,300 L230,330" fill="none" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowRed)"/>
+<text x="200" y="295" font-size="10" fill="#c0392b">产生</text>
+
+<rect x="155" y="335" width="150" height="48" rx="8" fill="#fff5f5" stroke="#c0392b" stroke-width="1.5"/>
+<text x="230" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">信息茧房</text>
+<text x="230" y="374" text-anchor="middle" font-size="9" fill="#6b5555">不自知的认知牢笼</text>
+
+<path d="M360,260 L320,300 L300,300 L300,330" fill="none" stroke="#3a6ea5" stroke-width="1.8" marker-end="url(#arrowBlue)"/>
+<text x="330" y="295" font-size="10" fill="#3a6ea5">基础</text>
+
+<rect x="240" y="335" width="140" height="48" rx="8" fill="#f0f5ff" stroke="#3a6ea5" stroke-width="1.5"/>
+<text x="310" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#3a6ea5">概念清晰化</text>
+<text x="310" y="374" text-anchor="middle" font-size="9" fill="#6b5555">理性思维基石</text>
+
+<path d="M360,260 L400,300 L430,300 L430,330" fill="none" stroke="#3a6ea5" stroke-width="1.8" marker-end="url(#arrowBlue)"/>
+<text x="400" y="295" font-size="10" fill="#3a6ea5">检验</text>
+
+<rect x="355" y="335" width="150" height="48" rx="8" fill="#f0f5ff" stroke="#3a6ea5" stroke-width="1.5"/>
+<text x="430" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#3a6ea5">前提真实性</text>
+<text x="430" y="374" text-anchor="middle" font-size="9" fill="#6b5555">错误前提→无意义结论</text>
+
+<path d="M560,260 L540,300 L530,300 L530,330" fill="none" stroke="#b8860b" stroke-width="1.8" marker-end="url(#arrowGold)"/>
+<text x="545" y="295" font-size="10" fill="#b8860b">遵循</text>
+
+<rect x="460" y="335" width="150" height="48" rx="8" fill="#fffdf5" stroke="#b8860b" stroke-width="1.5"/>
+<text x="535" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#b8860b">编码解码一致性</text>
+<text x="535" y="374" text-anchor="middle" font-size="9" fill="#6b5555">共用码本是沟通前提</text>
+
+<path d="M760,260 L740,300 L700,300 L700,330" fill="none" stroke="#27ae60" stroke-width="1.8" marker-end="url(#arrowGreen)"/>
+<text x="730" y="295" font-size="10" fill="#27ae60">应用</text>
+
+<rect x="635" y="335" width="140" height="48" rx="8" fill="#f0faf0" stroke="#27ae60" stroke-width="1.5"/>
+<text x="705" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">概率思维</text>
+<text x="705" y="374" text-anchor="middle" font-size="9" fill="#6b5555">判断本质是概率选择</text>
+
+<path d="M760,260 L800,300 L830,300 L830,330" fill="none" stroke="#27ae60" stroke-width="1.8" marker-end="url(#arrowGreen)"/>
+<text x="800" y="295" font-size="10" fill="#27ae60">运用</text>
+
+<rect x="760" y="335" width="140" height="48" rx="8" fill="#f0faf0" stroke="#27ae60" stroke-width="1.5"/>
+<text x="830" y="356" text-anchor="middle" font-size="12" font-weight="bold" fill="#27ae60">奥卡姆剃刀</text>
+<text x="830" y="374" text-anchor="middle" font-size="9" fill="#6b5555">简单解释更可能正确</text>
+
+<!-- 第四层：应用结果 -->
+<path d="M95,383 L95,420" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+<rect x="20" y="425" width="150" height="40" rx="8" fill="#fff0e6" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="95" y="450" text-anchor="middle" font-size="11" fill="#c0392b">→ 免疫假消息操控</text>
+
+<path d="M230,383 L230,420" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+<rect x="155" y="425" width="150" height="40" rx="8" fill="#fff0e6" stroke="#c0392b" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="230" y="450" text-anchor="middle" font-size="11" fill="#c0392b">→ 打破信息茧房</text>
+
+<path d="M310,383 L310,420" fill="none" stroke="#3a6ea5" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<rect x="240" y="425" width="140" height="40" rx="8" fill="#e8f0fe" stroke="#3a6ea5" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="310" y="450" text-anchor="middle" font-size="11" fill="#3a6ea5">→ 识别逻辑谬误</text>
+
+<path d="M430,383 L430,420" fill="none" stroke="#3a6ea5" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<rect x="355" y="425" width="150" height="40" rx="8" fill="#e8f0fe" stroke="#3a6ea5" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="430" y="450" text-anchor="middle" font-size="11" fill="#3a6ea5">→ 辨别谎言六大特征</text>
+
+<path d="M535,383 L535,420" fill="none" stroke="#b8860b" stroke-width="1.5" marker-end="url(#arrowGold)"/>
+<rect x="460" y="425" width="150" height="40" rx="8" fill="#fef9f2" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="535" y="450" text-anchor="middle" font-size="11" fill="#b8860b">→ 有效沟通与保密</text>
+
+<path d="M705,383 L705,420" fill="none" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+<rect x="635" y="425" width="140" height="40" rx="8" fill="#e8f5e9" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="705" y="450" text-anchor="middle" font-size="11" fill="#27ae60">→ 理性决策判断</text>
+
+<path d="M830,383 L830,420" fill="none" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+<rect x="760" y="425" width="140" height="40" rx="8" fill="#e8f5e9" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,2"/>
+<text x="830" y="450" text-anchor="middle" font-size="11" fill="#27ae60">→ 抓住决策关键因素</text>
+
+<!-- 回环反馈线 -->
+<path d="M705,465 L705,520 L160,520 L160,465" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="432" y="535" text-anchor="middle" font-size="11" fill="#b8860b">反馈闭环：决策结果修正信息接收策略</text>
+
+<!-- 底部总结 -->
+<rect x="250" y="570" width="500" height="50" rx="12" fill="#3d2f2f"/>
+<text x="500" y="601" text-anchor="middle" font-size="14" font-weight="bold" fill="#fdf6ec">🎯 核心目标：建立从信息接收到理性决策的完整认知操作系统</text>
+
+<!-- 事实优先原则 跨层连接 -->
+<path d="M830,335 L900,300 L900,260 L660,260" fill="none" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="870" y="280" font-size="10" fill="#27ae60">事实优先统领全部决策</text>
+
+<!-- 恐惧营销闭环底部关联 -->
+<path d="M230,335 L120,300 L40,300 L40,260 L60,260" fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="80" y="280" font-size="10" fill="#c0392b">恐惧闭环驱动信息接收层</text>
+</svg>`;
+  document.getElementById('svgWrap').innerHTML = svg;
+})();
+
+// ===== 知识卡片 =====
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx = idx;
+  cardFlipped = false;
+  const c = concepts[idx];
+  document.getElementById('flipFront').innerHTML = '<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent);margin-bottom:8px">'+c.name+'</h3><p style="color:var(--text-light);font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML = '<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = (idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+}
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1);}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1);}
+function markLearned(){
+  const id = concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards = learnedCards.filter(function(x){return x!==id;});}
+  else{learnedCards.push(id);}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped = !cardFlipped;});
+
+function updateProgress(){
+  const pct = Math.round(learnedCards.length / concepts.length * 100);
+  document.getElementById('cardProgress').style.width = pct+'%';
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+}
+function updateCardDisplay(){
+  setCard(currentCardIdx);
+  updateProgress();
+}
+setCard(0);
+
+// ===== 题库系统 =====
+function startQuiz(){
+  document.getElementById('staticQuiz').style.display = 'none';
+  const container = document.getElementById('quizContainer');
+
+  const shuffledMcq = mcqBank.slice().sort(function(){return Math.random()-0.5;}).slice(0,10);
+  const shuffledSa = shortAnswerBank.slice().sort(function(){return Math.random()-0.5;}).slice(0,3);
+
+  let html = '<h3>🎲 随机抽题练习</h3>';
+
+  shuffledMcq.forEach(function(q,qi){
+    html += '<div class="quiz-card"><span class="q-tag q-mc">选择题 '+(qi+1)+'/10</span>';
+    html += '<div class="q-text">'+q.q+'</div>';
+    var labels = ['A','B','C','D'];
+    q.opts.forEach(function(opt,oi){
+      html += '<div class="q-option" onclick="selectMcqOption(this,'+oi+','+q.answer+',\'mcq_r'+qi+'\')" id="mcq_r'+qi+'_'+oi+'">'+labels[oi]+'. '+opt+'</div>';
+    });
+    html += '<div class="q-feedback" id="mcq_r'+qi+'"></div></div>';
+  });
+
+  shuffledSa.forEach(function(q,qi){
+    html += '<div class="quiz-card"><span class="q-tag q-sa">简答题 '+(qi+1)+'/3</span>';
+    html += '<div class="q-text">'+q.q+'</div>';
+    html += '<textarea class="sa-input" placeholder="输入你的回答..." id="sa_input_'+qi+'"></textarea>';
+    html += '<div style="margin-top:8px"><button class="btn btn-sm btn-outline" onclick="revealSA(\'sa_reveal_'+qi+'\')">👁 查看参考答案</button></div>';
+    html += '<div class="sa-reveal" id="sa_reveal_'+qi+'"><strong>💡 参考要点：</strong>'+q.hint+'</div></div>';
+  });
+
+  html += '<div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="startQuiz()">🎲 重新抽题</button></div>';
+  container.innerHTML = html;
+}
+
+function selectMcqOption(el, selected, correct, feedbackId){
+  const parent = el.parentElement;
+  parent.querySelectorAll('.q-option').forEach(function(o){o.classList.remove('selected','correct','wrong');o.style.pointerEvents='none';});
+  el.classList.add('selected');
+  const fb = document.getElementById(feedbackId);
+  if(selected === correct){
+    el.classList.add('correct');
+    fb.className = 'q-feedback right show';
+    fb.textContent = '✅ 正确！';
+    mcqAnswered['q'+correct] = true;
+  }else{
+    el.classList.add('wrong');
+    parent.querySelectorAll('.q-option')[correct].classList.add('correct');
+    fb.className = 'q-feedback wrong-msg show';
+    fb.textContent = '❌ 错误，正确答案是 ' + ['A','B','C','D'][correct];
+    wrongIds.push('q'+correct);
+  }
+  save();
+}
+
+function revealSA(id){
+  document.getElementById(id).classList.toggle('show');
+}
+
+function resetQuiz(){
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('staticQuiz').style.display = 'none';
+}
+
+// ===== 考试模式 =====
+let examTimerInterval = null;
+let examTimeLeft = 1200;
+
+function startExam(){
+  document.getElementById('examStartBtn').style.display = 'none';
+  document.getElementById('examSubmitBtn').style.display = 'inline-block';
+  document.getElementById('examTimer').style.display = 'inline-block';
+  document.getElementById('examResult').style.display = 'none';
+
+  const container = document.getElementById('examContainer');
+  const shuffled = mcqBank.slice().sort(function(){return Math.random()-0.5;});
+  var html = '';
+  shuffled.forEach(function(q,qi){
+    html += '<div class="quiz-card"><span class="q-tag q-mc">第 '+(qi+1)+' 题</span>';
+    html += '<div class="q-text">'+q.q+'</div>';
+    var labels = ['A','B','C','D'];
+    q.opts.forEach(function(opt,oi){
+      html += '<div class="q-option" onclick="selectExamOption(this,'+oi+','+q.answer+','+qi+')" id="exam_opt_'+qi+'_'+oi+'">'+labels[oi]+'. '+opt+'</div>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+
+  examTimeLeft = 1200;
+  updateExamTimer();
+  examTimerInterval = setInterval(function(){
+    examTimeLeft--;
+    updateExamTimer();
+    if(examTimeLeft <= 0){submitExam();}
+  },1000);
+}
+
+function updateExamTimer(){
+  var m = Math.floor(examTimeLeft/60);
+  var s = examTimeLeft%60;
+  document.getElementById('examTimer').textContent = m+':'+(s<10?'0':'')+s;
+}
+
+function selectExamOption(el, selected, correct, idx){
+  const parent = el.parentElement;
+  if(parent.querySelector('.q-option.selected')) return;
+  parent.querySelectorAll('.q-option').forEach(function(o){o.style.pointerEvents='none';});
+  el.classList.add('selected');
+  if(selected === correct){
+    el.classList.add('correct');
+  }else{
+    el.classList.add('wrong');
+    parent.querySelectorAll('.q-option')[correct].classList.add('correct');
+  }
+  el.dataset.correct = (selected===correct)?'1':'0';
+}
+
+function submitExam(){
+  if(examTimerInterval){clearInterval(examTimerInterval);examTimerInterval=null;}
+  document.getElementById('examSubmitBtn').style.display = 'none';
+  document.getElementById('examTimer').style.display = 'none';
+
+  var total = 0, correct = 0;
+  document.querySelectorAll('#examContainer .q-option.selected').forEach(function(el){
+    total++;
+    if(el.dataset.correct === '1') correct++;
+  });
+
+  var unanswered = 20 - total;
+  var score = correct;
+  var pct = Math.round(score/20*100);
+  var grade = pct>=90?'🌟 优秀':pct>=70?'👍 良好':pct>=60?'⚠️ 及格':'📚 需加强';
+
+  examHistory.push({date:new Date().toISOString(),score:score,total:20,pct:pct,grade:grade});
+  save();
+  updateReview();
+
+  document.getElementById('examResult').style.display = 'block';
+  document.getElementById('examResult').innerHTML = '<div class="card" style="text-align:center"><h3>📊 考试成绩</h3><div class="stat-value">'+score+' / 20</div><div class="stat-label">正确率 '+pct+'% — '+grade+'</div><p style="color:var(--text-light);margin-top:8px">未作答：'+unanswered+' 题</p><button class="btn btn-primary" style="margin-top:12px" onclick="startExam()">🔄 重新考试</button></div>';
+}
+
+// ===== 复习模式 =====
+function updateReview(){
+  var totalQ = examHistory.reduce(function(s,e){return s+e.total;},0);
+  var correctQ = examHistory.reduce(function(s,e){return s+e.score;},0);
+  var rate = totalQ>0 ? Math.round(correctQ/totalQ*100) : 0;
+
+  document.getElementById('rsTotal').textContent = totalQ;
+  document.getElementById('rsCorrect').textContent = correctQ;
+  document.getElementById('rsRate').textContent = rate+'%';
+
+  var weakList = document.getElementById('weakConcepts');
+  var wrongList = document.getElementById('wrongQuestions');
+
+  var unlearned = concepts.filter(function(c){return !learnedCards.includes(c.id);});
+  if(unlearned.length > 0){
+    weakList.innerHTML = '<p style="margin-bottom:8px">以下概念尚未标记为已学习：</p>'+unlearned.map(function(c){return '<span class="tag" style="margin:4px">'+c.name+'</span>';}).join('');
+  }else{
+    weakList.innerHTML = '<p style="color:var(--success);font-weight:600">✅ 所有概念已学习！</p>';
+  }
+
+  if(wrongIds.length > 0){
+    var uniqueWrong = [];
+    wrongIds.forEach(function(id){if(uniqueWrong.indexOf(id)===-1)uniqueWrong.push(id);});
+    wrongList.innerHTML = '<p style="margin-bottom:8px">错题ID：'+uniqueWrong.join(', ')+'（共 '+wrongIds.length+' 次错误）</p><button class="btn btn-sm btn-outline" onclick="wrongIds=[];save();updateReview();">🗑 清空错题本</button>';
+  }else{
+    wrongList.innerHTML = '<p style="color:var(--success);font-weight:600">✅ 暂无错题记录</p>';
+  }
+}
+
+// ===== 思维导图折叠 =====
+function toggleMindmap(el){
+  if(typeof el === 'string'){el = document.getElementById(el);}
+  el.classList.toggle('open');
+  var children = el.nextElementSibling;
+  if(children && children.classList.contains('tree-children')){
+    children.classList.toggle('open');
+  }
+}
+
+// ===== 深度追问折叠 =====
+function toggleSocratic(el){
+  var answer = el.nextElementSibling;
+  if(answer && answer.classList.contains('socratic-a')){
+    answer.classList.toggle('open');
+  }
+  var sub = answer?answer.nextElementSibling:null;
+  if(sub && sub.classList.contains('socratic-sub')){
+    sub.classList.toggle('open');
+  }
+}
+
+// ===== 实战决策 =====
+function showDecisionResult(el, resultId){
+  var scenario = el.closest('.decision-scenario');
+  scenario.querySelectorAll('.decision-result').forEach(function(r){r.style.display='none';});
+  scenario.querySelectorAll('.decision-opt').forEach(function(o){o.style.borderColor='var(--border)';o.style.background='var(--card)';});
+  el.style.borderColor = 'var(--gold)';
+  el.style.background = '#fffdf5';
+  var result = document.getElementById(resultId);
+  if(result) result.style.display = 'block';
+}
+
+// ===== 初始化 =====
+updateProgress();
+updateReview();
+</script>
+
+</body>
+</html>

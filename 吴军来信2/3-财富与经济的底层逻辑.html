@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财富与经济的底层逻辑 — 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent2: #d4a574;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --radius: 10px;
+  --success: #27ae60;
+  --light: #fef9f4;
+  --sub: #8b7355;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+.tab-bar {
+  position: sticky; top: 52px; z-index: 99;
+  background: var(--card); border-bottom: 2px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 2px; padding: 0 8px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.tab-bar button {
+  flex-shrink: 0; padding: 8px 12px; border: none; background: none;
+  cursor: pointer; font-size: clamp(11px, 1.8vw, 13px); color: var(--text-light);
+  font-family: inherit; border-bottom: 3px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+}
+.tab-bar button:hover { color: var(--accent); }
+.tab-bar button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab-content { display: none; padding-top: 20px; animation: fadeIn 0.35s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.card h2 { color: var(--accent); font-size: 18px; margin-bottom: 12px; }
+.card h3 { color: #5a3e3e; font-size: 15px; margin: 10px 0 6px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.concept-card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px; border-left: 4px solid var(--accent2);
+  cursor: pointer; transition: transform 0.2s;
+}
+.concept-card:hover { transform: translateY(-2px); }
+.concept-card.star { border-left-color: var(--accent); }
+.concept-card .num {
+  display: inline-block; width: 26px; height: 26px; line-height: 26px;
+  text-align: center; background: var(--accent2); color: #fff;
+  border-radius: 50%; font-size: 13px; margin-right: 6px;
+}
+.concept-card.star .num { background: var(--accent); }
+.concept-card .star-badge {
+  display: inline-block; background: var(--accent); color: #fff;
+  font-size: 11px; padding: 1px 6px; border-radius: 8px; margin-left: 4px;
+  vertical-align: middle;
+}
+.progress-wrap { margin: 10px 0; }
+.progress-wrap .label { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+.progress-bar {
+  height: 10px; background: var(--border); border-radius: 5px; overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent));
+  border-radius: 5px; transition: width 0.5s ease;
+}
+.svg-wrap { overflow-x: auto; margin: 10px 0; }
+.svg-wrap svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-question { margin-bottom: 20px; }
+.quiz-question .q-text { font-weight: 600; margin-bottom: 10px; }
+.quiz-question .option {
+  padding: 8px 14px; margin: 4px 0; border-radius: 6px;
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+  background: var(--card);
+}
+.quiz-question .option:hover { border-color: var(--accent2); background: #fef9f4; }
+.quiz-question .option.selected { border-color: var(--accent); background: #fef5f0; }
+.quiz-question .option.correct { border-color: #27ae60; background: #eafaf1; }
+.quiz-question .option.wrong { border-color: #e74c3c; background: #fdedec; }
+.timer { font-size: 24px; font-weight: 700; color: var(--accent); text-align: center; padding: 8px; }
+.timer.warning { animation: pulse 0.5s infinite alternate; }
+@keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
+.tree { font-size: 14px; }
+.tree ul { list-style: none; padding-left: 20px; }
+.tree li { position: relative; padding: 4px 0; }
+.tree .node { cursor: pointer; font-weight: 600; color: var(--accent); }
+.tree .node::before { content: "▸ "; font-size: 10px; }
+.tree .node.open::before { content: "▾ "; }
+.tree .children { display: none; }
+.tree .children.open { display: block; }
+.socratic-q { margin-bottom: 12px; }
+.socratic-q .question {
+  padding: 10px 14px; background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: pointer; font-weight: 600;
+  transition: background 0.2s;
+}
+.socratic-q .question:hover { background: #fef9f4; }
+.socratic-q .answer { display: none; padding: 10px 14px; color: var(--text-light); }
+.socratic-q .answer.open { display: block; }
+.decision-option {
+  padding: 12px 16px; margin: 6px 0; border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+}
+.decision-option:hover { border-color: var(--accent2); }
+.decision-feedback { display: none; padding: 14px; margin-top: 8px; background: #fef9f4; border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--accent); font-weight: 600; }
+.btn {
+  display: inline-block; padding: 10px 20px; border-radius: 22px;
+  border: none; cursor: pointer; font-family: inherit; font-size: 14px;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { opacity: 0.9; }
+.stat-box {
+  display: inline-block; padding: 14px 20px; background: var(--card);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  text-align: center; margin: 6px; min-width: 100px;
+}
+.stat-box .num { font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-box .lbl { font-size: 12px; color: var(--text-light); }
+@media (max-width: 600px) {
+  .container { padding: 0 8px 40px; }
+  .card { padding: 14px; }
+  .tab-bar button { padding: 6px 8px; font-size: 11px; }
+}
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:var(--light);border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--light)}
+.tag{display:inline-block;background:var(--success);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>财富与经济的底层逻辑 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="active" data-tab="0">知识集总览</button>
+  <button data-tab="1">知识卡片</button>
+  <button data-tab="2">题库系统</button>
+  <button data-tab="3">考试模式</button>
+  <button data-tab="4">复习模式</button>
+  <button data-tab="5">思维导图</button>
+  <button data-tab="6">深度追问</button>
+  <button data-tab="7">案例分析</button>
+  <button data-tab="8">实战决策</button>
+</div>
+
+<div class="container" id="tabContents">
+
+<!-- TAB 0: 知识集总览 -->
+<div class="tab-content active" data-tab="0">
+
+<div class="card">
+  <h2>核心目标</h2>
+  <p style="font-size:16px;">不讲怎么投资赚钱，讲怎么思考财富问题。用<strong>财富本质、自由现金流、资产估值、财商认知、行为经济学</strong>等底层逻辑，构建一套理解财富与经济的<strong>认知操作系统</strong>。与硅谷来信1投资与财富互补：硅1讲实操策略，来信2讲底层逻辑。</p>
+</div>
+
+<div class="card">
+  <h2>10个核心概念</h2>
+  <div class="grid3" id="conceptGrid"></div>
+</div>
+
+<div class="card">
+  <h2>★ 最小知识集（骨架中的骨架）</h2>
+  <div class="grid2" id="mksGrid"></div>
+</div>
+
+<div class="card">
+  <h2>学习进度</h2>
+  <div class="progress-wrap">
+    <div class="label">概念卡片学习：<span id="cardProgress">0/10</span></div>
+    <div class="progress-bar"><div class="fill" id="cardBar" style="width:0%"></div></div>
+  </div>
+  <div class="progress-wrap">
+    <div class="label">题库完成：<span id="quizProgress">0/30</span></div>
+    <div class="progress-bar"><div class="fill" id="quizBar" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>概念关系图</h2>
+  <div class="svg-wrap" id="svgContainer"></div>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;">
+    <span style="color:#c0392b;">━━ 核心驱动力</span> &nbsp;
+    <span style="color:#d4a574;">━━ 三大认知层</span> &nbsp;
+    <span style="color:#5a3e3e;">━━ 核心概念</span> &nbsp;
+    <span style="color:#8b7355;">━━ 行为策略层</span> &nbsp;
+    <span style="color:#2c3e50;">━━ 结果/产物</span>
+  </p>
+</div>
+
+<div class="card">
+  <h2>边界知识表（14条）</h2>
+  <div style="overflow-x:auto;">
+  <table id="boundaryTable"></table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>学习路径（5阶段）</h2>
+  <div id="learningPath"></div>
+</div>
+</div>
+
+<!-- TAB 1: 知识卡片 -->
+<div class="tab-content" data-tab="1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="fill" id="cardProgressBar" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- TAB 2: 题库系统 -->
+<div class="tab-content" data-tab="2">
+<h3 style="margin-bottom:10px">📝 题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--sub)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card">
+  <h2>选择题（20道）</h2>
+  <p style="color:var(--text-light);font-size:13px;">点击选项作答，即时判分。正确选项索引0-3严格均匀分布。</p>
+  <div id="mcqContainer"></div>
+  <button class="btn btn-primary" onclick="resetMCQ()">重做选择题</button>
+</div>
+<div class="card">
+  <h2>简答题（10道）</h2>
+  <p style="color:var(--text-light);font-size:13px;">输入你的回答后点击查看参考答案对比。</p>
+  <div id="saqContainer"></div>
+  <button class="btn btn-primary" onclick="resetSAQ()">重做简答题</button>
+</div>
+</div>
+</div>
+
+<!-- TAB 3: 考试模式 -->
+<div class="tab-content" data-tab="3">
+<div class="card" id="examSetup">
+  <h2>模拟考试</h2>
+  <p>从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+  <button class="btn btn-primary" onclick="startExam()">开始考试</button>
+  <p style="font-size:12px;color:var(--text-light);margin-top:8px;">提交后显示分数、错题解析、薄弱概念</p>
+</div>
+<div class="card" id="examArea" style="display:none;">
+  <div class="timer" id="examTimer">15:00</div>
+  <div id="examContent"></div>
+  <button class="btn btn-primary" onclick="submitExam()" style="margin-top:12px;">提交答卷</button>
+</div>
+<div class="card" id="examResult" style="display:none;"></div>
+</div>
+
+<!-- TAB 4: 复习模式 -->
+<div class="tab-content" data-tab="4">
+<div class="card">
+  <h2>学习统计</h2>
+  <div id="statsArea"></div>
+</div>
+<div class="card">
+  <h2>错题本</h2>
+  <div id="errorBook"></div>
+</div>
+<div class="card">
+  <h2>概念薄弱点分析</h2>
+  <div id="weakPoints"></div>
+</div>
+</div>
+
+<!-- TAB 5: 思维导图 — 内联HTML -->
+<div class="tab-content" data-tab="5">
+<div class="card">
+  <h2>财富与经济的底层逻辑 · 思维导图</h2>
+  <p style="color:var(--text-light);font-size:13px;">可折叠/展开的层级树形结构。点击节点展开子级。</p>
+  <div class="tree">
+<ul>
+<li><span class="node" onclick="toggleMindmap(this)">财富与经济的底层逻辑</span>
+<div class="children">
+<ul>
+<li><span class="node" onclick="toggleMindmap(this)">💡 财富认知（什么是财富）</span>
+<div class="children">
+<ul>
+<li><span class="node" onclick="toggleMindmap(this)">财富的本质：调动全球资源的数量</span>
+<div class="children">
+<ul><li>现金及贵金属 — 最稳定形态</li><li>房地产 — 价值波动大，依赖区域共识</li><li>股票和债券 — 由实转虚的过渡形态</li><li>金融衍生品 — 合约化虚拟资产</li><li>虚拟物品 — 比特币、以太坊等</li><li>名气/名望 — 无形资产衍生收益</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">自由现金流：通向财富自由的关键</span>
+<div class="children">
+<ul><li>现金：无需负债即可支付的资金</li><li>现金流：一定周期内的现金增量</li><li>自由：扣除所有成本后可自由支配</li><li>企业视角：苹果年超1000亿美元</li><li>个人视角：持续被动收入覆盖花销</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">资产估值双引擎：共识与信仰</span>
+<div class="children">
+<ul><li>共识：群体对资产价值的共同认知</li><li>信仰：超越理性的价值坚信</li><li>英伟达市值 vs 英特尔+高通+AMD</li><li>东亚房地产信仰源于农耕传统</li><li>比特币信仰：数字黄金</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">新钱与老钱的本质区别</span>
+<div class="children">
+<ul><li>新钱=资产富有，依赖共识波动大</li><li>老钱=现金富有，不受情绪影响</li><li>从资产富有转向现金富有</li></ul>
+</div></li>
+</ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">📈 经济规律（钱怎么流动）</span>
+<div class="children">
+<ul>
+<li><span class="node" onclick="toggleMindmap(this)">挣钱 vs 赚钱：两种完全不同的逻辑</span>
+<div class="children">
+<ul><li>挣钱=劳动换取报酬，线性增长</li><li>赚钱=资本循环创造财富，指数增长</li><li>哈佛商学院核心：用别人的钱赚钱</li><li>马斯克：始终用他人资金推动资本循环</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">资本回报率(ROE)：资金周转效率</span>
+<div class="children">
+<ul><li>ROE=净收入/企业价值</li><li>美国企业ROE约20%，中国企业不到10%</li><li>浙江家庭企业高ROE秘密：短周期快回款</li><li>淘宝店10万投资ROE 70% vs 品牌店100万ROE 10%</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">实干与常识比教育背景更重要</span>
+<div class="children">
+<ul><li>LTCM：16名顶尖人才全军覆没</li><li>四大常识性错误：忽视便宜必有原因</li><li>巴菲特的比喻：100万弹膛中1颗子弹也不扣扳机</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">全球财富分布与行业格局</span>
+<div class="children">
+<ul><li>全球GDP约100万亿美元</li><li>房地产全球300万亿美元，中美各占21-22%</li><li>物流12.5%、医疗10%、化工5.7万亿</li><li>IT行业GDP占5%但就业仅1%</li></ul>
+</div></li>
+</ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">🧠 人性心理（钱怎么影响我们）</span>
+<div class="children">
+<ul>
+<li><span class="node" onclick="toggleMindmap(this)">狄德罗效应：配套消费的陷阱</span>
+<div class="children">
+<ul><li>获得新物品后不断配置配套物品</li><li>狄德罗的新睡袍故事</li><li>纣王象牙筷的古代版</li><li>平衡之道：入戏与出戏</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">韦伯定律：感觉阈值与消费决策</span>
+<div class="children">
+<ul><li>ΔI/I=K：差别阈限与标准刺激的比值恒定</li><li>低价商品对差价敏感，高价商品不敏感</li><li>免费商品ΔI/I=100%触发净赚心理</li><li>人际关系中的韦伯效应</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">登门术：得寸进尺效应</span>
+<div class="children">
+<ul><li>同意小请求后接受大请求概率3倍</li><li>经典实验：招牌从17%→55%(实验组)</li><li>防范策略：设置明确红线</li><li>逆向登门术：先提无理要求再让步</li></ul>
+</div></li>
+</ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">🛠️ 行为策略（怎么提升财富能力）</span>
+<div class="children">
+<ul>
+<li><span class="node" onclick="toggleMindmap(this)">财商(金融智商)的四大培养路径</span>
+<div class="children">
+<ul><li>财务知识积累</li><li>风险意识培养</li><li>长期规划制定</li><li>实践经验积累</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">投资回报公式 Y=beta·X+alpha</span>
+<div class="children">
+<ul><li>X=投资对象的基础回报</li><li>beta=杠杆/波动系数</li><li>alpha=独立于市场的回报（极难获取）</li><li>人生最大的alpha：投资自己</li></ul>
+</div></li>
+<li><span class="node" onclick="toggleMindmap(this)">专业服务：赚钱靠确定价值而非讨好</span>
+<div class="children">
+<ul><li>预期可知、稳定可靠、意外应对</li><li>精准定位目标群体，不讨好所有人</li><li>喜欢赚钱（过程）vs 喜欢钱（结果）</li></ul>
+</div></li>
+</ul>
+</div></li>
+</ul>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- TAB 6: 深度追问 — 内联HTML -->
+<div class="tab-content" data-tab="6">
+<div class="card">
+  <h2>苏格拉底式追问</h2>
+  <p style="color:var(--text-light);font-size:13px;">对每个核心概念逐层追问，点击问题展开答案。</p>
+
+  <h3 style="margin-top:16px;color:var(--accent);">财富的本质</h3>
+  <div class="socratic-q">
+    <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: 如果财富是调动资源的数量，那一个欠债10亿的地产商比一个存款100万的教师更富有吗？</div>
+    <div class="answer">A: 这里的关键区分在于净资产调动能力和总资源调动能力。地产商能调动10亿资源（银行贷款、供应链、土地），但净资产可能为负。教师存款100万是净资产，但调动资源的能力有限。财富的定义更接近前者——你能撬动多少资源为你创造价值。但这同时也是风险：一旦信用链条断裂，调动能力归零。这正是新钱的脆弱性所在。</div>
+  </div>
+  <div class="socratic-q">
+    <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: 那比特币算不算财富？它不能调动任何实体资源。</div>
+    <div class="answer">A: 比特币确实能调动资源——你可以用它兑换美元、购买商品（在某些国家和场景）。它的价值不在于实物背书，而在于全球共识网络：数千万人相信它是价值存储工具。这恰恰验证了吴军的核心观点：财富的价值来自共识+信仰，而非劳动价值论。比特币的总市值已超过白银，正在逼近黄金，这说明共识本身就是一种极其强大的资源组织形式。</div>
+  </div>
+
+  <h3 style="margin-top:16px;color:var(--accent);">自由现金流</h3>
+  <div class="socratic-q">
+    <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: 年薪百万的投行VP和年入30万的便利店老板，谁的财富自由更近？</div>
+    <div class="answer">A: 关键看自由现金流而非账面收入。年薪百万扣除税费(约30-40%)、应酬支出(维持客户关系)、房贷、私立学校学费后，实际可支配现金流可能不足20万。而便利店老板年入30万但经营模式稳定、无需持续追加投资维护客户关系，自由现金流可能也是20万。但便利店老板的现金流韧性更强——投行VP一旦被裁，收入归零且高端消费习惯难以快速调整；便利店老板即使某月生意差，基本盘仍在。这就是自由现金流的稳定性与追加投资陷阱的差异。</div>
+  </div>
+  <div class="socratic-q">
+    <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: 为什么苹果公司市值3万亿，但自由现金流才是巴菲特真正看重的东西？</div>
+    <div class="answer">A: 市值是市场共识的反映，今天3万亿明天可能2万亿。但自由现金流（年超1000亿美元）是实打实的、可预测的、可持续的真金白银。巴菲特买入苹果不是因为它还会涨，而是因为苹果每年能稳定产生巨额自由现金流，这些现金可以通过分红和回购返还给股东。市盈率可以造假，自由现金流很难造假——它是扣除所有必要支出后真正属于股东的钱。这也是为什么A股散户关注PE，而华尔街投行核心指标是自由现金流。</div>
+  </div>
+
+  <h3 style="margin-top:16px;color:var(--accent);">挣钱 vs 赚钱</h3>
+  <div class="socratic-q">
+    <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: 如果赚钱比挣钱高级，那为什么大多数人不直接去赚钱？</div>
+    <div class="answer">A: 因为赚钱有三个门槛，大多数人只看到收益没看到门槛。(1)资本门槛：需要启动资金或融资能力——哈佛商学院教的核心就是用别人的钱赚钱，但获取信任本身就是门槛。(2)风险门槛：挣钱干一天有一天确定性高，赚钱可能清零——LTCM的16个天才也会全军覆没。(3)反人性门槛：赚钱需要延迟满足、承担不确定性、持续学习总结——而大多数人喜欢确定的即时回报。吴军说赚钱本质上是反大多数人习惯的行为，就是这个意思。</div>
+  </div>
+
+  <h3 style="margin-top:16px;color:var(--accent);">财商</h3>
+  <div class="socratic-q">
+    <div class="question" onclick="this.nextElementSibling.classList.toggle('open')">Q: 那伟（《凡人歌》主角）年薪50万+千万期权，为什么说他财商低？</div>
+    <div class="answer">A: 那伟犯了财商低的四大典型错误：(1)把期权当实际财富——1000万未上市期权在融资失败后基本归零；(2)高估未来挣钱能力——将公司的资源和平台误认为自己的能力；(3)不懂沉没成本——公司危机时拒绝50万现金补偿；(4)忽视商业风险——把身份证借给老板注册公司，背负80万债务。他的资产结构（高房贷+低现金流+零变现能力）是典型的账面富翁，一击即碎。</div>
+  </div>
+</div>
+</div>
+
+<!-- TAB 7: 案例分析 — 内联HTML -->
+<div class="tab-content" data-tab="7">
+<div class="card">
+  <h2>案例：浙江家庭企业 vs 长期资本管理公司(LTCM) — 财富底层逻辑的AB面</h2>
+  <p style="color:var(--text-light);font-size:13px;">用MKS四维度（核心概念/关系/MKS/边界知识）拆解两个极端案例，看财富底层逻辑如何解释截然相反的命运。</p>
+
+  <div class="card" style="border-left:4px solid var(--accent);">
+    <h3>🔍 核心概念</h3>
+    <p><strong>资本回报率(ROE)：</strong>浙江服装加工企业3周完成订单，一年周转17次，10万投资年净利润7万，ROE=70%。LTCM管理数十亿美元，高杠杆操作，一次俄罗斯债券违约就全军覆没——高杠杆下的ROE是虚假的，一次风险事件就归零。</p>
+    <p><strong>实干与常识：</strong>浙江企业主学历一般但经验丰富，只接国外现款订单（国内订单账期长）、现金交易一笔一结。LTCM拥有诺贝尔奖得主和MIT/斯坦福教授，却犯了认为能发现别人看不到的价值与信誉差的机构做长期交易过度依赖数学模型高杠杆四大常识性错误。</p>
+    <p><strong>挣钱vs赚钱：</strong>浙江企业是赚钱而非挣钱——资金在高效循环中持续增值。LTCM也是赚钱，但走错了路：试图从市场的微小价差中套利（alpha为负），却忽视了高杠杆的毁灭性风险。</p>
+  </div>
+
+  <div class="card" style="border-left:4px solid #d4a574;">
+    <h3>🔗 概念关系</h3>
+    <p><strong>资金周转效率 → ROE → 财富积累速度：</strong>浙江企业3周一个循环，资金一年转17圈；LTCM的套利策略需要数月到数年才能兑现，资金周转极慢。这就是时间的朋友和时间的敌人的区别。</p>
+    <p><strong>常识 → 风险控制 → 生存概率：</strong>浙江企业主用血汗教训积累了不赊账、不垫资、不做长期生意的常识，这些简单规则让他们活过了无数次危机。LTCM用复杂的数学模型替代了常识，模型说这种违约是6个西格玛事件，概率几乎为零——然后它就发生了。</p>
+    <p><strong>自由现金流 → 反脆弱性：</strong>浙江企业每月有正现金流，危机中是熬过去者。LTCM现金流为负（高杠杆利息+管理费），危机中是被熬过去的人。</p>
+  </div>
+
+  <div class="card" style="border-left:4px solid #8b7355;">
+    <h3>★ MKS核心</h3>
+    <p><strong>资本回报率(ROE)是赚钱能力的核心指标：</strong>不是看赚了多少（绝对值），而是看你的资金一年转了几圈（效率）。浙江企业的10万元一年产生7万利润，LTCM的数十亿美元一年可能亏损数十亿。ROE不是一个会计数字，它背后是商业模式、风险控制和常识判断的综合体现。</p>
+    <p><strong>为什么这一条最重要？</strong>因为理解ROE的深层含义（效率>规模，周转>利润率），你就不会迷恋高大上的商业模式和名校光环，而能冷静判断任何赚钱项目的真实质量。</p>
+  </div>
+
+  <div class="card">
+    <h3>📋 边界知识</h3>
+    <table>
+      <tr><th>知识点</th><th>只需知道</th></tr>
+      <tr><td>LTCM成立时间与规模</td><td>1994年成立，巅峰时管理约1260亿美元资产（含杠杆），1998年崩溃</td></tr>
+      <tr><td>诺贝尔奖得主团队</td><td>迈伦·斯科尔斯和罗伯特·默顿，因期权定价理论获1997年诺贝尔经济学奖</td></tr>
+      <tr><td>西格玛事件</td><td>在正态分布中6个西格玛的概率约为十亿分之一，但金融市场不服从正态分布（肥尾效应）</td></tr>
+      <tr><td>巴菲特的扣扳机比喻</td><td>如果有一把100万个弹膛的枪，只有1颗子弹，你也不会把它对准自己的脑袋扣扳机——即使风险概率极低，如果后果是毁灭性的，就不要做</td></tr>
+      <tr><td>浙江模式</td><td>现金交易为主、短周期快回款、专注一件事、不追求规模而追求效率</td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- TAB 8: 实战决策 — 内联HTML -->
+<div class="tab-content" data-tab="8">
+<div class="card">
+  <h2>财富底层逻辑决策模拟（3轮）</h2>
+  <p style="color:var(--text-light);font-size:13px;">每轮面临一个真实决策场景，选择后显示MKS分析反馈。</p>
+
+  <div class="card" style="border-left:4px solid var(--accent);">
+    <h3>【第1轮】你拿到50万年终奖。朋友推荐买一辆宝马X3（落地45万），太太建议提前还房贷（利率4.5%）。你的财商判断是？</h3>
+    <div class="decision-option" onclick="selectDecision(0,0,'dec0')">A. 买宝马——人生苦短，享受当下，而且开车见客户也有面子</div>
+    <div class="decision-option" onclick="selectDecision(0,1,'dec0')">B. 提前还房贷——无债一身轻，省下利息就是赚</div>
+    <div class="decision-option" onclick="selectDecision(0,2,'dec0')">C. 留10万应急，40万定投指数基金——房贷利率低不急还，让钱进入资本循环</div>
+    <div class="decision-feedback" id="decFeedback0"><p style="font-size:13px;"></p></div>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--accent);">
+    <h3>【第2轮】你的小公司年利润80万，稳定经营5年了。现在有两个机会：(1)接受某大厂800万收购；(2)贷款200万扩张开3家分店。你怎么办？</h3>
+    <div class="decision-option" onclick="selectDecision(1,0,'dec1')">A. 接受收购——落袋为安，800万够花一辈子了</div>
+    <div class="decision-option" onclick="selectDecision(1,1,'dec1')">B. 贷款扩张——ROE远高于贷款利率，用别人的钱赚钱</div>
+    <div class="decision-option" onclick="selectDecision(1,2,'dec1')">C. 算一笔账再做决定——扩张后的自由现金流是否为正？新增200万贷款每年利息15万，3家新店能多赚多少？</div>
+    <div class="decision-feedback" id="decFeedback1"><p style="font-size:13px;"></p></div>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--accent);">
+    <h3>【第3轮】一个朋友拉你投资他的AI创业项目：现在入场，估值才500万，明年至少翻10倍。他之前在头部大厂干了8年，这是第一次创业。你投不投？</h3>
+    <div class="decision-option" onclick="selectDecision(2,0,'dec2')">A. 投50万——AI是大趋势，错过就没了，而且相信朋友的能力</div>
+    <div class="decision-option" onclick="selectDecision(2,1,'dec2')">B. 不投——初创企业存活率只有2-3%，朋友的技术背景不等于赚钱能力</div>
+    <div class="decision-option" onclick="selectDecision(2,2,'dec2')">C. 投5万——小额参与，亏了不心疼，赚了更好。同时观察他一年，再用实干与常识检验他的执行能力，决定是否追加</div>
+    <div class="decision-feedback" id="decFeedback2"><p style="font-size:13px;"></p></div>
+  </div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ======== DATA ========
+
+const concepts = [
+  { id:'c1', name: "财富的本质", star: true, short: "每人所能调动全世界资源的数量，六大类型从实到虚：现金→名气",
+    def: "财富的本质是每个人所能调动全世界资源的数量，而非拥有的金钱数额。财富涵盖六大类型（现金/贵金属→房地产→股票债券→金融衍生品→虚拟物品→名气名望），从实物到虚拟逐步演进。",
+    analogy: "如同一个杠杆——你的财富不是杠杆本身的重量，而是杠杆能撬动的石头重量。100万现金能撬动200万的餐馆生意，这就是你的真实财富。",
+    example: "英伟达市值远超英特尔+高通+AMD的总和，不是因为它有更多工厂，而是因为AI共识让它能调动全球投资者的资金。",
+    counter: "劳动价值论的局限——亚当·斯密认为财富来自劳动，但比特币（纯共识产物）市值万亿美元，说明当代财富已超出劳动价值论范畴。" },
+  { id:'c2', name: "自由现金流", star: true, short: "扣除所有成本和必要支出后可自由支配的现金，企业/个人财富自由的核心指标",
+    def: "自由现金流=经营活动现金流-资本支出-必要开支。它是扣除所有经营成本和维持业务所需投资后，真正可以自由支配的现金。巴菲特价值投资的核心标准不是低市盈率，而是自由现金流最大化。",
+    analogy: "就像一个人的可自由支配收入——不是你月薪5万，而是扣除房贷、车贷、保险、基本生活费后，真正可以随意花的那部分。年薪百万但月月光的人，自由现金流为负。",
+    example: "苹果每年自由现金流超过1000亿美元；谷歌约600亿美元。这些现金可用于回购股票、分红、并购，是企业的真正肌肉。",
+    counter: "共享单车行业（2015年大战）——表面上收取押金（每人100元x10万用户=1000万现金流），但这笔钱需要随时退还，本质上不是自由现金流，而是庞氏模式的虚假现金。" },
+  { id:'c3', name: "共识与信仰（资产估值）", star: true, short: "资产价值的两个非理性引擎：群体的共同认知（共识）和超越理性的坚信（信仰）",
+    def: "共识是群体对资产价值的共同认知（如英伟达的AI概念股），信仰是超越理性的价值坚信（如东亚人对房地产的执念）。两者共同决定了资产在市场上的实际估值，而非账面净资产。",
+    analogy: "就像艺术品的拍卖——一幅画的颜料和画布成本不到100元，但众人共识它是杰作后，可以拍出1亿元。信仰更强时，甚至不需要共识——比特币持有者坚信它是数字黄金，哪怕各国政府警告风险。",
+    example: "齐白石字画20年间从低价飙升至天价——中国收藏家群体的共识驱动；百达翡丽手表和爱马仕铂金包可以加价出售——奢侈品圈共识。",
+    counter: "功能性资产（如自住刚需房）——价值主要由使用功能和替代成本决定，共识和信仰的影响相对有限。" },
+  { id:'c4', name: "新钱与老钱", star: false, short: "资产富有（依赖共识，波动大）vs现金富有（不受情绪影响，稳定性高），财富自由的终极转化",
+    def: "新钱（New Money）是依赖于共识和信仰的资产富有，如股票、期权、房产市值，波动性大。老钱（Old Money）是不受大众情绪影响的现金富有，如土地、贵金属、稳定现金流企业，追求跨代保值。",
+    analogy: "新钱像海上的帆船——风（共识）来了跑得飞快，风停了原地不动。老钱像陆地上的火车——速度不快但轨道稳定，不受天气影响。",
+    example: "北京有房贷的房产持有者市值千万但月供压力大（新钱）；贝索斯、盖茨持有大量美国土地（老钱），土地价值不受股市波动影响。",
+    counter: "老钱也可能受损——如果持有的土地在白菜价地区（如某些无产业支撑的偏远地区），老钱反而是套牢而非保值。" },
+  { id:'c5', name: "财商（金融智商）", star: true, short: "认识、创造和管理财富的能力，与智商/情商并列的现代社会三大必备素质",
+    def: "财商是金融智商，包括三个层次：(1)认识财富——理解财富本质、区分账面资产与真实财富；(2)创造财富——掌握挣钱vs赚钱的差异；(3)管理财富——现金流优先、风险防控、资产配置。",
+    analogy: "智商是你的发动机马力，情商是你的方向盘灵敏度，财商是你的导航系统——马力再大、方向再稳，走错路也到不了目的地。",
+    example: "浙江家庭企业主学历一般但赚钱能力极强：专注一件事、短周期快回款、现金交易不赊账、用血汗经验替代教科书理论。",
+    counter: "那伟（《凡人歌》主角）年薪50万+千万期权，但财商极低：将期权当实际财富、把公司资源当个人能力、拒绝50万补偿金、为虚荣买宝马——典型的账面富翁。" },
+  { id:'c6', name: "挣钱 vs 赚钱", star: true, short: "挣=手+争（劳动线性换取），赚=贝+兼（资本循环指数增长），两种完全不同的财富逻辑",
+    def: "挣钱是出卖劳动时间换取报酬，增长模式为线性（与时间成正比）。赚钱是让资本进入高效循环创造新财富，增长模式为指数（资本复利效应）。全球名校不教赚钱——课程本质是打工技能培训。",
+    analogy: "挣钱像挑水——挑一担得一担，停下来就没水喝。赚钱像修水渠——前期投入大，但修好后水自己流，睡觉也有收入。",
+    example: "马斯克始终用别人的钱推动资本循环：X.com用用户留存资金、特斯拉用客户预付款、中国工厂用政府土地和银行贷款、收购推特用银行融资。",
+    counter: "伊丽莎白·福尔摩斯（Theranos）——把稻草说成金条是欺诈而非赚钱，最终被判11年监禁。赚钱的前提是合法透明+承诺兑现。" },
+  { id:'c7', name: "资本回报率(ROE)", star: false, short: "以钱赚钱的核心指标，不看赚了多少绝对值，而看资金一年转了几圈的效率",
+    def: "ROE=企业每年派息前净收入÷企业价值（市值-现金+债务）。资金周转效率是ROE的核心决定因素：同样20%毛利率，一年周转4次ROE是周转2次的2倍。美国企业ROE约20%，中国企业不到10%。",
+    analogy: "就像两个小吃摊——A摊每份赚2元，一天卖100份，净赚200元。B摊每份只赚1元，但5分钟出餐，一天卖500份，净赚500元。ROE高的不是利润率高的一方，而是周转快的一方。",
+    example: "淘宝店投资10万、毛利率10%、每月周转一次，年净利润7万，ROE=70%。品牌专卖店投资100万、毛利率40%、一年周转一次，年净利润10万，ROE=10%。",
+    counter: "长期资本管理公司(LTCM)——高杠杆使名义ROE极高，但一次俄罗斯债券违约就全军覆没。高杠杆下的ROE是虚假的，一根针就能戳破。" },
+  { id:'c8', name: "狄德罗效应", star: false, short: "获得新物品后不断配置配套物品的心理倾向，我是旧睡袍的主人，却是新睡袍的奴隶",
+    def: "狄德罗效应（配套效应）指人们在拥有一件新物品后，不断配置与其相适应的物品以达到心理平衡。源自狄德罗收到新睡袍后逐步更换全部书房家具的经历，由哈佛经济学家施罗尔1999年正式命名。",
+    analogy: "就像拼图——你本来只想换一块，但新图案和旧的不搭，于是你又换了旁边的，然后发现整个画面风格都变了，最终把整幅拼图全换了。你本来只想花200元，最后花了2000元。",
+    example: "买了一条高档裤子→需要配好上衣→衬衣和鞋子也得换→整套预算从几百元膨胀到几千元。纣王的象牙筷子→犀玉杯→山珍海味→锦衣楼宇→最终穷奢极欲（中国古人版狄德罗效应）。",
+    counter: "功能性更新而非配套驱动——笔记本电脑坏了换新的，不是因为旧的和办公桌不搭，而是已经无法满足工作需求。这种消费不受狄德罗效应影响。" },
+  { id:'c9', name: "韦伯定律", star: false, short: "ΔI/I=K：感觉差别阈限与原有刺激量的比值恒定，解释为什么我们对大钱不敏感",
+    def: "韦伯定律（19世纪德国生理学家韦伯提出）：能感受到的最小变化量(ΔI)与原有刺激量(I)的比值为常数(K)。商业含义是：低价商品消费者对价格敏感（差价占比大），高价商品消费者不敏感（差价占比小）。",
+    analogy: "就像往杯子里加盐——一杯水里加一小勺盐马上能尝出来，一大桶水里加同样一小勺盐完全没感觉。不是盐变了，而是原有刺激量(I)变大后，同样的ΔI就感知不到了。",
+    example: "200元商品打10%折扣（省20元）vs 300元商品打35%折扣（省105元），消费者倾向选后者，认为赚了更多。实际上绝对节省105元 vs 20元——选择是理性的，但商家利用的是35%比10%看起来大很多的相对感知偏差。",
+    counter: "韦伯定律仅适用于中等强度刺激——当价格极低（如1分钱vs1毛）或极高（如10亿vs20亿）时K值会变化，公式不再精确。" },
+  { id:'c10', name: "登门术", star: false, short: "得寸进尺效应：同意小请求后接受更大无理请求的概率提高3倍，防范关键在设置红线",
+    def: "登门术（Foot-in-the-door technique）是社会心理学经典效应：当个体同意一个小请求后，接受后续更大、更无理请求的概率显著提高。1966年弗里德曼与弗莱泽实验：先挂小招牌后挂大招牌的接受率55%，直接要求的接受率不到17%。",
+    analogy: "就像借盐——邻居先问你借一勺盐（你当然同意），第二天借一碗米（你也不好拒绝），一周后借500块钱（你已经习惯了说好）。每一步都看似合理，累积起来却远超你的底线。",
+    example: "工作中：同事请你帮我看一下这个文件→帮我把这个做完→以后这部分就归你负责了。商业中：客户要求账期延长一周→延长一个月→拖欠三个月。",
+    counter: "逆向登门术——先提极端无理要求再退而求其次：要么送我礼物，要么请我吃饭（创造假两难），利用对比效应让请吃饭看起来像是让步而非要求。" }
+];
+
+// MKS deep dive (5 star items)
+const mksDeep = [
+  { concept: concepts[0], why: "理解财富的本质（调动资源的能力而非拥有的金钱）是所有财富思维的坐标系原点。不懂这一点，就无法区分账面富翁和真富，也无法理解比特币为什么值钱。",
+    apply: "评估任何财富时，问它能调动什么资源而非它值多少钱。未上市期权调动不了任何资源=账面数字。" },
+  { concept: concepts[1], why: "自由现金流是穿透所有财务幻觉的X光机。市盈率可以包装、利润可以调节、资产可以高估，但自由现金流（扣除一切必要支出后真正可支配的现金）无法伪造。这是巴菲特整个投资体系的基石。",
+    apply: "看任何企业的财报时，第一眼看自由现金流而非净利润。净利润为正但自由现金流为负的企业，本质是在烧钱维持账面繁荣。" },
+  { concept: concepts[4], why: "财商是元能力——它决定了你如何配置智商和情商。高智商低财商的人（如LTCM的天才团队）可能输得比普通人更惨，因为他们能用复杂模型说服自己做蠢事。",
+    apply: "每做一个重大财务决策前，用财商的四把尺子量一遍：区分账面vs真实？考虑沉没成本？评估了负数可能？现金流是否为正？" },
+  { concept: concepts[5], why: "挣钱vs赚钱的区分是整个财富世界的分水岭。绝大多数人一辈子在挣钱（线性），少数人学会了赚钱（指数）。不是聪明与否的区别，而是认知框架的区别——你是否理解了资本的循环逻辑。",
+    apply: "审视自己的收入结构：工资占比多少？被动收入占比多少？如果工资是唯一来源，你就是在挣钱而非赚钱——需要开始构建资本循环。" }
+];
+
+const boundaryKnowledge = [
+  { name: "六大财富类型（现金→名气）", scene: "认知财富的全光谱，从实体资产到无形资产，用于个人资产配置规划" },
+  { name: "全球房地产300万亿美元分布", scene: "中美各占21-22%，了解全球财富地理结构" },
+  { name: "美国IRA/401K退休账户体系", scene: "理解美国个人投资型养老模式（共45万亿美元+）" },
+  { name: "Y=beta·X+alpha投资公式", scene: "评估任何投资策略的风险收益结构" },
+  { name: "LTCM崩溃始末（1998年）", scene: "理解高智商+复杂模型≠赚钱能力的经典反面案例" },
+  { name: "企业自由现金流三大障碍", scene: "应收账款坏账、追加投资需求、预收款的虚假现金流" },
+  { name: "投行商业模式（0.5%-2%管理费）", scene: "理解用别人的钱赚钱的合法路径" },
+  { name: "三大消费心理学定律", scene: "狄德罗效应、韦伯定律、登门术的商业与个人应用" },
+  { name: "对冲基金生存率（7-8年淘汰50%）", scene: "认知高风险金融职业的真实淘汰率" },
+  { name: "海恩法则（航空安全管理）", scene: "每起严重事故背后有29次轻微事故/300起未遂先兆/1000起隐患——用于评估企业质量问题的累积风险" },
+  { name: "马斯克X.com资金模式", scene: "学习如何利用用户预付款和平台资金池降低外部融资依赖" },
+  { name: "浙江家庭企业高ROE模式", scene: "理解短周期、快回款、专注一件事的赚钱逻辑" },
+  { name: "巴菲特100万弹膛风险比喻", scene: "即使概率极低，后果毁灭性的事永远不做" },
+  { name: "DEI政策与企业盈利能力矛盾", scene: "理解政治正确优先于专业能力可能导致企业衰败（波音案例）" }
+];
+
+const learningStages = [
+  { stage: "第一阶段：认清财富本质", content: "学习财富的本质和自由现金流。理解财富=调动资源的能力（非拥有的金钱），自由现金流=真正可支配的财富。这是整个认知体系的坐标系原点。" },
+  { stage: "第二阶段：掌握估值逻辑", content: "学习共识与信仰和新钱与老钱。理解资产价格的非理性驱动因素，以及账面富翁与真富的本质区别。这两个概念帮你穿透一切金融幻象。" },
+  { stage: "第三阶段：理解赚钱逻辑", content: "学习挣钱vs赚钱和资本回报率(ROE)。掌握资本循环的核心逻辑和资金周转效率的决定性作用。这两者是从劳动力到资本家的思维跃迁。" },
+  { stage: "第四阶段：警惕人性陷阱", content: "学习狄德罗效应韦伯定律登门术。理解消费心理学如何影响你的支出决策，以及商业中如何利用这些规律影响你。这层防御性知识保护你的财富不被蚕食。" },
+  { stage: "第五阶段：提升财商实战", content: "学习财商的四大路径，通过深度追问检验理解深度，用案例分析做MKS四维拆解，在实战决策中模拟真实场景——完成从知识到能力的转化。" }
+];
+
+// ======== MCQ (20 questions, answers: {0:5, 1:5, 2:5, 3:5}) ========
+const mcQuestions = [
+  { q: "吴军定义财富的本质是什么？", opts: ["每人所能调动全世界资源的数量", "拥有的现金和存款总和", "名下所有资产的市场价值", "劳动创造的价值总和"], answer: 0, concept: "财富的本质" },
+  { q: "自由现金流计算公式中，不包含以下哪项扣除？", opts: ["经营成本", "个人所得税", "资本支出", "必要开支"], answer: 1, concept: "自由现金流" },
+  { q: "巴菲特价值投资的核心标准是什么？", opts: ["低市盈率(PE)", "高股息率", "自由现金流最大化", "净资产收益率最高"], answer: 2, concept: "自由现金流" },
+  { q: "吴军认为新钱的核心特征是什么？", opts: ["代代传承的家族财富", "以贵金属为主要形式", "通过体力劳动积累的财富", "资产依赖共识与信仰，波动性大"], answer: 3, concept: "新钱与老钱" },
+  { q: "挣钱和赚钱的汉字解析分别强调什么？", opts: ["劳动争取 vs 资本兼并", "脑力劳动 vs 体力劳动", "短期收入 vs 长期收入", "主动收入 vs 被动收入"], answer: 0, concept: "挣钱 vs 赚钱" },
+  { q: "决定ROE（资本回报率）最核心的因素是什么？", opts: ["企业规模大小", "资金周转效率（一年转几圈）", "行业利润率高低", "企业成立年限"], answer: 1, concept: "资本回报率(ROE)" },
+  { q: "狄德罗效应的学名是什么？", opts: ["锚定效应", "从众效应", "配套效应（得寸进尺消费）", "幸存者偏差"], answer: 2, concept: "狄德罗效应" },
+  { q: "韦伯定律的核心公式中，K代表什么？", opts: ["资本系数", "绝对变化量", "感觉强度的绝对值", "韦伯常数（不同刺激类型不同）"], answer: 3, concept: "韦伯定律" },
+  { q: "1966年弗里德曼与弗莱泽的登门术实验中，实验组接受大招牌的比例是多少？", opts: ["55%", "76%", "17%", "90%"], answer: 0, concept: "登门术" },
+  { q: "以下哪项不是吴军提出的财商低的典型表现？", opts: ["混淆纸面资产与实际财富", "过度储蓄，从不进行任何投资", "高估未来挣钱能力，忽视技能贬值风险", "不懂沉没成本原理，执着于回本"], answer: 1, concept: "财商" },
+  { q: "全球房地产总市值约多少万亿美元？", opts: ["100万亿", "200万亿", "300万亿", "500万亿"], answer: 2, concept: "全球财富分布" },
+  { q: "长期资本管理公司(LTCM)的失败案例中，吴军指出其犯了几个常识性错误？", opts: ["一个：过度自信", "两个：模型错误+团队不合", "三个：选错市场+高杠杆+时间错配", "四个：忽视常识+与信誉差者交易+过度依赖模型+高杠杆"], answer: 3, concept: "实干与常识" },
+  { q: "吴军认为资产估值的两大核心非理性因素是什么？", opts: ["共识和信仰", "供需和成本", "利率和通胀", "政策和法规"], answer: 0, concept: "共识与信仰" },
+  { q: "关于个人自由现金流的常见误解中，以下哪项描述是正确的？", opts: ["高薪人群的自由现金流可能为负，因高端消费成为维持收入的必要投资", "年薪百万的人必定拥有大量自由现金流", "初创企业期权是优质的流动资产，可以等同于现金", "账面资产高的人财富自由程度一定高"], answer: 1, concept: "自由现金流" },
+  { q: "吴军认为专业服务的三个特征不包括哪项？", opts: ["预期可知", "稳定可靠", "价格最低", "意外应对机制"], answer: 2, concept: "专业服务" },
+  { q: "吴军将当代财富分为六大类型，从实到虚的排序中最后一项是什么？", opts: ["房地产", "股票和债券", "虚拟物品", "名气/名望"], answer: 3, concept: "财富的本质" },
+  { q: "企业从净利润到自由现金流，需要跨越的两大障碍是什么？", opts: ["应收账款的影响和追加投资的压力", "税收支出和人力成本", "市场竞争和监管合规", "汇率波动和原材料涨价"], answer: 0, concept: "自由现金流" },
+  { q: "吴军认为创业成功最重要的能力是？", opts: ["名校教育背景和行业经验", "实干和常识，比受教育程度更重要", "强大的融资能力和人脉资源", "先进的技术专利和知识产权"], answer: 1, concept: "实干与常识" },
+  { q: "投资回报公式 Y = beta·X + alpha 中，alpha代表什么？", opts: ["市场平均回报", "杠杆系数", "独立于市场的回报/损失", "无风险利率"], answer: 2, concept: "财商" },
+  { q: "吴军如何评价共享单车行业2015年大战中的现金流模式？", opts: ["是一种创新的共享经济模式", "是可持续的商业模式", "是高ROE的资本运作案例", "本质上是用用户押金维持的庞氏模式，不可持续"], answer: 3, concept: "自由现金流" }
+];
+
+// Short answer questions (10)
+const saQuestions = [
+  { q: "为什么吴军说自由现金流是通向财富自由的关键？从企业和个人两个角度说明。", ref: "企业视角：苹果每年自由现金流超1000亿美元，是现金奶牛，可以回购股票、分红、并购。个人视角：真正的财富自由不是账面资产高，而是拥有持续产生自由现金流的能力——即使不工作，仍有稳定现金流入覆盖花销。自由现金流=经营活动现金流-资本支出-必要开支，它穿透了所有财务包装。" },
+  { q: "简述共识与信仰如何驱动资产估值，各举一个案例。", ref: "共识：英伟达市值远超英特尔+高通+AMD总和——市场对AI增长潜力形成共同认知。信仰：东亚房地产信仰——源于农耕传统中的土地崇拜，超越理性判断；比特币信仰——被视为数字黄金，总市值即将超过白银。" },
+  { q: "挣钱和赚钱的本质区别是什么？为什么全球顶尖名校都不教赚钱？", ref: "挣钱=劳动换取报酬，线性增长，与时间成正比。赚钱=资本循环创造财富，指数增长，借助复利效应。名校三类课程（通识/专业基础/学位专业课）本质上都是打工技能培训，目标是成为他人赚钱的工具而非教会你如何让资本为你工作。哈佛商学院的独特价值在于教会你用别人的钱赚钱。" },
+  { q: "用ROE的框架分析：为什么淘宝店10万投资能年赚7万(ROE=70%)，而品牌专卖店100万投资只赚10万(ROE=10%)？", ref: "核心差异在资金周转效率。淘宝店毛利率仅10%但每月周转一次，一年周转12次。品牌店毛利率40%但一年只周转一次。不是利润率决定了赚钱能力，是资金周转速度。" },
+  { q: "狄德罗效应在当代消费中的主要助推因素有哪些？如何防范？", ref: "助推因素：商家打折促销（满200减30）、移动支付降低消费痛感、社交媒体展示压力。防范方法：遵循狄德罗自己的解决方案——平衡入戏与出戏。入戏：合理享受物质进步，不拒绝好东西。出戏：不沉溺于物质，保持本性，意识到我是旧睡袍的绝对主人，而在新睡袍面前我成了奴隶。" },
+  { q: "用韦伯定律解释：为什么消费者对30万汽车的5000元差价不敏感，却愿意为省钱20元的微波炉多跑两家店？", ref: "韦伯定律ΔI/I=K。微波炉场景：I=200元，ΔI=20元，ΔI/I=10%，远大于K值，消费者能清晰感知差异。汽车场景：I=30万，ΔI=5000元，ΔI/I=1.67%，远小于K值，消费者几乎感知不到差异。这就是韦伯-费希纳定律的商业应用：同样的绝对价差，在低价商品上比在高价商品上感觉大得多。" },
+  { q: "如何防范登门术（得寸进尺效应）在职场中的运用？", ref: "核心原则：将自己视为机器，建立客观判断标准，设置明确红线。(1)明确不可让步的底线，并在第一次小请求时就预判可能的升级路径；(2)管理他人预期——第一次就拒绝不合理的小事，避免形成好说话的形象；(3)如90后/00后员工一样，通过拒绝无意义加班打破预期，反而获得尊重。" },
+  { q: "吴军提出财商提升的四大核心路径是什么？分别简述。", ref: "(1)财务知识积累：深入学习金融知识，理解投资工具和市场运作机制；(2)风险意识培养：正确评估投资风险，避免盲目跟风；(3)长期规划制定：树立延迟满足观念，制定合理财务目标和投资计划；(4)实践经验积累：通过小额投资实践，逐步提升理财能力。此外还需打破文化和习惯的桎梏（如小赌怡情）、构建高财商社交圈。" },
+  { q: "吴军线下问答中提到的三大减法原则是什么？用于什么场景？", ref: "用于树立优化意识：(1)目标一致性筛选：与目标或路径不一致的事不做，无关事的大小；(2)收益可叠加性判断：优先做可叠加收益的事（如资本利滚利、技术积累），少做不可叠加的事（如单纯体力劳动）；(3)数量级聚焦：优先处理更大数量级的事（如1万>1），避免为小收益耗费过多时间。核心是做减法，承认个人能力有限。" },
+  { q: "为什么吴军说人生最大的alpha是投资自己？从投资公式Y=beta·X+alpha的角度说明。", ref: "在投资公式Y=beta·X+alpha中，X（投资对象基础回报）随市场波动，beta（杠杆系数）放大收益也放大损失，个人获取正alpha（独立于市场的超额收益）极其困难。但投资自己（提升专业能力）是唯一在任何经济周期都能提供正回报的策略：不管市场涨跌，一个更专业的人总能获得更高的收入。这是巴菲特（世界顶级的正alpha获得者）都承认最难被剥夺的优势。" }
+];
+
+
+// ======== SVG CONCEPT MAP ========
+function renderSVG() {
+  const svg = `<svg viewBox="0 0 1000 750" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker>
+    <marker id="arrGold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#d4a574"/></marker>
+    <marker id="arrBrown" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#5a3e3e"/></marker>
+    <marker id="arrTaupe" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b7355"/></marker>
+    <marker id="arrDark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2c3e50"/></marker>
+    <filter id="shadow"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+  </defs>
+  <!-- Root -->
+  <ellipse cx="500" cy="42" rx="170" ry="30" fill="#c0392b" filter="url(#shadow)"/>
+  <text x="500" y="38" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">财富与经济的底层逻辑</text>
+  <text x="500" y="54" text-anchor="middle" fill="#fdd" font-size="10">认知操作系统：不讲做什么，讲怎么想</text>
+  <!-- Tier 1: 三大认知层 -->
+  <line x1="380" y1="72" x2="200" y2="130" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <text x="275" y="92" text-anchor="middle" fill="#c0392b" font-size="10">认知框架</text>
+  <line x1="500" y1="72" x2="500" y2="130" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <text x="510" y="92" text-anchor="middle" fill="#c0392b" font-size="10">经济规律</text>
+  <line x1="620" y1="72" x2="800" y2="130" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <text x="725" y="92" text-anchor="middle" fill="#c0392b" font-size="10">人性心理</text>
+  <!-- 财富认知层 -->
+  <rect x="60" y="130" width="260" height="48" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="190" y="151" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">财富认知层（什么是财富）</text>
+  <text x="190" y="168" text-anchor="middle" fill="#fef9f4" font-size="10">定义·估值·分类·转化</text>
+  <!-- 经济规律层 -->
+  <rect x="365" y="130" width="270" height="48" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="500" y="151" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">经济规律层（钱怎么流动）</text>
+  <text x="500" y="168" text-anchor="middle" fill="#fef9f4" font-size="10">挣钱vs赚钱·ROE·实干与常识</text>
+  <!-- 人性心理层 -->
+  <rect x="680" y="130" width="260" height="48" rx="10" fill="#d4a574" filter="url(#shadow)"/>
+  <text x="810" y="151" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">人性心理层（钱怎么影响我们）</text>
+  <text x="810" y="168" text-anchor="middle" fill="#fef9f4" font-size="10">消费心理·决策偏差·行为陷阱</text>
+  <!-- Tier 2 sub-nodes: 财富 -->
+  <line x1="130" y1="178" x2="80" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <line x1="190" y1="178" x2="190" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <line x1="250" y1="178" x2="300" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <rect x="15" y="250" width="125" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="77" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">财富的本质</text>
+  <text x="77" y="283" text-anchor="middle" fill="#d4a574" font-size="9">★ 调动资源数量</text>
+  <rect x="135" y="250" width="120" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="195" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">共识与信仰</text>
+  <text x="195" y="283" text-anchor="middle" fill="#d4a574" font-size="9">资产估值引擎</text>
+  <rect x="250" y="250" width="120" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="310" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">新钱与老钱</text>
+  <text x="310" y="283" text-anchor="middle" fill="#d4a574" font-size="9">资产→现金转化</text>
+  <!-- Tier 2 sub-nodes: 经济 -->
+  <line x1="435" y1="178" x2="400" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <line x1="500" y1="178" x2="500" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <line x1="565" y1="178" x2="600" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <rect x="345" y="250" width="115" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="402" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">挣钱vs赚钱</text>
+  <text x="402" y="283" text-anchor="middle" fill="#d4a574" font-size="9">★ 劳动vs资本</text>
+  <rect x="455" y="250" width="115" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="512" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">ROE</text>
+  <text x="512" y="283" text-anchor="middle" fill="#d4a574" font-size="9">资本回报率</text>
+  <rect x="565" y="250" width="120" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="625" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">实干与常识</text>
+  <text x="625" y="283" text-anchor="middle" fill="#d4a574" font-size="9">LTCM教训</text>
+  <!-- Tier 2 sub-nodes: 心理 -->
+  <line x1="745" y1="178" x2="710" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <line x1="810" y1="178" x2="810" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <line x1="875" y1="178" x2="910" y2="250" stroke="#5a3e3e" stroke-width="1.8" marker-end="url(#arrBrown)"/>
+  <rect x="655" y="250" width="110" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="710" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">狄德罗效应</text>
+  <text x="710" y="283" text-anchor="middle" fill="#d4a574" font-size="9">配套消费陷阱</text>
+  <rect x="760" y="250" width="105" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="812" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">韦伯定律</text>
+  <text x="812" y="283" text-anchor="middle" fill="#d4a574" font-size="9">ΔI/I=K</text>
+  <rect x="862" y="250" width="115" height="42" rx="8" fill="#5a3e3e" filter="url(#shadow)"/>
+  <text x="920" y="268" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">登门术</text>
+  <text x="920" y="283" text-anchor="middle" fill="#d4a574" font-size="9">得寸进尺效应</text>
+  <!-- Tier 3 → Tier 4 connections -->
+  <line x1="77" y1="292" x2="50" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="195" y1="292" x2="170" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="310" y1="292" x2="300" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="402" y1="292" x2="390" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="512" y1="292" x2="510" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="625" y1="292" x2="630" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="710" y1="292" x2="720" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="812" y1="292" x2="830" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <line x1="920" y1="292" x2="940" y2="390" stroke="#8b7355" stroke-width="1.5" marker-end="url(#arrTaupe)"/>
+  <!-- Tier 4: 行为策略层 -->
+  <rect x="10" y="390" width="170" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="95" y="408" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">资产配置策略</text>
+  <text x="95" y="424" text-anchor="middle" fill="#f0dcc8" font-size="9">六类资产·新钱转老钱</text>
+  <rect x="190" y="390" width="170" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="275" y="408" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">估值判断框架</text>
+  <text x="275" y="424" text-anchor="middle" fill="#f0dcc8" font-size="9">共识+信仰分析</text>
+  <rect x="370" y="390" width="170" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="455" y="408" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">赚钱路径选择</text>
+  <text x="455" y="424" text-anchor="middle" fill="#f0dcc8" font-size="9">资本循环·ROE优化</text>
+  <rect x="550" y="390" width="170" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="635" y="408" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">风险控制底线</text>
+  <text x="635" y="424" text-anchor="middle" fill="#f0dcc8" font-size="9">不扣扳机·常识为王</text>
+  <rect x="730" y="390" width="170" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="815" y="408" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">消费决策优化</text>
+  <text x="815" y="424" text-anchor="middle" fill="#f0dcc8" font-size="9">反狄德罗·抗韦伯</text>
+  <rect x="880" y="390" width="105" height="44" rx="8" fill="#8b7355" filter="url(#shadow)"/>
+  <text x="932" y="408" text-anchor="middle" fill="#fdf6ec" font-size="11" font-weight="600">边界防御</text>
+  <text x="932" y="424" text-anchor="middle" fill="#f0dcc8" font-size="9">红线原则</text>
+  <!-- Tier 4 → Tier 5 -->
+  <line x1="95" y1="434" x2="70" y2="520" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
+  <line x1="275" y1="434" x2="250" y2="520" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
+  <line x1="455" y1="434" x2="450" y2="520" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
+  <line x1="635" y1="434" x2="640" y2="520" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
+  <line x1="815" y1="434" x2="830" y2="520" stroke="#2c3e50" stroke-width="1.5" marker-end="url(#arrDark)"/>
+  <!-- Tier 5: 结果层 -->
+  <rect x="10" y="520" width="155" height="42" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
+  <text x="87" y="538" text-anchor="middle" fill="#fdf6ec" font-size="11">资产保值增值</text>
+  <text x="87" y="553" text-anchor="middle" fill="#aab7c4" font-size="9">跨代财富传承</text>
+  <rect x="180" y="520" width="155" height="42" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
+  <text x="257" y="538" text-anchor="middle" fill="#fdf6ec" font-size="11">精准估值能力</text>
+  <text x="257" y="553" text-anchor="middle" fill="#aab7c4" font-size="9">穿透财务幻象</text>
+  <rect x="350" y="520" width="155" height="42" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
+  <text x="427" y="538" text-anchor="middle" fill="#fdf6ec" font-size="11">财富自由</text>
+  <text x="427" y="553" text-anchor="middle" fill="#aab7c4" font-size="9">★ 现金流>花销</text>
+  <rect x="520" y="520" width="155" height="42" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
+  <text x="597" y="538" text-anchor="middle" fill="#fdf6ec" font-size="11">抗周期生存</text>
+  <text x="597" y="553" text-anchor="middle" fill="#aab7c4" font-size="9">活过每次危机</text>
+  <rect x="690" y="520" width="155" height="42" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
+  <text x="767" y="538" text-anchor="middle" fill="#fdf6ec" font-size="11">理性消费</text>
+  <text x="767" y="553" text-anchor="middle" fill="#aab7c4" font-size="9">不被物质奴役</text>
+  <rect x="845" y="520" width="140" height="42" rx="8" fill="#2c3e50" filter="url(#shadow)"/>
+  <text x="915" y="538" text-anchor="middle" fill="#fdf6ec" font-size="11">高财商决策体系</text>
+  <text x="915" y="553" text-anchor="middle" fill="#aab7c4" font-size="9">系统性财富管理</text>
+  <!-- Feedback loop -->
+  <path d="M915,562 Q915,630 500,640 Q85,630 85,562" fill="none" stroke="#c0392b" stroke-width="1.3" stroke-dasharray="6,3" marker-end="url(#arrRed)"/>
+  <text x="500" y="635" text-anchor="middle" fill="#c0392b" font-size="10" font-style="italic">⟳ 反馈循环：财富结果反哺认知框架，持续迭代认知操作系统</text>
+  <!-- Cross connections -->
+  <path d="M77,292 Q200,340 310,250" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="190" y="330" text-anchor="middle" fill="#d4a574" font-size="8">财富本质→估值需要共识</text>
+  <path d="M402,250 Q320,310 310,250" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="340" y="300" text-anchor="middle" fill="#d4a574" font-size="8">赚钱→新钱转化</text>
+  <path d="M710,250 Q600,300 512,250" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="600" y="295" text-anchor="middle" fill="#d4a574" font-size="8">狄德罗效应→侵蚀现金流</text>
+  <path d="M812,250 Q900,340 920,250" fill="none" stroke="#d4a574" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="880" y="310" text-anchor="middle" fill="#d4a574" font-size="8">韦伯→登门术→</text>
+  <!-- Legend -->
+  <rect x="750" y="10" width="235" height="115" rx="8" fill="#fffaf2" stroke="#e8d5c4" stroke-width="1" filter="url(#shadow)"/>
+  <text x="867" y="28" text-anchor="middle" fill="#3d2f2f" font-size="11" font-weight="700">图例</text>
+  <rect x="760" y="36" width="18" height="10" rx="2" fill="#c0392b"/>
+  <text x="785" y="45" fill="#3d2f2f" font-size="9">认知操作系统（根节点）</text>
+  <rect x="760" y="52" width="18" height="10" rx="2" fill="#d4a574"/>
+  <text x="785" y="61" fill="#3d2f2f" font-size="9">三大认知层（一级分类）</text>
+  <rect x="760" y="68" width="18" height="10" rx="2" fill="#5a3e3e"/>
+  <text x="785" y="77" fill="#3d2f2f" font-size="9">核心概念（二级节点）</text>
+  <rect x="760" y="84" width="18" height="10" rx="2" fill="#8b7355"/>
+  <text x="785" y="93" fill="#3d2f2f" font-size="9">行为策略层</text>
+  <rect x="760" y="100" width="18" height="10" rx="2" fill="#2c3e50"/>
+  <text x="785" y="109" fill="#3d2f2f" font-size="9">结果/产物</text>
+  <line x1="760" y1="118" x2="778" y2="118" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="785" y="122" fill="#3d2f2f" font-size="9">回环反馈</text>
+  </svg>`;
+  document.getElementById('svgContainer').innerHTML = svg;
+}
+
+// ======== INIT TABS ========
+let currentTab = 0;
+document.querySelectorAll('#tabBar button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const tabIdx = parseInt(this.dataset.tab);
+    switchTab(tabIdx);
+  });
+});
+
+function switchTab(idx) {
+  currentTab = idx;
+  document.querySelectorAll('#tabBar button').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('#tabContents .tab-content').forEach((tc, i) => tc.classList.toggle('active', i === idx));
+  if (idx === 4) refreshReview();
+  if (idx === 3) resetExam();
+}
+
+// ======== TAB 0: DASHBOARD ========
+function renderDashboard() {
+  let html = '';
+  concepts.forEach((c, i) => {
+    const starClass = c.star ? ' star' : '';
+    const starBadge = c.star ? ' <span class="star-badge">★ MKS</span>' : '';
+    html += `<div class="concept-card${starClass}" onclick="switchTab(1);setCard(${i})">
+      <span class="num">${i+1}</span><strong>${c.name}</strong>${starBadge}
+      <p style="font-size:12px;color:var(--text-light);margin-top:6px;">${c.short}</p>
+    </div>`;
+  });
+  document.getElementById('conceptGrid').innerHTML = html;
+  document.getElementById('mksGrid').innerHTML = '';
+  mksDeep.forEach((m) => {
+    document.getElementById('mksGrid').innerHTML += `<div class="card" style="border-left:4px solid var(--accent);">
+      <h3>★ ${m.concept.name}</h3>
+      <p style="font-size:13px;color:var(--text-light);">${m.why}</p>
+      <p style="font-size:13px;"><strong>如何应用：</strong>${m.apply}</p>
+    </div>`;
+  });
+  let bhtml = '<tr><th>知识点</th><th>使用场景</th></tr>';
+  boundaryKnowledge.forEach(b => { bhtml += `<tr><td><strong>${b.name}</strong></td><td>${b.scene}</td></tr>`; });
+  document.getElementById('boundaryTable').innerHTML = bhtml;
+  let lhtml = '';
+  learningStages.forEach((s) => {
+    lhtml += `<div style="margin-bottom:14px;padding:12px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);">
+      <strong style="color:var(--accent);font-size:15px;">${s.stage}</strong>
+      <p style="font-size:13px;color:var(--text-light);margin-top:4px;">${s.content}</p>
+    </div>`;
+  });
+  document.getElementById('learningPath').innerHTML = lhtml;
+  renderSVG();
+  updateProgress();
+}
+
+// ======== PROGRESS ========
+let learnedCards = JSON.parse(localStorage.getItem('mks_wealth_econ_learned')||'[]');
+let answeredMCQ = JSON.parse(localStorage.getItem('mks_wealth_econ_answeredMCQ')||'{}');
+let answeredSAQ = JSON.parse(localStorage.getItem('mks_wealth_econ_answeredSAQ')||'{}');
+let errorMCQ = JSON.parse(localStorage.getItem('mks_wealth_econ_errorMCQ')||'[]');
+
+function save(){
+  localStorage.setItem('mks_wealth_econ_learned',JSON.stringify(learnedCards));
+  localStorage.setItem('mks_wealth_econ_answeredMCQ',JSON.stringify(answeredMCQ));
+  localStorage.setItem('mks_wealth_econ_answeredSAQ',JSON.stringify(answeredSAQ));
+  localStorage.setItem('mks_wealth_econ_errorMCQ',JSON.stringify(errorMCQ));
+}
+
+function getProgress() { return { learnedCards: learnedCards, answeredMCQ: answeredMCQ, answeredSAQ: answeredSAQ, errorMCQ: errorMCQ }; }
+function saveProgress(p) {
+  learnedCards = p.learnedCards || [];
+  answeredMCQ = p.answeredMCQ || {};
+  answeredSAQ = p.answeredSAQ || {};
+  errorMCQ = p.errorMCQ || [];
+  save();
+}
+
+function updateProgress() {
+  const mcDone = Object.keys(answeredMCQ).length;
+  const saDone = Object.keys(answeredSAQ).length;
+  const totalDone = mcDone + saDone;
+  document.getElementById('cardProgress').textContent = `${learnedCards.length}/10`;
+  document.getElementById('cardBar').style.width = `${learnedCards.length * 10}%`;
+  document.getElementById('quizProgress').textContent = `${totalDone}/30`;
+  document.getElementById('quizBar').style.width = `${(totalDone / 30) * 100}%`;
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+  var cpb = document.getElementById('cardProgressBar');
+  if(cpb) cpb.style.width = `${learnedCards.length * 10}%`;
+}
+
+// ======== TAB 1: FLIP CARDS ========
+let currentCardIdx = 0;
+let cardFlipped = false;
+
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML=`<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML=`<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=`${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  const id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(x=>x!==id)}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ======== TAB 5: MIND MAP TOGGLE ========
+function toggleMindmap(el){
+  if(typeof el==='string') el=document.getElementById(el);
+  if(!el) return;
+  el.classList.toggle('open');
+  var children=el.nextElementSibling;
+  if(children&&children.classList.contains('children')) children.classList.toggle('open');
+}
+
+// ======== TAB 2: RANDOM QUIZ PRACTICE ========
+let currentQuestions = [];
+let userAnswers = {};
+let quizTimeLeft = 900;
+let quizTimerInterval = null;
+
+function startQuiz(){
+  const shuffled = [...mcQuestions].sort(()=>Math.random()-0.5);
+  const essayShuffled = [...saQuestions].sort(()=>Math.random()-0.5);
+  currentQuestions = [...shuffled.slice(0,10), ...essayShuffled.slice(0,3)];
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('staticQuiz').style.display = 'none';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){ clearInterval(quizTimerInterval); submitQuizPractice(); }
+  },1000);
+}
+
+function updateQuizTimerDisplay(elemId){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuizPractice(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  currentQuestions.forEach((q,i)=>{
+    if(q.opts){
+      html += `<div class="quiz-card" id="qcard${i}">
+        <div class="q-num">选择题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>`;
+      q.opts.forEach((o,j)=>{
+        const sel = userAnswers[i]===j ? ' selected' : '';
+        html += `<div class="option${sel}" onclick="selectQuizChoice(${i},${j})" id="opt${i}_${j}">${'ABCD'[j]}. ${o}</div>`;
+      });
+      html += `<div id="fb${i}"></div></div>`;
+    }else{
+      html += `<div class="quiz-card">
+        <div class="q-num">简答题 ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="essay-area" id="essay${i}" placeholder="输入你的回答...">${userAnswers[i]||''}</textarea>
+      </div>`;
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  const q = currentQuestions[qIdx];
+  const isCorrect = optIdx === q.answer;
+  const allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach((el,j)=>{
+    el.classList.add(j===q.answer?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' 正确答案：'+'ABCD'[q.answer];
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].answer).length;
+  const totalChoice = currentQuestions.filter(q=>q.opts).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuizPractice(){
+  const correctCount = Object.values(userAnswers).filter((v,i)=>currentQuestions[i]&&currentQuestions[i].opts&&v===currentQuestions[i].answer).length;
+  const totalChoice = currentQuestions.filter(q=>q.opts).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'none';
+}
+
+// ======== TAB 2: MCQ + SAQ (static) ========
+function renderMCQ() {
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredMCQ || {};
+  mcQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question" id="mcq${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt, j) => {
+      const isAnswered = answered[i] !== undefined;
+      let cls = 'option';
+      if (isAnswered) {
+        if (j === q.answer) cls += ' correct';
+        else if (j === answered[i]) cls += ' wrong';
+      }
+      html += `<div class="${cls}" onclick="answerMCQ(${i}, ${j})" id="mcq${i}o${j}">
+        ${'ABCD'[j]}. ${opt}
+        ${isAnswered && j === q.answer ? ' ✓' : ''}
+        ${isAnswered && j === answered[i] && j !== q.answer ? ' ✗' : ''}
+      </div>`;
+    });
+    html += `<p style="font-size:11px;color:var(--text-light);margin-top:2px;">关联概念：${q.concept}</p></div>`;
+  });
+  document.getElementById('mcqContainer').innerHTML = html;
+}
+
+function answerMCQ(qIdx, optIdx) {
+  const p = getProgress();
+  if (!p.answeredMCQ) p.answeredMCQ = {};
+  if (p.answeredMCQ[qIdx] !== undefined) return;
+  p.answeredMCQ[qIdx] = optIdx;
+  if (optIdx !== mcQuestions[qIdx].answer) {
+    if (!p.errorMCQ) p.errorMCQ = [];
+    if (!p.errorMCQ.includes(qIdx)) p.errorMCQ.push(qIdx);
+  }
+  saveProgress(p);
+  renderMCQ();
+  updateProgress();
+}
+
+function resetMCQ() {
+  const p = getProgress();
+  p.answeredMCQ = {};
+  p.errorMCQ = [];
+  saveProgress(p);
+  renderMCQ();
+  updateProgress();
+}
+
+function renderSAQ() {
+  let html = '';
+  const p = getProgress();
+  const answered = p.answeredSAQ || {};
+  saQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question" id="saq${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>`;
+    if (!answered[i]) {
+      html += `<textarea id="saqInput${i}" style="width:100%;min-height:60px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>
+      <button class="btn btn-outline" style="margin-top:6px;" onclick="checkSAQ(${i})">查看参考答案</button>`;
+    } else {
+      html += `<p style="font-size:12px;color:var(--text-light);margin:6px 0;"><strong>你的回答：</strong>${answered[i]}</p>
+      <p style="font-size:12px;color:#27ae60;"><strong>参考答案：</strong>${q.ref}</p>`;
+    }
+    html += `</div>`;
+  });
+  document.getElementById('saqContainer').innerHTML = html;
+}
+
+function checkSAQ(i) {
+  const input = document.getElementById('saqInput' + i);
+  if (!input || !input.value.trim()) return;
+  const p = getProgress();
+  if (!p.answeredSAQ) p.answeredSAQ = {};
+  p.answeredSAQ[i] = input.value.trim();
+  saveProgress(p);
+  renderSAQ();
+  updateProgress();
+}
+
+function resetSAQ() {
+  const p = getProgress();
+  p.answeredSAQ = {};
+  saveProgress(p);
+  renderSAQ();
+  updateProgress();
+}
+
+// ======== TAB 3: EXAM MODE ========
+let examTimerId = null;
+let examSeconds = 900;
+let examQuestions = [];
+
+function resetExam() {
+  document.getElementById('examSetup').style.display = 'block';
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('examResult').style.display = 'none';
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  examSeconds = 900;
+}
+
+function startExam() {
+  document.getElementById('examSetup').style.display = 'none';
+  document.getElementById('examArea').style.display = 'block';
+  document.getElementById('examResult').style.display = 'none';
+  document.getElementById('examResult').innerHTML = '';
+  const mcIndices = shuffleArray([...Array(20).keys()]).slice(0, 7);
+  const saIndices = shuffleArray([...Array(10).keys()]).slice(0, 3);
+  examQuestions = { mc: mcIndices, sa: saIndices };
+  let html = '<h3>选择题（7道）</h3>';
+  mcIndices.forEach((idx, i) => {
+    const q = mcQuestions[idx];
+    html += `<div class="quiz-question"><div class="q-text">${i+1}. ${q.q}</div>`;
+    q.opts.forEach((opt, j) => {
+      html += `<div class="option" onclick="selectExamMC(${i}, ${j})" id="examMc${i}o${j}">${'ABCD'[j]}. ${opt}</div>`;
+    });
+    html += `</div>`;
+  });
+  html += '<h3>简答题（3道）</h3>';
+  saIndices.forEach((idx, i) => {
+    html += `<div class="quiz-question">
+      <div class="q-text">${i+1}. ${saQuestions[idx].q}</div>
+      <textarea id="examSaInput${i}" style="width:100%;min-height:50px;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:inherit;font-size:13px;" placeholder="输入你的回答..."></textarea>
+    </div>`;
+  });
+  document.getElementById('examContent').innerHTML = html;
+  examSeconds = 900;
+  updateExamTimer();
+  examTimerId = setInterval(() => { examSeconds--; updateExamTimer(); if (examSeconds <= 0) { submitExam(); } }, 1000);
+}
+
+function updateExamTimer() {
+  const m = Math.floor(examSeconds / 60);
+  const s = examSeconds % 60;
+  const el = document.getElementById('examTimer');
+  el.textContent = `${m}:${String(s).padStart(2, '0')}`;
+  el.classList.toggle('warning', examSeconds < 60);
+}
+
+let examMCAnswers = {};
+function selectExamMC(qIdx, optIdx) {
+  examMCAnswers[qIdx] = optIdx;
+  for (let j = 0; j < 4; j++) {
+    var el2 = document.getElementById('examMc'+qIdx+'o'+j);
+    if(el2) el2.classList.toggle('selected', j === optIdx);
+  }
+}
+
+function submitExam() {
+  if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('examResult').style.display = 'block';
+  let score = 0;
+  let mcResult = '';
+  examQuestions.mc.forEach((qIdx, i) => {
+    const q = mcQuestions[qIdx];
+    const userAns = examMCAnswers[i];
+    const correct = userAns === q.answer;
+    if (correct) score++;
+    mcResult += `<div style="margin-bottom:8px;">
+      <strong>${i+1}. ${q.q}</strong><br>
+      <span style="color:${correct ? '#27ae60' : '#e74c3c'}">你的答案：${userAns !== undefined ? 'ABCD'[userAns] : '未作答'} | 正确答案：${'ABCD'[q.answer]}</span><br>
+      ${!correct ? `<span style="font-size:12px;color:var(--text-light);">解析：${q.opts[q.answer]}</span>` : ''}
+    </div>`;
+  });
+  let saResult = '';
+  examQuestions.sa.forEach((idx, i) => {
+    const q = saQuestions[idx];
+    const userAns = document.getElementById('examSaInput'+i)?.value || '未作答';
+    saResult += `<div style="margin-bottom:8px;">
+      <strong>${i+1}. ${q.q}</strong><br>
+      <span style="font-size:12px;color:var(--text-light);">你的回答：${userAns.substring(0, 100)}...</span><br>
+      <span style="font-size:12px;color:#27ae60;">参考答案：${q.ref.substring(0, 150)}...</span>
+    </div>`;
+  });
+  const totalMC = examQuestions.mc.length;
+  const elapsed = 900 - examSeconds;
+  const elapsedM = Math.floor(elapsed / 60);
+  const elapsedS = elapsed % 60;
+  const conceptErrors = {};
+  examQuestions.mc.forEach((qIdx, i) => {
+    if (examMCAnswers[i] !== mcQuestions[qIdx].answer) {
+      const cName = mcQuestions[qIdx].concept;
+      conceptErrors[cName] = (conceptErrors[cName] || 0) + 1;
+    }
+  });
+  let weakHtml = '';
+  for (const [cname, cnt] of Object.entries(conceptErrors)) {
+    weakHtml += `<span style="display:inline-block;margin:4px;padding:4px 10px;background:#fdedec;border-radius:12px;font-size:12px;">${cname} (错${cnt}次)</span>`;
+  }
+  document.getElementById('examResult').innerHTML = `
+    <h2>考试成绩</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;">
+      <div class="stat-box"><div class="num">${score}/${totalMC}</div><div class="lbl">选择题得分</div></div>
+      <div class="stat-box"><div class="num">${Math.round(score/totalMC*100)}%</div><div class="lbl">正确率</div></div>
+      <div class="stat-box"><div class="num">${elapsedM}分${elapsedS}秒</div><div class="lbl">用时</div></div>
+    </div>
+    <h3>选择题解析</h3>${mcResult}
+    <h3>简答题参考</h3>${saResult}
+    <h3>薄弱概念</h3>${weakHtml || '<p>全部答对，暂无薄弱概念</p>'}
+    <button class="btn btn-primary" onclick="resetExam();switchTab(3);" style="margin-top:14px;">重新考试</button>
+  `;
+}
+
+// ======== TAB 4: REVIEW MODE ========
+function refreshReview() {
+  const p = getProgress();
+  const amcq = p.answeredMCQ || {};
+  const asaq = p.answeredSAQ || {};
+  const err = p.errorMCQ || [];
+  const lc = p.learnedCards || [];
+  const totalAnswered = Object.keys(amcq).length + Object.keys(asaq).length;
+  const mcCorrect = Object.keys(amcq).length - err.length;
+  const mcRate = Object.keys(amcq).length > 0 ? Math.round(mcCorrect / Object.keys(amcq).length * 100) : 0;
+  document.getElementById('statsArea').innerHTML = `
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <div class="stat-box"><div class="num">${totalAnswered}</div><div class="lbl">总答题数</div></div>
+      <div class="stat-box"><div class="num">${mcRate}%</div><div class="lbl">选择正确率</div></div>
+      <div class="stat-box"><div class="num">${lc.length}</div><div class="lbl">已学概念</div></div>
+      <div class="stat-box"><div class="num">${err.length}</div><div class="lbl">错题数</div></div>
+    </div>`;
+  if (err.length === 0) {
+    document.getElementById('errorBook').innerHTML = '<p style="color:#27ae60;">暂无错题，继续保持！</p>';
+  } else {
+    let ehtml = '<p style="margin-bottom:8px;font-size:13px;color:var(--text-light);">点击错题可重新作答（清除该题记录）</p>';
+    err.forEach(qIdx => {
+      const q = mcQuestions[qIdx];
+      const userAns = amcq[qIdx];
+      ehtml += `<div style="padding:8px;margin:6px 0;background:#fef9f4;border-radius:6px;border-left:3px solid #e74c3c;cursor:pointer;" onclick="retryMCQ(${qIdx})">
+        <strong>${qIdx+1}. ${q.q}</strong><br>
+        <span style="color:#e74c3c;">你的答案：${'ABCD'[userAns]}</span> |
+        <span style="color:#27ae60;">正确：${'ABCD'[q.answer]}</span> — ${q.opts[q.answer]}
+        <br><span style="font-size:11px;color:var(--text-light);">概念：${q.concept}</span>
+      </div>`;
+    });
+    document.getElementById('errorBook').innerHTML = ehtml;
+  }
+  const conceptErrors = {};
+  err.forEach(qIdx => {
+    const cn = mcQuestions[qIdx].concept;
+    conceptErrors[cn] = (conceptErrors[cn] || 0) + 1;
+  });
+  const sorted = Object.entries(conceptErrors).sort((a, b) => b[1] - a[1]);
+  if (sorted.length === 0) {
+    document.getElementById('weakPoints').innerHTML = '<p>暂无薄弱概念数据。</p>';
+  } else {
+    let whtml = '';
+    sorted.forEach(([cn, cnt]) => {
+      whtml += `<div style="margin-bottom:10px;">
+        <strong>${cn}</strong> — 错误${cnt}次
+        <div class="progress-bar"><div class="fill" style="width:${Math.max(10, 100-cnt*20)}%;background:#e74c3c;"></div></div>
+      </div>`;
+    });
+    document.getElementById('weakPoints').innerHTML = whtml;
+  }
+}
+
+function retryMCQ(qIdx) {
+  const p = getProgress();
+  delete p.answeredMCQ[qIdx];
+  p.errorMCQ = (p.errorMCQ || []).filter(e => e !== qIdx);
+  saveProgress(p);
+  refreshReview();
+  updateProgress();
+}
+
+// ======== TAB 8: DECISION GAME ========
+function selectDecision(si, oi, prefix) {
+  const feedbackDiv = document.getElementById('decFeedback'+si);
+  const messages = [
+    [
+      '❌ MKS分析：这是狄德罗效应的典型案例。宝马本身不是问题，问题在于买车后会触发配套消费（保养升级、更好车位、更高档的社交消费）。且45万占年终奖90%，大幅减少了你未来的资本循环本金。虚荣驱动的消费是财富积累的头号杀手。',
+      '⚠️ MKS分析：提前还贷有合理性，但不是最优。4.5%的房贷利率在通胀环境下实际成本更低。如果把40万投入年化8%的指数基金，每年净赚3.5%的利差。无债一身轻是心理安全需求，但不是资本效率最优。',
+      '✅ MKS分析：这是财商最高的选择——(1)保留应急资金（防御黑天鹅）；(2)让钱进入资本循环（指数基金年化8-10%长期复利）；(3)不提前还低息贷款（利用别人的钱）。体现了自由现金流优先、资本循环、风险防控三个核心原则。'
+    ],
+    [
+      '⚠️ MKS分析：落袋为安是安全策略，但需要补充MKS判断：(1)公司自由现金流为正吗？ROE是多少？如果年赚80万且稳定增长，800万的收购价只相当于10倍PE，偏低；(2)拿到800万后你的资本循环计划是什么？如果没有更好的替代项目，卖掉反而不如继续经营。',
+      '❌ MKS分析：这是典型的高beta行为。新增贷款200万=每年多付约15万利息。问题是3家新店的增量利润是否确定能覆盖利息？如果新店ROE不如老店，贷款扩张就是给自己加杠杆——赚的时候放大收益，亏的时候加速死亡。',
+      '✅ MKS分析：这就是实干与常识的体现。先算账再决策：新店ROE预计多少？自由现金流是否为正？扩张后管理能力跟得上吗（浙江企业的教训：不要超过自己的能力半径扩张）？有了数字再决定——不被接受收购和贷款扩张两个极端框住。'
+    ],
+    [
+      '❌ MKS分析：这是犯了财商低的第一条——混淆纸面资产与实际财富。初创企业存活率仅2-3%，明年翻10倍是典型的创业圈黑话。朋友在大厂的8年经验是挣钱能力，不是赚钱能力。50万如果占你储蓄的很大比例，这就是用高风险赌博替代投资。',
+      '⚠️ MKS分析：逻辑正确但损失了潜在机会。完全拒绝等于放弃了非对称收益（5万博50万的可能性）。AI确实是趋势，完全排斥也不理性。问题在于投不投是二元思维，更好的策略是小额参与同时持续观察。',
+      '✅ MKS分析：这是财商最高的策略——(1)小额参与获取信息优势和参与感；(2)用一年的观察期检验朋友是否实干且善于总结（浙江企业标准）；(3)不赌一次成功，而是通过持续跟踪累积判断力。这体现了风险控制、长期主义、以及投资自己的综合财商。'
+    ]
+  ];
+  var fb = messages[si] && messages[si][oi] ? messages[si][oi] : '请再考虑。提示：回顾相关的MKS核心概念。';
+  var allOpts = document.querySelectorAll('[id^='+prefix+'o]');
+  allOpts.forEach(function(el){el.style.borderColor='var(--border)';el.style.background='';});
+  var selEl = document.getElementById(prefix+'o'+oi);
+  if(selEl){selEl.style.borderColor='var(--accent)';selEl.style.background='#fef5f0';}
+  feedbackDiv.style.display = 'block';
+  feedbackDiv.querySelector('p').textContent = fb;
+}
+
+// ======== UTILS ========
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ======== INIT ========
+function init() {
+  renderDashboard();
+  renderMCQ();
+  renderSAQ();
+  updateProgress();
+}
+
+init();
+</script>
+
+</body></html>

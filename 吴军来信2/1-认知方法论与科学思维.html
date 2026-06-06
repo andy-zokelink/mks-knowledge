@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>认知方法论与科学思维 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"▸";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{min-width:700px;display:block;margin:0 auto;max-width:100%;height:auto}
+.back-home{text-align:center;margin:16px 0;font-size:.85rem}
+.back-home a{color:var(--text-light);text-decoration:none;border-bottom:1px dashed var(--border);padding-bottom:2px}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+.top-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#3d2f2f 0%,#5a3e3e 100%);color:#fdf6ec;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.top-bar h1{font-size:clamp(14px,2.5vw,18px);font-weight:600;white-space:nowrap}
+.top-bar .home-link{color:#d4a574;font-size:13px;border:1px solid #d4a574;padding:3px 10px;border-radius:14px;white-space:nowrap;transition:all .2s}
+.top-bar .home-link:hover{background:#d4a574;color:#3d2f2f;text-decoration:none}
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--card)}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}.tab-bar{flex-wrap:nowrap}}
+</style>
+</head>
+<body>
+<div class="top-bar"><h1>认知方法论与科学思维 · 最小知识集</h1><a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a></div>
+<div class="container">
+<p class="subtitle">吴军来信2 · 底层逻辑专题——认知操作系统的底座，用科学原理作为认知透镜，重建跨领域的思考方式</p>
+<div class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="0">知识集总览</button>
+<button class="tab-btn" data-tab="1">知识卡片</button>
+<button class="tab-btn" data-tab="2">题库系统</button>
+<button class="tab-btn" data-tab="3">考试模式</button>
+<button class="tab-btn" data-tab="4">复习模式</button>
+<button class="tab-btn" data-tab="5">思维导图</button>
+<button class="tab-btn" data-tab="6">深度追问</button>
+<button class="tab-btn" data-tab="7">案例分析</button>
+<button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+<!-- Tab 0: Knowledge Set Overview -->
+<div class="tab-panel active" id="panel0">
+<div class="card"><h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">用牛顿定律、香农信息论、奥卡姆剃刀等<strong>可验证的科学原理</strong>作为认知透镜，跨域重建所有生活领域的思考方式。不讲「想什么」，讲「怎么想」——这是吴军来信2的认知操作系统底座，与硅谷来信1「思维方法论」互补：前者是领域百科型方法论，后者是元认知框架。</p>
+</div>
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+<div class="card" style="margin-top:14px"><h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+<div class="card"><h3>概念关系图</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text-light);margin-top:8px;justify-content:center">
+<span style="color:#c0392b">━━ 底层逻辑线</span><span style="color:#b8860b">━━ 科学工具线</span><span style="color:#27ae60">━━ 实践应用线</span><span style="color:#7b2d8e">━━ 元认知线</span>
+</div>
+</div>
+<div class="card"><h3>边界知识表（14条 · 知道存在即可）</h3>
+<div style="overflow-x:auto"><table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>大卫·刘易斯共同知识理论的数学定义</td><td>理解共识、协调问题的底层逻辑时引用</td></tr>
+<tr><td>诺伯特·维纳《控制论》的动物与机器通信定义</td><td>讨论反馈回路在管理学的应用时举例</td></tr>
+<tr><td>瓦拉赫的真实生平（不是虚构的"瓦拉赫效应"）</td><td>辨别中文媒体知识谬误时引用</td></tr>
+<tr><td>斯温多尔名言 vs 费斯汀格法则的命名纠错</td><td>知识溯源与信息真实性判断</td></tr>
+<tr><td>香农第二定律的数学表达 R=Blog₂(1+S/N)</td><td>讨论信息传输效率上限时引用</td></tr>
+<tr><td>MIT关于AI替代工作的成本效益研究</td><td>讨论技术替代就业的量化参考</td></tr>
+<tr><td>毕达哥拉斯对自然规律客观性的贡献</td><td>讨论科学思维起源时引用</td></tr>
+<tr><td>自恋型人格障碍（NPD）的9项诊断标准</td><td>人际关系的科学分析工具</td></tr>
+<tr><td>数学家六级分类体系（陶哲轩→第六级）</td><td>理解人才梯度和势能概念</td></tr>
+<tr><td>美国NFL选秀机制的设计原理</td><td>讨论公平与效率的制度设计</td></tr>
+<tr><td>GDPR与AI监管全球治理框架</td><td>科技政策的国际比较分析</td></tr>
+<tr><td>日本诺奖井喷的六大社会因素</td><td>科研体制对比的素材</td></tr>
+<tr><td>隋文帝/隋炀帝的历史重估</td><td>历史认知偏差的案例分析</td></tr>
+<tr><td>猫头鹰效应（昼夜视觉限制→认知局限）</td><td>用动物行为类比人类认知偏差</td></tr>
+</tbody></table></div></div>
+<div class="card"><h3>学习路径</h3>
+<div style="padding:8px 0">
+<p style="margin:8px 0"><strong style="color:var(--accent)">阶段一：建立框架</strong> — 先理解底层逻辑的定义和牛顿第二定律(F=ma→渐变论)，这是认知操作系统的内核</p>
+<p style="margin:8px 0"><strong style="color:var(--accent)">阶段二：装备工具</strong> — 掌握奥卡姆剃刀、香农第二定律、积分效应、科学思维三要素等核心认知工具</p>
+<p style="margin:8px 0"><strong style="color:var(--accent)">阶段三：跨域应用</strong> — 用这些工具重新看人口老龄化、商品定价、教育投资、职业选择等生活领域问题</p>
+<p style="margin:8px 0"><strong style="color:var(--accent)">阶段四：元认知升级</strong> — 理解共同知识、控制论反馈、悟性培养，形成自我进化的认知闭环</p>
+<p style="margin:8px 0"><strong style="color:var(--accent)">阶段五：实践验证</strong> — 通过案例分析、实战决策、深度追问，将认知工具内化为思维习惯</p>
+</div></div>
+</div>
+<!-- Tab 1: Knowledge Cards -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+<button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+<span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+<button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+<button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+<!-- Tab 2: Quiz System -->
+<div class="tab-panel" id="panel2">
+<div style="margin-bottom:16px">
+<button class="btn btn-primary" onclick="startQuiz()">🎲 随机抽题练习</button>
+<button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+<span id="quizTimer" style="margin-left:12px;font-size:.85rem;color:var(--accent);display:none"></span>
+<span id="quizScore" style="margin-left:12px;font-size:.85rem;color:var(--text-light)"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card"><h3>选择题区</h3><div id="choiceQuiz"></div></div>
+<div class="card"><h3>简答题区</h3><div id="shortQuiz"></div></div>
+</div>
+</div>
+<!-- Tab 3: Exam Mode -->
+<div class="tab-panel" id="panel3">
+<div style="text-align:center;margin:16px 0">
+<button class="btn btn-primary" id="startExamBtn" onclick="startExam()">开始考试（15分钟 · 7选择+3简答）</button>
+<div class="timer" id="examTimer">15:00</div>
+</div>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+
+<!-- Tab 4: Review Mode -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+<!-- Tab 5: Mind Map -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>认知方法论与科学思维 · 思维导图</h3>
+<div id="mindmap">
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">一、底层逻辑总纲</div>
+<div class="tree-children open">
+<div class="tree-leaf">底层逻辑定义：全部学问的学问，全部方法的方法 —— 用可验证科学原理解释世界</div>
+<div class="tree-leaf">三大核心要求：普遍性（跨域适用）、可验证性（不靠直觉）、简单性（奥卡姆剃刀）</div>
+<div class="tree-leaf">时代背景：千年未有之大变局，旧认知体系失效，需要重建底层逻辑</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">二、牛顿定律体系（力量与积累）</div>
+<div class="tree-children open">
+<div class="tree-leaf">牛顿第二定律F=ma → 改变速度需外力，质量越大改变越慢 → 社会变革需渐进主义</div>
+<div class="tree-leaf">积分延迟效应 → 结果是历史积累的总和 → 长期主义、复利思维的科学基础</div>
+<div class="tree-leaf">提前效应/滞后效应 → 因果之间存在时间差 → 人口预测、教育投资的可预测性</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">三、信息论与系统论工具</div>
+<div class="tree-children open">
+<div class="tree-leaf">香农第二定律 → 信息传输速率有上限R=Blog₂(1+S/N) → 沟通带宽限制、学习瓶颈</div>
+<div class="tree-leaf">控制论 → 通过反馈回路实现动态调整 → 企业管理、个人成长的PDCA循环</div>
+<div class="tree-leaf">蝴蝶效应 → 初始条件微小差异导致巨大结果差异 → 不可预测 ≠ 不重要，而是需要系统思维</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">四、科学思维方法论</div>
+<div class="tree-children open">
+<div class="tree-leaf">奥卡姆剃刀 → 如无必要，勿增实体 → 简单解释优于复杂解释；警惕"发明问题再解决"</div>
+<div class="tree-leaf">科学思维三要素 → 抽象化（从具体到本质）+ 剥离问题（去除非关键变量）+ 结论的有限性</div>
+<div class="tree-leaf">共同知识 vs 共享知识 → 知道某事 vs 知道彼此都知道 → 共识、协调、社会规范的数学基础</div>
+<div class="tree-leaf">身边统计学批判 → 有限样本推广到全体的认知偏误 → 数据驱动决策 vs 经验主义</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">五、元认知能力</div>
+<div class="tree-children open">
+<div class="tree-leaf">悟性 → 理解事物本质的能力 → 从"慧根"到可培养的科学思维</div>
+<div class="tree-leaf">倒看世界 → 常规思维通常是错的，倒过来才看清真相 → 马云/阿里巴巴的思维方法论</div>
+<div class="tree-leaf">认知优化边界 → 可无限优化但总量有限 → 类似1=0.9+0.09+0.009...无限分割有限总量</div>
+<div class="tree-leaf">猫头鹰效应 → 昼夜活动特性揭示两种认知偏误：视野局限 + 真实表现的重要性</div>
+</div></div>
+<div class="tree-node">
+<div class="tree-toggle open" onclick="toggleMindmap(this)">六、应用场景</div>
+<div class="tree-children open">
+<div class="tree-leaf">人口老龄化分析 → 滞后效应（积分）+ F=ma（渐变改革）→ 劳动力/养老/经济的三维预测</div>
+<div class="tree-leaf">商品定价逻辑 → 劳动价值论 + 香农定律（信息不对称定价）→ 价值≠价格≠成本</div>
+<div class="tree-leaf">教育投入决策 → 积分效应（长期投入）+ 奥卡姆剃刀（简单教育原则）→ 非功利投入</div>
+<div class="tree-leaf">职业选择 → 势能积累（积分）+ F=ma（不要瞬间转向）→ 年轻聚势、中年释放</div>
+</div></div>
+</div></div>
+</div>
+<!-- Tab 6: Socratic Dialogue -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p>
+<div id="socratic">
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">1. 为什么说底层逻辑是"全部学问的学问"？它和具体方法论有什么区别？</span></div>
+<div class="socratic-a">具体方法论告诉你"怎么做"（如SWOT分析、时间管理矩阵），底层逻辑告诉你"为什么这么做"——它是一阶方法论之上的二阶框架。比如"牛顿第二定律F=ma"作为一个隐喻框架，不直接告诉你怎么管理团队，但它让你理解：任何大规模变革都需要持续力量，不能期望瞬间翻转——这比十个管理模型都深刻，因为它让你自己推导出正确的策略，而不是背诵别人的答案。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那为什么不直接学方法论，而要绕远路学底层逻辑？</span></div>
+<div class="socratic-sub">因为方法论有保质期，底层逻辑没有。SWOT分析是1960年代的框架，PEST分析是1990年代的工具——它们会过时。但"F=ma"在牛顿之后300年仍然成立，再300年也不会变。当你掌握了不变的东西，变化的东西你可以随时推导出来。这就是查理·芒格说的"拿着锤子找钉子"的反面——底层逻辑是让你拥有一整套工具车间，需要什么造什么。</div>
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那AI时代，底层逻辑会不会也被颠覆？</span></div>
+<div class="socratic-sub">AI是执行层工具，不是原理层的颠覆。香农第二定律（信息传输上限）、热力学第二定律（熵增）、奥卡姆剃刀（简单性优先）——这些是物理定律和数学定理，AI再强也改不了。AI改变的是"人能做什么"的上限，不是"什么是对的"的标准。真正危险的反而是：有了AI以后，更多人放弃思考底层逻辑，沦为提示词工程师——这才是最大的认知降级。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">2. 奥卡姆剃刀说"简单的解释更好"，但世界明明很复杂——这不是矛盾吗？</span></div>
+<div class="socratic-a">不矛盾。奥卡姆剃刀说的是：在<strong>同等解释力</strong>下，选更简单的。不是"世界很简单"，而是"不要人为增加复杂性"。举个例子：月亮为什么有圆缺？解释A：月亮本身在变化形状。解释B：月亮绕地球转，我们看到的角度在变。两种都解释圆缺现象，但B不需要假设月亮能变形——B更简单且同样有效。这就是奥卡姆剃刀。反过来，如果你非说月亮内部有个"月球神"在控制形状，你就引入了一个额外实体（神），而且无法证伪——这违反了奥卡姆剃刀。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那在社会问题上，奥卡姆剃刀会不会过于简化？</span></div>
+<div class="socratic-sub">这恰好是奥卡姆剃刀最常见的误用。社会问题需要"必要的复杂度"——你不能用F=ma解释婚姻矛盾。奥卡姆剃刀的关键词是"如无必要，勿增实体"——不是"不许有实体"。判断标准：你增加的每个解释变量，是否增加了预测准确度？如果变量增加了但预测没变好，就是浪费。很多"创造困难型思维"的人恰恰在反用奥卡姆剃刀：一个问题明明很简单，非要引入"深层阴谋""系统性问题"等不可证伪的额外实体，把简单问题复杂化以彰显自己的"深度"。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">3. 牛顿第二定律和积分延迟效应的核心区别是什么？为什么两者要一起学？</span></div>
+<div class="socratic-a">F=ma说的是<strong>瞬时的因果</strong>：今天施加力，今天就产生加速度。它的启发性隐喻是"渐进主义"——要改变一个系统的速度，需要持续施力，不能一步到位。积分延迟效应说的是<strong>积累的因果</strong>：今天的结果是过去所有努力（或懈怠）的积分。它的启发性隐喻是"长期主义"——你现在的处境，是你过去所有选择的累积。两者一起学的价值：F=ma告诉你改变要慢慢来（不要急），积分效应告诉你现在的付出在将来会有回报（不要停）。一个是方向感，一个是耐心——缺任何一个，你的努力都会跑偏。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那什么时候用F=ma，什么时候用积分思维？</span></div>
+<div class="socratic-sub">当你想要"启动改变"时用F=ma——设定可实现的小目标，持续施力，不期望一夜反转。当你评估"当前处境"时用积分思维——你今天的财务状况、职业技能、人际关系，不是你最近一个月决定的，而是过去5-10年的积分值。反过来，当你为一个重要决策焦虑时，问自己：这个决策在5年后的积分值是多少？大多数让你焦虑的小事，5年后的积分是零。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">4. 为什么说"悟性"可以被科学思维培养？这和天赋论矛盾吗？</span></div>
+<div class="socratic-a">不矛盾。吴军在来信中明确区分了"慧根"（佛教的天赋论视角）和"悟性"（可培养的认知能力）。科学思维三要素——抽象化（从现象提炼规律）、剥离问题（去除噪声聚焦本质）、结论的有限性（知道答案的适用范围）——本质上就是在训练"悟性"。毕达哥拉斯说自然规律是客观的、不以人的意志为转移的——这个认知本身就是悟性的起点：承认世界有规律，承认规律可以被认知。这不是天赋，是训练出来的思维习惯。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那为什么有些人学了很多知识但还是"没悟性"？</span></div>
+<div class="socratic-sub">因为知识的堆积 ≠ 悟性的提升。吴军引用"知识从共享变成公开"的重要性——很多人只是"共享知识"的接收者（在一个小圈子内知道一些东西），但没有将知识"公开化"（放在可被公共检验的逻辑框架中审视）。悟性的关键一步是"倒看世界"——把习以为常的认知倒过来，看看是不是还是对的。大多数"假努力"的人从来不倒看，只是在一个方向上堆砌更多信息——这就像往一个漏水的桶里倒水，永远装不满。</div>
+</div>
+</div></div>
+</div>
+<!-- Tab 7: Case Study -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解「为什么很多人学了100+套课程却没有改变？」</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px">
+<div class="card"><strong style="color:var(--accent)">背景</strong><p style="font-size:.85rem;margin-top:4px">读者"麦田里的晨曦"购买了100+套课程，持续续订听书/电子书会员，但感觉自我提升不明显——陷入了"消耗型学习"困境：学了但没改变。</p></div>
+<div class="card"><strong style="color:var(--accent)">现象本质</strong><p style="font-size:.85rem;margin-top:4px">这不是个别现象。吴军将其定义为"假努力"的三种典型之一——大量时间投入学习但能力未提升，忙碌感替代了成长感。</p></div>
+<div class="card"><strong style="color:var(--accent)">底层矛盾</strong><p style="font-size:.85rem;margin-top:4px">用户承认"知识肯定能用"，同时自我否定"理解不到位"——这种自我归因恰恰是最危险的，因为它把系统性问题误判为个人能力问题。</p></div>
+<div class="card"><strong style="color:var(--accent)">时代背景</strong><p style="font-size:.85rem;margin-top:4px">知识付费时代，信息获取成本趋零，但信息→知识的转换成本未降低。大量"共享知识"被误认为"共同知识"——知道某事≠真正掌握某事。</p></div>
+</div>
+<div class="card" style="border-left:4px solid var(--gold)"><h3>MKS五维度拆解</h3>
+<div style="margin:8px 0"><strong style="color:var(--accent)">1. 积分效应视角（为什么学了不变？）：</strong>学习效果是认知投入×时间的积分，不是课程数量的积分。100套课的浅层浏览积分值≈0，1本书的深度内化积分值可能>>100套课。关键不是"学了多少"，而是"信息经过你大脑时留下了多少痕迹"。如同吃100种食物但每一种只嚼一口——营养吸收总量极低。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">2. 香农第二定律视角（学习带宽瓶颈）：</strong>人的认知处理有速率上限（类似香农定律R=Blog₂(1+S/N)），每天处理信息的能力是有限的。100+套课程远超认知带宽——信息过载导致每条信息的信噪比S/N下降，实际学习效率趋近于零。高质量学习=提高S/N（选优质内容）+降低N（减少无效输入）。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">3. 牛顿第二定律视角（为什么不能速成？）：</strong>认知改变是"质量极大"的系统——你的思维模式、决策习惯、情绪反应都经过多年固化。F=ma告诉我们：要改变这么大质量的系统，需要持续的外力(curation+应用+反馈)，不能期望一门课就产生质变（即不能指望一瞬间获得极大的a）。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">4. 奥卡姆剃刀视角（课程筛选原则）：</strong>100套课程中真正对你有价值的可能不超过5套。如无必要，勿增课程。判断标准：学完这门课，你能不能用一句话说清楚它改变了你哪方面的思考？如果不能，就是"实体浪费"——可以砍掉。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">5. 控制论视角（建立学习反馈回路）：</strong>学习不改变的本质原因是没有反馈回路。你看完课程→没有实践→没有效果反馈→不知道自己是否真的理解→继续看下一门课。正确的做法：学一个概念→立刻用它解释现实问题→发现解释不通→回头修正理解→再应用。这个闭环才是控制论意义上的"学习"。</div>
+</div>
+<div class="card"><h3>解决方案：从"消费型学习"到"积分型学习"</h3>
+<p style="margin:6px 0">① <strong style="color:var(--accent)">选3本最好的书/课</strong>，放弃其余97个——奥卡姆剃刀</p>
+<p style="margin:6px 0">② <strong style="color:var(--accent)">每学一个概念，找一个现实案例自我解释</strong>——控制论反馈回路</p>
+<p style="margin:6px 0">③ <strong style="color:var(--accent)">坚持6个月而非6天</strong>，让积分效应产生质变——积分延迟效应</p>
+<p style="margin:6px 0">④ <strong style="color:var(--accent)">接受认知改变是渐进的</strong>，不期待一门课改变人生——F=ma</p>
+<p style="margin:6px 0">⑤ <strong style="color:var(--accent)">验证自己的"知道"是否转化为"共同知识"</strong>——能否在公共讨论中用逻辑自证你的理解？——共同知识理论</p>
+</div>
+</div>
+<!-- Tab 8: Decision Simulation -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p>
+<div id="decisionSim">
+
+<div class="decision-scenario">
+<strong>第1轮：公司战略转型决策</strong><br>你是一家中型互联网公司的CEO，AI浪潮下公司面临转型压力。技术团队强烈建议全面押注AI，但你的财务数据显示核心业务仍在增长（年增15%），AI业务需要2-3年才能盈利。你应该？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(0,0)">A. 全面转型AI，将60%的资源投入AI研发，抓住风口——"机会窗口不等人"</div>
+<div class="decision-opt" onclick="showDecision(0,1)">B. 保持核心业务稳定投入，AI作为增量部门逐步增加资源——"用F=ma思维渐进转型"</div>
+<div class="decision-opt" onclick="showDecision(0,2)">C. 拆分公司——核心业务独立运营，AI业务独立融资——"两线作战互不干扰"</div>
+</div>
+<div class="decision-result" id="decisionResult0"></div>
+</div>
+
+<div class="decision-scenario">
+<strong>第2轮：个人职业路径选择</strong><br>你今年28岁，在一家传统制造企业做了5年技术岗，年薪30万。突然收到两个offer：A-互联网大厂（年薪50万但996），B-创业合伙人（底薪15万+股权）。你应该？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(1,0)">A. 去大厂——高薪、履历镀金、积累资源后再做选择</div>
+<div class="decision-opt" onclick="showDecision(1,1)">B. 去创业——趁年轻积累势能，失败了还可以再找工作</div>
+<div class="decision-opt" onclick="showDecision(1,2)">C. 留在现在公司——利用5年积累的人脉和行业知识，申请内部创新项目</div>
+</div>
+<div class="decision-result" id="decisionResult1"></div>
+</div>
+
+<div class="decision-scenario">
+<strong>第3轮：教育投资决策</strong><br>你的孩子今年7岁，身边家长都在给孩子报各种辅导班（编程、奥数、英语、钢琴、围棋...）。你年收入30万，如果全部跟风每年需要支出8-10万。你应该？
+<div class="decision-options">
+<div class="decision-opt" onclick="showDecision(2,0)">A. 全力投入——不能让孩子输在起跑线上，自己能扛就扛</div>
+<div class="decision-opt" onclick="showDecision(2,1)">B. 只选1-2个孩子真正有兴趣的方向深入培养——用奥卡姆剃刀做减法</div>
+<div class="decision-opt" onclick="showDecision(2,2)">C. 不报任何辅导班——把省下的钱和时间用来带孩子旅行和阅读，相信自然成长</div>
+</div>
+<div class="decision-result" id="decisionResult2"></div>
+</div>
+
+</div></div>
+</div>
+</div><!-- .container -->
+
+<script>
+// ===== DATA STORE =====
+const concepts = [
+  {id:'c1',name:'底层逻辑',def:'用可验证的科学原理（牛顿、香农、奥卡姆等）作为跨域认知框架，重建所有生活领域的思考方式。不是"想什么"，是"怎么想"——全部学问的学问、全部方法的方法。',analogy:'如同计算机的操作系统内核——所有应用程序（具体方法论）都运行在它之上。换一个APP很容易，换操作系统需要重建整个思维体系。大部分人穷其一生在"装APP"，只有少数人在"升级操作系统"。',example:'牛顿第二定律F=ma作为底层逻辑：不直接告诉你怎么管理团队，但让你理解——改变"质量大"的系统（组织、文化、习惯）需要持续施力(F)，且加速度(a)有限，不能指望瞬间翻转。这比10个管理模型都深刻。',counter:'底层逻辑不能替代领域专业知识的积累——你有牛顿定律但不会写代码，仍然做不了软件工程师。底层逻辑是"怎么思考"，不是"什么技能"。两者是乘数关系而非替代关系。'},
+  {id:'c2',name:'牛顿第二定律F=ma',def:'力=质量×加速度。加速度是速度变化的快慢——质量(m)越大的系统，改变其速度所需的力(F)越大。社会隐喻：渐进改革的科学基础。',analogy:'如同改变一艘航空母舰的航向——航母质量极大，即使施加最大马力，转向也需要数海里。你不能期待航母原地掉头。转型中的大企业、改革中的制度、改变中的个人习惯都是"高质量"系统——给足时间、持续施力。',example:'中国改革开放不是一夜之间从计划到市场——是40年持续施力，先农村后城市、先沿海后内陆。如果1978年一步到位全面市场化，等于试图让航母原地掉头，系统必然崩溃。邓小平"摸着石头过河"本质上是F=ma的现实应用。',counter:'不是所有改变都需要F=ma的渐进——技术迭代某些时候需要"跳跃"（如从功能手机到智能手机）。判断标准：系统是"物理约束型"（组织、制度、文化）还是"信息约束型"（技术、知识、工具）——后者可以通过新信息瞬间改变。'},
+  {id:'c3',name:'积分延迟效应',def:'结果是历史积累的总和，而非某一时刻的瞬时反映。今天的你，是你过去所有选择、努力、懈怠的积分值。长期主义的科学基础。',analogy:'如同银行的复利存款——每天的利息是之前所有日子本金+已有利息的总和产生的增量。前10年的曲线几乎是平的，第20年以后开始陡峭上升。大部分人在"平的那段"放弃了，所以永远看不到陡峭的那段。',example:'巴菲特的财富99%在50岁之后获得——不是他50岁以后更聪明，而是他20岁开始投资的积分效应到了50岁终于进入陡峭区间。同理，一个人的职业竞争力、孩子的教育成果、身体健康的维持——都是积分函数，不是瞬时函数。',counter:'积分效应的前提是"每个时间单位的投入都是有价值的"——如果每天在无效的事情上投入（如"假努力"的网课消费），100天后的积分仍然是零。积分不是时间的堆积，是有效能量的积累。垃圾输入×时间=更多垃圾。'},
+  {id:'c4',name:'奥卡姆剃刀',def:'如无必要，勿增实体——在同等解释力的假设之间，选择最简单的那一个。这不是说世界很简单，而是说不要人为增加不必要的复杂性。',analogy:'如同写代码——两个算法都能解决问题，选代码更短、依赖更少的那一个。不是因为短的一定好，而是因为每多一行代码就多一个出bug的可能。复杂解释之所以"不好"，不是因为它"不对"，而是因为它引入了更多可能出错的地方。',example:'为什么有些人觉得"社会是由隐秘的精英集团控制的"？这个解释太复杂了——需要假设存在一个从未暴露的全球密谋组织，且几万人能保守秘密数十年。奥卡姆剃刀说：更简单的解释是——世界本身就充满随机性和利益博弈，不需要"秘密控制"。',counter:'奥卡姆剃刀不是"永远选最简单的"——当简单解释无法覆盖所有现象时，必须接受必要的复杂性。比如量子力学的"多重世界解释"虽然复杂，但它是目前唯一能自洽解释所有实验结果的框架——此时"简单解释"反而是错的。如无必要，勿增实体——但如果确实必要，就增。'},
+  {id:'c5',name:'香农第二定律',def:'信息传输速率R=Blog₂(1+S/N)——任何信道的信息传输速率存在硬上限，由带宽(B)和信噪比(S/N)决定。认知隐喻：人的学习、沟通、决策都有信息处理带宽瓶颈。',analogy:'如同一条高速公路——车道数(B)固定，车多了必然拥堵。信噪比(S/N)如同好车和故障车的比例：路上故障车越多，有效通行率越低。人的大脑每天能处理的有效信息是有限的，海量低质量信息输入≈往高速公路上堆故障车——看似繁忙，实际通行量极低。',example:'一个人一天看50篇公众号文章 vs 花2小时精读一本经典的一个章节——前者的"信息量"似乎更大（50>1），但前者的S/N趋近于零（大部分是噪声），后者S/N极高。香农定律告诉你：信息摄入的质量比数量重要100倍。',counter:'香农定律不能成为"不学习"的借口——有些领域的S/N本身就低，但必须保持输入（如行业动态、社会新闻）。判断标准：这个信息源在1年后回头看，有多少内容改变了你的决策？如果接近0%——它是噪声。'},
+  {id:'c6',name:'科学思维三要素',def:'抽象化（从现象到本质）、剥离问题（去除非关键变量）、结论的有限性（知道答案的适用范围）。三者合在一起，就是"会思考"的操作定义。',analogy:'如同医生诊断——抽象化是从症状归纳出可能的疾病类型；剥离问题是排除干扰因素（"肚子疼"可能是因为吃坏东西而非胃癌）；结论的有限性是知道"这个诊断只在目前证据下成立，需要随新证据更新"。差医生跳过前两步直接开药，好医生走完三步再行动。',example:'毕达哥拉斯提出"自然规律是客观的且可以被认知"——这是科学思维的起点：承认规律存在（抽象化），承认规律不以人的意志为转移（剥离主观），承认"你可以通过逻辑推理发现规律但你的推理可能不完全"（结论的有限性）。',counter:'科学思维三要素在某些领域不适用——艺术创作恰恰需要"不做剥离"（保留多义性）、"不接受有限性"（追求绝对美）。用科学思维分析一首诗是灾难——不是思维不好，是用错了领域。'},
+  {id:'c7',name:'控制论与反馈回路',def:'通过反馈(输出→回传→调整输入)实现动态稳定。系统不是靠一次完美设计运作的，而是靠持续检测偏差并修正。个人成长、企业管理、社会治理的本质都是反馈回路设计。',analogy:'如同恒温器——设定目标温度后，它不"知道"怎么一次到达目标，而是持续测量实际温度vs目标温度的偏差，然后调整加热。偏差大→加大火力，偏差小→减小火力。好的管理者不是"一次做对决策"的人，而是"及时发现决策偏差并修正"的人。',example:'日本制造业的"持续改善"(Kaizen)——不是一次设计完美，而是每天发现一个小问题、修正一个小偏差。日积月累的微调（反馈回路）最终产生了碾压式竞争优势。反面：很多公司靠"老板的英明决策"——没有反馈回路，一条路走到黑。',counter:'反馈回路在快速变化的环境中可能失效——因为反馈本身需要时间，环境变化快于反馈调整速度时，系统会"追不上"。这就是为什么创业公司不能靠"持续改善"，而需要"快速试错"——本质上是缩短反馈周期。'},
+  {id:'c8',name:'共同知识',def:'不仅"我知道"，而且"我知道你知道，你知道我知道，我知道你知道我知道..."无限递归。共同知识是社会协调、共识、规范形成的数学基础——没有它，人类社会无法协作。',analogy:'如同交通信号灯——"红灯停"不仅是"我知道红灯停"，而且是"我知道你知道红灯停，你知道我知道红灯停"。如果只是"我知道"但不知道你是否知道——我不敢过马路。人类社会的所有制度（货币、法律、语言）本质上都在创建"共同知识"。',example:'一个泡沫的形成：每个人都知道房价高得离谱（共享知识），但因为每个人都知道"其他人都认为房价还会涨"（共同知识），所以每个人都继续买——泡沫由共同知识维持，也由共同知识破灭（当所有人突然都知道"大家都知道会跌"时）。',counter:'共同知识的"无限递归"是数学模型，现实中的人类认知只能递归2-3层。大部分"协调失败"就是因为没有真正的共同知识——你以为别人知道你知道，但别人其实不知道你知道。沟通的关键不是"传递信息"，而是"确认对方收到了你的确认"。'},
+  {id:'c9',name:'悟性',def:'理解事物本质的能力——不是记忆更多事实，而是从有限事实中提取规律的能力。可以通过科学思维的训练得到提升。',analogy:'如同武侠小说中的"内功"——同样的招式（知识），内功深厚的人使出来威力大10倍。悟性好的人读一本书能提取出10个可迁移的原则，悟性差的人读10本书记住100个孤立的事实却无法迁移。这就是为什么有些人"学富五车却一事无成"。',example:'吴军分析隋文帝vs隋炀帝——传统史书把隋炀帝塑造成暴君，但仔细看史料会发现很多"暴政"在隋文帝时期就已经开始。悟性高的人不会接受"昏君vs明君"的简单叙事，会问：同一个制度框架下，为什么前后两任结果差异如此之大？答案往往不在个人品德，在制度。"',counter:'悟性不是"否定既有认知"——有些人把"怀疑一切"当成悟性，这恰恰是悟性不够的表现。真正的悟性是"理解一个观点为什么成立、在什么条件下不成立"——而不是简单地"不相信"。怀疑论和批判性思维是两回事。'},
+  {id:'c10',name:'倒看世界',def:'吴军引述马云的方法论——常规思维通常是错的，只有倒过来看才能看清真相。不是否定所有常识，而是把默认假设反转，检验它是否还成立。',analogy:'如同看一张底片——你习惯了看正片（常规思维），突然让你看底片（倒看），一开始会觉得很奇怪（黑的是白的、白的是黑的），但一旦适应，你会发现底片里有些正片看不到的细节。大多数人的认知错误不是因为信息不足，而是因为"正片看太久了"。',example:'常规思维："努力就有回报"——倒看：很多人付出了没有回报（见"假努力""教育投入悖论"），所以问题不是"是否努力"，而是"努力的方向和反馈回路是否正确"。常规思维："专家说的应该是对的"——倒看：瓦拉赫效应根本不存在，蝴蝶效应被广泛误读，很多"常识"只是被反复重复的谬误。',counter:'倒看世界不等于叛逆——不是为了反对而反对。倒看的目的是发现思维的盲区，不是制造混乱。判断标准：倒看后得出的结论，是否比常规视角有更强的解释力？如果不能，那就不是"倒看"，是"瞎看"。'}
+];
+const mksCoreIds = ['c1','c2','c4','c6'];
+
+// ===== QUIZ QUESTIONS (20 MC, answer 0-3 each x5 = 20) =====
+const choiceQuestions = [
+  {q:'底层逻辑的核心定义是？',opts:['具体的操作方法集合','用可验证的科学原理作为跨域认知框架','一种商业管理模型','历史经验的归纳总结'],answer:0},
+  {q:'牛顿第二定律F=ma给社会变革的核心启示是？',opts:['变革应该一步到位','改变"质量大"的系统需要持续施力，不能期望瞬间翻转','所有变革都可以精确计算所需力量','速度比力量更重要'],answer:0},
+  {q:'积分延迟效应的核心含义是？',opts:['时间会自动解决所有问题','结果取决于最近一次的努力','今天的结果是过去所有选择的累积','未来完全不可预测'],answer:2},
+  {q:'奥卡姆剃刀原则的正确表述是？',opts:['永远选择最复杂的解释','如无必要，勿增实体——在同等解释力下，简单解释优于复杂解释','世界本质上是简单的','所有复杂问题都必须分解为简单问题'],answer:1},
+  {q:'香农第二定律的公式R=Blog₂(1+S/N)中，S/N代表什么？',opts:['速度与噪声的比值','信号功率与噪声功率的比值（信噪比）','发送与接收的比例','存储与处理的比率'],answer:1},
+  {q:'科学思维三要素不包括以下哪项？',opts:['抽象化——从现象到本质','剥离问题——去除非关键变量','结论的有限性——知道答案的适用范围','经验主义——相信个人直觉优于数据分析'],answer:0},
+  {q:'控制论的核心机制是什么？',opts:['一次性完美设计','通过反馈回路实现动态调整','自上而下的命令链条','随机试错'],answer:0},
+  {q:'共同知识和共享知识的关键区别是？',opts:['共享知识是个人的，共同知识是集体的','共享知识是\"我知道\"，共同知识是\"我知道你知道我知道...\"无限递归','共享知识更高级','没有区别，两者是同义词'],answer:1},
+  {q:'吴军认为悟性可以通过什么方式提升？',opts:['天生注定，无法改变','大量阅读和死记硬背','科学思维训练：抽象化、剥离问题、结论有限性','禅修和冥想'],answer:1},
+  {q:'\"倒看世界\"方法论的核心是？',opts:['否定一切主流观点','从不同角度审视默认假设，检验其是否仍然成立','坚持与所有人相反的立场','只相信自己的直觉'],answer:0},
+  {q:'吴军认为\"假努力\"的典型表现不包括？',opts:['大量听网课但能力未见提升','深度阅读一本经典并做详细笔记','碎片化阅读大量公众号但记不住任何东西','购买了100+套课程但无法应用'],answer:2},
+  {q:'关于\"瓦拉赫效应\"，吴军指出什么真相？',opts:['它是一个广泛验证的教育心理学理论','中文媒体广泛传播的故事与瓦拉赫真实生平严重不符','它证明了天赋可以后天培养','它来自德国教育部的官方研究'],answer:1},
+  {q:'蝴蝶效应的核心启示是什么？',opts:['小事情一定会导致大灾难','复杂系统对初始条件高度敏感，长期精确预测不可能','蝴蝶可以控制天气','所有小问题都可以忽略'],answer:2},
+  {q:'为什么吴军强调\"知识从共享变成公开很重要\"？',opts:['因为公开可以赚钱','因为只有在公共领域接受检验的知识，才能转化为共同知识并驱动社会协作','因为秘密知识总是更有价值','因为公开有助于知识产权保护'],answer:3},
+  {q:'关于隋文帝和隋炀帝，吴军的核心论点是？',opts:['隋炀帝确实是十恶不赦的暴君','传统史书的\"明君/暴君\"二分法过于简单，两人的政策具有高度连续性','隋文帝其实是更坏的统治者','这段历史对当代完全没有参考价值'],answer:3},
+  {q:'文中\"创造困难型思维\"指的是什么？',opts:['在工作中主动接受挑战','主动将简单问题复杂化或虚构问题以彰显所谓\"深度\"','创造性解决困难','设计复杂解决方案应对复杂问题'],answer:2},
+  {q:'关于蝴蝶效应被广泛误读，吴军指出哪一点？',opts:['蝴蝶效应来自生物学而非气象学','蝴蝶效应原文中用的是海鸥而非蝴蝶','洛伦兹的原意是\"长期精确预测不可能\"，而非\"小事情决定大结果\"','蝴蝶效应已经被现代气象学证伪'],answer:2},
+  {q:'关于日本诺贝尔奖井喷，吴军分析的六大因素不包括？',opts:['长期稳定的科研投入','日本人智商高于其他民族','对基础研究的持续重视','老一辈科学家的谦逊传承文化'],answer:3},
+  {q:'\"猫头鹰效应\"给认知方法的启示是？',opts:['猫头鹰比人类更聪明','人类在不同条件下的认知能力会有显著差异——如视野受限和信息处理偏差','应该模仿猫头鹰的生活习惯','所有动物行为都可以直接映射到人类认知'],answer:3},
+  {q:'吴军关于\"追求绝对公平不现实\"的底层逻辑基础是？',opts:['因为人性本恶','因为资源有限且效率优先是资源最优配置的前提，绝对公平与效率存在根本矛盾','因为社会制度设计者都偏向富人','因为人们其实不想要公平'],answer:3}
+];
+
+const shortQuestions = [
+  {q:'请简述牛顿第二定律F=ma作为底层逻辑的三个社会启示。',a:'①改变"质量大"的系统（组织、文化、习惯）需要持续施力，不能期望一步到位；②要改变速度（状态），必须施加外力——内省不够，需要外部变量（新环境、新圈子、新信息）；③质量越大，同样的力产生的加速度越小——个人越早积累好习惯，未来的改变成本越低（年轻时"质量小"容易改变）。'},
+  {q:'积分延迟效应和"延迟满足"是一回事吗？区别在哪？',a:'不完全是一回事。延迟满足是心理学概念——克制即时欲望以获得更大回报。积分延迟效应是数学/物理概念——结果=投入×时间的累积积分。前者强调意志力（忍耐），后者强调持续性（不中断）。区别：你不需要"忍耐"健身的痛苦，你需要的是"不中断"健身的习惯——因为中断一天，积分值虽然不变但斜率下降，长期差距巨大。'},
+  {q:'奥卡姆剃刀和"简单化思维"有什么区别？',a:'奥卡姆剃刀是方法论原则——在同等解释力下选更简单的。"简单化思维"是偷懒——忽略必要复杂度以求省事。判断标准：你简化后，解释力下降了吗？如果下降了，就是简单化思维；如果没下降，就是奥卡姆剃刀。例如："这个社会问题很复杂"不是简单化思维，但"这个社会问题就是因为某个人/某个群体坏"就是。'},
+  {q:'用香农第二定律解释为什么碎片化学习效率低？',a:'香农定律R=Blog₂(1+S/N)：B是认知带宽（固定有限），S/N是信噪比。碎片化学习（刷朋友圈、看短视频）的S/N趋近于零——大量噪声淹没了极少量信号。即使B（学习时间）很大，由于S/N≈0，log₂(1+0)=0，实际信息传输率R≈0。这解释了为什么刷了2小时手机却"什么都没学到"。'},
+  {q:'科学思维三要素中"结论的有限性"为什么特别重要？',a:'因为在现实中，大多数错误不是"用了错方法"，而是"把正确的方法用到了它不适用的问题上"。知道一个工具的适用范围比知道工具本身更重要——这是从"学习"到"理解"的分水岭。例如：SWOT分析适用于静态竞争环境，用在快速颠覆的市场上是灾难。"结论的有限性"就是你的认知免疫系统。'},
+  {q:'控制论的核心贡献是什么？为什么它对管理学有革命性影响？',a:'控制论把管理从"设计完美计划"转为"设计有效反馈回路"。传统管理假设"CEO做正确决策→下属执行"，控制论假设"所有决策都有偏差→通过反馈持续修正"。这解释了为什么日本Kaizen（持续改善）打败了美国"拳头产品"策略——不是日本人更聪明，是控制论框架更符合现实（现实永远有偏差）。'},
+  {q:'如何用"共同知识"理论解释社会信任的崩溃？',a:'社会信任本质上是共同知识——"我相信法律会保护我"≠信任，信任是"我相信你知道法律会保护我，你知道我相信..."。当"老人摔倒没人扶"成为一个共同知识时（所有人都知道"所有人都知道没人会扶"），即使每个个体都愿意扶，也不敢扶——因为每个人都在假定别人不扶。信任的崩溃不是个体水平的变化，是共同知识层的断裂。'},
+  {q:'为什么说"悟性"是可以培养的？关键方法是什么？',a:'悟性=抽象化能力+模式识别能力+迁移能力。培养方法：①每学一个具体案例，强制自己找出3个不同领域的类似模式（训练迁移能力）；②对一个结论，问自己"它在什么条件下不成立"（训练边界感）；③用自己的语言重新解释给别人听，直到对方听懂（训练抽象化能力）。这三步就是科学思维三要素的日常训练。'},
+  {q:'"倒看世界"和批判性思维有什么区别？',a:'批判性思维是"不轻信"——质疑信息来源、逻辑链条、证据质量。倒看世界更进一步：把整个默认框架翻转过来，看看世界是不是反过来的。例如：批判性思维会问"这个数据可信吗？"，倒看世界会问"如果这个结论的反面才是真相，那么有什么证据支持它？"——这是更彻底的认知框架转换。'},
+  {q:'结合吴军来信2的内容，简述"底层逻辑"与硅谷来信1"思维方法论"的互补关系。',a:'硅谷来信1的思维方法论是"领域百科型"——分门别类讲科技商业、投资财富、历史文明等各领域的思维方法（如"怎样分析一家公司""怎样判断投资价值"）。吴军来信2的底层逻辑是"元认知框架"——不讲具体的"怎么做"，讲"怎么想"（如F=ma教你思考变革的节奏，奥卡姆剃刀教你筛选解释的复杂度）。简单说：方法论告诉你做菜的具体步骤，底层逻辑告诉你烹饪的核心原理——有了原理，你可以自己发明菜谱。'}
+];
+
+// ===== STATE =====
+let learnedCards = JSON.parse(localStorage.getItem('mks2_learned')||'[]');
+let wrongAnswers = JSON.parse(localStorage.getItem('mks2_wrong')||'[]');
+let currentCardIdx = 0;
+let cardFlipped = false;
+let examInterval = null;
+let examSeconds = 0;
+let examActive = false;
+let examQuestions = [];
+let examAnswers = [];
+let quizAnswered = JSON.parse(localStorage.getItem('mks2_quiz_answered')||'[]');
+let shortRevealed = JSON.parse(localStorage.getItem('mks2_short_revealed')||'[]');
+
+function save(){localStorage.setItem('mks2_learned',JSON.stringify(learnedCards));localStorage.setItem('mks2_wrong',JSON.stringify(wrongAnswers));localStorage.setItem('mks2_quiz_answered',JSON.stringify(quizAnswered));localStorage.setItem('mks2_short_revealed',JSON.stringify(shortRevealed));}
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');
+  document.getElementById('panel'+this.dataset.tab).classList.add('active');
+  if(this.dataset.tab==='4') renderReview();
+}));
+
+// ===== SVG CONCEPT MAP =====
+function renderSVG() {
+  var svg = '<!-- Generated by graphviz -->\n<svg width="860pt" height="560pt" viewBox="0.00 0.00 860.00 560.00" xmlns="http://www.w3.org/2000/svg">\n<g id="graph0" class="graph" transform="translate(4 556) scale(1)">\n<title>认知方法论与科学思维</title>\n<polygon fill="#fdf6ec" stroke="transparent" points="-4,4 -4,-556 856,-556 856,4 -4,4"/>\n<!-- ROOT -->\n<g id="root" class="node">\n<polygon fill="#c0392b" stroke="#5a3e3e" stroke-width="2" points="466,-552 386,-552 386,-516 466,-516 466,-552"/>\n<text text-anchor="middle" x="426" y="-530" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" fill="white">底层逻辑——认知操作系统</text>\n</g>\n';
+  svg += '<!-- LAYER 2: Three Science Pillars -->\n';
+  svg += '<g id="newton" class="node">\n<polygon fill="#d4a574" stroke="#b8860b" stroke-width="2" points="184,-460 84,-460 84,-424 184,-424 184,-460"/>\n<text text-anchor="middle" x="134" y="-438" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="white">牛顿定律体系</text>\n</g>\n';
+  svg += '<g id="info" class="node">\n<polygon fill="#d4a574" stroke="#b8860b" stroke-width="2" points="406,-460 306,-460 306,-424 406,-424 406,-460"/>\n<text text-anchor="middle" x="356" y="-438" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="white">信息与系统论</text>\n</g>\n';
+  svg += '<g id="science" class="node">\n<polygon fill="#d4a574" stroke="#b8860b" stroke-width="2" points="628,-460 528,-460 528,-424 628,-424 628,-460"/>\n<text text-anchor="middle" x="578" y="-438" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="white">科学方法论</text>\n</g>\n';
+  svg += '<!-- Edges root->three -->\n';
+  svg += '<path fill="none" stroke="#c0392b" stroke-width="2" d="M386,-515C337,-496 272,-471 206,-455"/>\n<polygon fill="#c0392b" stroke="#c0392b" points="196,-453 186,-451 194,-458 196,-453"/>\n<text text-anchor="middle" x="296" y="-478" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9">••••</text>\n';
+  svg += '<path fill="none" stroke="#c0392b" stroke-width="2" d="M416,-515C404,-496 389,-471 375,-455"/>\n<polygon fill="#c0392b" stroke="#c0392b" points="378,-453 369,-448 371,-458 378,-453"/>\n<text text-anchor="middle" x="394" y="-478" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9">••••</text>\n';
+  svg += '<path fill="none" stroke="#c0392b" stroke-width="2" d="M436,-515C457,-496 484,-471 506,-455"/>\n<polygon fill="#c0392b" stroke="#c0392b" points="509,-458 513,-448 504,-453 509,-458"/>\n<text text-anchor="middle" x="476" y="-478" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9">••••</text>\n';
+  svg += '<!-- LAYER 3: Sub-concepts under Newton -->\n';
+  svg += '<g id="fma" class="node">\n<polygon fill="#fffaf2" stroke="#5a3e3e" stroke-width="1" points="56,-360 0,-360 0,-332 56,-332 56,-360"/>\n<text text-anchor="middle" x="28" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">F=ma••••</text>\n</g>\n';
+  svg += '<g id="integral" class="node">\n<polygon fill="#fffaf2" stroke="#5a3e3e" stroke-width="1" points="166,-360 102,-360 102,-332 166,-332 166,-360"/>\n<text text-anchor="middle" x="134" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">••••••••</text>\n</g>\n';
+  svg += '<g id="delay" class="node">\n<polygon fill="#fffaf2" stroke="#5a3e3e" stroke-width="1" points="276,-360 212,-360 212,-332 276,-332 276,-360"/>\n<text text-anchor="middle" x="244" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">••••/••••</text>\n</g>\n';
+  svg += '<!-- Edges newton->sub -->\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M112,-423C97,-408 80,-393 65,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="56,-372 59,-379 63,-378 56,-372"/>\n<text text-anchor="middle" x="98" y="-395" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8">••••••</text>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M134,-423C134,-408 134,-393 134,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="131,-378 134,-372 137,-378 131,-378"/>\n<text text-anchor="middle" x="148" y="-395" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8">••••</text>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M175,-423C195,-408 220,-393 239,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="242,-381 247,-371 237,-376 242,-381"/>\n<text text-anchor="middle" x="214" y="-395" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8">••••</text>\n';
+  svg += '<!-- LAYER 3: Sub-concepts under Info -->\n';
+  svg += '<g id="shannon" class="node">\n<polygon fill="#fef0e0" stroke="#5a3e3e" stroke-width="1" points="316,-360 254,-360 254,-332 316,-332 316,-360"/>\n<text text-anchor="middle" x="285" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">•••••••••</text>\n</g>\n';
+  svg += '<g id="cyber" class="node">\n<polygon fill="#fef0e0" stroke="#5a3e3e" stroke-width="1" points="428,-360 368,-360 368,-332 428,-332 428,-360"/>\n<text text-anchor="middle" x="398" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">•••••••••</text>\n</g>\n';
+  svg += '<g id="butterfly" class="node">\n<polygon fill="#fef0e0" stroke="#5a3e3e" stroke-width="1" points="538,-360 478,-360 478,-332 538,-332 538,-360"/>\n<text text-anchor="middle" x="508" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">••••••</text>\n</g>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M340,-423C329,-408 316,-393 305,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="298,-371 303,-377 305,-378 298,-371"/>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M367,-423C373,-408 381,-393 388,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="391,-379 383,-371 385,-378 391,-379"/>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M416,-423C436,-408 461,-393 480,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="483,-381 488,-371 478,-376 483,-381"/>\n';
+  svg += '<!-- LAYER 3: Sub-concepts under Science -->\n';
+  svg += '<g id="occam" class="node">\n<polygon fill="#fffaf2" stroke="#5a3e3e" stroke-width="1" points="564,-360 502,-360 502,-332 564,-332 564,-360"/>\n<text text-anchor="middle" x="533" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">••••••••</text>\n</g>\n';
+  svg += '<g id="tripod" class="node">\n<polygon fill="#fffaf2" stroke="#5a3e3e" stroke-width="1" points="672,-360 604,-360 604,-332 672,-332 672,-360"/>\n<text text-anchor="middle" x="638" y="-343" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">•••••••••</text>\n</g>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M567,-423C560,-408 552,-393 544,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="538,-372 545,-376 548,-378 538,-372"/>\n';
+  svg += '<path fill="none" stroke="#b8860b" stroke-width="2" d="M595,-423C603,-408 614,-393 623,-378"/>\n<polygon fill="#b8860b" stroke="#b8860b" points="626,-379 618,-371 620,-378 626,-379"/>\n';
+  svg += '<!-- LAYER 4: Meta-cognition -->\n';
+  svg += '<g id="insight" class="node">\n<polygon fill="#7b2d8e" stroke="#5a3e3e" stroke-width="1" points="166,-268 102,-268 102,-240 166,-240 166,-268"/>\n<text text-anchor="middle" x="134" y="-251" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="white">••••</text>\n</g>\n';
+  svg += '<g id="invert" class="node">\n<polygon fill="#7b2d8e" stroke="#5a3e3e" stroke-width="1" points="316,-268 254,-268 254,-240 316,-240 316,-268"/>\n<text text-anchor="middle" x="285" y="-251" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="white">••••••</text>\n</g>\n';
+  svg += '<g id="common" class="node">\n<polygon fill="#7b2d8e" stroke="#5a3e3e" stroke-width="1" points="428,-268 368,-268 368,-240 428,-240 428,-268"/>\n<text text-anchor="middle" x="398" y="-251" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="white">••••••</text>\n</g>\n';
+  svg += '<g id="owl" class="node">\n<polygon fill="#7b2d8e" stroke="#5a3e3e" stroke-width="1" points="538,-268 478,-268 478,-240 538,-240 538,-268"/>\n<text text-anchor="middle" x="508" y="-251" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="white">••••••••</text>\n</g>\n';
+  svg += '<!-- Edges to meta-cognition -->\n';
+  svg += '<path fill="none" stroke="#7b2d8e" stroke-width="1.5" stroke-dasharray="5,3" d="M134,-331C134,-316 134,-301 134,-286"/>\n<polygon fill="#7b2d8e" stroke="#7b2d8e" points="131,-286 134,-280 137,-286 131,-286"/>\n<text text-anchor="middle" x="150" y="-305" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#7b2d8e">••••</text>\n';
+  svg += '<path fill="none" stroke="#7b2d8e" stroke-width="1.5" stroke-dasharray="5,3" d="M285,-331C285,-316 285,-301 285,-286"/>\n<polygon fill="#7b2d8e" stroke="#7b2d8e" points="282,-286 285,-280 288,-286 282,-286"/>\n<text text-anchor="middle" x="298" y="-305" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#7b2d8e">••••</text>\n';
+  svg += '<path fill="none" stroke="#7b2d8e" stroke-width="1.5" stroke-dasharray="5,3" d="M398,-331C398,-316 398,-301 398,-286"/>\n<polygon fill="#7b2d8e" stroke="#7b2d8e" points="395,-286 398,-280 401,-286 395,-286"/>\n<text text-anchor="middle" x="412" y="-305" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#7b2d8e">••••</text>\n';
+  svg += '<path fill="none" stroke="#7b2d8e" stroke-width="1.5" stroke-dasharray="5,3" d="M508,-331C508,-316 508,-301 508,-286"/>\n<polygon fill="#7b2d8e" stroke="#7b2d8e" points="505,-286 508,-280 511,-286 505,-286"/>\n<text text-anchor="middle" x="520" y="-305" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#7b2d8e">••••</text>\n';
+  svg += '<!-- LAYER 5: Application outcomes -->\n';
+  svg += '<g id="app1" class="node">\n<polygon fill="#27ae60" stroke="#5a3e3e" stroke-width="1" points="56,-176 0,-176 0,-148 56,-148 56,-176"/>\n<text text-anchor="middle" x="28" y="-159" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="white">••••••</text>\n</g>\n';
+  svg += '<g id="app2" class="node">\n<polygon fill="#27ae60" stroke="#5a3e3e" stroke-width="1" points="160,-176 108,-176 108,-148 160,-148 160,-176"/>\n<text text-anchor="middle" x="134" y="-159" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="white">••••••</text>\n</g>\n';
+  svg += '<g id="app3" class="node">\n<polygon fill="#27ae60" stroke="#5a3e3e" stroke-width="1" points="272,-176 218,-176 218,-148 272,-148 272,-176"/>\n<text text-anchor="middle" x="245" y="-159" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="white">••••••</text>\n</g>\n';
+  svg += '<g id="app4" class="node">\n<polygon fill="#27ae60" stroke="#5a3e3e" stroke-width="1" points="380,-176 316,-176 316,-148 380,-148 380,-176"/>\n<text text-anchor="middle" x="348" y="-159" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="white">••••••</text>\n</g>\n';
+  svg += '<g id="app5" class="node">\n<polygon fill="#27ae60" stroke="#5a3e3e" stroke-width="1" points="484,-176 428,-176 428,-148 484,-148 484,-176"/>\n<text text-anchor="middle" x="456" y="-159" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="white">••••••</text>\n</g>\n';
+  svg += '<!-- Loop-back feedback edge -->\n';
+  svg += '<path fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6,4" d="M280,-148C280,-124 280,-80 320,-40 360,0 450,4 480,4 550,4 432,-20 432,-20"/>\n<polygon fill="#c0392b" stroke="#c0392b" points="425,-18 436,-7 428,-16 425,-18"/>\n<text text-anchor="middle" x="350" y="-90" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#c0392b">••••••••••••••••••••</text>\n';
+  svg += '<!-- Legend -->\n';
+  svg += '<rect x="660" y="-548" width="180" height="140" rx="5" fill="#fffaf2" stroke="#e8d5c4" stroke-width="1"/>\n<text x="670" y="-528" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f" font-weight="bold">••••</text>\n';
+  svg += '<rect x="668" y="-512" width="14" height="10" rx="2" fill="#c0392b"/><text x="688" y="-502" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#3d2f2f">••••••••</text>\n';
+  svg += '<rect x="668" y="-496" width="14" height="10" rx="2" fill="#d4a574"/><text x="688" y="-486" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#3d2f2f">••••••••</text>\n';
+  svg += '<rect x="668" y="-480" width="14" height="10" rx="2" fill="#7b2d8e"/><text x="688" y="-470" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#3d2f2f">••••••••</text>\n';
+  svg += '<rect x="668" y="-464" width="14" height="10" rx="2" fill="#27ae60"/><text x="688" y="-454" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#3d2f2f">••••••••</text>\n';
+  svg += '<line x1="668" y1="-446" x2="694" y2="-446" stroke="#c0392b" stroke-dasharray="6,4" stroke-width="1.2"/><text x="699" y="-443" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="7" fill="#3d2f2f">••••••</text>\n';
+  svg += '</g>\n</svg>';
+  document.getElementById('conceptMap').innerHTML = svg;
+}
+renderSVG();
+
+// ===== DASHBOARD CONCEPTS =====
+function renderConcepts(){
+  var grid=document.getElementById('conceptGrid');
+  grid.innerHTML=concepts.map(function(c,i){return '<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><strong>'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,60)+'...</p></div>';}).join('');
+  var mks=document.getElementById('mksCoreGrid');
+  mks.innerHTML=mksCoreIds.map(function(id){
+    var c=concepts.find(function(x){return x.id===id;});
+    return '<div class="concept-card mks-core"><strong>★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,80)+'...</p></div>';
+  }).join('');
+}
+renderConcepts();
+
+function updateProgress(){
+  var pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('totalProgress').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct>0?'学习进度 '+pct+'%（'+learnedCards.length+'/'+concepts.length+'）':'尚未开始学习';
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+}
+updateProgress();
+
+// ===== TAB 1: KNOWLEDGE CARDS =====
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ===== TAB 2: RANDOM QUIZ PRACTICE =====
+var currentQuestions = [];
+var userAnswers = {};
+var quizTimeLeft = 900;
+var quizTimerInterval = null;
+
+function startQuiz(){
+  var shuffled = [].concat(choiceQuestions).sort(function(){return Math.random()-0.5});
+  var essayShuffled = [].concat(shortQuestions).sort(function(){return Math.random()-0.5});
+  currentQuestions = shuffled.slice(0,10).concat(essayShuffled.slice(0,3));
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(function(){
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuizPractice();
+    }
+  },1000);
+}
+
+function updateQuizTimerDisplay(elemId){
+  var m = Math.floor(quizTimeLeft/60);
+  var s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuizPractice(){
+  var container = document.getElementById('quizContainer');
+  var html = '';
+  currentQuestions.forEach(function(q,i){
+    var opts = q.opts || q.options || q.o;
+    if(opts){
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+      opts.forEach(function(o,j){
+        var sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    }else{
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  var q = currentQuestions[qIdx];
+  var correctIdx = q.answer !== undefined ? q.answer : q.a;
+  var isCorrect = optIdx === correctIdx;
+  var allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach(function(el,j){
+    el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  var fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' '+(q.explain||'');
+  var correctCount = Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!(qi.opts||qi.options||qi.o)) return false;
+    var ci=qi.answer!==undefined?qi.answer:qi.a;
+    return v===ci;
+  }).length;
+  var totalChoice = currentQuestions.filter(function(q){return q.opts||q.options||q.o}).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuizPractice(){
+  var correctCount = Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!(qi.opts||qi.options||qi.o)) return false;
+    var ci=qi.answer!==undefined?qi.answer:qi.a;
+    return v===ci;
+  }).length;
+  var totalChoice = currentQuestions.filter(function(q){return q.opts||q.options||q.o}).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+}
+
+// ===== TAB 2: STATIC QUIZ =====
+function renderChoiceQuiz(){
+  var div=document.getElementById('choiceQuiz');
+  div.innerHTML=choiceQuestions.map(function(q,i){
+    var answered=quizAnswered.includes(i);
+    var correct=q.answer;
+    var opts=q.opts.map(function(o,j){
+      var cls='quiz-option';
+      if(answered){
+        if(j===correct)cls+=' correct';
+        else cls+=' wrong';
+      }
+      return '<div class="'+cls+'" onclick="'+(answered?'':'answerChoice('+i+','+j+',this)')+'">'+'ABCD'[j]+'. '+o+(answered&&j===correct?' ✓':'')+'</div>';
+    }).join('');
+    return '<div style="margin-bottom:14px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+  }).join('');
+}
+renderChoiceQuiz();
+
+function answerChoice(qIdx,choice,el){
+  if(quizAnswered.includes(qIdx))return;
+  var correct=choiceQuestions[qIdx].answer;
+  quizAnswered.push(qIdx);
+  if(choice!==correct){
+    wrongAnswers.push({type:'choice',idx:qIdx,question:choiceQuestions[qIdx].q,userAnswer:choiceQuestions[qIdx].opts[choice],correctAnswer:choiceQuestions[qIdx].opts[correct]});
+  }
+  save();
+  renderChoiceQuiz();
+}
+
+function renderShortQuiz(){
+  var div=document.getElementById('shortQuiz');
+  div.innerHTML=shortQuestions.map(function(q,i){
+    var revealed=shortRevealed.includes(i);
+    return '<div style="margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+(revealed?'<div style="margin-top:6px;padding:10px;background:#fef9f2;border-radius:6px;color:var(--text-light);font-size:.88rem">'+q.a+'</div>':'<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="revealShort('+i+')">查看参考思路</button>')+'</div>';
+  }).join('');
+}
+renderShortQuiz();
+
+function revealShort(i){if(!shortRevealed.includes(i)){shortRevealed.push(i);save();renderShortQuiz()}}
+
+// ===== TAB 3: EXAM MODE =====
+function startExam(){
+  if(examActive)return;
+  examActive=true;
+  examSeconds=15*60;
+  document.getElementById('startExamBtn').style.display='none';
+  document.getElementById('examResult').style.display='none';
+  var cIdx=[],sIdx=[];
+  while(cIdx.length<7){var r=Math.floor(Math.random()*choiceQuestions.length);if(!cIdx.includes(r))cIdx.push(r)}
+  while(sIdx.length<3){var r=Math.floor(Math.random()*shortQuestions.length);if(!sIdx.includes(r))sIdx.push(r)}
+  examQuestions={choice:cIdx,short:sIdx};
+  examAnswers=new Array(7).fill(-1);
+  renderExam();
+  document.getElementById('examArea').style.display='block';
+  examInterval=setInterval(updateTimer,1000);
+}
+
+function updateTimer(){
+  examSeconds--;
+  var m=Math.floor(examSeconds/60),s=examSeconds%60;
+  document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;
+  if(examSeconds<=0){submitExam()}
+}
+
+function renderExam(){
+  var div=document.getElementById('examArea');
+  var html='';
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var opts=q.opts.map(function(o,j){return '<div class="quiz-option" onclick="selectExam('+i+','+j+')" id="examOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';}).join('');
+    html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+  });
+  examQuestions.short.forEach(function(idx,i){
+    html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+8)+'. '+shortQuestions[idx].q+'</strong><p style="color:var(--text-light);font-size:.82rem;margin-top:4px">（简答题，请在心中作答后点击"提交"查看参考思路）</p></div>';
+  });
+  html+='<button class="btn btn-primary" onclick="submitExam()">提交答卷</button>';
+  div.innerHTML=html;
+}
+
+function selectExam(i,j){
+  examAnswers[i]=j;
+  for(var k=0;k<4;k++){var el=document.getElementById('examOpt'+i+'_'+k);if(el){el.classList.remove('selected');if(k===j)el.classList.add('selected')}}
+}
+
+function submitExam(){
+  clearInterval(examInterval);
+  examActive=false;
+  document.getElementById('examTimer').textContent='00:00';
+  var score=0;
+  var detail='';
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var user=examAnswers[i];
+    var correct=q.answer;
+    var isCorrect=user===correct;
+    if(isCorrect)score++;
+    else{wrongAnswers.push({type:'exam',idx:idx,question:q.q,userAnswer:user>=0?q.opts[user]:'未作答',correctAnswer:q.opts[correct]})}
+    detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:'+(isCorrect?'#eafaf1':'#fdecea')+'"><strong>'+(i+1)+'. '+q.q+'</strong><br>你的答案：'+(user>=0?q.opts[user]:'未作答')+' '+(isCorrect?'✓':'✗')+'<br>正确答案：'+q.opts[correct]+'</div>';
+  });
+  examQuestions.short.forEach(function(idx,i){
+    var q=shortQuestions[idx];
+    detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2"><strong>'+(i+8)+'. '+q.q+'</strong><br>'+q.a+'</div>';
+  });
+  save();
+  var pct=Math.round(score/7*100);
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML='<h3 style="color:'+(pct>=70?'var(--success)':'var(--accent)')+'">得分：'+score+'/7（'+pct+'%）</h3>'+detail+'<button class="btn btn-outline" onclick="document.getElementById(\'startExamBtn\').style.display=\'inline-block\';document.getElementById(\'examResult\').style.display=\'none\';document.getElementById(\'examArea\').style.display=\'none\';document.getElementById(\'examTimer\').textContent=\'15:00\'">重新考试</button>';
+  document.getElementById('examArea').style.display='none';
+}
+
+// ===== TAB 4: REVIEW =====
+function renderReview(){
+  var totalQ=quizAnswered.length;
+  var correctQ=quizAnswered.length-wrongAnswers.filter(function(w){return w.type==='choice'}).length;
+  var pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+  var days=Math.max(1,Math.ceil((Date.now()-new Date('2026-05-01').getTime())/86400000));
+  document.getElementById('statsGrid').innerHTML='<div class="card stat-item"><div class="stat-value">'+totalQ+'</div><div class="stat-label">总答题数</div></div><div class="card stat-item"><div class="stat-value">'+pct+'%</div><div class="stat-label">正确率</div></div><div class="card stat-item"><div class="stat-value">'+days+'</div><div class="stat-label">学习天数</div></div>';
+  var wb=document.getElementById('wrongBook');
+  if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--success)">暂无错题，继续保持！</p>';}
+  else{wb.innerHTML=wrongAnswers.map(function(w,i){return '<div style="margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0"><strong>'+w.question+'</strong><br><span style="color:var(--accent)">你的答案：'+w.userAnswer+'</span><br><span style="color:var(--success)">正确答案：'+w.correctAnswer+'</span></div>';}).join('');}
+  var conceptMap={};
+  wrongAnswers.forEach(function(w){
+    var qIdx=w.idx;
+    if(choiceQuestions[qIdx]){
+      var topic=choiceQuestions[qIdx].q.slice(0,10);
+      conceptMap[topic]=conceptMap[topic]||{topic:topic,count:0,questions:[]};
+      conceptMap[topic].count++;
+      conceptMap[topic].questions.push(w.question);
+    }
+  });
+  var sorted=Object.values(conceptMap).sort(function(a,b){return b.count-a.count});
+  document.getElementById('weakConcepts').innerHTML=sorted.length>0?sorted.map(function(c){return '<div style="margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px"><strong>错'+c.count+'题：</strong>'+c.questions[0].slice(0,40)+'...</div>';}).join(''):'<p style="color:var(--success)">暂无薄弱概念</p>';
+}
+
+// ===== TAB 5: MIND MAP TOGGLE =====
+function toggleMindmap(el){
+  if(typeof el==='string'){el=document.getElementById(el);if(!el)return;}
+  el.classList.toggle('open');
+  var children=el.nextElementSibling;
+  if(children)children.classList.toggle('open');
+}
+
+// ===== TAB 6: SOCRATIC TOGGLE =====
+function toggleSocratic(el){el.nextElementSibling.classList.toggle('open')}
+function toggleSocraticSub(el){el.nextElementSibling.classList.toggle('open')}
+
+// ===== TAB 8: DECISION SIMULATION =====
+function showDecision(scenarioIdx,optIdx){
+  var scenarios=[
+    [
+      {result:'F=ma告诉我们：质量大的系统（整个公司）不能瞬间转向。全面押注AI等于把航母原地掉头——大概率会翻。你的核心业务仍在增长，这是你最大的m（质量/惯性），也是你转型的资本。',mks:'牛顿第二定律F=ma + 积分效应：保留核心业务现金流（积分值），用增量资源探索AI（施力方向渐变）。正确策略是'+
+        '"渐进转型"而非"换道超车"。'},
+      {result:'这是最理性的选择。F=ma的思维：核心业务=公司当前的"速度"（巨大惯性），AI=需要施加的"外力"。保持原速度的同时逐步转向，是代价最小、成功率最高的路径。微软从Windows到Azure用了10年——没有一夜之间的"转型成功"。',mks:'牛顿第二定律F=ma + 积分延迟效应：转型是力的持续施加过程，不是瞬间"跳跃"。核心业务的现金流是转型的燃料（积分值）。'},
+      {result:'拆分听起来灵活，但违背了积分效应——两个独立公司的资源无法共享积累。而且拆分后AI公司失去核心业务的"引力锚"，容易在融资压力下做出短视决策。历史上"母体孵化+独立上市"比纯粹拆分更成功。',mks:'积分延迟效应 + 控制论：拆分破坏了反馈回路的完整性——核心业务和AI业务之间的知识、客户、资源反馈断裂。'}
+    ],
+    [
+      {result:'如果这是你职业生涯的"积分加速期"（30岁前积累高势能技能），大厂是不错的选择。但要注意：大厂的履历"镀金"效果是递减的——5年大厂经验的信号价值远低于2年。',mks:'积分延迟效应：职业竞争力=技能×时间的积分。大厂能给你技能密度更高的"被积函数"，但必须确保你真的在积累稀缺技能而非只是享受平台光环。'},
+      {result:'如果你28岁、没有家庭负担、有一定积蓄，这可能是正确的选择。积分效应：年轻时积累的"势能"（判断力、领导力、抗压能力）是未来释放的基础。创业即使失败，你积累的"积分值"（认知、人脉、经验）不会消失——它们会在下一个机会中释放。',mks:'积分延迟效应 + 势能积累：趁年轻聚集势能。创业的核心收益不是股权，是你获得的"从0到1"的全链路认知——这个积分值在大厂很难获得。'},
+      {result:'这可能是被低估的最优解。你过去5年积累的行业认知和人脉是巨大的积分值，换赛道意味着这个积分值大幅贬值。内部创新项目=在已有积分值基础上寻求更大的加速度——这正是F=ma的理想场景：利用已有"质量"（行业经验），施加新"力"（创新方向）。',mks:'积分延迟效应 + 牛顿第二定律F=ma：不抛弃已有积累（积分值），在此基础上升级（施加新方向的力量）。这是风险调整后收益最高的路径——前提是公司内部确实有创新空间。'}
+    ],
+    [
+      {result:'这是典型的教育"军备竞赛"思维。用奥卡姆剃刀分析：你增加的每一门课（每一个"实体"），是否真的增加了孩子的能力？如果答案模糊，就是在"增实体"。更危险的是，10门课同时上=10条信息信道同时轰炸——孩子的认知带宽(S/N)趋近于零。',mks:'奥卡姆剃刀 + 香农第二定律：教育不是堆积课程数量。儿童的认知带宽有限，10门课同时学=信噪比崩溃，实际学到的东西可能还不如1-2门课深入。'},
+      {result:'这正是奥卡姆剃刀的最佳应用——如无必要，勿增课程。选择1-2个方向的标准不是"别人在学什么"，而是"孩子在其中是否进入心流状态"。心流=高S/N信号——这是香农定律告诉你该保留的。一个兴趣方向+一项运动=认知发展+身体健康，足够了。',mks:'奥卡姆剃刀 + 香农定律：提高教育信噪比。选择孩子真正投入的1-2项，深度培养。大量研究证明：在1-2个领域达到前10%的能力，比在10个领域都达到前50%的能力，对未来的正面影响大得多。'},
+      {result:'完全不报班可能走向另一个极端。孩子需要一定的结构化学习来发展"延迟满足"和"刻意练习"的能力——这些不能仅靠旅行和阅读获得。奥卡姆剃刀不是"一刀切"，是"精准做减法"。保留最核心的1-2项，其余的旅行和阅读补充——这才是平衡。',mks:'奥卡姆剃刀 + 科学思维三要素中的"结论的有限性"：自然成长教育在某些场景有效（如培养好奇心），但不是万能药。结构化学习+自由探索的平衡是最优解。'}
+    ]
+  ];
+  var r=scenarios[scenarioIdx][optIdx];
+  var el=document.getElementById('decisionResult'+scenarioIdx);
+  el.style.display='block';
+  el.innerHTML='<div style="margin-bottom:6px"><strong>反馈：</strong>'+r.result+'</div><div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>'+r.mks+'</div>';
+}
+
+// ===== UTILITY =====
+function switchTab(idx){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelector('.tab-btn[data-tab="'+idx+'"]').classList.add('active');
+  document.getElementById('panel'+idx).classList.add('active');
+  if(idx===4)renderReview();
+}
+</script>
+</body>
+</html>

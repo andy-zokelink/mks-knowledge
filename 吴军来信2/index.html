@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吴军来信2 · 认知操作系统</title>
+<style>
+:root {
+  --bg: #08080e;
+  --surface: #0f0f18;
+  --card: #141420;
+  --accent: #c0392b;
+  --accent2: #e74c3c;
+  --accent3: #ff6b5b;
+  --gold: #d4a853;
+  --gold2: #f0d78c;
+  --warm: #c06030;
+  --teal: #3aa89e;
+  --text: #d0ccc4;
+  --text2: #98958a;
+  --text3: #5e5b52;
+  --border: rgba(255,255,255,.06);
+  --border2: rgba(255,255,255,.10);
+  --radius: 14px;
+  --shadow: 0 4px 32px rgba(0,0,0,.45);
+  --font-mono: "SF Mono","Cascadia Code","Consolas","Noto Sans Mono",monospace;
+  --font-sans: "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size: clamp(15px, 1.4vw, 17px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============ BACKGROUND ============ */
+.bg-grid{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events:none; z-index:0; opacity:.03;
+  background-image:
+    linear-gradient(rgba(192,57,43,.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,57,43,.15) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.bg-glow{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:min(900px,80vw); height:min(700px,60vh);
+  background:radial-gradient(ellipse at center,
+    rgba(192,57,43,.06) 0%,
+    rgba(212,168,83,.03) 30%,
+    transparent 70%);
+  pointer-events:none; z-index:0; border-radius:50%;
+}
+
+/* ============ PARTICLES ============ */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.particle{
+  position:absolute; border-radius:50%;
+  background:var(--accent);
+  animation:particleRise var(--d) linear infinite;
+  animation-delay:var(--delay); opacity:0;
+}
+@keyframes particleRise{
+  0%{opacity:0;transform:translateY(105vh) scale(0)}
+  5%{opacity:.6}
+  90%{opacity:.2}
+  100%{opacity:0;transform:translateY(-10vh) scale(1.5)}
+}
+
+/* ============ MAIN ============ */
+.main-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:56px 20px 80px}
+
+/* ============ HEADER / BOOT CONSOLE ============ */
+.boot-console{
+  margin-bottom:52px;
+  background:var(--surface);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.boot-header{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 16px;
+  background:rgba(0,0,0,.3);
+  border-bottom:1px solid var(--border);
+}
+.boot-dot{
+  width:10px;height:10px;border-radius:50%;
+}
+.boot-dot.r{background:#e74c3c}
+.boot-dot.y{background:#f0c040}
+.boot-dot.g{background:#3aa84e}
+.boot-title-bar{
+  flex:1;text-align:center;
+  font-size:.7rem;color:var(--text3);
+  font-family:var(--font-mono);letter-spacing:.06em;
+}
+.boot-body{
+  padding:28px 28px 32px;
+  font-family:var(--font-mono);
+  font-size:.78rem;
+  line-height:2;
+  color:var(--text2);
+}
+.boot-body .line{display:flex;align-items:baseline;gap:10px}
+.boot-body .prompt{color:var(--teal);flex-shrink:0}
+.boot-body .ok{color:#3aa84e;font-weight:700}
+.boot-body .highlight{color:var(--accent3);font-weight:700}
+.boot-body .gold{color:var(--gold)}
+.boot-body .dim{color:var(--text3)}
+.boot-body .blank{height:10px}
+
+/* Title block inside console */
+.boot-title-block{
+  text-align:center;padding:10px 0 4px;
+}
+.boot-title-block h1{
+  font-family:var(--font-sans);
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:900;
+  background:linear-gradient(180deg,var(--gold2) 0%,var(--gold) 35%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:.04em;
+  line-height:1.2;
+  margin-bottom:4px;
+}
+.boot-title-block .tagline{
+  font-family:var(--font-sans);
+  font-size:.85rem;color:var(--text2);
+  font-style:italic;letter-spacing:.04em;
+}
+.boot-stats{
+  display:flex;justify-content:center;gap:32px;
+  padding:16px 0 0; margin-top:8px;
+  border-top:1px dashed rgba(255,255,255,.06);
+  font-family:var(--font-sans);
+}
+.boot-stat{text-align:center}
+.boot-stat .num{
+  font-size:1.5rem;font-weight:800;
+  color:var(--accent3);
+  font-family:var(--font-mono);
+}
+.boot-stat .lbl{font-size:.7rem;color:var(--text3);margin-top:2px}
+
+/* ============ ARCHITECTURE DIVIDER ============ */
+.arch-label-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:28px; margin-bottom:44px; flex-wrap:wrap;
+}
+.arch-chip{
+  font-family:var(--font-mono);font-size:.68rem;
+  font-weight:700;letter-spacing:.1em;
+  padding:6px 16px;border-radius:4px;
+  border:1px solid;
+}
+.arch-chip.kernel{
+  color:var(--accent3);border-color:rgba(192,57,43,.3);
+  background:rgba(192,57,43,.08);
+}
+.arch-chip.io{
+  color:var(--teal);border-color:rgba(58,168,158,.3);
+  background:rgba(58,168,158,.06);
+}
+.arch-chip.user{
+  color:var(--gold);border-color:rgba(212,168,83,.25);
+  background:rgba(212,168,83,.05);
+}
+.arch-chip .icon{font-size:.85rem;margin-right:4px}
+
+/* ============ OS LAYERS ============ */
+.layers{display:flex;flex-direction:column;gap:0}
+
+/* Layer labels on the left */
+.layer-group{
+  position:relative;
+  padding-left:0;
+  margin-bottom:0;
+}
+.layer-label{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:12px;
+  padding-left:20px;
+}
+.layer-label .tag{
+  font-family:var(--font-mono);font-size:.65rem;
+  font-weight:700;letter-spacing:.14em;
+  padding:3px 10px;border-radius:3px;
+  text-transform:uppercase;
+}
+.layer-label .tag.kernel-tag{background:rgba(192,57,43,.15);color:var(--accent3);border:1px solid rgba(192,57,43,.2)}
+.layer-label .tag.io-tag{background:rgba(58,168,158,.1);color:var(--teal);border:1px solid rgba(58,168,158,.18)}
+.layer-label .tag.user-tag{background:rgba(212,168,83,.08);color:var(--gold);border:1px solid rgba(212,168,83,.15)}
+.layer-label .layer-desc{
+  font-size:.72rem;color:var(--text3);
+  font-family:var(--font-mono);letter-spacing:.04em;
+}
+
+/* ============ CARD: KERNEL ============ */
+.kernel-card{
+  display:block;text-decoration:none;color:inherit;
+  background:var(--card);
+  border:1px solid rgba(192,57,43,.18);
+  border-radius:var(--radius);
+  padding:32px 28px;
+  position:relative;overflow:hidden;
+  transition:all .4s cubic-bezier(.22,.61,.36,1);
+  margin-bottom:12px;
+  box-shadow: 0 0 60px rgba(192,57,43,.04), var(--shadow);
+}
+.kernel-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at 50% 0%, rgba(192,57,43,.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.kernel-card::after{
+  content:'';position:absolute;top:-1px;left:20%;width:60%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,107,91,.25),transparent);
+}
+.kernel-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(192,57,43,.35);
+  box-shadow: 0 0 80px rgba(192,57,43,.08), 0 12px 44px rgba(0,0,0,.5);
+}
+.kernel-card .k-icon{
+  font-size:2.4rem;margin-bottom:12px;display:block;
+  filter:drop-shadow(0 0 12px rgba(192,57,43,.4));
+}
+.kernel-card .k-num{
+  font-family:var(--font-mono);font-size:.65rem;font-weight:700;
+  letter-spacing:.14em;color:var(--accent);
+  margin-bottom:8px;
+}
+.kernel-card h2{
+  font-size:1.35rem;font-weight:800;color:#e8ddd0;
+  margin-bottom:8px;letter-spacing:.02em;
+}
+.kernel-card .k-desc{
+  font-size:.88rem;color:var(--text2);line-height:1.8;
+  margin-bottom:14px;max-width:600px;
+}
+.kernel-card .k-pills{
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.kernel-card .k-pill{
+  font-family:var(--font-mono);font-size:.68rem;
+  padding:4px 12px;border-radius:12px;
+  background:rgba(192,57,43,.08);
+  color:var(--accent3);
+  border:1px solid rgba(192,57,43,.15);
+}
+.kernel-card .k-count{
+  position:absolute;right:28px;bottom:28px;
+  font-family:var(--font-mono);font-size:.75rem;color:var(--text3);
+  display:flex;align-items:center;gap:6px;
+}
+.kernel-card .k-count .cnt{color:var(--accent3);font-size:1.3rem;font-weight:700}
+.kernel-card .k-arrow{
+  position:absolute;right:28px;top:50%;transform:translateY(-60%);
+  font-size:1.5rem;color:var(--text3);transition:all .35s;
+}
+.kernel-card:hover .k-arrow{color:var(--accent3);transform:translateY(-60%) translateX(4px)}
+@media(max-width:600px){
+  .kernel-card .k-arrow{display:none}
+  .kernel-card .k-count{position:static;margin-top:12px}
+}
+
+/* ============ CARD: I/O LAYER ============ */
+.io-card{
+  display:block;text-decoration:none;color:inherit;
+  background:var(--card);
+  border:1px solid rgba(58,168,158,.14);
+  border-radius:var(--radius);
+  padding:26px 28px;
+  position:relative;overflow:hidden;
+  transition:all .4s cubic-bezier(.22,.61,.36,1);
+  margin-bottom:12px;
+  box-shadow:var(--shadow);
+}
+.io-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at 50% 0%, rgba(58,168,158,.05) 0%, transparent 60%);
+  pointer-events:none;
+}
+.io-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(58,168,158,.3);
+  box-shadow:0 12px 44px rgba(0,0,0,.5);
+}
+.io-card .io-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.io-card .io-icon{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(58,168,158,.3))}
+.io-card .io-num{
+  font-family:var(--font-mono);font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;color:var(--teal);
+}
+.io-card h2{font-size:1.2rem;font-weight:700;color:#e0dcd4}
+.io-card .io-desc{font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.io-card .io-tags{display:flex;flex-wrap:wrap;gap:6px}
+.io-card .io-tag{
+  font-family:var(--font-mono);font-size:.66rem;
+  padding:3px 10px;border-radius:10px;
+  background:rgba(58,168,158,.06);
+  color:var(--teal);
+  border:1px solid rgba(58,168,158,.12);
+}
+.io-card .io-count{
+  position:absolute;right:28px;bottom:24px;
+  font-family:var(--font-mono);font-size:.75rem;color:var(--text3);
+  display:flex;align-items:center;gap:6px;
+}
+.io-card .io-count .cnt{color:var(--teal);font-size:1.2rem;font-weight:700}
+.io-card .io-arrow{
+  position:absolute;right:28px;top:50%;transform:translateY(-55%);
+  font-size:1.4rem;color:var(--text3);transition:all .35s;
+}
+.io-card:hover .io-arrow{color:var(--teal);transform:translateY(-55%) translateX(4px)}
+@media(max-width:600px){
+  .io-card .io-arrow{display:none}
+  .io-card .io-count{position:static;margin-top:8px}
+}
+
+/* ============ BUS / BACKPLANE CONNECTOR ============ */
+.bus-connector{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  margin:0 auto;padding:0;height:24px;position:relative;
+}
+.bus-connector .bus-line{
+  width:2px;height:100%;
+  background:linear-gradient(180deg,
+    rgba(58,168,158,.15) 0%,
+    rgba(58,168,158,.25) 40%,
+    rgba(192,57,43,.25) 60%,
+    rgba(192,57,43,.15) 100%);
+}
+.bus-connector .bus-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  position:absolute;left:50%;transform:translateX(-50%);
+  box-shadow:0 0 8px rgba(192,57,43,.3);
+}
+
+/* ============ USER SPACE GRID ============ */
+.user-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+@media(max-width:768px){.user-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.user-grid{grid-template-columns:1fr}}
+
+.app-card{
+  display:block;text-decoration:none;color:inherit;
+  background:var(--card);
+  border:1px solid rgba(212,168,83,.08);
+  border-radius:var(--radius);
+  padding:22px 20px;
+  position:relative;overflow:hidden;
+  transition:all .35s cubic-bezier(.22,.61,.36,1);
+  box-shadow:var(--shadow);
+}
+.app-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.15;transition:opacity .35s;
+}
+.app-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(212,168,83,.2);
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+}
+.app-card:hover::before{opacity:.4}
+.app-card .app-icon{font-size:1.3rem;margin-bottom:8px;display:block}
+.app-card .app-num{
+  font-family:var(--font-mono);font-size:.6rem;font-weight:700;
+  letter-spacing:.1em;color:var(--gold);
+  margin-bottom:6px;
+}
+.app-card h3{font-size:.95rem;font-weight:700;color:#e0dcd0;margin-bottom:6px;line-height:1.4}
+.app-card .app-desc{font-size:.75rem;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.app-card .app-count{
+  font-family:var(--font-mono);font-size:.7rem;color:var(--text3);
+}
+
+/* ============ FOOTER ============ */
+.footer{
+  text-align:center;margin-top:64px;padding-top:32px;
+  border-top:1px solid var(--border);
+}
+.footer a.home-link{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--text3);text-decoration:none;font-size:.85rem;
+  padding:8px 24px;border:1px solid rgba(212,168,83,.12);
+  border-radius:24px;transition:all .3s;
+}
+.footer a.home-link:hover{
+  color:var(--gold);border-color:rgba(212,168,83,.3);
+  background:rgba(212,168,83,.04);
+}
+.footer .copy{font-size:.7rem;color:var(--text3);margin-top:20px}
+
+/* ============ ANIMATIONS ============ */
+@keyframes bootFadeIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.boot-line-anim{animation:bootFadeIn .5s ease both}
+.boot-line-anim:nth-child(1){animation-delay:.1s}
+.boot-line-anim:nth-child(2){animation-delay:.3s}
+.boot-line-anim:nth-child(3){animation-delay:.5s}
+.boot-line-anim:nth-child(4){animation-delay:.7s}
+.boot-line-anim:nth-child(5){animation-delay:.9s}
+.boot-line-anim:nth-child(6){animation-delay:1.1s}
+
+.layer-anim{
+  opacity:0;animation:bootFadeIn .6s ease both;
+}
+.layer-anim:nth-child(1){animation-delay:.2s}
+.layer-anim:nth-child(2){animation-delay:.35s}
+.layer-anim:nth-child(3){animation-delay:.5s}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:600px){
+  .main-wrap{padding:36px 12px 56px}
+  .boot-body{padding:20px 16px 24px;font-size:.7rem}
+  .boot-stats{gap:20px}
+  .kernel-card{padding:24px 20px}
+  .kernel-card h2{font-size:1.15rem}
+  .io-card{padding:22px 18px}
+  .io-card h2{font-size:1.05rem}
+  .arch-label-row{gap:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="particles" id="particles"></div>
+
+<main class="main-wrap">
+
+<!-- ============ BOOT CONSOLE ============ -->
+<div class="boot-console">
+  <div class="boot-header">
+    <span class="boot-dot r"></span>
+    <span class="boot-dot y"></span>
+    <span class="boot-dot g"></span>
+    <span class="boot-title-bar">cognitive-os — bash — 80×24</span>
+  </div>
+  <div class="boot-body">
+    <div class="boot-title-block">
+      <h1>吴军来信2 · 认知操作系统</h1>
+      <p class="tagline">不讲「想什么」，讲「怎么想」</p>
+    </div>
+    <div class="blank boot-line-anim"></div>
+    <div class="line boot-line-anim">
+      <span class="prompt">os:~$</span>
+      <span>systemctl start cognitive-engine.service</span>
+    </div>
+    <div class="line boot-line-anim">
+      <span class="prompt">os:~$</span>
+      <span>Loading kernel modules: <span class="highlight">牛顿力学</span> <span class="dim">·</span> <span class="highlight">香农信息论</span> <span class="dim">·</span> <span class="highlight">奥卡姆剃刀</span> <span class="dim">·</span> 系统论 <span class="dim">·</span> 进化论</span>
+    </div>
+    <div class="line boot-line-anim">
+      <span class="prompt"></span>
+      <span>Initializing I/O subsystem <span class="dim">················</span> <span class="ok">[OK]</span></span>
+    </div>
+    <div class="line boot-line-anim">
+      <span class="prompt"></span>
+      <span>Mounting knowledge partitions <span class="dim">·············</span> <span class="ok">[OK]</span></span>
+    </div>
+    <div class="line boot-line-anim">
+      <span class="prompt">os:~$</span>
+      <span class="gold">System ready.</span> <span>7 cognitive processes running. <span class="gold">320</span> knowledge nodes loaded.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OS ARCHITECTURE LABELS ============ -->
+<div class="arch-label-row">
+  <span class="arch-chip kernel"><span class="icon">⚙</span>KERNEL SPACE</span>
+  <span class="dim" style="font-size:.7rem">→</span>
+  <span class="arch-chip io"><span class="icon">⇄</span>I/O SUBSYSTEM</span>
+  <span class="dim" style="font-size:.7rem">→</span>
+  <span class="arch-chip user"><span class="icon">⊞</span>USER SPACE</span>
+</div>
+
+<!-- ============ LAYER 0: KERNEL ============ -->
+<div class="layers">
+
+<div class="layer-group layer-anim">
+  <div class="layer-label">
+    <span class="tag kernel-tag">Layer 0 · Ring 0</span>
+    <span class="layer-desc">— 系统内核：定义所有上层运算的基本规则</span>
+  </div>
+  <a class="kernel-card" href="1-认知方法论与科学思维.html">
+    <span class="k-icon">🧠</span>
+    <div class="k-num">专题 1 / PROCESS ID 001</div>
+    <h2>认知方法论与科学思维</h2>
+    <p class="k-desc">牛顿力学、香农信息论、奥卡姆剃刀、系统论、进化论——用第一性原理重建元认知框架，形成可跨域迁移的思维操作系统内核。</p>
+    <div class="k-pills">
+      <span class="k-pill">牛顿</span>
+      <span class="k-pill">香农</span>
+      <span class="k-pill">奥卡姆剃刀</span>
+      <span class="k-pill">系统论</span>
+      <span class="k-pill">进化论</span>
+      <span class="k-pill">还原论</span>
+    </div>
+    <div class="k-count"><span class="cnt">48</span> 篇笔记</div>
+    <span class="k-arrow">→</span>
+  </a>
+</div>
+
+<!-- BUS CONNECTOR -->
+<div class="bus-connector"><div class="bus-line"></div></div>
+
+<!-- ============ LAYER 1: I/O ============ -->
+<div class="layer-group layer-anim">
+  <div class="layer-label">
+    <span class="tag io-tag">Layer 1 · I/O Bridge</span>
+    <span class="layer-desc">— 信息输入输出：认知系统与外部世界的交互接口</span>
+  </div>
+  <a class="io-card" href="2-信息与决策的底层逻辑.html">
+    <div class="io-header">
+      <span class="io-icon">📡</span>
+      <div>
+        <div class="io-num">专题 2 / PROCESS ID 010</div>
+        <h2>信息与决策的底层逻辑</h2>
+      </div>
+    </div>
+    <p class="io-desc">信息素养与辨别真伪、决策框架与逻辑谬误——在信息洪流中建立可靠的输入过滤器与输出决策链路。</p>
+    <div class="io-tags">
+      <span class="io-tag">信息素养</span>
+      <span class="io-tag">辨别真伪</span>
+      <span class="io-tag">决策框架</span>
+      <span class="io-tag">逻辑谬误</span>
+      <span class="io-tag">认知偏误</span>
+    </div>
+    <div class="io-count"><span class="cnt">44</span> 篇笔记</div>
+    <span class="io-arrow">→</span>
+  </a>
+</div>
+
+<!-- BUS CONNECTOR -->
+<div class="bus-connector"><div class="bus-line"></div></div>
+
+<!-- ============ LAYER 2: USER SPACE ============ -->
+<div class="layer-group layer-anim">
+  <div class="layer-label">
+    <span class="tag user-tag">Layer 2–6 · User Space</span>
+    <span class="layer-desc">— 应用层：内核认知模型在五个生活领域的具体运行实例</span>
+  </div>
+
+  <div class="user-grid">
+
+    <!-- App 3: 财富 -->
+    <a class="app-card" href="3-财富与经济的底层逻辑.html">
+      <span class="app-icon">💰</span>
+      <div class="app-num">PID 011 · 应用层</div>
+      <h3>财富与经济的底层逻辑</h3>
+      <p class="app-desc">财富本质、自由现金流、财商觉醒、市场原理——用系统思维透视经济规律</p>
+      <div class="app-count">48 篇笔记</div>
+    </a>
+
+    <!-- App 4: 教育 -->
+    <a class="app-card" href="4-教育的选择与迷思.html">
+      <span class="app-icon">🎓</span>
+      <div class="app-num">PID 100 · 应用层</div>
+      <h3>教育的选择与迷思</h3>
+      <p class="app-desc">选校策略、留学抉择、教育公平、通才与专才——用认知框架穿透教育迷思</p>
+      <div class="app-count">46 篇笔记</div>
+    </a>
+
+    <!-- App 5: 人性 -->
+    <a class="app-card" href="5-人性、关系与幸福.html">
+      <span class="app-icon">❤️</span>
+      <div class="app-num">PID 101 · 应用层</div>
+      <h3>人性、关系与幸福</h3>
+      <p class="app-desc">人性善恶、亲密关系、代沟理解、安全感建构——用多学科透镜照亮关系本质</p>
+      <div class="app-count">44 篇笔记</div>
+    </a>
+
+    <!-- App 6: 文明 -->
+    <a class="app-card" href="6-文明、历史与全球视野.html">
+      <span class="app-icon">🏛️</span>
+      <div class="app-num">PID 110 · 应用层</div>
+      <h3>文明、历史与全球视野</h3>
+      <p class="app-desc">埃及、法国、荷兰、德国、非洲——用文明比较框架洞察历史深处的底层逻辑</p>
+      <div class="app-count">46 篇笔记</div>
+    </a>
+
+    <!-- App 7: 经济/职场 -->
+    <a class="app-card" href="7-经济规律与职场进化.html">
+      <span class="app-icon">📊</span>
+      <div class="app-num">PID 111 · 应用层</div>
+      <h3>经济规律与职场进化</h3>
+      <p class="app-desc">内卷本质、裁员逻辑、创业真伪、行业趋势——用底层规律拆解社会现象</p>
+      <div class="app-count">44 篇笔记</div>
+    </a>
+
+  </div>
+</div>
+
+</div><!-- /layers -->
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+  <a class="home-link" href="../index.html">← 返回知识主板</a>
+  <div class="copy">吴军来信2 · 认知操作系统 · MKS 最小知识集</div>
+</div>
+
+</main>
+
+<script>
+// Generate floating particles
+(function(){
+  const c = document.getElementById('particles');
+  const colors = ['#c0392b','#d4a853','#e74c3c','#c06030','#ff6b5b'];
+  for(let i=0;i<40;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = [
+      'left:'+Math.random()*100+'%',
+      'width:'+(1+Math.random()*2)+'px',
+      'height:'+(1+Math.random()*2)+'px',
+      '--d:'+(8+Math.random()*18)+'s',
+      '--delay:'+(Math.random()*12)+'s',
+      'background:'+colors[Math.floor(Math.random()*colors.length)]
+    ].join(';');
+    c.appendChild(p);
+  }
+})();
+</script>
+
+</body>
+</html>

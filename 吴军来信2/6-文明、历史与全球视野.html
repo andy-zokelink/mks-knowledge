@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文明、历史与全球视野 · 最小知识集</title>
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #fffaf2;
+  --accent: #c0392b;
+  --accent-light: #e74c3c;
+  --text: #3d2f2f;
+  --text-light: #6b5b5b;
+  --border: #e8d5c4;
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --gold: #b8860b;
+  --success: #27ae60;
+  --warning: #e67e22;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:clamp(12px,3vw,24px)}
+h1{font-size:clamp(1.4rem,3vw,2rem);text-align:center;color:var(--accent);margin-bottom:4px}
+.subtitle{text-align:center;color:var(--text-light);font-size:clamp(.85rem,2vw,.95rem);margin-bottom:clamp(12px,3vw,20px)}
+
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; color:#fdf6ec; margin:0; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s; text-decoration:none;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; }
+
+/* Tab bar */
+.tab-bar{position:sticky;top:44px;z-index:99;display:flex;flex-wrap:wrap;gap:2px;background:var(--bg);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:0 0 auto;padding:clamp(6px,1.5vw,10px) clamp(8px,2vw,14px);border:none;background:var(--card);color:var(--text);cursor:pointer;border-radius:6px 6px 0 0;font-size:clamp(.7rem,1.6vw,.85rem);white-space:nowrap;transition:all .2s;border:1px solid var(--border);border-bottom:none}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn:hover:not(.active){background:#f5e6d3}
+.tab-panel{display:none;animation:fadeIn .35s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--card);border-radius:10px;padding:clamp(14px,3vw,20px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.card h3{color:var(--accent);font-size:clamp(1rem,2.2vw,1.2rem);margin-bottom:8px;border-bottom:2px solid var(--border);padding-bottom:6px}
+.mks-star{display:inline-block;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:6px;vertical-align:middle}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.concept-card{background:var(--card);border-radius:10px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(60,20,10,.12)}
+.concept-card.mks-core{border-left:4px solid var(--accent);background:linear-gradient(135deg,#fffaf2 0%,#fff0e6 100%)}
+.progress-bar{height:10px;border-radius:5px;background:var(--border);overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .4s}
+.btn{display:inline-block;padding:clamp(7px,1.5vw,10px) clamp(14px,2.5vw,20px);border:none;border-radius:6px;cursor:pointer;font-size:clamp(.82rem,1.8vw,.9rem);transition:all .2s;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:4px 12px;font-size:.78rem}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+
+/* Flip card */
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+
+/* Quiz */
+.quiz-option{display:block;width:100%;text-align:left;padding:clamp(10px,2vw,14px) 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;transition:all .2s;font-size:clamp(.82rem,1.8vw,.9rem)}
+.quiz-option:hover{border-color:var(--accent);background:#fff5f0}
+.quiz-option.correct{border-color:var(--success);background:#eafaf1;color:var(--success)}
+.quiz-option.wrong{border-color:var(--accent);background:#fdecea;color:var(--accent)}
+.quiz-option.selected{border-color:var(--accent)}
+.timer{font-size:1.5rem;font-weight:bold;color:var(--accent);text-align:center;margin:8px 0}
+
+/* Stats */
+.stat-item{text-align:center;padding:12px}
+.stat-value{font-size:clamp(1.4rem,3vw,2rem);font-weight:bold;color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--text-light)}
+
+/* Tree */
+.tree-node{margin-left:20px;border-left:2px solid var(--border);padding-left:12px}
+.tree-toggle{cursor:pointer;user-select:none;font-weight:600;color:var(--accent);padding:4px 0;display:flex;align-items:center;gap:6px}
+.tree-toggle::before{content:"▸";display:inline-block;transition:transform .2s;font-size:.7rem}
+.tree-toggle.open::before{transform:rotate(90deg)}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-leaf{padding:3px 0;color:var(--text-light);font-size:.9rem}
+
+/* Socratic */
+.socratic-q{background:var(--card);border-radius:8px;padding:12px 16px;margin:8px 0;border:1px solid var(--border);cursor:pointer}
+.socratic-q .q-text{font-weight:600;color:var(--accent)}
+.socratic-a{display:none;padding:10px 16px;margin:4px 0 12px 16px;border-left:3px solid var(--accent);color:var(--text-light);font-size:.9rem}
+.socratic-a.open{display:block}
+.socratic-sub{display:none;margin-left:16px}
+.socratic-sub.open{display:block}
+
+/* Decision */
+.decision-scenario{background:var(--card);border-radius:10px;padding:16px;border-left:4px solid var(--gold);margin:12px 0}
+.decision-options{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.decision-opt{padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:var(--card);transition:all .2s}
+.decision-opt:hover{border-color:var(--gold);background:#fffdf5}
+.decision-result{display:none;padding:12px;margin-top:10px;border-radius:8px;background:#fffdf5;border:1px solid var(--gold)}
+
+/* Tables */
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.6vw,.88rem)}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px;text-align:left}
+.boundary-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:#fef9f2}
+
+/* SVG */
+.svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:#fffefb;padding:8px}
+.svg-wrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+
+/* Tags */
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.72rem;margin:2px;background:#fef0e0;color:var(--accent)}
+
+/* Quiz practice system */
+#quizContainer .quiz-card{background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(60,30,30,.07);padding:20px;margin-bottom:14px}
+#quizContainer .quiz-card .q-num{font-weight:700;color:var(--accent);margin-bottom:6px}
+#quizContainer .quiz-card .q-text{font-size:.95rem;margin-bottom:12px;line-height:1.6}
+#quizContainer .quiz-card .option{display:block;padding:8px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:.88rem;background:var(--card)}
+#quizContainer .quiz-card .option:hover{background:#fff5f0;border-color:var(--accent)}
+#quizContainer .quiz-card .option.selected{background:#ffe8e4;border-color:var(--accent);color:var(--accent);font-weight:600}
+#quizContainer .quiz-card .option.correct{background:#d4edda!important;border-color:var(--success)!important;color:#155724!important}
+#quizContainer .quiz-card .option.wrong{background:#f8d7da!important;border-color:var(--accent)!important;color:#721c24!important}
+#quizContainer .quiz-card .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.85rem;line-height:1.5}
+#quizContainer .quiz-card .feedback.correct{background:#d4edda;color:#155724}
+#quizContainer .quiz-card .feedback.wrong{background:#f8d7da;color:#721c24}
+#quizContainer .essay-area{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:inherit;font-size:.88rem;resize:vertical;background:var(--card)}
+
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .tab-bar{flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <h1>文明、历史与全球视野 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
+</div>
+
+<div class="container">
+
+<p class="subtitle">吴军来信2 · 认知操作系统之文明模块——埃及/法国/荷兰/德国/非洲旅行中的文明洞察，不讲历史故事，讲文明运行的底层机制。与硅谷来信1「历史与文明对话」形成互补。</p>
+
+<!-- Tab Bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="0">知识集总览</button>
+  <button class="tab-btn" data-tab="1">知识卡片</button>
+  <button class="tab-btn" data-tab="2">题库系统</button>
+  <button class="tab-btn" data-tab="3">考试模式</button>
+  <button class="tab-btn" data-tab="4">复习模式</button>
+  <button class="tab-btn" data-tab="5">思维导图</button>
+  <button class="tab-btn" data-tab="6">深度追问</button>
+  <button class="tab-btn" data-tab="7">案例分析</button>
+  <button class="tab-btn" data-tab="8">实战决策</button>
+</div>
+
+<!-- Tab 0: Dashboard -->
+<div class="tab-panel active" id="panel0">
+
+<div class="card">
+<h3>核心目标</h3>
+<p style="font-size:clamp(.95rem,2vw,1.05rem);line-height:1.8">通过科学原理（牛顿、香农、奥卡姆等）作为认知透镜，<strong>重建对文明、历史与全球化的思考方式</strong>——不讲「想什么」，讲「怎么想」。理解历史记载为何靠不住、文明为何循环停滞、陆权海权如何塑造政治制度、文化自信的真正含义，以及个体如何在历史偶然性中安放自己的人生。</p>
+</div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">10大核心概念</h3>
+<div class="grid-2" id="conceptGrid"></div>
+
+<h3 style="color:var(--accent);margin:16px 0 10px">★ 最小知识集核心（骨架中的骨架）</h3>
+<div class="grid-2" id="mksCoreGrid"></div>
+
+<div class="card" style="margin-top:14px">
+<h3>学习进度</h3>
+<div class="progress-bar"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.85rem;color:var(--text-light)" id="progressText">尚未开始学习</p>
+</div>
+
+<div class="card">
+<h3>概念关系图</h3>
+<div class="svg-wrap" id="conceptMap"></div>
+</div>
+
+<div class="card">
+<h3>边界知识表（12条 · 知道存在即可）</h3>
+<div style="overflow-x:auto">
+<table class="boundary-table">
+<thead><tr><th>知识点</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td>拉美西斯二世篡改卡迭石之战记录</td><td>理解历史记载失真时举例</td></tr>
+<tr><td>司马光砸缸故事真实性存疑（北宋无制缸技术）</td><td>讨论技术局限导致历史错误</td></tr>
+<tr><td>埃及"法老诅咒"是文学渲染的文化现象</td><td>区分历史事实与流行文化</td></tr>
+<tr><td>莎士比亚十四行诗第18首的结构（ABAB CDCD EFEF GG）</td><td>理解英语诗歌格律传统</td></tr>
+<tr><td>麦金德《陆权论》原名为《民主的理想与现实》</td><td>地缘政治讨论的背景知识</td></tr>
+<tr><td>阿斯旺大坝未修船闸导致尼罗河航运中断</td><td>大型工程的生态评估案例</td></tr>
+<tr><td>阿布辛贝神庙阳光每年2月21日和10月21日照入深处</td><td>古埃及天文数学水平例证</td></tr>
+<tr><td>托勒密王朝创造主神塞拉比斯融合希腊-埃及宗教</td><td>理解文化融合的政治手段</td></tr>
+<tr><td>罗塞塔石碑刻有圣书体、世俗体、希腊语三种文字</td><td>商博良破解象形文字的关键</td></tr>
+<tr><td>荷兰东印度公司是全球第一家跨国公司</td><td>商业文明起源的例证</td></tr>
+<tr><td>爱尔兰大饥荒的根本原因是英国的经济制度而非天灾</td><td>制度决定命运的历史案例</td></tr>
+<tr><td>伯克《法国革命论》预言了革命后的恐怖统治</td><td>保守主义思想的经典文献</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>学习路径（5阶段推荐顺序）</h3>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">1</span><div><strong>建立认知框架：</strong>先学「历史宜粗不宜细」+「历史偶然性」+「大历史视角」，这是理解一切历史问题的认知前提</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">2</span><div><strong>深化文明机制：</strong>学「文明的距离30米」+「陆权与海权」+「文明循环与停滞」，理解文明运行的底层逻辑</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">3</span><div><strong>连接当代实践：</strong>学「文化自信即开放」+「技术静默积累」+「规则而非道德」，将历史认知转化为现实判断力</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">4</span><div><strong>个体行动层面：</strong>学「个体书写历史」+「文明对话」，理解个人选择如何参与历史进程</div></div>
+<div style="display:flex;align-items:center;gap:12px"><span style="background:var(--accent);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">5</span><div><strong>整合应用：</strong>用全部10个概念分析现实问题（如中美关系、全球化争议、个人职业选择），形成条件反射式的认知透镜</div></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 1: Knowledge Cards -->
+<div class="tab-panel" id="panel1">
+<div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+<div class="flip-nav">
+  <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+  <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+  <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+</div>
+<div style="text-align:center;margin:8px 0">
+  <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+<p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: Quiz System -->
+<div class="tab-panel" id="panel2">
+<h3 style="margin-bottom:10px">题库系统</h3>
+<div style="margin-bottom:12px">
+  <button class="btn" onclick="startQuiz()">🎲 随机抽题练习</button>
+  <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:8px">重置</button>
+  <span style="margin-left:8px;font-size:.85rem;color:var(--text-light)" id="quizScore"></span>
+  <span id="quizTimer" style="float:right;color:var(--accent);font-weight:700"></span>
+</div>
+<div id="quizContainer"></div>
+<div id="staticQuiz" style="display:none">
+<div class="card"><h3>选择题（共20题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">点击选项作答，即时判分。错题自动收入错题本。</p>
+<div id="choiceQuiz"></div>
+</div>
+<div class="card"><h3>简答题（共10题）</h3>
+<p style="color:var(--text-light);font-size:.85rem">先自己思考，再点击查看参考答案。</p>
+<div id="shortQuiz"></div>
+</div>
+</div>
+</div>
+
+<!-- Tab 3: Exam Mode -->
+<div class="tab-panel" id="panel3">
+<div class="card" style="text-align:center">
+<h3>考试模式</h3>
+<p style="color:var(--text-light)">从题库随机抽取 <strong>7道选择题 + 3道简答题</strong>，限时 <strong>15分钟</strong></p>
+<div class="timer" id="examTimer">15:00</div>
+<button class="btn btn-primary" onclick="startExam()" id="startExamBtn">开始考试</button>
+<div id="examArea" style="display:none"></div>
+<div id="examResult" style="display:none"></div>
+</div>
+</div>
+
+<!-- Tab 4: Review Mode -->
+<div class="tab-panel" id="panel4">
+<div class="grid-3" id="statsGrid"></div>
+<div class="card"><h3>错题本</h3><div id="wrongBook"></div></div>
+<div class="card"><h3>概念薄弱点分析</h3><div id="weakConcepts"></div></div>
+</div>
+
+<!-- Tab 5: Mind Map -->
+<div class="tab-panel" id="panel5">
+<div class="card"><h3>文明、历史与全球视野 · 思维导图</h3>
+<div id="mindmap">
+<div class="tree-node"><div class="tree-toggle open">一、历史认知方法（3个概念）</div><div class="tree-children open">
+<div class="tree-leaf">c1 历史宜粗不宜细 → 细节失真但轮廓可信，把握宏观趋势比深究细节更重要</div>
+<div class="tree-leaf">c2 历史偶然性 → 必然性周期远超个体寿命，偶然性对个人命运影响更显著</div>
+<div class="tree-leaf">c5 大历史视角 → 将事件置于广阔时空背景，避免不当的历史类比</div>
+</div></div>
+<div class="tree-node"><div class="tree-toggle open">二、文明运行机制（3个概念）</div><div class="tree-children open">
+<div class="tree-leaf">c3 文明的距离30米 → 私人空间自律源于产权清晰，公共空间放纵源于责任分散</div>
+<div class="tree-leaf">c4 陆权与海权 → 地理决定政治制度：陆权→集权君主制，海权→分权联盟制</div>
+<div class="tree-leaf">c6 文明循环与停滞 → 古埃及早期高度发达后近千年无显著进步</div>
+</div></div>
+<div class="tree-node"><div class="tree-toggle open">三、当代应用透镜（2个概念）</div><div class="tree-children open">
+<div class="tree-leaf">c7 文化自信即开放 → 真正自信的国家对外更包容而非排斥，法国20年变化的启示</div>
+<div class="tree-leaf">c8 技术静默积累 → 无人驾驶在公众舆论摇摆中成熟，泡沫有商业价值</div>
+</div></div>
+<div class="tree-node"><div class="tree-toggle open">四、个体行动层面（2个概念）</div><div class="tree-children open">
+<div class="tree-leaf">c9 个体书写历史 → 240年前费城代表的选择塑造美国，每个人的选择都在累积历史</div>
+<div class="tree-leaf">c10 规则而非道德 → 社会进步依赖规则优化而非道德提升，制度防范自私行为</div>
+</div></div>
+<div class="tree-node"><div class="tree-toggle open">五、旅行中的文明洞察（补充视角）</div><div class="tree-children open">
+<div class="tree-leaf">埃及：尼罗河东岸=生，西岸=死 → 生死观的空间编码</div>
+<div class="tree-leaf">法国：巴黎≠法国，外省更保守 → 文明不是铁板一块</div>
+<div class="tree-leaf">荷兰：从海上帝国到小国 → 陆权海权博弈的现代案例</div>
+<div class="tree-leaf">德国：守规矩的另一面是信任社会 → 规则与自由的辩证关系</div>
+<div class="tree-leaf">非洲：不存在只有你一个人发现的好事 → 信息对称的经济学洞察</div>
+</div></div>
+</div></div>
+</div>
+
+<!-- Tab 6: Socratic Dialogue -->
+<div class="tab-panel" id="panel6">
+<div class="card"><h3>深度追问</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">点击问题展开答案，逐层深入思考</p>
+<div id="socratic">
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">1. 为什么说"宜粗不宜细"是一种科学的认知策略，而不只是偷懒？</span></div>
+<div class="socratic-a">因为历史记载的信息质量本身就不支持"细"——记录者按当时需求而非事实撰写（所有历史都是当代史），技术局限导致无意的错误（北宋没有能装小孩的缸），以及人为篡改（拉美西斯二世窃取他人战功）。当你用有噪声的数据做精细分析时，结论的可靠性反而更低。这本质上是一个信噪比问题：细节中的噪声比例远高于轮廓中的噪声比例。所以"宜粗不宜细"不是偷懒，是在低信噪比数据下的理性策略。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那历史岂不是完全不可信了？</span></div>
+<div class="socratic-sub">不是完全不可信，而是要知道信什么、不信什么。宏观趋势可信——比如古埃及文明确实存在且高度发达；但具体细节不可信——比如某场战役的具体人数、某位法老的英雄事迹。类似统计学：大样本的均值可靠，单个数据点可能全是噪声。所以学习历史的重点应是"了解历史脉络"而非"深究细节、提取经验"。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">2. 如果历史是偶然的，那"以史为鉴"还有意义吗？</span></div>
+<div class="socratic-a">有意义，但意义不在"预测"而在"扩容"。历史为你提供更多的人生参照系，让你在面对自己的困境时能够"看得开"——你今天的挫折，在历史的长河中微不足道。沈志华教授的案例：他人生多次重大挫折，但研究历史后认识到个人遭遇与历史上的苦难无法相提并论，形成了宠辱不惊的心态。历史不是给你答案的题库，而是帮你校准心灵的天平。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 但历史中难道没有规律吗？技术总是进步的，文明总是发展的？</span></div>
+<div class="socratic-sub">注意"总是"这个词。古埃及在第四王朝（公元前2600年）建造了金字塔，此后近3000年不但没有超越，反而退步——新王朝之后近1000年无显著进步。历史的"必然进步"叙事本身就是一种后见之明。每个时代的人面前都有无数可能的未来，我们事后挑出那个实现了的路径，就说它是"必然"——这是幸存者偏差的另一种形式。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">3. "文明的距离30米"为什么不是道德问题而是制度问题？</span></div>
+<div class="socratic-a">因为在私人空间（30米内），产权清晰、后果直接——你在自己家乱扔垃圾，最终是你自己打扫；但在公共空间，责任分散、后果延迟——你在地铁站乱扔垃圾，今天不是你打扫，甚至永远没有人知道是你。不是人在公园里变坏了，而是公园的规则约束比家里弱。所以解决方案不是道德说教（"人应该文明"），而是制度设计（罚款、监控、产权明晰）。美国天价财产官司的威慑力比任何道德教育都有效。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那道德教育的价值在哪里？</span></div>
+<div class="socratic-sub">道德教育有价值，但它的天花板很低——它只能影响那些已经在私人空间里表现良好的人向公共空间做有限的延伸。真正解决公共空间失范问题的是制度。亚当·斯密说"我们不是靠屠夫的仁慈获得晚餐，而是靠他对自身利益的关注"——文明的秩序建立在对自私的承认和约束上，而非对无私的幻想上。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">4. 陆权国家走向集权、海权国家走向分权——这个规律在今天还成立吗？</span></div>
+<div class="socratic-a">仍然成立，但形式变了。现代科技（铁路、电报→互联网、5G）使陆权国家的控制能力大幅增强，而海权国家的优势（贸易成本低、信息流通快）依然存在。当代的"海权"已不完全是军舰和商船，而是对全球供应链、数据流动和金融网络的控制。中国既是一个传统陆权国家（大陆面积大），也是一个新兴海权力量（全球最大贸易国、海军现代化）。真正的启示是：地理条件设定了制度选择的初始约束，但科技进步不断重写约束条件。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那内陆国家注定没有出路吗？</span></div>
+<div class="socratic-sub">不是注定，但确实面临更大的挑战。麦金德本人也承认科技改变了条件——铁路使陆地交通效率接近海洋。今天的数字经济和空运进一步缩小了差距。但80%的国际贸易仍走海运（成本仅为铁路的1/4），所以沿海的地理优势是结构性的。内陆国家的出路在于：区域一体化（如欧盟内部）、高价值轻量产品（如瑞士钟表、芯片）、以及数字经济（不依赖物理运输）。</div>
+</div>
+
+<div class="socratic-q" onclick="toggleSocratic(this)"><span class="q-text">5. 为什么说"规则而非道德"是现代社会的基石？</span></div>
+<div class="socratic-a">因为对人性有两种假设，以及由此产生的两种社会设计方案。假设一：人是善良的/可教育好的 → 道德说教 → 结果：公共场所秩序失控（过度理想化）。假设二：人是自私的且难教育 → 制度防范 → 结果：通过规则约束自私行为的边界。美国国父立宪时明确"不相信人的善意"，现代经济学以"人是自私的"为基础假设。这不是悲观，是务实——认识到人性局限，才能设计出不被人性摧毁的制度。
+<div class="socratic-q" onclick="event.stopPropagation();toggleSocraticSub(this)" style="margin-top:8px"><span class="q-text">↳ 那会不会导致"制度万能论"？什么都可以靠制度解决？</span></div>
+<div class="socratic-sub">制度的边界在于：它只能约束可观察的行为，无法规定内心的态度。法律可以禁止歧视，但无法消除偏见；规则可以处罚插队，但无法让人真心排队。所以"规则而非道德"说的是底线思维——用规则守住文明的下限，用文化和教育去争取文明的上限。两者不是替代关系，是分工关系。</div>
+</div>
+</div></div></div>
+
+<!-- Tab 7: Case Study -->
+<div class="tab-panel" id="panel7">
+<div class="card"><h3>案例分析：用MKS拆解「古埃及文明的循环停滞之谜」</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px">
+  <div class="card"><strong style="color:var(--accent)">背景</strong><p style="font-size:.85rem;margin-top:4px">古埃及在公元前2600年左右的第四王朝建造了吉萨三大金字塔，此后经历了中王朝、新王朝的复兴，但在新王朝（公元前11世纪）之后，文明进入了近1000年的停滞和衰落期。</p></div>
+  <div class="card"><strong style="color:var(--accent)">现象</strong><p style="font-size:.85rem;margin-top:4px">一个在公元前3000年就掌握了勾股定理、建造了世界最高建筑（胡夫金字塔保持了3800年的纪录）的文明，在接下来的3000年里不但没有超越，甚至无法复制自己的早期成就。</p></div>
+  <div class="card"><strong style="color:var(--accent)">对比</strong><p style="font-size:.85rem;margin-top:4px">同期其他文明：古希腊从城邦走向哲学科学繁荣，中国从商周走向秦汉大一统，罗马从城邦走向帝国。埃及却"原地踏步"。</p></div>
+  <div class="card"><strong style="color:var(--accent)">核心问题</strong><p style="font-size:.85rem;margin-top:4px">为什么一个起点如此之高的文明会陷入千年级别的停滞？这个问题对今天的中国、美国等"高峰文明"有直接的警示意义。</p></div>
+</div>
+<div class="card" style="border-left:4px solid var(--gold)">
+<h3>MKS四维度拆解</h3>
+<div style="margin:8px 0"><strong style="color:var(--accent)">1. 文明循环与停滞（c6）：</strong>古埃及的停滞并非个别现象，而是"循环文明"的典型特征——在达到一个技术-制度均衡后，路径依赖锁死了所有创新空间。具体机制：（1）尼罗河的规律性洪水使农业极度稳定，不需要技术创新来应对环境变化；（2）法老-祭司的神权体制从内部消除了挑战权威的动力；（3）多神教体系使"地方神升格"成为权力竞争的核心，而非技术创新。当一个文明的所有精英都在争夺同一个零和蛋糕（神权合法性）时，生产力边界的拓展就停止了。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">2. 历史偶然性（c2）：</strong>新王朝的崛起本身就是偶然事件——第十七王朝底比斯地方权贵赶走喜克索斯人，建立了第十八王朝，阿肯那顿、图坦卡蒙、拉美西斯二世等著名法老均出自此时期。但这个"偶然的复兴"未能改变文明停滞的趋势——因为制度框架（神权+集权）没有变。偶然性能掀起浪花，但改不了洋流方向。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">3. 陆权与海权（c4）：</strong>埃及本质上是一个极端的陆权文明——尼罗河虽然是水路，但它是封闭的内河系统，不连接广阔的贸易网络。埃及从未发展出古希腊、荷兰那样的商业文明和海外冒险精神。陆权文明的自给自足倾向使埃及精英缺乏"向外看"的动力——亚历山大大帝征服后才为埃及打开了地中海视野。</div>
+<div style="margin:8px 0"><strong style="color:var(--accent)">4. 技术静默积累（c8）的反例：</strong>古埃及的技术有积累但没有突破——他们在采石、运输、建筑方面达到了令人惊叹的水平，但这些技术都是"经验性"的而非"理论性"的。他们没有发展出古希腊那样的公理化数学、形式逻辑和实验科学。技术静默积累如果永远停留在"默会知识"（tacit knowledge）层面而不进入"编码知识"（codified knowledge）层面，就无法产生累积性的进步。</div>
+</div>
+<div class="card" style="margin-top:12px">
+<h3>当代启示</h3>
+<p style="line-height:1.8">今天的中国和美国都是"高峰文明"。但埃及的教训是：<strong>高峰之后不是必然上升，也可能是千年级别的停滞。</strong>警惕信号包括：（1）精英的竞争全部集中在零和领域（如权力、身份、符号），而非正和领域（如科技、制度、文化创新）；（2）既有的成功模式被视为"永恒正确"，所有偏离都被视为错误；（3）对外来思想从开放转向防御——托勒密王朝时期的埃及已成为西方学术中心，但伊斯兰化后的埃及失去了这个角色。真正的文化自信不是捍卫过去，而是拥抱未来。</p>
+</div>
+</div>
+</div>
+
+<!-- Tab 8: Decision Simulation -->
+<div class="tab-panel" id="panel8">
+<div class="card"><h3>实战决策模拟</h3><p style="color:var(--text-light);font-size:.85rem;margin-bottom:10px">3轮决策模拟，每轮3个选项，选择后查看MKS分析</p>
+<div id="decisionSim">
+<div class="decision-scenario">
+  <strong>第1轮：</strong>你是一家中国新能源车企的海外战略负责人，正在考虑是否参加CES 2025展示产品。已知：参展成本约50万美元；中国参展企业的签证通过率仅10-30%；但CES是接触全球买家和投资人的最佳平台。你应该？
+  <div class="decision-options">
+    <div class="decision-opt" onclick="showDecision(0,0)">A. 坚持参展——即使签证风险大，CES的品牌效应无法替代</div>
+    <div class="decision-opt" onclick="showDecision(0,1)">B. 放弃CES，转投港博会等亚洲平台，降低地缘政治风险</div>
+    <div class="decision-opt" onclick="showDecision(0,2)">C. 双线布局：CES派当地团队参展，同时在港博会设置主场展位</div>
+  </div>
+  <div class="decision-result" id="decisionResult0"></div>
+</div>
+
+<div class="decision-scenario">
+  <strong>第2轮：</strong>你的团队正在开发一个面向非洲市场的移动支付产品。调研发现：南撒哈拉国家现金社会、高通胀（37%）、ATM取现受限、手机普及率不低但智能机占比低。你的核心策略应该是？
+  <div class="decision-options">
+    <div class="decision-opt" onclick="showDecision(1,0)">A. 照搬中国移动支付模式（扫码支付），利用中国的成熟经验</div>
+    <div class="decision-opt" onclick="showDecision(1,1)">B. 从USSD功能机支付入手，待智能机普及后再升级</div>
+    <div class="decision-opt" onclick="showDecision(1,2)">C. 以黄金为锚定物，设计基于黄金价格的数字钱包</div>
+  </div>
+  <div class="decision-result" id="decisionResult1"></div>
+</div>
+
+<div class="decision-scenario">
+  <strong>第3轮：</strong>你在法国收购了一家百年家族企业。法国团队对"中国老板"保持礼貌但疏离。当地媒体报道中出现了"文化入侵"的负面声音。你应该如何应对？
+  <div class="decision-options">
+    <div class="decision-opt" onclick="showDecision(2,0)">A. 强调中国市场的增长前景，用商业利益说服团队和公众</div>
+    <div class="decision-opt" onclick="showDecision(2,1)">B. 保持原管理团队不变，自己退居幕后，只参与战略决策，通过本地化运营消除敌意</div>
+    <div class="decision-opt" onclick="showDecision(2,2)">C. 组织中法文化交流活动，邀请法国团队来中国参观，用文化理解化解偏见</div>
+  </div>
+  <div class="decision-result" id="decisionResult2"></div>
+</div>
+</div></div>
+</div>
+
+</div><!-- .container -->
+
+<script>
+// ===== DATA STORE =====
+const concepts = [
+  {id:'c1',name:'历史宜粗不宜细',def:'历史记载天然存在失真——记录者的主观立场（所有历史都是当代史）、技术局限导致的无意错误（司马光砸缸不可信）、以及人为篡改（拉美西斯二世窃取战功）——因此审视历史应把握宏观趋势而非深究细节，在低信噪比数据中，"粗"比"细"更科学。',analogy:'如同看卫星地图和街景照片——卫星地图（粗）适合了解地形走势，街景照片（细）可能被一棵树挡住整条街。用噪声数据做精细分析，结论的可靠性反而更低。',example:'司马懿成功核心因素是"活得长"而非"隐忍权谋"——活过曹丕、曹叡，等到对手都死了。后人津津乐道他的谋略，很可能是事后附会。同样，隋唐统一的趋势是必然的，但具体由宇文家还是李唐完成是偶然的。',counter:'"宜粗不宜细"≠偷懒不研究。精密科学（如物理学）需要极细的数据，因为数据质量高；历史学数据质量低，"细"容易掉入伪问题。'},
+
+  {id:'c2',name:'历史偶然性',def:'历史发展由大量偶然因素驱动——个人命运、国家兴衰、文明走向并非"必然规律"的结果。必然性周期（如经济周期）可能长达数十年甚至超过个体寿命，因此偶然性对具体人生的影响远大于必然性。',analogy:'如同一片树叶落入溪流——水流的大方向是南（必然性），但具体哪片叶子撞上哪块石头、在哪个漩涡打转（偶然性），决定了叶子最终到达的位置。你的出生年代、遇到的人、赶上的政策变化，都是叶子的撞石时刻。',example:'张益唐从北京锁厂工人到世界级数学家——如果高考晚恢复10年，他可能终身为锁匠。吴军自己如果早生10年就无法正常高考。日本股市1990年泡沫后30年才解套，很多投资者的整个职业生涯都浪费在了"等回本"上。',counter:'承认偶然性≠消极认命。认识到偶然性的威力反而能让人放下"我一定能控制命运"的焦虑，专注于当下的就事论事——美联储主席鲍威尔面对高通胀不套用1970年代模板，而是用汇率工具精准施策。'},
+
+  {id:'c3',name:'文明的距离30米',def:'人在私人空间（30米范围内）表现出文明行为——因为产权清晰、后果直接；在公共空间（30米范围外）放纵自私——因为责任分散、后果延迟。文明水平的真正标尺不是私人空间的秩序，而是公共空间的自律。',analogy:'如同在自己家客厅不会乱扔垃圾，但在公共公园就可能随手丢弃——不是人格分裂，而是约束条件变了。家里乱扔→自己打扫（后果内部化）；公园乱扔→别人打扫（后果外部化）。文明的距离就是"后果内部化"的距离。',example:'杭州龙坞泳池事件：数十名登山参赛者闯入私人基地清洗泥泞装备致其污浊（公共空间式的放纵）。深圳社区公园儿童随地大小便但住宅小区无此现象。日本工薪族天黑后街边小便——天黑提供了"匿名性"（虚拟30米外）。',counter:'"30米"是隐喻不是精确距离。核心是约束条件的切换：产权、监控、社会惩罚、后果反馈。当公共空间施加这些约束（如新加坡罚款制度），30米的距离可以延伸到整个国家。'},
+
+  {id:'c4',name:'陆权与海权',def:'地理条件深刻塑造政治制度：大陆国家（陆权）倾向于扩张版图、建立绝对君主制以维持疆域统一；海洋国家（海权）倾向于控制贸易航线、发展分权联盟制。科技（铁路、电报→互联网）在两种模式间不断改写力量对比。',analogy:'如同两种公司治理模式——陆权是"垂直整合型集团"：总部集权、层级分明、自给自足；海权是"平台生态型公司"：联盟制、契约驱动、依靠外部交换。前者适合稳定环境，后者适合快速变化的市场。',example:'陆权：中国秦统一后实行中央集权（疆域大需集权维持统一），法国从中世纪后走向绝对君主制。海权：英国通过海军控制全球贸易航线，发展出议会制和分权传统。19世纪铁路和电报使欧亚非形成联通"世界岛"，削弱了海权优势。',counter:'技术改变约束条件——互联网和空运使内陆国家也能接入全球贸易。80%的国际贸易仍走海运（成本为铁路的1/4），海权的底层优势未变，但形式已从"军舰和大炮"演变为"供应链和金融结算"的控制力。'},
+
+  {id:'c5',name:'大历史视角',def:'将特定地区和时间段的历史置于更广阔的时空背景中考察——不孤立地看一个国家、一个事件，而是寻找文明间的联系和互动模式。这种方法揭示了孤立研究无法发现的宏观规律。',analogy:'如同从飞机上俯瞰城市——站在地面只能看到一条街、一栋楼，飞上去才能看到整座城市的布局逻辑：为什么商业区在这里、住宅区在那里、河流如何决定了城市的形状。大历史视角就是坐飞机看文明。',example:'英国历史学家彼得·弗兰科潘《丝绸之路：一部全新的世界史》以文明间联系为主线，而非以欧洲为中心。中国在世界历史中的地位不只是"发明了造纸术"，而是作为东方人文主义的发源地、全球贸易的长期供应方、以及科举制对全球文官制度的影响。',counter:'大历史视角的优点恰恰是其弱点——俯瞰会丢失细节。宏观规律无法解释个体命运。所以大历史和小历史需要互补：用大历史理解文明脉络，用小历史（个案）理解人的处境。'},
+
+  {id:'c6',name:'文明循环与停滞',def:'文明并非线性进步——古埃及在公元前2600年就建造了金字塔，之后近3000年不但未超越，反而经历了多次衰落甚至无法复制早期成就。文明可以"早熟"然后长期停滞，路径依赖锁死了创新空间。',analogy:'如同一个天才儿童在5岁就学了微积分，但此后30年一直重复做微积分题，从未进入新的数学领域。不是能力不够，而是整个教育系统（制度环境）只需要"微积分"，不需要其他。天才就被系统锁死了。',example:'古埃及第四王朝在半个世纪内建造了三座金字塔，掌握勾股定理。但新王朝（18-20王朝）之后近千年无显著进步。阿斯旺大坝是当代类似的警示——解决了灌溉，却破坏了尼罗河泛滥带来的天然肥力、导致三角洲海岸线倒退、泥沙淤积降低发电能力。',counter:'停滞不是所有文明的宿命。古希腊、文艺复兴后的欧洲、明治维新后的日本都实现了"跃迁"。关键在于：文明是否保持了对外开放、是否有多元精英竞争、以及知识是否从"默会"编码为"可传播"的形式。'},
+
+  {id:'c7',name:'文化自信即开放',def:'真正的文化自信表现为对外来文化和外国人的包容，而非排斥和防御。法国20年间从"说英语不理你"到机场路标含多国语言、小城居民热情接待外国游客，证明文化自信与开放度正相关——自信了才敢打开门。',analogy:'如同一个真正有实力的人不介意别人指出自己的缺点——因为自信源于内核，不依赖外部认可。而一个缺乏自信的人反而需要不断向外界证明"我很强"，表现为攻击性和防御性。国家层面同理。',example:'法国2008年：当地人说英语却不说，圣诞节商店全关，"吃饭喝水都是问题"。法国2024年：从巴黎到阿维尼翁（10万人口小城）英语交流无障碍，菜单可拍照翻译，深夜回酒店无安全隐患。变化不是巴黎奥运会的短期效应，而是20年社会进步的累积。',counter:'开放≠放弃自己的文化身份。法国人在变得更包容的同时，饮食、艺术、生活节奏等核心文化特质并未消失。最好的状态是"出入自如"——既能在自己的文化传统中安身，也能在他者文化中舒适地做客。'},
+
+  {id:'c8',name:'技术静默积累',def:'重大技术突破往往在公众注意力转移的"静默期"中完成——无人驾驶从2016年概念热炒到2024年底规模化商业运营，中间经历了公众预期的"狂热→幻灭→遗忘→惊讶"完整周期。真正的进步不发生在聚光灯下。',analogy:'如同竹子生长——前4年只长了30厘米（在地下发展根系），第5年开始每天长30厘米，6周就能长到15米。公众只看到爆发式生长的那几周，以为"突然出现"，实际上根系的积累是看不见的关键。',example:'Waymo在2024年底实现：覆盖3个城市、700辆无人出租车、每周15万次接单、单车日均30次（高于人类司机）。传感器数量从两年前减少（算法进步使硬件需求降低），安全性反而提高。激光雷达价格从2015年的2-3万美元降至2025年的几百美元（降幅97%+）。',counter:'泡沫也有价值——无人驾驶、新能源车、AI等领域的"过热投资"虽然淘汰了大量企业，但也把产业链成本拉了下来（如中国禾赛科技月产10万台激光雷达）。泡沫破裂后的幸存者往往继承了下沉的产业基础。'},
+
+  {id:'c9',name:'个体书写历史',def:'历史不是抽象力量的结果，而是由每个具体的人的选择累积而成的。240年前费城制宪会议代表通过妥协保障了美国长期发展，同期法国大革命选择彻底变革带来多次动荡——同一时代的不同个体选择，塑造了完全不同的历史轨迹。',analogy:'如同千万滴雨水汇成河流——每一滴都觉得自己"无所谓"，但河流的方向恰恰是所有水滴的合力决定的。你在澳洲优步罢工期间选择抢单还是声援？你在工作中选择"差不多就行"还是"做到最好"？没有一滴雨是"无所谓"的。',example:'费城制宪代表vs法国革命者：前者承认人性的自私并设计制度来约束（规则而非道德），后者试图通过革命净化人性——前者建立了持续240年的制度，后者在革命后的恐怖统治中吞噬了自己的理想。沈志华教授通过研究历史认识到个体行为的累积效应，在个人困境中保持"看得开"。',counter:'个体选择的力量≠"人定胜天"。历史偶然性的强大意味着个体的努力可能被时代的巨浪吞没。但这不是放弃行动的理由——恰恰因为不知道未来怎样，过好每一天、做好每个选择，是我们唯一确定能做的事。'},
+
+  {id:'c10',name:'规则而非道德',def:'社会秩序和文明水平的提升主要依赖制度规则的优化，而非人类道德水平的快速提高。面对人类与生俱来的自私天性，最有效的策略是"承认自私→制度防范"而非"否认自私→道德说教"。',analogy:'如同高速公路的护栏——不是所有司机都想冲出公路，但万一有人打瞌睡，护栏能救所有人的命。护栏（制度）不假设司机都是圣人（道德），它假设最坏情况有可能发生，然后让最坏情况也不至于致命。',example:'美国国父立宪时明确"不相信人的善意"——设计了行政、立法、司法的三权分立。现代经济学以"人是自私的"为基础假设制定政策。法国社会的进步不是法国人变善良了，而是奥运会的契机推动了基础设施、语言服务、安全管理的制度化改善。',counter:'规则不是万能的——制度只能约束可观察的行为，无法改变内心的态度。真正伟大的社会既需要规则守住底线，也需要文化和教育争取上限。关键是分工明确：规则管下限，文化追上限。不要用"追上限"的叙事来回避"保下限"的紧迫性。'}
+];
+
+const mksCoreIds = ['c2','c3','c4','c10'];
+
+// ===== MCQ QUESTIONS (answer distribution: 0:5, 1:5, 2:5, 3:5) =====
+const choiceQuestions = [
+  {q:'吴军认为学习历史最重要的目的是什么？',o:['提取可复用的经验教训','验证历史规律的正确性','了解历史脉络，培养"看得开"的人生态度','预测未来的发展趋势'],a:2},
+  {q:'古埃及人将尼罗河的哪一岸视为"生的世界"？',o:['东岸（开罗）','西岸（吉萨）','南岸（阿斯旺）','北岸（亚历山大）'],a:0},
+  {q:'"文明的距离30米"这一概念的核心机制是什么？',o:['道德教育的缺失','产权约束和责任归属的切换','人与人之间的信任半径','城市规划的功能分区'],a:1},
+  {q:'麦金德《陆权论》中，以下哪一项不是其核心观点？',o:['地理对国家政治有决定性影响','欧洲亚洲非洲组成“世界岛”','科技推动大型国家形成','海权国家终将取代陆权国家'],a:3},
+  {q:'吴军认为司马懿成功的核心因素是什么？',o:['活得长——活过曹丕、曹叡等对手','权谋深算——隐忍待发','善于用人——麾下谋士众多','精通兵法——战术精湛'],a:0},
+  {q:'法国从2008年到2024年最显著的变化是什么？',o:['经济增长翻倍','科技水平飞跃','从排斥外语到包容开放','政治制度全面改革'],a:2},
+  {q:'古埃及金字塔在哪个时期集中建造？',o:['中王朝时期','第四王朝（古王朝高峰）','新王朝时期','托勒密王朝时期'],a:1},
+  {q:'吴军认为无人驾驶产业成熟的标志不包括以下哪项？',o:['产业链上下游配套成熟','商业生态形成（技术商+运营商+整车厂）','所有国家同步合法化','多家企业达到相似技术水平'],a:2},
+  {q:'"宜粗不宜细"的认知策略最适合哪个领域？',o:['信噪比低的历史研究','精密科学实验','会计报表审计','法律条文起草'],a:0},
+  {q:'科举制对全球文明最重要的贡献是什么？',o:['考试内容的标准化','为贫家子弟提供进入仕途的通道','"按能力择优"的选拔原则影响全球文官制度','延续了儒家学说'],a:2},
+  {q:'阿斯旺大坝最重要的教训是什么？',o:['国际合作的困难性','大型工程需全面评估生态与社会长期影响','苏联援助的不可靠性','埃及工程技术落后'],a:1},
+  {q:'古埃及文明停滞千年的根本原因是什么？',o:['外来入侵频繁','自然资源的枯竭','法老个人能力下降','路径依赖——制度环境锁死了创新空间'],a:3},
+  {q:'荷兰从海上帝国衰落为小国的关键地缘因素是什么？',o:['陆权国家的崛起和英国海权的竞争','荷兰人失去了航海技术','气候变冷导致港口冻结','人口大量外迁'],a:0},
+  {q:'吴军在南撒哈拉之旅中观察到的经济不发达根本原因是什么？',o:['自然资源的匮乏','殖民历史的遗留','地理条件（内陆、气候）对制度的锁定效应','当地人的懒惰'],a:2},
+  {q:'吴军认为减少社会自私行为的有效路径是什么？',o:['强化道德教育和舆论监督','通过制度规则明确行为边界和后果','让每个人都有足够的经济资源','依靠宗教信仰的约束'],a:1},
+  {q:'以下哪一项不是历史经验难以直接应用的原因？',o:['历史事件样本数量不足','相似事件的条件差异','社会问题的复杂性和归因困难','历史记载完全不可信'],a:3},
+  {q:'法国"外省"与巴黎的核心差异根源是什么？',o:['百年战争导致南北政治分裂和经济发展路径分化','气候条件的差异','语言不通','移民比例不同'],a:0},
+  {q:'Waymo无人驾驶在2024年底的运营规模是多少？',o:['覆盖1个城市、100辆车、每周1万次接单','覆盖2个城市、300辆车、每周5万次接单','覆盖5个城市、2000辆车、每周50万次接单','覆盖3个城市、700辆车、每周15万次接单'],a:3},
+  {q:'古埃及神庙兴起的根本动因是什么？',o:['建筑技术的突然突破','法老从"神本体"降为"神的代理人"，需通过敬神强化合法性','外来文化的影响','经济繁荣后的自然发展'],a:1},
+  {q:'吴军对"分久必合、合久必分"这一历史经验的看法是什么？',o:['这是一个放之四海皆准的规律','只适用于中国古代，不适用其他文明','是自然规律而非历史规律','现代世界已非王朝循环时期，此经验不再适用'],a:3}
+];
+
+const shortQuestions = [
+  {q:'为什么说"所有的历史都是当代史"？这对我们学习历史有什么启示？',a:'"所有的历史都是当代史"意味着写史者总是按照当时的需求而非事实来记载——古埃及拉美西斯二世将卡迭石之战的平局记载为"大胜"，司马光砸缸故事因北宋无制缸技术存疑。启示：学习历史应"宜粗不宜细"——把握宏观趋势，不要在失真细节上浪费精力。历史的轮廓大致可信，细节多有污染。'},
+  {q:'古埃及人的生死观如何体现在地理空间上？',a:'古埃及人以尼罗河为界：东岸（开罗）= 生的世界（法老宫殿所在地），西岸（吉萨）= 冥界（金字塔陵寝所在地）。太阳崇拜是这一观念的基础——日出=生命开始（东），日落=生命结束（西）。金字塔的四棱锥形既是力学设计，也象征日升日落的轨迹。这种将抽象世界观编码到物理空间的做法，在各大古文明中独一无二。'},
+  {q:'陆权国家和海权国家在政治制度上为何走向不同路径？',a:'陆权国家（如中国、法国）：疆域广大，需要中央集权维持统一→发展出绝对君主制和官僚体系。海权国家（如英国、荷兰）：殖民地分散，需要分权管理→发展出联盟制、议会制和契约精神。根本逻辑：管理成本决定了制度形态——陆地上传递命令需要层级官僚，海上只需要控制港口和航线。19世纪铁路和电报的出现使陆权国家也能高效远程控制，打破了传统海权优势。'},
+  {q:'"文明的距离30米"对公共服务设计有什么启示？',a:'启示：不要把公共秩序的希望寄托在"人变好"上，而要设计使"坏行为"的后果内部化的制度。具体应用：①公共空间安装监控（匿名性消失→后果内部化）；②明确罚款制度（新加坡模式）；③通过产权分配让公共空间"有主"（社区花园由居民认领维护）。设计的核心问题永远是：怎样让行为者直接感受到自己行为的后果？'},
+  {q:'法国从2008到2024年的变化说明了什么关于文化自信的道理？',a:'法国20年的核心变化：从"说英语但不说"到多语言服务普及，从商店早早关门到周末正常营业，从治安担忧到深夜出行无危险。这说明：①文化自信不是一夜之间发生的，是无数微小进步的累积；②真正的自信表现为"开门欢迎"，而非"关门防御"；③一个国家对外国人的实际友善度比其口头表态更重要——"宁可去民众心里傲慢但对外国人友好的国家，也不去声称欢迎但举步维艰的国家"。'},
+  {q:'无人驾驶从概念到商业化的历程有什么启示？',a:'启示包括：①公众永远高估短期进展、低估长期潜力——2016年热炒到2020年质疑，技术却在静默中成熟；②产业链的成熟比单项技术的突破更重要——激光雷达价格降幅97%靠的是中国禾赛科技的规模化生产；③泡沫有商业价值——过度投资虽然淘汰了大量企业，但也拉低了全产业链成本；④判断产业成熟期的标准：不是"有一家企业做得很好"，而是"多家企业达到相似水平+上下游配套成熟+商业生态形成"。'},
+  {q:'用"规则而非道德"的视角分析：为什么新加坡的公共秩序远超大多数国家？',a:'新加坡的案例不是"新加坡人道德水平高"的证据，而是"制度设计有效"的证据。具体：①高额罚款使违规行为的后果内部化（乱扔垃圾罚款1000新元）；②严格的执法使规则的威慑力是真实的（而非纸面规则）；③公共住房制度使居民对社区有"准产权"（自己的房子当然要维护好周围环境）。三者结合起来，本质上是把"30米外"的公共空间转化为"准私人空间"——通过制度创造了一种"伪产权"效应。'},
+  {q:'古埃及文明停滞千年对中国有什么警示意义？',a:'警示包括：①中国目前也是一个"高峰文明"——高峰之后不是必然上升，有可能进入长期平台甚至衰落；②警惕精英竞争的零和化——当最有才华的人都在争夺权力、符号、身份而非创造增量时，文明就开始内卷；③警惕成功模式的固化——古埃及第四王朝的金字塔成功后，此后3000年无人敢于尝试完全不同类型的建筑；④保持对外开放——埃及托勒密时期成为西方学术中心，伊斯兰化后失去此角色，真正的文化自信是拥抱未来而非捍卫过去。'},
+  {q:'"历史偶然性"与"活好当下"之间有什么逻辑联系？',a:'逻辑链：①历史由大量偶然驱动→必然性周期可能超过个体寿命→你无法通过"掌握规律"来预测和控制未来；②既然无法控制→最理性的策略不是焦虑地预测未来，而是专注当下就事论事；③美联储主席鲍威尔面对高通胀不套用历史模板，而是根据当下条件精准施策→效果良好；④那些套用1970年代模板的分析师→错过了股市上涨的黄金期。"活在当下"不是鸡汤，是在承认偶然性的前提下最理性的生存策略。'},
+  {q:'如何用MKS框架分析"全球化是否不可逆转"这个问题？',a:'用4个概念拆解：①陆权与海权（c4）：全球化本质是海权逻辑的延伸——贸易线路的连通。海权的优势未变（80%货物走海运），但陆权国家在科技加持下缩小差距；②文明的距离30米（c3）：全球化使"30米"的边界被打破——本国工人的利益被地球另一边的工人影响，而他们之间没有任何社会契约→引发了反全球化的政治反弹；③文化自信即开放（c7）：反对全球化的国家往往是文化不自信的国家——真正自信的文化敢于开放；④规则而非道德（c10）：全球化的可持续性不取决于"全球主义的道德理想"，而取决于国际规则的公平性——当规则被认为偏袒某一方时，全球化的政治基础就动摇了。'}
+];
+
+// ===== STATE =====
+let learnedCards = JSON.parse(localStorage.getItem('mks_t6_learned')||'[]');
+let wrongAnswers = JSON.parse(localStorage.getItem('mks_t6_wrong')||'[]');
+let currentCardIdx = 0;
+let cardFlipped = false;
+let examInterval = null;
+let examSeconds = 0;
+let examActive = false;
+let examQuestions = [];
+let examAnswers = [];
+let quizAnswered = JSON.parse(localStorage.getItem('mks_t6_quiz_answered')||'[]');
+let shortRevealed = JSON.parse(localStorage.getItem('mks_t6_short_revealed')||'[]');
+
+function save(){localStorage.setItem('mks_t6_learned',JSON.stringify(learnedCards));localStorage.setItem('mks_t6_wrong',JSON.stringify(wrongAnswers));localStorage.setItem('mks_t6_quiz_answered',JSON.stringify(quizAnswered));localStorage.setItem('mks_t6_short_revealed',JSON.stringify(shortRevealed));}
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');
+  document.getElementById('panel'+this.dataset.tab).classList.add('active');
+  if(this.dataset.tab==='4') renderReview();
+}));
+
+// ===== SVG CONCEPT MAP =====
+function renderSVG() {
+  var svg = '<svg width="960" height="620" viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg">';
+  // Background
+  svg += '<rect width="960" height="620" fill="#fdf6ec" rx="8"/>';
+
+  // Legend (top right)
+  svg += '<rect x="700" y="10" width="245" height="120" fill="#fffaf2" stroke="#e8d5c4" rx="8"/>';
+  svg += '<text x="822" y="32" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" font-weight="bold" fill="#3d2f2f">图例</text>';
+  svg += '<rect x="712" y="42" width="16" height="12" fill="#c0392b" rx="2"/>';
+  svg += '<text x="734" y="52" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">认知方法论</text>';
+  svg += '<rect x="712" y="60" width="16" height="12" fill="#b8860b" rx="2"/>';
+  svg += '<text x="734" y="70" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">文明机制</text>';
+  svg += '<rect x="712" y="78" width="16" height="12" fill="#27ae60" rx="2"/>';
+  svg += '<text x="734" y="88" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">当代应用/结果</text>';
+  svg += '<line x1="712" y1="100" x2="740" y2="100" stroke="#5a3e3e" stroke-dasharray="4,3"/>';
+  svg += '<text x="746" y="104" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">反馈回环</text>';
+  svg += '<rect x="712" y="110" width="16" height="12" fill="#e67e22" rx="2"/>';
+  svg += '<text x="734" y="120" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#3d2f2f">个体行为</text>';
+
+  // Layer 1: Root node
+  svg += '<rect x="330" y="40" width="300" height="48" fill="#c0392b" rx="10" stroke="#a02a22" stroke-width="1.5"/>';
+  svg += '<text x="480" y="70" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="16" fill="white" font-weight="bold">文明认知透镜</text>';
+
+  // Edges from root to layer 2
+  // Root -> History (left)
+  svg += '<path d="M420,88 L200,155" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>';
+  svg += '<text x="290" y="118" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#c0392b">认知方法</text>';
+  // Root -> Civilization (center)
+  svg += '<path d="M480,88 L480,155" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>';
+  svg += '<text x="492" y="125" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#c0392b">分析对象</text>';
+  // Root -> Tech/Global (right)
+  svg += '<path d="M540,88 L760,155" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>';
+  svg += '<text x="660" y="118" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#c0392b">时空扩展</text>';
+
+  // Arrow markers
+  svg += '<defs><marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c0392b"/></marker>';
+  svg += '<marker id="arrowGold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>';
+  svg += '<marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#27ae60"/></marker>';
+  svg += '<marker id="arrowDashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#5a3e3e"/></marker>';
+  svg += '<marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#e67e22"/></marker></defs>';
+
+  // Layer 2: Three branches
+  // History branch (left, y=160)
+  svg += '<rect x="100" y="155" width="200" height="50" fill="#fdf6ec" stroke="#c0392b" stroke-width="2.5" rx="8"/>';
+  svg += '<text x="200" y="175" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#c0392b" font-weight="bold">历史认知维度</text>';
+  svg += '<text x="200" y="193" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#6b5b5b">宜粗不宜细 · 偶然性 · 大历史</text>';
+
+  // Civilization branch (center, y=160)
+  svg += '<rect x="370" y="155" width="220" height="50" fill="#fdf6ec" stroke="#b8860b" stroke-width="2.5" rx="8"/>';
+  svg += '<text x="480" y="175" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#b8860b" font-weight="bold">文明运行机制</text>';
+  svg += '<text x="480" y="193" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#6b5b5b">30米距离 · 陆权海权 · 循环与停滞</text>';
+
+  // Tech/Global branch (right, y=160)
+  svg += '<rect x="660" y="155" width="200" height="50" fill="#fdf6ec" stroke="#27ae60" stroke-width="2.5" rx="8"/>';
+  svg += '<text x="760" y="175" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#27ae60" font-weight="bold">时空扩展视角</text>';
+  svg += '<text x="760" y="193" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#6b5b5b">技术静默 · 文化开放 · 全球化</text>';
+
+  // Layer 3: Sub-concepts under History
+  // c1: 宜粗不宜细
+  svg += '<rect x="45" y="270" width="155" height="48" fill="#fffaf2" stroke="#c0392b" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="122" y="290" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c1 宜粗不宜细</text>';
+  svg += '<text x="122" y="307" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">把握宏观趋势</text>';
+  svg += '<path d="M170,255 L155,270" stroke="#c0392b" stroke-width="1.5" fill="none"/>';
+
+  // c2: 历史偶然性
+  svg += '<rect x="120" y="340" width="155" height="48" fill="#fffaf2" stroke="#c0392b" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="197" y="360" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c2 历史偶然性</text>';
+  svg += '<text x="197" y="377" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">超越个体控制</text>';
+  svg += '<path d="M210,255 L210,340" stroke="#c0392b" stroke-width="1.5" fill="none"/>';
+  svg += '<text x="220" y="300" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#c0392b">例证</text>';
+
+  // c5: 大历史视角
+  svg += '<rect x="190" y="270" width="145" height="48" fill="#fffaf2" stroke="#c0392b" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="262" y="290" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c5 大历史视角</text>';
+  svg += '<text x="262" y="307" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">文明间联系</text>';
+  svg += '<path d="M250,255 L262,270" stroke="#c0392b" stroke-width="1.5" fill="none"/>';
+
+  // Layer 3: Sub-concepts under Civilization
+  // c3: 文明的距离30米
+  svg += '<rect x="320" y="270" width="145" height="48" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="392" y="290" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c3 文明的距离</text>';
+  svg += '<text x="392" y="307" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">私域vs公域</text>';
+  svg += '<path d="M420,255 L420,270" stroke="#b8860b" stroke-width="1.5" fill="none"/>';
+  svg += '<text x="432" y="265" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#b8860b">驱动</text>';
+
+  // c4: 陆权与海权
+  svg += '<rect x="490" y="270" width="145" height="48" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="562" y="290" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c4 陆权与海权</text>';
+  svg += '<text x="562" y="307" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">地理→制度</text>';
+  svg += '<path d="M540,255 L540,270" stroke="#b8860b" stroke-width="1.5" fill="none"/>';
+  svg += '<text x="552" y="265" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#b8860b">塑造</text>';
+
+  // c6: 文明循环与停滞
+  svg += '<rect x="405" y="340" width="155" height="48" fill="#fffaf2" stroke="#b8860b" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="482" y="360" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c6 循环与停滞</text>';
+  svg += '<text x="482" y="377" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">路径依赖锁定</text>';
+  svg += '<path d="M480,255 L482,340" stroke="#b8860b" stroke-width="1.5" fill="none"/>';
+  svg += '<text x="492" y="300" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#b8860b">实证</text>';
+
+  // Layer 3: Sub-concepts under Tech/Global
+  // c7: 文化自信即开放
+  svg += '<rect x="655" y="270" width="145" height="48" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="727" y="290" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c7 文化即开放</text>';
+  svg += '<text x="727" y="307" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">包容而非排斥</text>';
+  svg += '<path d="M730,255 L730,270" stroke="#27ae60" stroke-width="1.5" fill="none"/>';
+  svg += '<text x="742" y="265" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#27ae60">经验</text>';
+
+  // c8: 技术静默积累
+  svg += '<rect x="810" y="270" width="135" height="48" fill="#fffaf2" stroke="#27ae60" stroke-width="1.5" rx="6"/>';
+  svg += '<text x="877" y="290" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="11" fill="#3d2f2f" font-weight="bold">c8 静默积累</text>';
+  svg += '<text x="877" y="307" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">无声中成熟</text>';
+  svg += '<path d="M790,255 L810,270" stroke="#27ae60" stroke-width="1.5" fill="none"/>';
+
+  // Layer 4: Application/Outcomes (y=440)
+  // Under History -> 认知重构
+  svg += '<rect x="70" y="440" width="220" height="44" fill="#fffaf2" stroke="#e67e22" stroke-width="2" rx="8"/>';
+  svg += '<text x="180" y="458" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#e67e22" font-weight="bold">看得开的人生态度</text>';
+  svg += '<text x="180" y="476" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">个人困境在历史中微不足道</text>';
+  svg += '<path d="M122,318 L140,440" stroke="#e67e22" stroke-width="1.8" fill="none" marker-end="url(#arrowOrange)"/>';
+  svg += '<path d="M197,388 L180,440" stroke="#e67e22" stroke-width="1.8" fill="none" marker-end="url(#arrowOrange)"/>';
+
+  // Under Civilization -> 制度设计
+  svg += '<rect x="340" y="440" width="220" height="44" fill="#fffaf2" stroke="#e67e22" stroke-width="2" rx="8"/>';
+  svg += '<text x="450" y="458" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#e67e22" font-weight="bold">制度设计能力</text>';
+  svg += '<text x="450" y="476" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">规则约束 + 产权明晰</text>';
+  svg += '<path d="M392,318 L410,440" stroke="#e67e22" stroke-width="1.8" fill="none" marker-end="url(#arrowOrange)"/>';
+  svg += '<path d="M562,318 L530,440" stroke="#e67e22" stroke-width="1.8" fill="none" marker-end="url(#arrowOrange)"/>';
+
+  // Under Tech/Global -> 开放判断
+  svg += '<rect x="630" y="440" width="230" height="44" fill="#fffaf2" stroke="#e67e22" stroke-width="2" rx="8"/>';
+  svg += '<text x="745" y="458" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#e67e22" font-weight="bold">全球化判断力与开放决策</text>';
+  svg += '<text x="745" y="476" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#6b5b5b">技术趋势 · 文化包容 · 全球视野</text>';
+  svg += '<path d="M727,318 L745,440" stroke="#e67e22" stroke-width="1.8" fill="none" marker-end="url(#arrowOrange)"/>';
+
+  // c10: 规则而非道德 (bottom)
+  svg += '<rect x="355" y="530" width="250" height="50" fill="#3d2f2f" stroke="#e8d5c4" stroke-width="1.5" rx="10"/>';
+  svg += '<text x="480" y="552" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="14" fill="#fdf6ec" font-weight="bold">c10 规则而非道德</text>';
+  svg += '<text x="480" y="570" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#d4a574">文明秩序的最终保障</text>';
+
+  // Edges from outcomes to c10
+  svg += '<path d="M180,484 L280,530" stroke="#e67e22" stroke-width="1.5" fill="none" stroke-dasharray="6,4"/>';
+  svg += '<path d="M450,484 L480,530" stroke="#e67e22" stroke-width="1.5" fill="none" stroke-dasharray="6,4"/>';
+  svg += '<text x="470" y="512" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="9" fill="#e67e22">归结</text>';
+  svg += '<path d="M745,484 L680,530" stroke="#e67e22" stroke-width="1.5" fill="none" stroke-dasharray="6,4"/>';
+
+  // Feedback loop: c10 -> root (dashed)
+  svg += '<path d="M605,555 Q700,590 780,555 Q860,520 780,450 Q700,380 600,370 Q550,365 510,280 Q500,250 520,200 Q530,160 500,100 Q490,70 480,90" stroke="#5a3e3e" stroke-width="2" fill="none" stroke-dasharray="8,5" marker-end="url(#arrowDashed)"/>';
+  svg += '<text x="680" y="440" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="10" fill="#5a3e3e" transform="rotate(-15,680,440)">反馈：制度成果重塑认知框架</text>';
+
+  // Cross-layer connections
+  // c2 -> c3 (偶然性 -> 文明距离)
+  svg += '<path d="M275,365 L320,295" stroke="#5a3e3e" stroke-width="1.2" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowDashed)"/>';
+  svg += '<text x="285" y="330" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#5a3e3e">影响</text>';
+
+  // c4 -> c7 (陆权海权 -> 文化开放)
+  svg += '<path d="M635,295 L655,295" stroke="#5a3e3e" stroke-width="1.2" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowDashed)"/>';
+  svg += '<text x="642" y="288" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#5a3e3e">关联</text>';
+
+  // c5 -> c6 (大历史 -> 循环停滞)
+  svg += '<path d="M300,295 L400,340" stroke="#5a3e3e" stroke-width="1.2" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowDashed)"/>';
+  svg += '<text x="335" y="312" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="8" fill="#5a3e3e">揭示</text>';
+
+  svg += '</svg>';
+  document.getElementById('conceptMap').innerHTML = svg;
+}
+renderSVG();
+
+// ===== DASHBOARD CONCEPTS =====
+function renderConcepts(){
+  var grid=document.getElementById('conceptGrid');
+  grid.innerHTML=concepts.map(function(c,i){
+    return '<div class="concept-card" onclick="switchTab(1);setCard('+i+')"><strong>'+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,60)+'...</p></div>';
+  }).join('');
+  var mks=document.getElementById('mksCoreGrid');
+  mks.innerHTML=mksCoreIds.map(function(id){
+    var c=concepts.find(function(x){return x.id===id});
+    return '<div class="concept-card mks-core"><strong>★ '+c.name+'</strong><p style="font-size:.82rem;color:var(--text-light);margin-top:4px">'+c.def.slice(0,80)+'...</p></div>';
+  }).join('');
+}
+renderConcepts();
+
+function updateProgress(){
+  var pct=Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('totalProgress').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct>0?'学习进度 '+pct+'%（'+learnedCards.length+'/'+concepts.length+'）':'尚未开始学习';
+  document.getElementById('cardProgress').style.width=pct+'%';
+  document.getElementById('cardLearned').textContent=learnedCards.length;
+}
+updateProgress();
+
+// ===== TAB 1: KNOWLEDGE CARDS =====
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  var c=concepts[idx];
+  document.getElementById('flipFront').innerHTML='<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">'+c.name+'</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>'+(learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':'');
+  document.getElementById('flipBack').innerHTML='<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>'+c.def+'</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比（商业场景）：</strong>'+c.analogy+'</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>'+c.example+'</div><div><strong style="color:var(--accent)">反例/边界：</strong>'+c.counter+'</div>';
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent=(idx+1)+' / '+concepts.length;
+  document.getElementById('markLearnedBtn').textContent=learnedCards.includes(c.id)?'✓ 已学习':'✓ 标记已学习';
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0)setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1)setCard(currentCardIdx+1)}
+function markLearned(){
+  var id=concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)){learnedCards=learnedCards.filter(function(x){return x!==id})}else{learnedCards.push(id)}
+  save();updateProgress();setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click',function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+
+// ===== TAB 2: RANDOM QUIZ PRACTICE =====
+var currentQuestions = [];
+var userAnswers = {};
+var quizTimeLeft = 900;
+var quizTimerInterval = null;
+
+function startQuiz(){
+  var shuffled = choiceQuestions.slice().sort(function(){return Math.random()-0.5});
+  var essayShuffled = shortQuestions.slice().sort(function(){return Math.random()-0.5});
+  currentQuestions = shuffled.slice(0,10).concat(essayShuffled.slice(0,3));
+  userAnswers = {};
+  quizTimeLeft = 900;
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('staticQuiz').style.display = 'none';
+  renderQuizPractice();
+  startQuizTimer('quizTimer');
+}
+
+function startQuizTimer(elemId){
+  quizTimeLeft = 900;
+  clearInterval(quizTimerInterval);
+  document.getElementById(elemId).style.display = 'inline';
+  updateQuizTimerDisplay(elemId);
+  quizTimerInterval = setInterval(function(){
+    quizTimeLeft--;
+    updateQuizTimerDisplay(elemId);
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuizPractice();
+    }
+  },1000);
+}
+
+function updateQuizTimerDisplay(elemId){
+  var m = Math.floor(quizTimeLeft/60);
+  var s = quizTimeLeft%60;
+  document.getElementById(elemId).textContent = '⏱ '+m+':'+(s<10?'0':'')+s;
+}
+
+function renderQuizPractice(){
+  var container = document.getElementById('quizContainer');
+  var html = '';
+  currentQuestions.forEach(function(q,i){
+    var opts = q.o || q.opts;
+    if(opts){
+      html += '<div class="quiz-card" id="qcard'+i+'"><div class="q-num">选择题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div>';
+      opts.forEach(function(o,j){
+        var sel = userAnswers[i]===j ? ' selected' : '';
+        html += '<div class="option'+sel+'" onclick="selectQuizChoice('+i+','+j+')" id="opt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>';
+      });
+      html += '<div id="fb'+i+'"></div></div>';
+    }else{
+      html += '<div class="quiz-card"><div class="q-num">简答题 '+(i+1)+'</div><div class="q-text">'+q.q+'</div><textarea class="essay-area" id="essay'+i+'" placeholder="输入你的回答...">'+(userAnswers[i]||'')+'</textarea></div>';
+    }
+  });
+  html += '<button class="btn" onclick="submitQuizPractice()">📩 提交答案</button>';
+  container.innerHTML = html;
+}
+
+function selectQuizChoice(qIdx,optIdx){
+  if(userAnswers[qIdx]!==undefined) return;
+  userAnswers[qIdx] = optIdx;
+  var q = currentQuestions[qIdx];
+  var correctIdx = q.a !== undefined ? q.a : q.ans;
+  var isCorrect = optIdx === correctIdx;
+  var allOpts = document.querySelectorAll('#qcard'+qIdx+' .option');
+  allOpts.forEach(function(el,j){
+    el.classList.add(j===correctIdx?'correct':(j===optIdx&&!isCorrect?'wrong':''));
+    el.style.pointerEvents = 'none';
+  });
+  var fb = document.getElementById('fb'+qIdx);
+  fb.className = 'feedback '+(isCorrect?'correct':'wrong');
+  fb.textContent = (isCorrect?'✓ 正确！':'✗ 错误。')+' '+(q.explain||'');
+  var correctCount = Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!(qi.o||qi.opts)) return false;
+    var ci=qi.a!==undefined?qi.a:qi.ans;
+    return v===ci;
+  }).length;
+  var totalChoice = currentQuestions.filter(function(q){return q.o||q.opts}).length;
+  document.getElementById('quizScore').textContent = '得分: '+correctCount+'/'+totalChoice;
+}
+
+function submitQuizPractice(){
+  var correctCount = Object.values(userAnswers).filter(function(v,i){
+    var qi=currentQuestions[i];
+    if(!qi||!(qi.o||qi.opts)) return false;
+    var ci=qi.a!==undefined?qi.a:qi.ans;
+    return v===ci;
+  }).length;
+  var totalChoice = currentQuestions.filter(function(q){return q.o||q.opts}).length;
+  alert('选择题得分: '+correctCount+'/'+totalChoice+'\n简答题已保存（自我对照参考答案）');
+  clearInterval(quizTimerInterval);
+}
+
+function resetQuiz(){
+  currentQuestions = [];
+  userAnswers = {};
+  clearInterval(quizTimerInterval);
+  document.getElementById('quizContainer').innerHTML = '';
+  document.getElementById('quizScore').textContent = '';
+  document.getElementById('quizTimer').style.display = 'none';
+  document.getElementById('staticQuiz').style.display = 'block';
+}
+
+// ===== TAB 2: STATIC QUIZ =====
+function renderChoiceQuiz(){
+  var div=document.getElementById('choiceQuiz');
+  div.innerHTML=choiceQuestions.map(function(q,i){
+    var answered=quizAnswered.includes(i);
+    var correct=q.a;
+    var opts=q.o.map(function(o,j){
+      var cls='quiz-option';
+      if(answered){
+        if(j===correct)cls+=' correct';
+        else cls+=' wrong';
+      }
+      return '<div class="'+cls+'" onclick="'+(answered?'':'answerChoice('+i+','+j+',this)')+'">'+'ABCD'[j]+'. '+o+(answered&&j===correct?' ✓':'')+'</div>';
+    }).join('');
+    return '<div style="margin-bottom:14px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+  }).join('');
+}
+renderChoiceQuiz();
+
+function answerChoice(qIdx,choice,el){
+  if(quizAnswered.includes(qIdx))return;
+  var correct=choiceQuestions[qIdx].a;
+  quizAnswered.push(qIdx);
+  if(choice!==correct){
+    wrongAnswers.push({type:'choice',idx:qIdx,question:choiceQuestions[qIdx].q,userAnswer:choiceQuestions[qIdx].o[choice],correctAnswer:choiceQuestions[qIdx].o[correct]});
+  }
+  save();
+  renderChoiceQuiz();
+}
+
+function renderShortQuiz(){
+  var div=document.getElementById('shortQuiz');
+  div.innerHTML=shortQuestions.map(function(q,i){
+    var revealed=shortRevealed.includes(i);
+    return '<div style="margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+(revealed?'<div style="margin-top:6px;padding:10px;background:#fef9f2;border-radius:6px;color:var(--text-light);font-size:.88rem">'+q.a+'</div>':'<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="revealShort('+i+')">查看参考思路</button>')+'</div>';
+  }).join('');
+}
+renderShortQuiz();
+
+function revealShort(i){if(!shortRevealed.includes(i)){shortRevealed.push(i);save();renderShortQuiz()}}
+
+// ===== TAB 3: EXAM MODE =====
+function startExam(){
+  if(examActive)return;
+  examActive=true;
+  examSeconds=15*60;
+  document.getElementById('startExamBtn').style.display='none';
+  document.getElementById('examResult').style.display='none';
+  var cIdx=[],sIdx=[];
+  while(cIdx.length<7){var r=Math.floor(Math.random()*choiceQuestions.length);if(!cIdx.includes(r))cIdx.push(r)}
+  while(sIdx.length<3){var r=Math.floor(Math.random()*shortQuestions.length);if(!sIdx.includes(r))sIdx.push(r)}
+  examQuestions={choice:cIdx,short:sIdx};
+  examAnswers=new Array(7).fill(-1);
+  renderExam();
+  document.getElementById('examArea').style.display='block';
+  examInterval=setInterval(updateTimer,1000);
+}
+
+function updateTimer(){
+  examSeconds--;
+  var m=Math.floor(examSeconds/60),s=examSeconds%60;
+  document.getElementById('examTimer').textContent=m+':'+(s<10?'0':'')+s;
+  if(examSeconds<=0){submitExam()}
+}
+
+function renderExam(){
+  var div=document.getElementById('examArea');
+  var html='';
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var opts=q.o.map(function(o,j){return '<div class="quiz-option" onclick="selectExam('+i+','+j+')" id="examOpt'+i+'_'+j+'">'+'ABCD'[j]+'. '+o+'</div>'}).join('');
+    html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+1)+'. '+q.q+'</strong>'+opts+'</div>';
+  });
+  examQuestions.short.forEach(function(idx,i){
+    html+='<div style="margin-bottom:14px;text-align:left"><strong style="color:var(--accent)">'+(i+8)+'. '+shortQuestions[idx].q+'</strong><p style="color:var(--text-light);font-size:.82rem;margin-top:4px">（简答题，请在心中作答后点击"提交"查看参考思路）</p></div>';
+  });
+  html+='<button class="btn btn-primary" onclick="submitExam()">提交答卷</button>';
+  div.innerHTML=html;
+}
+
+function selectExam(i,j){
+  examAnswers[i]=j;
+  for(var k=0;k<4;k++){var el=document.getElementById('examOpt'+i+'_'+k);if(el){el.classList.remove('selected');if(k===j)el.classList.add('selected')}}
+}
+
+function submitExam(){
+  clearInterval(examInterval);
+  examActive=false;
+  document.getElementById('examTimer').textContent='00:00';
+  var score=0;
+  var detail='';
+  examQuestions.choice.forEach(function(idx,i){
+    var q=choiceQuestions[idx];
+    var user=examAnswers[i];
+    var correct=q.a;
+    var isCorrect=user===correct;
+    if(isCorrect)score++;
+    else{wrongAnswers.push({type:'exam',idx:idx,question:q.q,userAnswer:user>=0?q.o[user]:'未作答',correctAnswer:q.o[correct]})}
+    detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:'+(isCorrect?'#eafaf1':'#fdecea')+'"><strong>'+(i+1)+'. '+q.q+'</strong><br>你的答案：'+(user>=0?q.o[user]:'未作答')+' '+(isCorrect?'✓':'✗')+'<br>正确答案：'+q.o[correct]+'</div>';
+  });
+  examQuestions.short.forEach(function(idx,i){
+    var q=shortQuestions[idx];
+    detail+='<div style="margin:6px 0;padding:8px;border-radius:6px;background:#fef9f2"><strong>'+(i+8)+'. '+q.q+'</strong><br>'+q.a+'</div>';
+  });
+  save();
+  var pct=Math.round(score/7*100);
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML='<h3 style="color:'+(pct>=70?'var(--success)':'var(--accent)')+'">得分：'+score+'/7（'+pct+'%）</h3>'+detail+'<button class="btn btn-outline" onclick="document.getElementById(\'startExamBtn\').style.display=\'inline-block\';document.getElementById(\'examResult\').style.display=\'none\';document.getElementById(\'examArea\').style.display=\'none\';document.getElementById(\'examTimer\').textContent=\'15:00\'">重新考试</button>';
+  document.getElementById('examArea').style.display='none';
+}
+
+// ===== TAB 4: REVIEW =====
+function renderReview(){
+  var totalQ=quizAnswered.length;
+  var correctQ=quizAnswered.length-wrongAnswers.filter(function(w){return w.type==='choice'}).length;
+  var pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+  var days=Math.max(1,Math.ceil((Date.now()-new Date('2026-06-01').getTime())/86400000));
+  document.getElementById('statsGrid').innerHTML='<div class="card stat-item"><div class="stat-value">'+totalQ+'</div><div class="stat-label">总答题数</div></div><div class="card stat-item"><div class="stat-value">'+pct+'%</div><div class="stat-label">正确率</div></div><div class="card stat-item"><div class="stat-value">'+days+'</div><div class="stat-label">学习天数</div></div>';
+  var wb=document.getElementById('wrongBook');
+  if(wrongAnswers.length===0){wb.innerHTML='<p style="color:var(--success)">暂无错题，继续保持！</p>';}
+  else{wb.innerHTML=wrongAnswers.map(function(w,i){return '<div style="margin:8px 0;padding:10px;border-left:3px solid var(--accent);background:#fef9f2;border-radius:0 6px 6px 0"><strong>'+w.question+'</strong><br><span style="color:var(--accent)">你的答案：'+w.userAnswer+'</span><br><span style="color:var(--success)">正确答案：'+w.correctAnswer+'</span></div>'}).join('');}
+  var conceptMap={};
+  wrongAnswers.forEach(function(w){
+    var qIdx=w.idx;
+    if(choiceQuestions[qIdx]){
+      var topic=choiceQuestions[qIdx].q.slice(0,8);
+      conceptMap[topic]=conceptMap[topic]||{topic:topic,count:0,questions:[]};
+      conceptMap[topic].count++;
+      conceptMap[topic].questions.push(w.question);
+    }
+  });
+  var sorted=Object.values(conceptMap).sort(function(a,b){return b.count-a.count});
+  document.getElementById('weakConcepts').innerHTML=sorted.length>0?sorted.map(function(c){return '<div style="margin:4px 0;padding:8px;background:#fff5f0;border-radius:6px"><strong>错'+c.count+'题：</strong>'+c.questions[0].slice(0,40)+'...</div>'}).join(''):'<p style="color:var(--success)">暂无薄弱概念</p>';
+}
+
+// ===== TAB 5: MIND MAP (toggle event listeners) =====
+(function(){
+  document.querySelectorAll('.tree-toggle').forEach(function(el){
+    el.addEventListener('click',function(){
+      this.classList.toggle('open');
+      var children=this.nextElementSibling;
+      if(children)children.classList.toggle('open');
+    });
+  });
+})();
+
+// ===== TAB 6: SOCRATIC DIALOGUE =====
+function toggleSocratic(el){el.nextElementSibling.classList.toggle('open')}
+function toggleSocraticSub(el){el.nextElementSibling.classList.toggle('open')}
+
+// ===== TAB 8: DECISION SIMULATION =====
+function showDecision(scenarioIdx,optIdx){
+  var scenarios=[
+    [
+      {result:'坚持参展需要面对签证不确定性——你认为CES的品牌效应大于50万美元参展费和地缘政治风险。但"存在只有你一个人能发现的好事"是极不可能的：CES的全球参展商有4500家，单个中国展商不会因为参展就自动获得特殊关注。更好的策略是仔细评估你的产品是否处于"展会能创造独特价值"的阶段。',mks:'c8 技术静默积累：展会曝光≠技术突破。CES真正有价值的是南北馆（AI应用）和西馆（汽车），中央馆的大企业展位反而缺乏新意。非洲经济学2：不存在只有你一个人发现的好事。'},
+      {result:'放弃全球最大科技展会转向区域平台，有其务实的一面——港博会确实在成长中，面向亚洲市场更精准。但风险是：如果你放弃CES，等于放弃了接触全球顶级买家和投资人的最高效渠道。',mks:'c4 陆权与海权：CES本身是海权逻辑的产物——全球贸易的集散地。放弃CES意味着你选择了一条更"陆权"的路径——区域化而非全球化。'},
+      {result:'这是最优策略——双线布局既保持了全球曝光（CES），又利用港博会的区域优势对冲签证风险。派当地团队参展降低了地缘政治摩擦，同时主场展位确保核心信息的完整呈现。这恰好体现了"就事论事、具体问题具体分析"而非套用"必然要全球化/必然要本地化"的模板。',mks:'c2 历史偶然性 + c5 大历史视角：不做非此即彼的选择，而是根据具体约束条件（签证限制、产品成本、目标市场）设计多线并行的策略。鲍威尔面对高通胀不套用1970年代模板，也是同样的思维方式。'}
+    ],
+    [
+      {result:'中国移动支付的成功建立在三个前提上：智能手机普及率高（>90%）、银行账户持有率高、以及支付宝/微信的双寡头推动了商家端的快速覆盖。南撒哈拉国家的这三个前提都不成立。照搬模式=犯了"相似事件条件差异"的错误，戴克里先"四帝共治"和汉武帝选继承人的案例都是前车之鉴。',mks:'c2 历史偶然性：历史经验不能直接套用——每次发生的条件存在差别。中国移动支付是在特定时间窗口（2014-2018）特定条件（智能手机普及+政策支持）下成功的。'},
+      {result:'这是正确策略。南撒哈拉国家智能机普及率低，但功能机（USSD）覆盖率远高于智能机——M-Pesa在肯尼亚的成功就是靠USSD。技术选择要匹配目标用户的当下条件，而非"未来应该会好起来"。等智能机普及后再升级——这是"活在当下、就事论事"的方法论。',mks:'c8 技术静默积累的镜像：不是等条件成熟再做，而是在现有条件下找到可行方案，然后让技术随条件自然升级。c10 规则而非道德：移动支付的普及不是靠说服人们"应该用手机支付"，而是靠设计出比现金更方便的制度安排。'},
+      {result:'黄金锚定方案很有创造力——因为埃及镑高通胀下民众确实倾向用黄金保值。但数字钱包+黄金锚定的监管风险极高：黄金价格波动会使"余额"不稳定、监管机构可能将其视为变相的外汇交易。这个方向的成本可能远高于功能机支付的阶梯演进方案。',mks:'c6 文明循环与停滞：高通胀是制度问题的症状而非根源——37%的通胀率不是靠换一种支付方式就能解决的。产品设计应该"就事论事"解决支付问题，而非试图绕开货币制度。'}
+    ],
+    [
+      {result:'强调商业利益本身没有错，但"利益论证"在法国文化语境中容易被解读为"用钱买走我们的文化"。法国人对"商业"本身就有历史性的警惕——法国是一个重农主义传统深厚的国家（南方和中部的种植园经济），商业被长期视为"不那么体面"的事。利益论证可能适得其反。',mks:'c7 文化自信即开放：真正自信的国家是包容的，但包容需要时间——法国20年的变化证明微小的进步累积起来是巨大的。你的收购刚完成，团队还没看到你"包容"的证据。c4 陆权与海权：法国的重农传统是陆权文明的遗产。'},
+      {result:'这是最稳妥的起步策略。保持原管理团队传递了"尊重"的信号——法国人在乎的是"你把我们当平等的伙伴还是下属"。退居幕后的风险是：如果永远隐居幕后，品牌故事永远是"法国公司被中国资本收购"而非"中法共创"。长期来看需要逐步找到"共同叙事"。',mks:'c9 个体书写历史：你的每一个管理选择都在书写这家百年企业的下一章。c3 文明的距离30米：信任也是"30米距离"——先让周围30米的人（管理团队）感受到你的诚意，再扩展到更大的公共空间。'},
+      {result:'文化交流活动是有价值的长期投资，但它解决的是"认知"而非"信任"——法国团队和社区不信任的不是"中国文化"，而是"一个外国老板会不会尊重我们的传统和利益"。在信任建立之前，文化交流可能被视为PR表演。建议先通过行动（保持团队、保持品牌、保持质量标准）建立信任基础，再通过文化交流深化理解。',mks:'c7 文化自信即开放 + c10 规则而非道德："开放"需要通过规则来保障——在收购协议中明确"品牌独立性""管理层保留"等条款，比开10场文化晚会更能建立信任。信任的基础是"可预测的行为"，不是"好听的表态"。'}
+    ]
+  ];
+  var r=scenarios[scenarioIdx][optIdx];
+  var el=document.getElementById('decisionResult'+scenarioIdx);
+  el.style.display='block';
+  el.innerHTML='<div style="margin-bottom:6px"><strong>反馈：</strong>'+r.result+'</div><div style="font-size:.85rem;color:var(--text-light)"><strong>MKS分析：</strong>'+r.mks+'</div>';
+}
+
+// ===== UTILITY =====
+function switchTab(idx){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelector('.tab-btn[data-tab="'+idx+'"]').classList.add('active');
+  document.getElementById('panel'+idx).classList.add('active');
+  if(idx===4)renderReview();
+}
+</script>
+</body>
+</html>

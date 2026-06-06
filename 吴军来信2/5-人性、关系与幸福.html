@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人性、关系与幸福 — 吴军来信2 最小知识集</title>
+<style>
+:root{--bg:#fdf6ec;--card:#fffaf2;--accent:#c0392b;--text:#3d2f2f;--text-light:#6b5b5b;--border:#e8d5c4;--shadow:0 2px 12px rgba(61,47,47,.08);--success:#2e7d32}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;background:var(--bg);color:var(--text);line-height:1.7;padding-top:56px}
+.container{max-width:1100px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--text);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 clamp(12px,3vw,24px);height:48px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.top-bar .site-title{font-size:clamp(.9rem,2vw,1.1rem);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-bar a{color:#ffc;text-decoration:none;font-size:clamp(.8rem,1.8vw,.9rem);white-space:nowrap;transition:color .2s}
+.top-bar a:hover{color:#fff}
+.top-bar .home-link{display:flex;align-items:center;gap:6px}
+header{text-align:center;padding:clamp(20px,3vw,36px) 0 clamp(8px,2vw,16px)}
+header h1{font-size:clamp(1.4rem,3vw,2rem);color:var(--accent);margin-bottom:4px}
+header .subtitle{font-size:clamp(.85rem,1.6vw,1rem);color:var(--text-light)}
+.tab-bar{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 16px;justify-content:center}
+.tab-btn{padding:clamp(6px,1.2vw,9px) clamp(10px,2vw,14px);font-size:clamp(.7rem,1.3vw,.85rem);border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--card);color:var(--text);transition:all .2s;white-space:nowrap}
+.tab-btn:hover,.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-panel{display:none;animation:fadeIn .35s}
+.tab-panel.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+h2{font-size:clamp(1.1rem,2.2vw,1.5rem);color:var(--accent);margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+h3{font-size:clamp(.95rem,1.8vw,1.2rem);color:var(--text);margin:16px 0 8px}
+h4{font-size:clamp(.85rem,1.5vw,1rem);color:var(--accent);margin:12px 0 6px}
+.card{padding:clamp(12px,2.5vw,20px);background:var(--card);border-radius:10px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px}
+.goal-box{padding:20px;background:linear-gradient(135deg,var(--card),#fef5e7);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;margin-bottom:20px}
+.goal-box p{font-size:clamp(.9rem,1.6vw,1rem)}
+.concept-list{list-style:none;padding:0}
+.concept-list li{padding:10px 14px;margin-bottom:6px;background:var(--card);border-radius:8px;border:1px solid var(--border);font-size:clamp(.82rem,1.4vw,.92rem);display:flex;align-items:flex-start;gap:8px}
+.concept-list li .num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;margin-top:2px}
+.golden-list{list-style:none;padding:0}
+.golden-list li{padding:12px 14px;margin-bottom:8px;background:linear-gradient(135deg,#fffaf2,#fef5e7);border-radius:8px;border:1px solid var(--accent);border-left:3px solid var(--accent);font-size:clamp(.82rem,1.4vw,.92rem)}
+.star{color:var(--accent);font-weight:700}
+.svg-wrap{overflow-x:auto;margin:16px 0;text-align:center}
+.svg-wrap svg{max-width:100%;height:auto;min-width:600px}
+.boundary-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.3vw,.88rem);margin:12px 0}
+.boundary-table th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left}
+.boundary-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.boundary-table tr:nth-child(even){background:var(--card)}
+.path-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.path-step{background:var(--card);padding:16px;border-radius:10px;border:1px solid var(--border);text-align:center}
+.path-step .step-num{font-size:1.5rem;color:var(--accent);font-weight:700}
+.path-step p{font-size:clamp(.78rem,1.3vw,.88rem);margin-top:6px}
+.progress-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden;margin:12px 0}
+.progress-fill{height:100%;background:var(--accent);border-radius:5px;transition:width .5s}
+.flip-card{perspective:1000px;height:clamp(220px,40vw,280px);margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;padding:clamp(16px,3vw,24px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.flip-front{background:var(--card)}
+.flip-back{background:linear-gradient(135deg,#fffaf2,#fef5e7);transform:rotateY(180deg);overflow-y:auto;align-items:flex-start;text-align:left;font-size:clamp(.8rem,1.6vw,.9rem)}
+.flip-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0}
+.flip-nav .btn{min-width:80px}
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;background:var(--success);color:#fff}
+.btn{padding:clamp(7px,1.2vw,10px) clamp(14px,2.5vw,20px);border-radius:8px;border:none;cursor:pointer;font-size:clamp(.78rem,1.3vw,.9rem);font-family:inherit;transition:all .2s;min-height:44px}
+.btn-outline{border:2px solid var(--accent);color:var(--accent);background:transparent}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:#a02d26}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{background:#1b5e20}
+.btn-sm{padding:6px 14px;font-size:.8rem;min-height:36px}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:16px 0}
+.quiz-card{padding:clamp(12px,2.5vw,18px);background:var(--card);border-radius:10px;border:1px solid var(--border);margin-bottom:12px}
+.quiz-card h4{color:var(--accent);margin-bottom:8px}
+.q-option{display:block;padding:10px 14px;margin:6px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:clamp(.8rem,1.4vw,.9rem);transition:all .2s;background:var(--card)}
+.q-option:hover{border-color:var(--accent);background:#fef5e7}
+.q-option.selected{border-color:var(--accent);background:var(--accent);color:#fff}
+.q-option.correct{border-color:var(--success);background:#e8f5e9;color:var(--success)}
+.q-option.wrong{border-color:var(--accent);background:#fce4e4;color:var(--accent)}
+.q-feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:clamp(.78rem,1.2vw,.85rem);display:none}
+.q-feedback.show{display:block}
+.q-feedback.correct{background:#e8f5e9;color:var(--success);border:1px solid var(--success)}
+.q-feedback.wrong{background:#fce4e4;color:var(--accent);border:1px solid var(--accent)}
+.sa-input{width:100%;min-height:80px;padding:12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:clamp(.85rem,1.4vw,.92rem);margin:8px 0;resize:vertical;background:var(--card)}
+.sa-reveal{margin-top:8px;padding:12px;background:#fef5e7;border-radius:8px;border:1px solid var(--accent);font-size:clamp(.8rem,1.3vw,.88rem);display:none}
+.sa-reveal.show{display:block}
+.exam-timer{font-size:1.2rem;color:var(--accent);font-weight:700;text-align:center;margin:8px 0}
+.exam-score{text-align:center;font-size:1.1rem;margin:16px 0;padding:16px;background:var(--card);border-radius:10px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
+.stat-card{text-align:center;padding:14px 10px;background:var(--card);border-radius:10px;border:1px solid var(--border)}
+.stat-card .stat-val{font-size:1.6rem;font-weight:700;color:var(--accent)}
+.stat-card .stat-label{font-size:.78rem;color:var(--text-light)}
+.review-item{padding:12px;margin-bottom:10px;background:var(--card);border-radius:8px;border:1px solid var(--border)}
+.review-item .review-q{font-weight:700;color:var(--accent)}
+.review-item .review-a{color:var(--text-light);margin-top:4px}
+.node{border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin:4px 0;background:var(--card)}
+.node-header{cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:700;color:var(--accent)}
+.node-header::before{content:'▸';font-size:.8rem;transition:transform .3s;display:inline-block}
+.node-header.open::before{transform:rotate(90deg)}
+.node-body{display:none;padding:8px 0 0 20px;font-size:clamp(.8rem,1.3vw,.88rem);color:var(--text-light)}
+.node-body.open{display:block}
+.socratic-item{margin-bottom:18px;padding:14px;background:var(--card);border-radius:10px;border:1px solid var(--border)}
+.socratic-q{font-weight:700;color:var(--accent);margin-bottom:8px;font-size:clamp(.88rem,1.5vw,.95rem)}
+.socratic-a{color:var(--text-light);padding-left:12px;border-left:2px solid var(--border);font-size:clamp(.82rem,1.3vw,.9rem)}
+.case-block{padding:16px;background:var(--card);border-radius:10px;border:1px solid var(--border);margin-bottom:16px}
+.case-block h4{color:var(--accent);margin-bottom:6px}
+.decision-round{padding:14px;background:var(--card);border-radius:10px;border:1px solid var(--border);margin-bottom:12px}
+.d-option{display:block;padding:10px 14px;margin:4px 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:clamp(.8rem,1.4vw,.9rem);transition:all .2s}
+.d-option:hover{border-color:var(--accent);background:#fef5e7}
+.d-option.selected{border-color:var(--accent);background:var(--accent);color:#fff}
+.d-result{display:none;margin-top:10px;padding:12px;background:#fef5e7;border-radius:8px;border:1px solid var(--border)}
+.d-result.show{display:block}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 24px;border-radius:20px;font-size:.85rem;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.learned-check{display:inline-flex;align-items:center;gap:4px;font-size:.78rem;color:var(--success);margin-top:4px}
+@media(max-width:600px){
+body{padding-top:48px}
+.tab-bar{gap:2px}
+.tab-btn{padding:5px 8px;font-size:.68rem;border-radius:4px}
+.flip-back{font-size:.78rem}
+.flip-nav{gap:8px}
+.flip-nav .btn{min-width:60px}
+.svg-wrap svg{min-width:400px}
+.path-steps{grid-template-columns:1fr}
+}
+@media(max-width:375px){
+.tab-btn{padding:4px 6px;font-size:.62rem}
+.flip-card{height:clamp(200px,55vw,240px)}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span class="site-title">人性、关系与幸福</span>
+  <a href="index.html" class="home-link">← 返回知识主板</a>
+</div>
+
+<header>
+  <h1>人性、关系与幸福</h1>
+  <p class="subtitle">认知操作系统 · 用科学原理（生物学、博弈论、经济学）拆解人性底层逻辑</p>
+  <p class="subtitle" style="margin-top:4px;font-size:.78rem;color:var(--text-light)">母隐喻：认知操作系统 — 不讲「想什么」，讲「怎么想」。与硅谷来信3「人生算法」互补。</p>
+</header>
+
+<div class="container">
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="toggleTab(0,this)">知识集总览</button>
+  <button class="tab-btn" onclick="toggleTab(1,this)">知识卡片</button>
+  <button class="tab-btn" onclick="toggleTab(2,this)">题库系统</button>
+  <button class="tab-btn" onclick="toggleTab(3,this)">考试模式</button>
+  <button class="tab-btn" onclick="toggleTab(4,this)">复习模式</button>
+  <button class="tab-btn" onclick="toggleTab(5,this)">思维导图</button>
+  <button class="tab-btn" onclick="toggleTab(6,this)">深度追问</button>
+  <button class="tab-btn" onclick="toggleTab(7,this)">案例分析</button>
+  <button class="tab-btn" onclick="toggleTab(8,this)">实战决策</button>
+</div>
+
+<!-- Tab 0: 知识集总览 -->
+<div class="tab-panel show" id="tab0">
+  <div class="goal-box">
+    <p><strong>核心目标：</strong>用生物学、博弈论、经济学、心理学的底层逻辑，重建对人性的认知框架。不告诉你「人是什么样的」，而是给你一把手术刀，解剖人性背后的运行机制——从自私基因到暴力驯化，从代沟的不可弥合性到亲密关系的经营法则。</p>
+  </div>
+
+  <h2>核心概念</h2>
+  <ul class="concept-list" id="overviewConcepts"></ul>
+
+  <h2>最小知识集（骨架中的骨架）</h2>
+  <ul class="golden-list">
+    <li><span class="star">★ 人性善恶论</span> — 所有关于人性的制度设计、法律基础、教育理念都以此为锚点。不问「人好不好」，问「在什么制度下人能变好」。</li>
+    <li><span class="star">★ 暴力驯化</span> — 人类文明史本质上是一部群体暴力淘汰个体暴力的历史。理解这一点，才能理解法律、死刑、公权力的存在理由。</li>
+    <li><span class="star">★ 自我优先原则</span> — 「你比你周围的人都重要」不是自私宣言，而是认知操作系统的基础指令——只有确立自我价值，才能建立健康的边界和利他能力。</li>
+    <li><span class="star">★ 博弈论弱者生存</span> — 三方博弈证明最弱者生存概率可达70%——这对「弱肉强食」直觉构成根本颠覆，是理解联盟、制度制衡的关键。</li>
+    <li><span class="star">★ 盼头理论</span> — 快乐的核心不是物质满足，而是对未来的积极预期。加缪用《快乐的死》证明：没有盼头，财富和自由都是空的。</li>
+  </ul>
+
+  <h2>概念关系图</h2>
+  <div class="svg-wrap" id="svgContainer"></div>
+  <p style="text-align:center;font-size:.75rem;color:var(--text-light);margin-top:8px">图例：<span style="color:#c0392b">■ 根概念</span> <span style="color:#6b3a9e">■ 核心机制</span> <span style="color:#2e7d32">■ 实践法则</span> <span style="color:#e67e22">■ 认知工具</span> --- 虚线=回环反馈</p>
+
+  <h2>边界知识表</h2>
+  <table class="boundary-table">
+    <tr><th>知识点</th><th>使用场景</th></tr>
+    <tr><td>好撒玛利亚人法</td><td>需要保护见义勇为者免于恶意诉讼时</td></tr>
+    <tr><td>蝴蝶效应边界条件</td><td>需要区分偶然事件和系统性因果时</td></tr>
+    <tr><td>控制论中的负反馈</td><td>理解为什么大多数社会系统具有自我修正能力</td></tr>
+    <tr><td>兰厄姆两种攻击性</td><td>解释个体温和与集体暴力的矛盾</td></tr>
+    <tr><td>加州36号提案公投</td><td>个体投票如何形成系统性改变的案例</td></tr>
+    <tr><td>假两难谬误</td><td>识别「为自己活=自私」等逻辑陷阱</td></tr>
+    <tr><td>损失厌恶心理</td><td>解释为什么惩恶比扬善更有效的设计逻辑</td></tr>
+    <tr><td>马斯洛需求理论</td><td>理解成功三层标准（物质→尊重→自我实现）</td></tr>
+    <tr><td>傅佩荣人生七层次</td><td>认知发展的螺旋上升路径</td></tr>
+    <tr><td>巴里·施瓦茨选择悖论</td><td>理解为什么选择越多越不自由</td></tr>
+    <tr><td>马基雅维利权力悖论</td><td>解释为什么有能力的领导者有时不被选中</td></tr>
+    <tr><td>斯宾塞教育理念</td><td>理解父母需要专门学习为人父母的知识</td></tr>
+  </table>
+
+  <h2>学习路径</h2>
+  <div class="path-steps">
+    <div class="path-step"><div class="step-num">01</div><p><strong>人性底层</strong><br>先理解自私基因和暴力驯化——这是认知地基</p></div>
+    <div class="path-step"><div class="step-num">02</div><p><strong>博弈机制</strong><br>掌握三方博弈和弱者生存的逻辑</p></div>
+    <div class="path-step"><div class="step-num">03</div><p><strong>关系法则</strong><br>代沟、边界、亲密关系的经营策略</p></div>
+    <div class="path-step"><div class="step-num">04</div><p><strong>幸福构建</strong><br>盼头理论、成功三层标准、快乐哲学</p></div>
+    <div class="path-step"><div class="step-num">05</div><p><strong>认知升级</strong><br>将底层逻辑应用到生活各领域，形成自己的认知操作系统</p></div>
+  </div>
+
+  <h2>学习进度</h2>
+  <div class="progress-bar"><div class="progress-fill" id="overviewProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已掌握 <span id="overviewLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 1: 知识卡片 -->
+<div class="tab-panel" id="tab1">
+  <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+  <div class="flip-nav">
+    <button class="btn btn-outline btn-sm" onclick="prevCard()">← 上一张</button>
+    <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+    <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 →</button>
+  </div>
+  <div style="text-align:center;margin:8px 0">
+    <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">✓ 标记已学习</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+  <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / 10 个概念</p>
+</div>
+
+<!-- Tab 2: 题库系统 -->
+<div class="tab-panel" id="tab2">
+  <div class="btn-group">
+    <button class="btn btn-accent" onclick="startQuiz()">🎲 随机抽题练习</button>
+    <button class="btn btn-outline" onclick="resetQuiz()">重置</button>
+  </div>
+  <div id="quizContainer"></div>
+  <div id="staticQuiz" style="display:none">
+    <h3>全量题库</h3>
+    <p style="font-size:.82rem;color:var(--text-light)">共20道选择题 + 10道简答题。点击上方「🎲 随机抽题练习」可抽取随机题目练习。</p>
+    <div id="allMCQ"></div>
+    <h3 style="margin-top:24px">简答题</h3>
+    <div id="allSAQ"></div>
+  </div>
+</div>
+
+<!-- Tab 3: 考试模式 -->
+<div class="tab-panel" id="tab3">
+  <div style="text-align:center;margin-bottom:16px">
+    <button class="btn btn-accent" onclick="startExam()" id="examStartBtn">开始考试</button>
+    <button class="btn btn-outline" onclick="resetExam()" style="display:none" id="examResetBtn">重新开始</button>
+  </div>
+  <div class="exam-timer" id="examTimer" style="display:none">剩余时间: <span id="examTime">30:00</span></div>
+  <div id="examContainer"></div>
+  <div id="examResult" style="display:none"></div>
+</div>
+
+<!-- Tab 4: 复习模式 -->
+<div class="tab-panel" id="tab4">
+  <h2>错题复习</h2>
+  <div id="reviewWrongList"><p style="color:var(--text-light)">暂无错题记录，完成考试后错题会自动记录到此处。</p></div>
+  <h2 style="margin-top:28px">复习统计</h2>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val" id="rvTotal">0</div><div class="stat-label">总答题数</div></div>
+    <div class="stat-card"><div class="stat-val" id="rvCorrect">0</div><div class="stat-label">正确题数</div></div>
+    <div class="stat-card"><div class="stat-val" id="rvRate">0%</div><div class="stat-label">正确率</div></div>
+    <div class="stat-card"><div class="stat-val" id="rvWrong">0</div><div class="stat-label">待复习</div></div>
+  </div>
+  <div style="text-align:center;margin:16px 0">
+    <button class="btn btn-outline btn-sm" onclick="clearReview()">清空复习记录</button>
+  </div>
+</div>
+
+<!-- Tab 5: 思维导图 -->
+<div class="tab-panel" id="tab5">
+  <div class="node">
+    <div class="node-header" onclick="toggleMindmap(this)">人性认知操作系统</div>
+    <div class="node-body">
+      <div class="node">
+        <div class="node-header" onclick="toggleMindmap(this)">人性底层</div>
+        <div class="node-body">
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">人性善恶论——性善论vs性恶论的历史辩论与现代科学结论</div><div class="node-body"><p>孟子vs荀子的千年辩论。现代科学结论：人性本无善恶标签，但有自私基因。卢梭的性善论在"坠落城"实验中失败。关键在于制度设计：基于人性恶假设（美国宪法制衡原则），通过后天教化引导向善。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">自私的本质——自私是刻在基因里的天性，教化只能疏导不能消除</div><div class="node-body"><p>基因层面的自私证据。黄宗羲"人各自私，人各自利"的中性解读。文革清洗思想运动的失败证明自私无法消除。亚当·斯密"看不见的手"将私心转化为社会公利。关键区分：自我意识≠自私，有自我认知者更易利他。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">暴力驯化——人类文明史=群体暴力淘汰个体暴力的过程</div><div class="node-body"><p>兰厄姆《人性悖论》：黑猩猩vs倭黑猩猩的对比研究。两种攻击性：反应性攻击(减弱)与主动性攻击(增强)。倭黑猩猩雌性联盟的驯化模式。法律和死刑的存在逻辑——延续群体淘汰极端暴力个体的机制。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">贪婪与私有制——贪婪不是基因决定的，是私有制的产物</div><div class="node-body"><p>人类学证据：原始部落接触现代交易后才出现贪婪。佛教"贪嗔痴"三毒之首。贪婪与精益求精的边界——"过度"是关键特征。新加坡自助餐罚款的"事先制止"策略。</p></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-header" onclick="toggleMindmap(this)">博弈机制</div>
+        <div class="node-body">
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">三方博弈——最弱者生存概率可达70%，颠覆"弱肉强食"直觉</div><div class="node-body"><p>亚当(80%)、比尔(60%)、查理(40%)的数学模型。双人博弈：强者胜；三方博弈：最弱者胜。前提：所有参与者都是"聪明人"。历史案例：五胡乱华中只有鲜卑族留存。弱者的生存法则：联合起来，避免成为乌合之众。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">控制论与生活——负反馈系统=社会的自我修正能力</div><div class="node-body"><p>蝴蝶效应在负反馈系统中失效。个体改变系统需要："恒定变化条件"或"正反馈系统"。人生积累曲线：输出=初始条件+∑(持续输入-负反馈)。中年改变可行——保持稳定输入即相对进步。</p></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-header" onclick="toggleMindmap(this)">关系法则</div>
+        <div class="node-body">
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">自我优先原则——"你比你周围的人都重要"是认知操作系统的第一条指令</div><div class="node-body"><p>管理预期的核心：明确自己比周围人重要。00后职场现象的本质是权利意识觉醒。边界设定：守时、不欠款、拒绝惯坏毛病。价值自信：优质服务无需讨好换取合作。假两难谬误：为自己活≠自私。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">代际鸿沟——20世纪60年代后，代沟从"可弥合型"变为"永久型"</div><div class="node-body"><p>约翰·波普首次提出"代沟"概念。曼海姆发现传统代沟自然弥合律的失效。三类应对：青少年(接纳+底线)、老年人(尊重+选择)、自己(反思+更新)。2024美国大选：低估Z世代右转的代价。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">亲密关系经营——婚姻是超过原生家庭的三重重组</div><div class="node-body"><p>婚姻=自我重塑+社会关系重组+资产重组。婚前四问：价值观、金钱观、家庭边界、冲突处理。夹心层困境与原生家庭边界。松弛感的重要性——家庭不是效率机器。</p></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-header" onclick="toggleMindmap(this)">幸福构建</div>
+        <div class="node-body">
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">盼头理论——快乐的核心是对未来的积极预期，而非物质满足</div><div class="node-body"><p>加缪《快乐的死》的快乐哲学：梅尔索获得财富后仍然空虚。萨格勒斯的名言："快乐需要时间，应用金钱赢得时间"。三种没有盼头的情况：迷茫型、好高骛远型、环境限制型。行动优先：加缪"如果你一直在找人生的意义，你永远不会生活"。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">成功三层标准——物质收益→得到尊重→自我实现</div><div class="node-body"><p>基于马斯洛需求理论的三层解构。成功≠幸福：成功可能是事后评价，幸福源于自身感受。中产子女困境：超过父辈难度大。成功的边界：不试图超越个人极限。</p></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-header" onclick="toggleMindmap(this)">认知工具</div>
+        <div class="node-body">
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">奥卡姆剃刀——不惯毛病、不讨好、不自我感动</div><div class="node-body"><p>蒙田"少在意无关紧要的事"。选择的悖论（巴里·施瓦茨）：选择越多越不自由。FOMO（错失恐惧症）的本质——分不清什么是真正重要的事。</p></div></div>
+          <div class="node"><div class="node-header" onclick="toggleMindmap(this)">系统思维——个人不要把系统性的缺陷背负到自己身上</div><div class="node-body"><p>积极心态的异化——当社会系统性缺陷存在时，过度自我优化是徒劳的。内卷破解：站在更高层次用边际收益递减分析问题。全局最优vs局部最优——人生选择的思维框架。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 6: 深度追问 -->
+<div class="tab-panel" id="tab6">
+  <div class="socratic-item">
+    <div class="socratic-q">Q1：如果人性本无善恶，为什么几乎所有的法律和制度都以「人性恶」为设计前提？</div>
+    <div class="socratic-a">因为制度的底线思维。天花板可以低，但地板不能漏——法律是「地板」，防止最坏情况发生；道德是「天花板」，引领最好的可能。用性恶论设计制度（制衡、分权、惩罚），用性善论做教育（引导、激励、感化），两者并不矛盾。美国宪法200多年只改17次，正是因为它以「人可能变坏」为设计前提，而不是假设「人性本善」。</div>
+  </div>
+  <div class="socratic-item">
+    <div class="socratic-q">Q2：为什么说「为自己活」和「自私」是两个完全独立的概念？</div>
+    <div class="socratic-a">这是典型的「假两难谬误」——世界不是非黑即白。为自己活强调的是自我意识和自我价值确认，自私的核心是缺乏对他人的关心且常含损人利己。有自我意识的人才能「己所不欲，勿施于人」。亚历山大·贝尔为电话专利权打官司（维护自我权益），但后来免费分享专利（不自私）。没有自我的人反而容易成为伪君子——表面无私实则别有用心。</div>
+  </div>
+  <div class="socratic-item">
+    <div class="socratic-q">Q3：如果三方博弈中「最弱者生存概率最高」，那为什么现实中看起来强者总是赢？</div>
+    <div class="socratic-a">因为现实中博弈者不是永远「理性聪明」的。三方博弈的前提是所有参与者都能最大化自身利益。现实中往往出现「乌合之众效应」——六国不能合力抗秦。此外，聪明的强者会使用隐藏策略：英国的「光荣孤立」、司马懿示弱、朱元璋「高筑墙广积粮缓称王」。弱者的生存法则恰恰是「联合起来」，而这在现实中很难做到。</div>
+  </div>
+  <div class="socratic-item">
+    <div class="socratic-q">Q4：为什么说代沟在20世纪60年代后变成了「永久型」而非「可弥合型」？</div>
+    <div class="socratic-a">曼海姆发现传统社会中年轻人通过环境转换（如接手父辈的农场、教堂座位、俱乐部会员资格）自然接受上一代价值观——代沟随着年龄增长自然弥合。但20世纪60年代后社会变化速度超过了代际经验传递的周期。一个人在20岁时形成的价值观（如中国30年间从票证经济到市场经济的观念转变），即使到40岁也不会自动变成父辈的价值观。每一代都带着自己的时代烙印终老。</div>
+  </div>
+  <div class="socratic-item">
+    <div class="socratic-q">Q5：加缪的《快乐的死》得出「金钱可以赢得时间，时间能带来快乐」，但为什么主人公梅尔索得到了时间和金钱还是不快乐？</div>
+    <div class="socratic-a">因为快乐需要一个关键的中间变量——「盼头」（对未来的积极预期）。梅尔索在获得财富后环游欧洲、与美女同居，但这些只是感官刺激的堆叠，不是发自内心的目标。他没有真正「想要什么」。萨格勒斯说「快乐需要时间」是对的，但时间只是容器，盼头才是容器里的内容。所以加缪的另一句名言才是关键：「如果你一直在找人生的意义，你永远不会生活。」行动本身——不是财富，不是时间——才是盼头的载体。</div>
+  </div>
+  <div class="socratic-item">
+    <div class="socratic-q">Q6：为什么「惩恶」比「扬善」更有效？</div>
+    <div class="socratic-a">这是行为经济学中「损失厌恶」的直接应用——剥夺100元的痛苦远大于获得100元的喜悦。如果社会将同等资源用于惩罚恶行而非奖励善举，前者效果更显著。这也是为什么各国法律都以「禁止和惩罚」为核心，没有「做好事获奖励」的条款。同时，「不做坏事」就是对社会的最大贡献——如果人人都做到这一点，社会福祉将比现状提升十倍以上。</div>
+  </div>
+  <div class="socratic-item">
+    <div class="socratic-q">Q7：为什么说「婚姻对人生的重塑作用超过原生家庭」？</div>
+    <div class="socratic-a">因为婚姻涉及三重重组：①自我重塑——你需要从「我」变成「我们」；②社会关系重组——你的社交圈、生活方式、决策优先级全部改变；③资产重组——财务、房产、未来规划深度绑定。这三重改变的影响深度远超原生家庭（原生家庭的影响在你离开家后逐渐递减）。投资圈考察创业者配偶是有道理的——一个不合适的伴侣可以拖垮整个事业。</div>
+  </div>
+</div>
+
+<!-- Tab 7: 案例分析 -->
+<div class="tab-panel" id="tab7">
+  <div class="case-block">
+    <h4>案例一：美国「坠落城」公社实验（1965-1970）</h4>
+    <p><strong>背景：</strong>科罗拉多州，嬉皮士艺术家建立的乌托邦公社。基于「人性本善」假设，主张「没有老板、靠互助互爱运营」。</p>
+    <p><strong>初期：</strong>少数人实现资金共享、互助合作，看起来像天堂。</p>
+    <p><strong>崩溃：</strong>规则破坏者彼得·雷必特出现——不贡献、不劳动，因「爱」的原则无法被批评。他组织的狂欢节导致外部人员吸毒、性放纵，公社彻底崩塌。仅存活5年。</p>
+    <p><strong>认知透镜：</strong>任何建立在「人性本善」假设上的社会模式，都忽略了约束人性阴暗面的必要机制。制度设计不能寄希望于「大家都是好人」。</p>
+  </div>
+  <div class="case-block">
+    <h4>案例二：加州36号提案公投（2024）</h4>
+    <p><strong>背景：</strong>加州「950美元以下偷窃算轻罪」的法律导致零元购泛滥，选民持续不满。</p>
+    <p><strong>结果：</strong>72%选民支持废除该法律。同时罢免纵容犯罪的检察长、奥克兰市长、旧金山市长。</p>
+    <p><strong>认知透镜：</strong>小变量（个体的不满）→持续累积形成「恒定变量」→触发系统性改变。这就是蝴蝶效应在正反馈系统中的真实运作——不是一次投票改变世界，而是持续民意形成不可忽视的力量。</p>
+  </div>
+  <div class="case-block">
+    <h4>案例三：球友的边界设定</h4>
+    <p><strong>背景：</strong>上市公司老板邀请退休女高管打高尔夫，对方迟到、节奏慢，影响其体验。</p>
+    <p><strong>处理：</strong>首次忍耐→次日直接拒绝等待→最终彻底拒绝其加入。</p>
+    <p><strong>认知透镜：</strong>「不惯毛病」的核心——若必须有人不舒服，希望那个人不是自己。关系建立在价值互换之上，不是讨好之上。第一次忍耐是气度，第二次忍耐就是愚蠢。清晰的边界不是冷漠，而是对双方时间的尊重。</p>
+  </div>
+  <div class="case-block">
+    <h4>案例四：三明治一代的孝道两难</h4>
+    <p><strong>背景：</strong>中年群体同时面对「孝道义务」和「小家庭需求」的双重压力。父母期待子女「听话=孝顺」，子女有自己的生活和价值观。</p>
+    <p><strong>困境：</strong>农耕文明下的孝道（单向服从）与工业文明下的代际关系（平等情感照顾）之间的冲突。父母的「养育之恩」被用作道德绑架工具。</p>
+    <p><strong>认知透镜：</strong>「听话≠孝顺」。中间子女的案例证明：未被「听话」教育束缚的孩子反而获得更多自我实现机会（成为上市公司副总裁）。处理策略：接纳父母的局限+守住自己的核心边界+避免被道德绑架。</p>
+  </div>
+</div>
+
+<!-- Tab 8: 实战决策 -->
+<div class="tab-panel" id="tab8">
+  <div class="decision-round" id="dRound">
+    <h3>场景一：职场边界设定</h3>
+    <p style="font-size:clamp(.82rem,1.3vw,.9rem);color:var(--text-light);margin:8px 0">你的老板习惯在周末给你发消息安排工作。你每次都及时回复。渐渐地，老板开始期待你随时在线。今天周六上午，你正陪家人，老板又发来一条「紧急」消息（其实可以周一处理）。你怎么办？</p>
+    <div class="d-option" onclick="chooseDecision(this,'A')">A. 继续回复，毕竟升职评估在即，不能让老板有意见</div>
+    <div class="d-option" onclick="chooseDecision(this,'B')">B. 回复说「周一早上第一时间处理」，周末不回应后续</div>
+    <div class="d-option" onclick="chooseDecision(this,'C')">C. 不回复，等周一再解释自己在陪家人</div>
+    <div class="d-option" onclick="chooseDecision(this,'D')">D. 周一当面告诉老板，自己的周末属于家庭，请尊重边界</div>
+    <div class="d-result" id="dResult1"></div>
+  </div>
+  <div class="decision-round" id="dRound2">
+    <h3>场景二：朋友向你借钱</h3>
+    <p style="font-size:clamp(.82rem,1.3vw,.9rem);color:var(--text-light);margin:8px 0">一位交往多年的朋友突然向你借5万元，说是做生意周转急用，承诺下个月还。你知道他最近创业不顺。你们感情很好，但你也清楚「朋友之间不要有金钱往来」的忠告。</p>
+    <div class="d-option" onclick="chooseDecision2(this,'A')">A. 借给他——朋友有难，义不容辞</div>
+    <div class="d-option" onclick="chooseDecision2(this,'B')">B. 不借，但请他吃饭安慰他</div>
+    <div class="d-option" onclick="chooseDecision2(this,'C')">C. 借一部分（1万），说是自己目前能拿出的全部</div>
+    <div class="d-option" onclick="chooseDecision2(this,'D')">D. 坦诚说明「朋友间不借钱」的原则，但帮他找其他解决办法</div>
+    <div class="d-result" id="dResult2"></div>
+  </div>
+  <div class="decision-round" id="dRound3">
+    <h3>场景三：代际冲突——父母催婚</h3>
+    <p style="font-size:clamp(.82rem,1.3vw,.9rem);color:var(--text-light);margin:8px 0">你32岁，事业稳定，恋爱中但暂时没有结婚计划。父母每次打电话都催婚，说「再不结婚就晚了」「我们老了想抱孙子」。你感到压力很大，甚至开始回避接父母的电话。</p>
+    <div class="d-option" onclick="chooseDecision3(this,'A')">A. 妥协，和伴侣商量提前婚期</div>
+    <div class="d-option" onclick="chooseDecision3(this,'B')">B. 减少联系，少接电话，避免冲突</div>
+    <div class="d-option" onclick="chooseDecision3(this,'C')">C. 理性沟通：理解他们的焦虑，但明确婚姻时间是你的决定</div>
+    <div class="d-option" onclick="chooseDecision3(this,'D')">D. 让伴侣去和父母沟通，转移压力</div>
+    <div class="d-result" id="dResult3"></div>
+  </div>
+</div>
+
+</div><!-- .container -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const concepts = [
+  {id:'c1',name:'人性善恶论',def:'人性本无善恶标签——现代科学表明自私倾向刻在基因中，但后天的道德、法律和制度设计可以引导行为向善。关键不是“人好不好”，而是“在什么制度下人能变好”。',analogy:'如同一辆车没有“好车”或“坏车”的天然属性——车的好坏取决于刹车系统（法律）、方向盘（道德）和道路规则（制度）。没有刹车的车必然撞毁，这就是“坠落城”公社实验的教训。',example:'美国宪法基于人性恶假设设计：制衡防止权力滥用、平等避免弱肉强食、宪法至上约束所有人——200多年只改17次，证明“防恶”比“信善”更可靠。',counter:'认为人性本善不可靠——卢梭的浪漫想象在“坠落城”公社实验中5年即崩溃。但反过来，认为人全是恶的也不对——倭黑猩猩群体展现的同情心和合作精神证明道德情感可通过进化强化。'},
+  {id:'c2',name:'暴力驯化',def:'人类文明史本质上是“群体暴力淘汰个体暴力”的过程——通过法律、死刑等制度消灭最残忍的个体，使反应性攻击（日常暴力）不断减少，但主动性攻击（有组织战争）却可能增强。',analogy:'如同驯化狼为狗——不是消灭攻击性，而是将攻击性从“对群体内”转移到“对群体外”。狗对主人温顺但对陌生人警惕。人类的“文明化”就是在自我驯化的路上，反应性攻击减弱但国家间战争规模更大。',example:'倭黑猩猩的雌性联盟机制：雌性通过团结对抗施暴雄性，使整个群体的暴力水平降低。人类社会的法律和公权力正是这一机制的文明版本。',counter:'并非“暴力越少越好”——完全取消死刑可能削弱驯化机制，让极端暴力个体得不到淘汰。兰厄姆的研究表明：群体中最野蛮的人必须被清除，否则文明无法维持。'},
+  {id:'c3',name:'自我优先原则',def:'“你比你周围的人都重要”——这不是自私宣言，而是认知操作系统的基础指令。只有先确立自我价值，才能建立清晰的边界、真诚地利他、避免被人利用。',analogy:'如同飞机安全演示：“先给自己戴好氧气面罩，再帮助他人”——不是自私，而是如果你先晕倒了，谁也帮不了。职场中的“不惯毛病”、关系中的“不讨好”，都是同一原理。',example:'上市公司老板的球友边界：第一次忍耐迟到→第二次直接拒绝等待→最终拒绝其加入。逻辑：朋友关系基于价值互换，无需承担免费教练角色。维护自身体验优先。',counter:'自我优先≠冷漠无情。有自我意识的人更能“己所不欲，勿施于人”。亚历山大·贝尔为专利权打官司（维护自我），后来免费分享专利（利他）——两者并存。假两难谬误：把“为自己活”和“自私”混为一谈是逻辑错误。'},
+  {id:'c4',name:'自私的本质',def:'自私是刻在人类基因中的天性——原始社会剩余物品出现即诞生私有制，催生贪婪。教化无法消除自私，只能通过制度“疏导”（将私心转化为社会公利）和“规范”（法律限制损人利己）。',analogy:'如同河流——你无法让水不往下流（自私天性），但你可以修水渠引导它灌溉良田（疏导），也可以修堤坝防止它淹没村庄（规范）。亚当·斯密的“看不见的手”就是最著名的水渠工程。',example:'改革开放后，文革中被认为“自私”的教师获得科研机会后成为爆破专家——个人私利（名誉、收入）和社会公利（科技贡献）同时实现。这就是“疏导”的力量。',counter:'伪君子比真小人更危险——真小人可识别可防范，伪君子标榜无私却行极端自私之实。所以“消除自私”的口号本身就可能是最自私的人提出的——他们想让你放弃利益，好让他们独占。'},
+  {id:'c5',name:'博弈论弱者生存',def:'三方博弈中，最弱者反而拥有最高生存概率（可达70%），因为最强者成为所有人的优先攻击目标。这颠覆了“弱肉强食”的直觉，揭示了联盟策略和制度制衡的数学基础。',analogy:'如同三人决斗——枪法最差的查理无人攻击，生存概率70%；最强的亚当同时被两人锁定，生存概率仅11.5%。所以聪明的强者选择“知其雄，守其雌”（《道德经》），隐藏实力避免成为众矢之的。',example:'五胡乱华中只有主动汉化的鲜卑族留存至今——其他胡人部落因过于残暴被联合消灭。英国的“光荣孤立”政策：不直接对抗欧洲大陆最强国，而是制约它、等别人联合对抗它。',counter:'前提是所有参与者都是“聪明人”（能最大化自身利益）。现实中乌合之众效应——六国不能合力抗秦——使理论失效。弱者的生存法则恰恰是“联合起来”，而这最难做到。'},
+  {id:'c6',name:'代际鸿沟',def:'20世纪60年代后，代沟从“可弥合型”变为“永久型”——各代人即使衰老仍保留独特的价值观和观念。社会变化速度超过了代际经验传递周期，代沟不会随年龄自然消除。',analogy:'如同不同操作系统之间的文件格式——Windows 95的文档在Windows 11上可以打开，但两个系统的底层架构完全不同。60后（农耕思维）、80后（转型思维）、00后（数字原生），每一代都是一套独立的操作系统。',example:'2024年美国大选：民主党策略师想当然认为Z世代会支持贺锦丽，实际特朗普支持率与之相当——代际政治倾向已永久固化，不会因年龄增长自动“左转”。',counter:'并非所有代际差异都是永久型的——有些差异会在两代人进入相同人生阶段后减弱（如育儿观念、财务规划）。关键在于区分「生命周期效应」（随年龄变化）和「代际效应」（永久固化）。'},
+  {id:'c7',name:'贪婪与私有制',def:'贪婪不是基因决定的，而是私有制的产物。原始部落在没有长期拥有物品的能力前，贪婪行为不存在。贪婪的核心特征是“过度”——超出合理需求和自身能力范围的欲望。',analogy:'如同水库——私有制是水库，贪婪是水库满溢后的泛滥。没有水库（私有制），水（资源）来了就流走，没有积累欲望。有了水库，人们开始想“让水库更大”。关键不是水库是否存在，而是有没有溢洪道（自律和制度）。',example:'刚入职谷歌的大学毕业生初期过度拿取高档食品，半年后恢复正常——从“物质缺乏”进入“物质丰富”的过渡期最容易贪婪。新加坡自助餐厅对剩食罚款，让客人学会按需取餐——“事先制止”策略的效果。',counter:'追求更多≠贪婪。精益求精是在能力范围内做到最好（如非专业人士切均匀土豆丝），贪婪是追求能力不及的目标（如非专业人士试图将土豆丝切得如细挂面）。边界在于“过度”二字。'},
+  {id:'c8',name:'盼头理论',def:'快乐的核心不是物质满足，而是对未来的积极预期（盼头）。加缪在《快乐的死》中证明：获得财富和时间后，如果没有发自内心的目标，人依然会陷入空虚。',analogy:'如同开车——油箱（财富）是必要条件，但如果没有目的地（盼头），装满油的豪车也只是在绕圈子。萨格勒斯的名言“快乐需要时间，应用金钱赢得时间”只是给了你油箱，目的地还得自己找。',example:'台湾大学生案例：因研究表现优异获得知名教授的读博承诺，从而拥有明确目标和持续动力，每日生活充满快乐——尽管他当时并不富裕。反例：梅尔索获得财富后环游欧洲却依然空虚。',counter:'盼头不能过大过贵——“一个亿小目标”不是盼头，是无法实现的空想导致更深的绝望。也不能过低——“吃一顿大餐”作为目标缺乏持续动力。盼头需要是发自内心的、中等难度、可以渐进实现的目标。'},
+  {id:'c9',name:'成功三层标准',def:'基于马斯洛需求理论：第一层物质收益（生存基础）→第二层得到尊重（社会认可）→第三层自我实现（个人价值）。成功≠幸福：成功可能是事后评价，幸福源于自身感受且无需依赖成功。',analogy:'如同建房子——第一层是地基（没钱什么都谈不上），第二层是墙壁（有社会地位才有安全感），第三层是屋顶花园（自我实现是锦上添花）。很多人把建造顺序搞反了——还没地基就去追求屋顶花园。',example:'古代乡绅的成功路径：第一层（拥有土地）→第二层（修桥铺路赢得民间尊重、捐官获上层认可）→第三层（刻书稿流芳百世）。现代对比：收入→职场地位→“改变世界”的事业追求。',counter:'成功未必带来幸福——莫扎特、梵高生前未被认可（没有第二层成功的尊重），但他们在第三层（自我实现）上达到了顶峰。幸福的独立性意味着：你不应该为了追求成功而牺牲当下的幸福。'},
+  {id:'c10',name:'亲密关系经营',def:'婚姻对人生的重塑作用超过原生家庭——涉及自我重塑（从“我”到“我们”）、社会关系重组（社交圈与生活方式改变）和资产重组（财务与未来深度绑定）三重变革。',analogy:'如同创业合伙——婚姻是人生中最重要的一次“合伙创业”。选对合伙人，公司蒸蒸日上；选错合伙人，每天都在内耗。投资人考察创业者配偶是有道理的——家庭稳定性直接影响事业稳定性。',example:'婚前四问：①你们的价值观（钱、孩子、家庭角色）是否兼容？②你们如何处理冲突？③双方原生家庭的边界怎么设定？④你们对“幸福婚姻”的定义是否一致？回答不了这四问，婚后再考虑代价极高。',counter:'婚姻不是万能药——不合适的婚姻比单身更消耗人生。层次差异过大的伴侣会导致生活质量下降，但完全不结婚也意味着失去重组人生的机会。松弛感（家庭不是效率机器）是经营的核心原则。'}
+];
+
+const mcq = [
+  {q:'美国宪法200多年只修改17次，其稳定性源自什么设计前提？',opts:['基于人性恶假设的制衡设计','基于人性本善的乐观设计','模仿英国不成文宪法传统','制定者拥有超凡道德水平'],answer:0,exp:'美国宪法以”人可能变坏”为前提，通过制衡、平等、宪法至上三大原则约束权力，因此稳定性极强。'},
+  {q:'三方博弈中，最弱者查理（命中率40%）在多轮射击中的生存概率约为多少？',opts:['70.5%','11.5%','24%','100%'],answer:0,exp:'多轮射击中查理存活率约70.5%——最强者和次强者互相锁定，最弱者反而无人攻击。这是对”弱肉强食”直觉的根本颠覆。'},
+  {q:'”坠落城”公社实验（1965-1970）失败的根本原因是什么？',opts:['建立在人性本善假设上，没有约束恶的机制','资金不足','领导人能力不够','外部势力破坏'],answer:0,exp:'公社基于”没有老板靠互助互爱运营”的理念，当规则破坏者出现时，因”爱”的原则无法被批评，导致崩塌。'},
+  {q:'代沟在20世纪60年代后从”可弥合型”变为”永久型”的根本原因是什么？',opts:['社会变化速度超过了代际经验传递周期','年轻人越来越叛逆','家庭教育普遍失败','互联网使代际对立加剧'],answer:0,exp:'社会快速发展导致各代人在青年期形成的价值观永久固化，不会随年龄增长自动变为父辈的价值观。'},
+  {q:'加缪《快乐的死》最核心的结论是什么？',opts:['金钱可以赢得时间，但时间需要盼头才有意义','金钱是快乐的充分条件','物质满足即可获得快乐','人注定无法获得真正的快乐'],answer:0,exp:'萨格勒斯的名言揭示了时间和金钱的工具性——它们只是容器，盼头才是容器里的内容。'},
+  {q:'根据亚当·斯密的观点，自私的天性可以通过什么机制转化为社会公利？',opts:['政府强制分配','看不见的手——市场机制','宗教教化','彻底消除私有制'],answer:1,exp:'斯密从人性”贪婪和自私”出发创立经济学，证明市场机制可以将个人逐利行为转化为社会整体进步。'},
+  {q:'倭黑猩猩的雌性联盟机制给人类社会的核心启示是什么？',opts:['雄性应该被排斥','群体合作可以驯化个体暴力','雌性天生更优越','社会应该由雌性领导'],answer:1,exp:'倭黑猩猩通过雌性联合对抗施暴雄性实现群体和平——人类社会中的法律和公权力正是这一驯化机制的文明版本。'},
+  {q:'吴军关于贪婪的核心观点是什么？',opts:['贪婪是基因决定的无法改变','贪婪是私有制的产物，核心特征是过度','贪婪是人类进步的唯一动力','贪婪可以通过教育完全消除'],answer:1,exp:'人类学证据表明，原始部落在接触私有制前没有贪婪行为。贪婪与精益求精的边界在于”过度”二字。'},
+  {q:'成功的三层标准是基于哪个经典理论框架？',opts:['弗洛伊德精神分析','马斯洛需求理论','皮亚杰认知发展','荣格原型理论'],answer:1,exp:'吴军将成功解构为三层：物质收益（生存基础）→得到尊重（社会认可）→自我实现（个人价值），直接对应马斯洛需求金字塔。'},
+  {q:'”知其雄，守其雌”（《道德经》）在博弈论中的含义是什么？',opts:['弱者应该放弃竞争','强者应隐藏实力避免成为众矢之的','所有人都应该装弱','女性比男性更适合领导'],answer:1,exp:'三方博弈中，最强者因成为所有人的优先攻击目标而生存率最低。聪明的强者（如英国光荣孤立、司马懿示弱）隐藏实力。'},
+  {q:'为什么”惩恶”比”扬善”更有效？',opts:['惩罚比奖励更容易实施','人们天生更喜欢惩罚别人','损失厌恶心理——剥夺的痛苦大于获得的喜悦','法律只允许惩罚不允许奖励'],answer:2,exp:'行为经济学中，剥夺100元的痛苦远大于获得100元的喜悦。同等成本下，惩恶效果远优于扬善。这也是各国法律以禁止和惩罚为核心的原因。'},
+  {q:'吴军认为婚姻对人生的影响超过原生家庭，因为婚姻涉及什么核心变革？',opts:['经济和法律保障','生育和抚养后代','自我重塑、社会关系重组、资产重组','社会地位的提升'],answer:2,exp:'婚姻是人生中最重要的”重组事件”——三重重组的影响深度远超原生家庭。投资人考察创业者配偶是有道理的。'},
+  {q:'”好撒玛利亚人法”的核心目的是什么？',opts:['强制公民见义勇为','对见义勇为者给予金钱奖励','保护施救者免于恶意诉讼','惩罚不救助他人的行为'],answer:2,exp:'表面是扬善，实为除恶——通过保护施救者免于”恩将仇报”的恶意诉讼，消除见义勇为的后顾之忧。'},
+  {q:'吴军提出的”盼头”概念指的是什么？',opts:['对财富自由的期待','对社会地位的追求','对未来的积极预期——快乐的核心要素','等待机会到来的耐心'],answer:2,exp:'盼头是对未来的积极预期，是快乐生活的基础。”有盼头”是吴军快乐哲学的核心概念。'},
+  {q:'根据兰厄姆的研究，人类哪种攻击性在现代社会中不断增强？',opts:['反应性攻击（日常暴力）','自我攻击（自残行为）','主动性攻击（有组织战争）','语言攻击（辱骂）'],answer:2,exp:'反应性攻击（个体间冲突）在不断减弱，但主动性攻击（国家间有预谋的战争）在不断增大规模——如一战和二战。'},
+  {q:'”为自己而活”与”自私”的关系是什么？',opts:['完全相同——为自己活就是自私','完全对立——两者无法兼容','为自己活是自私的高级形式','不相关的独立概念——为自己活强调自我意识，自私强调损人利己'],answer:3,exp:'这是假两难谬误的典型。有自我认知者更能”将心比心”，自我意识是利他的基础。'},
+  {q:'吴军认为消除贪婪最有效的策略是什么？',opts:['道德说教','宗教修行','完全禁止私有财产','事先制止——通过限制行为让人懂得无需贪婪也能满足需求'],answer:3,exp:'新加坡自助餐厅对剩食罚款的策略表明，通过行为限制让人体验”不过度”的意义，比事后说教更有效。'},
+  {q:'为什么”乌合之众”效应会使三方博弈中弱者的理论优势失效？',opts:['弱者不够聪明','弱者天生就容易内斗','强者的人数更多','博弈者无法最大化自身利益——统一战线难以形成'],answer:3,exp:'三方博弈前提是所有参与者都是”聪明人”。现实中六国不能合力抗秦——弱者无法联合，各自为战，最终被各个击破。'},
+  {q:'吴军认为”三明治一代”（上有老下有小的中年人）最应该怎么做？',opts:['全力满足父母的所有要求','放弃小家庭以尽孝道','与父母断绝关系','接纳父母局限的同时守住自己的核心边界，避免被道德绑架'],answer:3,exp:'”听话≠孝顺”。保持边界不是不孝，而是防止不健康的代际关系消耗双方。'},
+  {q:'加缪的哪句名言最好地概括了他的行动哲学？',opts:['他人即地狱','存在先于本质','我思故我在','如果你一直在找人生的意义，你永远不会生活'],answer:3,exp:'加缪认为实践比空想更重要——盼头不是靠思考找到的，而是在行动中自然涌现的。'}
+];
+
+const saq = [
+  {q:'为什么说“人性善恶无定论”是更务实的态度？',ref:'人性中既有自私基因也有合作倾向。关键在于制度设计——基于人性恶假设建立底线（法律），基于性善潜力做教育引导。“坠落城”实验证明纯“信善”的社会模式必然失败。'},
+  {q:'简述三方博弈模型中“弱者生存”的核心逻辑。',ref:'三人互射→最强者和次强者互相锁定→最弱者无人攻击→生存率最高。但前提是所有参与者都“聪明”。现实中弱者联合是关键但最难实现的策略。'},
+  {q:'代沟从“可弥合型”变为“永久型”的社会学原因是什么？',ref:'社会变化速度超过了代际经验传递周期。传统社会中年轻人通过环境转换自然接受父辈价值观。20世纪60年代后，各代人在青年期形成的观念永久固化。'},
+  {q:'加缪《快乐的死》如何揭示了“金钱≠快乐”？',ref:'梅尔索通过杀死萨格勒斯获得财富→环游欧洲、与美女同居→仍然空虚。结论：金钱可以“赢得时间”，但时间只是容器——盼头才是内容。没有发自内心的目标，财富是空的。'},
+  {q:'为什么吴军认为“伪君子比真小人更危险”？',ref:'真小人可识别、可防范。伪君子标榜无私却行极端自私之实——防不胜防。以“消除自私”为名要求你放弃利益的人，很可能自己最自私。'},
+  {q:'驯化野蛮的核心机制是什么？',ref:'兰厄姆：群体暴力淘汰个体暴力。法律/公权力/死刑是文明化的延续——通过群体合作消灭最残忍个体。倭黑猩猩雌性联盟是这一机制的自然模型。'},
+  {q:'婚前四问分别涉及哪些维度？',ref:'①价值观（钱、孩子、家庭角色）②冲突处理方式③原生家庭边界设定④对“幸福婚姻”的共同定义。回答不了这四问，婚后再处理代价极高。'},
+  {q:'“自我优先原则”与“自私”的本质区别是什么？',ref:'自我优先强调自我意识与价值确认——是认知基础。自私强调对他人的漠不关心与损人利己。两者是独立维度：有自我者更易利他（己所不欲勿施于人），无自我者反而可能成为伪君子。'},
+  {q:'吴军提出的三大应对代沟策略是什么？',ref:'对青少年：接纳叛逆+设定安全底线+等待自然成熟。对老年人：理解选择性记忆+选择主动管理或放任。对自己：回忆自身反抗经历+警惕成为下一代的麻烦制造者。'},
+  {q:'为什么“惩恶”比“扬善”更有效？',ref:'行为经济学的损失厌恶——剥夺100元痛苦>获得100元喜悦。所以法律以禁止和惩罚为核心。“不做坏事”是对社会最大贡献——若人人做到，福祉提升十倍以上。'}
+];
+
+// ===== STATE =====
+let currentTab = 0;
+let currentCardIdx = 0;
+let cardFlipped = false;
+let learnedCards = JSON.parse(localStorage.getItem('mks5_learned')||'[]');
+let mcqHistory = JSON.parse(localStorage.getItem('mks5_mcqHistory')||'[]');
+let saqHistory = JSON.parse(localStorage.getItem('mks5_saqHistory')||'[]');
+let wrongList = JSON.parse(localStorage.getItem('mks5_wrong')||'[]');
+let examTimer = null;
+let examTimeLeft = 0;
+
+function save(){localStorage.setItem('mks5_learned',JSON.stringify(learnedCards));localStorage.setItem('mks5_wrong',JSON.stringify(wrongList));localStorage.setItem('mks5_mcqHistory',JSON.stringify(mcqHistory));localStorage.setItem('mks5_saqHistory',JSON.stringify(saqHistory))}
+
+// ===== OVERVIEW =====
+function renderOverviewConcepts(){
+  const ul = document.getElementById('overviewConcepts');
+  ul.innerHTML = concepts.map((c,i)=>`<li><span class="num">${i+1}</span><div><strong style="color:var(--accent)">${c.name}</strong> — ${c.def}</div></li>`).join('');
+}
+renderOverviewConcepts();
+
+function updateOverviewProgress(){
+  const pct = Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('overviewProgress').style.width = pct+'%';
+  document.getElementById('overviewLearned').textContent = learnedCards.length;
+}
+updateOverviewProgress();
+
+// ===== SVG CONCEPT MAP =====
+(function renderSVG(){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 850" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#555"/></marker>
+    <marker id="arrowDashed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#e67e22"/></marker>
+  </defs>
+  <rect width="1100" height="850" fill="#fdf6ec" rx="8"/>
+  <!-- 图例 -->
+  <rect x="860" y="20" width="220" height="170" rx="8" fill="#fffaf2" stroke="#e8d5c4" stroke-width="1"/>
+  <text x="875" y="45" font-size="13" font-weight="bold" fill="#3d2f2f">图例 Legend</text>
+  <rect x="875" y="55" width="14" height="14" rx="2" fill="#c0392b"/>
+  <text x="895" y="67" font-size="11" fill="#3d2f2f">根节点 · 人性底层结构</text>
+  <rect x="875" y="80" width="14" height="14" rx="2" fill="#6b3a9e"/>
+  <text x="895" y="92" font-size="11" fill="#3d2f2f">核心机制 · 博弈与制度</text>
+  <rect x="875" y="105" width="14" height="14" rx="2" fill="#2e7d32"/>
+  <text x="895" y="117" font-size="11" fill="#3d2f2f">实践法则 · 关系与幸福</text>
+  <rect x="875" y="130" width="14" height="14" rx="2" fill="#e67e22"/>
+  <text x="895" y="142" font-size="11" fill="#3d2f2f">认知工具 · 思维框架</text>
+  <line x1="875" y1="150" x2="889" y2="150" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="895" y="162" font-size="11" fill="#3d2f2f">虚线 = 回环反馈</text>
+  <!-- Layer 1: 根节点 -->
+  <rect x="420" y="60" width="260" height="50" rx="25" fill="#c0392b" stroke="#a02d26" stroke-width="2"/>
+  <text x="550" y="78" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">人性认知操作系统</text>
+  <text x="550" y="95" text-anchor="middle" font-size="10" fill="#fdd">Cognitive OS for Human Nature</text>
+  <!-- Layer 2: 核心机制  -->
+  <rect x="90" y="170" width="190" height="48" rx="12" fill="#6b3a9e" stroke="#5a2e8e" stroke-width="1.5"/>
+  <text x="185" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">暴力驯化</text>
+  <text x="185" y="207" text-anchor="middle" font-size="9" fill="#e0d0f0">群体暴力淘汰个体暴力</text>
+  <rect x="340" y="170" width="190" height="48" rx="12" fill="#6b3a9e" stroke="#5a2e8e" stroke-width="1.5"/>
+  <text x="435" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">博弈论弱者生存</text>
+  <text x="435" y="207" text-anchor="middle" font-size="9" fill="#e0d0f0">三方博弈颠覆弱肉强食</text>
+  <rect x="590" y="170" width="190" height="48" rx="12" fill="#6b3a9e" stroke="#5a2e8e" stroke-width="1.5"/>
+  <text x="685" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">自私 vs 贪婪</text>
+  <text x="685" y="207" text-anchor="middle" font-size="9" fill="#e0d0f0">天性不可消除只能疏导</text>
+  <rect x="840" y="170" width="190" height="48" rx="12" fill="#6b3a9e" stroke="#5a2e8e" stroke-width="1.5"/>
+  <text x="935" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">人性善恶论</text>
+  <text x="935" y="207" text-anchor="middle" font-size="9" fill="#e0d0f0">性善vs性恶的千年辩论</text>
+  <!-- Layer 3: 实践法则 -->
+  <rect x="70" y="310" width="175" height="48" rx="12" fill="#2e7d32" stroke="#1b5e20" stroke-width="1.5"/>
+  <text x="157" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">代际鸿沟</text>
+  <text x="157" y="347" text-anchor="middle" font-size="9" fill="#c8e6c9">永久型代沟与管理</text>
+  <rect x="275" y="310" width="175" height="48" rx="12" fill="#2e7d32" stroke="#1b5e20" stroke-width="1.5"/>
+  <text x="362" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">自我优先原则</text>
+  <text x="362" y="347" text-anchor="middle" font-size="9" fill="#c8e6c9">边界设定与价值自信</text>
+  <rect x="480" y="310" width="175" height="48" rx="12" fill="#2e7d32" stroke="#1b5e20" stroke-width="1.5"/>
+  <text x="567" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">亲密关系经营</text>
+  <text x="567" y="347" text-anchor="middle" font-size="9" fill="#c8e6c9">三重重组与松弛感</text>
+  <rect x="685" y="310" width="175" height="48" rx="12" fill="#2e7d32" stroke="#1b5e20" stroke-width="1.5"/>
+  <text x="772" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">盼头理论</text>
+  <text x="772" y="347" text-anchor="middle" font-size="9" fill="#c8e6c9">快乐=积极预期</text>
+  <rect x="880" y="310" width="175" height="48" rx="12" fill="#2e7d32" stroke="#1b5e20" stroke-width="1.5"/>
+  <text x="967" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">成功三层标准</text>
+  <text x="967" y="347" text-anchor="middle" font-size="9" fill="#c8e6c9">物质→尊重→自我实现</text>
+  <!-- Layer 4: 认知工具/结果 -->
+  <rect x="130" y="460" width="180" height="42" rx="12" fill="#e67e22" stroke="#d4781e" stroke-width="1.5"/>
+  <text x="220" y="478" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">奥卡姆剃刀</text>
+  <text x="220" y="494" text-anchor="middle" font-size="9" fill="#ffe0c0">少在意无关紧要的事</text>
+  <rect x="350" y="460" width="180" height="42" rx="12" fill="#e67e22" stroke="#d4781e" stroke-width="1.5"/>
+  <text x="440" y="478" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">系统思维</text>
+  <text x="440" y="494" text-anchor="middle" font-size="9" fill="#ffe0c0">全局最优vs局部最优</text>
+  <rect x="570" y="460" width="180" height="42" rx="12" fill="#e67e22" stroke="#d4781e" stroke-width="1.5"/>
+  <text x="660" y="478" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">选择悖论</text>
+  <text x="660" y="494" text-anchor="middle" font-size="9" fill="#ffe0c0">选择越多越不自由</text>
+  <rect x="790" y="460" width="180" height="42" rx="12" fill="#e67e22" stroke="#d4781e" stroke-width="1.5"/>
+  <text x="880" y="478" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">认知操作系统</text>
+  <text x="880" y="494" text-anchor="middle" font-size="9" fill="#ffe0c0">用底层逻辑重建思考</text>
+  <!-- Layer 5: 产物 -->
+  <ellipse cx="300" cy="580" rx="130" ry="28" fill="none" stroke="#3d2f2f" stroke-width="1.5"/>
+  <text x="300" y="576" text-anchor="middle" font-size="11" fill="#3d2f2f">法律与制度设计</text>
+  <text x="300" y="592" text-anchor="middle" font-size="9" fill="#6b5b5b">宪法/死刑/公权力</text>
+  <ellipse cx="550" cy="580" rx="130" ry="28" fill="none" stroke="#3d2f2f" stroke-width="1.5"/>
+  <text x="550" y="576" text-anchor="middle" font-size="11" fill="#3d2f2f">边界与关系管理</text>
+  <text x="550" y="592" text-anchor="middle" font-size="9" fill="#6b5b5b">职场/家庭/朋友</text>
+  <ellipse cx="800" cy="580" rx="130" ry="28" fill="none" stroke="#3d2f2f" stroke-width="1.5"/>
+  <text x="800" y="576" text-anchor="middle" font-size="11" fill="#3d2f2f">幸福与意义构建</text>
+  <text x="800" y="592" text-anchor="middle" font-size="9" fill="#6b5b5b">盼头/成功/快乐</text>
+  <!-- Edges: Layer 1 -> Layer 2 -->
+  <line x1="480" y1="110" x2="200" y2="170" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="340" y="138" text-anchor="middle" font-size="9" fill="#555">驱动淘汰机制</text>
+  <line x1="520" y1="110" x2="450" y2="170" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="500" y="138" text-anchor="middle" font-size="9" fill="#555">揭示权力结构</text>
+  <line x1="580" y1="110" x2="680" y2="170" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="645" y="138" text-anchor="middle" font-size="9" fill="#555">剖析欲望本质</text>
+  <line x1="620" y1="110" x2="930" y2="170" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="780" y="138" text-anchor="middle" font-size="9" fill="#555">定义认知前提</text>
+  <!-- Edges: Layer 2 -> Layer 3 -->
+  <line x1="185" y1="218" x2="157" y2="310" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="185" y="260" text-anchor="middle" font-size="9" fill="#555">解释代际冲突根源</text>
+  <line x1="185" y1="218" x2="362" y2="310" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="280" y="260" text-anchor="middle" font-size="9" fill="#555">奠定边界理论基础</text>
+  <line x1="435" y1="218" x2="567" y2="310" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="520" y="260" text-anchor="middle" font-size="9" fill="#555">揭示联盟=关系本质</text>
+  <line x1="685" y1="218" x2="772" y2="310" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="745" y="260" text-anchor="middle" font-size="9" fill="#555">过度欲望摧毁快乐</text>
+  <line x1="935" y1="218" x2="967" y2="310" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="965" y="260" text-anchor="middle" font-size="9" fill="#555">导出道德价值层次</text>
+  <line x1="435" y1="218" x2="362" y2="310" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="410" y="260" text-anchor="middle" font-size="8" fill="#555">弱者为生存联盟</text>
+  <!-- Edges: Layer 3 -> Layer 4 -->
+  <line x1="157" y1="358" x2="220" y2="460" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="205" y="408" text-anchor="middle" font-size="9" fill="#555">催生简化需求</text>
+  <line x1="362" y1="358" x2="440" y2="460" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="415" y="408" text-anchor="middle" font-size="9" fill="#555">扩展为全局视角</text>
+  <line x1="567" y1="358" x2="660" y2="460" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="630" y="408" text-anchor="middle" font-size="9" fill="#555">认识到选择有限性</text>
+  <line x1="772" y1="358" x2="880" y2="460" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="845" y="408" text-anchor="middle" font-size="9" fill="#555">升级为认知系统</text>
+  <!-- Edges: Layer 4 -> Layer 5 (产物) -->
+  <line x1="220" y1="502" x2="300" y2="552" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="440" y1="502" x2="300" y2="552" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="440" y1="502" x2="550" y2="552" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="660" y1="502" x2="550" y2="552" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="880" y1="502" x2="800" y2="552" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- 回环反馈虚线 -->
+  <path d="M300,608 C300,680 450,700 550,700 C650,700 800,680 800,608" fill="none" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="550" y="718" text-anchor="middle" font-size="9" fill="#e67e22">反馈回环：实践结果重塑认知框架</text>
+  <!-- 跨区虚线连接 -->
+  <line x1="185" y1="218" x2="220" y2="460" stroke="#e67e22" stroke-width="1.2" stroke-dasharray="6,3"/>
+  <text x="230" y="340" text-anchor="middle" font-size="8" fill="#e67e22" transform="rotate(-70,230,340)">长期约束</text>
+  <line x1="935" y1="218" x2="880" y2="460" stroke="#e67e22" stroke-width="1.2" stroke-dasharray="6,3"/>
+  <text x="900" y="340" text-anchor="middle" font-size="8" fill="#e67e22" transform="rotate(70,900,340)">反馈修正</text>
+  <!-- 中间贯穿线 -->
+  <line x1="550" y1="110" x2="550" y2="150" stroke="#c0392b" stroke-width="2"/>
+  <!-- 节点间横向关系 -->
+  <line x1="280" y1="194" x2="340" y2="194" stroke="#aaa" stroke-width="0.8"/>
+  <line x1="530" y1="194" x2="590" y2="194" stroke="#aaa" stroke-width="0.8"/>
+  <line x1="780" y1="194" x2="840" y2="194" stroke="#aaa" stroke-width="0.8"/>
+</svg>`;
+  document.getElementById('svgContainer').innerHTML = svg;
+})();
+
+// ===== TABS =====
+function toggleTab(n,btn){
+  currentTab = n;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('show'));
+  const panel = document.getElementById('tab'+n);
+  if(panel) panel.classList.add('show');
+  if(n===4) renderReview();
+}
+
+// ===== FLIP CARDS =====
+function setCard(idx){
+  currentCardIdx=idx;
+  cardFlipped=false;
+  const c=concepts[idx];
+  document.getElementById('flipFront').innerHTML = `<h3 style="font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent)">${c.name}</h3><p style="color:var(--text-light);margin-top:8px;font-size:clamp(.85rem,1.8vw,.95rem)">点击翻转卡片查看详情</p>${learnedCards.includes(c.id)?'<span class="tag" style="margin-top:8px">✓ 已学习</span>':''}`;
+  document.getElementById('flipBack').innerHTML = `<div style="margin-bottom:6px"><strong style="color:var(--accent)">定义：</strong>${c.def}</div><div style="margin-bottom:6px"><strong style="color:var(--accent)">类比：</strong>${c.analogy}</div><div style="margin-bottom:6px"><strong style="color:var(--success)">示例：</strong>${c.example}</div><div><strong style="color:var(--accent)">反例/边界：</strong>${c.counter}</div>`;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('cardIndex').textContent = `${idx+1} / ${concepts.length}`;
+  document.getElementById('markLearnedBtn').textContent = learnedCards.includes(c.id) ? '✓ 已学习' : '✓ 标记已学习';
+  updateCardProgress();
+}
+setCard(0);
+
+function prevCard(){if(currentCardIdx>0) setCard(currentCardIdx-1)}
+function nextCard(){if(currentCardIdx<concepts.length-1) setCard(currentCardIdx+1)}
+function markLearned(){
+  const id = concepts[currentCardIdx].id;
+  if(learnedCards.includes(id)) {learnedCards = learnedCards.filter(x=>x!==id)}
+  else {learnedCards.push(id)}
+  save(); updateCardProgress(); updateOverviewProgress(); setCard(currentCardIdx);
+}
+document.getElementById('flipInner').addEventListener('click', function(){this.classList.toggle('flipped');cardFlipped=!cardFlipped});
+function updateCardProgress(){
+  const pct = Math.round(learnedCards.length/concepts.length*100);
+  document.getElementById('cardProgress').style.width = pct+'%';
+  document.getElementById('cardLearned').textContent = learnedCards.length;
+}
+updateCardProgress();
+
+// ===== QUIZ =====
+function startQuiz(){
+  document.getElementById('staticQuiz').style.display = 'none';
+  const shuffled = [...mcq].sort(()=>Math.random()-0.5);
+  const picked = shuffled.slice(0,10);
+  const saShuffled = [...saq].sort(()=>Math.random()-0.5);
+  const saPicked = saShuffled.slice(0,3);
+  let html = '<h3>随机抽题练习</h3>';
+  picked.forEach((q,i)=>{
+    html += `<div class="quiz-card"><h4>选择题 ${i+1}. ${q.q}</h4>`;
+    q.opts.forEach((o,j)=>{
+      html += `<div class="q-option" onclick="selectOption(this,${i},${j},${q.answer})" data-q="${i}" data-o="${j}">${'ABCD'[j]}. ${o}</div>`;
+    });
+    html += `<div class="q-feedback" id="qfb${i}"></div></div>`;
+  });
+  html += '<h3 style="margin-top:24px">简答题</h3>';
+  saPicked.forEach((q,i)=>{
+    html += `<div class="quiz-card"><h4>简答题 ${i+1}. ${q.q}</h4>
+    <textarea class="sa-input" id="sa${i}" placeholder="输入你的回答..."></textarea>
+    <button class="btn btn-outline btn-sm" onclick="document.getElementById('sar${i}').classList.toggle('show')">查看参考要点</button>
+    <div class="sa-reveal" id="sar${i}">${q.ref}</div></div>`;
+  });
+  document.getElementById('quizContainer').innerHTML = html;
+
+  // Track selected options
+  window._selectedMCQ = {};
+  window._mcqData = picked;
+  window._saqData = saPicked;
+}
+
+function selectOption(el, qi, oi, ans){
+  const qid = 'qfb'+qi;
+  if(window._selectedMCQ && window._selectedMCQ[qi]!==undefined) return;
+  const siblings = el.parentElement.querySelectorAll('.q-option');
+  siblings.forEach(s=>s.classList.remove('selected','correct','wrong'));
+  if(oi===ans) {el.classList.add('correct');document.getElementById(qid).className='q-feedback correct show';document.getElementById(qid).textContent='✓ 正确！'+window._mcqData[qi].exp;}
+  else {el.classList.add('wrong');document.getElementById(qid).className='q-feedback wrong show';document.getElementById(qid).textContent='✗ 错误。正确答案是'+'ABCD'[ans]+'。'+window._mcqData[qi].exp;
+    siblings[ans].classList.add('correct');
+  }
+  if(window._selectedMCQ!==undefined) window._selectedMCQ[qi]=oi===ans;
+  mcqHistory.push({q:window._mcqData[qi].q, correct:oi===ans});
+  if(oi!==ans) wrongList.push(window._mcqData[qi]);
+  save();
+}
+
+function resetQuiz(){
+  document.getElementById('quizContainer').innerHTML = '';
+  window._selectedMCQ = {};
+  window._mcqData = [];
+  window._saqData = [];
+}
+
+// ===== EXAM MODE =====
+function startExam(){
+  document.getElementById('examStartBtn').style.display='none';
+  document.getElementById('examResetBtn').style.display='inline-block';
+  document.getElementById('examTimer').style.display='block';
+  document.getElementById('examResult').style.display='none';
+  const shuffled = [...mcq].sort(()=>Math.random()-0.5);
+  const picked = shuffled.slice(0,10);
+  let html = '';
+  picked.forEach((q,i)=>{
+    html += `<div class="quiz-card"><h4>${i+1}. ${q.q}</h4>`;
+    q.opts.forEach((o,j)=>{
+      html += `<div class="q-option" onclick="selectExamOption(this,${i},${j},${q.answer})" data-q="${i}" data-o="${j}">${'ABCD'[j]}. ${o}</div>`;
+    });
+    html += `<div class="q-feedback" id="exfb${i}"></div></div>`;
+  });
+  document.getElementById('examContainer').innerHTML = html;
+  window._examData = picked;
+  window._examSelected = {};
+  window._examAnswers = {};
+  examTimeLeft = 30*60;
+  clearInterval(examTimer);
+  updateExamTimer();
+  examTimer = setInterval(()=>{
+    examTimeLeft--;
+    updateExamTimer();
+    if(examTimeLeft<=0){clearInterval(examTimer);finishExam();}
+  },1000);
+}
+
+function updateExamTimer(){
+  const m = Math.floor(examTimeLeft/60);
+  const s = examTimeLeft%60;
+  document.getElementById('examTime').textContent = m+':'+(s<10?'0':'')+s;
+}
+
+function selectExamOption(el, qi, oi, ans){
+  if(window._examSelected[qi]!==undefined) return;
+  window._examSelected[qi] = oi;
+  window._examAnswers[qi] = oi===ans;
+  const siblings = el.parentElement.querySelectorAll('.q-option');
+  siblings.forEach(s=>s.classList.remove('selected','correct','wrong'));
+  if(oi===ans) {el.classList.add('correct');document.getElementById('exfb'+qi).className='q-feedback correct show';document.getElementById('exfb'+qi).textContent='✓ 正确';}
+  else {el.classList.add('wrong');document.getElementById('exfb'+qi).className='q-feedback wrong show';document.getElementById('exfb'+qi).textContent='✗ 错误。正确答案是'+'ABCD'[ans];siblings[ans].classList.add('correct');}
+  if(oi!==ans) wrongList.push(window._examData[qi]);
+  if(Object.keys(window._examSelected).length>=10) finishExam();
+}
+
+function finishExam(){
+  clearInterval(examTimer);
+  let total=Object.keys(window._examAnswers).length, correct=0;
+  Object.values(window._examAnswers).forEach(v=>{if(v) correct++;});
+  document.getElementById('examResult').style.display='block';
+  document.getElementById('examResult').innerHTML = `<div class="exam-score"><strong>考试结束！</strong><br>正确：${correct}/${total}（${Math.round(correct/total*100)}%）<br>用时剩余：${document.getElementById('examTime').textContent}</div>`;
+  document.getElementById('examTimer').style.display='none';
+  document.getElementById('examResetBtn').style.display='inline-block';
+  save();
+}
+
+function resetExam(){
+  clearInterval(examTimer);
+  document.getElementById('examContainer').innerHTML='';
+  document.getElementById('examResult').style.display='none';
+  document.getElementById('examTimer').style.display='none';
+  document.getElementById('examStartBtn').style.display='inline-block';
+  document.getElementById('examResetBtn').style.display='none';
+  window._examData=[];
+  window._examSelected={};
+  window._examAnswers={};
+}
+
+// ===== REVIEW MODE =====
+function renderReview(){
+  document.getElementById('rvTotal').textContent = mcqHistory.length;
+  let correct = mcqHistory.filter(h=>h.correct).length;
+  document.getElementById('rvCorrect').textContent = correct;
+  document.getElementById('rvRate').textContent = mcqHistory.length?Math.round(correct/mcqHistory.length*100)+'%':'0%';
+  document.getElementById('rvWrong').textContent = wrongList.length;
+  if(wrongList.length>0){
+    let h='';
+    wrongList.forEach((w,i)=>{h+=`<div class="review-item"><div class="review-q">${i+1}. ${w.q}</div><div class="review-a">正确答案：${'ABCD'[w.answer] || '见参考'}。${w.exp||''}</div></div>`});
+    document.getElementById('reviewWrongList').innerHTML = h;
+  } else {
+    document.getElementById('reviewWrongList').innerHTML = '<p style="color:var(--success);text-align:center">太棒了！暂无错题记录。</p>';
+  }
+}
+
+function clearReview(){
+  wrongList=[];
+  mcqHistory=[];
+  saqHistory=[];
+  save();
+  renderReview();
+  showToast('复习记录已清空');
+}
+
+// ===== MINDMAP TOGGLE =====
+function toggleMindmap(el){
+  if(typeof el==='string') el = document.getElementById(el);
+  if(!el) return;
+  const body = el.nextElementSibling;
+  if(!body || !body.classList.contains('node-body')) return;
+  el.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ===== DECISION =====
+function chooseDecision(el, choice){
+  const round = el.parentElement;
+  round.querySelectorAll('.d-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const result = round.querySelector('.d-result');
+  result.classList.add('show');
+  if(choice==='B'){
+    result.innerHTML = '<p style="color:var(--success)">✓ <strong>推荐选择</strong>——吴军的“不惯毛病”原则：第一次忍耐是气度，第二次忍耐是愚蠢。周一下班后回复是合理操作——既守住了边界，又保持了专业。关键是<strong>一致性</strong>：不要这周不回下周又秒回。</p>';
+  } else if(choice==='D'){
+    result.innerHTML = '<p style="color:var(--accent)">⚠ 直接摊牌可能有效，但风险高——如果老板格局不高，可能被解读为“不配合”。更好的策略是先行为示范（B选项），让对方自然适应你的边界，而非主动宣战。</p>';
+  } else if(choice==='A'){
+    result.innerHTML = '<p style="color:var(--accent)">✗ “怕穿小鞋”是职场最常见的自我绑架。越怕越容易被拿捏。而且一旦你打破边界一次，对方会期待你次次都破。长期来看，你的价值取决于产出质量而非响应速度。</p>';
+  } else {
+    result.innerHTML = '<p style="color:var(--text-light)">C选项属于回避策略——效果取决于老板的敏感度。有些老板会解读为“看到了但不回”，反而更难处理。主动设定期望（B）比被动回避（C）更清晰。</p>';
+  }
+}
+
+function chooseDecision2(el, choice){
+  const round = el.parentElement;
+  round.querySelectorAll('.d-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const result = round.querySelector('.d-result');
+  result.classList.add('show');
+  if(choice==='D'){
+    result.innerHTML = '<p style="color:var(--success)">✓ <strong>推荐选择</strong>——吴军的核心洞察：利益面前保持理性，情感关系不该与金钱关系混合。最好的方式是：守住原则（不借钱）+提供真正有价值的帮助（帮他分析问题、介绍资源），这才是对朋友真正负责。</p>';
+  } else if(choice==='C'){
+    result.innerHTML = '<p style="color:var(--accent)">⚠ 折中策略看似聪明，实则最危险——你既破了原则，又不够慷慨。如果对方还不上，1万元也一样伤感情。而且给了钱再拒绝后续请求会更尴尬。要么全帮，要么不帮，“帮一半”是两败俱伤。</p>';
+  } else if(choice==='A'){
+    result.innerHTML = '<p style="color:var(--accent)">✗ 情感容易蒙蔽判断。亲戚朋友因情感信任更易成为金融诈骗目标——不是说你朋友是骗子，而是情感借钱和商业借贷遵循完全不同的逻辑。这笔钱如果收不回来，你们的感情也没了。</p>';
+  } else {
+    result.innerHTML = '<p style="color:var(--text-light)">B选项回避了核心问题——如果你珍视这段友情，你需要帮的是他的人，而不是他的钱袋子。请吃饭安慰是好的，但回避金钱话题会让关系变得别扭。</p>';
+  }
+}
+
+function chooseDecision3(el, choice){
+  const round = el.parentElement;
+  round.querySelectorAll('.d-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const result = round.querySelector('.d-result');
+  result.classList.add('show');
+  if(choice==='C'){
+    result.innerHTML = '<p style="color:var(--success)">✓ <strong>推荐选择</strong>——吴军的代际沟通核心：“接纳+底线+不改对立”。接纳父母焦虑是真实的（他们确实老了），但守住自己的决定权。同时不把沟通当成对立——“我知道你们关心我，我很感激。但结婚时间是我和伴侣的决定”。</p>';
+  } else if(choice==='A'){
+    result.innerHTML = '<p style="color:var(--accent)">✗ 妥协的代价：你这次妥协了结婚时间，下次他们可能要求你什么时候生孩子、怎么带孩子。“听话=孝顺”是农耕文明的道德绑架，现代代际关系应基于平等的情感照顾，而非单向服从。</p>';
+  } else if(choice==='B'){
+    result.innerHTML = '<p style="color:var(--accent)">⚠ 回避不是解决方案——你越回避，父母的焦虑越升级，最终可能做出更极端的行为（如直接来找你）。回避带来的内疚感也会消耗你的心理能量。</p>';
+  } else {
+    result.innerHTML = '<p style="color:var(--text-light)">D选项把压力转移给了伴侣——这是对伴侣不公平的。代际冲突的核心是你和父母的关系，伴侣只能支持，不能替代你面对。而且这会让父母觉得“是对方的问题”，进一步恶化关系。</p>';
+  }
+}
+
+// ===== TOAST =====
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ===== INIT =====
+document.getElementById('staticQuiz').style.display = 'none';
+updateOverviewProgress();
+</script>
+
+</body>
+</html>
