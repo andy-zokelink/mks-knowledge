@@ -159,6 +159,88 @@ body.overlay-open { overflow: hidden; }
   color: #2a5068;
 }
 
+/* ===== Mouse Ripple Canvas ===== */
+#rippleCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ===== Koi Fish ===== */
+.koi {
+  position: fixed;
+  z-index: 4;
+  pointer-events: none;
+  font-size: 2.2rem;
+  opacity: 0.55;
+  filter: drop-shadow(0 2px 6px rgba(80,140,160,0.25));
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.koi::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 30px;
+  background: radial-gradient(ellipse, rgba(160,210,230,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: koi-ripple 2.5s ease-in-out infinite;
+}
+@keyframes koi-ripple {
+  0%,100% { opacity: 0.5; transform: translateX(-50%) scale(0.7); }
+  50%     { opacity: 1; transform: translateX(-50%) scale(1.2); }
+}
+
+.koi-1 {
+  top: 18%;
+  animation-name: koi-swim-1;
+  animation-duration: 16s;
+}
+.koi-2 {
+  top: 55%;
+  animation-name: koi-swim-2;
+  animation-duration: 19s;
+  animation-delay: -7s;
+  font-size: 1.8rem;
+  opacity: 0.40;
+}
+.koi-3 {
+  top: 75%;
+  animation-name: koi-swim-3;
+  animation-duration: 22s;
+  animation-delay: -13s;
+  font-size: 1.6rem;
+  opacity: 0.35;
+}
+
+@keyframes koi-swim-1 {
+  0%   { left: -5%; transform: scaleX(1) translateY(0); }
+  25%  { left: 30%; transform: scaleX(1) translateY(-18px); }
+  50%  { left: 65%; transform: scaleX(1) translateY(8px); }
+  75%  { left: 88%; transform: scaleX(1) translateY(-10px); }
+  80%  { left: 92%; transform: scaleX(-1) translateY(0); }
+  100% { left: -5%; transform: scaleX(-1) translateY(5px); }
+}
+@keyframes koi-swim-2 {
+  0%   { left: 105%; transform: scaleX(-1) translateY(0); }
+  20%  { left: 78%; transform: scaleX(-1) translateY(-12px); }
+  45%  { left: 42%; transform: scaleX(-1) translateY(6px); }
+  65%  { left: 12%; transform: scaleX(-1) translateY(-8px); }
+  70%  { left: 8%; transform: scaleX(1) translateY(0); }
+  100% { left: 105%; transform: scaleX(1) translateY(-4px); }
+}
+@keyframes koi-swim-3 {
+  0%   { left: -8%; transform: scaleX(1) translateY(0); }
+  30%  { left: 40%; transform: scaleX(1) translateY(-14px); }
+  55%  { left: 72%; transform: scaleX(1) translateY(10px); }
+  75%  { left: 95%; transform: scaleX(-1) translateY(-6px); }
+  100% { left: -8%; transform: scaleX(-1) translateY(3px); }
+}
+
 @keyframes rays-shift {
   0%   { transform: translateX(-6%) skewX(-2deg); }
   50%  { transform: translateX(6%) skewX(2deg); }
@@ -597,6 +679,10 @@ body.overlay-open { overflow: hidden; }
 
 <div class="water-bg"></div>
 <div class="light-rays"></div>
+<canvas id="rippleCanvas"></canvas>
+<div class="koi koi-1">🐟</div>
+<div class="koi koi-2">🐠</div>
+<div class="koi koi-3">🐡</div>
 
 <div class="floating-overview" id="floatingOverview">
   <div class="ov-title">概念卡片墙 · <span id="ovTotal">238</span> 个核心概念</div>
@@ -942,6 +1028,74 @@ body.overlay-open { overflow: hidden; }
     div.textContent = str;
     return div.innerHTML;
   }
+
+  // ── Mouse Ripple Trail ──────────────────────────────────
+  (function() {
+    var canvas = document.getElementById('rippleCanvas');
+    var ctx = canvas.getContext('2d');
+    var ripples = [];
+    var mouseX = -100, mouseY = -100;
+    var lastRippleTime = 0;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      var now = Date.now();
+      if (now - lastRippleTime > 60) {
+        ripples.push({ x: mouseX, y: mouseY, r: 0, opacity: 0.5, life: 1 });
+        lastRippleTime = now;
+        if (ripples.length > 40) ripples.shift();
+      }
+    });
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Small glow at mouse position
+      if (mouseX > 0) {
+        var glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 50);
+        glow.addColorStop(0, 'rgba(180, 220, 240, 0.18)');
+        glow.addColorStop(0.5, 'rgba(140, 200, 225, 0.06)');
+        glow.addColorStop(1, 'rgba(140, 200, 225, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, 50, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Animate ripples
+      for (var i = ripples.length - 1; i >= 0; i--) {
+        var r = ripples[i];
+        r.r += 1.2;
+        r.life -= 0.018;
+        r.opacity = r.life * 0.4;
+        if (r.life <= 0) { ripples.splice(i, 1); continue; }
+
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(150, 210, 235,' + r.opacity + ')';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Inner softer ring
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.r * 0.6, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(180, 220, 240,' + (r.opacity * 0.6) + ')';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
 
   // ── Init ───────────────────────────────────────────────
   if (CONCEPTS.length > 0) {
