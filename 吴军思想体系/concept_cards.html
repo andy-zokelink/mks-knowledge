@@ -298,8 +298,8 @@ body.overlay-open { overflow: hidden; }
   position: relative;
   z-index: 1;
   width: 92vw;
-  max-width: 560px;
-  max-height: 86vh;
+  max-width: 820px;
+  max-height: 85vh;
   overflow-y: auto;
   background: #fff;
   border-radius: var(--radius-detail);
@@ -307,7 +307,24 @@ body.overlay-open { overflow: hidden; }
 }
 
 .detail-card-inner {
-  padding: 36px 32px 32px;
+  padding: 32px 36px 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 0 36px;
+}
+
+.detail-card-inner .detail-header {
+  grid-column: 1 / -1;
+  margin-bottom: 18px;
+}
+
+.detail-card-inner .detail-body {
+  grid-column: 1;
+}
+
+.detail-card-inner .detail-body-extras {
+  grid-column: 2;
 }
 
 /* Scrollbar */
@@ -497,7 +514,8 @@ body.overlay-open { overflow: hidden; }
   .card { min-height: 102px; padding: 16px 12px 14px; }
   .card-name { font-size: 0.88rem; }
   .detail-card { width: 94vw; max-width: 94vw; max-height: 84vh; }
-  .detail-card-inner { padding: 28px 22px 24px; }
+  .detail-card-inner { padding: 28px 22px 24px; grid-template-columns: 1fr; gap: 0; }
+  .detail-card-inner .detail-body-extras { grid-column: 1; }
   .detail-name { font-size: 1.45rem; }
 }
 
@@ -624,6 +642,8 @@ body.overlay-open { overflow: hidden; }
           '<h3>类比</h3>' +
           '<p class="analogy-text">' + escHtml(concept.analogy) + '</p>' +
         '</section>' +
+      '</div>' +
+      '<div class="detail-body-extras">' +
         '<section>' +
           '<h3>事例</h3>' +
           '<ul>' + concept.examples.map(function(e) { return '<li>' + escHtml(e) + '</li>'; }).join('') + '</ul>' +
