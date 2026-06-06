@@ -3,462 +3,868 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>思想河流 · 概念卡片</title>
+<title>概念卡片墙 · 水面捞出</title>
 <style>
 /* ===== Reset & Base ===== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px}
-body{
-  min-height:100vh;
-  background:#0a0a1a;
-  background-image:
-    radial-gradient(ellipse at 20% 15%, rgba(59,130,246,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 20%, rgba(16,185,129,0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 40% 60%, rgba(168,85,247,0.08) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 70%, rgba(245,158,11,0.09) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(6,182,212,0.06) 0%, transparent 70%),
-    linear-gradient(180deg, #0a0a1a 0%, #0d1b2a 40%, #0a1628 70%, #0a0a1a 100%);
-  background-attachment:fixed;
-  font-family:'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
-  color:#e2e8f0;
-  overflow-x:hidden;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --water-1: #d8f0f8;
+  --water-2: #c8e6e0;
+  --water-3: #d4edf4;
+  --text-primary: #1a2a3a;
+  --text-secondary: #4a6070;
+  --text-muted: #7a8a96;
+  --card-bg: rgba(255, 255, 255, 0.52);
+  --card-bg-hover: rgba(255, 255, 255, 0.88);
+  --shadow-card: 0 2px 8px rgba(60, 100, 130, 0.07);
+  --shadow-hover: 0 10px 30px rgba(60, 100, 130, 0.13);
+  --shadow-pop: 0 24px 64px rgba(0, 0, 0, 0.16);
+  --radius-card: 14px;
+  --radius-detail: 20px;
+  --font-stack: 'PingFang SC', 'Noto Sans SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --ease-card: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-pop: 380ms cubic-bezier(0.22, 0.98, 0.36, 1.02);
+  --ease-close: 280ms cubic-bezier(0.4, 0, 0.6, 1);
 }
 
-/* ===== Floating light orbs (water caustics) ===== */
-body::before{
-  content:'';
-  position:fixed;inset:0;pointer-events:none;z-index:0;
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-stack);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.overlay-open { overflow: hidden; }
+
+/* ===== Water Background ===== */
+.water-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   background:
-    radial-gradient(circle at 12% 8%, rgba(59,130,246,0.25) 0%, transparent 25%),
-    radial-gradient(circle at 85% 12%, rgba(6,182,212,0.20) 0%, transparent 22%),
-    radial-gradient(circle at 25% 75%, rgba(16,185,129,0.18) 0%, transparent 28%),
-    radial-gradient(circle at 70% 82%, rgba(168,85,247,0.16) 0%, transparent 24%),
-    radial-gradient(circle at 55% 35%, rgba(245,158,11,0.14) 0%, transparent 30%);
-  animation:caustics 18s ease-in-out infinite;
-}
-@keyframes caustics{
-  0%,100%{opacity:0.7;transform:translate(0,0) scale(1)}
-  25%{opacity:1;transform:translate(12px,-8px) scale(1.05)}
-  50%{opacity:0.6;transform:translate(-8px,10px) scale(0.95)}
-  75%{opacity:0.9;transform:translate(5px,-4px) scale(1.03)}
+    linear-gradient(172deg,
+      #d8f0f8 0%,
+      #c8e8e0 16%,
+      #d4edf4 32%,
+      #e2f2f0 48%,
+      #cce8e8 64%,
+      #daf0f5 82%,
+      #d0eaf2 100%
+    );
 }
 
-/* ===== Main container ===== */
-.app{
-  position:relative;z-index:1;
-  max-width:1400px;margin:0 auto;padding:20px 24px 48px;
+/* Caustics — large slow blobs */
+.water-bg::before {
+  content: '';
+  position: absolute;
+  inset: -35%;
+  background:
+    radial-gradient(ellipse 600px 400px at 18% 28%, rgba(255,255,255,0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 350px at 72% 18%, rgba(255,255,255,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 520px 380px at 48% 68%, rgba(255,255,255,0.17) 0%, transparent 58%),
+    radial-gradient(ellipse 420px 300px at 82% 72%, rgba(255,255,255,0.11) 0%, transparent 50%),
+    radial-gradient(ellipse 360px 280px at 28% 78%, rgba(255,255,255,0.13) 0%, transparent 52%);
+  animation: caustics-drift 14s ease-in-out infinite;
 }
 
-/* ===== Header ===== */
-.header{
-  text-align:center;padding:32px 0 24px;
-  position:sticky;top:0;z-index:50;
-  background:linear-gradient(180deg,rgba(10,10,26,0.95) 60%,rgba(10,10,26,0) 100%);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  margin:-20px -24px 0;padding:28px 24px 28px;
-}
-.header h1{
-  font-size:2rem;font-weight:700;
-  background:linear-gradient(135deg,#60a5fa,#34d399,#a78bfa);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  letter-spacing:0.06em;margin-bottom:4px;
-}
-.header .subtitle{
-  font-size:0.85rem;color:#64748b;letter-spacing:0.12em;
-  margin-bottom:18px;
+/* Caustics — smaller faster highlights */
+.water-bg::after {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(ellipse 300px 200px at 22% 42%, rgba(255,255,255,0.09) 0%, transparent 50%),
+    radial-gradient(ellipse 260px 180px at 62% 32%, rgba(255,255,255,0.07) 0%, transparent 48%),
+    radial-gradient(ellipse 280px 190px at 44% 74%, rgba(255,255,255,0.08) 0%, transparent 52%);
+  animation: caustics-drift 9s ease-in-out infinite reverse;
 }
 
-/* ===== Filter row ===== */
-.filters{
-  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
-  gap:8px;margin-top:8px;
-}
-.filter-btn{
-  padding:7px 18px;border-radius:20px;border:1px solid #334155;
-  background:rgba(15,23,42,0.8);color:#94a3b8;
-  cursor:pointer;font-size:0.82rem;font-weight:500;
-  transition:all 0.25s ease;white-space:nowrap;
-  font-family:inherit;letter-spacing:0.03em;
-}
-.filter-btn:hover{
-  border-color:#60a5fa;color:#e2e8f0;
-  background:rgba(59,130,246,0.12);
-}
-.filter-btn.active{
-  background:rgba(59,130,246,0.22);border-color:#60a5fa;
-  color:#bfdbfe;font-weight:600;
-  box-shadow:0 0 14px rgba(59,130,246,0.2);
+@keyframes caustics-drift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  18%      { transform: translate(2.8%, 1.8%) rotate(0.7deg) scale(1.03); }
+  38%      { transform: translate(-1.2%, 2.2%) rotate(-0.5deg) scale(0.97); }
+  58%      { transform: translate(1.8%, -1.6%) rotate(0.4deg) scale(1.02); }
+  78%      { transform: translate(-2.2%, -1.2%) rotate(-0.6deg) scale(0.98); }
 }
 
-/* category chips */
-.cat-chip{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 14px;border-radius:20px;border:1px solid transparent;
-  cursor:pointer;font-size:0.8rem;font-weight:500;
-  transition:all 0.25s ease;white-space:nowrap;
-  font-family:inherit;opacity:0.65;
-}
-.cat-chip:hover{opacity:1;}
-.cat-chip.active{opacity:1;border-color:#fff;box-shadow:0 0 10px currentColor;}
-.cat-dot{
-  width:9px;height:9px;border-radius:50%;
-  display:inline-block;flex-shrink:0;
-}
-
-/* ===== Separator ===== */
-.filter-sep{
-  width:1px;height:20px;background:#334155;margin:0 4px;
-}
-
-/* ===== Card count ===== */
-.card-count{
-  text-align:center;margin:16px 0 4px;
-  font-size:0.78rem;color:#475569;
+/* Subtle light rays overlay */
+.light-rays {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.30;
+  background:
+    repeating-linear-gradient(
+      108deg,
+      transparent,
+      transparent 140px,
+      rgba(255,255,255,0.035) 140px,
+      rgba(255,255,255,0.07) 143px,
+      transparent 143px
+    );
+  animation: rays-shift 22s linear infinite;
 }
 
-/* ===== Card grid ===== */
-.card-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
-  gap:14px;padding:8px 0;
+@keyframes rays-shift {
+  0%   { transform: translateX(-6%) skewX(-2deg); }
+  50%  { transform: translateX(6%) skewX(2deg); }
+  100% { transform: translateX(-6%) skewX(-2deg); }
 }
 
-/* ===== Card ===== */
-.card{
-  position:relative;
-  aspect-ratio:1;
-  perspective:800px;
-  transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1),z-index 0s 0.45s;
-  z-index:1;cursor:pointer;
-}
-.card.core{
-  z-index:2;
-}
-.card.flipped{
-  transform:scale(1.28);
-  z-index:100 !important;
-  transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1),z-index 0s 0s;
-}
-.card-inner{
-  width:100%;height:100%;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:transform 0.65s cubic-bezier(0.4,0,0.2,1);
-}
-.card.flipped .card-inner{
-  transform:rotateY(180deg);
+/* ===== Page ===== */
+.page {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  padding: 24px 20px 48px;
 }
 
-/* ===== Card faces ===== */
-.card-face{
-  position:absolute;inset:0;
-  border-radius:14px;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
+.page-title {
+  text-align: center;
+  padding: 12px 0 4px;
 }
 
-/* --- Front --- */
-.card-front{
-  flex-direction:column;
-  padding:14px;
-  text-align:center;
-}
-.card-front .concept-name{
-  font-weight:700;color:#fff;
-  font-size:0.92rem;line-height:1.35;
-  text-shadow:0 1px 3px rgba(0,0,0,0.35);
-  position:relative;z-index:2;
-  word-break:break-word;
-}
-.card.core .card-front .concept-name{
-  font-size:1.05rem;
-}
-.card.secondary .card-front .concept-name{
-  font-size:0.85rem;
-  font-weight:600;
+.page-title h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(26, 52, 64, 0.72);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.55);
 }
 
-/* importance badge on front */
-.imp-badge{
-  position:absolute;top:8px;right:10px;
-  font-size:0.62rem;font-weight:700;letter-spacing:0.06em;
-  padding:2px 7px;border-radius:8px;
-  background:rgba(0,0,0,0.25);
-  color:rgba(255,255,255,0.85);
-  z-index:3;text-transform:uppercase;
+.page-title p {
+  margin-top: 4px;
+  font-size: 0.84rem;
+  color: rgba(60, 96, 112, 0.50);
+  letter-spacing: 0.04em;
 }
 
-/* --- Ripple on hover --- */
-.card-front::before,
-.card-front::after{
-  content:'';
-  position:absolute;
-  top:50%;left:50%;
-  width:60%;height:60%;
-  border-radius:50%;
-  transform:translate(-50%,-50%) scale(0);
-  pointer-events:none;z-index:1;
-}
-.card-front::before{
-  border:1.5px solid rgba(255,255,255,0.35);
-}
-.card-front::after{
-  background:radial-gradient(circle,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.05) 40%,transparent 70%);
-}
-.card:hover .card-front::before{
-  animation:ripple-ring 1.8s ease-out infinite;
-}
-.card:hover .card-front::after{
-  animation:ripple-fill 1.8s ease-out 0.6s infinite;
-}
-@keyframes ripple-ring{
-  0%{transform:translate(-50%,-50%) scale(0);opacity:1}
-  100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}
-}
-@keyframes ripple-fill{
-  0%{transform:translate(-50%,-50%) scale(0);opacity:0.7}
-  100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}
+/* ===== Card Grid ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 10px;
+  max-width: 1400px;
+  margin: 16px auto 0;
+  padding: 0 4px;
 }
 
-/* subtle shimmer on hover */
-.card:hover .card-front{
-  box-shadow:inset 0 0 60px rgba(255,255,255,0.08);
-}
-.card:hover{
-  filter:brightness(1.1);
-}
-
-/* --- Back --- */
-.card-back{
-  transform:rotateY(180deg);
-  flex-direction:column;
-  gap:6px;padding:16px;
-  background:rgba(15,23,42,0.95) !important;
-  border:2px solid rgba(255,255,255,0.2);
-  text-align:center;
-}
-.card-back .back-cat{
-  font-size:0.7rem;font-weight:600;
-  letter-spacing:0.08em;text-transform:uppercase;
-  padding:3px 10px;border-radius:10px;
-  color:#fff;
-}
-.card-back .back-imp{
-  font-size:0.65rem;color:#94a3b8;
-  text-transform:uppercase;letter-spacing:0.1em;
-}
-.card-back .back-name{
-  font-size:1.25rem;font-weight:700;color:#fff;
-  line-height:1.3;word-break:break-word;
-  text-shadow:0 0 20px rgba(255,255,255,0.3);
+/* ===== Individual Card (Underwater) ===== */
+.card {
+  position: relative;
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: var(--radius-card);
+  padding: 20px 14px 18px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 118px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: var(--shadow-card);
+  filter: blur(1.0px);
+  opacity: 0.70;
+  user-select: none;
+  transition:
+    transform var(--ease-card),
+    opacity var(--ease-card),
+    filter var(--ease-card),
+    box-shadow var(--ease-card),
+    background var(--ease-card);
+  animation: underwater-sway 5s ease-in-out infinite;
+  animation-delay: var(--sway-delay, 0s);
 }
 
-/* ===== No results ===== */
-.no-results{
-  grid-column:1/-1;text-align:center;padding:60px 20px;
-  color:#475569;font-size:1.1rem;
+/* Underwater sway */
+@keyframes underwater-sway {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  14%      { transform: translateY(-2.6px) rotate(0.25deg); }
+  32%      { transform: translateY(1.2px) rotate(-0.20deg); }
+  52%      { transform: translateY(-1.6px) rotate(0.14deg); }
+  74%      { transform: translateY(2.0px) rotate(-0.22deg); }
+}
+
+/* Hover — float up, clear up */
+.card:hover {
+  transform: translateY(-7px) scale(1.04);
+  filter: blur(0px);
+  opacity: 1;
+  background: var(--card-bg-hover);
+  box-shadow: var(--shadow-hover);
+  z-index: 10;
+  animation-play-state: paused;
+}
+
+.card:active {
+  transform: translateY(-3px) scale(0.97);
+  transition: transform 100ms ease-out;
+}
+
+/* Retrieved — ghost in grid */
+.card.retrieved {
+  opacity: 0.15;
+  filter: blur(3px);
+  pointer-events: none;
+  transform: scale(0.95);
+  animation-play-state: paused;
+  transition: opacity 350ms ease, filter 350ms ease, transform 350ms ease;
+}
+
+/* Hover ripple ring */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 18px;
+  border: 2px solid rgba(140, 200, 220, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.card:hover::after {
+  opacity: 1;
+  animation: hover-ripple 1.8s ease-out infinite;
+}
+
+@keyframes hover-ripple {
+  0%   { inset: -3px; opacity: 0.45; border-color: rgba(140,200,220,0.35); }
+  100% { inset: -18px; opacity: 0; border-color: rgba(140,200,220,0); }
+}
+
+/* ===== Card inner content ===== */
+.card-category {
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.card-name {
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.card-type {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  background: rgba(90, 130, 150, 0.10);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* ===== Overlay ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.30s ease;
+}
+
+.overlay.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 28, 40, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===== Detail Card ===== */
+.detail-card {
+  position: relative;
+  z-index: 1;
+  width: 92vw;
+  max-width: 560px;
+  max-height: 86vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: var(--radius-detail);
+  box-shadow: var(--shadow-pop);
+}
+
+.detail-card-inner {
+  padding: 36px 32px 32px;
+}
+
+/* Scrollbar */
+.detail-card::-webkit-scrollbar { width: 5px; }
+.detail-card::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
+.detail-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 10px; }
+
+/* ===== Detail Header ===== */
+.detail-header { margin-bottom: 24px; }
+
+.detail-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+.tag-category { background: #e3f2fd; color: #1e6fa0; }
+.tag-type     { background: #e8f5e9; color: #2e7d32; }
+
+.detail-name {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #0d2137;
+  letter-spacing: 0.02em;
+  word-break: break-word;
+}
+
+/* ===== Detail Body ===== */
+.detail-body section { margin-bottom: 22px; }
+.detail-body section:last-child { margin-bottom: 0; }
+
+.detail-body h3 {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #889aaa;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #eef3f6;
+}
+
+.detail-body p {
+  font-size: 0.94rem;
+  line-height: 1.72;
+  color: #334455;
+}
+
+.analogy-text {
+  font-style: italic;
+  color: #3a6070 !important;
+  background: #f5f9fb;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border-left: 3px solid #b5d6e8;
+}
+
+.detail-body ul { list-style: none; padding: 0; }
+.detail-body li {
+  font-size: 0.91rem;
+  line-height: 1.6;
+  color: #445566;
+  padding: 5px 0 5px 16px;
+  position: relative;
+}
+.detail-body li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #99bbcc;
+  font-weight: bold;
+}
+.counter-list li { color: #7a6a5a !important; }
+.counter-list li::before {
+  color: #d4b896 !important;
+  content: '✗';
+  font-size: 0.68rem;
+}
+
+.detail-source p { font-size: 0.84rem !important; color: #889aaa !important; }
+
+/* ===== Related Concepts ===== */
+.related-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.related-tag {
+  display: inline-block;
+  font-size: 0.80rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #f0f4f7;
+  color: #556677;
+  border: 1px solid #e0e8ee;
+  cursor: default;
+  transition: all 0.2s;
+}
+
+.related-tag.clickable {
+  cursor: pointer;
+  background: #e8f0f6;
+  color: #2a6080;
+  border-color: #c8dae8;
+}
+.related-tag.clickable:hover {
+  background: #d0e4f2;
+  border-color: #90c0d8;
+  color: #1a4a66;
+  transform: translateY(-1px);
+}
+
+/* ===== Close Button ===== */
+.close-btn {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 110;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  font-size: 1.15rem;
+  color: #556;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.close-btn.visible {
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.close-btn:hover {
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+  transform: scale(1.08);
+}
+
+.close-btn:active { transform: scale(0.94); }
+
+/* ===== Splash ===== */
+.splash {
+  position: fixed;
+  pointer-events: none;
+  z-index: 150;
+  border-radius: 50%;
+  border: 2px solid rgba(180, 210, 225, 0.45);
+  background: radial-gradient(circle, rgba(190, 220, 235, 0.18) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+}
+
+.splash.animate {
+  animation: splash-expand 0.72s ease-out forwards;
+}
+
+@keyframes splash-expand {
+  0%   { width: 16px; height: 16px; opacity: 0.75; }
+  100% { width: 220px; height: 220px; opacity: 0; }
 }
 
 /* ===== Responsive ===== */
-@media(max-width:768px){
-  .header h1{font-size:1.5rem}
-  .card-grid{
-    grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
-    gap:10px;
-  }
-  .card-front .concept-name{font-size:0.78rem}
-  .card.core .card-front .concept-name{font-size:0.88rem}
-  .card.secondary .card-front .concept-name{font-size:0.72rem}
-  .card.flipped{transform:scale(1.35)}
-  .card-back .back-name{font-size:1rem}
-  .filter-btn{padding:6px 13px;font-size:0.75rem}
+@media (max-width: 768px) {
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .card { min-height: 102px; padding: 16px 12px 14px; }
+  .card-name { font-size: 0.88rem; }
+  .detail-card { width: 94vw; max-width: 94vw; max-height: 84vh; }
+  .detail-card-inner { padding: 28px 22px 24px; }
+  .detail-name { font-size: 1.45rem; }
 }
-@media(max-width:480px){
-  .card-grid{
-    grid-template-columns:repeat(auto-fill,minmax(85px,1fr));
-    gap:8px;
+
+@media (max-width: 480px) {
+  .page { padding: 10px 6px 30px; }
+  .card-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .card {
+    min-height: 88px;
+    padding: 14px 8px 12px;
+    border-radius: 12px;
+    filter: blur(0.8px);
+    opacity: 0.72;
   }
-  .card-face{border-radius:10px}
-  .card-front .concept-name{font-size:0.68rem}
-  .card.core .card-front .concept-name{font-size:0.75rem}
-  .card.secondary .card-front .concept-name{font-size:0.65rem}
-  .card.flipped{transform:scale(1.45)}
-  .card-back .back-name{font-size:0.85rem}
-  .filter-btn{padding:5px 10px;font-size:0.72rem}
-  .header h1{font-size:1.25rem}
+  .card-name { font-size: 0.80rem; }
+  .card-category { font-size: 0.58rem; }
+  .card-type { font-size: 0.62rem; padding: 2px 8px; }
+  .detail-card { width: 96vw; max-width: 96vw; max-height: 80vh; border-radius: 16px; }
+  .detail-card-inner { padding: 24px 18px 20px; }
+  .detail-name { font-size: 1.30rem; }
+  .close-btn { top: 14px; right: 14px; width: 36px; height: 36px; font-size: 1rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="app">
-  <header class="header">
-    <h1>思想河流 · 概念卡片</h1>
-    <p class="subtitle">吴军思想体系 · 知识图谱</p>
-    <div class="filters" id="filters"></div>
-    <div class="card-count" id="cardCount"></div>
-  </header>
+<div class="water-bg"></div>
+<div class="light-rays"></div>
+
+<div class="page">
+  <div class="page-title">
+    <h1>概念卡片墙</h1>
+    <p>点击卡片，从水中捞出</p>
+  </div>
   <div class="card-grid" id="cardGrid"></div>
 </div>
 
+<div class="overlay" id="overlay">
+  <div class="overlay-backdrop"></div>
+  <div class="detail-card" id="detailCard">
+    <div class="detail-card-inner" id="detailInner"></div>
+  </div>
+</div>
+
+<button class="close-btn" id="closeBtn" aria-label="关闭">✕</button>
+
+<script src="data/concepts_enriched.js"></script>
 <script>
-const CONCEPTS = [{"name": "万尼瓦尔·布什", "category": "人物", "importance": "core"}, {"name": "丹尼尔·吉尔曼", "category": "人物", "importance": "core"}, {"name": "乔丹·彼得森", "category": "人物", "importance": "core"}, {"name": "亚历山大·冯·洪堡", "category": "人物", "importance": "core"}, {"name": "亚历山大·汉密尔顿", "category": "人物", "importance": "core"}, {"name": "亚当·弗格森", "category": "人物", "importance": "core"}, {"name": "亚里士多德", "category": "人物", "importance": "core"}, {"name": "亨利·罗林森", "category": "人物", "importance": "core"}, {"name": "伊壁鸠鲁", "category": "人物", "importance": "core"}, {"name": "伊曼努尔·康德", "category": "人物", "importance": "core"}, {"name": "伽利略·伽利莱", "category": "人物", "importance": "core"}, {"name": "但丁·阿利吉耶里", "category": "人物", "importance": "core"}, {"name": "佛陀", "category": "人物", "importance": "core"}, {"name": "保罗·朗格朗", "category": "人物", "importance": "core"}, {"name": "列夫·托尔斯泰", "category": "人物", "importance": "core"}, {"name": "卡尔·波普尔", "category": "人物", "importance": "core"}, {"name": "卡尔文·柯立芝", "category": "人物", "importance": "core"}, {"name": "司马迁", "category": "人物", "importance": "core"}, {"name": "吴军", "category": "人物", "importance": "core"}, {"name": "哥白尼", "category": "人物", "importance": "core"}, {"name": "埃利希·弗洛姆", "category": "人物", "importance": "core"}, {"name": "埃德蒙·费尔普斯", "category": "人物", "importance": "core"}, {"name": "塞缪尔·亨廷顿", "category": "人物", "importance": "core"}, {"name": "大卫·休谟", "category": "人物", "importance": "core"}, {"name": "威廉·冯·洪堡", "category": "人物", "importance": "core"}, {"name": "威廉·肖克利", "category": "人物", "importance": "core"}, {"name": "威廉·莎士比亚", "category": "人物", "importance": "core"}, {"name": "孔子", "category": "人物", "importance": "core"}, {"name": "孟德斯鸠", "category": "人物", "importance": "core"}, {"name": "安德鲁·维特比", "category": "人物", "importance": "core"}, {"name": "尼古拉·特斯拉", "category": "人物", "importance": "core"}, {"name": "崔屹", "category": "人物", "importance": "core"}, {"name": "巴勃罗·毕加索", "category": "人物", "importance": "core"}, {"name": "巴鲁赫·斯宾诺莎", "category": "人物", "importance": "core"}, {"name": "庄子", "category": "人物", "importance": "core"}, {"name": "康拉德·楚泽（Konrad Zuse）", "category": "人物", "importance": "core"}, {"name": "弗朗西斯·哈奇森", "category": "人物", "importance": "core"}, {"name": "弗里德里希·哈耶克", "category": "人物", "importance": "core"}, {"name": "弗里德里希·尼采", "category": "人物", "importance": "core"}, {"name": "张忠谋", "category": "人物", "importance": "core"}, {"name": "张纯如", "category": "人物", "importance": "core"}, {"name": "彼得·林奇", "category": "人物", "importance": "core"}, {"name": "戈特弗里德·威廉·莱布尼茨", "category": "人物", "importance": "core"}, {"name": "托马斯·爱迪生", "category": "人物", "importance": "core"}, {"name": "拉里·佩奇", "category": "人物", "importance": "core"}, {"name": "拿破仑·波拿巴", "category": "人物", "importance": "core"}, {"name": "斯科特·派克", "category": "人物", "importance": "core"}, {"name": "本-耶胡达", "category": "人物", "importance": "core"}, {"name": "本杰明·富兰克林", "category": "人物", "importance": "core"}, {"name": "李清照", "category": "人物", "importance": "core"}, {"name": "杰夫·迪恩（Jeff Dean）", "category": "人物", "importance": "core"}, {"name": "杰弗里·辛顿", "category": "人物", "importance": "core"}, {"name": "查尔斯·艾略特", "category": "人物", "importance": "core"}, {"name": "查尔斯·达尔文", "category": "人物", "importance": "core"}, {"name": "歌德与《浮士德》", "category": "人物", "importance": "core"}, {"name": "毕达哥拉斯", "category": "人物", "importance": "core"}, {"name": "汉尼拔", "category": "人物", "importance": "core"}, {"name": "沃伦·巴菲特", "category": "人物", "importance": "core"}, {"name": "深度学习三剑客", "category": "人物", "importance": "core"}, {"name": "王阳明", "category": "人物", "importance": "core"}, {"name": "玛格丽特·撒切尔", "category": "人物", "importance": "core"}, {"name": "第斯多惠", "category": "人物", "importance": "core"}, {"name": "米哈里·契克森米哈赖", "category": "人物", "importance": "core"}, {"name": "约翰·杜威", "category": "人物", "importance": "core"}, {"name": "约翰·杜尔", "category": "人物", "importance": "core"}, {"name": "约翰·纽曼", "category": "人物", "importance": "core"}, {"name": "约翰·马歇尔", "category": "人物", "importance": "core"}, {"name": "罗纳德·里根", "category": "人物", "importance": "core"}, {"name": "艾伦·图灵", "category": "人物", "importance": "core"}, {"name": "艾萨克·牛顿", "category": "人物", "importance": "core"}, {"name": "苏格拉底", "category": "人物", "importance": "core"}, {"name": "萨古鲁", "category": "人物", "importance": "core"}, {"name": "蔡伦", "category": "人物", "importance": "core"}, {"name": "西格蒙德·弗洛伊德", "category": "人物", "importance": "core"}, {"name": "詹姆斯·焦耳", "category": "人物", "importance": "core"}, {"name": "詹姆斯·瓦特", "category": "人物", "importance": "core"}, {"name": "让-雅克·卢梭", "category": "人物", "importance": "core"}, {"name": "让·皮亚杰", "category": "人物", "importance": "core"}, {"name": "诺伯特·维纳", "category": "人物", "importance": "core"}, {"name": "费迪南·冯·李希霍芬", "category": "人物", "importance": "core"}, {"name": "资中筠", "category": "人物", "importance": "core"}, {"name": "赫伯特·斯宾塞", "category": "人物", "importance": "core"}, {"name": "赫尔巴特", "category": "人物", "importance": "core"}, {"name": "路德维希·维特根斯坦", "category": "人物", "importance": "core"}, {"name": "阿历克西·德·托克维尔", "category": "人物", "importance": "core"}, {"name": "阿尔伯特·爱因斯坦", "category": "人物", "importance": "core"}, {"name": "阿尔弗雷德·阿德勒", "category": "人物", "importance": "core"}, {"name": "霍华德·加德纳", "category": "人物", "importance": "core"}, {"name": "马克斯·普朗克", "category": "人物", "importance": "core"}, {"name": "马克斯·韦伯", "category": "人物", "importance": "core"}, {"name": "马可·奥勒留", "category": "人物", "importance": "core"}, {"name": "高德纳（Donald Knuth）", "category": "人物", "importance": "core"}, {"name": "IT行业赢家通吃", "category": "理论/定律", "importance": "core"}, {"name": "《孙子兵法》", "category": "理论/定律", "importance": "core"}, {"name": "一万小时定律", "category": "理论/定律", "importance": "core"}, {"name": "上帝即自然", "category": "理论/定律", "importance": "core"}, {"name": "个体心理学", "category": "理论/定律", "importance": "core"}, {"name": "人工智能三大支柱", "category": "理论/定律", "importance": "core"}, {"name": "休谟的叉子", "category": "理论/定律", "importance": "core"}, {"name": "信息消除不确定性", "category": "理论/定律", "importance": "core"}, {"name": "充分性推理原则", "category": "理论/定律", "importance": "core"}, {"name": "克劳塞维茨《战争论》", "category": "理论/定律", "importance": "core"}, {"name": "卢梭《爱弥儿》教育节奏理论", "category": "理论/定律", "importance": "core"}, {"name": "原有产业+新技术=新的产业", "category": "理论/定律", "importance": "core"}, {"name": "发明的荣誉归于最后一个发明家", "category": "理论/定律", "importance": "core"}, {"name": "发生认识论", "category": "理论/定律", "importance": "core"}, {"name": "古典自由主义", "category": "理论/定律", "importance": "core"}, {"name": "可证伪性", "category": "理论/定律", "importance": "core"}, {"name": "司法审查权", "category": "理论/定律", "importance": "core"}, {"name": "哥德尔不完备定理", "category": "理论/定律", "importance": "core"}, {"name": "四因说", "category": "理论/定律", "importance": "core"}, {"name": "图灵机", "category": "理论/定律", "importance": "core"}, {"name": "图灵机理论边界", "category": "理论/定律", "importance": "core"}, {"name": "图论", "category": "理论/定律", "importance": "core"}, {"name": "地理气候决定论", "category": "理论/定律", "importance": "core"}, {"name": "多元智能理论", "category": "理论/定律", "importance": "core"}, {"name": "大众创新活力理论", "category": "理论/定律", "importance": "core"}, {"name": "安迪-比尔定律", "category": "理论/定律", "importance": "core"}, {"name": "帕累托分布效应", "category": "理论/定律", "importance": "core"}, {"name": "帕金森定律", "category": "理论/定律", "importance": "core"}, {"name": "幂律分布", "category": "理论/定律", "importance": "core"}, {"name": "形式逻辑", "category": "理论/定律", "importance": "core"}, {"name": "心流理论", "category": "理论/定律", "importance": "core"}, {"name": "战略三要素", "category": "理论/定律", "importance": "core"}, {"name": "控制论", "category": "理论/定律", "importance": "core"}, {"name": "控制论、信息论、系统论", "category": "理论/定律", "importance": "core"}, {"name": "摩尔定律", "category": "理论/定律", "importance": "core"}, {"name": "教育即生活", "category": "理论/定律", "importance": "core"}, {"name": "文明三要素", "category": "理论/定律", "importance": "core"}, {"name": "斯多葛哲学", "category": "理论/定律", "importance": "core"}, {"name": "斯宾塞五层次知识理论", "category": "理论/定律", "importance": "core"}, {"name": "最大熵原理", "category": "理论/定律", "importance": "core"}, {"name": "期望值最大化原理", "category": "理论/定律", "importance": "core"}, {"name": "机器学习本质（寻找数学模型）", "category": "理论/定律", "importance": "core"}, {"name": "机械论世界观", "category": "理论/定律", "importance": "core"}, {"name": "欧几里得《几何原本》", "category": "理论/定律", "importance": "core"}, {"name": "渐变与突变的辩证关系", "category": "理论/定律", "importance": "core"}, {"name": "牛顿的机械思维", "category": "理论/定律", "importance": "core"}, {"name": "理性主义", "category": "理论/定律", "importance": "core"}, {"name": "理性四维度理论", "category": "理论/定律", "importance": "core"}, {"name": "皮格马利翁效应", "category": "理论/定律", "importance": "core"}, {"name": "相对论", "category": "理论/定律", "importance": "core"}, {"name": "知行合一", "category": "理论/定律", "importance": "core"}, {"name": "科学与技术的本质区别", "category": "理论/定律", "importance": "core"}, {"name": "科学哲学", "category": "理论/定律", "importance": "core"}, {"name": "科学教育学", "category": "理论/定律", "importance": "core"}, {"name": "科学知识最有价值", "category": "理论/定律", "importance": "core"}, {"name": "等价问题", "category": "理论/定律", "importance": "core"}, {"name": "算法复杂度", "category": "理论/定律", "importance": "core"}, {"name": "纳什均衡", "category": "理论/定律", "importance": "core"}, {"name": "终身教育理论", "category": "理论/定律", "importance": "core"}, {"name": "经验主义", "category": "理论/定律", "importance": "core"}, {"name": "罗森塔尔效应", "category": "理论/定律", "importance": "core"}, {"name": "罗马法", "category": "理论/定律", "importance": "core"}, {"name": "能量守恒定律", "category": "理论/定律", "importance": "core"}, {"name": "能量密度决定文明形态", "category": "理论/定律", "importance": "core"}, {"name": "自卑与超越", "category": "理论/定律", "importance": "core"}, {"name": "自然教育", "category": "理论/定律", "importance": "core"}, {"name": "认知发展四阶段", "category": "理论/定律", "importance": "core"}, {"name": "语言决定思维论", "category": "理论/定律", "importance": "core"}, {"name": "语言游戏理论", "category": "理论/定律", "importance": "core"}, {"name": "货币的起源（记账工具说 vs 交易媒介说）", "category": "理论/定律", "importance": "core"}, {"name": "超人哲学", "category": "理论/定律", "importance": "core"}, {"name": "辛普森悖论", "category": "理论/定律", "importance": "core"}, {"name": "达尔文进化论", "category": "理论/定律", "importance": "core"}, {"name": "进化论", "category": "理论/定律", "importance": "core"}, {"name": "重复博弈", "category": "理论/定律", "importance": "core"}, {"name": "量子力学", "category": "理论/定律", "importance": "core"}, {"name": "香农信息论", "category": "理论/定律", "importance": "core"}, {"name": "香农第二定理", "category": "理论/定律", "importance": "core"}, {"name": "2017年减法生活", "category": "方法/框架", "importance": "core"}, {"name": "20小时入门法则", "category": "方法/框架", "importance": "core"}, {"name": "B计划方法论", "category": "方法/框架", "importance": "core"}, {"name": "OKR目标管理法", "category": "方法/框架", "importance": "core"}, {"name": "《红楼梦》四阶段阅读法", "category": "方法/框架", "importance": "core"}, {"name": "一生的五件事", "category": "方法/框架", "importance": "core"}, {"name": "三板斧破四困境", "category": "方法/框架", "importance": "core"}, {"name": "上帝喜欢笨人", "category": "方法/框架", "importance": "core"}, {"name": "不给选择的管理智慧", "category": "方法/框架", "importance": "core"}, {"name": "为自己工作的职场心态", "category": "方法/框架", "importance": "core"}, {"name": "二流大学的一流教育路径", "category": "方法/框架", "importance": "core"}, {"name": "五级工程师模型", "category": "方法/框架", "importance": "core"}, {"name": "五阶段认知模型（知→懂→做→成→好）", "category": "方法/框架", "importance": "core"}, {"name": "人生四问", "category": "方法/框架", "importance": "core"}, {"name": "从害怕写到天天想写", "category": "方法/框架", "importance": "core"}, {"name": "从机械思维到信息论思维", "category": "方法/框架", "importance": "core"}, {"name": "以正合，以奇胜", "category": "方法/框架", "importance": "core"}, {"name": "价值投资", "category": "方法/框架", "importance": "core"}, {"name": "众争勿往", "category": "方法/框架", "importance": "core"}, {"name": "众利勿为，众争勿往", "category": "方法/框架", "importance": "core"}, {"name": "信息时代人才选拔", "category": "方法/框架", "importance": "core"}, {"name": "做功公式与职场映射（W=F×D×cosθ）", "category": "方法/框架", "importance": "core"}, {"name": "做对的事而非学某个人", "category": "方法/框架", "importance": "core"}, {"name": "八维度历史分析法", "category": "方法/框架", "importance": "core"}, {"name": "分享、跟踪、合作、众筹八字诀", "category": "方法/框架", "importance": "core"}, {"name": "分享利益、独立决断", "category": "方法/框架", "importance": "core"}, {"name": "分层阅读法", "category": "方法/框架", "importance": "core"}, {"name": "创业不要一开始就做平台", "category": "方法/框架", "importance": "core"}, {"name": "创始人三大关键职责", "category": "方法/框架", "importance": "core"}, {"name": "动态平衡（工作与生活）", "category": "方法/框架", "importance": "core"}, {"name": "勿因人之短护己之短", "category": "方法/框架", "importance": "core"}, {"name": "合格的阅读理解", "category": "方法/框架", "importance": "core"}, {"name": "四力模型", "category": "方法/框架", "importance": "core"}, {"name": "四种财富积累路径", "category": "方法/框架", "importance": "core"}, {"name": "回望与俯瞰双重视角", "category": "方法/框架", "importance": "core"}, {"name": "因果关系四象限分析", "category": "方法/框架", "importance": "core"}, {"name": "国际教育决策系统框架", "category": "方法/框架", "importance": "core"}, {"name": "图灵测试", "category": "方法/框架", "importance": "core"}, {"name": "基层员工要抬起头，管理者要弯下腰", "category": "方法/框架", "importance": "core"}, {"name": "大学教育的三大核心目的", "category": "方法/框架", "importance": "core"}, {"name": "家长作为孩子的朋友", "category": "方法/框架", "importance": "core"}, {"name": "工程思维：直觉和极限", "category": "方法/框架", "importance": "core"}, {"name": "巴菲特三大人生禁忌", "category": "方法/框架", "importance": "core"}, {"name": "巴菲特长期投资理念", "category": "方法/框架", "importance": "core"}, {"name": "帝国兴衰的系统性分析", "category": "方法/框架", "importance": "core"}, {"name": "常识、科技和艺术三阶段认知模型", "category": "方法/框架", "importance": "core"}, {"name": "心智成熟四原则", "category": "方法/框架", "importance": "core"}, {"name": "怡情、养性、长智读书六字诀", "category": "方法/框架", "importance": "core"}, {"name": "情商三维模型", "category": "方法/框架", "importance": "core"}, {"name": "成就公式（成功率×量级×速度）", "category": "方法/框架", "importance": "core"}, {"name": "技术成熟度投资原则", "category": "方法/框架", "importance": "core"}, {"name": "把事情做好的三条边", "category": "方法/框架", "importance": "core"}, {"name": "投资六大误区", "category": "方法/框架", "importance": "core"}, {"name": "投资方法三派理论", "category": "方法/框架", "importance": "core"}, {"name": "投资目的决定策略", "category": "方法/框架", "importance": "core"}, {"name": "拉姆斯菲尔德风险分类法", "category": "方法/框架", "importance": "core"}, {"name": "挑金子不要过滤沙子", "category": "方法/框架", "importance": "core"}, {"name": "排序算法", "category": "方法/框架", "importance": "core"}, {"name": "数学思维与逻辑训练", "category": "方法/框架", "importance": "core"}, {"name": "数据结构", "category": "方法/框架", "importance": "core"}, {"name": "时间管理的减法原则", "category": "方法/框架", "importance": "core"}, {"name": "有效沟通的四大核心问题", "category": "方法/框架", "importance": "core"}, {"name": "有效进步的两大基石", "category": "方法/框架", "importance": "core"}, {"name": "朗道等级体系", "category": "方法/框架", "importance": "core"}, {"name": "机器学习（有模型 vs 数据驱动）", "category": "方法/框架", "importance": "core"}, {"name": "止损——砍断厄运链", "category": "方法/框架", "importance": "core"}, {"name": "消除妄念", "category": "方法/框架", "importance": "core"}, {"name": "深度工作", "category": "方法/框架", "importance": "core"}, {"name": "牙刷原则（产品设计）", "category": "方法/框架", "importance": "core"}, {"name": "牙刷和爆款原则", "category": "方法/框架", "importance": "core"}, {"name": "知识从\"知道\"到\"理解\"的转化", "category": "方法/框架", "importance": "core"}, {"name": "知识体系构建方法论", "category": "方法/框架", "importance": "core"}, {"name": "矩阵式管理", "category": "方法/框架", "importance": "core"}, {"name": "社会导向", "category": "方法/框架", "importance": "core"}, {"name": "科学学习的四大目的", "category": "方法/框架", "importance": "core"}, {"name": "科学方法论", "category": "方法/框架", "importance": "core"}, {"name": "科学试错法", "category": "方法/框架", "importance": "core"}, {"name": "第三眼美女产品演化模型", "category": "方法/框架", "importance": "core"}, {"name": "粗调与精调——工程思维", "category": "方法/框架", "importance": "core"}, {"name": "精英三大核心能力", "category": "方法/框架", "importance": "core"}, {"name": "系统化学习", "category": "方法/框架", "importance": "core"}, {"name": "系统论自我优化", "category": "方法/框架", "importance": "core"}, {"name": "索引（Index）", "category": "方法/框架", "importance": "core"}, {"name": "编址（Addressing）", "category": "方法/框架", "importance": "core"}, {"name": "美国大语文教育", "category": "方法/框架", "importance": "core"}, {"name": "美国科学人才筛选体系", "category": "方法/框架", "importance": "core"}, {"name": "职场四大误区与破法", "category": "方法/框架", "importance": "core"}, {"name": "职场晋升三大核心因素", "category": "方法/框架", "importance": "core"}, {"name": "能量与信息的双主线框架", "category": "方法/框架", "importance": "core"}, {"name": "行为导向", "category": "方法/框架", "importance": "core"}, {"name": "解决复杂问题两步法", "category": "方法/框架", "importance": "core"}, {"name": "计算机思维", "category": "方法/框架", "importance": "core"}, {"name": "计算机思维三层架构", "category": "方法/框架", "importance": "core"}, {"name": "计算机科学通用方法论", "category": "方法/框架", "importance": "core"}, {"name": "资产与债务的动态定义", "category": "方法/框架", "importance": "core"}, {"name": "超越免费四大策略", "category": "方法/框架", "importance": "core"}, {"name": "递归思维", "category": "方法/框架", "importance": "core"}, {"name": "递推（Iterative）vs 递归（Recursive）", "category": "方法/框架", "importance": "core"}, {"name": "量级思维", "category": "方法/框架", "importance": "core"}, {"name": "问题抽象化", "category": "方法/框架", "importance": "core"}, {"name": "阶层突破的两种路径", "category": "方法/框架", "importance": "core"}, {"name": "黄赌毒开道技术验证原理", "category": "方法/框架", "importance": "core"}, {"name": "2%与98%的社会分化", "category": "概念/思想", "importance": "core"}, {"name": "AI时代学习内容变革", "category": "概念/思想", "importance": "core"}, {"name": "AI时代教育方法变革", "category": "概念/思想", "importance": "core"}, {"name": "ChatGPT本质是语言模型", "category": "概念/思想", "importance": "core"}, {"name": "ChatGPT的固有缺陷", "category": "概念/思想", "importance": "core"}, {"name": "ChatGPT的能力边界", "category": "概念/思想", "importance": "core"}, {"name": "IT产业生态链", "category": "概念/思想", "importance": "core"}, {"name": "K线技术指标无效性", "category": "概念/思想", "importance": "core"}, {"name": "《大学的理念》", "category": "概念/思想", "importance": "core"}, {"name": "《红楼梦》作为农耕文明解读工具", "category": "概念/思想", "importance": "core"}, {"name": "上帝死了", "category": "概念/思想", "importance": "core"}, {"name": "不做的智慧", "category": "概念/思想", "importance": "core"}, {"name": "不平等形态迭代", "category": "概念/思想", "importance": "core"}, {"name": "与自己和解", "category": "概念/思想", "importance": "core"}, {"name": "专注的本质", "category": "概念/思想", "importance": "core"}, {"name": "个人稀缺性", "category": "概念/思想", "importance": "core"}, {"name": "中美文化思维差异", "category": "概念/思想", "importance": "core"}, {"name": "主人道德与奴隶道德", "category": "概念/思想", "importance": "core"}, {"name": "主动争取+合理妥协+最终宽容", "category": "概念/思想", "importance": "core"}, {"name": "主动性原则", "category": "概念/思想", "importance": "core"}, {"name": "事实比口才更重要", "category": "概念/思想", "importance": "core"}, {"name": "互联网的本质", "category": "概念/思想", "importance": "core"}, {"name": "人文主义", "category": "概念/思想", "importance": "core"}, {"name": "人生是一条河", "category": "概念/思想", "importance": "core"}, {"name": "人生是马拉松而非百米跑", "category": "概念/思想", "importance": "core"}, {"name": "从熟人社会到陌生人社会", "category": "概念/思想", "importance": "core"}, {"name": "价值与价格区分", "category": "概念/思想", "importance": "core"}, {"name": "企业的死亡是对社会的最后贡献", "category": "概念/思想", "importance": "core"}, {"name": "优点与缺点的辩证关系——只有特点", "category": "概念/思想", "importance": "core"}, {"name": "伪工作", "category": "概念/思想", "importance": "core"}, {"name": "伪工作与假努力", "category": "概念/思想", "importance": "core"}, {"name": "保守主义", "category": "概念/思想", "importance": "core"}, {"name": "信息世界常识", "category": "概念/思想", "importance": "core"}, {"name": "做好最后的1%", "category": "概念/思想", "importance": "core"}, {"name": "儒释道一体", "category": "概念/思想", "importance": "core"}, {"name": "全球化2.0", "category": "概念/思想", "importance": "core"}, {"name": "公民社会", "category": "概念/思想", "importance": "core"}, {"name": "共享经济的认知误区", "category": "概念/思想", "importance": "core"}, {"name": "关注的价值陷阱", "category": "概念/思想", "importance": "core"}, {"name": "内卷（involution）", "category": "概念/思想", "importance": "core"}, {"name": "半导体设计与制造分离", "category": "概念/思想", "importance": "core"}, {"name": "博士培养的本质", "category": "概念/思想", "importance": "core"}, {"name": "博雅教育", "category": "概念/思想", "importance": "core"}, {"name": "历史学习的本质", "category": "概念/思想", "importance": "core"}, {"name": "原子习惯", "category": "概念/思想", "importance": "core"}, {"name": "发明是从0到N的完整过程", "category": "概念/思想", "importance": "core"}, {"name": "合作经济", "category": "概念/思想", "importance": "core"}, {"name": "向死而生的生命态度", "category": "概念/思想", "importance": "core"}, {"name": "启蒙的定义", "category": "概念/思想", "importance": "core"}, {"name": "唐诗的巅峰与格律诗定型", "category": "概念/思想", "importance": "core"}, {"name": "商业的本质是让人多花钱而不是省钱", "category": "概念/思想", "importance": "core"}, {"name": "大学学习的本质", "category": "概念/思想", "importance": "core"}, {"name": "天赋的核心特征（先天性、稀缺性）", "category": "概念/思想", "importance": "core"}, {"name": "太空探索的深层价值", "category": "概念/思想", "importance": "core"}, {"name": "好心办坏事现象", "category": "概念/思想", "importance": "core"}, {"name": "婚姻投资论", "category": "概念/思想", "importance": "core"}, {"name": "学以致用与无用之用的辩证关系", "category": "概念/思想", "importance": "core"}, {"name": "学好与考好的本质差异", "category": "概念/思想", "importance": "core"}, {"name": "家族财富传承", "category": "概念/思想", "importance": "core"}, {"name": "小公司对大公司的非对称竞争", "category": "概念/思想", "importance": "core"}, {"name": "小数字世界 vs 大数世界", "category": "概念/思想", "importance": "core"}, {"name": "工业时代 vs 信息时代管理范式", "category": "概念/思想", "importance": "core"}, {"name": "工业革命的本质", "category": "概念/思想", "importance": "core"}, {"name": "巧读书", "category": "概念/思想", "importance": "core"}, {"name": "市场永远是对的", "category": "概念/思想", "importance": "core"}, {"name": "帝道、王道与霸道", "category": "概念/思想", "importance": "core"}, {"name": "庄周梦蝶", "category": "概念/思想", "importance": "core"}, {"name": "快乐教育批判", "category": "概念/思想", "importance": "core"}, {"name": "快乐教育的陷阱", "category": "概念/思想", "importance": "core"}, {"name": "悲观主义成因", "category": "概念/思想", "importance": "core"}, {"name": "成功在于少犯错误", "category": "概念/思想", "importance": "core"}, {"name": "技术变革的受益者规律", "category": "概念/思想", "importance": "core"}, {"name": "技术指标无法帮助股民持续盈利", "category": "概念/思想", "importance": "core"}, {"name": "技术跳跃性", "category": "概念/思想", "importance": "core"}, {"name": "技能教育与阶层流动", "category": "概念/思想", "importance": "core"}, {"name": "投资与赌博的混淆", "category": "概念/思想", "importance": "core"}, {"name": "投资回报的底层逻辑", "category": "概念/思想", "importance": "core"}, {"name": "政治正确的破产", "category": "概念/思想", "importance": "core"}, {"name": "教育目的：手段与目的之辩", "category": "概念/思想", "importance": "core"}, {"name": "数据资产化", "category": "概念/思想", "importance": "core"}, {"name": "文艺复兴的科学本质", "category": "概念/思想", "importance": "core"}, {"name": "普娃教育", "category": "概念/思想", "importance": "core"}, {"name": "智能时代创业是苦差事", "category": "概念/思想", "importance": "core"}, {"name": "智能时代对传统媒体的颠覆", "category": "概念/思想", "importance": "core"}, {"name": "暗夜猫头鹰效应", "category": "概念/思想", "importance": "core"}, {"name": "最好是更好的敌人", "category": "概念/思想", "importance": "core"}, {"name": "有涯与无涯的辩证", "category": "概念/思想", "importance": "core"}, {"name": "未知的未知", "category": "概念/思想", "importance": "core"}, {"name": "朴素是富豪的专利", "category": "概念/思想", "importance": "core"}, {"name": "李约瑟谜题", "category": "概念/思想", "importance": "core"}, {"name": "林黛玉困境", "category": "概念/思想", "importance": "core"}, {"name": "标准答案教育的局限", "category": "概念/思想", "importance": "core"}, {"name": "死循环与递归陷阱", "category": "概念/思想", "importance": "core"}, {"name": "沉没成本陷阱", "category": "概念/思想", "importance": "core"}, {"name": "洪堡教育体系", "category": "概念/思想", "importance": "core"}, {"name": "焦虑代际传递", "category": "概念/思想", "importance": "core"}, {"name": "父母是孩子的天花板", "category": "概念/思想", "importance": "core"}, {"name": "现代医学的科学化转型", "category": "概念/思想", "importance": "core"}, {"name": "现代文明素养", "category": "概念/思想", "importance": "core"}, {"name": "瓷器是中国历史上最伟大的发明", "category": "概念/思想", "importance": "core"}, {"name": "生产关系代际差决定竞争结果", "category": "概念/思想", "importance": "core"}, {"name": "生活是具体的", "category": "概念/思想", "importance": "core"}, {"name": "癌症治疗的万灵药不存在", "category": "概念/思想", "importance": "core"}, {"name": "相对大小 vs 绝对数值", "category": "概念/思想", "importance": "core"}, {"name": "看透钱——精英财富观", "category": "概念/思想", "importance": "core"}, {"name": "知识与智慧的区别", "category": "概念/思想", "importance": "core"}, {"name": "研究型大学", "category": "概念/思想", "importance": "core"}, {"name": "硅谷成功的核心要素", "category": "概念/思想", "importance": "core"}, {"name": "硅谷的从1到N转化能力", "category": "概念/思想", "importance": "core"}, {"name": "硅谷衰退论", "category": "概念/思想", "importance": "core"}, {"name": "碳中和", "category": "概念/思想", "importance": "core"}, {"name": "社会竞争是多变量互动", "category": "概念/思想", "importance": "core"}, {"name": "科学素养与迷信科学", "category": "概念/思想", "importance": "core"}, {"name": "科学结论的限制条件", "category": "概念/思想", "importance": "core"}, {"name": "科技助产士——战争", "category": "概念/思想", "importance": "core"}, {"name": "科技进步加速与减速之争", "category": "概念/思想", "importance": "core"}, {"name": "第一份工作不要太在乎工资", "category": "概念/思想", "importance": "core"}, {"name": "算盘作为计算机的本质", "category": "概念/思想", "importance": "core"}, {"name": "精英教育的公平与选拔矛盾", "category": "概念/思想", "importance": "core"}, {"name": "经历与经验的区分", "category": "概念/思想", "importance": "core"}, {"name": "美国基础教育悖论", "category": "概念/思想", "importance": "core"}, {"name": "美国慈善文化", "category": "概念/思想", "importance": "core"}, {"name": "职业天花板来自认知局限", "category": "概念/思想", "importance": "core"}, {"name": "职业选择不以短期热门为导向", "category": "概念/思想", "importance": "core"}, {"name": "聪明努力的失败者悖论", "category": "概念/思想", "importance": "core"}, {"name": "西瓜与芝麻的取舍智慧", "category": "概念/思想", "importance": "core"}, {"name": "计算机从专用到通用", "category": "概念/思想", "importance": "core"}, {"name": "计算机是工具", "category": "概念/思想", "importance": "core"}, {"name": "计算机科学 vs 计算机工程", "category": "概念/思想", "importance": "core"}, {"name": "让父母成熟起来", "category": "概念/思想", "importance": "core"}, {"name": "识数能力", "category": "概念/思想", "importance": "core"}, {"name": "谋事在人，成事在天", "category": "概念/思想", "importance": "core"}, {"name": "财务自由与个人自由", "category": "概念/思想", "importance": "core"}, {"name": "财富传承困境", "category": "概念/思想", "importance": "core"}, {"name": "贵族精神", "category": "概念/思想", "importance": "core"}, {"name": "资产配置决定投资回报", "category": "概念/思想", "importance": "core"}, {"name": "赚钱与挣钱的区分", "category": "概念/思想", "importance": "core"}, {"name": "跟踪经济", "category": "概念/思想", "importance": "core"}, {"name": "运气在成功中的作用", "category": "概念/思想", "importance": "core"}, {"name": "选择与幸福感的关系", "category": "概念/思想", "importance": "core"}, {"name": "逍遥游", "category": "概念/思想", "importance": "core"}, {"name": "递归与社会组织结构", "category": "概念/思想", "importance": "core"}, {"name": "通识教育（Liberal Arts）", "category": "概念/思想", "importance": "core"}, {"name": "酒神精神与日神精神", "category": "概念/思想", "importance": "core"}, {"name": "钱的本质是资源所有权与使用权的量化度量", "category": "概念/思想", "importance": "core"}, {"name": "长期主义", "category": "概念/思想", "importance": "core"}, {"name": "阅读写作是人生王牌能力", "category": "概念/思想", "importance": "core"}, {"name": "隐私与便利的权衡", "category": "概念/思想", "importance": "core"}, {"name": "非功利性科学精神", "category": "概念/思想", "importance": "core"}, {"name": "面向未来的教育", "category": "概念/思想", "importance": "core"}, {"name": "面子是消费决策的关键因素", "category": "概念/思想", "importance": "core"}, {"name": "面对现实", "category": "概念/思想", "importance": "core"}, {"name": "领导力≠管理岗位", "category": "概念/思想", "importance": "core"}, {"name": "颠覆式创新", "category": "概念/思想", "importance": "core"}, {"name": "颠覆性创新批判", "category": "概念/思想", "importance": "core"}, {"name": "风险意识", "category": "概念/思想", "importance": "core"}, {"name": "风险投资的本质是投人而非项目", "category": "概念/思想", "importance": "core"}, {"name": "风险投资（Venture Capital）", "category": "概念/思想", "importance": "core"}, {"name": "鲁迅的文学与社会变革", "category": "概念/思想", "importance": "core"}, {"name": "MIT媒体实验室", "category": "事件/运动", "importance": "core"}, {"name": "《俄狄浦斯王》与希腊悲剧", "category": "事件/运动", "importance": "core"}, {"name": "《拜杜法案》", "category": "事件/运动", "importance": "core"}, {"name": "《诗经》", "category": "事件/运动", "importance": "core"}, {"name": "《货殖列传》", "category": "事件/运动", "importance": "core"}, {"name": "丝绸之路命名", "category": "事件/运动", "importance": "core"}, {"name": "中世纪大学的诞生", "category": "事件/运动", "importance": "core"}, {"name": "中国瓷器全球化", "category": "事件/运动", "importance": "core"}, {"name": "人类基因组计划", "category": "事件/运动", "importance": "core"}, {"name": "农业革命", "category": "事件/运动", "importance": "core"}, {"name": "南京大屠杀", "category": "事件/运动", "importance": "core"}, {"name": "太空竞赛", "category": "事件/运动", "importance": "core"}, {"name": "工业革命", "category": "事件/运动", "importance": "core"}, {"name": "布匿战争", "category": "事件/运动", "importance": "core"}, {"name": "日心说与地心说之争", "category": "事件/运动", "importance": "core"}, {"name": "明治维新", "category": "事件/运动", "importance": "core"}, {"name": "月光社", "category": "事件/运动", "importance": "core"}, {"name": "楔形文字破译", "category": "事件/运动", "importance": "core"}, {"name": "法国启蒙运动", "category": "事件/运动", "importance": "core"}, {"name": "法国大革命", "category": "事件/运动", "importance": "core"}, {"name": "炼金术到现代化学的演化", "category": "事件/运动", "importance": "core"}, {"name": "现代希伯来语复兴", "category": "事件/运动", "importance": "core"}, {"name": "现代智人走出非洲", "category": "事件/运动", "importance": "core"}, {"name": "电学发展的四大伟大瞬间", "category": "事件/运动", "importance": "core"}, {"name": "罗塞塔石碑", "category": "事件/运动", "importance": "core"}, {"name": "美国高等教育转型（19世纪）", "category": "事件/运动", "importance": "core"}, {"name": "苏格兰启蒙运动", "category": "事件/运动", "importance": "core"}, {"name": "达特茅斯学院案", "category": "事件/运动", "importance": "core"}, {"name": "通信革命", "category": "事件/运动", "importance": "core"}, {"name": "青霉素的发明", "category": "事件/运动", "importance": "core"}, {"name": "DNA双螺旋结构", "category": "发明/技术", "importance": "core"}, {"name": "IoT万物互联", "category": "发明/技术", "importance": "core"}, {"name": "《神曲》", "category": "发明/技术", "importance": "core"}, {"name": "《科学：无尽的边疆》", "category": "发明/技术", "importance": "core"}, {"name": "信使RNA技术", "category": "发明/技术", "importance": "core"}, {"name": "冯·诺依曼体系结构", "category": "发明/技术", "importance": "core"}, {"name": "印刷术的技术迭代", "category": "发明/技术", "importance": "core"}, {"name": "古腾堡印刷术", "category": "发明/技术", "importance": "core"}, {"name": "可控核聚变", "category": "发明/技术", "importance": "core"}, {"name": "基因工程", "category": "发明/技术", "importance": "core"}, {"name": "基因技术与IT技术的结合", "category": "发明/技术", "importance": "core"}, {"name": "基因编辑技术(CRISPR)", "category": "发明/技术", "importance": "core"}, {"name": "工具制造与火的掌握", "category": "发明/技术", "importance": "core"}, {"name": "引力波", "category": "发明/技术", "importance": "core"}, {"name": "柏拉图《理想国》", "category": "发明/技术", "importance": "core"}, {"name": "核裂变", "category": "发明/技术", "importance": "core"}, {"name": "深度学习", "category": "发明/技术", "importance": "core"}, {"name": "移动互联网", "category": "发明/技术", "importance": "core"}, {"name": "维特比算法", "category": "发明/技术", "importance": "core"}, {"name": "造纸术", "category": "发明/技术", "importance": "core"}, {"name": "量子通信", "category": "发明/技术", "importance": "core"}, {"name": "集成电路（IC）", "category": "发明/技术", "importance": "core"}, {"name": "轴心时代", "category": "时代/时期", "importance": "core"}, {"name": "镀金时代", "category": "时代/时期", "importance": "core"}, {"name": "J.P.摩根", "category": "人物", "importance": "secondary"}, {"name": "J.保罗·盖蒂", "category": "人物", "importance": "secondary"}, {"name": "丹尼斯·罗德曼", "category": "人物", "importance": "secondary"}, {"name": "乔纳森·格鲁伯", "category": "人物", "importance": "secondary"}, {"name": "亨利·明茨伯格", "category": "人物", "importance": "secondary"}, {"name": "伍德罗·威尔逊", "category": "人物", "importance": "secondary"}, {"name": "伯顿·马尔基尔", "category": "人物", "importance": "secondary"}, {"name": "何塞·卡雷拉斯", "category": "人物", "importance": "secondary"}, {"name": "保罗·埃利希", "category": "人物", "importance": "secondary"}, {"name": "俾斯麦", "category": "人物", "importance": "secondary"}, {"name": "冯·诺依曼", "category": "人物", "importance": "secondary"}, {"name": "列夫·朗道", "category": "人物", "importance": "secondary"}, {"name": "卡尔·曼海姆", "category": "人物", "importance": "secondary"}, {"name": "卡尔·纽波特", "category": "人物", "importance": "secondary"}, {"name": "古斯塔夫·克里姆特", "category": "人物", "importance": "secondary"}, {"name": "唐纳德·特朗普", "category": "人物", "importance": "secondary"}, {"name": "商博良", "category": "人物", "importance": "secondary"}, {"name": "塞克斯图斯·恩披里科", "category": "人物", "importance": "secondary"}, {"name": "塞尔曼·瓦克斯曼", "category": "人物", "importance": "secondary"}, {"name": "夏洛蒂·勃朗特", "category": "人物", "importance": "secondary"}, {"name": "多米尼克·斯垂特菲尔德", "category": "人物", "importance": "secondary"}, {"name": "大卫·古德尔", "category": "人物", "importance": "secondary"}, {"name": "奚恺元", "category": "人物", "importance": "secondary"}, {"name": "威廉·夏普", "category": "人物", "importance": "secondary"}, {"name": "威灵顿公爵", "category": "人物", "importance": "secondary"}, {"name": "安迪·沃霍尔", "category": "人物", "importance": "secondary"}, {"name": "富兰克林·罗斯福", "category": "人物", "importance": "secondary"}, {"name": "尤瓦尔·赫拉利", "category": "人物", "importance": "secondary"}, {"name": "尼尔斯·玻尔", "category": "人物", "importance": "secondary"}, {"name": "尼采", "category": "人物", "importance": "secondary"}, {"name": "山姆·高斯林", "category": "人物", "importance": "secondary"}, {"name": "川端康成", "category": "人物", "importance": "secondary"}, {"name": "巴伦博伊姆", "category": "人物", "importance": "secondary"}, {"name": "布鲁内莱斯基", "category": "人物", "importance": "secondary"}, {"name": "布鲁斯·利普顿", "category": "人物", "importance": "secondary"}, {"name": "弗拉基米尔·霍洛维茨", "category": "人物", "importance": "secondary"}, {"name": "弗朗兹·奥科", "category": "人物", "importance": "secondary"}, {"name": "张爱玲", "category": "人物", "importance": "secondary"}, {"name": "彼得·马克思", "category": "人物", "importance": "secondary"}, {"name": "恩里科·费米", "category": "人物", "importance": "secondary"}, {"name": "戈登·柴尔德", "category": "人物", "importance": "secondary"}, {"name": "拉瓦锡", "category": "人物", "importance": "secondary"}, {"name": "斯坦利·米尔格拉姆", "category": "人物", "importance": "secondary"}, {"name": "施特劳斯家族", "category": "人物", "importance": "secondary"}, {"name": "晏几道", "category": "人物", "importance": "secondary"}, {"name": "晴雯", "category": "人物", "importance": "secondary"}, {"name": "曹操", "category": "人物", "importance": "secondary"}, {"name": "朱利安·西蒙", "category": "人物", "importance": "secondary"}, {"name": "朱塞佩·威尔第", "category": "人物", "importance": "secondary"}, {"name": "李开复", "category": "人物", "importance": "secondary"}, {"name": "李林塔尔", "category": "人物", "importance": "secondary"}, {"name": "村上春树", "category": "人物", "importance": "secondary"}, {"name": "杜牧", "category": "人物", "importance": "secondary"}, {"name": "杜甫", "category": "人物", "importance": "secondary"}, {"name": "杜邦家族", "category": "人物", "importance": "secondary"}, {"name": "杜鲁门", "category": "人物", "importance": "secondary"}, {"name": "杨立昆", "category": "人物", "importance": "secondary"}, {"name": "林黛玉", "category": "人物", "importance": "secondary"}, {"name": "柏辽兹", "category": "人物", "importance": "secondary"}, {"name": "柴门霍夫", "category": "人物", "importance": "secondary"}, {"name": "欧内斯特·海明威", "category": "人物", "importance": "secondary"}, {"name": "比尔·米勒", "category": "人物", "importance": "secondary"}, {"name": "汤显祖", "category": "人物", "importance": "secondary"}, {"name": "沃尔夫冈·莫扎特", "category": "人物", "importance": "secondary"}, {"name": "潘建伟", "category": "人物", "importance": "secondary"}, {"name": "特里斯坦·哈里斯", "category": "人物", "importance": "secondary"}, {"name": "王晓峰", "category": "人物", "importance": "secondary"}, {"name": "玛丽莎·梅耶尔", "category": "人物", "importance": "secondary"}, {"name": "玛塔·阿格丽姬", "category": "人物", "importance": "secondary"}, {"name": "皮埃罗·斯加鲁菲", "category": "人物", "importance": "secondary"}, {"name": "简·奥斯汀", "category": "人物", "importance": "secondary"}, {"name": "米兰·昆德拉", "category": "人物", "importance": "secondary"}, {"name": "约书亚·本吉奥", "category": "人物", "importance": "secondary"}, {"name": "约翰·洛克菲勒", "category": "人物", "importance": "secondary"}, {"name": "约翰内斯·古腾堡", "category": "人物", "importance": "secondary"}, {"name": "纳兰性德", "category": "人物", "importance": "secondary"}, {"name": "维克多·雨果", "category": "人物", "importance": "secondary"}, {"name": "罗伯特·清崎", "category": "人物", "importance": "secondary"}, {"name": "罗曼·罗兰", "category": "人物", "importance": "secondary"}, {"name": "肖邦", "category": "人物", "importance": "secondary"}, {"name": "艾伦·唐尼", "category": "人物", "importance": "secondary"}, {"name": "艾伦·尤斯塔斯", "category": "人物", "importance": "secondary"}, {"name": "艾萨克·阿西莫夫", "category": "人物", "importance": "secondary"}, {"name": "苏必德（Peter Salovey）", "category": "人物", "importance": "secondary"}, {"name": "莱特兄弟", "category": "人物", "importance": "secondary"}, {"name": "萨尔兹伯格教授", "category": "人物", "importance": "secondary"}, {"name": "萨尔瓦多·达利", "category": "人物", "importance": "secondary"}, {"name": "薄伽丘", "category": "人物", "importance": "secondary"}, {"name": "薛宝钗", "category": "人物", "importance": "secondary"}, {"name": "西蒙·斯涅克", "category": "人物", "importance": "secondary"}, {"name": "詹姆斯·克利尔", "category": "人物", "importance": "secondary"}, {"name": "赵小兰", "category": "人物", "importance": "secondary"}, {"name": "郭嘉", "category": "人物", "importance": "secondary"}, {"name": "阿尔弗雷德·诺贝尔", "category": "人物", "importance": "secondary"}, {"name": "阿瑟·克拉克", "category": "人物", "importance": "secondary"}, {"name": "霍夫曼", "category": "人物", "importance": "secondary"}, {"name": "香农", "category": "人物", "importance": "secondary"}, {"name": "马克·吐温与《镀金时代》", "category": "人物", "importance": "secondary"}, {"name": "马克·夏加尔", "category": "人物", "importance": "secondary"}, {"name": "马克·库班", "category": "人物", "importance": "secondary"}, {"name": "马克·扎克伯格", "category": "人物", "importance": "secondary"}, {"name": "马尔科姆·格拉德威尔", "category": "人物", "importance": "secondary"}, {"name": "鲁迅", "category": "人物", "importance": "secondary"}, {"name": "业力与生命构成", "category": "理论/定律", "importance": "secondary"}, {"name": "主观世界构成论", "category": "理论/定律", "importance": "secondary"}, {"name": "享乐主义哲学", "category": "理论/定律", "importance": "secondary"}, {"name": "代沟理论", "category": "理论/定律", "importance": "secondary"}, {"name": "伊恩·莫里斯的文明能量论", "category": "理论/定律", "importance": "secondary"}, {"name": "伯克森悖论", "category": "理论/定律", "importance": "secondary"}, {"name": "供给学派经济学", "category": "理论/定律", "importance": "secondary"}, {"name": "假两难谬误", "category": "理论/定律", "importance": "secondary"}, {"name": "六度分隔理论", "category": "理论/定律", "importance": "secondary"}, {"name": "内向者优势", "category": "理论/定律", "importance": "secondary"}, {"name": "切比雪夫大数定律", "category": "理论/定律", "importance": "secondary"}, {"name": "卡尔达肖夫指数", "category": "理论/定律", "importance": "secondary"}, {"name": "古希腊怀疑主义", "category": "理论/定律", "importance": "secondary"}, {"name": "城市革命理论", "category": "理论/定律", "importance": "secondary"}, {"name": "奥古斯丁定律", "category": "理论/定律", "importance": "secondary"}, {"name": "幸福的三种模式", "category": "理论/定律", "importance": "secondary"}, {"name": "性善论与道德感", "category": "理论/定律", "importance": "secondary"}, {"name": "惩罚性赔偿", "category": "理论/定律", "importance": "secondary"}, {"name": "成熟性格理论", "category": "理论/定律", "importance": "secondary"}, {"name": "政府定价监管", "category": "理论/定律", "importance": "secondary"}, {"name": "毛奇的外线战略", "category": "理论/定律", "importance": "secondary"}, {"name": "气候影响论", "category": "理论/定律", "importance": "secondary"}, {"name": "滑坡谬误", "category": "理论/定律", "importance": "secondary"}, {"name": "电梯效应", "category": "理论/定律", "importance": "secondary"}, {"name": "社交网络的生物学基础", "category": "理论/定律", "importance": "secondary"}, {"name": "约米尼的内线战略", "category": "理论/定律", "importance": "secondary"}, {"name": "细胞学说", "category": "理论/定律", "importance": "secondary"}, {"name": "英美特殊论", "category": "理论/定律", "importance": "secondary"}, {"name": "视察者悖论", "category": "理论/定律", "importance": "secondary"}, {"name": "计算机死机与排队论", "category": "理论/定律", "importance": "secondary"}, {"name": "诉诸大众谬误", "category": "理论/定律", "importance": "secondary"}, {"name": "诉诸权威谬误", "category": "理论/定律", "importance": "secondary"}, {"name": "跨领域广度理论", "category": "理论/定律", "importance": "secondary"}, {"name": "迈克尔·波特价值链模型", "category": "理论/定律", "importance": "secondary"}, {"name": "邓巴数（150人社交上限）", "category": "理论/定律", "importance": "secondary"}, {"name": "青少年叛逆期（卢梭-皮亚杰理论）", "category": "理论/定律", "importance": "secondary"}, {"name": "风险的双重特征", "category": "理论/定律", "importance": "secondary"}, {"name": "黄金分割", "category": "理论/定律", "importance": "secondary"}, {"name": "12球问题", "category": "方法/框架", "importance": "secondary"}, {"name": "APM培养计划", "category": "方法/框架", "importance": "secondary"}, {"name": "Facebook平台战略", "category": "方法/框架", "importance": "secondary"}, {"name": "GPS定位原理", "category": "方法/框架", "importance": "secondary"}, {"name": "Google的OKR目标管理法", "category": "方法/框架", "importance": "secondary"}, {"name": "《麻省理工科技评论》", "category": "方法/框架", "importance": "secondary"}, {"name": "专业选择适配性", "category": "方法/框架", "importance": "secondary"}, {"name": "中值问题", "category": "方法/框架", "importance": "secondary"}, {"name": "事实判断与意图判断", "category": "方法/框架", "importance": "secondary"}, {"name": "二分查找", "category": "方法/框架", "importance": "secondary"}, {"name": "二叉树", "category": "方法/框架", "importance": "secondary"}, {"name": "二进制计算", "category": "方法/框架", "importance": "secondary"}, {"name": "五秒钟法则", "category": "方法/框架", "importance": "secondary"}, {"name": "井盖面试题", "category": "方法/框架", "importance": "secondary"}, {"name": "任务清单与番茄工作法", "category": "方法/框架", "importance": "secondary"}, {"name": "企业碳中和三阶段", "category": "方法/框架", "importance": "secondary"}, {"name": "传递坏消息的沟通方式", "category": "方法/框架", "importance": "secondary"}, {"name": "分布式计算", "category": "方法/框架", "importance": "secondary"}, {"name": "分治算法", "category": "方法/框架", "importance": "secondary"}, {"name": "到达优先原则", "category": "方法/框架", "importance": "secondary"}, {"name": "十分钟演讲方法论", "category": "方法/框架", "importance": "secondary"}, {"name": "咖啡品鉴方法论", "category": "方法/框架", "importance": "secondary"}, {"name": "哈佛大学的沉默策略", "category": "方法/框架", "importance": "secondary"}, {"name": "哈希表", "category": "方法/框架", "importance": "secondary"}, {"name": "困境应对三误模式", "category": "方法/框架", "importance": "secondary"}, {"name": "多元化学习渠道", "category": "方法/框架", "importance": "secondary"}, {"name": "大学生活非学术任务清单", "category": "方法/框架", "importance": "secondary"}, {"name": "学习的双重维度", "category": "方法/框架", "importance": "secondary"}, {"name": "孩子沉迷电子产品管控", "category": "方法/框架", "importance": "secondary"}, {"name": "寓情于景的写作手法", "category": "方法/框架", "importance": "secondary"}, {"name": "工作邮件写作", "category": "方法/框架", "importance": "secondary"}, {"name": "广度优先搜索（BFS）", "category": "方法/框架", "importance": "secondary"}, {"name": "快速排序", "category": "方法/框架", "importance": "secondary"}, {"name": "报告写作方法论", "category": "方法/框架", "importance": "secondary"}, {"name": "拼写纠错算法", "category": "方法/框架", "importance": "secondary"}, {"name": "推棋问题", "category": "方法/框架", "importance": "secondary"}, {"name": "教育各阶段认知边界", "category": "方法/框架", "importance": "secondary"}, {"name": "文物价值评估三原则", "category": "方法/框架", "importance": "secondary"}, {"name": "无人驾驶五级分类", "category": "方法/框架", "importance": "secondary"}, {"name": "日记提升写作能力", "category": "方法/框架", "importance": "secondary"}, {"name": "时间消费结构分析", "category": "方法/框架", "importance": "secondary"}, {"name": "有效增长期（股票）", "category": "方法/框架", "importance": "secondary"}, {"name": "模块化知识架构", "category": "方法/框架", "importance": "secondary"}, {"name": "比喻的进阶技巧", "category": "方法/框架", "importance": "secondary"}, {"name": "沟通的四大误区", "category": "方法/框架", "importance": "secondary"}, {"name": "法国哲学作文考试", "category": "方法/框架", "importance": "secondary"}, {"name": "深度优先搜索（DFS）", "category": "方法/框架", "importance": "secondary"}, {"name": "火星探索系统工程", "category": "方法/框架", "importance": "secondary"}, {"name": "物品痕迹识人法", "category": "方法/框架", "importance": "secondary"}, {"name": "科技预测方法论", "category": "方法/框架", "importance": "secondary"}, {"name": "空间优化算法", "category": "方法/框架", "importance": "secondary"}, {"name": "简历撰写方法论", "category": "方法/框架", "importance": "secondary"}, {"name": "米其林三星评级体系", "category": "方法/框架", "importance": "secondary"}, {"name": "经济下行期保底策略", "category": "方法/框架", "importance": "secondary"}, {"name": "网络爬虫", "category": "方法/框架", "importance": "secondary"}, {"name": "美国特长生培养体系", "category": "方法/框架", "importance": "secondary"}, {"name": "美国科研基金体系", "category": "方法/框架", "importance": "secondary"}, {"name": "美国选举人团制度", "category": "方法/框架", "importance": "secondary"}, {"name": "苹果式头脑风暴", "category": "方法/框架", "importance": "secondary"}, {"name": "西点军校选拔原则", "category": "方法/框架", "importance": "secondary"}, {"name": "论文写作方法论", "category": "方法/框架", "importance": "secondary"}, {"name": "谈资的三维体系", "category": "方法/框架", "importance": "secondary"}, {"name": "贝叶斯分类法", "category": "方法/框架", "importance": "secondary"}, {"name": "迷宫算法", "category": "方法/框架", "importance": "secondary"}, {"name": "遍历算法", "category": "方法/框架", "importance": "secondary"}, {"name": "锦标赛排序算法", "category": "方法/框架", "importance": "secondary"}, {"name": "随机化算法", "category": "方法/框架", "importance": "secondary"}, {"name": "面试的本质是人性理解", "category": "方法/框架", "importance": "secondary"}, {"name": "DARPA", "category": "概念/思想", "importance": "secondary"}, {"name": "M2货币供应量", "category": "概念/思想", "importance": "secondary"}, {"name": "TGIF（Google企业文化）", "category": "概念/思想", "importance": "secondary"}, {"name": "《今日简史》", "category": "概念/思想", "importance": "secondary"}, {"name": "《威尼斯商人》双线叙事", "category": "概念/思想", "importance": "secondary"}, {"name": "《弗兰肯斯坦》的技术恐惧", "category": "概念/思想", "importance": "secondary"}, {"name": "中国大学理工分校制度", "category": "概念/思想", "importance": "secondary"}, {"name": "中国经济解放生产力", "category": "概念/思想", "importance": "secondary"}, {"name": "中等收入陷阱", "category": "概念/思想", "importance": "secondary"}, {"name": "中美教育全面比较", "category": "概念/思想", "importance": "secondary"}, {"name": "中美教育模式比较", "category": "概念/思想", "importance": "secondary"}, {"name": "中美本科教育差异", "category": "概念/思想", "importance": "secondary"}, {"name": "中美生活习惯差异", "category": "概念/思想", "importance": "secondary"}, {"name": "主观多元整合的全面性", "category": "概念/思想", "importance": "secondary"}, {"name": "乔戈里峰（K2）", "category": "概念/思想", "importance": "secondary"}, {"name": "互联网下半场批判", "category": "概念/思想", "importance": "secondary"}, {"name": "互联网免费模式的代价", "category": "概念/思想", "importance": "secondary"}, {"name": "人口结构变化", "category": "概念/思想", "importance": "secondary"}, {"name": "人类永生技术可行性", "category": "概念/思想", "importance": "secondary"}, {"name": "伊莎基金会", "category": "概念/思想", "importance": "secondary"}, {"name": "众筹经济的产业链优化", "category": "概念/思想", "importance": "secondary"}, {"name": "信托制度（Trust）", "category": "概念/思想", "importance": "secondary"}, {"name": "全球咖啡消费文化", "category": "概念/思想", "importance": "secondary"}, {"name": "全球经济四大风险", "category": "概念/思想", "importance": "secondary"}, {"name": "八旗制度", "category": "概念/思想", "importance": "secondary"}, {"name": "内幕交易的法律界定", "category": "概念/思想", "importance": "secondary"}, {"name": "冗余度", "category": "概念/思想", "importance": "secondary"}, {"name": "凯鹏华盈（KPCB）", "category": "概念/思想", "importance": "secondary"}, {"name": "切断与过去学生生活的脐带", "category": "概念/思想", "importance": "secondary"}, {"name": "利益永恒论（正本清源）", "category": "概念/思想", "importance": "secondary"}, {"name": "剑桥大学", "category": "概念/思想", "importance": "secondary"}, {"name": "十日谈精读与泛读", "category": "概念/思想", "importance": "secondary"}, {"name": "单一化思维陷阱", "category": "概念/思想", "importance": "secondary"}, {"name": "博洛尼亚大学", "category": "概念/思想", "importance": "secondary"}, {"name": "占星术", "category": "概念/思想", "importance": "secondary"}, {"name": "印度种姓制度", "category": "概念/思想", "importance": "secondary"}, {"name": "反社会人格障碍", "category": "概念/思想", "importance": "secondary"}, {"name": "台积电", "category": "概念/思想", "importance": "secondary"}, {"name": "各国央行平衡表", "category": "概念/思想", "importance": "secondary"}, {"name": "哈维·穆德学院", "category": "概念/思想", "importance": "secondary"}, {"name": "哥伦比亚大学", "category": "概念/思想", "importance": "secondary"}, {"name": "哥特体文学", "category": "概念/思想", "importance": "secondary"}, {"name": "四健会（4H-Club）", "category": "概念/思想", "importance": "secondary"}, {"name": "固执的心理成因", "category": "概念/思想", "importance": "secondary"}, {"name": "国际化人才", "category": "概念/思想", "importance": "secondary"}, {"name": "地中海式气候与红酒产区", "category": "概念/思想", "importance": "secondary"}, {"name": "垃圾食品概念误读", "category": "概念/思想", "importance": "secondary"}, {"name": "基布兹公有化制度", "category": "概念/思想", "importance": "secondary"}, {"name": "大乘佛教与上座部佛教", "category": "概念/思想", "importance": "secondary"}, {"name": "大器晚成的真相", "category": "概念/思想", "importance": "secondary"}, {"name": "大学友谊的独特价值", "category": "概念/思想", "importance": "secondary"}, {"name": "大学恋爱的意义", "category": "概念/思想", "importance": "secondary"}, {"name": "大学扩招与精英教育困境", "category": "概念/思想", "importance": "secondary"}, {"name": "天才的智力特征", "category": "概念/思想", "importance": "secondary"}, {"name": "学区房悖论", "category": "概念/思想", "importance": "secondary"}, {"name": "学历与收入正相关", "category": "概念/思想", "importance": "secondary"}, {"name": "学历价值二元论", "category": "概念/思想", "importance": "secondary"}, {"name": "学校作为家庭/社区的教育观", "category": "概念/思想", "importance": "secondary"}, {"name": "宋词中的生活美学", "category": "概念/思想", "importance": "secondary"}, {"name": "客观性与主观性的哲学辨析", "category": "概念/思想", "importance": "secondary"}, {"name": "家长过度干预作业", "category": "概念/思想", "importance": "secondary"}, {"name": "宾夕法尼亚大学", "category": "概念/思想", "importance": "secondary"}, {"name": "富养与穷养的教育辩证", "category": "概念/思想", "importance": "secondary"}, {"name": "寒门出贵子", "category": "概念/思想", "importance": "secondary"}, {"name": "巧合警惕原理", "category": "概念/思想", "importance": "secondary"}, {"name": "德尔斐神谕", "category": "概念/思想", "importance": "secondary"}, {"name": "德雷克海峡", "category": "概念/思想", "importance": "secondary"}, {"name": "情人锁现象的社会学解读", "category": "概念/思想", "importance": "secondary"}, {"name": "愚蠢的认知论", "category": "概念/思想", "importance": "secondary"}, {"name": "成家与立业的先后选择", "category": "概念/思想", "importance": "secondary"}, {"name": "承诺升级陷阱", "category": "概念/思想", "importance": "secondary"}, {"name": "持续卓越的天才定义", "category": "概念/思想", "importance": "secondary"}, {"name": "摄影与记录的本质区别", "category": "概念/思想", "importance": "secondary"}, {"name": "教授治校制度", "category": "概念/思想", "importance": "secondary"}, {"name": "教育不平等", "category": "概念/思想", "importance": "secondary"}, {"name": "教育分流", "category": "概念/思想", "importance": "secondary"}, {"name": "教育选择与亲子陪伴", "category": "概念/思想", "importance": "secondary"}, {"name": "数字鸿沟", "category": "概念/思想", "importance": "secondary"}, {"name": "数学文化素养", "category": "概念/思想", "importance": "secondary"}, {"name": "数据信托", "category": "概念/思想", "importance": "secondary"}, {"name": "数据所有权", "category": "概念/思想", "importance": "secondary"}, {"name": "文理学院", "category": "概念/思想", "importance": "secondary"}, {"name": "文科理科比例与经济发展", "category": "概念/思想", "importance": "secondary"}, {"name": "斜杠青年", "category": "概念/思想", "importance": "secondary"}, {"name": "早教内卷误区", "category": "概念/思想", "importance": "secondary"}, {"name": "明星员工创业失败悖论", "category": "概念/思想", "importance": "secondary"}, {"name": "普遍规律与个案的关系", "category": "概念/思想", "importance": "secondary"}, {"name": "智商税故事特征", "category": "概念/思想", "importance": "secondary"}, {"name": "智库的作用", "category": "概念/思想", "importance": "secondary"}, {"name": "朋友关系破裂的机制原因", "category": "概念/思想", "importance": "secondary"}, {"name": "机械时代的管理特点", "category": "概念/思想", "importance": "secondary"}, {"name": "柏林爱乐乐团", "category": "概念/思想", "importance": "secondary"}, {"name": "标题音乐", "category": "概念/思想", "importance": "secondary"}, {"name": "欧洲五线谱 vs 中国古乐谱", "category": "概念/思想", "importance": "secondary"}, {"name": "法国精英学校（Grande Ecole）", "category": "概念/思想", "importance": "secondary"}, {"name": "波普艺术", "category": "概念/思想", "importance": "secondary"}, {"name": "洗脑的现代内涵", "category": "概念/思想", "importance": "secondary"}, {"name": "流量明星与戏骨的片酬对比", "category": "概念/思想", "importance": "secondary"}, {"name": "爱马仕凯莉钱包案例", "category": "概念/思想", "importance": "secondary"}, {"name": "牛津剑桥学院制", "category": "概念/思想", "importance": "secondary"}, {"name": "牛津大学", "category": "概念/思想", "importance": "secondary"}, {"name": "现代地理学", "category": "概念/思想", "importance": "secondary"}, {"name": "玻璃心", "category": "概念/思想", "importance": "secondary"}, {"name": "电商差评要挟", "category": "概念/思想", "importance": "secondary"}, {"name": "电子垃圾危机", "category": "概念/思想", "importance": "secondary"}, {"name": "白兰地的起源与酿造工艺", "category": "概念/思想", "importance": "secondary"}, {"name": "硅谷创业生态", "category": "概念/思想", "importance": "secondary"}, {"name": "硅谷沙丘路", "category": "概念/思想", "importance": "secondary"}, {"name": "社交媒体与传统媒体差异", "category": "概念/思想", "importance": "secondary"}, {"name": "科幻文学的超经验需求", "category": "概念/思想", "importance": "secondary"}, {"name": "科研梯队金字塔结构", "category": "概念/思想", "importance": "secondary"}, {"name": "立体主义", "category": "概念/思想", "importance": "secondary"}, {"name": "第一学历门槛", "category": "概念/思想", "importance": "secondary"}, {"name": "第二次工业革命的受益者", "category": "概念/思想", "importance": "secondary"}, {"name": "简单答案的认知局限", "category": "概念/思想", "importance": "secondary"}, {"name": "精神虐待", "category": "概念/思想", "importance": "secondary"}, {"name": "紧箍咒的隐喻", "category": "概念/思想", "importance": "secondary"}, {"name": "红杉资本", "category": "概念/思想", "importance": "secondary"}, {"name": "红酒新旧世界划分", "category": "概念/思想", "importance": "secondary"}, {"name": "终身教职制度", "category": "概念/思想", "importance": "secondary"}, {"name": "经济指标的结构性缺陷", "category": "概念/思想", "importance": "secondary"}, {"name": "罗马帝国有效管理", "category": "概念/思想", "importance": "secondary"}, {"name": "美国中小学通识教育阅读体系", "category": "概念/思想", "importance": "secondary"}, {"name": "美国公立教育投入悖论", "category": "概念/思想", "importance": "secondary"}, {"name": "美国大学董事会制度", "category": "概念/思想", "importance": "secondary"}, {"name": "美国政治参与机制", "category": "概念/思想", "importance": "secondary"}, {"name": "美国身份认同演变", "category": "概念/思想", "importance": "secondary"}, {"name": "考试与学习动力的关系", "category": "概念/思想", "importance": "secondary"}, {"name": "耶路撒冷三教格局", "category": "概念/思想", "importance": "secondary"}, {"name": "职场沟通困境", "category": "概念/思想", "importance": "secondary"}, {"name": "职场霸凌", "category": "概念/思想", "importance": "secondary"}, {"name": "股市不可预测性的价值", "category": "概念/思想", "importance": "secondary"}, {"name": "肯定式教育的边界", "category": "概念/思想", "importance": "secondary"}, {"name": "能力与人品的权衡", "category": "概念/思想", "importance": "secondary"}, {"name": "自由意志与命运预设", "category": "概念/思想", "importance": "secondary"}, {"name": "蓝色地带（Blue Zone）", "category": "概念/思想", "importance": "secondary"}, {"name": "藤校", "category": "概念/思想", "importance": "secondary"}, {"name": "计算机科学（CS）vs 电子工程（EE）", "category": "概念/思想", "importance": "secondary"}, {"name": "认知减负", "category": "概念/思想", "importance": "secondary"}, {"name": "赌博行为动因", "category": "概念/思想", "importance": "secondary"}, {"name": "赏樱的审美与人生感悟", "category": "概念/思想", "importance": "secondary"}, {"name": "赛道与多快好省的反思", "category": "概念/思想", "importance": "secondary"}, {"name": "超越敬业的职业精神", "category": "概念/思想", "importance": "secondary"}, {"name": "躺平现象", "category": "概念/思想", "importance": "secondary"}, {"name": "迦太基商业文明", "category": "概念/思想", "importance": "secondary"}, {"name": "逃避现实的合理性", "category": "概念/思想", "importance": "secondary"}, {"name": "选择的本质", "category": "概念/思想", "importance": "secondary"}, {"name": "透支风险", "category": "概念/思想", "importance": "secondary"}, {"name": "通货膨胀的阶层差异", "category": "概念/思想", "importance": "secondary"}, {"name": "道歉的价值", "category": "概念/思想", "importance": "secondary"}, {"name": "金字塔建造者争议", "category": "概念/思想", "importance": "secondary"}, {"name": "金本位制度", "category": "概念/思想", "importance": "secondary"}, {"name": "阅读的社交连接价值", "category": "概念/思想", "importance": "secondary"}, {"name": "阿拉伯文明的原创性贡献", "category": "概念/思想", "importance": "secondary"}, {"name": "隐私保护十大价值", "category": "概念/思想", "importance": "secondary"}, {"name": "雅典民主缺陷", "category": "概念/思想", "importance": "secondary"}, {"name": "青花瓷", "category": "概念/思想", "importance": "secondary"}, {"name": "非此即彼的思维陷阱", "category": "概念/思想", "importance": "secondary"}, {"name": "非虚构写作", "category": "概念/思想", "importance": "secondary"}, {"name": "香槟酒的产区与工艺", "category": "概念/思想", "importance": "secondary"}, {"name": "马萨达精神", "category": "概念/思想", "importance": "secondary"}, {"name": "高盛", "category": "概念/思想", "importance": "secondary"}, {"name": "高通公司（Qualcomm）", "category": "概念/思想", "importance": "secondary"}, {"name": "鲁迅的物质观", "category": "概念/思想", "importance": "secondary"}, {"name": "鸡娃现象", "category": "概念/思想", "importance": "secondary"}, {"name": "黑科技", "category": "概念/思想", "importance": "secondary"}, {"name": "1707年英苏合并", "category": "事件/运动", "importance": "secondary"}, {"name": "1976年巴黎盲测事件", "category": "事件/运动", "importance": "secondary"}, {"name": "2016年三大黑天鹅事件", "category": "事件/运动", "importance": "secondary"}, {"name": "2016年五大核心科技突破", "category": "事件/运动", "importance": "secondary"}, {"name": "2016年诺贝尔经济学奖", "category": "事件/运动", "importance": "secondary"}, {"name": "AltSchool实验", "category": "事件/运动", "importance": "secondary"}, {"name": "CES国际消费电子展", "category": "事件/运动", "importance": "secondary"}, {"name": "Calico公司", "category": "事件/运动", "importance": "secondary"}, {"name": "DDT的兴衰", "category": "事件/运动", "importance": "secondary"}, {"name": "Google IPO", "category": "事件/运动", "importance": "secondary"}, {"name": "Google商业模式的确立", "category": "事件/运动", "importance": "secondary"}, {"name": "SpaceX重型猎鹰", "category": "事件/运动", "importance": "secondary"}, {"name": "Windows Vista失败案例", "category": "事件/运动", "importance": "secondary"}, {"name": "《不能承受的生命之轻》", "category": "事件/运动", "importance": "secondary"}, {"name": "《傲慢与偏见》", "category": "事件/运动", "importance": "secondary"}, {"name": "《哈佛中国史》", "category": "事件/运动", "importance": "secondary"}, {"name": "《文明之光》", "category": "事件/运动", "importance": "secondary"}, {"name": "《漫步华尔街》", "category": "事件/运动", "importance": "secondary"}, {"name": "《牡丹亭》", "category": "事件/运动", "importance": "secondary"}, {"name": "《简·爱》", "category": "事件/运动", "importance": "secondary"}, {"name": "三言二拍与市井文学", "category": "事件/运动", "importance": "secondary"}, {"name": "世界三大男高音", "category": "事件/运动", "importance": "secondary"}, {"name": "世纪资源赌局", "category": "事件/运动", "importance": "secondary"}, {"name": "人工智能失误案例", "category": "事件/运动", "importance": "secondary"}, {"name": "人类长寿公司(Human Longevity)", "category": "事件/运动", "importance": "secondary"}, {"name": "仙童公司", "category": "事件/运动", "importance": "secondary"}, {"name": "伯尔叛国案", "category": "事件/运动", "importance": "secondary"}, {"name": "伯罗奔尼撒战争", "category": "事件/运动", "importance": "secondary"}, {"name": "全球股市2018年暴跌", "category": "事件/运动", "importance": "secondary"}, {"name": "内燃机的发明竞赛", "category": "事件/运动", "importance": "secondary"}, {"name": "加州一号公路", "category": "事件/运动", "importance": "secondary"}, {"name": "华盛顿哥伦比亚特区", "category": "事件/运动", "importance": "secondary"}, {"name": "南北战争的经济根源", "category": "事件/运动", "importance": "secondary"}, {"name": "卡迭石战役", "category": "事件/运动", "importance": "secondary"}, {"name": "印度体育困境", "category": "事件/运动", "importance": "secondary"}, {"name": "哈佛商学院", "category": "事件/运动", "importance": "secondary"}, {"name": "哥伦比亚大学1968年学生运动", "category": "事件/运动", "importance": "secondary"}, {"name": "商鞅变法", "category": "事件/运动", "importance": "secondary"}, {"name": "国际联盟失败与联合国成功", "category": "事件/运动", "importance": "secondary"}, {"name": "图灵奖", "category": "事件/运动", "importance": "secondary"}, {"name": "坎尼会战", "category": "事件/运动", "importance": "secondary"}, {"name": "墨尔本", "category": "事件/运动", "importance": "secondary"}, {"name": "多佛尔角哨兵——形式主义寓言", "category": "事件/运动", "importance": "secondary"}, {"name": "大堡礁", "category": "事件/运动", "importance": "secondary"}, {"name": "奈飞商业转型", "category": "事件/运动", "importance": "secondary"}, {"name": "奥斯特利茨战役", "category": "事件/运动", "importance": "secondary"}, {"name": "好莱坞明星片酬演变", "category": "事件/运动", "importance": "secondary"}, {"name": "威斯特伐利亚和约", "category": "事件/运动", "importance": "secondary"}, {"name": "安然公司丑闻", "category": "事件/运动", "importance": "secondary"}, {"name": "工业革命以来的就业结构调整", "category": "事件/运动", "importance": "secondary"}, {"name": "工会与女权运动对服务业的影响", "category": "事件/运动", "importance": "secondary"}, {"name": "平流层跳伞", "category": "事件/运动", "importance": "secondary"}, {"name": "德国大学衰落", "category": "事件/运动", "importance": "secondary"}, {"name": "悉尼", "category": "事件/运动", "importance": "secondary"}, {"name": "戊戌变法", "category": "事件/运动", "importance": "secondary"}, {"name": "摩拜单车", "category": "事件/运动", "importance": "secondary"}, {"name": "撒切尔夫人的私有化改革", "category": "事件/运动", "importance": "secondary"}, {"name": "文明的起源——广汉土匪经济工作会议", "category": "事件/运动", "importance": "secondary"}, {"name": "斯卡保罗集市", "category": "事件/运动", "importance": "secondary"}, {"name": "日本清酒国际化", "category": "事件/运动", "importance": "secondary"}, {"name": "普林斯顿大学", "category": "事件/运动", "importance": "secondary"}, {"name": "曼哈顿计划", "category": "事件/运动", "importance": "secondary"}, {"name": "曾文正公全集", "category": "事件/运动", "importance": "secondary"}, {"name": "朱元璋命名规则", "category": "事件/运动", "importance": "secondary"}, {"name": "核冬天效应", "category": "事件/运动", "importance": "secondary"}, {"name": "欧洲再发明瓷器", "category": "事件/运动", "importance": "secondary"}, {"name": "比克曼会议", "category": "事件/运动", "importance": "secondary"}, {"name": "汉谟拉比法典", "category": "事件/运动", "importance": "secondary"}, {"name": "波士顿艺术博物馆", "category": "事件/运动", "importance": "secondary"}, {"name": "洋务运动", "category": "事件/运动", "importance": "secondary"}, {"name": "海洛因的发明", "category": "事件/运动", "importance": "secondary"}, {"name": "滑铁卢战役", "category": "事件/运动", "importance": "secondary"}, {"name": "火山口湖国家公园", "category": "事件/运动", "importance": "secondary"}, {"name": "特拉法加海战", "category": "事件/运动", "importance": "secondary"}, {"name": "王安石变法", "category": "事件/运动", "importance": "secondary"}, {"name": "红白玫瑰战争", "category": "事件/运动", "importance": "secondary"}, {"name": "纳帕谷红酒产区", "category": "事件/运动", "importance": "secondary"}, {"name": "纽约城市文化", "category": "事件/运动", "importance": "secondary"}, {"name": "纽约现代艺术博物馆(MoMA)", "category": "事件/运动", "importance": "secondary"}, {"name": "维也纳分离派", "category": "事件/运动", "importance": "secondary"}, {"name": "维也纳金色大厅", "category": "事件/运动", "importance": "secondary"}, {"name": "罗密欧与朱丽叶", "category": "事件/运动", "importance": "secondary"}, {"name": "美国两党制演变", "category": "事件/运动", "importance": "secondary"}, {"name": "美国政党政治起源", "category": "事件/运动", "importance": "secondary"}, {"name": "美苏航天竞赛", "category": "事件/运动", "importance": "secondary"}, {"name": "耶鲁大学", "category": "事件/运动", "importance": "secondary"}, {"name": "耶鲁大学开学演讲", "category": "事件/运动", "importance": "secondary"}, {"name": "肖克利半导体实验室", "category": "事件/运动", "importance": "secondary"}, {"name": "肖邦国际钢琴比赛", "category": "事件/运动", "importance": "secondary"}, {"name": "苹果公司万亿市值", "category": "事件/运动", "importance": "secondary"}, {"name": "西厢记与张生形象改造", "category": "事件/运动", "importance": "secondary"}, {"name": "触宝输入法337调查案", "category": "事件/运动", "importance": "secondary"}, {"name": "语言模型的进化三阶段", "category": "事件/运动", "importance": "secondary"}, {"name": "费尔蒙特皇后酒店香肠事件", "category": "事件/运动", "importance": "secondary"}, {"name": "达特茅斯诉伍德沃德案", "category": "事件/运动", "importance": "secondary"}, {"name": "铁血演说", "category": "事件/运动", "importance": "secondary"}, {"name": "链霉素发明争议", "category": "事件/运动", "importance": "secondary"}, {"name": "长木花园", "category": "事件/运动", "importance": "secondary"}, {"name": "阿司匹林与制药业革命", "category": "事件/运动", "importance": "secondary"}, {"name": "阿波罗计划", "category": "事件/运动", "importance": "secondary"}, {"name": "雅尔塔格局", "category": "事件/运动", "importance": "secondary"}, {"name": "雨果《九三年》的人性探讨", "category": "事件/运动", "importance": "secondary"}, {"name": "马拉松战役", "category": "事件/运动", "importance": "secondary"}, {"name": "驭势汽车", "category": "事件/运动", "importance": "secondary"}, {"name": "6G通信技术", "category": "发明/技术", "importance": "secondary"}, {"name": "Cookie跟踪", "category": "发明/技术", "importance": "secondary"}, {"name": "GFS（Google文件系统）", "category": "发明/技术", "importance": "secondary"}, {"name": "GPT-3语言模型", "category": "发明/技术", "importance": "secondary"}, {"name": "Google助手（Google Assistant）", "category": "发明/技术", "importance": "secondary"}, {"name": "Grail公司", "category": "发明/技术", "importance": "secondary"}, {"name": "XB-70女武神轰炸机", "category": "发明/技术", "importance": "secondary"}, {"name": "《少有人走的路》", "category": "发明/技术", "importance": "secondary"}, {"name": "《摩西与一神教》", "category": "发明/技术", "importance": "secondary"}, {"name": "《李尔王》", "category": "发明/技术", "importance": "secondary"}, {"name": "《社交困境》", "category": "发明/技术", "importance": "secondary"}, {"name": "世界语", "category": "发明/技术", "importance": "secondary"}, {"name": "云计算", "category": "发明/技术", "importance": "secondary"}, {"name": "亚马逊Echo与对话机器人", "category": "发明/技术", "importance": "secondary"}, {"name": "人工胎盘技术", "category": "发明/技术", "importance": "secondary"}, {"name": "克隆器官技术", "category": "发明/技术", "importance": "secondary"}, {"name": "区块链", "category": "发明/技术", "importance": "secondary"}, {"name": "多任务人工智能", "category": "发明/技术", "importance": "secondary"}, {"name": "大数据情绪分析", "category": "发明/技术", "importance": "secondary"}, {"name": "帕斯卡机械计算机", "category": "发明/技术", "importance": "secondary"}, {"name": "未来汽车", "category": "发明/技术", "importance": "secondary"}, {"name": "机器翻译", "category": "发明/技术", "importance": "secondary"}, {"name": "欧洲核子加速器(CERN)", "category": "发明/技术", "importance": "secondary"}, {"name": "癌症早期检测", "category": "发明/技术", "importance": "secondary"}, {"name": "米格-25战斗机", "category": "发明/技术", "importance": "secondary"}, {"name": "纳米材料", "category": "发明/技术", "importance": "secondary"}, {"name": "绿色氢计划", "category": "发明/技术", "importance": "secondary"}, {"name": "脑机接口（BCI）", "category": "发明/技术", "importance": "secondary"}, {"name": "虚拟现实(VR)", "category": "发明/技术", "importance": "secondary"}, {"name": "虚拟货币", "category": "发明/技术", "importance": "secondary"}, {"name": "超音速飞行发展停滞", "category": "发明/技术", "importance": "secondary"}, {"name": "达·芬奇手术系统", "category": "发明/技术", "importance": "secondary"}, {"name": "达·芬奇飞行设计", "category": "发明/技术", "importance": "secondary"}, {"name": "阿司匹林", "category": "发明/技术", "importance": "secondary"}, {"name": "音乐剧《汉密尔顿》", "category": "发明/技术", "importance": "secondary"}, {"name": "马克沁机关枪", "category": "发明/技术", "importance": "secondary"}, {"name": "高精度定位系统", "category": "发明/技术", "importance": "secondary"}, {"name": "吠陀文明", "category": "时代/时期", "importance": "secondary"}, {"name": "迷惘的一代", "category": "时代/时期", "importance": "secondary"}];
-const CAT_COLORS = {"人物": "#f59e0b", "理论/定律": "#f97316", "方法/框架": "#a855f7", "概念/思想": "#10b981", "事件/运动": "#ef4444", "发明/技术": "#06b6d4", "时代/时期": "#3b82f6"};
+(function() {
+  'use strict';
 
-// ===== State =====
-let state = {
-  importance: 'all',    // 'all' | 'core' | 'secondary'
-  category: null,       // null = all categories
-  flippedCards: new Set()
-};
+  // ── Data ───────────────────────────────────────────────
+  const CONCEPTS = window.CONCEPTS || [];
+  const conceptMap = Object.fromEntries(CONCEPTS.map(c => [c.name, c]));
 
-// ===== Build filter bar =====
-function buildFilters() {
-  const container = document.getElementById('filters');
+  // ── State ──────────────────────────────────────────────
+  let activeConcept = null;
+  let activeCardEl  = null;
+  let isAnimating   = false;
 
-  // Importance buttons
-  const impAll = document.createElement('button');
-  impAll.className = 'filter-btn active'; impAll.textContent = '全部';
-  impAll.dataset.filter = 'importance'; impAll.dataset.value = 'all';
-  impAll.addEventListener('click', () => setImportance('all'));
-  container.appendChild(impAll);
+  // ── DOM ────────────────────────────────────────────────
+  const grid        = document.getElementById('cardGrid');
+  const overlay     = document.getElementById('overlay');
+  const detailCard  = document.getElementById('detailCard');
+  const detailInner = document.getElementById('detailInner');
+  const closeBtn    = document.getElementById('closeBtn');
 
-  const impCore = document.createElement('button');
-  impCore.className = 'filter-btn'; impCore.textContent = '核心概念';
-  impCore.dataset.filter = 'importance'; impCore.dataset.value = 'core';
-  impCore.addEventListener('click', () => setImportance('core'));
-  container.appendChild(impCore);
-
-  const impSec = document.createElement('button');
-  impSec.className = 'filter-btn'; impSec.textContent = '辅助概念';
-  impSec.dataset.filter = 'importance'; impSec.dataset.value = 'secondary';
-  impSec.addEventListener('click', () => setImportance('secondary'));
-  container.appendChild(impSec);
-
-  // Separator
-  const sep = document.createElement('span');
-  sep.className = 'filter-sep';
-  container.appendChild(sep);
-
-  // Category chips
-  Object.entries(CAT_COLORS).forEach(([cat, color]) => {
-    const chip = document.createElement('button');
-    chip.className = 'cat-chip';
-    chip.dataset.filter = 'category'; chip.dataset.value = cat;
-    chip.innerHTML = `<span class="cat-dot" style="background:${color}"></span>${cat}`;
-    chip.addEventListener('click', () => toggleCategory(cat));
-    container.appendChild(chip);
-  });
-}
-
-// ===== Render cards =====
-function renderCards() {
-  const grid = document.getElementById('cardGrid');
-  grid.innerHTML = '';
-
-  let filtered = CONCEPTS;
-  if (state.importance !== 'all') {
-    filtered = filtered.filter(c => c.importance === state.importance);
-  }
-  if (state.category !== null) {
-    filtered = filtered.filter(c => c.category === state.category);
+  // ── Build card grid ────────────────────────────────────
+  function renderGrid() {
+    grid.innerHTML = '';
+    CONCEPTS.forEach(function(concept, i) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.conceptId = concept.id;
+      card.style.setProperty('--sway-delay', (i * 0.37).toFixed(2) + 's');
+      card.innerHTML =
+        '<span class="card-category">' + escHtml(concept.category) + '</span>' +
+        '<h3 class="card-name">' + escHtml(concept.name) + '</h3>' +
+        '<span class="card-type">' + escHtml(concept.type) + '</span>';
+      card.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isAnimating) return;
+        if (activeConcept && activeConcept.id === concept.id) return;
+        openCard(concept, card);
+      });
+      grid.appendChild(card);
+    });
   }
 
-  document.getElementById('cardCount').textContent =
-    `显示 ${filtered.length} / ${CONCEPTS.length} 条概念`;
+  // ── Render detail view ─────────────────────────────────
+  function renderDetail(concept) {
+    var relatedHtml = concept.related_concepts.map(function(rc) {
+      var exists = rc in conceptMap;
+      return '<span class="related-tag' + (exists ? ' clickable' : '') + '"' +
+             ' data-concept-name="' + escHtml(rc) + '"' +
+             (exists ? ' tabindex="0" role="button"' : '') + '>' +
+             escHtml(rc) + '</span>';
+    }).join('');
 
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="no-results">没有匹配的概念</div>';
-    return;
-  }
-
-  filtered.forEach((concept, idx) => {
-    const color = CAT_COLORS[concept.category] || '#64748b';
-    const card = document.createElement('div');
-    card.className = 'card ' + concept.importance;
-    card.dataset.index = idx;
-    card.dataset.conceptIdx = CONCEPTS.indexOf(concept);
-
-    // Check if this card was previously flipped
-    const conceptIdx = CONCEPTS.indexOf(concept);
-    if (state.flippedCards.has(conceptIdx)) {
-      card.classList.add('flipped');
+    var counterHtml = '';
+    if (concept.counter_examples && concept.counter_examples.length) {
+      counterHtml =
+        '<section>' +
+        '<h3>反例 / 常见误解</h3>' +
+        '<ul class="counter-list">' +
+        concept.counter_examples.map(function(e) { return '<li>' + escHtml(e) + '</li>'; }).join('') +
+        '</ul>' +
+        '</section>';
     }
 
-    card.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleFlip(card, conceptIdx);
+    detailInner.innerHTML =
+      '<div class="detail-header">' +
+        '<div class="detail-tags">' +
+          '<span class="tag tag-category">' + escHtml(concept.category) + '</span>' +
+          '<span class="tag tag-type">' + escHtml(concept.type) + '</span>' +
+        '</div>' +
+        '<h1 class="detail-name">' + escHtml(concept.name) + '</h1>' +
+      '</div>' +
+      '<div class="detail-body">' +
+        '<section>' +
+          '<h3>定义</h3>' +
+          '<p>' + escHtml(concept.definition) + '</p>' +
+        '</section>' +
+        '<section>' +
+          '<h3>类比</h3>' +
+          '<p class="analogy-text">' + escHtml(concept.analogy) + '</p>' +
+        '</section>' +
+        '<section>' +
+          '<h3>事例</h3>' +
+          '<ul>' + concept.examples.map(function(e) { return '<li>' + escHtml(e) + '</li>'; }).join('') + '</ul>' +
+        '</section>' +
+        counterHtml +
+        '<section class="detail-source">' +
+          '<h3>来源</h3>' +
+          '<p>' + escHtml(concept.source.course) + ' · ' + escHtml(concept.source.letter) + '</p>' +
+        '</section>' +
+        '<section>' +
+          '<h3>关联概念</h3>' +
+          '<div class="related-tags">' + relatedHtml + '</div>' +
+        '</section>' +
+      '</div>';
+
+    // Bind related-concept clicks
+    var clickables = detailInner.querySelectorAll('.related-tag.clickable');
+    clickables.forEach(function(tag) {
+      tag.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var name = tag.dataset.conceptName;
+        var target = conceptMap[name];
+        if (target) switchToConcept(target);
+      });
     });
 
-    card.innerHTML = `
-      <div class="card-inner">
-        <div class="card-face card-front" style="background:${color}">
-          <span class="imp-badge">${concept.importance === 'core' ? '★' : '·'}</span>
-          <span class="concept-name">${escapeHtml(concept.name)}</span>
-        </div>
-        <div class="card-face card-back" style="background:linear-gradient(135deg,${color}22,${color}11)">
-          <span class="back-cat" style="background:${color}">${escapeHtml(concept.category)}</span>
-          <span class="back-imp">${concept.importance === 'core' ? '● 核心概念' : '○ 辅助概念'}</span>
-          <span class="back-name">${escapeHtml(concept.name)}</span>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// ===== Flip logic =====
-function toggleFlip(card, conceptIdx) {
-  if (card.classList.contains('flipped')) {
-    card.classList.remove('flipped');
-    state.flippedCards.delete(conceptIdx);
-  } else {
-    card.classList.add('flipped');
-    state.flippedCards.add(conceptIdx);
+    detailCard.scrollTop = 0;
   }
-}
 
-// ===== Filter logic =====
-function setImportance(value) {
-  state.importance = value;
-  updateFilterButtons();
-  state.flippedCards.clear();
-  renderCards();
-}
+  // ── Open card (FLIP animation) ─────────────────────────
+  function openCard(concept, cardEl) {
+    if (activeConcept) {
+      closeCardInstant();
+    }
 
-function toggleCategory(cat) {
-  if (state.category === cat) {
-    state.category = null;
-  } else {
-    state.category = cat;
+    isAnimating = true;
+
+    var cardRect = cardEl.getBoundingClientRect();
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var cx = vw / 2;
+    var cy = vh / 2;
+    var cardCX = cardRect.left + cardRect.width / 2;
+    var cardCY = cardRect.top + cardRect.height / 2;
+    var dx = cardCX - cx;
+    var dy = cardCY - cy;
+    var detailW = Math.min(560, vw * 0.92);
+    var scaleFrom = Math.min(cardRect.width / detailW, 0.42);
+
+    // Build detail content
+    renderDetail(concept);
+
+    // Position the detail card at the grid card's location
+    detailCard.style.transition = 'none';
+    detailCard.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scaleFrom + ')';
+    detailCard.style.opacity = '0.55';
+
+    // Show overlay
+    overlay.classList.add('active');
+    closeBtn.classList.add('visible');
+    document.body.classList.add('overlay-open');
+
+    // Splash at clicked position
+    createSplash(cardCX, cardCY);
+
+    // Force reflow
+    detailCard.offsetHeight;
+
+    // Animate to center
+    detailCard.style.transition =
+      'transform 380ms cubic-bezier(0.22, 0.98, 0.36, 1.02), opacity 300ms ease-out';
+    detailCard.style.transform = 'translate(0, 0) scale(1)';
+    detailCard.style.opacity = '1';
+
+    cardEl.classList.add('retrieved');
+    activeConcept = concept;
+    activeCardEl  = cardEl;
+
+    setTimeout(function() { isAnimating = false; }, 400);
   }
-  updateFilterButtons();
-  state.flippedCards.clear();
-  renderCards();
-}
 
-function updateFilterButtons() {
-  document.querySelectorAll('[data-filter="importance"]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.value === state.importance);
-  });
-  document.querySelectorAll('[data-filter="category"]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.value === state.category);
-  });
-}
+  // ── Close card ─────────────────────────────────────────
+  function closeCard(instant) {
+    if (!activeConcept) return;
 
-// ===== Init =====
-buildFilters();
-renderCards();
+    if (instant) {
+      closeCardInstant();
+      return;
+    }
+
+    isAnimating = true;
+
+    var cardEl   = activeCardEl;
+    var cardRect = cardEl.getBoundingClientRect();
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var cx = vw / 2;
+    var cy = vh / 2;
+    var cardCX = cardRect.left + cardRect.width / 2;
+    var cardCY = cardRect.top + cardRect.height / 2;
+    var dx = cardCX - cx;
+    var dy = cardCY - cy;
+    var detailW = Math.min(560, vw * 0.92);
+    var scaleTo = Math.min(cardRect.width / detailW, 0.42);
+
+    // Animate back to grid position
+    detailCard.style.transition =
+      'transform 280ms cubic-bezier(0.4, 0, 0.6, 1), opacity 220ms ease-in';
+    detailCard.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scaleTo + ')';
+    detailCard.style.opacity = '0.35';
+
+    // Fade overlay
+    overlay.style.transition = 'opacity 280ms ease';
+    overlay.style.opacity = '0';
+
+    createSplash(cardCX, cardCY);
+
+    var el = activeCardEl;
+    setTimeout(function() {
+      overlay.classList.remove('active');
+      overlay.style.transition = '';
+      overlay.style.opacity = '';
+      closeBtn.classList.remove('visible');
+      document.body.classList.remove('overlay-open');
+      detailCard.style.transition = 'none';
+      detailCard.style.transform = '';
+      detailCard.style.opacity = '';
+      el.classList.remove('retrieved');
+      activeConcept = null;
+      activeCardEl  = null;
+      isAnimating = false;
+    }, 300);
+  }
+
+  function closeCardInstant() {
+    overlay.classList.remove('active');
+    overlay.style.transition = '';
+    overlay.style.opacity = '';
+    closeBtn.classList.remove('visible');
+    document.body.classList.remove('overlay-open');
+    detailCard.style.transition = 'none';
+    detailCard.style.transform = '';
+    detailCard.style.opacity = '';
+    if (activeCardEl) activeCardEl.classList.remove('retrieved');
+    activeConcept = null;
+    activeCardEl  = null;
+    isAnimating = false;
+  }
+
+  // ── Switch concept (from related link) ─────────────────
+  function switchToConcept(concept) {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    var newCardEl = grid.querySelector('[data-concept-id="' + concept.id + '"]');
+
+    // Shrink
+    detailCard.style.transition = 'transform 160ms ease-in, opacity 120ms ease-in';
+    detailCard.style.transform = 'scale(0.92)';
+    detailCard.style.opacity = '0.25';
+
+    setTimeout(function() {
+      renderDetail(concept);
+      detailCard.scrollTop = 0;
+
+      if (activeCardEl) activeCardEl.classList.remove('retrieved');
+      if (newCardEl) newCardEl.classList.add('retrieved');
+
+      activeConcept = concept;
+      activeCardEl  = newCardEl;
+
+      // Expand
+      detailCard.style.transition =
+        'transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms ease-out';
+      detailCard.style.transform = 'scale(1)';
+      detailCard.style.opacity = '1';
+
+      setTimeout(function() { isAnimating = false; }, 250);
+    }, 170);
+  }
+
+  // ── Splash ─────────────────────────────────────────────
+  function createSplash(x, y) {
+    var splash = document.createElement('div');
+    splash.className = 'splash';
+    splash.style.left = x + 'px';
+    splash.style.top  = y + 'px';
+    document.body.appendChild(splash);
+
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        splash.classList.add('animate');
+      });
+    });
+
+    splash.addEventListener('animationend', function() { splash.remove(); });
+    setTimeout(function() { if (splash.parentNode) splash.remove(); }, 800);
+  }
+
+  // ── Events ─────────────────────────────────────────────
+  closeBtn.addEventListener('click', function() { closeCard(false); });
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay || e.target.classList.contains('overlay-backdrop')) {
+      closeCard(false);
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && activeConcept && !isAnimating) {
+      closeCard(false);
+    }
+  });
+
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      if (activeConcept) closeCardInstant();
+    }, 300);
+  });
+
+  // ── Helpers ────────────────────────────────────────────
+  function escHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ── Init ───────────────────────────────────────────────
+  if (CONCEPTS.length > 0) {
+    renderGrid();
+  } else {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#889;padding:60px 0;">概念数据加载中…</p>';
+    window.addEventListener('load', function() {
+      if (window.CONCEPTS && window.CONCEPTS.length > 0 && !grid.children.length) {
+        renderGrid();
+      }
+    });
+  }
+})();
 </script>
 </body>
 </html>
