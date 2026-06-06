@@ -67,7 +67,7 @@ body {
 /* Flip Card — Golden Standard */
 .flip-card-grid { display: flex; flex-direction: column; align-items: center; }
 .flip-card { perspective: 1000px; height: clamp(220px,40vw,280px); margin-bottom: 14px; width: 100%; max-width: 500px; }
-.flip-inner { position: relative; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; cursor: pointer; }
+.flip-inner { position: absolute; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; cursor: pointer; }
 .flip-inner.flipped { transform: rotateY(180deg); }
 .flip-front, .flip-back {
   position: absolute; width: 100%; height: 100%;
@@ -92,14 +92,14 @@ body {
   display: inline-block; padding: 10px 20px; border-radius: 8px;
   border: none; cursor: pointer; font-size: 0.9rem; font-family: inherit;
   transition: all 0.2s; text-decoration: none;
+  background: var(--accent); color: #fff;
 }
+.btn:hover { background: #a93226; }
 .btn-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
 .btn-outline:hover { background: var(--accent); color: #fff; }
 .btn-success { background: var(--success); color: #fff; }
 .btn-success:hover { background: #219a52; }
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #a93226; }
 
 /* Progress Bar */
 .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; margin: 10px 0; overflow: hidden; }
@@ -140,6 +140,15 @@ body {
 .tbl th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; }
 .tbl td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
 .tbl tr:nth-child(even) td { background: #fef9f0; }
+
+/* Decision Round */
+.decision-round { background: var(--card); border-radius: 10px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; border: 1px solid var(--border); }
+.decision-round .scenario { font-weight: 700; margin-bottom: 12px; color: var(--accent); font-size: 1.02rem; }
+.decision-round .d-option { padding: 10px 14px; margin: 6px 0; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s; background: var(--card); font-size: 0.88rem; text-align: left; display: block; width: 100%; font-family: inherit; }
+.decision-round .d-option:hover { border-color: var(--accent); background: #fef0e0; }
+.decision-round .d-option.chosen { border-color: var(--accent); background: #fde8e8; }
+.decision-round .d-result { display: none; margin-top: 12px; padding: 14px; border-radius: 8px; background: #fef9f0; font-size: 0.85rem; line-height: 1.7; }
+.decision-round .d-result.show { display: block; }
 
 /* Toast */
 .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #3d2f2f; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 0.88rem; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
@@ -449,16 +458,16 @@ body {
 <div class="tab-panel" id="tab2">
   <div class="section">
     <h2>题库系统</h2>
-    <p style="color:var(--text-light);margin-bottom:16px">共20道选择题 + 10道简答题。点击「随机抽题」从题库中随机抽取10道选择 + 3道简答练习。</p>
+    <p style="color:var(--text-light);margin-bottom:16px">题库包含20道选择题型与10道简答题型。点击「随机抽题」随机抽取10道选择 + 3道简答进行练习。</p>
     <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-      <button class="btn btn-primary" onclick="startQuiz()">&#x1F3B2; 随机抽题练习</button>
+      <button class="btn" onclick="startQuiz()">&#x1F3B2; 随机抽题练习</button>
       <button class="btn btn-outline" onclick="resetQuiz()">重置</button>
     </div>
     <div id="quizContainer"></div>
     <div id="staticQuiz" style="display:none">
-      <h3 style="color:var(--accent);margin:20px 0 12px">选择题（20题）</h3>
+      <h3 style="color:var(--accent);margin:20px 0 12px">选择题型（20题）</h3>
       <div id="staticMCQ"></div>
-      <h3 style="color:var(--accent);margin:20px 0 12px">简答题（10题）</h3>
+      <h3 style="color:var(--accent);margin:20px 0 12px">简答题型（10题）</h3>
       <div id="staticSAQ"></div>
     </div>
   </div>
@@ -468,9 +477,9 @@ body {
 <div class="tab-panel" id="tab3">
   <div class="section">
     <h2>考试模式</h2>
-    <p style="color:var(--text-light);margin-bottom:16px">限时完成全部20道选择题。点击「开始考试」启动15分钟倒计时。</p>
+    <p style="color:var(--text-light);margin-bottom:16px">限时完成全部20道选择题型。点击「开始考试」启动15分钟倒计时。</p>
     <div style="text-align:center;margin-bottom:16px">
-      <button class="btn btn-primary" id="examStartBtn" onclick="startExam()">开始考试</button>
+      <button class="btn" id="examStartBtn" onclick="startExam()">开始考试</button>
       <button class="btn btn-outline btn-sm" id="examResetBtn" onclick="resetExam()" style="display:none">重新考试</button>
     </div>
     <div class="exam-timer" id="examTimer" style="display:none">剩余时间：15:00</div>
@@ -684,53 +693,45 @@ body {
 </div>
 
 <!-- Tab 8: 实战决策 -->
-<div class="tab-panel" id="tab8">
-  <div class="section">
+<div class=”tab-panel” id=”tab8”>
+  <div class=”section”>
     <h2>实战决策模拟</h2>
-    <p style="color:var(--text-light);margin-bottom:16px;font-size:.9rem">应用逻辑+统计工具解决真实决策问题。每个场景包含情境描述和决策框架。</p>
+    <p style=”color:var(--text-light);margin-bottom:16px;font-size:.9rem”>应用逻辑+统计工具解决真实决策问题。选择一种分析路径，查看对应的逻辑剖析。</p>
 
-    <div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>决策一：是否投资这个创业项目？</strong></div>
-    <div class="node-body open">
-      <p><strong>情境：</strong>朋友介绍一个AI创业项目：“团队来自大厂，技术领先，市场巨大，已经有3个付费客户。天使轮估值5000万，现在入场是最佳时机。”</p>
-      <p><strong>决策框架 — 逻辑+统计五步法：</strong></p>
-      <p><strong>① 命题化</strong>：把每句话变成可验证的命题。“技术领先” → 领先什么？什么指标？谁评价？“市场巨大” → TAM多少？CAGR多少？</p>
-      <p><strong>② 前提检查</strong>：团队真的来自大厂核心部门吗？3个付费客户是全价付费还是友情价？</p>
-      <p><strong>③ 三段论验证</strong>：大前提“大厂出来的团队成功率更高”——成立吗？检查数据：大厂创业者的整体成功率是多少？（大概率不比你高多少。）</p>
-      <p><strong>④ 相关性陷阱</strong>：“已有3个客户”和“未来会成功”之间的相关性是多少？很多有早期客户的项目后来都死了。</p>
-      <p><strong>⑤ 证伪思维</strong>：什么情况下这个项目一定会失败？列出top 3失败条件，逐一评估发生概率。</p>
+    <div class=”decision-round” id=”dRound0”>
+      <div class=”scenario”>决策一：是否投资这个AI创业项目？</div>
+      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：朋友介绍一个AI创业项目——“团队来自大厂，技术领先，市场巨大，已有3个付费客户。天使轮估值5000万，入场最佳时机。”你最先用哪个逻辑工具检验？</p>
+      <div class=”d-option” onclick=”chooseDecision(0,0)” id=”dopt0_0”>A. 命题化——把每句模糊声明变成可验证的精确命题</div>
+      <div class=”d-option” onclick=”chooseDecision(0,1)” id=”dopt0_1”>B. 三段论检验——验证大前提”大厂团队成功率更高”是否成立</div>
+      <div class=”d-option” onclick=”chooseDecision(0,2)” id=”dopt0_2”>C. 证伪思维——列出项目必然失败的top 3条件，逐一评估</div>
+      <div class=”d-result” id=”dres0”></div>
     </div>
 
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>决策二：换工作的逻辑评估</strong></div>
-    <div class="node-body">
-      <p><strong>情境：</strong>收到一个offer：薪资涨30%，职位升一级，但公司规模更小、赛道更新、需要换城市。去还是留？</p>
-      <p><strong>决策框架：</strong></p>
-      <p><strong>① 命题化+量化</strong>：把模糊感受转为可比较的命题。如“新赛道有前景” → 赛道TAM增速？头部公司市值？人才流向？</p>
-      <p><strong>② 避免选言三段论陷阱</strong>：不要简化为“要么去要么留”。可能存在第三选项（协商remote、推迟入职、谈更好的条件）。</p>
-      <p><strong>③ 合取命题风险</strong>：换工作的好处是一个合取命题——薪资高&and;职位高&and;赛道好&and;生活OK——所有条件同时为真的概率=各条件概率的乘积。条件越多，整体成立概率越低。</p>
-      <p><strong>④ 统计思维</strong>：收集同类跳槽案例的数据。同类背景的人跳槽到类似公司后，1年/3年留存率和满意度如何？不要只看成功案例。</p>
-      <p><strong>⑤ 德摩根律应用</strong>：与其问“新工作会好吗”，不如问“什么会导致新工作失败”——列出失败条件，如果都不太可能发生，就可以去。</p>
+    <div class=”decision-round” id=”dRound1”>
+      <div class=”scenario”>决策二：换工作的逻辑评估</div>
+      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：收到offer：薪资涨30%，职位升一级，但公司更小、赛道更新、需换城市。去还是留？用哪个逻辑视角分析？</p>
+      <div class=”d-option” onclick=”chooseDecision(1,0)” id=”dopt1_0”>A. 命题化+量化——把”前景””成长”等模糊词转为可比较的量化指标</div>
+      <div class=”d-option” onclick=”chooseDecision(1,1)” id=”dopt1_1”>B. 合取命题风险分析——所有好处同时成立的概率 = 各条件概率的乘积</div>
+      <div class=”d-option” onclick=”chooseDecision(1,2)” id=”dopt1_2”>C. 德摩根律逆向——与其问”会好吗”，不如问”什么会导致失败”</div>
+      <div class=”d-result” id=”dres1”></div>
     </div>
 
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>决策三：产品A/B测试结果解读</strong></div>
-    <div class="node-body">
-      <p><strong>情境：</strong>你的产品团队做了A/B测试：新版页面转化率从4.2%提升到4.5%（样本量10000用户/组）。团队建议全面上线新版。</p>
-      <p><strong>决策框架：</strong></p>
-      <p><strong>① 统计显著性</strong>：0.3个百分点的差异是否显著？需要计算p值。如果p&gt;0.05，这个差异可能完全是随机波动。</p>
-      <p><strong>② 效应量</strong>：即使统计显著，0.3%的提升到底有多大商业价值？换算成收入增量，扣掉改版成本后是否为正？</p>
-      <p><strong>③ 辛普森悖论检查</strong>：把用户按渠道/设备/时段分组。有可能每组内新版都更差，但汇总数据却显示新版更好——因为分组分布不同。</p>
-      <p><strong>④ 证伪测试</strong>：如果新版真的更好，我们预期看到什么？如果看不到，说明什么？——提前设定验收标准。</p>
-      <p><strong>⑤ 回归到均值</strong>：如果4.2%是某个异常低点的数据，任何改动后都会“回归”到正常水平。需要多轮A/B测试确认效果稳定。</p>
+    <div class=”decision-round” id=”dRound2”>
+      <div class=”scenario”>决策三：产品A/B测试结果解读</div>
+      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：A/B测试显示新版转化率从4.2%提升到4.5%（n=10000/组）。团队建议立即全面上线。你最先检查什么？</p>
+      <div class=”d-option” onclick=”chooseDecision(2,0)” id=”dopt2_0”>A. 统计显著性——0.3个百分点差异是否可能只是随机波动？</div>
+      <div class=”d-option” onclick=”chooseDecision(2,1)” id=”dopt2_1”>B. 辛普森悖论——按渠道/设备分组后趋势是否反转？</div>
+      <div class=”d-option” onclick=”chooseDecision(2,2)” id=”dopt2_2”>C. 效应量+回归均值——提升的商业价值是否大于成本？基线是否异常？</div>
+      <div class=”d-result” id=”dres2”></div>
     </div>
 
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>决策四：媒体报道的可信度评估</strong></div>
-    <div class="node-body">
-      <p><strong>情境：</strong>一篇热传文章称“每天喝一杯红酒可以降低心脏病风险30%”。你应该改变饮酒习惯吗？</p>
-      <p><strong>决策框架：</strong></p>
-      <p><strong>① 命题还原</strong>：把标题变成精确命题——“每天喝一杯红酒的人，心脏病发病率比不喝酒的人低30%”。这是观察性研究还是实验？</p>
-      <p><strong>② 混淆变量</strong>：每天喝一杯红酒的人，可能收入更高、更注重健康、更经常运动——这些才是降低心脏病风险的真实原因，红酒只是伴随现象。</p>
-      <p><strong>③ 绝对风险 vs 相对风险</strong>：“降低30%”听起来很大——但绝对风险从5%降到3.5%（降低1.5个百分点），需要多少人每天喝红酒才能避免一例心脏病？</p>
-      <p><strong>④ 反向因果</strong>：也许是健康的人更喜欢社交喝酒，而不是喝酒让人健康。</p>
-      <p><strong>⑤ 前提检查</strong>：研究是谁资助的？红酒行业协会赞助的研究需要打折扣看待。</p>
+    <div class=”decision-round” id=”dRound3”>
+      <div class=”scenario”>决策四：媒体报道的可信度评估</div>
+      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：热传文章称”每天一杯红酒降低心脏病风险30%”。你该改变饮酒习惯吗？先检查什么？</p>
+      <div class=”d-option” onclick=”chooseDecision(3,0)” id=”dopt3_0”>A. 混淆变量——喝红酒的人收入更高、更爱运动？红酒只是伴随现象</div>
+      <div class=”d-option” onclick=”chooseDecision(3,1)” id=”dopt3_1”>B. 绝对风险vs相对风险——30%听起来大，绝对风险实际降了多少？</div>
+      <div class=”d-option” onclick=”chooseDecision(3,2)” id=”dopt3_2”>C. 研究前提——谁资助的？观察性还是实验性研究？</div>
+      <div class=”d-result” id=”dres3”></div>
     </div>
   </div>
 </div>
@@ -965,7 +966,7 @@ function startQuiz() {
   const shuffledSAQ = [...saq].sort(() => Math.random() - 0.5);
   const chosenSAQ = shuffledSAQ.slice(0, 3);
 
-  let html = '<h3 style="color:var(--accent);margin-bottom:14px">✍️ 选择题（随机抽取10题）</h3>';
+  let html = '<h3 style="color:var(--accent);margin-bottom:14px">✍️ 选择题型（随机抽取10题）</h3>';
   chosenMCQ.forEach((q, qi) => {
     html += '<div class="quiz-card"><div class="q-stem">' + (qi + 1) + '. ' + q.stem + '</div>';
     q.opts.forEach((opt, oi) => {
@@ -974,7 +975,7 @@ function startQuiz() {
     html += '<div class="q-feedback" id="fb' + qi + '"></div></div>';
   });
 
-  html += '<h3 style="color:var(--accent);margin:20px 0 14px">✍️ 简答题（随机抽取3题）</h3>';
+  html += '<h3 style="color:var(--accent);margin:20px 0 14px">✍️ 简答题型（随机抽取3题）</h3>';
   chosenSAQ.forEach((q, qi) => {
     const si = qi + 10;
     html += '<div class="quiz-card"><div class="q-stem">' + (qi + 1) + '. ' + q.stem + '</div>';
@@ -1029,7 +1030,7 @@ function startExam() {
     });
     html += '</div>';
   });
-  html += '<div style="text-align:center;margin-top:16px"><button class="btn btn-primary" onclick="submitExam()">提交答卷</button></div>';
+  html += '<div style="text-align:center;margin-top:16px"><button class="btn" onclick="submitExam()">提交答卷</button></div>';
   document.getElementById('examContainer').innerHTML = html;
   examAnswers = {};
   document.getElementById('examResetBtn').style.display = 'inline-block';
@@ -1115,6 +1116,47 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(function() { t.classList.remove('show'); }, 2000);
+}
+
+// ==================== DECISION SIM ====================
+const decisionData = [
+  [
+    {feedback:'✅ <strong>命题化</strong>是最优先步骤。把"技术领先"变成可验证命题（哪个指标？谁评价？），"市场巨大"变成TAM和CAGR数字，"已有客户"核实付费性质。只有变成可验证的命题，后续的逻辑工具才有用武之地。吴军反复强调：<em>清晰表达是逻辑的起点</em>——不会把想法变成可验证的命题，所有推理工具都用不上。',},
+    {feedback:'⚠️ <strong>三段论检验</strong>也有价值——大前提"大厂团队成功率更高"需要数据支撑。大厂创业者的整体成功率是多少？很可能不比你高多少。从假前提推导的结论即使逻辑完美也没有意义。<em>检查前提比检查推理更重要。</em>',},
+    {feedback:'✅ <strong>证伪思维</strong>是投资决策的终极防线。列出项目必然失败的top 3条件（核心人员离职？竞品出现？资金断裂？），逐一评估概率。找不到致命反例的项目比"看起来很美的项目"可靠得多。波普尔的智慧：<em>一个反例胜过一千个支持案例。</em>',}
+  ],
+  [
+    {feedback:'✅ <strong>命题化+量化</strong>是决策基础。把"新赛道有前景"转为可比较的指标——赛道TAM增速？头部公司市值？人才流入量？没有量化就无法比较。同时注意第三选项陷阱：选言三段论只能通过否定一项来肯定另一项，<em>不能简化为"要么去要么留"</em>。',},
+    {feedback:'⚠️ <strong>合取命题风险</strong>值得警惕。换工作的好处是合取命题：薪资高 ∧ 职位高 ∧ 赛道好 ∧ 生活OK。所有条件同时为真的概率 = 各条件概率的乘积。条件越多，整体成立概率越低。这解释了为什么<em>看起来完美的机会往往不完美</em>。',},
+    {feedback:'✅ <strong>德摩根律逆向分析</strong>是最务实的思路。¬(A∧B)=¬A∨¬B 的实践应用：与其问"新工作会好吗"，不如问"什么会导致失败"——列出所有失败条件，如果都不太可能发生，就可以去。<em>正向证明难，逆向证伪易。</em>',}
+  ],
+  [
+    {feedback:'⚠️ <strong>统计显著性</strong>是第一道关卡。0.3个百分点的差异在n=10000的样本中，需要计算p值。如果p>0.05，这个差异完全可能是随机波动。但p<0.05也不等于"效果真实且重要"——它只说明<em>不太可能由随机因素单独解释</em>。',},
+    {feedback:'✅ <strong>辛普森悖论</strong>是最危险的隐藏陷阱。即使汇总数据显示新版更好，按渠道/设备/时段分组后，每组内新版都可能更差。分组分布不同造成了汇总数据的反转。<em>汇总数据的方向可能与分组数据完全相反。</em>',},
+    {feedback:'✅ <strong>效应量+回归均值</strong>决定了商业决策。0.3%的提升换算成收入增量，扣掉改版成本后是否为正？更重要的是：4.2%是否异常低点？任何改动后极端值都会"回归"到正常水平。<em>需要多轮测试确认效果稳定</em>。',}
+  ],
+  [
+    {feedback:'✅ <strong>混淆变量</strong>是最常见的"相关≠因果"陷阱。每天喝红酒的人可能收入更高、更注重健康、更经常运动——这些才是降低心脏病风险的真实原因，红酒只是伴随现象。<em>相关性是"它们一起出现"；因果性是"一个推另一个"。</em>',},
+    {feedback:'⚠️ <strong>绝对vs相对风险</strong>也很重要。"降低30%"是相对风险降低，绝对风险可能只从5%降到3.5%（降低1.5个百分点）。需要多少人每天喝红酒才能避免一例心脏病？这个"需要治疗人数"（NNT）可能高达数百人。',},
+    {feedback:'⚠️ <strong>研究前提</strong>不能被忽略。首先确认：这是观察性研究还是随机实验？观察性研究只能报告"关联"，不能声称因果。其次：研究是谁资助的？红酒行业协会赞助的研究需要打折扣看待。<em>数据不会撒谎，但使用数据的人会。</em>',}
+  ]
+];
+
+function chooseDecision(round, choice) {
+  // Reset all options for this round
+  for (let j = 0; j < 3; j++) {
+    const el = document.getElementById('dopt' + round + '_' + j);
+    if (el) el.classList.remove('chosen');
+  }
+  // Mark chosen
+  const chosen = document.getElementById('dopt' + round + '_' + choice);
+  if (chosen) chosen.classList.add('chosen');
+  // Show result
+  const res = document.getElementById('dres' + round);
+  if (res && decisionData[round] && decisionData[round][choice]) {
+    res.className = 'd-result show';
+    res.innerHTML = '<p>' + decisionData[round][choice].feedback + '</p>';
+  }
 }
 
 // ==================== BOOT ====================

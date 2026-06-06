@@ -2,27 +2,28 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>逻辑思维训练50讲 · 真值之网</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>逻辑思维训练50讲 · 推理齿轮</title>
 <style>
-/* ===== CSS Variables (STYLE_SPEC §1.1) ===== */
+/* ===== CSS Variables ===== */
 :root {
   --bg: #fdf6ec;
   --card: #fffaf2;
   --accent: #c0392b;
   --accent2: #d4a574;
+  --accent3: #e74c3c;
   --text: #3d2f2f;
   --text2: #6b5555;
   --border: #e8d5c0;
-  --gold: #b8860b;
+  --brass: #b8860b;
+  --brass-light: #d4a574;
+  --steel: #5a5a5a;
+  --steel-light: #95a5a6;
   --shadow: 0 2px 12px rgba(60,30,20,.08);
   --radius: 12px;
-  --logic-blue: #2c5f8a;
-  --logic-teal: #1a7a5a;
-  --logic-purple: #5c3d6e;
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -34,42 +35,59 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== Truth-Grid Background ===== */
-.truth-bg {
+/* ===== Blueprint Background ===== */
+.bp-bg {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: .035;
+  opacity: .03;
   background-image:
-    linear-gradient(rgba(192,57,43,.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(192,57,43,.3) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(var(--steel) 1px, transparent 1px),
+    linear-gradient(90deg, var(--steel) 1px, transparent 1px);
+  background-size: 80px 80px;
 }
 
-/* ===== Floating Logic Symbols ===== */
-.symbols-layer {
+/* Subtle radial gear pattern */
+.gear-pattern {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(800px, 90vw);
+  height: min(800px, 90vw);
   pointer-events: none;
   z-index: 0;
+  opacity: .025;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    var(--accent) 0deg 3deg,
+    transparent 3deg 8deg
+  );
+  animation: patternRotate 120s linear infinite;
 }
-.logic-sym {
-  position: absolute;
+@keyframes patternRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ===== Floating symbols ===== */
+.float-sym {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
   font-family: "Times New Roman", "STIX Two Math", serif;
   font-weight: 700;
-  color: rgba(192,57,43,.06);
-  font-size: clamp(24px, 3vw, 42px);
+  color: rgba(192,57,43,.05);
+  font-size: clamp(20px, 2.5vw, 36px);
+  animation: symDrift 22s ease-in-out infinite;
   user-select: none;
-  animation: drift 20s ease-in-out infinite;
 }
-@keyframes drift {
+@keyframes symDrift {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(8px, -6px) rotate(2deg); }
-  50% { transform: translate(-4px, -12px) rotate(-1deg); }
-  75% { transform: translate(-8px, 4px) rotate(1deg); }
+  25% { transform: translate(10px, -8px) rotate(3deg); }
+  50% { transform: translate(-5px, -14px) rotate(-2deg); }
+  75% { transform: translate(-10px, 5px) rotate(2deg); }
 }
 
 /* ===== Main Container ===== */
@@ -84,146 +102,106 @@ body {
 /* ===== Header ===== */
 header {
   text-align: center;
-  padding: clamp(32px, 5vw, 56px) 0 clamp(24px, 4vw, 40px);
+  padding: clamp(28px, 5vw, 52px) 0 clamp(20px, 4vw, 36px);
   position: relative;
 }
 
-/* Logic Gate Icon Cluster */
-.gate-cluster {
+/* Gear Cluster SVG */
+.gear-cluster-wrap {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: clamp(6px, 1.5vw, 12px);
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  margin-bottom: 16px;
 }
-.gate-icon {
-  width: clamp(44px, 6vw, 56px);
-  height: clamp(44px, 6vw, 56px);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Times New Roman", "STIX Two Math", serif;
-  font-weight: 700;
-  font-size: clamp(18px, 2.2vw, 24px);
-  transition: all .35s;
-  position: relative;
+.gear-cluster-wrap svg {
+  width: min(280px, 60vw);
+  height: auto;
 }
-.gate-and {
-  background: linear-gradient(135deg, #fde8e8, #f5d0d0);
-  color: var(--accent);
-  border: 2px solid rgba(192,57,43,.25);
-  animation: gatePulse 3s ease-in-out infinite;
+.gear-spin-slow {
+  transform-origin: center center;
+  animation: gearSpin 20s linear infinite;
 }
-.gate-or {
-  background: linear-gradient(135deg, #e8f0f8, #d0e0f5);
-  color: var(--logic-blue);
-  border: 2px solid rgba(44,95,138,.25);
-  animation: gatePulse 3s ease-in-out .3s infinite;
+.gear-spin-rev {
+  transform-origin: center center;
+  animation: gearSpinRev 15s linear infinite;
 }
-.gate-not {
-  background: linear-gradient(135deg, #f5edd8, #ede0c0);
-  color: var(--gold);
-  border: 2px solid rgba(184,134,11,.25);
-  animation: gatePulse 3s ease-in-out .6s infinite;
+@keyframes gearSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
-.gate-impl {
-  background: linear-gradient(135deg, #e8f5ee, #d0ede0);
-  color: var(--logic-teal);
-  border: 2px solid rgba(26,122,90,.25);
-  animation: gatePulse 3s ease-in-out .9s infinite;
-}
-.gate-equiv {
-  background: linear-gradient(135deg, #f0e8f5, #e0d0ed);
-  color: var(--logic-purple);
-  border: 2px solid rgba(92,61,110,.25);
-  animation: gatePulse 3s ease-in-out 1.2s infinite;
-}
-@keyframes gatePulse {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.gate-connector {
-  width: clamp(12px, 2vw, 24px);
-  height: 2px;
-  background: var(--border);
-  position: relative;
-}
-.gate-connector::after {
-  content: '';
-  position: absolute;
-  right: 0; top: 50%;
-  transform: translateY(-50%);
-  width: 6px; height: 6px;
-  background: var(--accent2);
-  border-radius: 50%;
+@keyframes gearSpinRev {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
 }
 
 header h1 {
-  font-size: clamp(1.6rem, 3.8vw, 2.2rem);
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   letter-spacing: 1px;
   font-weight: 800;
 }
 
 header .sub {
-  font-size: clamp(.85rem, 1.5vw, .95rem);
+  font-size: clamp(.82rem, 1.4vw, .92rem);
   color: var(--text2);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  letter-spacing: .5px;
 }
 
-header .course-author {
-  font-size: .82rem;
+header .author {
+  font-size: .78rem;
   color: var(--accent2);
-  margin-bottom: 20px;
   letter-spacing: 2px;
+  font-weight: 600;
 }
 
-/* Stats Bar */
+/* ===== Stats Bar ===== */
 .stats-bar {
   display: flex;
   justify-content: center;
-  gap: clamp(12px, 3vw, 28px);
+  gap: clamp(10px, 2.5vw, 24px);
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin: 20px 0 24px;
 }
 .stat-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 18px;
+  padding: 7px 16px;
   background: var(--card);
-  border-radius: 24px;
+  border-radius: 20px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
+.stat-icon {
+  font-size: 1.1rem;
+}
 .stat-num {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--accent);
   line-height: 1;
 }
 .stat-label {
-  font-size: .78rem;
+  font-size: .74rem;
   color: var(--text2);
 }
 
-/* Home Link */
+/* ===== Home Link ===== */
 .home-link-wrap {
   text-align: center;
   margin-bottom: clamp(20px, 3vw, 32px);
 }
 .home-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 20px;
   border: 2px solid var(--accent);
   border-radius: 20px;
   color: var(--accent);
   text-decoration: none;
-  font-size: .88rem;
+  font-size: .85rem;
   font-weight: 600;
   transition: all .25s;
 }
@@ -236,9 +214,9 @@ header .course-author {
 .divider {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin: 0 auto clamp(32px, 4vw, 44px);
-  max-width: 480px;
+  gap: 14px;
+  margin: 0 auto clamp(28px, 4vw, 40px);
+  max-width: 420px;
 }
 .divider::before,
 .divider::after {
@@ -247,194 +225,222 @@ header .course-author {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
-.divider .diamond {
-  width: 10px; height: 10px;
-  background: var(--accent);
-  transform: rotate(45deg);
-  opacity: .5;
+.divider .gear-icon {
+  width: 18px; height: 18px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
   flex-shrink: 0;
+  position: relative;
+  opacity: .6;
+}
+.divider .gear-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
 }
 
 /* ===== Section Title ===== */
 .section-title {
   text-align: center;
-  font-size: .8rem;
+  font-size: .76rem;
   color: var(--text2);
   letter-spacing: 4px;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   font-weight: 600;
 }
+.section-title::before { content: '⚙ '; }
+.section-title::after { content: ' ⚙'; }
 
-/* ===== Main Topic Entry Card ===== */
-.topic-entry {
+/* ===== Mainspring Card ===== */
+.mainspring {
   display: block;
   text-decoration: none;
   color: inherit;
   background: var(--card);
   border-radius: var(--radius);
-  padding: clamp(24px, 4vw, 36px);
-  box-shadow: 0 4px 24px rgba(60,30,20,.1);
+  padding: clamp(22px, 4vw, 34px);
+  box-shadow: 0 4px 28px rgba(60,30,20,.1);
   border: 2px solid var(--border);
   border-left: 5px solid var(--accent);
-  margin-bottom: clamp(32px, 5vw, 48px);
+  margin-bottom: clamp(28px, 5vw, 44px);
   transition: all .3s;
   position: relative;
   overflow: hidden;
 }
-.topic-entry::after {
+.mainspring::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px; bottom: -1px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: border-color .3s;
+}
+.mainspring::after {
   content: '';
   position: absolute;
   top: 0; right: 0;
-  width: 80px; height: 80px;
-  background: linear-gradient(135deg, transparent 50%, rgba(192,57,43,.04) 50%);
-  border-radius: 0 0 0 80px;
+  width: 100px; height: 100px;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(192,57,43,.03) 45deg, transparent 90deg,
+                              transparent 180deg, rgba(192,57,43,.03) 225deg, transparent 270deg);
+  border-radius: 0 var(--radius) 0 0;
 }
-.topic-entry:hover {
+.mainspring:hover {
   transform: translateY(-3px);
   border-color: var(--accent2);
-  box-shadow: 0 8px 32px rgba(60,30,20,.14);
+  box-shadow: 0 8px 36px rgba(60,30,20,.14);
 }
-.topic-entry .entry-badge {
-  display: inline-block;
+.mainspring .spring-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 3px 12px;
   background: var(--accent);
   color: #fff;
   border-radius: 12px;
-  font-size: .72rem;
+  font-size: .7rem;
   font-weight: 700;
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
-.topic-entry h2 {
-  font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+.mainspring h2 {
+  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 700;
 }
-.topic-entry .entry-meta {
-  font-size: .82rem;
+.mainspring .spring-meta {
+  font-size: .8rem;
   color: var(--text2);
   margin-bottom: 8px;
 }
-.topic-entry .entry-desc {
-  font-size: .88rem;
+.mainspring .spring-desc {
+  font-size: .86rem;
   color: var(--text);
   line-height: 1.75;
 }
-.topic-entry .entry-arrow {
+.mainspring .spring-arrow {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
+  margin-top: 12px;
   font-weight: 700;
   color: var(--accent);
-  font-size: .88rem;
+  font-size: .86rem;
 }
 
-/* ===== Module Pipeline ===== */
-.pipeline-section {
-  margin-bottom: clamp(32px, 5vw, 48px);
-}
-.pipeline {
+/* ===== Gear Train ===== */
+.gear-train {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(10px, 1.5vw, 18px);
+  gap: clamp(10px, 1.5vw, 16px);
+  margin-bottom: clamp(28px, 5vw, 44px);
 }
 @media (max-width: 700px) {
-  .pipeline {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .gear-train { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 460px) {
-  .pipeline {
-    grid-template-columns: 1fr;
-  }
+  .gear-train { grid-template-columns: 1fr; }
 }
 
-.pipe-stage {
+.gear-module {
   background: var(--card);
   border-radius: var(--radius);
-  padding: clamp(16px, 2.5vw, 24px);
+  padding: clamp(15px, 2.5vw, 22px);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   position: relative;
   transition: all .3s;
-  display: flex;
-  flex-direction: column;
 }
-.pipe-stage:hover {
+.gear-module:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(60,30,20,.12);
 }
-.pipe-stage .stage-num {
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--accent2);
-  margin-bottom: 4px;
+.gear-module .gear-ring {
+  width: clamp(36px, 5vw, 44px);
+  height: clamp(36px, 5vw, 44px);
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  position: relative;
 }
-.pipe-stage .stage-icon {
-  font-size: 1.4rem;
-  margin-bottom: 8px;
+.gear-module .gear-ring::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed;
+  opacity: .3;
 }
-.pipe-stage h3 {
-  font-size: .95rem;
+.gear-module h3 {
+  font-size: .9rem;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   font-weight: 700;
 }
-.pipe-stage .stage-count {
-  font-size: .75rem;
+.gear-module .mod-count {
+  font-size: .72rem;
   color: var(--text2);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
-.pipe-stage .stage-topics {
-  font-size: .76rem;
+.gear-module .mod-topics {
+  font-size: .73rem;
   color: var(--accent2);
   line-height: 1.6;
 }
 
-/* Stage accent stripes */
-.pipe-stage:nth-child(1) { border-top: 3px solid var(--accent); }
-.pipe-stage:nth-child(2) { border-top: 3px solid #c0603b; }
-.pipe-stage:nth-child(3) { border-top: 3px solid #c0804b; }
-.pipe-stage:nth-child(4) { border-top: 3px solid var(--logic-blue); }
-.pipe-stage:nth-child(5) { border-top: 3px solid var(--logic-teal); }
-.pipe-stage:nth-child(6) { border-top: 3px solid var(--logic-purple); }
+/* Module accent colors */
+.gear-module:nth-child(1) .gear-ring { border-color: var(--accent); color: var(--accent); }
+.gear-module:nth-child(1) { border-top: 3px solid var(--accent); }
+.gear-module:nth-child(2) .gear-ring { border-color: #c0603b; color: #c0603b; }
+.gear-module:nth-child(2) { border-top: 3px solid #c0603b; }
+.gear-module:nth-child(3) .gear-ring { border-color: #c0804b; color: #c0804b; }
+.gear-module:nth-child(3) { border-top: 3px solid #c0804b; }
+.gear-module:nth-child(4) .gear-ring { border-color: #2c5f8a; color: #2c5f8a; }
+.gear-module:nth-child(4) { border-top: 3px solid #2c5f8a; }
+.gear-module:nth-child(5) .gear-ring { border-color: #1a7a5a; color: #1a7a5a; }
+.gear-module:nth-child(5) { border-top: 3px solid #1a7a5a; }
+.gear-module:nth-child(6) .gear-ring { border-color: #5c3d6e; color: #5c3d6e; }
+.gear-module:nth-child(6) { border-top: 3px solid #5c3d6e; }
 
-/* ===== Truth Table Insight ===== */
+/* ===== Insight Bar ===== */
 .insight-bar {
   text-align: center;
-  padding: 20px 24px;
+  padding: 18px 24px;
   background: var(--card);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   margin-bottom: clamp(24px, 3vw, 36px);
-  font-size: .85rem;
+  font-size: .83rem;
   color: var(--text2);
-  line-height: 1.8;
+  line-height: 1.9;
 }
-.insight-bar strong {
-  color: var(--accent);
-}
-.insight-bar .truth-glyph {
+.insight-bar strong { color: var(--accent); }
+.insight-bar .glyph {
   display: inline-block;
-  margin: 0 4px;
+  margin: 0 3px;
   font-family: "Times New Roman", "STIX Two Math", serif;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
-.truth-glyph.t { color: var(--logic-teal); }
-.truth-glyph.f { color: var(--accent); }
+.glyph.t { color: #1a7a5a; }
+.glyph.f { color: var(--accent); }
 
 /* ===== Footer ===== */
 footer {
   text-align: center;
-  padding: 28px 20px;
+  padding: 24px 20px;
   border-top: 1px solid var(--border);
-  margin-top: clamp(24px, 4vw, 40px);
+  margin-top: clamp(20px, 4vw, 36px);
 }
 footer .home-link-footer {
   display: inline-block;
@@ -443,7 +449,7 @@ footer .home-link-footer {
   border-radius: 20px;
   color: var(--accent);
   text-decoration: none;
-  font-size: .88rem;
+  font-size: .85rem;
   font-weight: 600;
   transition: all .25s;
 }
@@ -452,55 +458,96 @@ footer .home-link-footer:hover {
   color: #fff;
 }
 footer .tagline {
-  font-size: .72rem;
+  font-size: .7rem;
   color: var(--accent2);
-  margin-top: 12px;
+  margin-top: 10px;
   letter-spacing: 1px;
 }
 </style>
 </head>
 <body>
 
-<!-- Truth Table Grid Background -->
-<div class="truth-bg"></div>
+<!-- Blueprint Background -->
+<div class="bp-bg"></div>
 
-<!-- Floating Logic Symbols -->
-<div class="symbols-layer" id="symbolsLayer"></div>
+<!-- Subtle rotating gear pattern -->
+<div class="gear-pattern"></div>
+
+<!-- Floating logic symbols -->
+<div class="float-sym" id="fsym0"></div>
+<div class="float-sym" id="fsym1"></div>
+<div class="float-sym" id="fsym2"></div>
+<div class="float-sym" id="fsym3"></div>
+<div class="float-sym" id="fsym4"></div>
+<div class="float-sym" id="fsym5"></div>
+<div class="float-sym" id="fsym6"></div>
+<div class="float-sym" id="fsym7"></div>
 
 <div class="container">
 
   <!-- ===== Header ===== -->
   <header>
-    <!-- Logic Gate Cluster -->
-    <div class="gate-cluster">
-      <div class="gate-icon gate-and">&and;</div>
-      <div class="gate-connector"></div>
-      <div class="gate-icon gate-or">&or;</div>
-      <div class="gate-connector"></div>
-      <div class="gate-icon gate-not">&not;</div>
-      <div class="gate-connector"></div>
-      <div class="gate-icon gate-impl">&rarr;</div>
-      <div class="gate-connector"></div>
-      <div class="gate-icon gate-equiv">&harr;</div>
+    <!-- Animated Gear Cluster SVG -->
+    <div class="gear-cluster-wrap">
+      <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Left gear -->
+        <g class="gear-spin-rev">
+          <circle cx="90" cy="85" r="38" fill="none" stroke="#c0392b" stroke-width="12" stroke-dasharray="8 6" opacity=".7"/>
+          <circle cx="90" cy="85" r="32" fill="none" stroke="#c0392b" stroke-width="2"/>
+          <text x="90" y="90" text-anchor="middle" font-size="22" font-weight="bold" fill="#c0392b" font-family="Times New Roman, STIX Two Math, serif">&and;</text>
+        </g>
+        <!-- Center gear -->
+        <g class="gear-spin-slow">
+          <circle cx="175" cy="85" r="32" fill="none" stroke="#5a3e3e" stroke-width="10" stroke-dasharray="6 5" opacity=".5"/>
+          <circle cx="175" cy="85" r="27" fill="none" stroke="#5a3e3e" stroke-width="2"/>
+          <text x="175" y="91" text-anchor="middle" font-size="20" font-weight="bold" fill="#5a3e3e" font-family="Times New Roman, STIX Two Math, serif">&there4;</text>
+        </g>
+        <!-- Right gear -->
+        <g class="gear-spin-rev">
+          <circle cx="250" cy="85" r="28" fill="none" stroke="#d4a574" stroke-width="10" stroke-dasharray="6 5" opacity=".6"/>
+          <circle cx="250" cy="85" r="23" fill="none" stroke="#d4a574" stroke-width="2"/>
+          <text x="250" y="91" text-anchor="middle" font-size="18" font-weight="bold" fill="#d4a574" font-family="Times New Roman, STIX Two Math, serif">&forall;</text>
+        </g>
+        <!-- Small accent gear bottom-left -->
+        <g class="gear-spin-slow">
+          <circle cx="110" cy="145" r="18" fill="none" stroke="#2c5f8a" stroke-width="7" stroke-dasharray="5 4" opacity=".4"/>
+          <circle cx="110" cy="145" r="14" fill="none" stroke="#2c5f8a" stroke-width="1.5"/>
+          <text x="110" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c5f8a" font-family="Times New Roman, STIX Two Math, serif">&exist;</text>
+        </g>
+        <!-- Small accent gear bottom-right -->
+        <g class="gear-spin-rev">
+          <circle cx="230" cy="150" r="15" fill="none" stroke="#1a7a5a" stroke-width="6" stroke-dasharray="4 4" opacity=".4"/>
+          <circle cx="230" cy="150" r="12" fill="none" stroke="#1a7a5a" stroke-width="1.5"/>
+          <text x="230" y="154" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a7a5a" font-family="Times New Roman, STIX Two Math, serif">&ne;</text>
+        </g>
+        <!-- Connector lines -->
+        <line x1="125" y1="85" x2="140" y2="85" stroke="#c0392b" stroke-width="1.5" opacity=".3"/>
+        <line x1="210" y1="85" x2="220" y2="85" stroke="#d4a574" stroke-width="1.5" opacity=".3"/>
+        <line x1="115" y1="110" x2="120" y2="130" stroke="#2c5f8a" stroke-width="1" opacity=".25"/>
+        <line x1="220" y1="115" x2="225" y2="135" stroke="#1a7a5a" stroke-width="1" opacity=".25"/>
+      </svg>
     </div>
 
     <h1>逻辑思维训练50讲</h1>
-    <p class="sub">从形式逻辑到统计思维的完整训练</p>
-    <p class="course-author">吴军 &middot; 最小知识集</p>
+    <p class="sub">推理齿轮 · 从形式逻辑到统计思维的精密仪器</p>
+    <p class="author">吴军 &middot; 最小知识集</p>
 
     <!-- Stats -->
     <div class="stats-bar">
       <div class="stat-item">
+        <span class="stat-icon">🦷</span>
         <span class="stat-num">57</span>
-        <span class="stat-label">篇笔记</span>
+        <span class="stat-label">齿轮刻齿</span>
       </div>
       <div class="stat-item">
+        <span class="stat-icon">⚙️</span>
         <span class="stat-num">1</span>
-        <span class="stat-label">个专题</span>
+        <span class="stat-label">主动力轴</span>
       </div>
       <div class="stat-item">
+        <span class="stat-icon">🔩</span>
         <span class="stat-num">6</span>
-        <span class="stat-label">大模块</span>
+        <span class="stat-label">齿轮组件</span>
       </div>
     </div>
 
@@ -512,113 +559,98 @@ footer .tagline {
 
   <!-- ===== Divider ===== -->
   <div class="divider">
-    <div class="diamond"></div>
+    <div class="gear-icon"></div>
   </div>
 
-  <!-- ===== Main Topic Entry ===== -->
-  <div class="section-title">&there4; 专题入口 &there4;</div>
+  <!-- ===== Mainspring ===== -->
+  <div class="section-title">主动力轴 · 唯一入口</div>
 
-  <a class="topic-entry" href="1-逻辑思维训练50讲.html">
-    <span class="entry-badge">唯一入口</span>
-    <h2>逻辑思维训练50讲 &mdash; 全集</h2>
-    <div class="entry-meta">57 篇笔记 &middot; 从命题逻辑到统计实战</div>
-    <div class="entry-desc">
-      不讲空洞的批判性思维概念，讲可操作的逻辑工具。
-      从形式逻辑基础（命题、与或非、蕴含等价、三段论），到谓词逻辑与科学推理（数学归纳法、证伪、必然与可能），
-      再到常见逻辑谬误、数据收集方法、统计分析工具，最终在实战中运用统计找规律、图形工具和生活中的逻辑。
+  <a class="mainspring" href="1-逻辑思维训练50讲.html">
+    <span class="spring-badge">&#x2699; 全集</span>
+    <h2>逻辑思维训练50讲 &mdash; 完整知识集</h2>
+    <div class="spring-meta">57 篇笔记 &middot; 从命题构建到统计实战</div>
+    <div class="spring-desc">
+      不讲空洞的批判性思维概念，讲可操作的逻辑工具。从形式逻辑基础（命题、与或非、蕴含等价、三段论），到谓词逻辑与科学推理（数学归纳法、证伪、必然与可能），再到常见逻辑谬误、数据收集、统计分析，最终形成<strong>命题化表达 + 三段论验证 + 统计量化</strong>的完整思维习惯。就像一台精密运转的引擎——<strong>输入是模糊的信息，输出是清晰的判断</strong>。
     </div>
-    <span class="entry-arrow">进入专题 &rarr;</span>
+    <span class="spring-arrow">启动推理引擎 &rarr;</span>
   </a>
 
-  <!-- ===== Module Pipeline ===== -->
-  <div class="section-title">&there4; 课程模块 &there4;</div>
+  <!-- ===== Gear Train ===== -->
+  <div class="section-title">齿轮组件 · 六大模块</div>
 
-  <div class="pipeline-section">
-    <div class="pipeline">
+  <div class="gear-train">
 
-      <div class="pipe-stage">
-        <div class="stage-num">模块一</div>
-        <div class="stage-icon">&#x2227;</div>
-        <h3>形式逻辑基础</h3>
-        <div class="stage-count">命题 &middot; 与或非 &middot; 蕴含等价</div>
-        <div class="stage-topics">三段论 &middot; 逻辑定律 &middot; 推理规则</div>
-      </div>
-
-      <div class="pipe-stage">
-        <div class="stage-num">模块二</div>
-        <div class="stage-icon">&#x2200;</div>
-        <h3>谓词逻辑与科学推理</h3>
-        <div class="stage-count">数学归纳法 &middot; 证伪 &middot; 必然与可能</div>
-        <div class="stage-topics">全称/存在量词 &middot; 模态逻辑入门</div>
-      </div>
-
-      <div class="pipe-stage">
-        <div class="stage-num">模块三</div>
-        <div class="stage-icon">&#x26A0;</div>
-        <h3>常见逻辑谬误</h3>
-        <div class="stage-count">7 种经典谬误</div>
-        <div class="stage-topics">诉诸情感 &middot; 偷换概念 &middot; 假两难 &middot; 滑坡论证 &middot; 以偏概全 &middot; 因果谬误 &middot; 循环论证</div>
-      </div>
-
-      <div class="pipe-stage">
-        <div class="stage-num">模块四</div>
-        <div class="stage-icon">&#x1F4CA;</div>
-        <h3>数据收集方法</h3>
-        <div class="stage-count">调查抽样 &middot; 实验设计 &middot; 双盲实验</div>
-        <div class="stage-topics">样本偏差 &middot; 随机化 &middot; 对照原则</div>
-      </div>
-
-      <div class="pipe-stage">
-        <div class="stage-num">模块五</div>
-        <div class="stage-icon">&#x1F4C8;</div>
-        <h3>统计分析工具</h3>
-        <div class="stage-count">数据对比 &middot; 相关性 &middot; 线性回归</div>
-        <div class="stage-topics">量化验证 &middot; 显著性检验 &middot; 贝叶斯思维</div>
-      </div>
-
-      <div class="pipe-stage">
-        <div class="stage-num">模块六</div>
-        <div class="stage-icon">&#x1F3AF;</div>
-        <h3>实战应用</h3>
-        <div class="stage-count">统计找规律 &middot; 图形工具 &middot; 生活中的逻辑</div>
-        <div class="stage-topics">决策优化 &middot; 信息甄别 &middot; 论证写作</div>
-      </div>
-
+    <div class="gear-module">
+      <div class="gear-ring">&and;</div>
+      <h3>形式逻辑基础</h3>
+      <div class="mod-count">命题 &middot; 与或非 &middot; 蕴含等价</div>
+      <div class="mod-topics">三段论 &middot; 逻辑定律 &middot; 推理规则</div>
     </div>
+
+    <div class="gear-module">
+      <div class="gear-ring">&forall;</div>
+      <h3>谓词逻辑与科学推理</h3>
+      <div class="mod-count">数学归纳法 &middot; 证伪 &middot; 必然与可能</div>
+      <div class="mod-topics">全称/存在量词 &middot; 模态逻辑入门</div>
+    </div>
+
+    <div class="gear-module">
+      <div class="gear-ring">&#x26A0;</div>
+      <h3>常见逻辑谬误</h3>
+      <div class="mod-count">7 种经典谬误</div>
+      <div class="mod-topics">以偏概全 &middot; 偷换概念 &middot; 错误归因 &middot; 滑坡 &middot; 自相矛盾 &middot; 循环论证</div>
+    </div>
+
+    <div class="gear-module">
+      <div class="gear-ring">&#x1F4CA;</div>
+      <h3>数据收集方法</h3>
+      <div class="mod-count">调查抽样 &middot; 实验设计 &middot; 双盲实验</div>
+      <div class="mod-topics">样本偏差 &middot; 随机化 &middot; 对照原则</div>
+    </div>
+
+    <div class="gear-module">
+      <div class="gear-ring">&#x1F4C8;</div>
+      <h3>统计分析工具</h3>
+      <div class="mod-count">数据对比 &middot; 相关性 &middot; 线性回归</div>
+      <div class="mod-topics">量化验证 &middot; 显著性检验 &middot; 贝叶斯思维</div>
+    </div>
+
+    <div class="gear-module">
+      <div class="gear-ring">&#x1F3AF;</div>
+      <h3>实战应用</h3>
+      <div class="mod-count">统计找规律 &middot; 图形工具 &middot; 生活逻辑</div>
+      <div class="mod-topics">决策优化 &middot; 信息甄别 &middot; 论证写作</div>
+    </div>
+
   </div>
 
   <!-- ===== Insight Bar ===== -->
   <div class="insight-bar">
-    <span class="truth-glyph t">T</span> 真值在逻辑之网中传递&ensp;
-    <span class="truth-glyph f">F</span> 谬误在推理链条上断裂&ensp;
-    <strong>&there4;</strong> 从前提走向结论，每一步都必须经得起<span class="truth-glyph t">T</span>的检验
+    <span class="glyph t">T</span> 真值在齿轮啮合中传递，每个推理齿扣环环相扣&ensp;
+    <span class="glyph f">F</span> 谬误在传动链上滑脱，一个错误的齿距让整个系统空转&ensp;
+    <strong>&there4;</strong> 从前提走向结论，每一步都必须经得起<span class="glyph t">T</span>的检验
   </div>
 
   <!-- ===== Footer ===== -->
   <footer>
     <a href="../index.html" class="home-link-footer">&larr; 返回知识主板</a>
-    <p class="tagline">逻辑思维训练50讲 &middot; 吴军 &middot; 最小知识集</p>
+    <p class="tagline">逻辑思维训练50讲 &middot; 吴军 &middot; 推理齿轮 &middot; 最小知识集</p>
   </footer>
 
 </div>
 
 <script>
-// Floating logic symbols
 (function() {
-  var symbols = ['∧','∨','¬','→','↔','∀','∃','∴','T','F','⊢','≡'];
-  var layer = document.getElementById('symbolsLayer');
-  var count = 18;
-
-  for (var i = 0; i < count; i++) {
-    var el = document.createElement('span');
-    el.className = 'logic-sym';
+  // Floating logic symbols
+  var symbols = ['∧','∨','¬','→','↔','∀','∃','∴','⊢','≢'];
+  for (var i = 0; i < 8; i++) {
+    var el = document.getElementById('fsym' + i);
+    if (!el) continue;
     el.textContent = symbols[i % symbols.length];
-    el.style.left = (5 + Math.random() * 88) + '%';
+    el.style.left = (4 + Math.random() * 88) + '%';
     el.style.top = (8 + Math.random() * 84) + '%';
-    el.style.animationDelay = (Math.random() * 15).toFixed(1) + 's';
-    el.style.animationDuration = (18 + Math.random() * 24).toFixed(1) + 's';
-    el.style.opacity = (0.03 + Math.random() * 0.06).toFixed(3);
-    layer.appendChild(el);
+    el.style.animationDelay = (Math.random() * 18).toFixed(1) + 's';
+    el.style.animationDuration = (18 + Math.random() * 26).toFixed(1) + 's';
   }
 })();
 </script>
