@@ -66,7 +66,7 @@ body {
 
 /* Flip Card — Golden Standard */
 .flip-card-grid { display: flex; flex-direction: column; align-items: center; }
-.flip-card { perspective: 1000px; height: clamp(220px,40vw,280px); margin-bottom: 14px; width: 100%; max-width: 500px; }
+.flip-card { position: relative; perspective: 1000px; height: clamp(220px,40vw,280px); margin-bottom: 14px; width: 100%; max-width: 500px; }
 .flip-inner { position: absolute; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; cursor: pointer; }
 .flip-inner.flipped { transform: rotateY(180deg); }
 .flip-front, .flip-back {
@@ -693,45 +693,45 @@ body {
 </div>
 
 <!-- Tab 8: 实战决策 -->
-<div class=”tab-panel” id=”tab8”>
-  <div class=”section”>
-    <h2>实战决策模拟</h2>
-    <p style=”color:var(--text-light);margin-bottom:16px;font-size:.9rem”>应用逻辑+统计工具解决真实决策问题。选择一种分析路径，查看对应的逻辑剖析。</p>
+<div class="tab-panel" id="tab8">
+  <div class="section">
+    <h2>实战决策</h2>
+    <p style="color:var(--text-light);margin-bottom:16px;font-size:.9rem">应用逻辑+统计工具解决真实决策问题。选择一种分析路径，查看对应的逻辑剖析。</p>
 
-    <div class=”decision-round” id=”dRound0”>
-      <div class=”scenario”>决策一：是否投资这个AI创业项目？</div>
-      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：朋友介绍一个AI创业项目——“团队来自大厂，技术领先，市场巨大，已有3个付费客户。天使轮估值5000万，入场最佳时机。”你最先用哪个逻辑工具检验？</p>
-      <div class=”d-option” onclick=”chooseDecision(0,0)” id=”dopt0_0”>A. 命题化——把每句模糊声明变成可验证的精确命题</div>
-      <div class=”d-option” onclick=”chooseDecision(0,1)” id=”dopt0_1”>B. 三段论检验——验证大前提”大厂团队成功率更高”是否成立</div>
-      <div class=”d-option” onclick=”chooseDecision(0,2)” id=”dopt0_2”>C. 证伪思维——列出项目必然失败的top 3条件，逐一评估</div>
-      <div class=”d-result” id=”dres0”></div>
+    <div class="decision-round" id="dRound0">
+      <div class="scenario">决策一：是否投资这个AI创业项目？</div>
+      <p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">情境：朋友介绍一个AI创业项目——"团队来自大厂，技术领先，市场巨大，已有3个付费客户。天使轮估值5000万，入场最佳时机。"你最先用哪个逻辑工具检验？</p>
+      <button class="d-option" onclick="chooseDecision(0,0)" id="dopt0_0">A. 命题化——把每句模糊声明变成可验证的精确命题</button>
+      <button class="d-option" onclick="chooseDecision(0,1)" id="dopt0_1">B. 三段论检验——验证大前提"大厂团队成功率更高"是否成立</button>
+      <button class="d-option" onclick="chooseDecision(0,2)" id="dopt0_2">C. 证伪思维——列出项目必然失败的top 3条件，逐一评估</button>
+      <div class="d-result" id="dres0"></div>
     </div>
 
-    <div class=”decision-round” id=”dRound1”>
-      <div class=”scenario”>决策二：换工作的逻辑评估</div>
-      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：收到offer：薪资涨30%，职位升一级，但公司更小、赛道更新、需换城市。去还是留？用哪个逻辑视角分析？</p>
-      <div class=”d-option” onclick=”chooseDecision(1,0)” id=”dopt1_0”>A. 命题化+量化——把”前景””成长”等模糊词转为可比较的量化指标</div>
-      <div class=”d-option” onclick=”chooseDecision(1,1)” id=”dopt1_1”>B. 合取命题风险分析——所有好处同时成立的概率 = 各条件概率的乘积</div>
-      <div class=”d-option” onclick=”chooseDecision(1,2)” id=”dopt1_2”>C. 德摩根律逆向——与其问”会好吗”，不如问”什么会导致失败”</div>
-      <div class=”d-result” id=”dres1”></div>
+    <div class="decision-round" id="dRound1">
+      <div class="scenario">决策二：换工作的逻辑评估</div>
+      <p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">情境：收到offer：薪资涨30%，职位升一级，但公司更小、赛道更新、需换城市。去还是留？用哪个逻辑视角分析？</p>
+      <button class="d-option" onclick="chooseDecision(1,0)" id="dopt1_0">A. 命题化+量化——把"前景""成长"等模糊词转为可比较的量化指标</button>
+      <button class="d-option" onclick="chooseDecision(1,1)" id="dopt1_1">B. 合取命题风险分析——所有好处同时成立的概率 = 各条件概率的乘积</button>
+      <button class="d-option" onclick="chooseDecision(1,2)" id="dopt1_2">C. 德摩根律逆向——与其问"会好吗"，不如问"什么会导致失败"</button>
+      <div class="d-result" id="dres1"></div>
     </div>
 
-    <div class=”decision-round” id=”dRound2”>
-      <div class=”scenario”>决策三：产品A/B测试结果解读</div>
-      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：A/B测试显示新版转化率从4.2%提升到4.5%（n=10000/组）。团队建议立即全面上线。你最先检查什么？</p>
-      <div class=”d-option” onclick=”chooseDecision(2,0)” id=”dopt2_0”>A. 统计显著性——0.3个百分点差异是否可能只是随机波动？</div>
-      <div class=”d-option” onclick=”chooseDecision(2,1)” id=”dopt2_1”>B. 辛普森悖论——按渠道/设备分组后趋势是否反转？</div>
-      <div class=”d-option” onclick=”chooseDecision(2,2)” id=”dopt2_2”>C. 效应量+回归均值——提升的商业价值是否大于成本？基线是否异常？</div>
-      <div class=”d-result” id=”dres2”></div>
+    <div class="decision-round" id="dRound2">
+      <div class="scenario">决策三：产品A/B测试结果解读</div>
+      <p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">情境：A/B测试显示新版转化率从4.2%提升到4.5%（n=10000/组）。团队建议立即全面上线。你最先检查什么？</p>
+      <button class="d-option" onclick="chooseDecision(2,0)" id="dopt2_0">A. 统计显著性——0.3个百分点差异是否可能只是随机波动？</button>
+      <button class="d-option" onclick="chooseDecision(2,1)" id="dopt2_1">B. 辛普森悖论——按渠道/设备分组后趋势是否反转？</button>
+      <button class="d-option" onclick="chooseDecision(2,2)" id="dopt2_2">C. 效应量+回归均值——提升的商业价值是否大于成本？基线是否异常？</button>
+      <div class="d-result" id="dres2"></div>
     </div>
 
-    <div class=”decision-round” id=”dRound3”>
-      <div class=”scenario”>决策四：媒体报道的可信度评估</div>
-      <p style=”font-size:.85rem;color:var(--text-light);margin-bottom:10px”>情境：热传文章称”每天一杯红酒降低心脏病风险30%”。你该改变饮酒习惯吗？先检查什么？</p>
-      <div class=”d-option” onclick=”chooseDecision(3,0)” id=”dopt3_0”>A. 混淆变量——喝红酒的人收入更高、更爱运动？红酒只是伴随现象</div>
-      <div class=”d-option” onclick=”chooseDecision(3,1)” id=”dopt3_1”>B. 绝对风险vs相对风险——30%听起来大，绝对风险实际降了多少？</div>
-      <div class=”d-option” onclick=”chooseDecision(3,2)” id=”dopt3_2”>C. 研究前提——谁资助的？观察性还是实验性研究？</div>
-      <div class=”d-result” id=”dres3”></div>
+    <div class="decision-round" id="dRound3">
+      <div class="scenario">决策四：媒体报道的可信度评估</div>
+      <p style="font-size:.85rem;color:var(--text-light);margin-bottom:10px">情境：热传文章称"每天一杯红酒降低心脏病风险30%"。你该改变饮酒习惯吗？先检查什么？</p>
+      <button class="d-option" onclick="chooseDecision(3,0)" id="dopt3_0">A. 混淆变量——喝红酒的人收入更高、更爱运动？红酒只是伴随现象</button>
+      <button class="d-option" onclick="chooseDecision(3,1)" id="dopt3_1">B. 绝对风险vs相对风险——30%听起来大，绝对风险实际降了多少？</button>
+      <button class="d-option" onclick="chooseDecision(3,2)" id="dopt3_2">C. 研究前提——谁资助的？观察性还是实验性研究？</button>
+      <div class="d-result" id="dres3"></div>
     </div>
   </div>
 </div>
@@ -872,6 +872,7 @@ const saq = [
 // ==================== STATE ====================
 let activeTab = 0;
 let learnedCards = [];
+let wrongAnswers = [];
 let examAnswers = {};
 let examTimeLeft = 0;
 let examTimerId = null;
@@ -892,10 +893,11 @@ function load() {
     const d = JSON.parse(localStorage.getItem('mks_logic') || '{}');
     learnedCards = d.learnedCards || [];
     examAnswers = d.examAnswers || {};
+    wrongAnswers = d.wrongAnswers || [];
   } catch(e) {}
 }
 function save() {
-  localStorage.setItem('mks_logic', JSON.stringify({ learnedCards, examAnswers }));
+  localStorage.setItem('mks_logic', JSON.stringify({ learnedCards, examAnswers, wrongAnswers }));
 }
 
 // ==================== TABS ====================
@@ -940,11 +942,9 @@ function markLearned() {
   else { learnedCards.push(id); }
   save(); updateProgress(); setCard(currentCardIdx);
 }
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('flipInner').addEventListener('click', function() {
-    this.classList.toggle('flipped');
-    cardFlipped = !cardFlipped;
-  });
+document.getElementById('flipInner').addEventListener('click', function() {
+  this.classList.toggle('flipped');
+  cardFlipped = !cardFlipped;
 });
 
 function updateProgress() {
@@ -999,6 +999,10 @@ function checkMCQ(btn, qi, oi, ans, exp) {
   const fb = document.getElementById('fb' + qi);
   fb.textContent = (oi === ans ? '✅ 正确！' : '❌ 错误。正确答案是 ' + String.fromCharCode(65 + ans) + '。') + ' ' + exp;
   fb.className = 'q-feedback show ' + (oi === ans ? 'correct' : 'wrong');
+  if (oi !== ans) {
+    wrongAnswers.push({ q: btn.parentElement.querySelector('.q-stem').textContent, user: oi, correct: ans, exp: exp, time: Date.now() });
+    save();
+  }
 }
 function revealSAQ(si) {
   document.getElementById('sar' + si).classList.toggle('show');
@@ -1009,6 +1013,8 @@ function resetQuiz() {
 }
 
 // ==================== EXAM ====================
+let examQuestions = [];
+
 function startExam() {
   document.getElementById('examStartBtn').style.display = 'none';
   document.getElementById('examTimer').style.display = 'block';
@@ -1021,12 +1027,12 @@ function startExam() {
     if (examTimeLeft <= 0) { submitExam(); }
   }, 1000);
 
-  const shuffled = [...mcq].sort(() => Math.random() - 0.5);
+  examQuestions = [...mcq].sort(() => Math.random() - 0.5);
   let html = '';
-  shuffled.forEach((q, qi) => {
+  examQuestions.forEach((q, qi) => {
     html += '<div class="quiz-card"><div class="q-stem">' + (qi + 1) + '. ' + q.stem + '</div>';
     q.opts.forEach((opt, oi) => {
-      html += '<button class="q-option" id="ex' + qi + '_' + oi + '" onclick="selectExam(' + qi + ',' + oi + ',' + shuffled.length + ')">' + String.fromCharCode(65 + oi) + '. ' + opt + '</button>';
+      html += '<button class="q-option" id="ex' + qi + '_' + oi + '" onclick="selectExam(' + qi + ',' + oi + ')">' + String.fromCharCode(65 + oi) + '. ' + opt + '</button>';
     });
     html += '</div>';
   });
@@ -1040,7 +1046,7 @@ function updateExamTimer() {
   const s = examTimeLeft % 60;
   document.getElementById('examTimer').textContent = '剩余时间：' + m + ':' + (s < 10 ? '0' : '') + s;
 }
-function selectExam(qi, oi, total) {
+function selectExam(qi, oi) {
   for (let i = 0; i < 4; i++) {
     const btn = document.getElementById('ex' + qi + '_' + i);
     if (btn) btn.style.background = (i === oi) ? '#f5c6c0' : '';
@@ -1050,19 +1056,26 @@ function selectExam(qi, oi, total) {
 function submitExam() {
   if (examTimerId) { clearInterval(examTimerId); examTimerId = null; }
   document.getElementById('examTimer').style.display = 'none';
-  const shuffled = [...mcq].sort(() => Math.random() - 0.5);
   let score = 0;
-  for (let qi = 0; qi < shuffled.length; qi++) {
-    if (examAnswers[qi] === shuffled[qi].answer) score++;
-    const correctBtn = document.getElementById('ex' + qi + '_' + shuffled[qi].answer);
+  const total = examQuestions.length;
+  for (let qi = 0; qi < total; qi++) {
+    const correctIdx = examQuestions[qi].answer;
+    if (examAnswers[qi] === correctIdx) score++;
+    const correctBtn = document.getElementById('ex' + qi + '_' + correctIdx);
     if (correctBtn) correctBtn.style.background = '#d5f5e3';
-    if (examAnswers[qi] !== undefined && examAnswers[qi] !== shuffled[qi].answer) {
+    if (examAnswers[qi] !== undefined && examAnswers[qi] !== correctIdx) {
       const wrongBtn = document.getElementById('ex' + qi + '_' + examAnswers[qi]);
       if (wrongBtn) wrongBtn.style.background = '#fadbd8';
+      wrongAnswers.push({ q: examQuestions[qi].stem, user: examAnswers[qi], correct: correctIdx, exp: examQuestions[qi].exp, time: Date.now() });
+    }
+    // Disable all options after submit
+    for (let oi = 0; oi < 4; oi++) {
+      const btn = document.getElementById('ex' + qi + '_' + oi);
+      if (btn) btn.disabled = true;
     }
   }
   document.getElementById('examScore').style.display = 'block';
-  document.getElementById('examScore').innerHTML = '考试结束！你的得分：<strong>' + score + ' / ' + shuffled.length + '</strong>（' + Math.round(score / shuffled.length * 100) + '%）';
+  document.getElementById('examScore').innerHTML = '考试结束！你的得分：<strong>' + score + ' / ' + total + '</strong>（' + Math.round(score / total * 100) + '%）';
   save();
 }
 function resetExam() {
@@ -1073,28 +1086,43 @@ function resetExam() {
   document.getElementById('examStartBtn').style.display = 'inline-block';
   document.getElementById('examResetBtn').style.display = 'none';
   examAnswers = {};
+  examQuestions = [];
 }
 
 // ==================== REVIEW ====================
 function renderReview() {
   const unlearned = concepts.filter(c => !learnedCards.includes(c.id));
   let html = '';
+
+  // Show unlearned concepts
   if (unlearned.length > 0) {
     html += '<h3 style="color:var(--accent);margin-bottom:12px">未学习的概念（' + unlearned.length + '个）</h3>';
     unlearned.forEach(c => {
-      html += '<div class="quiz-card"><strong>' + c.name + '</strong>：' + c.def + '</div>';
+      html += '<div class="quiz-card"><strong>' + c.name + '</strong>：' + c.def + '<br><button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="switchTab(1)">去学习 &rarr;</button></div>';
+    });
+  } else {
+    html += '<p style="color:var(--success);text-align:center;padding:16px">✅ 全部概念已学习！</p>';
+  }
+
+  // Show wrong answers
+  if (wrongAnswers.length > 0) {
+    html += '<h3 style="color:var(--accent);margin:20px 0 12px">错题记录（' + wrongAnswers.length + '题）</h3>';
+    wrongAnswers.forEach((w, i) => {
+      const labels = ['A', 'B', 'C', 'D'];
+      html += '<div class="quiz-card">';
+      html += '<div class="q-stem">' + (i + 1) + '. ' + w.q + '</div>';
+      html += '<p style="color:var(--accent);font-size:.85rem">你的答案：<strong>' + labels[w.user] + '</strong> (' + labels[w.user] + ')</p>';
+      html += '<p style="color:var(--success);font-size:.85rem">正确答案：<strong>' + labels[w.correct] + '</strong></p>';
+      html += '<p style="font-size:.82rem;color:var(--text-light);margin-top:4px">' + w.exp + '</p>';
+      html += '</div>';
     });
   }
-  if (unlearned.length === 0 && Object.keys(examAnswers).length === 0) {
+
+  if (unlearned.length === 0 && wrongAnswers.length === 0) {
     document.getElementById('reviewEmpty').style.display = 'block';
-    document.getElementById('reviewContainer').innerHTML = document.getElementById('reviewContainer').innerHTML + html;
+    document.getElementById('reviewContainer').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:30px">暂无复习内容。请先在知识卡片中标记已学习，或在题库/考试中做题后查看错题。</p>';
   } else {
     document.getElementById('reviewEmpty').style.display = 'none';
-    if (unlearned.length === 0) html += '<p style="color:var(--success);text-align:center;padding:16px">✅ 全部概念已学习！</p>';
-    if (Object.keys(examAnswers).length > 0) {
-      html += '<h3 style="color:var(--accent);margin:20px 0 12px">已答题统计</h3>';
-      html += '<p>在最近一次考试中回答了 <strong>' + Object.keys(examAnswers).length + '</strong> 题。点击考试模式查看详细结果。</p>';
-    }
     document.getElementById('reviewContainer').innerHTML = html;
   }
 }
