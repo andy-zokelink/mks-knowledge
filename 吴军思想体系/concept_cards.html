@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>概念卡片墙 · 水面捞出</title>
+<title>概念卡片池 · 水面捞出</title>
 <style>
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,11 +64,11 @@ body.overlay-open { overflow: hidden; }
   position: absolute;
   inset: -35%;
   background:
-    radial-gradient(ellipse 600px 400px at 18% 28%, rgba(255,255,255,0.20) 0%, transparent 60%),
-    radial-gradient(ellipse 500px 350px at 72% 18%, rgba(255,255,255,0.15) 0%, transparent 55%),
-    radial-gradient(ellipse 520px 380px at 48% 68%, rgba(255,255,255,0.17) 0%, transparent 58%),
-    radial-gradient(ellipse 420px 300px at 82% 72%, rgba(255,255,255,0.11) 0%, transparent 50%),
-    radial-gradient(ellipse 360px 280px at 28% 78%, rgba(255,255,255,0.13) 0%, transparent 52%);
+    radial-gradient(ellipse 600px 400px at 18% 28%, rgba(255,255,255,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 350px at 72% 18%, rgba(255,255,255,0.17) 0%, transparent 55%),
+    radial-gradient(ellipse 520px 380px at 48% 68%, rgba(255,255,255,0.19) 0%, transparent 58%),
+    radial-gradient(ellipse 420px 300px at 82% 72%, rgba(255,255,255,0.13) 0%, transparent 50%),
+    radial-gradient(ellipse 360px 280px at 28% 78%, rgba(255,255,255,0.15) 0%, transparent 52%);
   animation: caustics-drift 14s ease-in-out infinite;
 }
 
@@ -78,10 +78,25 @@ body.overlay-open { overflow: hidden; }
   position: absolute;
   inset: -25%;
   background:
-    radial-gradient(ellipse 300px 200px at 22% 42%, rgba(255,255,255,0.09) 0%, transparent 50%),
-    radial-gradient(ellipse 260px 180px at 62% 32%, rgba(255,255,255,0.07) 0%, transparent 48%),
-    radial-gradient(ellipse 280px 190px at 44% 74%, rgba(255,255,255,0.08) 0%, transparent 52%);
+    radial-gradient(ellipse 300px 200px at 22% 42%, rgba(255,255,255,0.11) 0%, transparent 50%),
+    radial-gradient(ellipse 260px 180px at 62% 32%, rgba(255,255,255,0.09) 0%, transparent 48%),
+    radial-gradient(ellipse 280px 190px at 44% 74%, rgba(255,255,255,0.10) 0%, transparent 52%),
+    radial-gradient(ellipse 240px 160px at 78% 58%, rgba(255,255,255,0.08) 0%, transparent 50%);
   animation: caustics-drift 9s ease-in-out infinite reverse;
+}
+
+/* Extra caustics overlay for more light play */
+.caustics-extra {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background:
+    radial-gradient(ellipse 380px 240px at 30% 35%, rgba(200,235,250,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 340px 200px at 65% 55%, rgba(200,235,250,0.20) 0%, transparent 50%),
+    radial-gradient(ellipse 300px 220px at 50% 20%, rgba(220,245,255,0.22) 0%, transparent 52%);
+  animation: caustics-drift 12s ease-in-out infinite;
 }
 
 @keyframes caustics-drift {
@@ -111,52 +126,94 @@ body.overlay-open { overflow: hidden; }
   animation: rays-shift 22s linear infinite;
 }
 
-/* ===== Floating Overview Panel ===== */
-.floating-overview {
+@keyframes rays-shift {
+  0%   { transform: translateX(-6%) skewX(-2deg); }
+  50%  { transform: translateX(6%) skewX(2deg); }
+  100% { transform: translateX(-6%) skewX(-2deg); }
+}
+
+/* ===== Legend Panel — Top Left Fixed ===== */
+.legend-panel {
   position: fixed;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 16px;
+  left: 16px;
   z-index: 50;
   pointer-events: none;
-  background: rgba(255,255,255,0.38);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  border: 1px solid rgba(255,255,255,0.55);
-  border-radius: 18px;
-  padding: 10px 22px 12px;
-  box-shadow: 0 4px 24px rgba(60,110,140,0.10);
-  max-width: 94vw;
-  transition: all 0.4s ease;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  padding: 16px 20px 18px;
+  box-shadow: 0 4px 28px rgba(60, 110, 140, 0.12);
+  width: 260px;
+  max-width: calc(100vw - 32px);
+  transition: all 0.35s ease;
+  overflow: hidden;
 }
 
-.floating-overview .ov-title {
-  font-size: 0.82rem;
-  font-weight: 700;
+/* Water reflection line at top */
+.legend-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(140, 200, 225, 0.5) 15%,
+    rgba(200, 230, 245, 0.8) 35%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(200, 230, 245, 0.8) 65%,
+    rgba(140, 200, 225, 0.5) 85%,
+    transparent 100%
+  );
+  border-radius: 1px;
+}
+
+.legend-panel .legend-title {
+  font-size: 0.88rem;
+  font-weight: 800;
   color: #1a3040;
-  text-align: center;
-  margin-bottom: 6px;
-  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+  letter-spacing: 0.05em;
 }
 
-.floating-overview .ov-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-  justify-content: center;
-  font-size: 0.66rem;
+.legend-panel .legend-subtitle {
+  font-size: 0.65rem;
+  color: #5a7888;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.legend-panel .legend-divider {
+  border: none;
+  border-top: 1px dashed rgba(120, 170, 195, 0.25);
+  margin: 0 0 8px 0;
+}
+
+.legend-panel .legend-cats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+  font-size: 0.65rem;
   color: #4a6678;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-.floating-overview .ov-stat-item {
+.legend-panel .legend-cat-item {
   white-space: nowrap;
-  opacity: 0.8;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
 }
 
-.floating-overview .ov-stat-num {
+.legend-panel .legend-cat-num {
   font-weight: 700;
   color: #2a5068;
+  min-width: 20px;
+  text-align: right;
 }
 
 /* ===== Mouse Ripple Canvas ===== */
@@ -167,84 +224,130 @@ body.overlay-open { overflow: hidden; }
   pointer-events: none;
 }
 
-/* ===== Koi Fish ===== */
-.koi {
+/* ===== Raindrops ===== */
+.raindrop-container {
   position: fixed;
-  z-index: 4;
+  inset: 0;
+  z-index: 3;
   pointer-events: none;
-  font-size: 2.2rem;
-  opacity: 0.55;
-  filter: drop-shadow(0 2px 6px rgba(80,140,160,0.25));
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
 }
-.koi::after {
-  content: '';
+
+.raindrop {
   position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70px;
-  height: 30px;
-  background: radial-gradient(ellipse, rgba(160,210,230,0.25) 0%, transparent 70%);
+  width: 5px;
+  height: 8px;
+  background: linear-gradient(180deg,
+    rgba(180, 220, 240, 0.7) 0%,
+    rgba(140, 200, 225, 0.5) 100%
+  );
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  pointer-events: none;
+  filter: drop-shadow(0 0 2px rgba(160, 210, 235, 0.5));
+}
+
+.raindrop.falling {
+  animation: raindrop-fall var(--fall-duration, 0.6s) ease-in forwards;
+}
+
+@keyframes raindrop-fall {
+  0%   { transform: translateY(0); opacity: 0.7; }
+  70%  { opacity: 0.6; }
+  100% { transform: translateY(var(--fall-distance, 300px)); opacity: 0.3; }
+}
+
+/* Rain ripple — expands from impact point */
+.rain-ripple {
+  position: fixed;
+  pointer-events: none;
+  z-index: 4;
   border-radius: 50%;
-  animation: koi-ripple 2.5s ease-in-out infinite;
-}
-@keyframes koi-ripple {
-  0%,100% { opacity: 0.5; transform: translateX(-50%) scale(0.7); }
-  50%     { opacity: 1; transform: translateX(-50%) scale(1.2); }
+  border: 1.5px solid rgba(180, 215, 235, 0.55);
+  background: radial-gradient(circle, rgba(190, 220, 240, 0.15) 0%, transparent 65%);
+  transform: translate(-50%, -50%);
 }
 
-.koi-1 {
-  top: 18%;
-  animation-name: koi-swim-1;
-  animation-duration: 16s;
-}
-.koi-2 {
-  top: 55%;
-  animation-name: koi-swim-2;
-  animation-duration: 19s;
-  animation-delay: -7s;
-  font-size: 1.8rem;
-  opacity: 0.40;
-}
-.koi-3 {
-  top: 75%;
-  animation-name: koi-swim-3;
-  animation-duration: 22s;
-  animation-delay: -13s;
-  font-size: 1.6rem;
-  opacity: 0.35;
+.rain-ripple.animating {
+  animation: rain-ripple-expand 1.6s ease-out forwards;
 }
 
-@keyframes koi-swim-1 {
-  0%   { left: -5%; transform: scaleX(1) translateY(0); }
-  25%  { left: 30%; transform: scaleX(1) translateY(-18px); }
-  50%  { left: 65%; transform: scaleX(1) translateY(8px); }
-  75%  { left: 88%; transform: scaleX(1) translateY(-10px); }
-  80%  { left: 92%; transform: scaleX(-1) translateY(0); }
-  100% { left: -5%; transform: scaleX(-1) translateY(5px); }
-}
-@keyframes koi-swim-2 {
-  0%   { left: 105%; transform: scaleX(-1) translateY(0); }
-  20%  { left: 78%; transform: scaleX(-1) translateY(-12px); }
-  45%  { left: 42%; transform: scaleX(-1) translateY(6px); }
-  65%  { left: 12%; transform: scaleX(-1) translateY(-8px); }
-  70%  { left: 8%; transform: scaleX(1) translateY(0); }
-  100% { left: 105%; transform: scaleX(1) translateY(-4px); }
-}
-@keyframes koi-swim-3 {
-  0%   { left: -8%; transform: scaleX(1) translateY(0); }
-  30%  { left: 40%; transform: scaleX(1) translateY(-14px); }
-  55%  { left: 72%; transform: scaleX(1) translateY(10px); }
-  75%  { left: 95%; transform: scaleX(-1) translateY(-6px); }
-  100% { left: -8%; transform: scaleX(-1) translateY(3px); }
+@keyframes rain-ripple-expand {
+  0%   { width: 6px; height: 6px; opacity: 0.7; }
+  100% { width: 140px; height: 140px; opacity: 0; }
 }
 
-@keyframes rays-shift {
-  0%   { transform: translateX(-6%) skewX(-2deg); }
-  50%  { transform: translateX(6%) skewX(2deg); }
-  100% { transform: translateX(-6%) skewX(-2deg); }
+/* ===== Bubbles ===== */
+.bubble-container {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(220, 240, 250, 0.45) 0%,
+    rgba(140, 200, 225, 0.12) 60%,
+    rgba(140, 200, 225, 0.03) 100%
+  );
+  border: 1px solid rgba(180, 215, 235, 0.25);
+  pointer-events: none;
+  animation: bubble-rise var(--bubble-dur, 7s) ease-in-out var(--bubble-delay, 0s) infinite;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.55;
+  }
+  40% {
+    transform: translateY(calc(-40vh)) translateX(var(--wobble-1, 8px)) scale(1);
+    opacity: 0.45;
+  }
+  70% {
+    transform: translateY(calc(-75vh)) translateX(var(--wobble-2, -6px)) scale(0.9);
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(calc(-105vh)) translateX(var(--wobble-3, 4px)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ===== Seaweed silhouettes ===== */
+.seaweed-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+  height: 160px;
+}
+
+.seaweed {
+  position: absolute;
+  bottom: 0;
+  opacity: 0.08;
+  transform-origin: bottom center;
+  animation: seaweed-sway var(--sway-dur, 7s) ease-in-out var(--sway-delay, 0s) infinite;
+}
+
+.seaweed svg {
+  display: block;
+}
+
+@keyframes seaweed-sway {
+  0%, 100% { transform: rotate(0deg) scaleY(1); }
+  25%      { transform: rotate(1.5deg) scaleY(1.02); }
+  50%      { transform: rotate(-1deg) scaleY(0.99); }
+  75%      { transform: rotate(1.2deg) scaleY(1.01); }
 }
 
 /* ===== Page ===== */
@@ -255,24 +358,9 @@ body.overlay-open { overflow: hidden; }
   padding: 24px 20px 48px;
 }
 
+/* Remove the old centered title — legend panel replaces it */
 .page-title {
-  text-align: center;
-  padding: 12px 0 4px;
-}
-
-.page-title h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: rgba(26, 52, 64, 0.72);
-  text-shadow: 0 1px 2px rgba(255,255,255,0.55);
-}
-
-.page-title p {
-  margin-top: 4px;
-  font-size: 0.84rem;
-  color: rgba(60, 96, 112, 0.50);
-  letter-spacing: 0.04em;
+  display: none;
 }
 
 /* ===== Card Grid ===== */
@@ -650,9 +738,15 @@ body.overlay-open { overflow: hidden; }
   .detail-card-inner { padding: 28px 22px 24px; grid-template-columns: 1fr; gap: 0; }
   .detail-card-inner .detail-body-extras { grid-column: 1; }
   .detail-name { font-size: 1.45rem; }
-  .floating-overview { padding: 8px 14px 10px; }
-  .floating-overview .ov-title { font-size: 0.72rem; }
-  .floating-overview .ov-stats { font-size: 0.58rem; gap: 2px 6px; }
+  .legend-panel {
+    width: 220px;
+    padding: 12px 14px 14px;
+    top: 8px;
+    left: 8px;
+  }
+  .legend-panel .legend-title { font-size: 0.78rem; }
+  .legend-panel .legend-subtitle { font-size: 0.60rem; }
+  .legend-panel .legend-cats { font-size: 0.60rem; }
 }
 
 @media (max-width: 480px) {
@@ -672,21 +766,41 @@ body.overlay-open { overflow: hidden; }
   .detail-card-inner { padding: 24px 18px 20px; }
   .detail-name { font-size: 1.30rem; }
   .close-btn { top: 14px; right: 14px; width: 36px; height: 36px; font-size: 1rem; }
+  .legend-panel {
+    width: 180px;
+    padding: 10px 12px 12px;
+    top: 6px;
+    left: 6px;
+    border-radius: 12px;
+  }
+  .legend-panel .legend-title { font-size: 0.72rem; }
+  .legend-panel .legend-subtitle { font-size: 0.56rem; }
+  .legend-panel .legend-cats { font-size: 0.56rem; gap: 1px 6px; }
 }
 </style>
 </head>
 <body>
 
 <div class="water-bg"></div>
+<div class="caustics-extra"></div>
 <div class="light-rays"></div>
 <canvas id="rippleCanvas"></canvas>
-<div class="koi koi-1">🐟</div>
-<div class="koi koi-2">🐠</div>
-<div class="koi koi-3">🐡</div>
 
-<div class="floating-overview" id="floatingOverview">
-  <div class="ov-title">概念卡片墙 · <span id="ovTotal">238</span> 个核心概念</div>
-  <div class="ov-stats" id="ovStats"></div>
+<!-- Raindrops + ripples container -->
+<div class="raindrop-container" id="raindropContainer"></div>
+
+<!-- Bubbles container -->
+<div class="bubble-container" id="bubbleContainer"></div>
+
+<!-- Seaweed silhouettes at pool bottom -->
+<div class="seaweed-container" id="seaweedContainer"></div>
+
+<!-- Legend Panel — fixed top-left -->
+<div class="legend-panel" id="legendPanel">
+  <div class="legend-title">概念卡片池</div>
+  <div class="legend-subtitle"><span id="legendTotal">238</span> 个核心概念 · <span id="legendCatCount">15</span> 个类别</div>
+  <hr class="legend-divider">
+  <div class="legend-cats" id="legendCats"></div>
 </div>
 
 <div class="page">
@@ -1008,8 +1122,8 @@ body.overlay-open { overflow: hidden; }
   });
 
   // ── Helpers ────────────────────────────────────────────
-  // ── Render floating overview ──────────────────────────
-  function renderOverview() {
+  // ── Render legend panel ────────────────────────────────
+  function renderLegend() {
     var cats = {};
     CONCEPTS.forEach(function(c) {
       cats[c.category] = (cats[c.category] || 0) + 1;
@@ -1017,10 +1131,11 @@ body.overlay-open { overflow: hidden; }
     var sorted = Object.entries(cats).sort(function(a, b) { return b[1] - a[1]; });
     var html = '';
     sorted.forEach(function(pair) {
-      html += '<span class="ov-stat-item"><span class="ov-stat-num">' + pair[1] + '</span> ' + escHtml(pair[0]) + '</span>';
+      html += '<span class="legend-cat-item"><span>' + escHtml(pair[0]) + '</span><span class="legend-cat-num">' + pair[1] + '</span></span>';
     });
-    document.getElementById('ovStats').innerHTML = html;
-    document.getElementById('ovTotal').textContent = CONCEPTS.length;
+    document.getElementById('legendCats').innerHTML = html;
+    document.getElementById('legendTotal').textContent = CONCEPTS.length;
+    document.getElementById('legendCatCount').textContent = sorted.length;
   }
 
   function escHtml(str) {
@@ -1029,13 +1144,14 @@ body.overlay-open { overflow: hidden; }
     return div.innerHTML;
   }
 
-  // ── Mouse Ripple Trail ──────────────────────────────────
+  // ── Mouse Ripple Trail (Enhanced) ──────────────────────
   (function() {
     var canvas = document.getElementById('rippleCanvas');
     var ctx = canvas.getContext('2d');
     var ripples = [];
     var mouseX = -100, mouseY = -100;
     var lastRippleTime = 0;
+    var prevMouseX = -100, prevMouseY = -100;
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -1045,50 +1161,77 @@ body.overlay-open { overflow: hidden; }
     window.addEventListener('resize', resize);
 
     document.addEventListener('mousemove', function(e) {
+      prevMouseX = mouseX;
+      prevMouseY = mouseY;
       mouseX = e.clientX;
       mouseY = e.clientY;
       var now = Date.now();
-      if (now - lastRippleTime > 60) {
-        ripples.push({ x: mouseX, y: mouseY, r: 0, opacity: 0.5, life: 1 });
+      if (now - lastRippleTime > 40) {  // was 60ms — denser ripples
+        ripples.push({ x: mouseX, y: mouseY, r: 0, opacity: 0.55, life: 1 });
         lastRippleTime = now;
-        if (ripples.length > 40) ripples.shift();
+        if (ripples.length > 60) ripples.shift();  // was 40 — keep more
       }
+    });
+
+    // Also leave a trail when mouse is between grid updates
+    document.addEventListener('mouseleave', function() {
+      mouseX = -100;
+      mouseY = -100;
     });
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Small glow at mouse position
-      if (mouseX > 0) {
-        var glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 50);
-        glow.addColorStop(0, 'rgba(180, 220, 240, 0.18)');
-        glow.addColorStop(0.5, 'rgba(140, 200, 225, 0.06)');
+      // Persistent glow at mouse position — larger, more visible
+      if (mouseX > 0 && mouseY > 0) {
+        var glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 140);
+        glow.addColorStop(0, 'rgba(180, 220, 240, 0.34)');
+        glow.addColorStop(0.3, 'rgba(155, 215, 235, 0.20)');
+        glow.addColorStop(0.6, 'rgba(140, 200, 225, 0.08)');
         glow.addColorStop(1, 'rgba(140, 200, 225, 0)');
         ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 50, 0, Math.PI * 2);
+        ctx.arc(mouseX, mouseY, 140, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Inner brighter core
+        var coreGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 40);
+        coreGlow.addColorStop(0, 'rgba(210, 240, 250, 0.40)');
+        coreGlow.addColorStop(0.5, 'rgba(180, 225, 240, 0.15)');
+        coreGlow.addColorStop(1, 'rgba(150, 210, 230, 0)');
+        ctx.fillStyle = coreGlow;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, 40, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // Animate ripples
+      // Animate ripples — expand further, higher opacity
       for (var i = ripples.length - 1; i >= 0; i--) {
         var r = ripples[i];
-        r.r += 1.2;
-        r.life -= 0.018;
-        r.opacity = r.life * 0.4;
+        r.r += 1.5;  // faster expansion
+        r.life -= 0.010;  // slower fade → larger max radius
+        r.opacity = r.life * 0.55;
         if (r.life <= 0) { ripples.splice(i, 1); continue; }
 
+        // Main ring
         ctx.beginPath();
         ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(150, 210, 235,' + r.opacity + ')';
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(150, 210, 235,' + (r.opacity * 0.7) + ')';
+        ctx.lineWidth = 1.6;
         ctx.stroke();
 
         // Inner softer ring
         ctx.beginPath();
-        ctx.arc(r.x, r.y, r.r * 0.6, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(180, 220, 240,' + (r.opacity * 0.6) + ')';
-        ctx.lineWidth = 0.8;
+        ctx.arc(r.x, r.y, r.r * 0.55, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(180, 220, 240,' + (r.opacity * 0.5) + ')';
+        ctx.lineWidth = 1.0;
+        ctx.stroke();
+
+        // Outer faint ring
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.r * 1.4, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(170, 215, 235,' + (r.opacity * 0.25) + ')';
+        ctx.lineWidth = 0.7;
         ctx.stroke();
       }
 
@@ -1097,16 +1240,144 @@ body.overlay-open { overflow: hidden; }
     draw();
   })();
 
+  // ── Raindrop System ─────────────────────────────────────
+  (function() {
+    var container = document.getElementById('raindropContainer');
+    var maxDrops = 8;
+    var activeDrops = 0;
+    var dropIndex = 0;
+
+    function createRaindrop() {
+      if (activeDrops >= maxDrops) return;
+      activeDrops++;
+
+      var x = Math.random() * window.innerWidth;
+      // Water surface level — where the drop hits (varies slightly)
+      var surfaceY = window.innerHeight * (0.4 + Math.random() * 0.45);
+      var fallDistance = surfaceY + 10; // start just above visible area
+
+      var drop = document.createElement('div');
+      drop.className = 'raindrop falling';
+      drop.style.left = x + 'px';
+      drop.style.top = '-12px';
+      drop.style.setProperty('--fall-distance', surfaceY + 'px');
+      drop.style.setProperty('--fall-duration', (0.45 + Math.random() * 0.35) + 's');
+      drop.dataset.surfaceY = surfaceY;
+      drop.dataset.dropX = x;
+      container.appendChild(drop);
+
+      // When the drop finishes falling, create ripple at impact point
+      drop.addEventListener('animationend', function() {
+        drop.remove();
+        // Create ripple at impact point
+        createRainRipple(parseFloat(drop.dataset.dropX), parseFloat(drop.dataset.surfaceY));
+        activeDrops--;
+      });
+
+      // Fallback cleanup
+      var dur = parseFloat(drop.style.getPropertyValue('--fall-duration')) * 1000 + 200;
+      setTimeout(function() {
+        if (drop.parentNode) {
+          createRainRipple(parseFloat(drop.dataset.dropX), parseFloat(drop.dataset.surfaceY));
+          drop.remove();
+          activeDrops--;
+        }
+      }, dur);
+    }
+
+    function createRainRipple(x, y) {
+      var ripple = document.createElement('div');
+      ripple.className = 'rain-ripple animating';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      document.body.appendChild(ripple);
+
+      ripple.addEventListener('animationend', function() { ripple.remove(); });
+      // Fallback
+      setTimeout(function() { if (ripple.parentNode) ripple.remove(); }, 1800);
+    }
+
+    // Spawn raindrops at random intervals
+    function scheduleNext() {
+      var delay = 1200 + Math.random() * 2200;
+      setTimeout(function() {
+        createRaindrop();
+        scheduleNext();
+      }, delay);
+    }
+
+    // Start with 2 drops immediately for quick visual feedback
+    setTimeout(function() { createRaindrop(); }, 400);
+    setTimeout(function() { createRaindrop(); }, 900);
+    scheduleNext();
+  })();
+
+  // ── Bubble System ──────────────────────────────────────
+  (function() {
+    var container = document.getElementById('bubbleContainer');
+    var bubbleCount = 18;
+
+    for (var i = 0; i < bubbleCount; i++) {
+      var bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      var size = 4 + Math.random() * 14;
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = (Math.random() * 94) + '%';
+      bubble.style.setProperty('--bubble-dur', (6 + Math.random() * 12) + 's');
+      bubble.style.setProperty('--bubble-delay', (Math.random() * 14) + 's');
+      bubble.style.setProperty('--wobble-1', ((Math.random() - 0.5) * 20) + 'px');
+      bubble.style.setProperty('--wobble-2', ((Math.random() - 0.5) * 16) + 'px');
+      bubble.style.setProperty('--wobble-3', ((Math.random() - 0.5) * 12) + 'px');
+      container.appendChild(bubble);
+    }
+  })();
+
+  // ── Seaweed Silhouettes ────────────────────────────────
+  (function() {
+    var container = document.getElementById('seaweedContainer');
+    // Generate simple SVG seaweed shapes
+    var seaweedDefs = [
+      { x: '5%', w: 20, h: 90, swayDur: '6s', swayDelay: '0s', opacity: 0.10 },
+      { x: '14%', w: 14, h: 70, swayDur: '7.5s', swayDelay: '-2s', opacity: 0.08 },
+      { x: '22%', w: 24, h: 110, swayDur: '5.5s', swayDelay: '-4s', opacity: 0.11 },
+      { x: '35%', w: 16, h: 60, swayDur: '8s', swayDelay: '-1s', opacity: 0.07 },
+      { x: '48%', w: 18, h: 85, swayDur: '6.5s', swayDelay: '-3s', opacity: 0.10 },
+      { x: '60%', w: 22, h: 100, swayDur: '7s', swayDelay: '-5s', opacity: 0.09 },
+      { x: '72%', w: 15, h: 75, swayDur: '5.8s', swayDelay: '-2.5s', opacity: 0.08 },
+      { x: '82%', w: 20, h: 95, swayDur: '6.8s', swayDelay: '-1.5s', opacity: 0.10 },
+      { x: '92%', w: 12, h: 55, swayDur: '7.2s', swayDelay: '-3.5s', opacity: 0.07 },
+    ];
+
+    seaweedDefs.forEach(function(def) {
+      var weed = document.createElement('div');
+      weed.className = 'seaweed';
+      weed.style.left = def.x;
+      weed.style.setProperty('--sway-dur', def.swayDur);
+      weed.style.setProperty('--sway-delay', def.swayDelay);
+      weed.style.opacity = def.opacity;
+
+      // Simple blade-of-grass SVG
+      var svg = '<svg width="' + (def.w * 2) + '" height="' + def.h + '" viewBox="0 0 ' + (def.w * 2) + ' ' + def.h + '">' +
+        '<ellipse cx="' + def.w + '" cy="' + (def.h * 0.85) + '" rx="' + (def.w * 0.25) + '" ry="' + (def.h * 0.8) + '" fill="#5a8a6a" opacity="0.6"/>' +
+        '<ellipse cx="' + (def.w * 0.65) + '" cy="' + (def.h * 0.75) + '" rx="' + (def.w * 0.18) + '" ry="' + (def.h * 0.6) + '" fill="#4a7a5a" opacity="0.5"/>' +
+        '<ellipse cx="' + (def.w * 1.35) + '" cy="' + (def.h * 0.8) + '" rx="' + (def.w * 0.2) + '" ry="' + (def.h * 0.7) + '" fill="#5a8a6a" opacity="0.5"/>' +
+        '</svg>';
+      weed.innerHTML = svg;
+      container.appendChild(weed);
+    });
+  })();
+
   // ── Init ───────────────────────────────────────────────
   if (CONCEPTS.length > 0) {
     renderGrid();
-    renderOverview();
+    renderLegend();
   } else {
     grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#889;padding:60px 0;">概念数据加载中…</p>';
     window.addEventListener('load', function() {
       if (window.CONCEPTS && window.CONCEPTS.length > 0 && !grid.children.length) {
         renderGrid();
-        renderOverview();
+        renderLegend();
       }
     });
   }
