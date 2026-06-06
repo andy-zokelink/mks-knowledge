@@ -9,11 +9,15 @@
   --bg: #fdf6ec;
   --card: #fffaf2;
   --accent: #c0392b;
+  --accent2: #d4a574;
   --text: #3d2f2f;
+  --text2: #6b5555;
   --text-light: #6b5b5b;
   --border: #e8d5c4;
+  --gold: #b8860b;
   --success: #27ae60;
-  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(60,20,10,.08);
+  --radius: 12px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -21,36 +25,46 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
-  padding-top: 56px;
+  padding-top: 0;
 }
 .top-bar {
   position: sticky; top: 0; z-index: 100;
-  background: linear-gradient(135deg, #3d2f2f, #5a3e3e);
-  color: #fffaf2; padding: 0 24px;
+  background: linear-gradient(135deg, #3d2f2f 0%, #5a3e3e 100%);
+  color: #fdf6ec; padding: 10px 16px;
   display: flex; align-items: center; justify-content: space-between;
-  height: 56px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  flex-wrap: wrap; gap: 8px;
 }
-.top-bar .title { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; }
-.top-bar .home-link { color: #f0d9b5; text-decoration: none; font-size: 0.9rem; }
-.top-bar .home-link:hover { color: #fff; }
-.container { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+.top-bar h1 { font-size: clamp(14px, 2.5vw, 18px); font-weight: 600; white-space: nowrap; }
+.top-bar .home-link {
+  color: #d4a574; font-size: 13px; border: 1px solid #d4a574;
+  padding: 3px 10px; border-radius: 14px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.top-bar .home-link:hover { background: #d4a574; color: #3d2f2f; text-decoration: none; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 clamp(12px, 3vw, 24px); }
 
 /* Tab Navigation */
 .tab-bar {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  margin-bottom: 28px; border-bottom: 2px solid var(--border);
-  padding-bottom: 12px;
+  position: sticky; top: 44px; z-index: 99;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  background: var(--bg);
+  padding: 8px 0 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  justify-content: center;
 }
 .tab-btn {
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text-light); padding: 8px 16px;
-  border-radius: 20px; cursor: pointer; font-size: 0.88rem;
-  transition: all 0.25s; white-space: nowrap;
+  padding: 7px clamp(8px, 2vw, 16px);
+  border: 1px solid var(--border);
+  background: var(--card); color: var(--text);
+  cursor: pointer; font-size: clamp(0.72rem, 1.6vw, 0.88rem);
+  border-radius: 6px; transition: all 0.2s;
+  font-family: inherit; white-space: nowrap;
 }
-.tab-btn:hover { background: #fef0e0; color: var(--accent); }
+.tab-btn:hover { border-color: var(--accent); color: var(--accent); }
 .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 .tab-panel { display: none; }
-.tab-panel.show { display: block; animation: fadeIn 0.35s ease; }
+.tab-panel.active { display: block; animation: fadeIn 0.35s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Cards & Sections */
@@ -65,9 +79,8 @@ body {
 .star { color: #e67e22; }
 
 /* Flip Card — Golden Standard */
-.flip-card-grid { display: flex; flex-direction: column; align-items: center; }
-.flip-card { position: relative; perspective: 1000px; height: clamp(220px,40vw,280px); margin-bottom: 14px; width: 100%; max-width: 500px; }
-.flip-inner { position: absolute; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; cursor: pointer; }
+.flip-card { perspective: 1000px; height: clamp(220px,40vw,280px); margin-bottom: 14px; }
+.flip-inner { position: relative; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; cursor: pointer; }
 .flip-inner.flipped { transform: rotateY(180deg); }
 .flip-front, .flip-back {
   position: absolute; width: 100%; height: 100%;
@@ -89,17 +102,18 @@ body {
 
 /* Buttons */
 .btn {
-  display: inline-block; padding: 10px 20px; border-radius: 8px;
-  border: none; cursor: pointer; font-size: 0.9rem; font-family: inherit;
+  display: inline-block; padding: 10px 24px; border-radius: 20px;
+  border: 2px solid var(--accent); cursor: pointer; font-size: 0.88rem;
+  font-family: inherit; font-weight: 700;
   transition: all 0.2s; text-decoration: none;
   background: var(--accent); color: #fff;
 }
-.btn:hover { background: #a93226; }
-.btn-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+.btn:hover { background: #a93226; border-color: #a93226; }
+.btn-outline { background: transparent; color: var(--accent); }
 .btn-outline:hover { background: var(--accent); color: #fff; }
-.btn-success { background: var(--success); color: #fff; }
-.btn-success:hover { background: #219a52; }
-.btn-sm { padding: 6px 14px; font-size: 0.82rem; }
+.btn-success { background: #4caf50; border-color: #4caf50; color: #fff; }
+.btn-success:hover { background: #388e3c; border-color: #388e3c; }
+.btn-sm { padding: 6px 14px; font-size: 0.78rem; }
 
 /* Progress Bar */
 .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; margin: 10px 0; overflow: hidden; }
@@ -110,8 +124,8 @@ body {
 .quiz-card .q-stem { font-weight: 600; margin-bottom: 12px; }
 .q-option { display: block; width: 100%; text-align: left; padding: 10px 16px; margin: 6px 0; background: #fdf6ec; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: all 0.2s; }
 .q-option:hover { background: #fef0e0; border-color: var(--accent); }
-.q-option.correct { background: #d5f5e3; border-color: var(--success); color: #1e8449; }
-.q-option.wrong { background: #fadbd8; border-color: #e74c3c; color: #c0392b; }
+.q-option.correct { background: #d4edda !important; border-color: var(--success) !important; color: #155724 !important; }
+.q-option.wrong { background: #f8d7da !important; border-color: #e74c3c !important; color: #721c24 !important; }
 .q-feedback { font-size: 0.85rem; margin-top: 8px; padding: 8px 12px; border-radius: 6px; display: none; }
 .q-feedback.show { display: block; }
 .q-feedback.correct { background: #eafaf1; color: #1e8449; }
@@ -127,13 +141,26 @@ body {
 .svg-wrap svg { max-width: 100%; height: auto; }
 
 /* Mindmap */
-.mindmap { padding: 10px 0; }
-.node-header { cursor: pointer; padding: 10px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
-.node-header:hover { background: #fef0e0; }
-.node-header .arrow { transition: transform 0.3s; font-size: 0.75rem; }
-.node-header.open .arrow { transform: rotate(90deg); }
-.node-body { display: none; padding: 6px 0 12px 28px; font-size: 0.88rem; color: var(--text-light); }
-.node-body.open { display: block; }
+.mindmap { padding: 0; }
+.mindmap .node { margin-left: 20px; }
+.mindmap .node-header { cursor: pointer; padding: 6px 0; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+.mindmap .node-header::before { content: "▸"; display: inline-block; transition: transform 0.2s; font-size: 0.7rem; }
+.mindmap .node-header.open::before { transform: rotate(90deg); }
+.mindmap .node-children { display: none; margin-left: 16px; border-left: 2px solid var(--border); padding-left: 10px; }
+.mindmap .node-children.open { display: block; }
+.mindmap .leaf { padding: 3px 0; font-size: 0.88rem; color: var(--text); }
+
+/* Socratic Q&A */
+.soc-item { margin-bottom: 16px; }
+.soc-q { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+.soc-q:hover { border-color: var(--accent); }
+.soc-a { display: none; padding: 14px; background: #fffefb; border-radius: 0 0 10px 10px; border: 1px solid var(--border); border-top: none; font-size: 0.88rem; color: var(--text-light); margin-bottom: 8px; }
+.soc-a.show { display: block; }
+
+/* Case Study */
+.case-section { margin-bottom: 16px; }
+.case-section h4 { color: var(--accent); margin-bottom: 6px; }
+.case-section p { font-size: 0.88rem; color: var(--text-light); }
 
 /* Tables */
 .tbl { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; }
@@ -161,9 +188,8 @@ body {
 /* Responsive */
 @media (max-width: 600px) {
   .container { padding: 16px 10px 40px; }
-  .top-bar { padding: 0 12px; }
-  .top-bar .title { font-size: 0.92rem; }
-  .tab-btn { padding: 6px 10px; font-size: 0.78rem; }
+  .top-bar { padding: 8px 12px; }
+  .tab-btn { padding: 6px 10px; font-size: 0.72rem; }
   .section { padding: 18px 14px; }
   .flip-card { height: clamp(200px,55vw,260px); }
 }
@@ -172,8 +198,8 @@ body {
 <body>
 
 <div class="top-bar">
-  <span class="title">逻辑思维训练50讲 · 最小知识集</span>
-  <a href="index.html" class="home-link">&larr; 返回知识主板</a>
+  <h1>逻辑思维训练50讲 · 最小知识集</h1>
+  <a class="home-link" href="index.html" title="返回知识主板">← 知识主板</a>
 </div>
 
 <div class="container">
@@ -192,7 +218,7 @@ body {
 </div>
 
 <!-- Tab 0: 知识集总览 -->
-<div class="tab-panel show" id="tab0">
+<div class="tab-panel active" id="tab0">
   <!-- 核心目标 -->
   <div class="section">
     <h2>核心目标</h2>
@@ -223,9 +249,9 @@ body {
     <div style="margin-top:12px">
       <p><span class="star">&starf; 命题</span> — <strong>骨架中的骨架</strong>。一切逻辑推理的原子单元。不会把想法变成可验证的命题，后面的所有推理工具都用不上。清晰表达是逻辑的起点。</p>
       <p><span class="star">&starf; 三段论</span> — 演绎推理的核心引擎。掌握直言/选言/假言三种三段论及其有效性条件，就能判断绝大多数日常论证的可靠性。</p>
-      <p><span class="star">&starf; 谓词逻辑</span> — 从命题逻辑到科学推理的桥梁。全称量词&forall;和存在量词&exist;的转换规则，是区分“所有都不”与“不都”的关键。</p>
+      <p><span class="star">&starf; 谓词逻辑</span> — 从命题逻辑到科学推理的桥梁。全称量词&forall;和存在量词&exist;的转换规则，是区分"所有都不"与"不都"的关键。</p>
       <p><span class="star">&starf; 证伪</span> — 科学与伪科学的分界线。一个反例胜过一千个支持案例。理解证伪就理解了科学方法的本质。</p>
-      <p><span class="star">&starf; 相关性与因果</span> — 统计思维的核心。绝大多数人在这一点上犯错。会区分“有关联”和“有因果”，就超越了90%的日常论证。</p>
+      <p><span class="star">&starf; 相关性与因果</span> — 统计思维的核心。绝大多数人在这一点上犯错。会区分"有关联"和"有因果"，就超越了90%的日常论证。</p>
     </div>
   </div>
 
@@ -396,15 +422,15 @@ body {
       <tr><td>德摩根律</td><td>复杂命题否定化简：&not;(A&and;B)=&not;A&or;&not;B；正向推理困难时逆向求解</td></tr>
       <tr><td>逆否命题</td><td>原命题难证时，证其逆否命题等价成立；改变劝说话气</td></tr>
       <tr><td>矛盾律 &amp; 排中律</td><td>反证法基础；识别自相矛盾的言论；投资对冲策略设计</td></tr>
-      <tr><td>否定之否定律</td><td>简化双重否定表达；注意自然语言中“不是不爱你”不等于“爱你”</td></tr>
-      <tr><td>统治律（Domination）</td><td>复杂合取命题化简：P&and;F=F，P&and;T=P；识别“言多必失”的逻辑原理</td></tr>
+      <tr><td>否定之否定律</td><td>简化双重否定表达；注意自然语言中"不是不爱你"不等于"爱你"</td></tr>
+      <tr><td>统治律（Domination）</td><td>复杂合取命题化简：P&and;F=F，P&and;T=P；识别"言多必失"的逻辑原理</td></tr>
       <tr><td>数学归纳法</td><td>证明对所有自然数成立的命题；谓词逻辑典型应用</td></tr>
       <tr><td>公理体系</td><td>无需前提的绝对真理；任何学科可从公理演绎出完整体系</td></tr>
       <tr><td>双盲实验</td><td>医学/社会科学中消除安慰剂效应和观察者偏差的标准方法</td></tr>
       <tr><td>线性回归</td><td>量化两个变量间的线性关系强度；预测与因果推断的基础工具</td></tr>
       <tr><td>统计显著性</td><td>判断观测到的差异是否可能由随机因素导致；p值的基本理解</td></tr>
       <tr><td>幸存者偏差</td><td>只看到成功案例而忽略失败样本；投资/创业/历史研究常见陷阱</td></tr>
-      <tr><td>辛普森悖论</td><td>分组数据趋势与汇总趋势相反；数据分析中的“反转”现象</td></tr>
+      <tr><td>辛普森悖论</td><td>分组数据趋势与汇总趋势相反；数据分析中的"反转"现象</td></tr>
     </table>
   </div>
 
@@ -415,13 +441,13 @@ body {
       <p><strong>阶段一：形式逻辑基础</strong>（4-6小时）</p>
       <p style="margin-left:16px;color:var(--text-light)">命题构建 &rarr; 与或非运算 &rarr; 蕴含等价关系 &rarr; 三段论推理 &rarr; 逻辑定律化简。重点：能把日常表达转化为命题，能用三段论检验论证有效性。</p>
       <p style="margin-top:10px"><strong>阶段二：谓词逻辑与科学推理</strong>（3-4小时）</p>
-      <p style="margin-left:16px;color:var(--text-light)">全称/存在量词 &rarr; 命题否定规则 &rarr; 数学归纳法 &rarr; 证伪原则 &rarr; 必然性与可能性。重点：掌握“所有都”与“不都”的精确定义。</p>
+      <p style="margin-left:16px;color:var(--text-light)">全称/存在量词 &rarr; 命题否定规则 &rarr; 数学归纳法 &rarr; 证伪原则 &rarr; 必然性与可能性。重点：掌握"所有都"与"不都"的精确定义。</p>
       <p style="margin-top:10px"><strong>阶段三：逻辑谬误识别</strong>（2-3小时）</p>
-      <p style="margin-left:16px;color:var(--text-light)">学习7种经典谬误的辨别方法，用真实案例训练“一眼看穿”的能力。重点：在实际讨论中快速定位对方的逻辑错误类型。</p>
+      <p style="margin-left:16px;color:var(--text-light)">学习7种经典谬误的辨别方法，用真实案例训练"一眼看穿"的能力。重点：在实际讨论中快速定位对方的逻辑错误类型。</p>
       <p style="margin-top:10px"><strong>阶段四：数据思维工具</strong>（4-5小时）</p>
-      <p style="margin-left:16px;color:var(--text-light)">调查抽样 &rarr; 实验设计 &rarr; 相关性分析 &rarr; 线性回归 &rarr; 量化验证。重点：学会区分“有关联”和“有因果”，从数据中得出合理结论。</p>
+      <p style="margin-left:16px;color:var(--text-light)">调查抽样 &rarr; 实验设计 &rarr; 相关性分析 &rarr; 线性回归 &rarr; 量化验证。重点：学会区分"有关联"和"有因果"，从数据中得出合理结论。</p>
       <p style="margin-top:10px"><strong>阶段五：实战整合</strong>（持续练习）</p>
-      <p style="margin-left:16px;color:var(--text-light)">用逻辑+统计双工具分析日常决策、媒体报道、商业计划。目标是形成“命题化表达+三段论验证+统计量化”的思维习惯。</p>
+      <p style="margin-left:16px;color:var(--text-light)">用逻辑+统计双工具分析日常决策、媒体报道、商业计划。目标是形成"命题化表达+三段论验证+统计量化"的思维习惯。</p>
     </div>
   </div>
 
@@ -438,19 +464,17 @@ body {
   <div class="section">
     <h2>知识卡片 · 翻转查看详情</h2>
     <p style="color:var(--text-light);margin-bottom:18px;font-size:.9rem">点击卡片翻转查看定义、类比、示例与反例。共 <span id="cardTotal">10</span> 个核心概念。</p>
-    <div class="flip-card-grid">
-      <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
-      <div class="flip-nav">
-        <button class="btn btn-outline btn-sm" onclick="prevCard()">&larr; 上一张</button>
-        <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
-        <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 &rarr;</button>
-      </div>
-      <div style="text-align:center;margin:8px 0">
-        <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">&#x2713; 标记已学习</button>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
-      <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / <span id="cardTotal2">10</span> 个概念</p>
+    <div class="flip-card"><div class="flip-inner" id="flipInner"><div class="flip-front" id="flipFront"></div><div class="flip-back" id="flipBack"></div></div></div>
+    <div class="flip-nav">
+      <button class="btn btn-outline btn-sm" onclick="prevCard()">&larr; 上一张</button>
+      <span style="font-size:.85rem;color:var(--text-light)" id="cardIndex">1 / 10</span>
+      <button class="btn btn-outline btn-sm" onclick="nextCard()">下一张 &rarr;</button>
     </div>
+    <div style="text-align:center;margin:8px 0">
+      <button class="btn btn-success btn-sm" onclick="markLearned()" id="markLearnedBtn">&#x2713; 标记已学习</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="cardProgress" style="width:0%"></div></div>
+    <p style="text-align:center;font-size:.78rem;color:var(--text-light)">已学习 <span id="cardLearned">0</span> / <span id="cardTotal2">10</span> 个概念</p>
   </div>
 </div>
 
@@ -504,98 +528,118 @@ body {
   <div class="section">
     <h2>思维导图：逻辑思维知识体系</h2>
     <p style="color:var(--text-light);margin-bottom:16px;font-size:.9rem">点击各节点展开/折叠子内容。覆盖从形式逻辑到统计思维的全部核心模块。</p>
-    <div class="mindmap">
+  </div>
+  <div class="card mindmap">
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>逻辑思维知识体系</strong></div>
+    <div class="node-children open">
 
-<div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>一、形式逻辑基础</strong></div>
-<div class="node-body open">
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 1.1 命题 — 逻辑推理的原子单元</div>
-  <div class="node-body">
-    <p>可判断真伪的陈述句。两大特征：可判断真伪性、概念同一性。只有陈述句可做命题，感叹句/祈使句/疑问句不能。</p>
-    <p style="color:var(--accent)">关键工具：同一律 — “苹果就是苹果”，个体&ne;群体</p>
-  </div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 1.2 逻辑运算（与或非）</div>
-  <div class="node-body">
-    <p><strong>与(&and;)</strong>：所有命题为真才为真。自然语言中“但是”实为与关系。</p>
-    <p><strong>或(&or;)</strong>：至少一个命题为真即为真。注意与自然语言“或者”的区别——有时“或者”表示异或。</p>
-    <p><strong>非(&not;)</strong>：反转真值。“所有人都会死”的否定是“并非所有人都会死”，不是“所有人都不会死”。</p>
-  </div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 1.3 蕴含与等价</div>
-  <div class="node-body">
-    <p><strong>蕴含(P&rarr;Q)</strong>：P为真时Q必为真。前提为假时，蕴含关系恒成立——但论证无意义。</p>
-    <p><strong>等价(P&harr;Q)</strong>：P&rarr;Q且Q&rarr;P。互为充要条件，可互相替代证明。</p>
-    <p style="color:var(--accent)">关键洞察：检查前提是否成立，比检查推理过程更重要。</p>
-  </div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 1.4 三段论</div>
-  <div class="node-body">
-    <p><strong>直言三段论</strong>：(P&rarr;Q)&and;P &rArr; Q。可从前提肯定结论，从否定结论反推否定前提。不可从结论倒推前提。</p>
-    <p><strong>选言三段论</strong>：(P&or;Q)&and;&not;P &rArr; Q。否定一项可肯定另一项，但肯定一项不能否定另一项。</p>
-    <p><strong>假言三段论</strong>：(P&rarr;Q)&and;(Q&rarr;R) &rArr; (P&rarr;R)。传递性依赖每个蕴含关系严格成立——警惕滑坡谬误。</p>
-  </div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 1.5 逻辑定律</div>
-  <div class="node-body">
-    <p><strong>否定之否定律</strong>：&not;&not;P = P。注意自然语言中“不是不爱你”&ne;“爱你”。</p>
-    <p><strong>统治律</strong>：P&and;F=F, P&and;T=P。“言多必失”的逻辑原理。</p>
-    <p><strong>互补律</strong>：P&or;&not;P=T, P&and;&not;P=F。排中律：矛盾命题必有一真一假。</p>
-    <p><strong>德摩根律</strong>：&not;(A&and;B)=&not;A&or;&not;B, &not;(A&or;B)=&not;A&and;&not;B。</p>
-  </div>
-</div>
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>一、形式逻辑基础</strong></div>
+    <div class="node-children open">
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">1.1 命题 — 逻辑推理的原子单元</div>
+      <div class="node-children">
+        <div class="leaf">可判断真伪的陈述句。两大特征：可判断真伪性、概念同一性。只有陈述句可做命题，感叹句/祈使句/疑问句不能。</div>
+        <div class="leaf" style="color:var(--accent)">关键工具：同一律 — "苹果就是苹果"，个体≠群体</div>
+      </div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">1.2 逻辑运算（与或非）</div>
+      <div class="node-children">
+        <div class="leaf"><strong>与(∧)</strong>：所有命题为真才为真。自然语言中"但是"实为与关系。</div>
+        <div class="leaf"><strong>或(∨)</strong>：至少一个命题为真即为真。注意与自然语言"或者"的区别——有时"或者"表示异或。</div>
+        <div class="leaf"><strong>非(¬)</strong>：反转真值。否定"所有人都会死"是"并非所有人都会死"，不是"所有人都不会死"。</div>
+      </div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">1.3 蕴含与等价</div>
+      <div class="node-children">
+        <div class="leaf"><strong>蕴含(P→Q)</strong>：P为真时Q必为真。前提为假时蕴含关系恒成立——但论证无意义。</div>
+        <div class="leaf"><strong>等价(P↔Q)</strong>：P→Q且Q→P。互为充要条件，可互相替代证明。</div>
+        <div class="leaf" style="color:var(--accent)">关键洞察：检查前提是否成立，比检查推理过程更重要。</div>
+      </div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">1.4 三段论</div>
+      <div class="node-children">
+        <div class="leaf"><strong>直言三段论</strong>：(P→Q)∧P ⇒ Q。不可从结论倒推前提。</div>
+        <div class="leaf"><strong>选言三段论</strong>：(P∨Q)∧¬P ⇒ Q。否定一项可肯定另一项，但不能反过来。</div>
+        <div class="leaf"><strong>假言三段论</strong>：(P→Q)∧(Q→R) ⇒ (P→R)。警惕滑坡谬误——链条越长整体可靠性越低。</div>
+      </div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">1.5 逻辑定律</div>
+      <div class="node-children">
+        <div class="leaf"><strong>否定之否定律</strong>：¬¬P = P。注意自然语言中"不是不爱你"≠"爱你"。</div>
+        <div class="leaf"><strong>统治律</strong>：P∧F=F, P∧T=P。"言多必失"的逻辑原理。</div>
+        <div class="leaf"><strong>互补律</strong>：P∨¬P=T, P∧¬P=F。排中律：矛盾命题必有一真一假。</div>
+        <div class="leaf"><strong>德摩根律</strong>：¬(A∧B)=¬A∨¬B, ¬(A∨B)=¬A∧¬B。</div>
+      </div></div>
+    </div></div>
 
-<div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>二、谓词逻辑与科学推理</strong></div>
-<div class="node-body open">
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 2.1 谓词逻辑</div>
-  <div class="node-body">
-    <p>将命题拆解为<strong>谓词+变量+量词</strong>。全称量词&forall;（所有）与存在量词&exist;（至少一个）。</p>
-    <p>“所有人都会死” &rarr; &forall;x(M(x)&rarr;D(x))</p>
-    <p style="color:var(--accent)">否定规则：&not;&forall;xP=&exist;x&not;P, &not;&exist;xP=&forall;x&not;P</p>
-  </div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 2.2 数学归纳法</div>
-  <div class="node-body"><p>证明对所有自然数成立的命题：证n=1成立 + 证n=k成立可推n=k+1成立 &rArr; 对所有n成立。谓词逻辑的典型应用。</p></div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 2.3 证伪</div>
-  <div class="node-body">
-    <p>一个反例即可推翻全称命题。科学理论必须<strong>可被证伪</strong>——不可证伪的不是科学。</p>
-    <p style="color:var(--accent)">“所有的天鹅都是白的” — 只需一只黑天鹅即可证伪。</p>
-  </div>
-  <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> 2.4 必然性与可能性</div>
-  <div class="node-body">
-    <p><strong>必然性</strong>：A成立则B一定成立（A&rarr;B恒真）。</p>
-    <p><strong>可能性</strong>：A成立时B可能成立（A&and;B可能为真）。</p>
-    <p><strong>排他性</strong>：A成立时B一定不成立（A&and;B恒假）。</p>
-  </div>
-</div>
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>二、谓词逻辑与科学推理</strong></div>
+    <div class="node-children open">
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">2.1 谓词逻辑</div>
+      <div class="node-children">
+        <div class="leaf">将命题拆解为<strong>谓词+变量+量词</strong>。全称量词∀（所有）与存在量词∃（至少一个）。</div>
+        <div class="leaf">"所有人都会死" → ∀x(M(x)→D(x))</div>
+        <div class="leaf" style="color:var(--accent)">否定规则：¬∀xP=∃x¬P, ¬∃xP=∀x¬P</div>
+      </div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">2.2 数学归纳法</div>
+      <div class="node-children"><div class="leaf">证明对所有自然数成立的命题：证n=1成立 + 证n=k成立可推n=k+1成立 ⇒ 对所有n成立。</div></div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">2.3 证伪</div>
+      <div class="node-children">
+        <div class="leaf">一个反例即可推翻全称命题。科学理论必须<strong>可被证伪</strong>——不可证伪的不是科学。</div>
+        <div class="leaf" style="color:var(--accent)">"所有的天鹅都是白的" — 只需一只黑天鹅即可证伪。</div>
+      </div></div>
+      <div class="node">
+      <div class="node-header" onclick="toggleMindmap(this)">2.4 必然性与可能性</div>
+      <div class="node-children">
+        <div class="leaf"><strong>必然性</strong>：A成立则B一定成立（A→B恒真）。</div>
+        <div class="leaf"><strong>可能性</strong>：A成立时B可能成立（A∧B可能为真）。</div>
+        <div class="leaf"><strong>排他性</strong>：A成立时B一定不成立（A∧B恒假）。</div>
+      </div></div>
+    </div></div>
 
-<div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>三、逻辑谬误</strong></div>
-<div class="node-body open">
-  <p><strong>1. 以偏概全</strong>：将个体/部分特征推广到全体。“某地人小气”。</p>
-  <p><strong>2. 偷换概念</strong>：同一词语在论证中变换含义。“纸飞机不是飞机”。</p>
-  <p><strong>3. 错误归因</strong>：将前后发生的事件误认为因果。“梅西上场所以赢球”。</p>
-  <p><strong>4. 滑坡谬误</strong>：夸大因果链条，每步蕴含关系牵强。“不上好小学&rarr;人生失败”。</p>
-  <p><strong>5. 诉诸怜悯</strong>：用情感替代逻辑。“我这么可怜，你应该同意”。</p>
-  <p><strong>6. 自相矛盾</strong>：同时肯定P和&not;P。P&and;&not;P恒假。</p>
-  <p><strong>7. 循环论证</strong>：用结论自身作为前提。“因为它是真的，所以它是对的”。</p>
-</div>
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>三、逻辑谬误</strong></div>
+    <div class="node-children open">
+      <div class="leaf"><strong>1. 以偏概全</strong>：将个体/部分特征推广到全体。"某地人小气"。</div>
+      <div class="leaf"><strong>2. 偷换概念</strong>：同一词语在论证中变换含义。"纸飞机不是飞机"。</div>
+      <div class="leaf"><strong>3. 错误归因</strong>：将前后发生的事件误认为因果。"梅西上场所以赢球"。</div>
+      <div class="leaf"><strong>4. 滑坡谬误</strong>：夸大因果链条，每步蕴含关系牵强。"不上好小学→人生失败"。</div>
+      <div class="leaf"><strong>5. 诉诸怜悯</strong>：用情感替代逻辑。"我这么可怜，你应该同意"。</div>
+      <div class="leaf"><strong>6. 自相矛盾</strong>：同时肯定P和¬P。P∧¬P恒假。</div>
+      <div class="leaf"><strong>7. 循环论证</strong>：用结论自身作为前提。"因为它是真的，所以它是对的"。</div>
+    </div></div>
 
-<div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>四、数据收集方法</strong></div>
-<div class="node-body open">
-  <p><strong>调查法</strong>：被动观察，无干预。关键：随机抽样、样本量足够、避免选择偏差。</p>
-  <p><strong>实验法</strong>：主动干预，有目的。关键：控制变量、随机分组、对照设计。</p>
-  <p><strong>双盲实验</strong>：受试者和实验者均不知分组。消除安慰剂效应和观察者偏差的金标准。</p>
-</div>
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>四、数据收集方法</strong></div>
+    <div class="node-children open">
+      <div class="leaf"><strong>调查法</strong>：被动观察，无干预。关键：随机抽样、样本量足够、避免选择偏差。</div>
+      <div class="leaf"><strong>实验法</strong>：主动干预，有目的。关键：控制变量、随机分组、对照设计。</div>
+      <div class="leaf"><strong>双盲实验</strong>：受试者和实验者均不知分组。消除安慰剂效应和观察者偏差的金标准。</div>
+    </div></div>
 
-<div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>五、统计分析工具</strong></div>
-<div class="node-body open">
-  <p><strong>数据对比</strong>：均值、中位数、方差的基本比较。警惕辛普森悖论。</p>
-  <p><strong>相关性分析</strong>：P<sub>ab</sub> vs P<sub>a</sub>&times;P<sub>b</sub>。相关性&ne;因果性——可能存在混淆变量。</p>
-  <p><strong>线性回归</strong>：量化变量间线性关系。注意：回归到均值是普遍现象。</p>
-  <p><strong>量化验证</strong>：用p值判断统计显著性。从数据中得出合理结论，而非想要的结论。</p>
-</div>
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>五、统计分析工具</strong></div>
+    <div class="node-children open">
+      <div class="leaf"><strong>数据对比</strong>：均值、中位数、方差的基本比较。警惕辛普森悖论。</div>
+      <div class="leaf"><strong>相关性分析</strong>：P<sub>ab</sub> vs P<sub>a</sub>×P<sub>b</sub>。相关性≠因果性——可能存在混淆变量。</div>
+      <div class="leaf"><strong>线性回归</strong>：量化变量间线性关系。注意：回归到均值是普遍现象。</div>
+      <div class="leaf"><strong>量化验证</strong>：用p值判断统计显著性。从数据中得出合理结论，而非想要的结论。</div>
+    </div></div>
 
-<div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>六、实战应用</strong></div>
-<div class="node-body open">
-  <p><strong>统计找规律</strong>：从数据中发现模式，区分信号与噪声。</p>
-  <p><strong>图形工具</strong>：散点图、直方图、箱线图——可视化辅助判断。</p>
-  <p><strong>生活中的逻辑</strong>：合同条款审查、媒体报道评估、投资决策分析。</p>
-</div>
+    <div class="node">
+    <div class="node-header open" onclick="toggleMindmap(this)"><strong>六、实战应用</strong></div>
+    <div class="node-children open">
+      <div class="leaf"><strong>统计找规律</strong>：从数据中发现模式，区分信号与噪声。</div>
+      <div class="leaf"><strong>图形工具</strong>：散点图、直方图、箱线图——可视化辅助判断。</div>
+      <div class="leaf"><strong>生活中的逻辑</strong>：合同条款审查、媒体报道评估、投资决策分析。</div>
+    </div></div>
 
+    </div>
     </div>
   </div>
 </div>
@@ -605,41 +649,7 @@ body {
   <div class="section">
     <h2>深度追问（苏格拉底式问答）</h2>
     <p style="color:var(--text-light);margin-bottom:16px;font-size:.9rem">通过层层追问揭示概念本质。点击问题展开思考，再点击查看参考思路。</p>
-
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>追问一：什么是命题？为什么感叹句不能做命题？</strong></div>
-    <div class="node-body">
-      <p><strong>第一层：</strong>命题是能判断真伪的陈述句。“今天下雨了”是命题（可验证），“多么美好的一天”不是（主观感受）。</p>
-      <p><strong>第二层：</strong>为什么必须是陈述句？因为逻辑运算（与或非）只能对真值（T/F）操作。没有真值，就无法建立逻辑关系。</p>
-      <p><strong>第三层：</strong>那么“明天会下雨”是命题吗？是——命题不要求现在能判断，只要求<strong>存在可判断主体</strong>和<strong>可验证的时间点</strong>。这区分了“假命题”（有真值但是假）和“非命题”（根本无真值）。</p>
-    </div>
-
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>追问二：蕴含关系中，前提为假时蕴含关系恒真——这有什么用？</strong></div>
-    <div class="node-body">
-      <p><strong>第一层：</strong>这似乎反直觉。“如果太阳从西边出来，我就给你100万”——前提不可能为真，所以这个蕴含关系逻辑正确。但你拿不到100万。</p>
-      <p><strong>第二层：</strong>这条规则的深层含义是：<strong>论证之前必须先检查前提</strong>。从错误前提出发，能“合乎逻辑地”推出任何荒谬结论。</p>
-      <p><strong>第三层：</strong>现实中这意味着什么？听到一个逻辑严密的论证时，第一反应不是赞叹推理，而是追问：“你的大前提成立吗？条件有没有例外？”。2008年次贷危机的根源之一：模型假设“通常情况”永远成立。</p>
-    </div>
-
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>追问三：证伪只需要一个反例——为什么这么“简单”的原则如此强大？</strong></div>
-    <div class="node-body">
-      <p><strong>第一层：</strong>证明“所有天鹅都是白的”需要检查每只天鹅（不可完成），证伪只需要找到一只黑天鹅（可行）。</p>
-      <p><strong>第二层：</strong>科学进步的本质不是“证实”而是<strong>“证伪”</strong>——波普尔认为，一个理论越容易被证伪（却尚未被证伪），它就越有价值。不可证伪的“理论”（如弗洛伊德精神分析）不是科学。</p>
-      <p><strong>第三层：</strong>应用到日常决策：不要试图证明一个方案完美——列出一个“如果X发生则方案失败”的清单，逐一检查。找不到反例的方案，比“看起来很美”的方案可靠得多。</p>
-    </div>
-
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>追问四：相关性&ne;因果性——到底怎么区分？</strong></div>
-    <div class="node-body">
-      <p><strong>第一层：</strong>用公式：若P<sub>ab</sub> &asymp; P<sub>a</sub>&times;P<sub>b</sub>，则无关。若P<sub>ab</sub> &gt; P<sub>a</sub>&times;P<sub>b</sub>，则正相关。但这只是相关性，不是因果。</p>
-      <p><strong>第二层：</strong>因果需要三个条件：①时间顺序（因在前果在后）②相关性存在 ③排除混淆变量。“短裙流行与股市上涨”——可能第三个变量（经济繁荣）同时导致两者。</p>
-      <p><strong>第三层：</strong>建立因果的金标准是<strong>随机对照实验</strong>。观察性研究只能报告“关联”。读新闻时遇到“研究发现X导致Y”，先问：这是实验还是观察？控制了哪些变量？</p>
-    </div>
-
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>追问五：三段论看似简单，为什么现实中大量论证违反三段论规则？</strong></div>
-    <div class="node-body">
-      <p><strong>第一层：</strong>因为自然语言掩盖了逻辑结构。“成功人士都努力，他很努力，所以他成功”——听起来合理，但逻辑形式是(Q&rarr;P)&and;P &rArr; Q？不对！这是从结论倒推前提的谬误。</p>
-      <p><strong>第二层：</strong>更深层的原因：人类大脑习惯<strong>模式匹配</strong>而非逻辑推导。看到“努力+成功”两个词同时出现，就自动建立因果。三段论要求我们压制这种直觉，逐项检验逻辑形式。</p>
-      <p><strong>第三层：</strong>这意味着学习三段论不是为了做纸面推理，而是训练一个<strong>思维习惯</strong>：听到论证时自动在大脑中做“大前提检查&rarr;小前提检查&rarr;结论有效性检查”的流程。这是一种可以刻意练习的元认知技能。</p>
-    </div>
+    <div id="socraticContainer"></div>
   </div>
 </div>
 
@@ -649,45 +659,45 @@ body {
     <h2>案例分析</h2>
     <p style="color:var(--text-light);margin-bottom:16px;font-size:.9rem">用课程中的逻辑工具分析真实案例。每个案例先描述场景，再给出逻辑剖析。</p>
 
-    <div class="node-header open" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>案例一：“短裙理论”——经济形势与女性裙长</strong></div>
-    <div class="node-body open">
+    <div class="section" style="border-left:4px solid var(--accent);margin-bottom:16px">
+      <h3>案例一："短裙理论"——经济形势与女性裙长</h3>
       <p><strong>场景：</strong>1926年经济学家乔治·泰勒提出：经济繁荣时女性穿短裙，萧条时穿长裙。有人以此作为股市预测指标。</p>
       <p><strong>逻辑工具：</strong>相关性 vs 因果性 + 证伪 + 文氏图</p>
       <p><strong>剖析：</strong></p>
-      <p>① <strong>相关性检验</strong>：假设P(短裙)=0.4, P(股市涨)=0.6, P(同时)=0.25。0.25 &asymp; 0.4&times;0.6=0.24，说明<strong>几乎无关</strong>。</p>
+      <p>① <strong>相关性检验</strong>：假设P(短裙)=0.4, P(股市涨)=0.6, P(同时)=0.25。0.25 ≈ 0.4×0.6=0.24，说明<strong>几乎无关</strong>。</p>
       <p>② <strong>证伪</strong>：2012年欧债危机期间短裙流行，但2013年欧洲股市表现不佳——一个反例就推翻了理论。</p>
       <p>③ <strong>文氏图</strong>：经济、股市、裙长各有自己的决定因素集合，三者交集极小。泰勒只看到了交集，忽略了各自独立变化的区域。</p>
-      <p style="color:var(--accent)"><strong>教训：</strong>同时发生&ne;有关联，有关联&ne;有因果。媒体喜欢报道“神奇相关性”，但它们大多经不起统计检验。</p>
+      <p style="color:var(--accent)"><strong>教训：</strong>同时发生≠有关联，有关联≠有因果。媒体喜欢报道"神奇相关性"，但它们大多经不起统计检验。</p>
     </div>
 
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>案例二：科举无用论博文——以偏概全的经典样本</strong></div>
-    <div class="node-body">
-      <p><strong>场景：</strong>网络上流传“科举无用”的博文：列举几位状元默默无闻、几位落榜生（如蒲松龄）名垂青史，得出结论——科举选拔无效。</p>
+    <div class="section" style="border-left:4px solid var(--accent);margin-bottom:16px">
+      <h3>案例二：科举无用论博文——以偏概全的经典样本</h3>
+      <p><strong>场景：</strong>网络上流传"科举无用"的博文：列举几位状元默默无闻、几位落榜生（如蒲松龄）名垂青史，得出结论——科举选拔无效。</p>
       <p><strong>逻辑工具：</strong>以偏概全 + 偷换概念 + 幸存者偏差</p>
       <p><strong>剖析：</strong></p>
       <p>① <strong>以偏概全</strong>：作者只挑了支持结论的个案，故意忽略整体数据——如果比较所有状元和所有落榜生的平均成就呢？</p>
-      <p>② <strong>偷换概念</strong>：将“未参加科举的名人”等同于“科举落榜生”。蒲松龄多次落榜，但“落榜”&ne;“没能力”——他恰恰是用科举训练的文字能力写了《聊斋》。</p>
+      <p>② <strong>偷换概念</strong>：将"未参加科举的名人"等同于"科举落榜生"。蒲松龄多次落榜，但"落榜"≠"没能力"——他恰恰是用科举训练的文字能力写了《聊斋》。</p>
       <p>③ <strong>幸存者偏差</strong>：我们只记得名垂青史的落榜生，忘记了成千上万默默无闻的落榜者和有所作为的状元。</p>
-      <p style="color:var(--accent)"><strong>教训：</strong>选择性呈现个案是最高效的误导手段——因为它在技术上不“撒谎”，只是“不全说”。验证方法：要求对方提供<strong>完整数据集</strong>。</p>
+      <p style="color:var(--accent)"><strong>教训：</strong>选择性呈现个案是最高效的误导手段——因为它在技术上不"撒谎"，只是"不全说"。验证方法：要求对方提供<strong>完整数据集</strong>。</p>
     </div>
 
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>案例三：创业承诺中的自相矛盾</strong></div>
-    <div class="node-body">
-      <p><strong>场景：</strong>叔叔对侄子说：①“我有钱一定投资你”(P&rarr;Q) ②“投资都要回报”(Q&rarr;R) ③“我有钱，但不像别人要回报”(P&and;&not;R)</p>
+    <div class="section" style="border-left:4px solid var(--accent);margin-bottom:16px">
+      <h3>案例三：创业承诺中的自相矛盾</h3>
+      <p><strong>场景：</strong>叔叔对侄子说：①"我有钱一定投资你"(P→Q) ②"投资都要回报"(Q→R) ③"我有钱，但不像别人要回报"(P∧¬R)</p>
       <p><strong>逻辑工具：</strong>自相矛盾 + 真值表 + 合取命题</p>
-      <p><strong>剖析：</strong>复合命题S=(P&rarr;Q)&and;(Q&rarr;R)&and;(P&and;&not;R)。对P/Q/R的任意真值赋值，S恒为假。从②可推出“有钱&rarr;要回报”，与③“有钱且不要回报”构成P&and;&not;P矛盾。</p>
-      <p style="color:var(--accent)"><strong>教训：</strong>自相矛盾的人要么思维混乱、要么有意误导——两种情况下其承诺都不可靠。签合同前把对方的前提条件逐个写成命题，检查是否存在P&and;&not;P。</p>
+      <p><strong>剖析：</strong>复合命题S=(P→Q)∧(Q→R)∧(P∧¬R)。对P/Q/R的任意真值赋值，S恒为假。从②可推出"有钱→要回报"，与③"有钱且不要回报"构成P∧¬P矛盾。</p>
+      <p style="color:var(--accent)"><strong>教训：</strong>自相矛盾的人要么思维混乱、要么有意误导——两种情况下其承诺都不可靠。签合同前把对方的前提条件逐个写成命题，检查是否存在P∧¬P。</p>
     </div>
 
-    <div class="node-header" onclick="toggleMindmap(this)"><span class="arrow">&#9654;</span> <strong>案例四：“补习班提升成绩”——错误归因的产业链</strong></div>
-    <div class="node-body">
-      <p><strong>场景：</strong>培训机构宣传：“参加我们补习班的学生，90%成绩提高了！”</p>
+    <div class="section" style="border-left:4px solid var(--accent);margin-bottom:16px">
+      <h3>案例四："补习班提升成绩"——错误归因的产业链</h3>
+      <p><strong>场景：</strong>培训机构宣传："参加我们补习班的学生，90%成绩提高了！"</p>
       <p><strong>逻辑工具：</strong>错误归因 + 安慰剂效应 + 回归到均值 + 控制变量</p>
       <p><strong>剖析：</strong></p>
-      <p>① <strong>时间顺序&ne;因果</strong>：补习后成绩提高，可能是补习的效果，也可能是学生同时在学校学习的结果。</p>
-      <p>② <strong>回归到均值</strong>：成绩最差的学生最可能报补习班——他们的成绩天然会“回归”到平均水平，与补习无关。</p>
-      <p>③ <strong>无对照组</strong>：没有比较“参加补习的学生”和“想参加但没参加的学生”的成绩变化。后者才是真正的对照组。</p>
-      <p style="color:var(--accent)"><strong>教训：</strong>“做了A之后B变好了”可能是世界最常见的逻辑陷阱。没有随机对照实验，就不能声称因果。</p>
+      <p>① <strong>时间顺序≠因果</strong>：补习后成绩提高，可能是补习的效果，也可能是学生同时在学校学习的结果。</p>
+      <p>② <strong>回归到均值</strong>：成绩最差的学生最可能报补习班——他们的成绩天然会"回归"到平均水平，与补习无关。</p>
+      <p>③ <strong>无对照组</strong>：没有比较"参加补习的学生"和"想参加但没参加的学生"的成绩变化。后者才是真正的对照组。</p>
+      <p style="color:var(--accent)"><strong>教训：</strong>"做了A之后B变好了"可能是世界最常见的逻辑陷阱。没有随机对照实验，就不能声称因果。</p>
     </div>
   </div>
 </div>
@@ -747,26 +757,26 @@ const concepts = [
   {
     id: "c1",
     name: "命题",
-    def: "逻辑推理的基本单元——能判断真伪的陈述句。两大特征：可判断真伪性（有真值T/F）、概念同一性（“苹果就是苹果”，个体≠群体）。",
-    analogy: "命题之于逻辑，如同原子之于化学。不能拆成命题的想法无法进入推理流水线。就像你不能用“这菜真好吃”做数学运算，你不能用感叹句做逻辑推理。",
-    example: "“宋朝是一个伟大的王朝”——陈述句，可判断真伪（历史学家可以评估），是命题。“请保持安静”——祈使句，表达指令而非事实，不是命题。",
-    counter: "边界：“意大利队将获得下一届世界杯冠军”——虽未发生，仍是命题（未来可验证）。不能用“未发生的事情”做前提推导当前结论。"
+    def: "逻辑推理的基本单元——能判断真伪的陈述句。两大特征：可判断真伪性（有真值T/F）、概念同一性（"苹果就是苹果"，个体≠群体）。",
+    analogy: "命题之于逻辑，如同原子之于化学。不能拆成命题的想法无法进入推理流水线。就像你不能用"这菜真好吃"做数学运算，你不能用感叹句做逻辑推理。",
+    example: ""宋朝是一个伟大的王朝"——陈述句，可判断真伪（历史学家可以评估），是命题。"请保持安静"——祈使句，表达指令而非事实，不是命题。",
+    counter: "边界："意大利队将获得下一届世界杯冠军"——虽未发生，仍是命题（未来可验证）。不能用"未发生的事情"做前提推导当前结论。"
   },
   {
     id: "c2",
     name: "逻辑运算（与或非）",
     def: "将独立命题关联为复合命题的三种基本操作：与(∧)——所有命题为真才为真；或(∨)——至少一个命题为真即为真；非(¬)——反转真值。",
-    analogy: "如同数学中的加减乘除——命题是数字，逻辑运算是运算符。不同之处在于逻辑只有T/F两个“值”，所以运算规则比算术更简洁，但自然语言的歧义让应用更复杂。",
-    example: "“小常考上研究生，但是小梅落榜了”——“但是”在逻辑中等同于“并且”（∧）。转折语气不影响真值：两件事同时为真，合取命题才为真。",
-    counter: "自然语言“或者”有时是异或（二选一）。“调休两天或者拿1000元奖金”——只能选一个，不是逻辑∨（可以两个都选）。自然语言映射到逻辑运算时常需澄清。"
+    analogy: "如同数学中的加减乘除——命题是数字，逻辑运算是运算符。不同之处在于逻辑只有T/F两个"值"，所以运算规则比算术更简洁，但自然语言的歧义让应用更复杂。",
+    example: ""小常考上研究生，但是小梅落榜了"——"但是"在逻辑中等同于"并且"（∧）。转折语气不影响真值：两件事同时为真，合取命题才为真。",
+    counter: "自然语言"或者"有时是异或（二选一）。"调休两天或者拿1000元奖金"——只能选一个，不是逻辑∨（可以两个都选）。自然语言映射到逻辑运算时常需澄清。"
   },
   {
     id: "c3",
     name: "蕴含与等价",
     def: "蕴含(P→Q)：每当前提P为真，结论Q一定为真。前提为假时蕴含关系恒成立（但论证无意义）。等价(P↔Q)：P→Q且Q→P，互为充要条件。",
-    analogy: "蕴含如同多米诺骨牌——P倒下必然导致Q倒下。但如果P根本没立起来（前提为假），Q倒不倒都不违反“P倒下则Q倒下”的规则。等价如同两枚绑在一起的硬币——翻一个另一个必翻。",
-    example: "“水烧到100摄氏度就会开”——前提成立时结论必成立。但前提隐含了“标准大气压+纯净水”的条件。2008年次贷危机正是因“通常情况”的前提不再成立。",
-    counter: "不能从结论倒推前提：Q成立不意味着P成立。“她死了&rarr;她是被人害死的”——结论为真时不能推出前提。成功人士都努力，但不能反推“努力&rarr;成功”。"
+    analogy: "蕴含如同多米诺骨牌——P倒下必然导致Q倒下。但如果P根本没立起来（前提为假），Q倒不倒都不违反"P倒下则Q倒下"的规则。等价如同两枚绑在一起的硬币——翻一个另一个必翻。",
+    example: ""水烧到100摄氏度就会开"——前提成立时结论必成立。但前提隐含了"标准大气压+纯净水"的条件。2008年次贷危机正是因"通常情况"的前提不再成立。",
+    counter: "不能从结论倒推前提：Q成立不意味着P成立。"她死了&rarr;她是被人害死的"——结论为真时不能推出前提。成功人士都努力，但不能反推"努力&rarr;成功"。"
   },
   {
     id: "c4",
@@ -780,93 +790,93 @@ const concepts = [
     id: "c5",
     name: "谓词逻辑",
     def: "将命题拆解为谓词（描述属性）、变量（代表对象）和量词（∀全称/∃存在）。否定规则：¬∀xP=∃x¬P，¬∃xP=∀x¬P。",
-    analogy: "命题逻辑像用整个乐高房子做操作——只能整体移动。谓词逻辑则把房子拆成积木块（谓词+变量+量词），可以单独替换一扇窗户。这就是“精确推理”的含义。",
-    example: "“工作不能都完成”=¬∀x(W(x)→C(x))=∃x(W(x)∧¬C(x))，即“有些工作完不成”。被老板曲解为“都不完成”(∀x(W(x)→¬C(x)))是量词混淆谬误。",
-    counter: "集合-个体混淆：“犹太人善于做生意”是全称命题吗？不是——是统计意义上的群体倾向，不是每个犹太人的个体属性。从群体不能严格推导个体。"
+    analogy: "命题逻辑像用整个乐高房子做操作——只能整体移动。谓词逻辑则把房子拆成积木块（谓词+变量+量词），可以单独替换一扇窗户。这就是"精确推理"的含义。",
+    example: ""工作不能都完成"=¬∀x(W(x)→C(x))=∃x(W(x)∧¬C(x))，即"有些工作完不成"。被老板曲解为"都不完成"(∀x(W(x)→¬C(x)))是量词混淆谬误。",
+    counter: "集合-个体混淆："犹太人善于做生意"是全称命题吗？不是——是统计意义上的群体倾向，不是每个犹太人的个体属性。从群体不能严格推导个体。"
   },
   {
     id: "c6",
     name: "逻辑谬误",
-    def: "七种经典推理陷阱：以偏概全、偷换概念、错误归因、滑坡谬误、诉诸怜悯、自相矛盾、循环论证。识别它们是把“感觉不对”变成“明确指出的错误类型”。",
-    analogy: "逻辑谬误如同下棋中的“漏着”——业余棋手感觉“这步不太好”但说不出为什么，专业棋手能一眼看出“这是送子”。学了谬误分类，你就从业余“感觉派”变成专业“诊断派”。",
-    example: "自相矛盾：韩非子“自相矛盾”典故——“不可陷之盾”(P)与“无不陷之矛”(¬P)同时为真，P∧¬P恒假。日常生活中：老板说“我信任你放手做”+每步都要审批——行为与陈述矛盾。",
-    counter: "不是所有“不严谨”都是逻辑谬误。日常对话中的比喻、夸张、省略不算谬误。只有在声称“论证某事”的上下文中，违反逻辑规则才算谬误。“我饿死了”是夸张，不是逻辑谬误。"
+    def: "七种经典推理陷阱：以偏概全、偷换概念、错误归因、滑坡谬误、诉诸怜悯、自相矛盾、循环论证。识别它们是把"感觉不对"变成"明确指出的错误类型"。",
+    analogy: "逻辑谬误如同下棋中的"漏着"——业余棋手感觉"这步不太好"但说不出为什么，专业棋手能一眼看出"这是送子"。学了谬误分类，你就从业余"感觉派"变成专业"诊断派"。",
+    example: "自相矛盾：韩非子"自相矛盾"典故——"不可陷之盾"(P)与"无不陷之矛"(¬P)同时为真，P∧¬P恒假。日常生活中：老板说"我信任你放手做"+每步都要审批——行为与陈述矛盾。",
+    counter: "不是所有"不严谨"都是逻辑谬误。日常对话中的比喻、夸张、省略不算谬误。只有在声称"论证某事"的上下文中，违反逻辑规则才算谬误。"我饿死了"是夸张，不是逻辑谬误。"
   },
   {
     id: "c7",
     name: "证伪",
-    def: "一个反例即可推翻全称命题。“所有的…”只需一个“不”就被推翻。科学理论必须可被证伪——不可证伪的理论不是科学。源自波普尔的科学哲学。",
-    analogy: "证伪如同免疫系统——一个病毒就能让防护系统拉响警报。你不需要检查每个细胞来“证明”身体没有感染，你只需要发现一个感染细胞来“证伪”——这就是证伪比证实高效得多的原因。",
-    example: "“所有天鹅都是白的”——在发现澳大利亚黑天鹅之前，欧洲人观察了成千上万只白天鹅也未能“证实”该命题，但一只黑天鹅就完成了证伪。这就是为什么科学用证伪而非证实来检验理论。",
-    counter: "边界：证伪适用于全称命题（“所有…”），不适用于存在命题（“存在…”）。“存在外星人”不能用“还没发现外星人”来证伪，只能用“发现了外星人”来证实。"
+    def: "一个反例即可推翻全称命题。"所有的…"只需一个"不"就被推翻。科学理论必须可被证伪——不可证伪的理论不是科学。源自波普尔的科学哲学。",
+    analogy: "证伪如同免疫系统——一个病毒就能让防护系统拉响警报。你不需要检查每个细胞来"证明"身体没有感染，你只需要发现一个感染细胞来"证伪"——这就是证伪比证实高效得多的原因。",
+    example: ""所有天鹅都是白的"——在发现澳大利亚黑天鹅之前，欧洲人观察了成千上万只白天鹅也未能"证实"该命题，但一只黑天鹅就完成了证伪。这就是为什么科学用证伪而非证实来检验理论。",
+    counter: "边界：证伪适用于全称命题（"所有…"），不适用于存在命题（"存在…"）。"存在外星人"不能用"还没发现外星人"来证伪，只能用"发现了外星人"来证实。"
   },
   {
     id: "c8",
     name: "数据收集方法",
     def: "将经验量化为可分析数据的两类方法：调查法（被动观察，随机抽样，避免选择偏差）和实验法（主动干预，控制变量，随机分组）。双盲实验是因果推断的金标准。",
     analogy: "调查法如同在岸边观察鱼群——你记录自然发生的情况但不干预。实验法如同在水族箱里做实验——你主动改变一个变量（水温）观察鱼的反应。双盲实验是你和鱼都不知道自己在哪个实验组。",
-    example: "医学双盲实验：患者和医生都不知道谁吃真药谁吃安慰剂。这样消除了两个偏差：患者的安慰剂效应（相信自己吃真药而好转）和医生的观察者偏差（潜意识里更关注“吃药组”的改善）。",
-    counter: "调查法的陷阱：“我们调查了1000人，80%支持X政策”——但样本从哪里来的？如果是从X支持者社群中招募的，调查毫无价值。样本代表性比样本量更重要。"
+    example: "医学双盲实验：患者和医生都不知道谁吃真药谁吃安慰剂。这样消除了两个偏差：患者的安慰剂效应（相信自己吃真药而好转）和医生的观察者偏差（潜意识里更关注"吃药组"的改善）。",
+    counter: "调查法的陷阱："我们调查了1000人，80%支持X政策"——但样本从哪里来的？如果是从X支持者社群中招募的，调查毫无价值。样本代表性比样本量更重要。"
   },
   {
     id: "c9",
     name: "相关性与因果",
     def: "相关性：Pab与Pa×Pb的比较——Pab>Pa×Pb为正相关。因果性需要三个条件：时间顺序（因在先）、相关性存在、排除混淆变量。相关性≠因果性。",
-    analogy: "冰淇淋销量和溺水死亡高度正相关——是冰淇淋导致溺水吗？不是。第三个变量（夏天高温）同时导致两者。相关性是“它们一起出现”，因果性是“一个推另一个”。混淆变量是“幕后推手”。",
-    example: "短裙理论：P(短裙)=0.4, P(股市涨)=0.6, P(同时)=0.25。25%≈24%，接近随机——两者几乎无关。但媒体会选择性报道“穿短裙的同时股市涨了”的案例，制造虚假关联的印象。",
-    counter: "必然性蕴含相关性，但相关性不蕴含必然性。“所有天鹅都是白的”如果为真，则“白色”和“天鹅”必然相关。但大数据发现的“看了A视频的人也看了B视频”只是相关性——推荐100次也许成功3次。"
+    analogy: "冰淇淋销量和溺水死亡高度正相关——是冰淇淋导致溺水吗？不是。第三个变量（夏天高温）同时导致两者。相关性是"它们一起出现"，因果性是"一个推另一个"。混淆变量是"幕后推手"。",
+    example: "短裙理论：P(短裙)=0.4, P(股市涨)=0.6, P(同时)=0.25。25%≈24%，接近随机——两者几乎无关。但媒体会选择性报道"穿短裙的同时股市涨了"的案例，制造虚假关联的印象。",
+    counter: "必然性蕴含相关性，但相关性不蕴含必然性。"所有天鹅都是白的"如果为真，则"白色"和"天鹅"必然相关。但大数据发现的"看了A视频的人也看了B视频"只是相关性——推荐100次也许成功3次。"
   },
   {
     id: "c10",
     name: "统计验证",
-    def: "用线性回归、数据对比、显著性检验等工具从数据中得出合理结论（而非“想要的结论”）。核心原则：无数据不结论，有数据还需验证。注意回归到均值、辛普森悖论等陷阱。",
-    analogy: "统计验证如同法庭上的证据检验——不能只看“被告在案发现场附近出现过”（相关性），还要验证指纹、监控、动机（排除其他可能）。好的数据分析师像好的法官：先听双方证据，再下结论，不被先入为主的观点左右。",
+    def: "用线性回归、数据对比、显著性检验等工具从数据中得出合理结论（而非"想要的结论"）。核心原则：无数据不结论，有数据还需验证。注意回归到均值、辛普森悖论等陷阱。",
+    analogy: "统计验证如同法庭上的证据检验——不能只看"被告在案发现场附近出现过"（相关性），还要验证指纹、监控、动机（排除其他可能）。好的数据分析师像好的法官：先听双方证据，再下结论，不被先入为主的观点左右。",
     example: "辛普森悖论：某药物整体数据显示有效（治愈率更高），但按病情轻重分组后，每组中药物都更差——因为轻症患者更可能被分配到药物组。汇总数据的方向可能与分组数据完全相反。",
-    counter: "“用数据说话”也可能误导：选择性地呈现支持自己观点的数据、忽略p值不显著的结果（p-hacking）、把探索性分析当确认性结论。数据不会撒谎，但使用数据的人会。"
+    counter: ""用数据说话"也可能误导：选择性地呈现支持自己观点的数据、忽略p值不显著的结果（p-hacking）、把探索性分析当确认性结论。数据不会撒谎，但使用数据的人会。"
   }
 ];
 
 const mcq = [
   // answer:0 — 5题
   {stem:"以下哪句话可以作为一个有效的逻辑命题？",opts:["今天下雨了。","多么美好的一天啊！","请把门关上。","你吃饭了吗？"],answer:0,exp:"命题必须是可判断真伪的陈述句。A是陈述句可以验证真伪；B是感叹句、C是祈使句、D是疑问句，均非命题。"},
-  {stem:"“所有人都不是完美的”的否定是什么？",opts:["有些人不是完美的","有些人是不完美的","所有人都是完美的","并非所有人不是完美的"],answer:0,exp:"“所有人都不是完美的”即∀x¬P(x)。其否定为∃xP(x)——“有些人不是完美的”。注意“并非所有人不是完美的”等价于∃xP(x)即“有人是完美的”。"},
+  {stem:""所有人都不是完美的"的否定是什么？",opts:["有些人不是完美的","有些人是不完美的","所有人都是完美的","并非所有人不是完美的"],answer:0,exp:""所有人都不是完美的"即∀x¬P(x)。其否定为∃xP(x)——"有些人不是完美的"。注意"并非所有人不是完美的"等价于∃xP(x)即"有人是完美的"。"},
   {stem:"文氏图中两个圆圈无交集（完全分离）表示什么逻辑关系？",opts:["排他性——两事件不可能同时发生","必然性——A发生B一定发生","可能性——A发生B可能发生","相关性——两事件正相关"],answer:0,exp:"文氏图中两圆无交集表示两命题不可能同时为真，即排他性关系（P∧Q恒假）。"},
-  {stem:"“数据收集方法”中，调查法和实验法的核心区别是什么？",opts:["调查法被动观察不干预，实验法主动干预控制变量","调查法比实验法更准确","实验法不需要随机抽样","调查法只能用于医学研究"],answer:0,exp:"调查法是被动观察（无干预），实验法是主动干预（有目的）。这是方法论的底层区别。"},
-  {stem:"以下哪种情况属于“偷换概念”的谬误？",opts:["把“纸飞机”等同于“飞机”来论证“飞机不需要燃料也能飞”","说“所有人都会死，苏格拉底会死”","用“有些”来否定“所有”","用数学归纳法证明命题"],answer:0,exp:"偷换概念是同一词语在论证中变换含义。“飞机”（动力飞行器）vs“纸飞机”（玩具模型），概念内涵完全不同。"},
+  {stem:""数据收集方法"中，调查法和实验法的核心区别是什么？",opts:["调查法被动观察不干预，实验法主动干预控制变量","调查法比实验法更准确","实验法不需要随机抽样","调查法只能用于医学研究"],answer:0,exp:"调查法是被动观察（无干预），实验法是主动干预（有目的）。这是方法论的底层区别。"},
+  {stem:"以下哪种情况属于"偷换概念"的谬误？",opts:["把"纸飞机"等同于"飞机"来论证"飞机不需要燃料也能飞"","说"所有人都会死，苏格拉底会死"","用"有些"来否定"所有"","用数学归纳法证明命题"],answer:0,exp:"偷换概念是同一词语在论证中变换含义。"飞机"（动力飞行器）vs"纸飞机"（玩具模型），概念内涵完全不同。"},
 
   // answer:1 — 5题
-  {stem:"在逻辑运算中，“与(∧)”运算的结果为真当且仅当？",opts:["至少一个命题为真","所有命题都为真","恰好一个命题为真","所有命题都为假"],answer:1,exp:"与运算要求所有子命题同时为真，复合命题才为真。这是合取运算的基本定义。"},
-  {stem:"直言三段论“(P→Q)∧P⇒Q”中，以下哪个推理是无效的？",opts:["从¬Q推出¬P","从Q推出P","从P推出Q","从¬Q和P→Q推出¬P"],answer:1,exp:"直言三段论不能从结论Q为真反推前提P为真（肯定后件谬误）。会死的不一定是人，还可能是动物。"},
-  {stem:"“有些工作完不成”用谓词逻辑如何表示（设Wx为x是工作，Cx为x被完成）？",opts:["∀x(Wx→¬Cx)","∃x(Wx∧¬Cx)","∃x(Wx→Cx)","¬∀x(Wx→¬Cx)"],answer:1,exp:"“有些工作完不成”=存在某个x，x是工作且x没被完成=∃x(Wx∧¬Cx)。"},
-  {stem:"双盲实验“双盲”的是哪两方？",opts:["医生和患者","受试者和实验者","赞助方和研究者","数据收集者和数据分析者"],answer:1,exp:"双盲实验要求受试者（患者）和实验者（医生/评估者）均不知分组情况，消除安慰剂效应和观察者偏差。"},
-  {stem:"统计验证中“回归到均值”指的是什么？",opts:["所有数据最终会趋向中位数","极端值在后续测量中倾向于向平均水平靠拢","用线性回归分析数据","样本均值等于总体均值"],answer:1,exp:"回归到均值：某次测量中极端高/低的值，在下一次测量中倾向于更接近平均水平。这是统计规律，不是因果效应。"},
+  {stem:"在逻辑运算中，"与(∧)"运算的结果为真当且仅当？",opts:["至少一个命题为真","所有命题都为真","恰好一个命题为真","所有命题都为假"],answer:1,exp:"与运算要求所有子命题同时为真，复合命题才为真。这是合取运算的基本定义。"},
+  {stem:"直言三段论"(P→Q)∧P⇒Q"中，以下哪个推理是无效的？",opts:["从¬Q推出¬P","从Q推出P","从P推出Q","从¬Q和P→Q推出¬P"],answer:1,exp:"直言三段论不能从结论Q为真反推前提P为真（肯定后件谬误）。会死的不一定是人，还可能是动物。"},
+  {stem:""有些工作完不成"用谓词逻辑如何表示（设Wx为x是工作，Cx为x被完成）？",opts:["∀x(Wx→¬Cx)","∃x(Wx∧¬Cx)","∃x(Wx→Cx)","¬∀x(Wx→¬Cx)"],answer:1,exp:""有些工作完不成"=存在某个x，x是工作且x没被完成=∃x(Wx∧¬Cx)。"},
+  {stem:"双盲实验"双盲"的是哪两方？",opts:["医生和患者","受试者和实验者","赞助方和研究者","数据收集者和数据分析者"],answer:1,exp:"双盲实验要求受试者（患者）和实验者（医生/评估者）均不知分组情况，消除安慰剂效应和观察者偏差。"},
+  {stem:"统计验证中"回归到均值"指的是什么？",opts:["所有数据最终会趋向中位数","极端值在后续测量中倾向于向平均水平靠拢","用线性回归分析数据","样本均值等于总体均值"],answer:1,exp:"回归到均值：某次测量中极端高/低的值，在下一次测量中倾向于更接近平均水平。这是统计规律，不是因果效应。"},
 
   // answer:2 — 5题
   {stem:"蕴含关系P→Q中，如果前提P为假，那么？",opts:["蕴含关系为假","Q一定为假","蕴含关系恒为真","Q一定为真"],answer:2,exp:"前提为假时，无论结论真假，蕴含关系P→Q恒为真。但这意味着论证没有实际意义——从假前提可推出任何结论。所以论证前必须先检查前提。"},
-  {stem:"以下哪项正确表述了命题的“同一律”？",opts:["一个命题不能同时为真和为假","两个矛盾命题必有一真一假","命题中的概念必须保持自身同一——“苹果就是苹果”","任何命题都是可判断真伪的"],answer:2,exp:"同一律要求命题中的概念保持自身同一性：此个体就是此个体，不等于彼个体，也不等于群体。"},
-  {stem:"“自相矛盾”的逻辑形式是什么？",opts:["P∨¬P","P→Q","P∧¬P","¬¬P"],answer:2,exp:"自相矛盾是同时肯定P和¬P，即P∧¬P。根据矛盾律，该复合命题恒为假。"},
+  {stem:"以下哪项正确表述了命题的"同一律"？",opts:["一个命题不能同时为真和为假","两个矛盾命题必有一真一假","命题中的概念必须保持自身同一——"苹果就是苹果"","任何命题都是可判断真伪的"],answer:2,exp:"同一律要求命题中的概念保持自身同一性：此个体就是此个体，不等于彼个体，也不等于群体。"},
+  {stem:""自相矛盾"的逻辑形式是什么？",opts:["P∨¬P","P→Q","P∧¬P","¬¬P"],answer:2,exp:"自相矛盾是同时肯定P和¬P，即P∧¬P。根据矛盾律，该复合命题恒为假。"},
   {stem:"判断相关性时，如果两事件同时发生的概率趋近于各自概率的乘积，说明？",opts:["两事件正相关","两事件负相关","两事件几乎无关","两事件互为因果"],answer:2,exp:"Pab≈Pa×Pb意味着两事件是否同时发生接近随机水平，彼此几乎无关。"},
-  {stem:"以下哪个是“错误归因”的典型案例？",opts:["韩非子“自相矛盾”","公孙龙“白马非马”","把“梅西上场后阿根廷赢了”归因为“梅西上场是赢球原因”","“不自由，毋宁死”与“给我自由或死亡”的逻辑等价"],answer:2,exp:"错误归因是将时间上的先后误认为因果关系。梅西上场与赢球可能同时发生，但不能仅凭此推断因果关系——忽略了队友、对手、运气等因素。"},
+  {stem:"以下哪个是"错误归因"的典型案例？",opts:["韩非子"自相矛盾"","公孙龙"白马非马"","把"梅西上场后阿根廷赢了"归因为"梅西上场是赢球原因"",""不自由，毋宁死"与"给我自由或死亡"的逻辑等价"],answer:2,exp:"错误归因是将时间上的先后误认为因果关系。梅西上场与赢球可能同时发生，但不能仅凭此推断因果关系——忽略了队友、对手、运气等因素。"},
 
   // answer:3 — 5题
-  {stem:"谓词逻辑中，“并非所有人都会死”的谓词公式是？",opts:["∀x¬Dx","∃xDx","¬∀xDx→∃x¬Dx","∃x¬Dx"],answer:3,exp:"“并非所有人都会死”=¬∀xDx=∃x¬Dx。全称量词的否定变为存在量词并否定谓词。"},
-  {stem:"“证伪”思维在决策中的最佳应用是？",opts:["收集所有支持方案的数据","找更多人确认方案可行","先实施方案再根据结果调整","列出“如果X发生则方案失败”的清单逐一检查"],answer:3,exp:"证伪思维的核心不是“证明方案正确”，而是主动寻找方案可能被推翻的条件——找不到反例的方案比“看起来很美的方案”更可靠。"},
+  {stem:"谓词逻辑中，"并非所有人都会死"的谓词公式是？",opts:["∀x¬Dx","∃xDx","¬∀xDx→∃x¬Dx","∃x¬Dx"],answer:3,exp:""并非所有人都会死"=¬∀xDx=∃x¬Dx。全称量词的否定变为存在量词并否定谓词。"},
+  {stem:""证伪"思维在决策中的最佳应用是？",opts:["收集所有支持方案的数据","找更多人确认方案可行","先实施方案再根据结果调整","列出"如果X发生则方案失败"的清单逐一检查"],answer:3,exp:"证伪思维的核心不是"证明方案正确"，而是主动寻找方案可能被推翻的条件——找不到反例的方案比"看起来很美的方案"更可靠。"},
   {stem:"假言三段论(P→Q)∧(Q→R)⇒(P→R)的典型误用是？",opts:["用结论倒推前提","用选言三段论替代假言三段论","混淆全称和存在量词","滑坡谬误——每步蕴含关系不严格成立"],answer:3,exp:"滑坡谬误是假言三段论的误用：链条中某个→关系牵强，导致整体传递失效。链条越长，可靠性越低。"},
-  {stem:"以下关于统计显著性的说法，哪个是正确的？",opts:["p<0.05说明效应量很大","p<0.05说明结果一定可以复现","p<0.05证明因果关系成立","p<0.05说明观测到的差异不太可能由随机因素单独解释"],answer:3,exp:"p值只表示“如果无效假设为真，观察到当前结果的概率”。p<0.05不说明效应量大、不能保证可复现、更不能证明因果。"},
-  {stem:"在逻辑思维训练中，“可叠加的进步”依赖什么来实现？",opts:["每次都比上一次更努力","运气+天赋","找到一个好的导师或方法","可重复的成功方法——每次成功的方法可被再次应用和验证"],answer:3,exp:"可叠加的进步来自科学方法：成功的步骤可被记录、复制、验证和改进。不是靠运气或天赋，而是靠逻辑和统计保证“可重复性”。"}
+  {stem:"以下关于统计显著性的说法，哪个是正确的？",opts:["p<0.05说明效应量很大","p<0.05说明结果一定可以复现","p<0.05证明因果关系成立","p<0.05说明观测到的差异不太可能由随机因素单独解释"],answer:3,exp:"p值只表示"如果无效假设为真，观察到当前结果的概率"。p<0.05不说明效应量大、不能保证可复现、更不能证明因果。"},
+  {stem:"在逻辑思维训练中，"可叠加的进步"依赖什么来实现？",opts:["每次都比上一次更努力","运气+天赋","找到一个好的导师或方法","可重复的成功方法——每次成功的方法可被再次应用和验证"],answer:3,exp:"可叠加的进步来自科学方法：成功的步骤可被记录、复制、验证和改进。不是靠运气或天赋，而是靠逻辑和统计保证"可重复性"。"}
 ];
 
 const saq = [
-  {stem:"用一句话解释命题和感叹句的核心区别，并各举一例。",ref:"命题是可判断真伪的陈述句（如“今天气温30度”），感叹句表达情感没有真值（如“太热了！”）。只有命题能进入逻辑推理流程。"},
-  {stem:"为什么“前提为假时蕴含关系恒真”这条规则在实践中极其重要？",ref:"它告诉我们：论证前必须先检查前提是否成立。从假前提可“合乎逻辑地”推出任何荒谬结论——逻辑正确不等于结论可靠。例如“如果有钱了我就投资你”——前提永远是未来可能，论证本身无实际约束力。"},
-  {stem:"用文氏图解释“所有男人是人，有些男人会死，因此有些人会死”为什么有效。",ref:"男人集合完全包含在人集合中。人集合与“会死的”集合完全重叠。男人集合与“会死的”集合有交集（因为男人包含于人，人全部会死）。所以存在量词的结论成立。"},
-  {stem:"解释“否定之否定律”在形式逻辑中和在自然语言中的差异。",ref:"形式逻辑中¬¬P=P严格成立。自然语言中“我不是不爱你”不等于“我爱你”——可能表达抱怨、犹豫或情感复杂。自然语言的模糊性和语境依赖使简单套用逻辑定律可能出错。"},
-  {stem:"德摩根律¬(A∧B)=¬A∨¬B如何帮助解决“逆向思维”问题？举一例。",ref:"当正向列举所有可能困难时，可用德摩根律逆向求解。例如算50人中至少两人生日相同的概率：正向需枚举所有重复组合极其复杂；逆向先算“所有人生日都不同”的概率（约3%），答案=1-3%=97%。"},
-  {stem:"为什么“大数据发现的相关性”不能替代因果推断？",ref:"相关性只说明两事件同时发生的频率高于随机水平，不说明一个导致另一个。混淆变量（如夏天同时导致冰淇淋销量和溺水率上升）可以产生虚假相关。因果推断需要随机对照实验来控制混淆变量。"},
-  {stem:"选言三段论“(P∨Q)∧¬P⇒Q”在什么情况下会被误用？",ref:"常见误用：通过肯定一项来否定另一项。“假期要么旅行要么工作”——去了旅行不等于没有工作（可能边旅行边工作）。选言三段论只能通过否定一项来肯定另一项，不能反过来。"},
-  {stem:"“以偏概全”和“以全概偏”有什么区别？各举一例。",ref:"以偏概全：从部分个体的特征推广到全体（“某地人小气”）。以全概偏：从群体统计特征推导具体个体（“犹太人善于做生意，所以这个犹太人一定能赚钱”）。前者夸大部分为全部，后者忽略个体差异。"},
+  {stem:"用一句话解释命题和感叹句的核心区别，并各举一例。",ref:"命题是可判断真伪的陈述句（如"今天气温30度"），感叹句表达情感没有真值（如"太热了！"）。只有命题能进入逻辑推理流程。"},
+  {stem:"为什么"前提为假时蕴含关系恒真"这条规则在实践中极其重要？",ref:"它告诉我们：论证前必须先检查前提是否成立。从假前提可"合乎逻辑地"推出任何荒谬结论——逻辑正确不等于结论可靠。例如"如果有钱了我就投资你"——前提永远是未来可能，论证本身无实际约束力。"},
+  {stem:"用文氏图解释"所有男人是人，有些男人会死，因此有些人会死"为什么有效。",ref:"男人集合完全包含在人集合中。人集合与"会死的"集合完全重叠。男人集合与"会死的"集合有交集（因为男人包含于人，人全部会死）。所以存在量词的结论成立。"},
+  {stem:"解释"否定之否定律"在形式逻辑中和在自然语言中的差异。",ref:"形式逻辑中¬¬P=P严格成立。自然语言中"我不是不爱你"不等于"我爱你"——可能表达抱怨、犹豫或情感复杂。自然语言的模糊性和语境依赖使简单套用逻辑定律可能出错。"},
+  {stem:"德摩根律¬(A∧B)=¬A∨¬B如何帮助解决"逆向思维"问题？举一例。",ref:"当正向列举所有可能困难时，可用德摩根律逆向求解。例如算50人中至少两人生日相同的概率：正向需枚举所有重复组合极其复杂；逆向先算"所有人生日都不同"的概率（约3%），答案=1-3%=97%。"},
+  {stem:"为什么"大数据发现的相关性"不能替代因果推断？",ref:"相关性只说明两事件同时发生的频率高于随机水平，不说明一个导致另一个。混淆变量（如夏天同时导致冰淇淋销量和溺水率上升）可以产生虚假相关。因果推断需要随机对照实验来控制混淆变量。"},
+  {stem:"选言三段论"(P∨Q)∧¬P⇒Q"在什么情况下会被误用？",ref:"常见误用：通过肯定一项来否定另一项。"假期要么旅行要么工作"——去了旅行不等于没有工作（可能边旅行边工作）。选言三段论只能通过否定一项来肯定另一项，不能反过来。"},
+  {stem:""以偏概全"和"以全概偏"有什么区别？各举一例。",ref:"以偏概全：从部分个体的特征推广到全体（"某地人小气"）。以全概偏：从群体统计特征推导具体个体（"犹太人善于做生意，所以这个犹太人一定能赚钱"）。前者夸大部分为全部，后者忽略个体差异。"},
   {stem:"用三个条件说明如何从相关性推断因果性。",ref:"①时间顺序：因必须发生在果之前。②相关性存在：Pab显著偏离Pa×Pb。③排除混淆变量：通过随机对照实验或统计控制，排除其他可能同时导致因和果的第三变量。三个条件全部满足才能声称因果。"},
-  {stem:"为什么“可叠加的进步”需要逻辑思维和统计思维两种能力？",ref:"逻辑思维保证推理过程的一致性——每一步都有根有据，不依赖运气。统计思维保证从经验中正确归纳——区分信号和噪声，不被随机波动误导。两者结合：逻辑保证“可重复”，统计保证“可验证”。"}
+  {stem:"为什么"可叠加的进步"需要逻辑思维和统计思维两种能力？",ref:"逻辑思维保证推理过程的一致性——每一步都有根有据，不依赖运气。统计思维保证从经验中正确归纳——区分信号和噪声，不被随机波动误导。两者结合：逻辑保证"可重复"，统计保证"可验证"。"}
 ];
 
 // ==================== STATE ====================
@@ -887,6 +897,7 @@ function init() {
   setCard(0);
   updateProgress();
   updateOverviewProgress();
+  renderSocratic();
 }
 function load() {
   try {
@@ -911,7 +922,7 @@ function setupTabs() {
 function switchTab(idx) {
   activeTab = idx;
   document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('show', i === idx));
+  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
   if (idx === 4) renderReview();
   if (idx === 0) updateOverviewProgress();
 }
@@ -1129,12 +1140,10 @@ function renderReview() {
 
 // ==================== MINDMAP TOGGLE ====================
 function toggleMindmap(el) {
-  if (typeof el === 'string') el = document.getElementById(el);
-  if (!el) return;
   el.classList.toggle('open');
-  const body = el.nextElementSibling;
-  if (body && body.classList.contains('node-body')) {
-    body.classList.toggle('open');
+  const children = el.nextElementSibling;
+  if (children && (children.classList.contains('node-children') || children.classList.contains('node-body'))) {
+    children.classList.toggle('open');
   }
 }
 
@@ -1184,6 +1193,59 @@ function chooseDecision(round, choice) {
   if (res && decisionData[round] && decisionData[round][choice]) {
     res.className = 'd-result show';
     res.innerHTML = '<p>' + decisionData[round][choice].feedback + '</p>';
+  }
+}
+
+// ==================== SOCRATIC RENDER ====================
+const socraticData = [
+  {q: '追问一：什么是命题？为什么感叹句不能做命题？', layers: [
+    '<strong>第一层：</strong>命题是能判断真伪的陈述句。"今天下雨了"是命题（可验证），"多么美好的一天"不是（主观感受）。',
+    '<strong>第二层：</strong>为什么必须是陈述句？因为逻辑运算（与或非）只能对真值（T/F）操作。没有真值，就无法建立逻辑关系。',
+    '<strong>第三层：</strong>那么"明天会下雨"是命题吗？是——命题不要求现在能判断，只要求<strong>存在可判断主体</strong>和<strong>可验证的时间点</strong>。这区分了"假命题"（有真值但是假）和"非命题"（根本无真值）。'
+  ]},
+  {q: '追问二：蕴含关系中，前提为假时蕴含关系恒真——这有什么用？', layers: [
+    '<strong>第一层：</strong>这似乎反直觉。"如果太阳从西边出来，我就给你100万"——前提不可能为真，所以这个蕴含关系逻辑正确。但你拿不到100万。',
+    '<strong>第二层：</strong>这条规则的深层含义是：<strong>论证之前必须先检查前提</strong>。从错误前提出发，能"合乎逻辑地"推出任何荒谬结论。',
+    '<strong>第三层：</strong>现实中这意味着什么？听到一个逻辑严密的论证时，第一反应不是赞叹推理，而是追问："你的大前提成立吗？条件有没有例外？"。2008年次贷危机的根源之一：模型假设"通常情况"永远成立。'
+  ]},
+  {q: '追问三：证伪只需要一个反例——为什么这么"简单"的原则如此强大？', layers: [
+    '<strong>第一层：</strong>证明"所有天鹅都是白的"需要检查每只天鹅（不可完成），证伪只需要找到一只黑天鹅（可行）。',
+    '<strong>第二层：</strong>科学进步的本质不是"证实"而是<strong>"证伪"</strong>——波普尔认为，一个理论越容易被证伪（却尚未被证伪），它就越有价值。不可证伪的"理论"（如弗洛伊德精神分析）不是科学。',
+    '<strong>第三层：</strong>应用到日常决策：不要试图证明一个方案完美——列出一个"如果X发生则方案失败"的清单，逐一检查。找不到反例的方案，比"看起来很美"的方案可靠得多。'
+  ]},
+  {q: '追问四：相关性≠因果性——到底怎么区分？', layers: [
+    '<strong>第一层：</strong>用公式：若P<sub>ab</sub> ≈ P<sub>a</sub>×P<sub>b</sub>，则无关。若P<sub>ab</sub> > P<sub>a</sub>×P<sub>b</sub>，则正相关。但这只是相关性，不是因果。',
+    '<strong>第二层：</strong>因果需要三个条件：①时间顺序（因在前果在后）②相关性存在 ③排除混淆变量。"短裙流行与股市上涨"——可能第三个变量（经济繁荣）同时导致两者。',
+    '<strong>第三层：</strong>建立因果的金标准是<strong>随机对照实验</strong>。观察性研究只能报告"关联"。读新闻时遇到"研究发现X导致Y"，先问：这是实验还是观察？控制了哪些变量？'
+  ]},
+  {q: '追问五：三段论看似简单，为什么现实中大量论证违反三段论规则？', layers: [
+    '<strong>第一层：</strong>因为自然语言掩盖了逻辑结构。"成功人士都努力，他很努力，所以他成功"——听起来合理，但逻辑形式是(Q→P)∧P ⇒ Q？不对！这是从结论倒推前提的谬误。',
+    '<strong>第二层：</strong>更深层的原因：人类大脑习惯<strong>模式匹配</strong>而非逻辑推导。看到"努力+成功"两个词同时出现，就自动建立因果。三段论要求我们压制这种直觉，逐项检验逻辑形式。',
+    '<strong>第三层：</strong>这意味着学习三段论不是为了做纸面推理，而是训练一个<strong>思维习惯</strong>：听到论证时自动在大脑中做"大前提检查→小前提检查→结论有效性检查"的流程。这是一种可以刻意练习的元认知技能。'
+  ]}
+];
+
+function renderSocratic() {
+  var container = document.getElementById('socraticContainer');
+  if (!container) return;
+  if (container.innerHTML) return; // already rendered
+  var html = '';
+  socraticData.forEach(function(item, i) {
+    html += '<div class="soc-item"><div class="soc-q" onclick="toggleSoc(this)">' + item.q + '</div>';
+    item.layers.forEach(function(layer, j) {
+      html += '<div class="soc-a" id="soc' + i + '_' + j + '">' + layer + '</div>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function toggleSoc(el) {
+  el.classList.toggle('open');
+  var next = el.nextElementSibling;
+  while (next && next.classList.contains('soc-a')) {
+    next.classList.toggle('show');
+    next = next.nextElementSibling;
   }
 }
 
