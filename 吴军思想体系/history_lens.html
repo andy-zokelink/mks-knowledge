@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>历史的双镜头 — 造物主视角 × 普通人视角</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'STSong', serif;
+  background: #000810;
+  color: #e0d8c8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background 1s ease;
+}
+body.ordinary-mode { background: #0d0b08; }
+canvas#bg-canvas { display: block; position: fixed; top: 0; left: 0; z-index: 0; }
+canvas#transition-canvas { display: block; position: fixed; top: 0; left: 0; z-index: 199; pointer-events: none; opacity: 0; }
+
+/* ===== LENS CONTAINER ===== */
+#lens-container { position: relative; z-index: 1; width: 100%; }
+
+/* ===== CREATOR VIEW ===== */
+#creator-view { position: relative; }
+.creator-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 4rem 2rem; }
+.creator-section.column { flex-direction: column; }
+
+/* Cosmic Title */
+.cosmic-title-block { text-align: center; z-index: 2; }
+.cosmic-title {
+  font-size: clamp(2.5rem, 8vw, 7rem); font-weight: 200;
+  letter-spacing: 0.35em; color: #f0e6d3;
+  text-shadow: 0 0 120px rgba(180,160,120,0.25), 0 0 40px rgba(180,140,100,0.15);
+  margin-bottom: 0.5em;
+}
+.cosmic-subtitle {
+  font-size: clamp(0.9rem, 2.5vw, 1.4rem); font-weight: 300;
+  letter-spacing: 0.6em; color: rgba(200,180,150,0.5); margin-bottom: 3em;
+}
+.cosmic-quote {
+  max-width: 700px; margin: 0 auto 2em;
+  font-size: clamp(1rem, 2vw, 1.3rem); line-height: 2.2;
+  color: rgba(180,160,130,0.45); font-style: italic;
+}
+.cosmic-quote span { color: rgba(220,200,160,0.7); display: block; margin-top: 0.6em; font-size: 0.75em; font-style: normal; }
+
+/* Universe Calendar */
+.calendar-viz { position: relative; width: 100%; max-width: 900px; margin: 0 auto; }
+.calendar-bar {
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, rgba(60,40,100,0.6), rgba(100,60,160,0.6), rgba(200,140,70,0.6), rgba(255,200,100,0.8));
+  position: relative; margin: 5rem 0 3rem;
+}
+.calendar-marker {
+  position: absolute; top: -10px; transform: translateX(-50%);
+  font-size: 0.65rem; color: rgba(180,160,130,0.4); letter-spacing: 0.1em;
+}
+.calendar-marker::before { content: ''; display: block; width: 1px; height: 14px; background: rgba(180,160,130,0.25); margin: 0 auto 4px; }
+.calendar-human {
+  position: absolute; right: 0; top: -12px; transform: translateX(50%);
+  font-size: 0.55rem; color: rgba(255,200,100,0.75); letter-spacing: 0.2em;
+}
+.calendar-human::before { content: ''; display: block; width: 2px; height: 18px; background: rgba(255,200,100,0.5); margin: 0 auto 6px; box-shadow: 0 0 15px rgba(255,200,100,0.4); }
+
+.scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(180,160,130,0.35); animation: floatHint 3s ease-in-out infinite; }
+@keyframes floatHint { 0%,100%{opacity:0.25;transform:translateX(-50%) translateY(0)} 50%{opacity:0.6;transform:translateX(-50%) translateY(-10px)} }
+
+/* ===== TIMELINE / PIVOT NODES ===== */
+.timeline-section { min-height: 200vh; position: relative; padding: 4rem 2rem; }
+.timeline-center { position: sticky; top: 50vh; transform: translateY(-50%); }
+.timeline-label { text-align: center; font-size: 0.75rem; letter-spacing: 0.4em; color: rgba(180,160,130,0.35); margin-bottom: 2rem; }
+
+.pivot-nodes { display: flex; justify-content: space-between; align-items: flex-start; max-width: 1100px; margin: 0 auto; padding: 2rem 0; position: relative; flex-wrap: wrap; gap: 1rem; }
+.pivot-nodes::before { content: ''; position: absolute; top: calc(50% - 6px); left: 5%; right: 5%; height: 1px; background: linear-gradient(90deg, transparent, rgba(200,160,100,0.2), rgba(200,160,100,0.4), rgba(200,160,100,0.2), transparent); z-index: 0; }
+
+.pivot-node { position: relative; z-index: 1; text-align: center; cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s; flex: 1; min-width: 100px; max-width: 160px; padding: 2rem 0.5rem; }
+.pivot-node:hover { transform: translateY(-12px); filter: brightness(1.4); }
+.pivot-dot {
+  width: 14px; height: 14px; border-radius: 50%; margin: 0 auto 1rem;
+  background: rgba(200,160,100,0.5); box-shadow: 0 0 24px rgba(200,160,100,0.25); transition: all 0.4s ease;
+}
+.pivot-node:hover .pivot-dot { background: rgba(255,210,140,0.9); box-shadow: 0 0 50px rgba(255,200,120,0.7); }
+.pivot-node.energy .pivot-dot { background: rgba(220,140,60,0.5); box-shadow: 0 0 24px rgba(220,140,60,0.25); }
+.pivot-node.energy:hover .pivot-dot { background: rgba(255,170,80,0.9); box-shadow: 0 0 50px rgba(255,170,80,0.7); }
+.pivot-node.info .pivot-dot { background: rgba(100,160,220,0.5); box-shadow: 0 0 24px rgba(100,160,220,0.25); }
+.pivot-node.info:hover .pivot-dot { background: rgba(130,200,255,0.9); box-shadow: 0 0 50px rgba(130,200,255,0.7); }
+.pivot-year { font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(180,160,130,0.35); margin-bottom: 0.3rem; }
+.pivot-name { font-size: 0.82rem; letter-spacing: 0.15em; color: rgba(200,180,150,0.65); margin-bottom: 0.3rem; }
+.pivot-metric { font-size: 0.58rem; letter-spacing: 0.1em; color: rgba(180,160,130,0.3); line-height: 1.5; }
+
+/* ===== CURVES CANVAS ===== */
+#curves-canvas-main { width: 100%; max-width: 1000px; height: auto; display: block; }
+
+/* ===== PIVOT PANEL ===== */
+.pivot-panel {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+  width: 92vw; max-width: 620px;
+  background: rgba(8,6,12,0.96); border: 1px solid rgba(200,160,100,0.15);
+  padding: 3rem; z-index: 100; transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none; backdrop-filter: blur(24px);
+  box-shadow: 0 0 80px rgba(0,0,0,0.6), 0 0 20px rgba(200,160,100,0.08);
+}
+.pivot-panel.active { transform: translate(-50%, -50%) scale(1); pointer-events: all; }
+.pivot-panel h3 { font-size: 1.1rem; font-weight: 300; letter-spacing: 0.2em; color: #f0e6d3; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(200,160,100,0.1); padding-bottom: 1rem; }
+.pivot-panel p { font-size: 0.85rem; line-height: 1.9; color: rgba(180,160,130,0.65); margin-bottom: 1rem; }
+.pivot-panel p strong { color: rgba(220,190,140,0.85); font-weight: 400; }
+.pivot-panel .metric-row { display: flex; gap: 2rem; margin: 1.5rem 0; }
+.pivot-panel .metric { flex: 1; text-align: center; padding: 1rem; border: 1px solid rgba(200,160,100,0.1); }
+.pivot-panel .metric-value { font-size: 1.6rem; font-weight: 200; color: #e0c080; display: block; }
+.pivot-panel .metric-label { font-size: 0.6rem; letter-spacing: 0.15em; color: rgba(180,160,130,0.35); margin-top: 0.3rem; }
+.panel-close { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; color: rgba(180,160,130,0.4); font-size: 1.5rem; cursor: pointer; transition: color 0.3s; }
+.panel-close:hover { color: rgba(240,200,150,0.8); }
+
+/* ===== FIGURES GRID ===== */
+.figures-section { min-height: 100vh; padding: 6rem 2rem; display: flex; align-items: center; justify-content: center; }
+.figures-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1050px; width: 100%; }
+.figure-card { text-align: center; padding: 2.5rem 2rem; border: 1px solid rgba(200,160,100,0.08); transition: all 0.5s ease; cursor: pointer; position: relative; overflow: hidden; }
+.figure-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(200,160,100,0.04) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; }
+.figure-card:hover { border-color: rgba(200,160,100,0.35); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.figure-card:hover::after { opacity: 1; }
+.figure-name { font-size: 1.4rem; font-weight: 200; letter-spacing: 0.25em; color: #e0d0b0; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+.figure-role { font-size: 0.65rem; letter-spacing: 0.25em; color: rgba(180,160,130,0.35); margin-bottom: 1.2rem; position: relative; z-index: 1; }
+.figure-insight { font-size: 0.82rem; line-height: 1.8; color: rgba(180,160,130,0.55); position: relative; z-index: 1; }
+.figure-insight strong { color: rgba(220,190,140,0.7); font-weight: 400; }
+
+/* ===== TRANSITION TRIGGER ===== */
+.transition-trigger { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; position: relative; }
+.transition-prompt { font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 300; letter-spacing: 0.3em; color: rgba(180,160,130,0.45); margin-bottom: 2.5rem; transition: all 0.5s ease; cursor: pointer; }
+.transition-prompt:hover { color: rgba(240,210,160,0.75); text-shadow: 0 0 50px rgba(200,160,100,0.3); }
+.transition-arrow { font-size: 2rem; color: rgba(180,160,130,0.25); animation: floatHint 2s ease-in-out infinite; }
+
+/* ===== ORDINARY VIEW ===== */
+#ordinary-view { position: relative; display: none; }
+
+.ordinary-header { text-align: center; padding: 8rem 2rem 4rem; }
+.ordinary-title { font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 200; letter-spacing: 0.25em; color: #d4c8b0; margin-bottom: 1.2em; }
+.ordinary-quote { font-size: 0.85rem; line-height: 2; color: rgba(180,160,130,0.45); max-width: 600px; margin: 0 auto; font-style: italic; }
+
+/* ===== STRATA DIG ===== */
+.strata-container { position: relative; max-width: 780px; margin: 0 auto; padding: 2rem; }
+
+.strata-surface {
+  text-align: center; padding: 2.5rem;
+  background: linear-gradient(180deg, rgba(70,55,35,0.25) 0%, rgba(50,40,25,0.35) 100%);
+  border: 1px solid rgba(180,150,100,0.15); border-bottom: none; position: relative; z-index: 2;
+}
+.strata-surface-label { font-size: 0.75rem; letter-spacing: 0.3em; color: rgba(200,180,140,0.5); }
+.strata-surface-year { font-size: 2.2rem; font-weight: 200; color: #e0d0b0; letter-spacing: 0.1em; margin-top: 0.3rem; }
+
+.strata-layer {
+  padding: 2rem 2rem 2rem 2.5rem;
+  border-left: 1px solid rgba(180,150,100,0.12);
+  border-right: 1px solid rgba(180,150,100,0.12);
+  border-bottom: 1px solid rgba(180,150,100,0.12);
+  position: relative; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); cursor: pointer;
+}
+.strata-layer:hover { background: rgba(180,150,100,0.04); border-left-color: rgba(200,160,100,0.35); padding-left: 3.5rem; }
+.strata-layer::before { content: ''; position: absolute; left: -1px; top: 0; width: 3px; height: 0; background: linear-gradient(180deg, rgba(200,160,100,0.5), rgba(200,140,80,0.3)); transition: height 0.5s ease; }
+.strata-layer:hover::before { height: 100%; }
+
+.strata-depth { font-size: 0.58rem; letter-spacing: 0.3em; color: rgba(180,160,130,0.25); margin-bottom: 0.5rem; }
+.strata-era { font-size: 0.68rem; letter-spacing: 0.2em; color: rgba(200,170,130,0.45); margin-bottom: 0.6rem; }
+.strata-item { font-size: 1.05rem; color: #d4c4a0; letter-spacing: 0.08em; margin-bottom: 0.4rem; font-weight: 300; }
+.strata-origin { font-size: 0.72rem; color: rgba(180,160,130,0.4); line-height: 1.7; }
+
+.strata-bedrock {
+  text-align: center; padding: 2.5rem;
+  background: linear-gradient(180deg, rgba(30,20,15,0.5) 0%, rgba(20,12,8,0.6) 100%);
+  border: 1px solid rgba(100,70,40,0.15); color: rgba(160,130,100,0.35);
+  font-size: 0.68rem; letter-spacing: 0.25em; line-height: 2;
+}
+
+/* ===== OBJECTS GRID ===== */
+.objects-section { padding: 8rem 2rem; max-width: 900px; margin: 0 auto; }
+.objects-title { text-align: center; font-size: 1.1rem; font-weight: 300; letter-spacing: 0.3em; color: rgba(200,170,130,0.45); margin-bottom: 4rem; }
+.objects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+.object-card { text-align: center; padding: 2.5rem 1.5rem; border: 1px solid rgba(180,150,100,0.08); transition: all 0.5s ease; cursor: pointer; }
+.object-card:hover { background: rgba(180,150,100,0.04); border-color: rgba(200,160,100,0.25); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+.object-emoji { font-size: 2.8rem; margin-bottom: 1rem; display: block; filter: grayscale(0.3); transition: filter 0.5s; }
+.object-card:hover .object-emoji { filter: grayscale(0); }
+.object-name { font-size: 0.88rem; color: #d4c4a0; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+.object-origin { font-size: 0.62rem; color: rgba(180,160,130,0.35); line-height: 1.7; }
+
+/* ===== LENS SWITCH ===== */
+.lens-switch {
+  position: fixed; bottom: 2.5rem; right: 2.5rem; z-index: 150;
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(200,160,100,0.25); background: rgba(8,6,12,0.85);
+  color: rgba(200,160,100,0.55); font-size: 1.2rem; cursor: pointer;
+  transition: all 0.5s ease; backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+}
+.lens-switch:hover { border-color: rgba(220,180,120,0.55); color: rgba(240,200,140,0.85); box-shadow: 0 0 35px rgba(200,160,100,0.2); transform: scale(1.08); }
+.lens-switch-label { position: absolute; right: 62px; font-size: 0.58rem; letter-spacing: 0.2em; color: rgba(180,160,130,0.35); white-space: nowrap; }
+
+/* ===== FINAL SECTION ===== */
+.final-section { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; }
+.final-text { font-size: clamp(1rem, 2.5vw, 1.4rem); font-weight: 300; letter-spacing: 0.25em; color: rgba(200,170,130,0.35); max-width: 700px; line-height: 2.2; }
+
+/* ===== OVERLAY ===== */
+.overlay-mask { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.45); pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+.overlay-mask.active { opacity: 1; pointer-events: all; }
+#zoom-overlay { position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0; transition: opacity 0.8s ease; }
+
+/* ===== READING PROGRESS ===== */
+.progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(200,160,100,0.6), transparent); z-index: 160; transition: width 0.1s linear; pointer-events: none; }
+
+/* ===== FADE IN ===== */
+.fade-in { opacity: 0; transform: translateY(35px); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px rgba(200,160,100,0.3)} 50%{box-shadow:0 0 60px rgba(200,160,100,0.7)} }
+.pulse { animation: pulse-glow 4s ease-in-out infinite; }
+@keyframes pulse-glow-blue { 0%,100%{box-shadow:0 0 20px rgba(100,160,220,0.3)} 50%{box-shadow:0 0 60px rgba(100,180,255,0.7)} }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .pivot-nodes { flex-direction: column; align-items: center; gap: 1.5rem; }
+  .pivot-nodes::before { top: 0; left: 50%; width: 1px; height: 100%; right: auto; }
+  .pivot-node { max-width: 100%; padding: 0.5rem; }
+  .figures-grid { grid-template-columns: 1fr; }
+  .objects-grid { grid-template-columns: repeat(2, 1fr); }
+  .strata-layer { padding: 1.5rem; }
+  .lens-switch { bottom: 1.5rem; right: 1.5rem; width: 44px; height: 44px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<canvas id="transition-canvas"></canvas>
+<div class="progress-bar" id="progress-bar"></div>
+<div id="zoom-overlay"></div>
+<div class="overlay-mask" id="overlay-mask"></div>
+
+<button class="lens-switch" id="lens-switch" title="切换镜头">
+  <span class="lens-switch-label" id="lens-label">▸ 普通人视角</span>
+  ◈
+</button>
+
+<div class="pivot-panel" id="pivot-panel">
+  <button class="panel-close" id="panel-close">×</button>
+  <h3 id="panel-title"></h3>
+  <div id="panel-content"></div>
+</div>
+
+<div id="lens-container">
+
+<!-- ==================== CREATOR VIEW ==================== -->
+<div id="creator-view">
+
+  <section class="creator-section">
+    <div class="cosmic-title-block fade-in">
+      <div class="cosmic-subtitle">造物主视角 · THE CREATOR'S LENS</div>
+      <h1 class="cosmic-title">人类文明</h1>
+      <div class="cosmic-quote">
+        「回望历史，看清来龙去脉；<br>俯瞰历史，看清万物联系」
+        <span>—— 吴军</span>
+      </div>
+    </div>
+    <div class="scroll-hint">▼ 向下滚动</div>
+  </section>
+
+  <section class="creator-section">
+    <div class="calendar-viz fade-in">
+      <p style="text-align:center;font-size:0.75rem;letter-spacing:0.35em;color:rgba(180,160,130,0.35);margin-bottom:4rem;">
+        宇宙历 · 138 亿年压缩为一年
+      </p>
+      <div class="calendar-bar">
+        <div class="calendar-marker" style="left:0%;">1月1日<br>大爆炸</div>
+        <div class="calendar-marker" style="left:22%;">3月<br>银河系诞生</div>
+        <div class="calendar-marker" style="left:60%;">8月末<br>太阳系形成</div>
+        <div class="calendar-marker" style="left:86%;">11月中<br>地球上出现生命</div>
+        <div class="calendar-marker" style="left:94%;">12月中旬<br>寒武纪生命大爆发</div>
+        <div class="calendar-marker" style="left:99%;">12月27日<br>恐龙灭绝</div>
+        <div class="calendar-human">12月31日<br>23:59:30<br>人类文明<br>全部历史</div>
+      </div>
+      <div style="text-align:center;font-size:0.78rem;line-height:2;color:rgba(180,160,130,0.45);max-width:620px;margin:0 auto;">
+        <p>整个有文字记载的人类文明——苏美尔、古埃及、夏商周、希腊罗马、<br>文艺复兴、工业革命、信息时代——所有这些，仅占宇宙历的最后 <strong style="color:rgba(220,180,130,0.6);font-weight:300;">30 秒</strong>。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="creator-section column">
+    <div style="text-align:center;max-width:850px;">
+      <p class="timeline-label fade-in">能量与信息 —— 文明的两把尺子</p>
+      <h2 style="font-size:clamp(1.1rem,3vw,1.7rem);font-weight:200;letter-spacing:0.2em;color:#d4c4a0;margin-bottom:2.5rem;" class="fade-in">
+        能量是文明的标尺 · 信息是文明的密码
+      </h2>
+      <canvas id="curves-canvas-main" width="1000" height="340"></canvas>
+      <p style="font-size:0.65rem;letter-spacing:0.25em;color:rgba(180,160,130,0.25);margin-top:1.2rem;">
+        <span style="color:rgba(255,160,60,0.45);">━━ 能量利用水平（卡尔达肖夫标度参照）</span>&nbsp;&nbsp;
+        <span style="color:rgba(130,200,255,0.45);">━━ 信息组织能力</span>
+      </p>
+      <p style="font-size:0.7rem;color:rgba(180,160,130,0.3);margin-top:2rem;line-height:1.8;max-width:650px;margin-left:auto;margin-right:auto;">
+        两条线在工业革命之后同时陡升——这不是巧合。<br>
+        能量让信息传播得更远，信息让能量组织得更高效。<br>
+        正反馈循环一旦启动，文明的速度就不再是加法的，而是乘法的。
+      </p>
+    </div>
+  </section>
+
+  <section class="timeline-section">
+    <div class="timeline-center">
+      <p class="timeline-label fade-in">七大拐点 · 当能量与信息在某一个时刻交汇</p>
+      <div class="pivot-nodes">
+        <div class="pivot-node energy fade-in" data-pivot="agriculture">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">~10,000 BCE</div>
+          <div class="pivot-name">农耕革命</div>
+          <div class="pivot-metric">能量突破生存基线<br>人口密度首次跃迁</div>
+        </div>
+        <div class="pivot-node info fade-in" data-pivot="writing">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">~3,200 BCE</div>
+          <div class="pivot-name">文字诞生</div>
+          <div class="pivot-metric">信息首次脱离肉身<br>楔形文字·苏美尔</div>
+        </div>
+        <div class="pivot-node fade-in" data-pivot="axial">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">800–300 BCE</div>
+          <div class="pivot-name">轴心时代</div>
+          <div class="pivot-metric">思想同步大爆发<br>奠定今日文明底色</div>
+        </div>
+        <div class="pivot-node info fade-in" data-pivot="printing">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">1450 CE</div>
+          <div class="pivot-name">印刷革命</div>
+          <div class="pivot-metric">信息复制成本趋零<br>知识从线性→指数</div>
+        </div>
+        <div class="pivot-node energy fade-in" data-pivot="industrial">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">1760–1840</div>
+          <div class="pivot-name">工业革命</div>
+          <div class="pivot-metric">能量量级跃迁<br>GDP ×50，寿命 ×2</div>
+        </div>
+        <div class="pivot-node info fade-in" data-pivot="digital">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">1950–</div>
+          <div class="pivot-name">信息时代</div>
+          <div class="pivot-metric">信息增速超越能量<br>摩尔定律·互联网</div>
+        </div>
+        <div class="pivot-node pulse fade-in" data-pivot="ai">
+          <div class="pivot-dot"></div>
+          <div class="pivot-year">2022–</div>
+          <div class="pivot-name">AI 时代</div>
+          <div class="pivot-metric">信息开始生产信息<br>GPT·文明新拐点</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="creator-section column" style="min-height:auto;padding-top:2rem;">
+    <p class="timeline-label fade-in" style="margin-bottom:3rem;">关键人物 · 在能量 × 信息框架中的角色</p>
+    <div class="figures-grid" style="margin:0 auto;">
+      <div class="figure-card fade-in">
+        <div class="figure-name">牛顿</div>
+        <div class="figure-role">· 发现者 ·</div>
+        <div class="figure-insight">不是发现了万有引力。<br>而是发现了<strong>自然规律可以用数学描述</strong>。<br>这把钥匙打开了现代科学的全部大门。首位享受西敏寺国葬的非王室成员。</div>
+      </div>
+      <div class="figure-card fade-in">
+        <div class="figure-name">古腾堡</div>
+        <div class="figure-role">· 复制者 ·</div>
+        <div class="figure-insight">不是第一个发明活字印刷的人（毕昇早他 400 年）。<br>但他让<strong>信息复制的成本趋近于零</strong>。<br>传播模式从线性（1→2→3）变为指数（1→N→N²）。</div>
+      </div>
+      <div class="figure-card fade-in">
+        <div class="figure-name">瓦特</div>
+        <div class="figure-role">· 跃迁者 ·</div>
+        <div class="figure-insight">不是发明了蒸汽机。<br>而是完成了<strong>能量的量级跃迁</strong>。<br>一个人的力量从此等于一百个人。背后是月光社的学术生态和英国的专利制度。</div>
+      </div>
+      <div class="figure-card fade-in">
+        <div class="figure-name">蔡伦</div>
+        <div class="figure-role">· 规模化者 ·</div>
+        <div class="figure-insight">不是发明了纸。<br>而是创造了<strong>可规模化生产的廉价造纸工艺</strong>。<br>"术"比"物"重要——这是文明扩散的本质逻辑。</div>
+      </div>
+      <div class="figure-card fade-in">
+        <div class="figure-name">图灵</div>
+        <div class="figure-role">· 边界定义者 ·</div>
+        <div class="figure-insight">不是发明了计算机。<br>而是<strong>画出了"可计算"的边界</strong>。<br>受哥德尔不完备定理和冯·诺依曼启发，定义了什么是机器能做的、什么是不能的。</div>
+      </div>
+      <div class="figure-card fade-in">
+        <div class="figure-name">GPT</div>
+        <div class="figure-role">· 转折点 ·</div>
+        <div class="figure-insight">第一次，<strong>信息本身开始生产信息</strong>。<br>能量与信息的关系被重写。<br>人类站在文明的新拐点上——卡尔达肖夫 0.7 型文明。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="transition-trigger" id="transition-trigger">
+    <div class="transition-prompt" id="transition-prompt">
+      如果你是一个普通人类<br>这些意味着什么？
+    </div>
+    <div class="transition-arrow">▼</div>
+    <p style="font-size:0.6rem;letter-spacing:0.25em;color:rgba(180,160,130,0.2);margin-top:2rem;">点击问题或箭头切换镜头</p>
+  </section>
+
+</div><!-- /creator-view -->
+
+<!-- ==================== ORDINARY VIEW ==================== -->
+<div id="ordinary-view">
+
+  <div class="ordinary-header">
+    <div style="font-size:0.65rem;letter-spacing:0.45em;color:rgba(180,160,130,0.35);margin-bottom:1.5rem;">普通人视角 · THE ORDINARY LENS</div>
+    <h1 class="ordinary-title">你的日常考古学</h1>
+    <div class="ordinary-quote">
+      「所有的历史都是当代史」<br>
+      <span style="font-size:0.65em;font-style:normal;">—— 从现在开始，往下挖。你每天触摸的每一个事物，都是一万年的沉积。</span>
+    </div>
+  </div>
+
+  <div class="strata-container">
+
+    <div class="strata-surface">
+      <div class="strata-surface-label">▦ 地表层</div>
+      <div class="strata-surface-year">2026</div>
+      <p style="color:rgba(180,160,130,0.4);font-size:0.78rem;margin-top:0.6rem;">你在这里。今天早上醒来，刷了手机，看了新闻，喝了咖啡。一切如此自然。</p>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(50,40,30,0.2) 0%,rgba(45,38,28,0.25) 100%);">
+      <div class="strata-depth">▼ 0.1m · 表层腐殖质</div>
+      <div class="strata-era">互联网 / 移动计算层 · 1990s — 2026</div>
+      <div class="strata-item">📱 你早上刷手机获取新闻</div>
+      <div class="strata-origin">你获取信息的方式在不到一代人的时间里变了三次：报纸→电视→网页→手机推送→算法推荐。每一次变化都重新定义了"知道"：知道得更多，还是知道自己想知道的？</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(45,38,28,0.22) 0%,rgba(40,34,24,0.28) 100%);">
+      <div class="strata-depth">▼ 0.3m · 硅基层</div>
+      <div class="strata-era">晶体管 / 计算机层 · 1947 — 1990s</div>
+      <div class="strata-item">💻 你手机里的芯片</div>
+      <div class="strata-origin">追溯链：晶体管（1947·贝尔实验室·肖克利/巴丁/布拉顿）→ 量子力学（1920s·薛定谔/海森堡/狄拉克）→ 电磁感应（1831·法拉第）。一块指甲盖大小的硅片上，压着 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">150 年的物理学</strong>。摩尔观察到的"每 18 个月翻倍"不是自然规律——是一代代工程师的选择。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(40,34,24,0.22) 0%,rgba(36,30,20,0.3) 100%);">
+      <div class="strata-depth">▼ 0.6m · 电气层</div>
+      <div class="strata-era">电力 / 石油层 · 1880s — 1950s</div>
+      <div class="strata-item">⚡ 你随手按下电灯开关</div>
+      <div class="strata-origin">法拉第电磁感应（1831）→ 麦克斯韦方程组（1865）→ 爱迪生直流电网（1882）→ 特斯拉交流电（1888）。在法拉第之前，"电"是一种玩具——莱顿瓶里的火花。他之后，"电"是一种可以精确计算、大规模传输的能量形式。当你按下开关，你在调用 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">两百年来最聪明的大脑</strong>为你铺好的路。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(36,30,20,0.25) 0%,rgba(32,26,18,0.32) 100%);">
+      <div class="strata-depth">▼ 1.0m · 蒸汽与钢铁层</div>
+      <div class="strata-era">工业革命层 · 1760 — 1880s</div>
+      <div class="strata-item">🚂 你吃的早餐来自千里之外</div>
+      <div class="strata-origin">工业革命前近 2000 年，英国人均 GDP 从古罗马时代的约 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">600 美元</strong>涨到 18 世纪的约 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">800 美元</strong>——2000 年只增长了 1/3。工业革命后 200 年：涨到 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">4 万美元</strong>——增长了 50 倍。人均寿命翻了一番。没有瓦特，你今天早上的咖啡、面包、鸡蛋——这些你视为理所当然的东西——不可能同时出现在你的餐桌上。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(32,26,18,0.28) 0%,rgba(28,22,15,0.35) 100%);">
+      <div class="strata-depth">▼ 2.0m · 印刷层</div>
+      <div class="strata-era">文艺复兴 / 印刷革命层 · 1450 — 1760</div>
+      <div class="strata-item">📖 你认得的每一个字</div>
+      <div class="strata-origin">古腾堡之前，知识的传播是手抄式的线性过程：1 本 → 2 本 → 3 本。抄到第 100 本时，错误已经层层累积。犹太人发明了字母数字核对法来对抗这种衰减——但终究无力回天。古腾堡之后：1 本 → 1000 本，信噪比飞跃。复制技术历经四代（抄写→印刷→电磁→激光），每代的本质都是 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">提高信噪比</strong>。你今天能识字、阅读、拥有独立判断——是信息复制成本趋近于零的结果。代价是：欧洲在中世纪等了一千年。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(28,22,15,0.3) 0%,rgba(25,19,12,0.38) 100%);">
+      <div class="strata-depth">▼ 3.5m · 帝国层</div>
+      <div class="strata-era">古典文明 / 罗马层 · ~500 BCE — 476 CE</div>
+      <div class="strata-item">⚖️ 你相信"法律面前人人平等"</div>
+      <div class="strata-origin">罗马法——大陆法系的鼻祖。你今天签的每一份合同、继承的每一份财产、你心中"公正"的原型——都来自罗马人写在 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">十二铜表法（约 450 BCE）</strong>上的朴素信念。而罗马法本身继承自希腊哲学中对"自然法"的思考。你今天走进法庭时心里默念的"正义"——是一个已经流传了 2500 年的概念。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(25,19,12,0.32) 0%,rgba(22,16,10,0.4) 100%);">
+      <div class="strata-depth">▼ 5.5m · 思想爆发层</div>
+      <div class="strata-era">轴心时代层 · 800 — 300 BCE</div>
+      <div class="strata-item">🧠 你觉得"人应该怎样生活"</div>
+      <div class="strata-origin">公元前 600 年到公元前 300 年，在互不知情的情况下——孔子在鲁国，佛陀在恒河流域，苏格拉底在雅典广场，犹太先知在耶路撒冷——同时提出了同一个问题：<strong style="color:rgba(200,170,130,0.6);font-weight:300;">人应该如何活着？</strong>不是巧合。德国哲学家雅斯贝尔斯称之为"轴心时代"——这 300 年奠定了 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">今天全世界所有文明的底色</strong>。当你判断一件事"对不对"——你在调用轴心时代留下的源代码。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(22,16,10,0.35) 0%,rgba(18,13,8,0.42) 100%);">
+      <div class="strata-depth">▼ 8.0m · 符号层</div>
+      <div class="strata-era">文字 / 早期城市文明层 · 3,200 — 800 BCE</div>
+      <div class="strata-item">📝 你使用的文字</div>
+      <div class="strata-origin">约 3200 BCE，苏美尔人在美索不达米亚的幼发拉底河畔，用削尖的芦苇在湿泥板上压出了第一批楔形文字。人类第一次把 <strong style="color:rgba(200,170,130,0.6);font-weight:300;">思想钉在了物质上</strong>——从此知识可以穿越时间和空间，传给从未谋面的人。腓尼基人把象形简化成字母，希腊人加上元音，罗马人改造了字形——你现在读的每一个汉字和字母，都带着 5000 年的基因。</div>
+    </div>
+
+    <div class="strata-layer fade-in" style="background:linear-gradient(180deg,rgba(18,13,8,0.38) 0%,rgba(15,10,6,0.45) 100%);">
+      <div class="strata-depth">▼ 12.0m · 谷物层</div>
+      <div class="strata-era">农耕革命层 · 10,000 — 3,200 BCE</div>
+      <div class="strata-item">🌾 你今天吃的每一粒米</div>
+      <div class="strata-origin">约 12000 年前，<strong style="color:rgba(200,170,130,0.6);font-weight:300;">太阳活动增强</strong>导致全球变暖。但气温上升滞后于能量输入数千年——因为 1 克冰融化成水需要 80 卡路里，而 1 克水升温 1°C 只需要 1 卡路里。能量被优先用于融化冰川。当冰雪终于消融，可耕种的土地出现了。人类从狩猎采集转向农耕——<strong style="color:rgba(200,170,130,0.6);font-weight:300;">不是因为更聪明了，而是因为地球的能量预算终于有了盈余</strong>。你今天碗里的米饭，来自一万年前的一次太阳活动波动和一场持续数千年的滞后效应。</div>
+    </div>
+
+    <div class="strata-bedrock">
+      <div style="font-size:1rem;margin-bottom:0.5rem;">⬤ 基岩</div>
+      走出非洲 · ~60,000 BCE<br><br>
+      现代智人带着 <strong style="color:rgba(180,150,110,0.5);font-weight:300;">FOXP2 基因突变</strong>走出非洲。<br>
+      这不是肌肉的突变，不是大脑容量的突变——是 <strong style="color:rgba(180,150,110,0.5);font-weight:300;">语言基因</strong>的突变。<br>
+      和尼安德特人的区别不在于脑容量（相当），<br>而在于：智人能组织 <strong style="color:rgba(180,150,110,0.5);font-weight:300;">200 人</strong>协作，尼安德特人只能沟通 <strong style="color:rgba(180,150,110,0.5);font-weight:300;">十几人</strong>。<br>
+      信息组织能力的差异——在最古老的基岩上，就已经写好了后来的全部剧本。
+    </div>
+
+  </div>
+
+  <div class="objects-section">
+    <div class="objects-title">你的日常 × 历史遗产</div>
+    <div class="objects-grid">
+      <div class="object-card fade-in">
+        <span class="object-emoji">📅</span><div class="object-name">星期制</div>
+        <div class="object-origin">← 巴比伦人观测到七个天体<br>← 犹太教安息日传统（每七日休息）<br>← 罗马帝国君士坦丁颁布七日制</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">🔢</span><div class="object-name">阿拉伯数字</div>
+        <div class="object-origin">← 印度笈多王朝发明（~500 CE）<br>← 花剌子密等阿拉伯数学家传播<br>← 斐波那契《算盘书》引入欧洲（1202）</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">☕</span><div class="object-name">咖啡</div>
+        <div class="object-origin">← 埃塞俄比亚牧羊人发现（~850）<br>← 阿拉伯世界流行（15 世纪）<br>← 欧洲咖啡馆成为启蒙运动沙龙</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">🕰️</span><div class="object-name">一小时 60 分钟</div>
+        <div class="object-origin">← 古巴比伦的 60 进制计数法<br>← 苏美尔人最早使用（~3000 BCE）<br>← 你今天看表时，在用 5000 年前的数学</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">🗳️</span><div class="object-name">投票表决</div>
+        <div class="object-origin">← 雅典公民大会（~500 BCE）<br>← 伯里克利黄金时代<br>← 2500 年后你仍在使用——不完美，但至今没有更好地替代方案</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">🏛️</span><div class="object-name">合同与法律</div>
+        <div class="object-origin">← 罗马十二铜表法（~450 BCE）<br>← 查士丁尼法典（529 CE）<br>← 拿破仑法典（1804）→ 现代各国民法</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">💊</span><div class="object-name">抗生素</div>
+        <div class="object-origin">← 唐代裁缝用长绿毛的浆糊治伤口<br>← 弗莱明发现青霉素（1928）<br>← 弗洛里/钱恩提纯量产（1940s）<br>← 人类平均寿命 +15 岁</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">🎵</span><div class="object-name">你听的音乐</div>
+        <div class="object-origin">← 毕达哥拉斯发现音阶的数学比例<br>← 巴赫用数学结构谱写赋格<br>← 傅里叶变换 → MP3 → 流媒体<br>← 音乐是人类最古老的信息编码</div>
+      </div>
+      <div class="object-card fade-in">
+        <span class="object-emoji">🧬</span><div class="object-name">你的基因</div>
+        <div class="object-origin">← 6 万年前 FOXP2 突变 → 语言<br>← 走出非洲 → 全球迁徙<br>← 农业革命 → 乳糖耐受、淀粉酶倍增<br>← 你的身体是 20 万年的进化考古遗址</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="final-section">
+    <p class="final-text">
+      你此刻阅读的每一个字<br>
+      是美索不达米亚泥板上的楔形符号<br>
+      是蔡伦浸泡在池水里的植物纤维<br>
+      是古腾堡排列在木框中的铅合金活字<br>
+      是肖克利实验室里的第一块锗晶体管<br>
+      是数十亿人、跨越一万年的接力<br>
+      才最终呈现在你眼前。
+    </p>
+    <p style="color:rgba(180,160,130,0.25);font-size:0.65rem;letter-spacing:0.3em;margin-top:3rem;">
+      「所有的历史都是当代史」
+    </p>
+  </section>
+
+</div><!-- /ordinary-view -->
+
+</div><!-- /lens-container -->
+
+<script>
+// ============================================================
+// PARTICLE BACKGROUND SYSTEM
+// ============================================================
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let stars = [], constellations = [], shootingStars = [];
+let bgW, bgH;
+
+function resizeBg() {
+  bgW = window.innerWidth; bgH = window.innerHeight;
+  bgCanvas.width = bgW; bgCanvas.height = bgH;
+}
+resizeBg();
+window.addEventListener('resize', () => { resizeBg(); initStars(); });
+
+function initStars() {
+  stars = []; constellations = [];
+  const count = Math.floor((bgW * bgH) / 2500);
+
+  // Generate star clusters (density varies by region)
+  for (let i = 0; i < count; i++) {
+    const clusterX = Math.random();
+    const clusterY = Math.random();
+    const inCluster = Math.random() < 0.4;
+    stars.push({
+      x: inCluster ? (clusterX * bgW + (Math.random()-0.5)*200) : Math.random() * bgW,
+      y: inCluster ? (clusterY * bgH + (Math.random()-0.5)*200) : Math.random() * bgH,
+      r: Math.random() * 1.4 + 0.2,
+      speed: Math.random() * 0.12 + 0.03,
+      opacity: Math.random() * 0.5 + 0.25,
+      pulse: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.003 + 0.001,
+      hue: [210, 220, 230, 240, 30, 35, 40][Math.floor(Math.random()*7)]
+    });
+  }
+
+  // Generate a few constellation-like connections
+  for (let c = 0; c < 8; c++) {
+    const base = stars[Math.floor(Math.random() * stars.length)];
+    const points = [];
+    let cx = base.x, cy = base.y;
+    for (let p = 0; p < 4 + Math.floor(Math.random()*5); p++) {
+      cx += (Math.random() - 0.5) * 200;
+      cy += (Math.random() - 0.5) * 200;
+      points.push({ x: cx, y: cy });
+    }
+    constellations.push({ points, opacity: Math.random() * 0.15 + 0.05 });
+  }
+}
+initStars();
+
+function spawnShootingStar() {
+  if (Math.random() < 0.003) {
+    shootingStars.push({
+      x: Math.random() * bgW,
+      y: Math.random() * bgH * 0.3,
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 4 + 3,
+      life: 1,
+      decay: Math.random() * 0.02 + 0.01,
+      trail: []
+    });
+  }
+}
+
+function drawBg(time) {
+  bgCtx.fillStyle = '#000810';
+  bgCtx.fillRect(0, 0, bgW, bgH);
+
+  // Large-scale nebula patches
+  const nebulas = [
+    { x: bgW*0.2, y: bgH*0.3, r: 350, c: 'rgba(40,20,70,0.04)' },
+    { x: bgW*0.75, y: bgH*0.55, r: 450, c: 'rgba(70,35,20,0.04)' },
+    { x: bgW*0.5, y: bgH*0.15, r: 300, c: 'rgba(25,45,80,0.03)' },
+    { x: bgW*0.85, y: bgH*0.2, r: 250, c: 'rgba(30,20,60,0.03)' },
+  ];
+  nebulas.forEach(n => {
+    const g = bgCtx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+    g.addColorStop(0, n.c); g.addColorStop(1, 'transparent');
+    bgCtx.fillStyle = g; bgCtx.fillRect(n.x-n.r, n.y-n.r, n.r*2, n.r*2);
+  });
+
+  // Draw constellation lines
+  constellations.forEach(c => {
+    if (c.points.length < 2) return;
+    bgCtx.strokeStyle = `rgba(180,170,200,${c.opacity})`;
+    bgCtx.lineWidth = 0.3;
+    bgCtx.beginPath();
+    bgCtx.moveTo(c.points[0].x, c.points[0].y);
+    for (let i=1; i<c.points.length; i++) bgCtx.lineTo(c.points[i].x, c.points[i].y);
+    bgCtx.stroke();
+  });
+
+  // Smooth parallax
+  scrollOffset += (targetScrollOffset - scrollOffset) * 0.05;
+
+  // Draw stars with parallax
+  stars.forEach(s => {
+    const flicker = Math.sin(time * s.twinkleSpeed + s.pulse) * 0.4 + 0.6;
+    const alpha = Math.min(1, s.opacity * flicker);
+    // Apply parallax: closer (larger) stars move faster
+    const parallaxY = s.y - scrollOffset * (s.r / 2.5) * 0.02;
+    const drawY = ((parallaxY % bgH) + bgH) % bgH;
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, drawY, s.r, 0, Math.PI*2);
+    bgCtx.fillStyle = `hsla(${s.hue},30%,75%,${alpha})`;
+    bgCtx.fill();
+    // Glow for brighter stars
+    if (s.r > 0.9 && flicker > 0.8) {
+      const glow = bgCtx.createRadialGradient(s.x, drawY, 0, s.x, drawY, s.r*4);
+      glow.addColorStop(0, `hsla(${s.hue},30%,80%,${alpha*0.3})`);
+      glow.addColorStop(1, 'transparent');
+      bgCtx.fillStyle = glow;
+      bgCtx.beginPath(); bgCtx.arc(s.x, drawY, s.r*4, 0, Math.PI*2); bgCtx.fill();
+    }
+    s.y -= s.speed * 0.08;
+    if (s.y < -10) { s.y = bgH + 10; s.x = Math.random() * bgW; }
+  });
+
+  // Shooting stars
+  spawnShootingStar();
+  shootingStars = shootingStars.filter(s => {
+    s.trail.push({ x: s.x, y: s.y });
+    if (s.trail.length > 30) s.trail.shift();
+    s.x += s.vx; s.y += s.vy; s.life -= s.decay;
+    if (s.life <= 0) return false;
+    // Draw trail
+    for (let i=1; i<s.trail.length; i++) {
+      const alpha = (i / s.trail.length) * s.life * 0.6;
+      bgCtx.strokeStyle = `rgba(255,255,255,${alpha})`;
+      bgCtx.lineWidth = i / s.trail.length * 1.5;
+      bgCtx.beginPath();
+      bgCtx.moveTo(s.trail[i-1].x, s.trail[i-1].y);
+      bgCtx.lineTo(s.trail[i].x, s.trail[i].y);
+      bgCtx.stroke();
+    }
+    return true;
+  });
+}
+
+// ============================================================
+// ENERGY × INFORMATION CURVES (Dynamic Canvas)
+// ============================================================
+const curvesCanvas = document.getElementById('curves-canvas-main');
+if (curvesCanvas) {
+  const cCtx = curvesCanvas.getContext('2d');
+  const W = curvesCanvas.width, H = curvesCanvas.height;
+  let animProgress = 0;
+  let curveAnimating = false;
+
+  function drawCurves(progress = 1) {
+    cCtx.clearRect(0, 0, W, H);
+
+    const pad = { top: 55, right: 90, bottom: 65, left: 90 };
+    const pw = W - pad.left - pad.right;
+    const ph = H - pad.top - pad.bottom;
+
+    // Subtle grid
+    cCtx.strokeStyle = 'rgba(180,160,130,0.06)';
+    cCtx.lineWidth = 0.5;
+    for (let i=0; i<=8; i++) {
+      const y = pad.top + (ph/8)*i;
+      cCtx.beginPath(); cCtx.moveTo(pad.left, y); cCtx.lineTo(W-pad.right, y); cCtx.stroke();
+    }
+
+    // Axes
+    cCtx.strokeStyle = 'rgba(180,160,130,0.15)';
+    cCtx.lineWidth = 1;
+    cCtx.beginPath();
+    cCtx.moveTo(pad.left, pad.top);
+    cCtx.lineTo(pad.left, H-pad.bottom);
+    cCtx.lineTo(W-pad.right, H-pad.bottom);
+    cCtx.stroke();
+
+    // Y-axis label
+    cCtx.save();
+    cCtx.fillStyle = 'rgba(180,160,130,0.25)';
+    cCtx.font = '10px "Noto Serif SC", serif';
+    cCtx.translate(pad.left-45, pad.top+ph/2);
+    cCtx.rotate(-Math.PI/2);
+    cCtx.textAlign = 'center';
+    cCtx.fillText('文明发展水平（对数标度）', 0, 0);
+    cCtx.restore();
+
+    // X labels
+    cCtx.fillStyle = 'rgba(180,160,130,0.35)';
+    cCtx.font = '11px "Noto Serif SC", serif';
+    cCtx.textAlign = 'center';
+    const xLabels = ['狩猎采集','农耕革命','文字诞生','轴心时代','罗马帝国','中世纪','文艺复兴','工业革命','信息时代','AI时代'];
+    const xStep = pw / (xLabels.length - 1);
+    xLabels.forEach((l, i) => {
+      const px = pad.left + xStep * i;
+      cCtx.fillText(l, px, H-pad.bottom+22);
+      // Tick
+      cCtx.strokeStyle = 'rgba(180,160,130,0.1)';
+      cCtx.beginPath();
+      cCtx.moveTo(px, H-pad.bottom);
+      cCtx.lineTo(px, H-pad.bottom+6);
+      cCtx.stroke();
+    });
+
+    // Energy curve (gold/amber)
+    const energyPts = [
+      [0,0.01],[1,0.02],[2,0.025],[3,0.035],[4,0.045],
+      [5,0.04],[6,0.05],[7,0.35],[8,0.72],[9,1.0]
+    ];
+    // Glow layer
+    cCtx.strokeStyle = 'rgba(255,140,40,0.12)';
+    cCtx.lineWidth = 8;
+    cCtx.beginPath();
+    let first = true;
+    energyPts.forEach(([x,y], i) => {
+      const px = pad.left + xStep * x;
+      const py = H - pad.bottom - y * ph * progress;
+      if (first) { cCtx.moveTo(px, py); first = false; }
+      else cCtx.lineTo(px, py);
+    });
+    cCtx.stroke();
+    // Main line
+    cCtx.strokeStyle = 'rgba(255,150,50,0.55)';
+    cCtx.lineWidth = 2.5;
+    cCtx.shadowColor = 'rgba(255,150,50,0.35)';
+    cCtx.shadowBlur = 10;
+    cCtx.beginPath();
+    first = true;
+    energyPts.forEach(([x,y], i) => {
+      const px = pad.left + xStep * x;
+      const py = H - pad.bottom - y * ph * progress;
+      if (first) { cCtx.moveTo(px, py); first = false; }
+      else cCtx.lineTo(px, py);
+    });
+    cCtx.stroke();
+    cCtx.shadowBlur = 0;
+
+    // Information curve (blue)
+    const infoPts = [
+      [0,0.008],[1,0.012],[2,0.04],[3,0.07],[4,0.09],
+      [5,0.07],[6,0.1],[7,0.4],[8,0.85],[9,1.0]
+    ];
+    cCtx.strokeStyle = 'rgba(100,180,255,0.1)';
+    cCtx.lineWidth = 8;
+    cCtx.beginPath();
+    first = true;
+    infoPts.forEach(([x,y], i) => {
+      const px = pad.left + xStep * x;
+      const py = H - pad.bottom - y * ph * progress;
+      if (first) { cCtx.moveTo(px, py); first = false; }
+      else cCtx.lineTo(px, py);
+    });
+    cCtx.stroke();
+    cCtx.strokeStyle = 'rgba(120,195,255,0.5)';
+    cCtx.lineWidth = 2.5;
+    cCtx.shadowColor = 'rgba(120,195,255,0.35)';
+    cCtx.shadowBlur = 10;
+    cCtx.beginPath();
+    first = true;
+    infoPts.forEach(([x,y], i) => {
+      const px = pad.left + xStep * x;
+      const py = H - pad.bottom - y * ph * progress;
+      if (first) { cCtx.moveTo(px, py); first = false; }
+      else cCtx.lineTo(px, py);
+    });
+    cCtx.stroke();
+    cCtx.shadowBlur = 0;
+
+    // Key annotations
+    if (progress > 0.6) {
+      cCtx.fillStyle = 'rgba(120,195,255,0.4)';
+      cCtx.font = '10px "Noto Serif SC", serif';
+      cCtx.textAlign = 'left';
+      const labelX = pad.left + xStep * 7.2;
+      cCtx.fillText('信息增速 > 能量增速 — 现代性的本质', labelX, pad.top-10);
+
+      cCtx.fillStyle = 'rgba(255,150,50,0.45)';
+      cCtx.textAlign = 'right';
+      const px7 = pad.left + xStep * 7;
+      const py7 = H - pad.bottom - 0.35 * ph * progress;
+      cCtx.fillText('工业革命：量级跃迁', px7-10, py7-8);
+    }
+  }
+
+  drawCurves(1);
+
+  // Animate on scroll into view
+  const curvesObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !curveAnimating) {
+        curveAnimating = true;
+        let p = 0;
+        const anim = () => {
+          p += 0.025;
+          if (p >= 1) { drawCurves(1); return; }
+          drawCurves(p);
+          requestAnimationFrame(anim);
+        };
+        anim();
+      }
+    });
+  }, { threshold: 0.3 });
+  curvesObserver.observe(curvesCanvas);
+}
+
+// ============================================================
+// PIVOT NODE INTERACTION
+// ============================================================
+const pivotData = {
+  agriculture: {
+    title: '农耕革命 · ~10,000 BCE',
+    content: `
+      <p>约 20,000 年前，太阳活动增强。但气温上升滞后了数千年——因为<strong>融化冰川消耗了 80 倍于升温的能量</strong>（1 克冰→水需 80 卡路里，升温 1°C 仅需 1 卡）。</p>
+      <p>当冰雪终于消融，可耕种的土地出现了。人类从狩猎采集转向农耕——<strong>不是因为更聪明了，而是地球的能量预算终于有了盈余。</strong></p>
+      <p>在乌鲁克城（约 4000 BCE），人均粮食产出达到每日最低消耗量的 <strong>5 倍</strong>——相当于中国 20 世纪 70 年代末的水平。多余的粮食养活了不种地的人：僧侣、管理者、工匠、士兵。</p>
+      <div class="metric-row">
+        <div class="metric"><span class="metric-value">4000</span><span class="metric-label">大卡/天 · 狩猎者所需能量</span></div>
+        <div class="metric"><span class="metric-value">5×</span><span class="metric-label">乌鲁克人均产出/最低消耗</span></div>
+        <div class="metric"><span class="metric-value">5000</span><span class="metric-label">乌鲁克城人口（最早城市）</span></div>
+      </div>
+      <p>文明从此有了"余粮"——能量的盈余是一切上层建筑的物理基础。</p>
+    `
+  },
+  writing: {
+    title: '文字诞生 · ~3,200 BCE',
+    content: `
+      <p>苏美尔人在美索不达米亚的幼发拉底河畔，用削尖的芦苇在湿泥板上压出楔形符号——<strong>人类第一次把思想钉在了物质上。</strong></p>
+      <p>泥板材料廉价（胶泥）、刻写方便。缺点是重量大、易损坏——但苏美尔人用它们记录了法律、税收、天象、神话，<strong>整整用了 3000 年。</strong></p>
+      <p>在此之前，信息只能储存在人脑中，随着每一代人的死亡而丢失。在此之后，<strong>知识可以穿越时空，传给从未谋面的陌生人。</strong></p>
+      <p>楔形文字被埋没了 2000 多年，直到 19 世纪才被英国军官罗林森破解——他悬在贝希斯敦铭文的悬崖上，逐个抄录了三种文字对照的碑文。</p>
+    `
+  },
+  axial: {
+    title: '轴心时代 · 800–300 BCE',
+    content: `
+      <p>德国哲学家雅斯贝尔斯发现了一个不可思议的事实：在互不知情的情况下——</p>
+      <p><strong>中国</strong>：孔子、老子、庄子、孟子、百家争鸣<br><strong>印度</strong>：释迦牟尼、沙门思潮<br><strong>希腊</strong>：苏格拉底、柏拉图、亚里士多德、埃斯库罗斯<br><strong>以色列</strong>：犹太先知群体</p>
+      <p>同时爆发了思想革命。不是巧合——是<strong>各文明在相近的能量和信息积累水平上，同时触碰到了同一个天花板。</strong></p>
+      <p>这 300 年<strong>奠定了今天全世界所有文明的底色</strong>。你判断"对不对"时的道德直觉——你在调用轴心时代留下的源代码。</p>
+    `
+  },
+  printing: {
+    title: '印刷革命 · 1450 CE',
+    content: `
+      <p>毕昇比古腾堡早了整整 400 年发明活字印刷。但胶泥活字烧制后大小有差异，排版不齐，易碎。毕昇的发明<strong>从未成为主流。</strong></p>
+      <p>古腾堡的关键不在于"活字"——而在于：金属字模批量铸造 + 油性油墨 + 螺旋压印机 = <strong>信息复制成本趋近于零。</strong></p>
+      <p>手工抄写时代：传播是线性的（1→2→3……），抄到第 100 本时错误层层累积。犹太人发明了字母数字核对法——但这只是延缓，不是解决。</p>
+      <p>古腾堡之前，欧洲大约只有 3 万本书。50 年后：超过 1200 万本。<strong>信息复制的革命从来不是关于"第一个发明"，而是关于"第一个可规模化"。</strong></p>
+    `
+  },
+  industrial: {
+    title: '工业革命 · 1760–1840',
+    content: `
+      <p>吴军判断历史事件的唯一标准：<strong>普通人的生活是否因这件事而大不相同。</strong></p>
+      <p>工业革命前近 2000 年，英国人均 GDP 从约 600 美元涨到约 800 美元——<strong>2000 年仅增长 33%。</strong></p>
+      <p>工业革命后 200 年：涨到 4 万美元——<strong>增长 5000%。</strong>马克思说工业革命创造的生产力"超过了过去一切时代的总和"——他说对了。</p>
+      <div class="metric-row">
+        <div class="metric"><span class="metric-value">50×</span><span class="metric-label">人均 GDP 增长</span></div>
+        <div class="metric"><span class="metric-value">2×</span><span class="metric-label">全球人均寿命增长</span></div>
+      </div>
+      <p>瓦特成功的关键不是个人天才——是<strong>月光社的学术生态</strong>、1623 年设立的<strong>专利权制度</strong>、信息在发明家之间的<strong>自由流动</strong>。正反馈循环一旦启动，就无法停止。</p>
+    `
+  },
+  digital: {
+    title: '信息时代 · 1950–',
+    content: `
+      <p>摩尔观察到：集成电路上的晶体管数量每 18-24 个月翻一番——这不是自然规律，是一代代工程师的<strong>自我实现的预言。</strong></p>
+      <p>关键拐点：<strong>信息的增速开始远超能量的增速。</strong>这意味着：谁能更高效地用信息组织能量，谁就领先。</p>
+      <p>鸦片战争时期，中国的能量总量远超英国——但输了。因为<strong>信息组织能力</strong>的差距比能量差距更大。</p>
+      <p>能量和信息的可互换性（E=mc²）在这个时代开始展现它的文明含义。</p>
+    `
+  },
+  ai: {
+    title: 'AI 时代 · 2022–',
+    content: `
+      <p>GPT 的意义不在于它能写诗或写代码。<strong>而在于这是第一次，信息自身开始生产信息。</strong></p>
+      <p>人类文明的两条主线——能量和信息——在这个点上发生关系重构。</p>
+      <p>以前：人类用能量获取信息，用信息组织能量。现在：AI 用信息生成信息，用信息替代部分能量的消耗。</p>
+      <p>卡尔达肖夫指数：人类目前是 <strong>0.7 型文明</strong>（尚未达到 I 型——利用所在行星的全部能量）。I 型的关键标志是<strong>可控核聚变</strong>。如果我们同时解决了能源问题（I 型）和智能问题（AI），文明的轨迹将彻底改变。</p>
+    `
+  }
+};
+
+const pivotPanel = document.getElementById('pivot-panel');
+const panelTitle = document.getElementById('panel-title');
+const panelContent = document.getElementById('panel-content');
+const panelClose = document.getElementById('panel-close');
+const overlayMask = document.getElementById('overlay-mask');
+
+document.querySelectorAll('.pivot-node').forEach(node => {
+  node.addEventListener('click', () => {
+    const key = node.dataset.pivot;
+    if (!pivotData[key]) return;
+    panelTitle.textContent = pivotData[key].title;
+    panelContent.innerHTML = pivotData[key].content;
+    pivotPanel.classList.add('active');
+    overlayMask.classList.add('active');
+  });
+});
+
+function closePanel() {
+  pivotPanel.classList.remove('active');
+  overlayMask.classList.remove('active');
+}
+panelClose.addEventListener('click', closePanel);
+overlayMask.addEventListener('click', closePanel);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+// ============================================================
+// LENS SWITCH — Cinematic Zoom Transition
+// ============================================================
+const creatorView = document.getElementById('creator-view');
+const ordinaryView = document.getElementById('ordinary-view');
+const lensSwitch = document.getElementById('lens-switch');
+const lensLabel = document.getElementById('lens-label');
+const zoomOverlay = document.getElementById('zoom-overlay');
+const transitionPrompt = document.getElementById('transition-prompt');
+const transitionCanvas = document.getElementById('transition-canvas');
+const tCtx = transitionCanvas.getContext('2d');
+
+let currentLens = 'creator';
+let zoomParticles = [];
+let zoomActive = false;
+let zoomStartTime = 0;
+
+function resizeTransitionCanvas() {
+  transitionCanvas.width = window.innerWidth;
+  transitionCanvas.height = window.innerHeight;
+}
+resizeTransitionCanvas();
+window.addEventListener('resize', resizeTransitionCanvas);
+
+function switchLens() {
+  if (zoomActive) return;
+  zoomActive = true;
+  zoomStartTime = performance.now();
+
+  resizeTransitionCanvas();
+  const cx = transitionCanvas.width / 2;
+  const cy = transitionCanvas.height / 2;
+  const maxR = Math.sqrt(cx*cx + cy*cy);
+
+  // Determine direction
+  const zoomingIn = currentLens === 'creator'; // zoom in = go to ordinary (human scale)
+
+  // Initialize ring particles for the cinematic zoom effect
+  zoomParticles = [];
+  const ringCount = 8;
+  for (let ring = 0; ring < ringCount; ring++) {
+    const ringRadius = maxR * ((ring + 1) / ringCount);
+    const particleCount = 40 + ring * 15;
+    for (let i = 0; i < particleCount; i++) {
+      const angle = (i / particleCount) * Math.PI * 2 + ring * 0.5;
+      zoomParticles.push({
+        baseR: ringRadius,
+        baseAngle: angle,
+        x: cx + Math.cos(angle) * (zoomingIn ? ringRadius : 0),
+        y: cy + Math.sin(angle) * (zoomingIn ? ringRadius : 0),
+        r: Math.random() * 1.5 + 0.3,
+        ring: ring,
+        hue: zoomingIn ? 35 + Math.random() * 25 : 200 + Math.random() * 30,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  // Screen flash
+  zoomOverlay.style.transition = 'none';
+  zoomOverlay.style.opacity = '1';
+  zoomOverlay.style.background = zoomingIn
+    ? 'radial-gradient(circle at center, rgba(255,200,150,0.05) 0%, rgba(180,130,80,0.25) 40%, #000 95%)'
+    : 'radial-gradient(circle at center, rgba(180,200,240,0.05) 0%, rgba(100,140,200,0.25) 40%, #000 95%)';
+
+  transitionCanvas.style.opacity = '1';
+
+  let switchDone = false;
+
+  function zoomAnim(time) {
+    const elapsed = (time - zoomStartTime) / 1000;
+    const duration = 1.5;
+
+    tCtx.clearRect(0, 0, transitionCanvas.width, transitionCanvas.height);
+
+    // Draw expanding/contracting rings
+    zoomParticles.forEach(p => {
+      const t = Math.min(1, elapsed / duration);
+      // Each ring moves at slightly different timing
+      const ringDelay = p.ring * 0.06;
+      const ringT = Math.min(1, Math.max(0, (t - ringDelay) / (1 - ringDelay)));
+      const ease = ringT < 0.5
+        ? 4 * ringT * ringT * ringT
+        : 1 - Math.pow(-2 * ringT + 2, 3) / 2;
+
+      const currentR = zoomingIn
+        ? p.baseR * (1 - ease)
+        : p.baseR * ease;
+      const r = zoomingIn ? p.r * (1 - ease * 0.7) : p.r * (0.3 + ease * 0.7);
+
+      if (currentR < 0.5 && zoomingIn) return;
+
+      const px = cx + Math.cos(p.baseAngle + elapsed * 0.5) * currentR;
+      const py = cy + Math.sin(p.baseAngle + elapsed * 0.5) * currentR;
+      const alpha = zoomingIn
+        ? 0.7 * (1 - ringT)
+        : 0.7 * ringT;
+
+      tCtx.beginPath();
+      tCtx.arc(px, py, r, 0, Math.PI * 2);
+      tCtx.fillStyle = `hsla(${p.hue},60%,65%,${alpha})`;
+      tCtx.fill();
+
+      // Glow
+      if (r > 0.8 && alpha > 0.1) {
+        const glow = tCtx.createRadialGradient(px, py, 0, px, py, r * 3);
+        glow.addColorStop(0, `hsla(${p.hue},60%,70%,${alpha * 0.3})`);
+        glow.addColorStop(1, 'transparent');
+        tCtx.fillStyle = glow;
+        tCtx.beginPath();
+        tCtx.arc(px, py, r * 3, 0, Math.PI * 2);
+        tCtx.fill();
+      }
+    });
+
+    // Switch views at midpoint
+    if (elapsed > duration * 0.35 && !switchDone) {
+      switchDone = true;
+      if (zoomingIn) {
+        creatorView.style.display = 'none';
+        ordinaryView.style.display = 'block';
+        lensLabel.textContent = '▸ 造物主视角';
+        currentLens = 'ordinary';
+        document.body.classList.add('ordinary-mode');
+      } else {
+        ordinaryView.style.display = 'none';
+        creatorView.style.display = 'block';
+        lensLabel.textContent = '▸ 普通人视角';
+        currentLens = 'creator';
+        document.body.classList.remove('ordinary-mode');
+      }
+    }
+
+    // Fade overlay
+    if (elapsed > duration * 0.5) {
+      const overlayFade = 1 - (elapsed - duration * 0.5) / (duration * 0.5);
+      zoomOverlay.style.opacity = Math.max(0, overlayFade);
+    }
+
+    if (elapsed > duration) {
+      transitionCanvas.style.opacity = '0';
+      zoomOverlay.style.opacity = '0';
+      zoomOverlay.style.transition = 'opacity 0.8s ease';
+      zoomActive = false;
+      // Trigger visible fade-ins
+      setTimeout(() => {
+        const vid = currentLens === 'creator' ? 'creator' : 'ordinary';
+        document.querySelectorAll('#' + vid + '-view .fade-in').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight + 100) el.classList.add('visible');
+        });
+      }, 100);
+      return;
+    }
+    requestAnimationFrame(zoomAnim);
+  }
+  requestAnimationFrame(zoomAnim);
+}
+
+lensSwitch.addEventListener('click', switchLens);
+transitionPrompt.addEventListener('click', switchLens);
+
+// ============================================================
+// SCROLL-BASED FADE IN
+// ============================================================
+const observerOptions = { threshold: 0.12, rootMargin: '0px 0px -40px 0px' };
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+// ============================================================
+// READING PROGRESS BAR
+// ============================================================
+const progressBar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+  progressBar.style.width = progress + '%';
+});
+
+// ============================================================
+// ANIMATION LOOP
+// ============================================================
+function animate(time) {
+  drawBg(time);
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+// ============================================================
+// SCROLL-BASED BACKGROUND PARALLAX
+// ============================================================
+let scrollOffset = 0;
+let targetScrollOffset = 0;
+window.addEventListener('scroll', () => {
+  targetScrollOffset = window.scrollY * 0.3;
+});
+
+// ============================================================
+// INITIAL TRIGGER
+// ============================================================
+setTimeout(() => {
+  document.querySelectorAll('#creator-view .fade-in').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 100) el.classList.add('visible');
+  });
+}, 400);
+</script>
+</body>
+</html>
