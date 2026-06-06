@@ -111,6 +111,54 @@ body.overlay-open { overflow: hidden; }
   animation: rays-shift 22s linear infinite;
 }
 
+/* ===== Floating Overview Panel ===== */
+.floating-overview {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+  background: rgba(255,255,255,0.38);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 18px;
+  padding: 10px 22px 12px;
+  box-shadow: 0 4px 24px rgba(60,110,140,0.10);
+  max-width: 94vw;
+  transition: all 0.4s ease;
+}
+
+.floating-overview .ov-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a3040;
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.floating-overview .ov-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  justify-content: center;
+  font-size: 0.66rem;
+  color: #4a6678;
+  line-height: 1.5;
+}
+
+.floating-overview .ov-stat-item {
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.floating-overview .ov-stat-num {
+  font-weight: 700;
+  color: #2a5068;
+}
+
 @keyframes rays-shift {
   0%   { transform: translateX(-6%) skewX(-2deg); }
   50%  { transform: translateX(6%) skewX(2deg); }
@@ -148,11 +196,11 @@ body.overlay-open { overflow: hidden; }
 /* ===== Card Grid ===== */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
-  gap: 10px;
-  max-width: 1400px;
-  margin: 16px auto 0;
-  padding: 0 4px;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  gap: 6px;
+  max-width: 100%;
+  margin: 8px auto 0;
+  padding: 0 2px;
 }
 
 /* ===== Individual Card (Underwater) ===== */
@@ -161,15 +209,15 @@ body.overlay-open { overflow: hidden; }
   background: var(--card-bg);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border-radius: var(--radius-card);
-  padding: 20px 14px 18px;
+  border-radius: 12px;
+  padding: 10px 6px 10px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 118px;
+  min-height: 82px;
   border: 1px solid rgba(255, 255, 255, 0.45);
   box-shadow: var(--shadow-card);
   filter: blur(1.0px);
@@ -244,26 +292,27 @@ body.overlay-open { overflow: hidden; }
 
 /* ===== Card inner content ===== */
 .card-category {
-  font-size: 0.66rem;
+  font-size: 0.56rem;
   font-weight: 500;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 3px;
+  opacity: 0.75;
 }
 
 .card-name {
-  font-size: 0.96rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.25;
   color: var(--text-primary);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .card-type {
-  font-size: 0.68rem;
+  font-size: 0.58rem;
   color: var(--text-muted);
-  background: rgba(90, 130, 150, 0.10);
-  padding: 2px 10px;
+  background: rgba(90, 130, 150, 0.08);
+  padding: 1px 8px;
   border-radius: 20px;
 }
 
@@ -510,28 +559,33 @@ body.overlay-open { overflow: hidden; }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .card-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
-  .card { min-height: 102px; padding: 16px 12px 14px; }
-  .card-name { font-size: 0.88rem; }
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 5px; }
+  .card { min-height: 76px; padding: 10px 6px 10px; }
+  .card-name { font-size: 0.70rem; }
+  .card-category { font-size: 0.50rem; }
+  .card-type { font-size: 0.52rem; }
   .detail-card { width: 94vw; max-width: 94vw; max-height: 84vh; }
   .detail-card-inner { padding: 28px 22px 24px; grid-template-columns: 1fr; gap: 0; }
   .detail-card-inner .detail-body-extras { grid-column: 1; }
   .detail-name { font-size: 1.45rem; }
+  .floating-overview { padding: 8px 14px 10px; }
+  .floating-overview .ov-title { font-size: 0.72rem; }
+  .floating-overview .ov-stats { font-size: 0.58rem; gap: 2px 6px; }
 }
 
 @media (max-width: 480px) {
-  .page { padding: 10px 6px 30px; }
-  .card-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .page { padding: 8px 2px 20px; }
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 4px; }
   .card {
-    min-height: 88px;
-    padding: 14px 8px 12px;
-    border-radius: 12px;
+    min-height: 68px;
+    padding: 8px 4px 8px;
+    border-radius: 10px;
     filter: blur(0.8px);
     opacity: 0.72;
   }
-  .card-name { font-size: 0.80rem; }
-  .card-category { font-size: 0.58rem; }
-  .card-type { font-size: 0.62rem; padding: 2px 8px; }
+  .card-name { font-size: 0.65rem; }
+  .card-category { font-size: 0.48rem; }
+  .card-type { font-size: 0.50rem; padding: 1px 6px; }
   .detail-card { width: 96vw; max-width: 96vw; max-height: 80vh; border-radius: 16px; }
   .detail-card-inner { padding: 24px 18px 20px; }
   .detail-name { font-size: 1.30rem; }
@@ -544,11 +598,12 @@ body.overlay-open { overflow: hidden; }
 <div class="water-bg"></div>
 <div class="light-rays"></div>
 
+<div class="floating-overview" id="floatingOverview">
+  <div class="ov-title">概念卡片墙 · <span id="ovTotal">238</span> 个核心概念</div>
+  <div class="ov-stats" id="ovStats"></div>
+</div>
+
 <div class="page">
-  <div class="page-title">
-    <h1>概念卡片墙</h1>
-    <p>点击卡片，从水中捞出</p>
-  </div>
   <div class="card-grid" id="cardGrid"></div>
 </div>
 
@@ -867,6 +922,21 @@ body.overlay-open { overflow: hidden; }
   });
 
   // ── Helpers ────────────────────────────────────────────
+  // ── Render floating overview ──────────────────────────
+  function renderOverview() {
+    var cats = {};
+    CONCEPTS.forEach(function(c) {
+      cats[c.category] = (cats[c.category] || 0) + 1;
+    });
+    var sorted = Object.entries(cats).sort(function(a, b) { return b[1] - a[1]; });
+    var html = '';
+    sorted.forEach(function(pair) {
+      html += '<span class="ov-stat-item"><span class="ov-stat-num">' + pair[1] + '</span> ' + escHtml(pair[0]) + '</span>';
+    });
+    document.getElementById('ovStats').innerHTML = html;
+    document.getElementById('ovTotal').textContent = CONCEPTS.length;
+  }
+
   function escHtml(str) {
     var div = document.createElement('div');
     div.textContent = str;
@@ -876,11 +946,13 @@ body.overlay-open { overflow: hidden; }
   // ── Init ───────────────────────────────────────────────
   if (CONCEPTS.length > 0) {
     renderGrid();
+    renderOverview();
   } else {
     grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#889;padding:60px 0;">概念数据加载中…</p>';
     window.addEventListener('load', function() {
       if (window.CONCEPTS && window.CONCEPTS.length > 0 && !grid.children.length) {
         renderGrid();
+        renderOverview();
       }
     });
   }
