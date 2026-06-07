@@ -648,6 +648,13 @@ body.overlay-open { overflow: hidden; }
   50% { opacity: 0.4; transform: scale(0.7); }
 }
 .timer-text { font-size: 0.7rem; font-weight: 600; color: #4a7a6a; font-variant-numeric: tabular-nums; }
+.timer-pause {
+  background: none; border: none; cursor: pointer;
+  font-size: 0.65rem; line-height: 1; padding: 0 2px;
+  opacity: 0.6; transition: opacity 0.2s;
+}
+.timer-pause:hover { opacity: 1; }
+.timer-pause.paused { opacity: 1; }
 
 /* Card highlight/dim for patterns and category filter */
 .card.dimmed { opacity: 0.18; filter: blur(1.5px); }
@@ -998,7 +1005,8 @@ body.overlay-open { overflow: hidden; }
     <button class="cat-nav-btn" data-cat="时代/时期" onclick="filterCategory('时代/时期', this)">时代时期</button>
     <div class="cat-nav-timer" id="catNavTimer">
       <span class="timer-dot"></span>
-      <span class="timer-text" id="timerText">60s</span>
+      <span class="timer-text" id="timerText">15s</span>
+      <button class="timer-pause" id="timerPause" title="暂停轮换" onclick="toggleTimer()">⏸</button>
     </div>
   </div>
 </div>
@@ -2089,9 +2097,24 @@ body.overlay-open { overflow: hidden; }
   var ROTATE_SECONDS = 15;
   var rotateTimer = ROTATE_SECONDS;
   var rotateInterval = null;
+  var isTimerPaused = false;
 
-  function startRotationTimer() {
-    rotateTimer = ROTATE_SECONDS;
+  function toggleTimer() {
+    isTimerPaused = !isTimerPaused;
+    var btn = document.getElementById('timerPause');
+    if (isTimerPaused) {
+      if (btn) { btn.textContent = '▶'; btn.classList.add('paused'); }
+      clearInterval(rotateInterval);
+      rotateInterval = null;
+    } else {
+      if (btn) { btn.textContent = '⏸'; btn.classList.remove('paused'); }
+      startRotationTimer(false); // resume, don't reset timer
+    }
+  }
+  window.toggleTimer = toggleTimer;
+
+  function startRotationTimer(resetTimer) {
+    if (resetTimer !== false) rotateTimer = ROTATE_SECONDS; // reset unless explicitly false
     updateTimerDisplay();
     if (rotateInterval) clearInterval(rotateInterval);
     rotateInterval = setInterval(function() {
@@ -2100,17 +2123,12 @@ body.overlay-open { overflow: hidden; }
       if (rotateTimer <= 0) {
         rotateTimer = ROTATE_SECONDS;
         currentPattern = (currentPattern + 1) % 6;
-
-        // Switch to new pattern with "全部" filter (no DOM rebuild)
         clearPatternClasses();
         applyPattern(currentPattern);
         currentFilter = '*';
-
-        // Update nav button state
         document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
         var allBtn = document.querySelector('.cat-nav-btn[data-cat="*"]');
         if (allBtn) allBtn.classList.add('active');
-
         renderLegend();
       }
     }, 1000);
