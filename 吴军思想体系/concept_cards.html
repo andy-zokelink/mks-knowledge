@@ -808,9 +808,93 @@ body.overlay-open { overflow: hidden; }
   .legend-subtitle { font-size: 0.54rem; }
   .legend-cats { font-size: 0.54rem; gap: 1px 5px; }
 }
+
+/* ========== CATEGORY NAV BAR ========== */
+.cat-nav {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border-bottom: 1px solid rgba(180,210,225,0.35);
+  padding: 5px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.cat-nav::-webkit-scrollbar { height: 2px; }
+.cat-nav::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+.cat-nav-inner {
+  display: flex; align-items: center; gap: 3px;
+  padding: 0 10px; min-width: max-content;
+}
+.cat-nav-btn {
+  font-family: var(--font-stack);
+  font-size: 0.70rem; font-weight: 500;
+  padding: 5px 10px; border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent; color: var(--text-muted);
+  cursor: pointer; white-space: nowrap;
+  transition: all 0.2s;
+}
+.cat-nav-btn:hover { background: rgba(0,0,0,0.04); color: var(--text-primary); }
+.cat-nav-btn.active { background: #d8efe8; color: #2a6a5a; font-weight: 600; border-color: rgba(106,171,154,0.3); }
+
+/* Timer */
+.cat-nav-timer {
+  display: flex; align-items: center; gap: 5px;
+  margin-left: 12px; padding: 4px 10px;
+  border-radius: 14px; border: 1px solid rgba(180,210,225,0.4);
+  background: rgba(255,255,255,0.5); flex-shrink: 0;
+}
+.timer-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #6aab9a; animation: timer-pulse 1s ease-in-out infinite;
+}
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.timer-text { font-size: 0.7rem; font-weight: 600; color: #4a7a6a; font-variant-numeric: tabular-nums; }
+
+/* Card highlight for category filter */
+.card.dimmed { opacity: 0.18; filter: blur(1.5px); }
+.card.highlighted { opacity: 1; filter: blur(0); z-index: 5; box-shadow: 0 0 12px rgba(0,0,0,0.12); }
+
+@media (max-width: 768px) {
+  .cat-nav-btn { font-size: 0.62rem; padding: 4px 8px; }
+  .cat-nav-timer { margin-left: 6px; padding: 3px 8px; }
+  .timer-text { font-size: 0.62rem; }
+}
+
+
 </style>
 </head>
 <body>
+
+<!-- ====== Top Category Navigation Bar ====== -->
+<div class="cat-nav" id="catNav">
+  <div class="cat-nav-inner">
+    <button class="cat-nav-btn active" data-cat="*" onclick="filterCategory('*', this)">全部</button>
+    <button class="cat-nav-btn" data-cat="方法论" onclick="filterCategory('方法论', this)">方法论</button>
+    <button class="cat-nav-btn" data-cat="科技" onclick="filterCategory('科技', this)">科技</button>
+    <button class="cat-nav-btn" data-cat="历史" onclick="filterCategory('历史', this)">历史</button>
+    <button class="cat-nav-btn" data-cat="经济学" onclick="filterCategory('经济学', this)">经济学</button>
+    <button class="cat-nav-btn" data-cat="教育" onclick="filterCategory('教育', this)">教育</button>
+    <button class="cat-nav-btn" data-cat="科学" onclick="filterCategory('科学', this)">科学</button>
+    <button class="cat-nav-btn" data-cat="人物" onclick="filterCategory('人物', this)">人物</button>
+    <button class="cat-nav-btn" data-cat="社会" onclick="filterCategory('社会', this)">社会</button>
+    <button class="cat-nav-btn" data-cat="心理学" onclick="filterCategory('心理学', this)">心理学</button>
+    <button class="cat-nav-btn" data-cat="哲学" onclick="filterCategory('哲学', this)">哲学</button>
+    <button class="cat-nav-btn" data-cat="管理" onclick="filterCategory('管理', this)">管理</button>
+    <button class="cat-nav-btn" data-cat="数学" onclick="filterCategory('数学', this)">数学</button>
+    <button class="cat-nav-btn" data-cat="商业" onclick="filterCategory('商业', this)">商业</button>
+    <button class="cat-nav-btn" data-cat="文化" onclick="filterCategory('文化', this)">文化</button>
+    <button class="cat-nav-btn" data-cat="艺术" onclick="filterCategory('艺术', this)">艺术</button>
+    <div class="cat-nav-timer" id="catNavTimer">
+      <span class="timer-dot"></span>
+      <span class="timer-text" id="timerText">60s</span>
+    </div>
+  </div>
+</div>
 
 <div class="water-bg"></div>
 <div class="caustics-extra"></div>
@@ -1921,6 +2005,74 @@ body.overlay-open { overflow: hidden; }
   })();
 
   // ═══════════════════════════════════════════════════════
+  //  CATEGORY FILTER
+  // ═══════════════════════════════════════════════════════
+
+  function filterCategory(cat, btn) {
+    // Update active button
+    document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+
+    var cards = pool.querySelectorAll('.card');
+    if (cat === '*') {
+      cards.forEach(function(c) { c.classList.remove('dimmed', 'highlighted'); });
+      return;
+    }
+    cards.forEach(function(c) {
+      if (c.dataset.category === cat) {
+        c.classList.add('highlighted');
+        c.classList.remove('dimmed');
+      } else {
+        c.classList.add('dimmed');
+        c.classList.remove('highlighted');
+      }
+    });
+    var first = pool.querySelector('.card.highlighted');
+    if (first) { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+  window.filterCategory = filterCategory;
+
+  // ═══════════════════════════════════════════════════════
+  //  AUTO-ROTATION TIMER
+  // ═══════════════════════════════════════════════════════
+
+  var ROTATE_SECONDS = 60;
+  var rotateTimer = ROTATE_SECONDS;
+  var rotateInterval = null;
+
+  function startRotationTimer() {
+    rotateTimer = ROTATE_SECONDS;
+    updateTimerDisplay();
+    if (rotateInterval) clearInterval(rotateInterval);
+    rotateInterval = setInterval(function() {
+      rotateTimer--;
+      updateTimerDisplay();
+      if (rotateTimer <= 0) {
+        rotateTimer = ROTATE_SECONDS;
+        currentPattern = (currentPattern + 1) % 6;
+        renderPool();
+        renderLegend();
+        // Reset category filter
+        document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+        var allBtn = document.querySelector('.cat-nav-btn[data-cat="*"]');
+        if (allBtn) allBtn.classList.add('active');
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    var el = document.getElementById('timerText');
+    if (el) el.textContent = rotateTimer + 's';
+    // Visual urgency when < 15s
+    var timer = document.getElementById('catNavTimer');
+    if (timer) {
+      timer.style.borderColor = rotateTimer <= 15 ? 'rgba(220,100,80,0.5)' : 'rgba(180,210,225,0.4)';
+      var dot = timer.querySelector('.timer-dot');
+      if (dot) dot.style.background = rotateTimer <= 15 ? '#d06050' : '#6aab9a';
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════
   //  INIT
   // ═══════════════════════════════════════════════════════
 
@@ -1928,6 +2080,7 @@ body.overlay-open { overflow: hidden; }
     currentPattern = Math.floor(Math.random() * 6);
     renderPool();
     renderLegend();
+    startRotationTimer();
   } else {
     pool.innerHTML = '<p style="text-align:center;color:#889;padding:60px 0;grid-column:1/-1;">概念数据加载中…</p>';
     window.addEventListener('load', function() {
@@ -1935,6 +2088,7 @@ body.overlay-open { overflow: hidden; }
         currentPattern = Math.floor(Math.random() * 6);
         renderPool();
         renderLegend();
+        startRotationTimer();
       }
     });
   }
