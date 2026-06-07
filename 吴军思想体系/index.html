@@ -9,47 +9,47 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 16px; scroll-behavior: smooth; }
   body {
-    font-family: "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
-    background: #fdf6f0;
-    color: #3a2a1a;
+    font-family: "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", system-ui, -apple-system, sans-serif;
+    background: #FAFBFC;
+    color: #1F2937;
     line-height: 1.7;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ========== COLOR SYSTEM (Warm Palette) ========== */
+  /* ========== COLOR SYSTEM (Think-Tank Briefing) ========== */
   :root {
-    --bg: #fdf6f0;
-    --bg-alt: #f8efe4;
-    --surface: #fffbf6;
-    --surface-border: #e8d5c0;
-    --text: #3a2a1a;
-    --text-muted: #8a7560;
-    --text-light: #b8a590;
+    --bg: #FAFBFC;
+    --bg-alt: #F3F4F6;
+    --surface: #FFFFFF;
+    --surface-border: #E5E7EB;
+    --text: #1F2937;
+    --text-muted: #6B7280;
+    --text-light: #9CA3AF;
 
-    --layer1: #b87333;       /* copper/bronze — kernel */
-    --layer1-light: #f0dcc8;
-    --layer1-bg: #fdf3e8;
-    --layer1-glow: rgba(184,115,51,0.15);
+    --accent: #F59E0B;
+    --accent-hover: #D97706;
+    --accent-dark: #92400E;
+    --accent-light: #FEF3C7;
+    --accent-bg: #FFFBEB;
 
-    --layer2: #c06040;       /* terracotta — middleware */
-    --layer2-light: #f5d8cc;
-    --layer2-bg: #fdf0ea;
-    --layer2-glow: rgba(192,96,64,0.15);
+    --layer1: #D97706;
+    --layer1-light: #FEF3C7;
+    --layer1-bg: #FFFBEB;
 
-    --layer3: #d4a030;       /* gold — user space */
-    --layer3-light: #faf0d8;
-    --layer3-bg: #fef9f0;
-    --layer3-glow: rgba(212,160,48,0.15);
+    --layer2: #F59E0B;
+    --layer2-light: #FEF3C7;
+    --layer2-bg: #FFFBEB;
 
-    --thread-1: #e07050;
-    --thread-2: #c88840;
-    --thread-3: #a06060;
-    --thread-4: #b09050;
+    --layer3: #FBBF24;
+    --layer3-light: #FEF9E7;
+    --layer3-bg: #FFFDF5;
 
-    --shadow-sm: 0 1px 3px rgba(58,42,26,0.06);
-    --shadow-md: 0 4px 16px rgba(58,42,26,0.1);
-    --shadow-lg: 0 12px 40px rgba(58,42,26,0.12);
+    --thread-accent: #F59E0B;
+
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
     --radius: 12px;
     --radius-sm: 8px;
   }
@@ -57,210 +57,207 @@
   /* ========== TOP NAV BAR ========== */
   .nav-bar {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(253,246,240,0.85); backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--surface-border);
-    padding: 10px 24px;
+    padding: 8px 24px;
     display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
   }
   .nav-back {
     display: inline-flex; align-items: center; gap: 6px;
-    color: var(--layer1); text-decoration: none; font-size: 0.9rem;
+    color: var(--text-muted); text-decoration: none; font-size: 0.82rem;
     font-weight: 500; transition: color 0.2s;
+    flex-shrink: 0;
   }
-  .nav-back:hover { color: var(--layer2); }
+  .nav-back:hover { color: var(--accent-hover); }
   .nav-back svg { width: 16px; height: 16px; }
-  .nav-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
-  .nav-links { display: flex; gap: 16px; }
-  .nav-links a {
-    color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
-    transition: color 0.2s;
+  .nav-title {
+    font-size: 0.88rem; font-weight: 600; color: var(--text);
+    display: none;
+    white-space: nowrap;
   }
-  .nav-links a:hover { color: var(--layer1); }
+  .nav-links {
+    display: flex; gap: 6px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    display: inline-flex; align-items: center;
+    padding: 5px 14px; border-radius: 9999px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--text-muted); text-decoration: none;
+    background: transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { background: var(--accent-light); color: var(--accent-dark); }
+
+  @media (min-width: 640px) {
+    .nav-title { display: inline; }
+  }
 
   /* ========== HERO ========== */
   .hero {
-    text-align: center; padding: 64px 24px 48px;
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: ''; position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(184,115,51,0.06) 0%, transparent 70%);
-    pointer-events: none;
+    text-align: center; padding: 56px 24px 36px;
+    max-width: 720px; margin: 0 auto;
   }
   .hero-badge {
     display: inline-block;
-    background: var(--layer1-light); color: var(--layer1);
-    padding: 4px 16px; border-radius: 20px; font-size: 0.85rem;
-    font-weight: 500; margin-bottom: 20px;
+    background: var(--accent-light); color: var(--accent-dark);
+    padding: 4px 16px; border-radius: 9999px; font-size: 0.8rem;
+    font-weight: 600; letter-spacing: 0.03em; margin-bottom: 16px;
   }
   .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
     font-weight: 800; color: var(--text);
-    letter-spacing: 0.02em; line-height: 1.3;
-    position: relative;
+    letter-spacing: 0.01em; line-height: 1.35;
   }
-  .hero h1 .accent { color: var(--layer1); }
+  .hero h1 .accent { color: var(--accent); }
   .hero .subtitle {
-    margin-top: 16px; font-size: 1.1rem; color: var(--text-muted);
-    max-width: 600px; margin-left: auto; margin-right: auto;
+    margin-top: 12px; font-size: 0.95rem; color: var(--text-muted);
+    max-width: 520px; margin-left: auto; margin-right: auto;
+    line-height: 1.6;
   }
   .hero .stats {
-    display: flex; justify-content: center; gap: 32px; margin-top: 32px;
+    display: flex; justify-content: center; align-items: center;
+    gap: 8px; margin-top: 24px;
     flex-wrap: wrap;
+    font-size: 0.85rem; color: var(--text-muted);
   }
   .hero .stat {
-    text-align: center;
+    display: flex; align-items: center; gap: 4px;
   }
   .hero .stat-num {
-    font-size: 2rem; font-weight: 800; color: var(--layer1);
-    line-height: 1.2;
+    font-weight: 700; color: var(--accent-dark);
+    font-size: 1rem;
   }
-  .hero .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+  .hero .stat-label { color: var(--text-muted); }
+  .hero .stat-sep { color: var(--text-light); margin: 0 2px; }
 
-  /* ========== OS DIAGRAM AREA ========== */
+  /* ========== SECTION COMMONS ========== */
+  .section-container {
+    max-width: 960px; margin: 0 auto; padding: 0 24px 56px;
+  }
+  .section-title {
+    text-align: center; margin-bottom: 32px;
+  }
+  .section-title h2 {
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    margin-bottom: 6px;
+  }
+  .section-title p { color: var(--text-muted); font-size: 0.88rem; }
+
+  /* ========== OS DIAGRAM — Three-layer horizontal cards ========== */
   .os-diagram {
-    max-width: 1100px; margin: 0 auto; padding: 0 24px 24px;
+    max-width: 960px; margin: 0 auto; padding: 0 24px 56px;
   }
   .os-title {
-    text-align: center; margin-bottom: 40px;
+    text-align: center; margin-bottom: 32px;
   }
   .os-title h2 {
-    font-size: 1.5rem; font-weight: 700; color: var(--text);
-    margin-bottom: 4px;
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    margin-bottom: 6px;
   }
-  .os-title p { color: var(--text-muted); font-size: 0.9rem; }
+  .os-title p { color: var(--text-muted); font-size: 0.88rem; }
 
-  /* The OS stack */
   .os-stack {
-    display: flex; flex-direction: column; gap: 0;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .os-stack { grid-template-columns: repeat(3, 1fr); }
   }
 
   .os-layer {
     position: relative;
-    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 24px 20px 20px;
     cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
+    display: flex; flex-direction: column;
   }
   .os-layer::before {
-    content: ''; position: absolute; inset: 0;
-    opacity: 0; transition: opacity 0.35s;
-    pointer-events: none;
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .os-layer:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 
-  /* Layer 1 — Kernel */
-  .os-layer.layer-1 {
-    background: linear-gradient(135deg, #f8ece0 0%, #fdf3e8 100%);
-    border-left: 4px solid var(--layer1);
-  }
-  .os-layer.layer-1::before {
-    background: radial-gradient(ellipse at 20% 50%, rgba(184,115,51,0.08) 0%, transparent 70%);
-  }
-  .os-layer.layer-1:hover { background: linear-gradient(135deg, #f5e4d4 0%, #fcecdd 100%); }
-  .os-layer.layer-1:hover::before { opacity: 1; }
-
-  /* Layer 2 — Middleware */
-  .os-layer.layer-2 {
-    background: linear-gradient(135deg, #f8e8e0 0%, #fdf0ea 100%);
-    border-left: 4px solid var(--layer2);
-  }
-  .os-layer.layer-2::before {
-    background: radial-gradient(ellipse at 20% 50%, rgba(192,96,64,0.08) 0%, transparent 70%);
-  }
-  .os-layer.layer-2:hover { background: linear-gradient(135deg, #f5ddd0 0%, #fce8e0 100%); }
-  .os-layer.layer-2:hover::before { opacity: 1; }
-
-  /* Layer 3 — User Space */
-  .os-layer.layer-3 {
-    background: linear-gradient(135deg, #faf2e4 0%, #fef9f0 100%);
-    border-left: 4px solid var(--layer3);
-  }
-  .os-layer.layer-3::before {
-    background: radial-gradient(ellipse at 20% 50%, rgba(212,160,48,0.08) 0%, transparent 70%);
-  }
-  .os-layer.layer-3:hover { background: linear-gradient(135deg, #f7e9d4 0%, #fdf5e8 100%); }
-  .os-layer.layer-3:hover::before { opacity: 1; }
+  /* Layer accent bars */
+  .os-layer.layer-1::before { background: var(--layer1); }
+  .os-layer.layer-2::before { background: var(--layer2); }
+  .os-layer.layer-3::before { background: #F59E0B; }
 
   .layer-header {
-    display: flex; align-items: flex-start; gap: 20px;
+    display: flex; flex-direction: column; gap: 10px;
     position: relative; z-index: 1;
   }
   .layer-icon {
-    width: 56px; height: 56px; border-radius: 14px;
+    width: 44px; height: 44px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem; flex-shrink: 0;
-    box-shadow: var(--shadow-sm);
-  }
-  .layer-1 .layer-icon {
-    background: var(--layer1); color: #fff;
-  }
-  .layer-2 .layer-icon {
-    background: var(--layer2); color: #fff;
-  }
-  .layer-3 .layer-icon {
-    background: var(--layer3); color: #fff;
+    font-size: 1.3rem; flex-shrink: 0;
+    background: var(--accent-light);
   }
 
   .layer-info { flex: 1; min-width: 0; }
   .layer-label {
-    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.08em; margin-bottom: 2px;
+    color: var(--accent);
   }
-  .layer-1 .layer-label { color: var(--layer1); }
-  .layer-2 .layer-label { color: var(--layer2); }
-  .layer-3 .layer-label { color: var(--layer3); }
-
   .layer-name {
-    font-size: 1.35rem; font-weight: 700; color: var(--text);
-    margin-bottom: 4px;
+    font-size: 1.1rem; font-weight: 700; color: var(--text);
+    margin-bottom: 6px; line-height: 1.35;
   }
   .layer-desc {
-    font-size: 0.9rem; color: var(--text-muted);
-    margin-bottom: 8px;
+    font-size: 0.85rem; color: var(--text-muted);
+    margin-bottom: 10px; line-height: 1.55;
   }
   .layer-courses {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    margin-bottom: 6px;
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-bottom: 8px;
   }
   .layer-course-tag {
-    font-size: 0.78rem; padding: 2px 10px; border-radius: 12px;
-    background: rgba(58,42,26,0.06); color: var(--text-muted);
+    font-size: 0.7rem; padding: 3px 10px; border-radius: 9999px;
+    background: var(--accent-light); color: var(--accent-dark);
+    font-weight: 500;
   }
-  .layer-1 .layer-course-tag { background: var(--layer1-light); color: var(--layer1); }
-  .layer-2 .layer-course-tag { background: var(--layer2-light); color: var(--layer2); }
-  .layer-3 .layer-course-tag { background: var(--layer3-light); color: #8a7020; }
 
   .layer-expand-hint {
-    font-size: 0.78rem; color: var(--text-light);
+    font-size: 0.75rem; color: var(--text-light);
     display: flex; align-items: center; gap: 4px;
-    margin-top: 4px;
+    margin-top: auto;
   }
   .layer-expand-hint .arrow {
     display: inline-block; transition: transform 0.3s;
   }
   .os-layer.expanded .layer-expand-hint .arrow { transform: rotate(180deg); }
 
-  .layer-detail-link {
-    position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
-    z-index: 2;
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none;
-    background: rgba(255,255,255,0.7); color: var(--layer1);
-    font-size: 0.85rem; font-weight: 600;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.25s;
+  /* Detail links at bottom of layer cards */
+  .layer-detail-links {
+    display: flex; gap: 8px; margin-top: 12px;
+    position: relative; z-index: 2;
   }
-  .layer-1 .layer-detail-link { color: var(--layer1); }
-  .layer-2 .layer-detail-link { color: var(--layer2); }
-  .layer-3 .layer-detail-link { color: var(--layer3); }
+  .layer-detail-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 6px 14px; border-radius: 9999px;
+    font-size: 0.78rem; font-weight: 600;
+    text-decoration: none;
+    background: var(--accent-light); color: var(--accent-dark);
+    transition: all 0.2s;
+  }
   .layer-detail-link:hover {
-    background: #fff; box-shadow: var(--shadow-md);
-    transform: translateY(-50%) scale(1.08);
+    background: var(--accent); color: #fff;
   }
 
   /* Expanded sub-topics */
@@ -270,136 +267,110 @@
     opacity: 0;
   }
   .os-layer.expanded .layer-subtopics {
-    max-height: 800px; opacity: 1; margin-top: 20px;
+    max-height: 1200px; opacity: 1; margin-top: 16px;
   }
   .subtopic-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
+    display: grid; grid-template-columns: 1fr;
+    gap: 10px;
   }
   .subtopic-card {
-    background: rgba(255,255,255,0.6); border-radius: var(--radius-sm);
-    padding: 16px 18px;
-    border: 1px solid rgba(58,42,26,0.06);
+    background: #F9FAFB; border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    border: 1px solid var(--surface-border);
     transition: all 0.2s;
   }
   .subtopic-card:hover {
     background: #fff;
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
   .subtopic-card h4 {
-    font-size: 0.95rem; font-weight: 600; color: var(--text);
-    margin-bottom: 6px;
+    font-size: 0.88rem; font-weight: 600; color: var(--text);
+    margin-bottom: 4px;
   }
   .subtopic-card p {
-    font-size: 0.82rem; color: var(--text-muted);
-    line-height: 1.6;
+    font-size: 0.78rem; color: var(--text-muted);
+    line-height: 1.55;
   }
   .subtopic-card .concept-tags {
     display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;
   }
   .subtopic-card .concept-tag {
-    font-size: 0.72rem; padding: 1px 8px; border-radius: 10px;
-    background: var(--bg-alt); color: var(--text-muted);
+    font-size: 0.68rem; padding: 2px 8px; border-radius: 9999px;
+    background: var(--bg); color: var(--text-muted);
   }
 
   /* ========== CROSS THREADS SECTION ========== */
   .cross-threads-section {
-    max-width: 1100px; margin: 48px auto; padding: 0 24px;
+    max-width: 960px; margin: 0 auto; padding: 0 24px 56px;
   }
   .threads-title {
-    text-align: center; margin-bottom: 32px;
+    text-align: center; margin-bottom: 28px;
   }
   .threads-title h2 {
-    font-size: 1.4rem; font-weight: 700; color: var(--text);
-    margin-bottom: 4px;
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    margin-bottom: 6px;
   }
-  .threads-title p { color: var(--text-muted); font-size: 0.9rem; }
+  .threads-title p { color: var(--text-muted); font-size: 0.88rem; }
 
   .threads-visual {
-    position: relative;
-    display: flex; flex-direction: column; gap: 16px;
+    display: flex; flex-direction: column; gap: 12px;
   }
   .thread-line {
-    display: flex; align-items: center; gap: 16px;
-    padding: 16px 20px;
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px 22px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-left: 3px solid var(--accent);
     border-radius: var(--radius);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s;
   }
   .thread-line:hover {
-    transform: translateX(4px);
     box-shadow: var(--shadow-md);
+    transform: translateX(2px);
   }
-  .thread-line::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-    width: 4px;
-  }
-  .thread-1 {
-    background: linear-gradient(90deg, rgba(224,112,80,0.08) 0%, rgba(224,112,80,0.02) 100%);
-  }
-  .thread-1::before { background: var(--thread-1); }
-  .thread-2 {
-    background: linear-gradient(90deg, rgba(200,136,64,0.08) 0%, rgba(200,136,64,0.02) 100%);
-  }
-  .thread-2::before { background: var(--thread-2); }
-  .thread-3 {
-    background: linear-gradient(90deg, rgba(160,96,96,0.08) 0%, rgba(160,96,96,0.02) 100%);
-  }
-  .thread-3::before { background: var(--thread-3); }
-  .thread-4 {
-    background: linear-gradient(90deg, rgba(176,144,80,0.08) 0%, rgba(176,144,80,0.02) 100%);
-  }
-  .thread-4::before { background: var(--thread-4); }
-
   .thread-num {
-    width: 36px; height: 36px; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 0.9rem; color: #fff;
+    font-weight: 700; font-size: 1rem; color: var(--accent-dark);
     flex-shrink: 0;
-    box-shadow: var(--shadow-sm);
+    background: var(--accent-light);
   }
-  .thread-1 .thread-num { background: var(--thread-1); }
-  .thread-2 .thread-num { background: var(--thread-2); }
-  .thread-3 .thread-num { background: var(--thread-3); }
-  .thread-4 .thread-num { background: var(--thread-4); }
-
   .thread-content { flex: 1; min-width: 0; }
   .thread-content h4 {
     font-size: 0.95rem; font-weight: 700; color: var(--text);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
   .thread-content p {
     font-size: 0.82rem; color: var(--text-muted);
+    line-height: 1.6;
   }
   .thread-layers {
-    display: flex; gap: 6px; flex-shrink: 0;
+    display: flex; gap: 5px; flex-shrink: 0;
+    align-items: center; padding-top: 2px;
   }
   .thread-layer-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    opacity: 0.5;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.4;
   }
-  .thread-layer-dot.l1 { background: var(--layer1); }
-  .thread-layer-dot.l2 { background: var(--layer2); }
-  .thread-layer-dot.l3 { background: var(--layer3); }
 
   /* ========== PYRAMID VISUAL ========== */
   .pyramid-section {
-    max-width: 900px; margin: 56px auto; padding: 0 24px;
+    max-width: 720px; margin: 0 auto; padding: 0 24px 56px;
     text-align: center;
   }
   .pyramid {
-    display: flex; flex-direction: column; align-items: center; gap: 0;
-    max-width: 600px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    max-width: 480px; margin: 0 auto;
   }
   .pyramid-row {
     display: flex; align-items: stretch; justify-content: center;
     width: 100%;
   }
   .pyramid-block {
-    padding: 20px 16px; text-align: center;
-    font-weight: 600; font-size: 0.9rem;
+    padding: 18px 14px; text-align: center;
+    font-weight: 600; font-size: 0.85rem;
     color: #fff;
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
@@ -407,7 +378,7 @@
   }
   .pyramid-block:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     z-index: 2;
   }
   .pyramid-block a {
@@ -415,55 +386,159 @@
   }
   .pyramid-top {
     width: 180px;
-    background: linear-gradient(180deg, var(--layer3) 0%, #c8952a 100%);
+    background: linear-gradient(180deg, var(--layer3) 0%, #E5A810 100%);
     border-radius: 10px 10px 0 0;
     clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
-    padding: 28px 16px 20px;
+    padding: 26px 14px 18px;
   }
   .pyramid-mid {
-    width: 340px;
-    background: linear-gradient(180deg, var(--layer2) 0%, #a05030 100%);
+    width: 320px;
+    background: linear-gradient(180deg, var(--layer2) 0%, #D97706 100%);
     border-radius: 0;
   }
   .pyramid-base {
-    width: 500px;
-    background: linear-gradient(180deg, var(--layer1) 0%, #9a5a28 100%);
+    width: 440px;
+    background: linear-gradient(180deg, var(--layer1) 0%, #B45309 100%);
     border-radius: 0 0 10px 10px;
-    padding: 20px 16px;
+    padding: 18px 14px;
   }
+
+  /* ========== PODCAST SECTION ========== */
+  .podcast-section {
+    max-width: 960px; margin: 0 auto; padding: 0 24px 56px;
+  }
+  .podcast-header {
+    text-align: center; margin-bottom: 28px;
+  }
+  .podcast-header h2 {
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .podcast-header p { color: var(--text-muted); font-size: 0.88rem; margin-top: 6px; }
+  .podcast-badge {
+    display: inline-block; background: var(--accent-light); color: var(--accent-dark);
+    padding: 4px 16px; border-radius: 9999px; font-size: 0.82rem;
+    font-weight: 600; margin-bottom: 14px;
+  }
+
+  .podcast-list {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .podcast-ep {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px;
+    background: var(--surface); border: 1px solid var(--surface-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+  }
+  .podcast-ep:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(2px);
+  }
+  .ep-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; color: var(--accent-dark);
+    flex-shrink: 0;
+    background: var(--accent-light);
+  }
+  .ep-info { flex: 1; min-width: 0; }
+  .ep-title { font-weight: 700; color: var(--text); font-size: 0.9rem; margin-bottom: 2px; }
+  .ep-desc { font-size: 0.8rem; color: var(--text-muted); }
+  .ep-duration {
+    font-size: 0.72rem; color: var(--accent-dark);
+    display: inline-block; background: var(--accent-light);
+    padding: 2px 10px; border-radius: 9999px; margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .ep-play {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: none; background: var(--accent); color: #fff;
+    cursor: pointer; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .ep-play:hover { transform: scale(1.1); box-shadow: var(--shadow-md); background: var(--accent-hover); }
+  .ep-play.playing { background: var(--accent-dark); }
+
+  .podcast-player-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--surface-border);
+    padding: 10px 24px;
+    display: none; align-items: center; gap: 12px;
+    z-index: 200;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.06);
+  }
+  .podcast-player-bar.active { display: flex; }
+  .player-now { flex: 1; min-width: 0; }
+  .player-now .player-ep-title { font-weight: 600; font-size: 0.85rem; color: var(--text); }
+  .player-controls { display: flex; align-items: center; gap: 10px; }
+  .player-btn {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: none; background: var(--accent); color: #fff;
+    cursor: pointer; font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .player-btn:hover { transform: scale(1.08); background: var(--accent-hover); }
+  .player-close {
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--surface-border);
+  }
+  .player-close:hover { color: var(--text); background: var(--bg-alt); }
 
   /* ========== FOOTER ========== */
   .footer {
-    text-align: center; padding: 48px 24px 40px;
+    text-align: center; padding: 40px 24px 36px;
     border-top: 1px solid var(--surface-border);
-    max-width: 1100px; margin: 0 auto;
+    max-width: 960px; margin: 0 auto;
   }
   .footer p {
-    font-size: 0.85rem; color: var(--text-muted);
+    font-size: 0.82rem; color: var(--text-muted);
     margin-bottom: 4px;
   }
   .footer-links {
-    display: flex; justify-content: center; gap: 20px; margin-top: 12px;
+    display: flex; justify-content: center; gap: 16px; margin-top: 12px;
     flex-wrap: wrap;
   }
   .footer-links a {
-    color: var(--layer1); text-decoration: none; font-size: 0.85rem;
-    transition: color 0.2s;
+    color: var(--accent-dark); text-decoration: none; font-size: 0.82rem;
+    font-weight: 500; transition: color 0.2s;
   }
-  .footer-links a:hover { color: var(--layer2); }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ========== INFO BOX (amber left border, for emphasis) ========== */
+  .info-box {
+    background: #FFFBEB;
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    line-height: 1.6;
+  }
 
   /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
-    .hero { padding: 40px 16px 32px; }
-    .hero h1 { font-size: 1.6rem; }
-    .hero .stats { gap: 20px; }
-    .hero .stat-num { font-size: 1.5rem; }
+    .hero { padding: 40px 16px 28px; }
+    .hero h1 { font-size: 1.45rem; }
+    .hero .stats { gap: 4px; font-size: 0.78rem; }
+    .hero .stat-num { font-size: 0.88rem; }
+    .hero .stat-sep { display: none; }
+
+    .os-stack { grid-template-columns: 1fr; }
 
     .os-layer { padding: 20px 16px; }
-    .layer-header { gap: 12px; }
-    .layer-icon { width: 44px; height: 44px; border-radius: 10px; font-size: 1.3rem; }
-    .layer-name { font-size: 1.1rem; }
-    .layer-detail-link { right: 16px; width: 34px; height: 34px; font-size: 0.75rem; }
+    .layer-header { gap: 8px; }
+    .layer-icon { width: 38px; height: 38px; border-radius: 10px; font-size: 1.1rem; }
+    .layer-name { font-size: 1rem; }
 
     .subtopic-grid { grid-template-columns: 1fr; }
 
@@ -471,117 +546,287 @@
     .pyramid-mid { width: 85%; }
     .pyramid-top { width: 60%; }
 
-    .thread-line { flex-wrap: wrap; }
+    .thread-line { padding: 16px; gap: 12px; flex-wrap: wrap; }
     .thread-layers { width: 100%; justify-content: flex-end; }
 
-    .nav-bar { padding: 8px 12px; }
-    .nav-links { gap: 8px; }
+    .nav-bar { padding: 6px 12px; }
+    .nav-links { gap: 3px; }
+    .nav-links a { padding: 4px 10px; font-size: 0.72rem; }
+
+    .podcast-ep { flex-wrap: wrap; gap: 8px; padding: 14px 16px; }
+    .ep-play { order: 3; }
+    .podcast-player-bar { padding: 8px 14px; }
   }
 
   @media (max-width: 480px) {
-    .hero h1 { font-size: 1.35rem; }
-    .hero .stats { gap: 12px; }
-    .hero .stat-num { font-size: 1.2rem; }
-    .layer-name { font-size: 1rem; }
+    .hero { padding: 32px 14px 24px; }
+    .hero h1 { font-size: 1.3rem; }
+    .hero .stats { font-size: 0.72rem; gap: 6px; }
+    .hero .stat-num { font-size: 0.82rem; }
+    .layer-name { font-size: 0.95rem; }
   }
 
-  /* ========== PODCAST SECTION ========== */
-  .podcast-section {
-    max-width: 1100px; margin: 56px auto; padding: 0 24px;
-  }
-  .podcast-header {
-    text-align: center; margin-bottom: 32px;
-  }
-  .podcast-header h2 {
-    font-size: 1.5rem; font-weight: 700; color: var(--text);
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .podcast-header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 6px; }
-  .podcast-badge {
-    display: inline-block; background: #f0dcc8; color: var(--layer1);
-    padding: 4px 16px; border-radius: 20px; font-size: 0.85rem;
-    font-weight: 500; margin-bottom: 16px;
+  /* ========== AI Chat Widget (Light Theme) ========== */
+  .ai-chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 300;
+    font-family: inherit;
   }
 
-  .podcast-list {
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .podcast-ep {
-    display: flex; align-items: center; gap: 16px;
-    padding: 16px 20px;
-    background: var(--surface); border: 1px solid var(--surface-border);
-    border-radius: var(--radius);
-    transition: all 0.25s;
-  }
-  .podcast-ep:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateX(2px);
-  }
-  .ep-num {
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 1rem; color: #fff;
-    flex-shrink: 0;
-    box-shadow: var(--shadow-sm);
-  }
-  .podcast-ep.ep-overview .ep-num { background: var(--layer1); }
-  .podcast-ep.ep-layer1 .ep-num { background: var(--layer1); }
-  .podcast-ep.ep-layer2 .ep-num { background: var(--layer2); }
-  .podcast-ep.ep-layer3 .ep-num { background: var(--layer3); }
-  .podcast-ep.ep-history .ep-num { background: var(--thread-2); }
-  .podcast-ep.ep-lens .ep-num { background: var(--thread-3); }
-  .podcast-ep.ep-cards .ep-num { background: var(--thread-4); }
-
-  .ep-info { flex: 1; min-width: 0; }
-  .ep-title { font-weight: 700; color: var(--text); font-size: 0.95rem; margin-bottom: 2px; }
-  .ep-desc { font-size: 0.82rem; color: var(--text-muted); }
-  .ep-duration { font-size: 0.78rem; color: var(--text-light); margin-top: 2px; }
-
-  .ep-play {
-    width: 40px; height: 40px; border-radius: 50%;
-    border: none; background: var(--layer1); color: #fff;
-    cursor: pointer; font-size: 1rem;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
-  }
-  .ep-play:hover { transform: scale(1.1); box-shadow: var(--shadow-md); }
-  .ep-play.playing { background: var(--layer2); }
-
-  .podcast-player-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(253,246,240,0.95); backdrop-filter: blur(12px);
-    border-top: 1px solid var(--surface-border);
-    padding: 12px 24px;
-    display: none; align-items: center; gap: 12px;
-    z-index: 200;
-    box-shadow: 0 -4px 20px rgba(58,42,26,0.08);
-  }
-  .podcast-player-bar.active { display: flex; }
-  .player-now { flex: 1; min-width: 0; }
-  .player-now .player-ep-title { font-weight: 600; font-size: 0.9rem; color: var(--text); }
-  .player-controls { display: flex; align-items: center; gap: 12px; }
-  .player-btn {
-    width: 36px; height: 36px; border-radius: 50%;
-    border: none; background: var(--layer1); color: #fff;
-    cursor: pointer; font-size: 0.85rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .player-btn:hover { transform: scale(1.08); }
-  .player-close {
-    background: transparent; color: var(--text-muted);
+  .ai-chat-toggle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
     border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--accent);
+    font-size: 1.35rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
   }
-  .player-close:hover { color: var(--text); }
 
-  @media (max-width: 768px) {
-    .podcast-ep { flex-wrap: wrap; gap: 10px; }
-    .ep-play { order: 3; }
-    .podcast-player-bar { padding: 10px 16px; }
+  .ai-chat-toggle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.16);
+    background: var(--accent);
+    color: #fff;
   }
 
+  .ai-chat-toggle:active { transform: scale(0.94); }
+
+  .ai-chat-indicator {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #22c55e;
+    border: 2px solid #fff;
+    transition: background 0.3s;
+  }
+
+  .ai-chat-indicator.offline { background: #ef4444; }
+
+  /* Panel */
+  .ai-chat-panel {
+    position: absolute;
+    bottom: 66px;
+    right: 0;
+    width: 360px;
+    max-height: 500px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.14);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .ai-chat-panel.open { display: flex; }
+
+  .ai-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--surface-border);
+    background: #FAFBFC;
+    flex-shrink: 0;
+  }
+
+  .ai-chat-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .ai-chat-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .ai-chat-dot.offline { background: #ef4444; }
+
+  .ai-chat-close {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 7px;
+    border-radius: 6px;
+    line-height: 1;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .ai-chat-close:hover { color: var(--text); background: var(--surface-border); }
+
+  /* Messages */
+  .ai-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 320px;
+    min-height: 100px;
+    background: #FAFBFC;
+  }
+
+  .ai-chat-messages::-webkit-scrollbar { width: 4px; }
+  .ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+
+  .ai-chat-msg {
+    max-width: 86%;
+    padding: 9px 14px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    word-break: break-word;
+    animation: ai-msg-in 0.26s ease-out;
+  }
+
+  @keyframes ai-msg-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .ai-chat-msg.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+
+  .ai-chat-msg.assistant {
+    align-self: flex-start;
+    background: #FFFFFF;
+    color: var(--text);
+    border: 1px solid var(--surface-border);
+    border-bottom-left-radius: 4px;
+  }
+
+  .ai-chat-msg.assistant strong { color: var(--accent-dark); font-weight: 700; }
+  .ai-chat-msg.assistant code {
+    background: var(--accent-light);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.74rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--accent-dark);
+  }
+  .ai-chat-msg.assistant ul,
+  .ai-chat-msg.assistant ol { margin: 3px 0; padding-left: 18px; }
+  .ai-chat-msg.assistant li { margin: 1px 0; }
+
+  /* Typing indicator */
+  .ai-chat-typing {
+    align-self: flex-start;
+    background: #FFFFFF;
+    border: 1px solid var(--surface-border);
+    color: var(--text-muted);
+    padding: 10px 16px;
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    font-size: 0.74rem;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .ai-chat-typing span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: ai-dot-bounce 1.3s ease-in-out infinite;
+  }
+
+  .ai-chat-typing span:nth-child(2) { animation-delay: 0.18s; }
+  .ai-chat-typing span:nth-child(3) { animation-delay: 0.36s; }
+
+  @keyframes ai-dot-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+    30% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* Input area */
+  .ai-chat-input-area {
+    display: flex;
+    gap: 7px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--surface-border);
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  .ai-chat-input {
+    flex: 1;
+    background: #F9FAFB;
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    padding: 9px 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .ai-chat-input::placeholder { color: var(--text-light); }
+  .ai-chat-input:focus { border-color: var(--accent); }
+
+  .ai-chat-send {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 9px 18px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .ai-chat-send:hover { background: var(--accent-hover); }
+  .ai-chat-send:active { transform: scale(0.95); }
+  .ai-chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Responsive chat */
+  @media (max-width: 480px) {
+    .ai-chat-panel {
+      width: calc(100vw - 32px);
+      right: -2px;
+      max-height: 420px;
+    }
+    .ai-chat-messages { max-height: 240px; }
+    .ai-chat-toggle {
+      width: 46px;
+      height: 46px;
+      font-size: 1.2rem;
+    }
+  }
 
 </style>
 </head>
@@ -610,22 +855,13 @@
     从 2,132 篇笔记中提炼的完整思想操作系统 —— 不是按课拆解，是按思想线索跨课重组，三层金字塔 + 四条贯穿线索
   </p>
   <div class="stats">
-    <div class="stat">
-      <div class="stat-num">2,132</div>
-      <div class="stat-label">篇笔记</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">13</div>
-      <div class="stat-label">门课程</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">3</div>
-      <div class="stat-label">层架构</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">4</div>
-      <div class="stat-label">条贯穿线索</div>
-    </div>
+    <span class="stat"><span class="stat-num">2,132</span><span class="stat-label">篇笔记</span></span>
+    <span class="stat-sep">·</span>
+    <span class="stat"><span class="stat-num">13</span><span class="stat-label">门课程</span></span>
+    <span class="stat-sep">·</span>
+    <span class="stat"><span class="stat-num">3</span><span class="stat-label">层架构</span></span>
+    <span class="stat-sep">·</span>
+    <span class="stat"><span class="stat-num">4</span><span class="stat-label">条贯穿线索</span></span>
   </div>
 </section>
 
@@ -657,8 +893,10 @@
           </div>
         </div>
       </div>
-      <a href="layer3a.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第三层A面：硅谷来信">→ A</a>
-      <a href="layer3b.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第三层B面：吴军来信2">→ B</a>
+      <div class="layer-detail-links">
+        <a href="layer3a.html" class="layer-detail-link" onclick="event.stopPropagation()">A面：硅谷来信 →</a>
+        <a href="layer3b.html" class="layer-detail-link" onclick="event.stopPropagation()">B面：吴军来信2 →</a>
+      </div>
 
       <div class="layer-subtopics">
         <div class="subtopic-grid">
@@ -741,7 +979,9 @@
           </div>
         </div>
       </div>
-      <a href="layer2.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第二层详情">→</a>
+      <div class="layer-detail-links">
+        <a href="layer2.html" class="layer-detail-link" onclick="event.stopPropagation()">进入第二层 →</a>
+      </div>
 
       <div class="layer-subtopics">
         <div class="subtopic-grid">
@@ -824,7 +1064,9 @@
           </div>
         </div>
       </div>
-      <a href="layer1.html" class="layer-detail-link" onclick="event.stopPropagation()" title="进入第一层详情">→</a>
+      <div class="layer-detail-links">
+        <a href="layer1.html" class="layer-detail-link" onclick="event.stopPropagation()">进入第一层 →</a>
+      </div>
 
       <div class="layer-subtopics">
         <div class="subtopic-grid">
@@ -912,9 +1154,9 @@
         <p>从文明演进到个人成长的第一性原理——每步都建立在上一步之上，避免归零重启。底层是公理体系的积累性，上层是职业生涯的方向选择</p>
       </div>
       <div class="thread-layers">
-        <span class="thread-layer-dot l1" title="认知底座"></span>
-        <span class="thread-layer-dot l2" title="文明与方法论"></span>
-        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+        <span class="thread-layer-dot" title="认知底座"></span>
+        <span class="thread-layer-dot" title="文明与方法论"></span>
+        <span class="thread-layer-dot" title="人生操作系统"></span>
       </div>
     </div>
 
@@ -925,9 +1167,9 @@
         <p>科技史的主轴分析框架，渗透到信息论（香农熵）、GPT（信息生成能量消耗）、文明史（能量革命→信息革命）——理解世界运转的元模型</p>
       </div>
       <div class="thread-layers">
-        <span class="thread-layer-dot l1" title="认知底座"></span>
-        <span class="thread-layer-dot l2" title="文明与方法论"></span>
-        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+        <span class="thread-layer-dot" title="认知底座"></span>
+        <span class="thread-layer-dot" title="文明与方法论"></span>
+        <span class="thread-layer-dot" title="人生操作系统"></span>
       </div>
     </div>
 
@@ -938,9 +1180,9 @@
         <p>不讲怎么做，讲怎么想。从逻辑课的公理推演到投资的自由现金流分析到教育的有效做功——一切回到第一性原理</p>
       </div>
       <div class="thread-layers">
-        <span class="thread-layer-dot l1" title="认知底座"></span>
-        <span class="thread-layer-dot l2" title="文明与方法论"></span>
-        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+        <span class="thread-layer-dot" title="认知底座"></span>
+        <span class="thread-layer-dot" title="文明与方法论"></span>
+        <span class="thread-layer-dot" title="人生操作系统"></span>
       </div>
     </div>
 
@@ -951,9 +1193,9 @@
         <p>奥卡姆剃刀贯穿全局：从数学证明的简洁性到投资组合的集中策略到教育方法的聚焦——做减法才是真正的智慧</p>
       </div>
       <div class="thread-layers">
-        <span class="thread-layer-dot l1" title="认知底座"></span>
-        <span class="thread-layer-dot l2" title="文明与方法论"></span>
-        <span class="thread-layer-dot l3" title="人生操作系统"></span>
+        <span class="thread-layer-dot" title="认知底座"></span>
+        <span class="thread-layer-dot" title="文明与方法论"></span>
+        <span class="thread-layer-dot" title="人生操作系统"></span>
       </div>
     </div>
 
@@ -1098,6 +1340,28 @@
   </div>
 </footer>
 
+<!-- ====== AI Chat Widget ====== -->
+<div class="ai-chat-widget" id="aiChatWidget">
+  <button class="ai-chat-toggle" id="aiChatToggle" aria-label="AI 助手" title="AI 知识库助手">
+    <span style="line-height:1;">💬</span>
+    <span class="ai-chat-indicator" id="aiChatIndicator"></span>
+  </button>
+  <div class="ai-chat-panel" id="aiChatPanel">
+    <div class="ai-chat-header">
+      <span class="ai-chat-status">
+        <span class="ai-chat-dot" id="aiChatDot"></span>
+        <span id="aiChatStatusText">DeepSeek 在线</span>
+      </span>
+      <button class="ai-chat-close" id="aiChatClose">✕</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages"></div>
+    <div class="ai-chat-input-area">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="问一个关于吴军思想体系的问题…" autocomplete="off">
+      <button class="ai-chat-send" id="aiChatSend">发送</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // Expand/collapse layers on click
   function toggleLayer(id) {
@@ -1111,7 +1375,6 @@
     // Toggle clicked
     if (!wasExpanded) {
       el.classList.add('expanded');
-      // Scroll into better view
       setTimeout(() => {
         el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
@@ -1121,6 +1384,7 @@
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      // Close expanded layers
       document.querySelectorAll('.os-layer.expanded').forEach(l => l.classList.remove('expanded'));
     }
   });
@@ -1135,35 +1399,36 @@
     const title = ep.querySelector('.ep-title').textContent;
 
     if (currentButton === btn && currentAudio) {
-      if (currentAudio.paused) { currentAudio.play(); btn.textContent = '⏸'; }
-      else { currentAudio.pause(); btn.textContent = '▶'; }
+      if (currentAudio.paused) { currentAudio.play(); btn.textContent = '⏸'; btn.classList.add('playing'); }
+      else { currentAudio.pause(); btn.textContent = '▶'; btn.classList.remove('playing'); }
       return;
     }
 
     if (currentAudio) { currentAudio.pause(); currentAudio.remove(); }
-    if (currentButton) currentButton.textContent = '▶';
+    if (currentButton) { currentButton.textContent = '▶'; currentButton.classList.remove('playing'); }
 
     currentAudio = new Audio(src);
     currentButton = btn;
     document.getElementById('playerTitle').textContent = title;
     document.getElementById('playerBar').classList.add('active');
     btn.textContent = '⏸';
+    btn.classList.add('playing');
 
     currentAudio.play();
-    currentAudio.onended = () => { btn.textContent = '▶'; currentAudio = null; currentButton = null; };
-    currentAudio.onerror = () => { btn.textContent = '⚠'; };
+    currentAudio.onended = () => { btn.textContent = '▶'; btn.classList.remove('playing'); currentAudio = null; currentButton = null; };
+    currentAudio.onerror = () => { btn.textContent = '⚠'; btn.classList.remove('playing'); };
   }
 
   function togglePlayer() {
     if (currentAudio) {
-      if (currentAudio.paused) { currentAudio.play(); if (currentButton) currentButton.textContent = '⏸'; }
-      else { currentAudio.pause(); if (currentButton) currentButton.textContent = '▶'; }
+      if (currentAudio.paused) { currentAudio.play(); if (currentButton) { currentButton.textContent = '⏸'; currentButton.classList.add('playing'); } }
+      else { currentAudio.pause(); if (currentButton) { currentButton.textContent = '▶'; currentButton.classList.remove('playing'); } }
     }
   }
 
   function closePlayer() {
     if (currentAudio) { currentAudio.pause(); currentAudio.remove(); currentAudio = null; }
-    if (currentButton) { currentButton.textContent = '▶'; currentButton = null; }
+    if (currentButton) { currentButton.textContent = '▶'; currentButton.classList.remove('playing'); currentButton = null; }
     document.getElementById('playerBar').classList.remove('active');
   }
 
@@ -1176,19 +1441,257 @@
       setTimeout(() => {
         el.style.opacity = '1';
         el.style.transform = 'translateY(0)';
-      }, 100 + i * 150);
+      }, 100 + i * 120);
     });
 
     document.querySelectorAll('.thread-line').forEach((el, i) => {
       el.style.opacity = '0';
-      el.style.transform = 'translateX(-20px)';
+      el.style.transform = 'translateX(-12px)';
       el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
       setTimeout(() => {
         el.style.opacity = '1';
         el.style.transform = 'translateX(0)';
-      }, 400 + i * 120);
+      }, 350 + i * 100);
     });
   });
+
+  // ===== AI CHAT ASSISTANT (DeepSeek) =====
+  (function() {
+    var API_URL = 'https://api.deepseek.com/v1/chat/completions';
+    var API_KEY = 'sk-9cd2150c397f4294934ef02d7cb15822';
+    var MODEL = 'deepseek-v4-flash';
+    var HEALTH_URL = 'https://api.deepseek.com/v1/models';
+    var REQUEST_TIMEOUT = 30000;
+    var HEALTH_TIMEOUT = 5000;
+
+    var chatPanel = document.getElementById('aiChatPanel');
+    var chatMessages = document.getElementById('aiChatMessages');
+    var chatInput = document.getElementById('aiChatInput');
+    var chatSend = document.getElementById('aiChatSend');
+    var chatClose = document.getElementById('aiChatClose');
+    var chatToggle = document.getElementById('aiChatToggle');
+    var chatDot = document.getElementById('aiChatDot');
+    var chatIndicator = document.getElementById('aiChatIndicator');
+    var chatStatusText = document.getElementById('aiChatStatusText');
+    var isOnline = true;
+
+    // System prompt
+    var SYSTEM_PROMPT = '你是吴军知识库 AI 助手，运行在"吴军思想体系全景图"首页。' +
+      '本知识库从 2,132 篇笔记中提炼了吴军博士 13 门课程的核心思想，组织为三层金字塔架构：' +
+      '第一层"认知底座"（逻辑、数学、信息论、科学方法、计算机思维），' +
+      '第二层"文明与方法论"（科技史、文明史、教育方法、阅读写作），' +
+      '第三层"人生操作系统"（财富、职业、关系、决策、时代判断）。' +
+      '四条贯穿线索：可叠加的进步、能量×信息双螺旋、底层逻辑>表层现象、少即是多。' +
+      '回答要求：简洁有洞察力（200字内），引用吴军课程中的具体概念和框架。' +
+      '若问题与吴军思想体系完全无关，礼貌引导回知识库话题。';
+
+    // ── Toggle panel ─────────────────────────────────────
+    chatToggle.addEventListener('click', function() {
+      if (chatPanel.classList.contains('open')) {
+        chatPanel.classList.remove('open');
+      } else {
+        chatPanel.classList.add('open');
+        setTimeout(function() { chatInput.focus(); }, 150);
+      }
+    });
+
+    chatClose.addEventListener('click', function() {
+      chatPanel.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && chatPanel.classList.contains('open') && document.activeElement !== chatInput) {
+        chatPanel.classList.remove('open');
+      }
+    });
+
+    // ── Send on Enter ────────────────────────────────────
+    chatInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    chatSend.addEventListener('click', sendMessage);
+
+    // ── Simple Markdown → HTML ───────────────────────────
+    function renderMarkdown(text) {
+      if (!text) return '';
+      var html = text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\n\s*[-•]\s+(.+)/g, '\n<li>$1</li>')
+        .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+        .replace(/\n/g, '<br>');
+      return html;
+    }
+
+    // ── Add message bubble ───────────────────────────────
+    function addMessage(role, content) {
+      var div = document.createElement('div');
+      div.className = 'ai-chat-msg ' + role;
+      if (role === 'assistant') {
+        div.innerHTML = renderMarkdown(content);
+      } else {
+        div.textContent = content;
+      }
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return div;
+    }
+
+    // ── Typing indicator ─────────────────────────────────
+    function showTyping() {
+      var el = document.createElement('div');
+      el.className = 'ai-chat-typing';
+      el.id = 'aiTyping';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      chatMessages.appendChild(el);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function hideTyping() {
+      var el = document.getElementById('aiTyping');
+      if (el) el.remove();
+    }
+
+    // ── Online / Offline status ──────────────────────────
+    function setOnline(online) {
+      isOnline = online;
+      var method = online ? 'remove' : 'add';
+      chatDot.classList[method]('offline');
+      chatIndicator.classList[method]('offline');
+      chatStatusText.textContent = online ? 'DeepSeek 在线' : '离线模式';
+    }
+
+    // ── Mock reply (offline fallback) ────────────────────
+    function getMockReply(msg) {
+      var lower = msg.toLowerCase();
+
+      if (lower.indexOf('定义') !== -1 || lower.indexOf('解释') !== -1 || lower.indexOf('是什么') !== -1) {
+        return '请浏览页面中的三层架构卡片，或前往**概念卡片池**（页面底部有链接）查看 1,192 个核心概念的详细定义——每张卡片包含：定义、类比、事例、反例和关联概念。';
+      }
+
+      if (lower.indexOf('三层') !== -1 || lower.indexOf('金字塔') !== -1 || lower.indexOf('架构') !== -1) {
+        return '吴军思想体系采用三层金字塔架构：\n• **第一层·认知底座**：逻辑、数学、信息论、科学方法、计算机思维——怎么看世界\n• **第二层·文明与方法论**：科技史、文明史、教育方法、阅读写作——世界怎么运转\n• **第三层·人生操作系统**：财富、职业、关系、决策、时代判断——怎么活得好\n\n点击页面中的三层卡片可以展开查看详细子主题。';
+      }
+
+      if (lower.indexOf('线索') !== -1 || lower.indexOf('贯穿') !== -1) {
+        return '四条贯穿线索连接三层架构：\n1. **可叠加的进步** — 从文明演化到个人成长\n2. **能量×信息双螺旋** — 理解世界运转的元模型\n3. **底层逻辑>表层现象** — 回到第一性原理\n4. **少即是多** — 奥卡姆剃刀贯穿全局';
+      }
+
+      if (lower.indexOf('课程') !== -1 || lower.indexOf('来源') !== -1) {
+        return '知识库涵盖吴军博士 13 门课程：硅谷来信、谷歌方法论、科技史纲60讲、世界文明史、信息论40讲、数学通识50讲、逻辑思维训练、教育方法、阅读与写作等。';
+      }
+
+      return '我正在离线模式，无法连接 DeepSeek API。您可以：\n• 浏览页面中的三层架构卡片，点击展开查看详细子主题\n• 前往**概念卡片池**查看 1,192 个核心概念的完整定义\n• 收听 7 期深度播客了解思想体系全貌\n\n网络恢复后我将能提供更详细的回答。';
+    }
+
+    // ── Send to API or fallback ──────────────────────────
+    function sendMessage() {
+      var text = chatInput.value.trim();
+      if (!text) return;
+
+      chatInput.value = '';
+      chatSend.disabled = true;
+      addMessage('user', text);
+      showTyping();
+
+      if (!isOnline) {
+        setTimeout(function() {
+          hideTyping();
+          addMessage('assistant', getMockReply(text));
+          chatSend.disabled = false;
+          chatInput.focus();
+        }, 600 + Math.random() * 500);
+        return;
+      }
+
+      var controller = new AbortController();
+      var tid = setTimeout(function() { controller.abort(); }, REQUEST_TIMEOUT);
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + API_KEY
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: text }
+          ],
+          max_tokens: 600,
+          temperature: 0.6
+        }),
+        signal: controller.signal
+      })
+      .then(function(res) {
+        clearTimeout(tid);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        hideTyping();
+        var reply = '';
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          reply = data.choices[0].message.content || '';
+        }
+        if (!reply) reply = '（AI 未返回内容，请重试）';
+        addMessage('assistant', reply);
+        chatSend.disabled = false;
+        chatInput.focus();
+      })
+      .catch(function(err) {
+        clearTimeout(tid);
+        hideTyping();
+        console.warn('DeepSeek API 不可达，切换离线模式:', err.message);
+        setOnline(false);
+        addMessage('assistant', getMockReply(text));
+        chatSend.disabled = false;
+        chatInput.focus();
+      });
+    }
+
+    // ── Health check ──────────────────────────────────────
+    function healthCheck() {
+      var ctrl = new AbortController();
+      var tid = setTimeout(function() { ctrl.abort(); }, HEALTH_TIMEOUT);
+
+      fetch(HEALTH_URL, {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + API_KEY },
+        signal: ctrl.signal
+      })
+      .then(function(res) {
+        clearTimeout(tid);
+        setOnline(res.ok);
+      })
+      .catch(function(err) {
+        clearTimeout(tid);
+        console.warn('DeepSeek 健康检查失败:', err.message);
+        setOnline(false);
+      });
+    }
+
+    // ── Welcome ───────────────────────────────────────────
+    function showWelcome() {
+      addMessage('assistant',
+        '你好！我是吴军知识库 AI 助手。可以问我关于思想体系、概念解释、课程内容等问题——比如"三层金字塔分别是什么？"或"可叠加的进步是什么意思？"'
+      );
+    }
+
+    // ── Init ──────────────────────────────────────────────
+    healthCheck();
+    setTimeout(function() {
+      if (chatMessages.children.length === 0) showWelcome();
+    }, 350);
+
+  })();
+
 </script>
 
 </body>
