@@ -1,194 +1,1129 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>阿森智库 · 简报与周报</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Serif SC','STSong','Songti SC',serif;background:#faf6f0;color:#3d2f2f;min-height:100vh}
-main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
-h1{font-size:28px;color:#6a3e1e;margin-bottom:6px}
-.sub{color:#9b8c7c;font-size:14px;margin-bottom:36px}
-.filters{margin-bottom:24px;display:flex;gap:10px;flex-wrap:wrap}
-.filters button{padding:6px 16px;border:1px solid #d4c4a8;background:#fff;border-radius:20px;font-size:13px;color:#6b5b5b;cursor:pointer;transition:all .2s}
-.filters button:hover,.filters button.active{background:#6a3e1e;color:#fff;border-color:#6a3e1e}
-.posts{display:flex;flex-direction:column;gap:16px}
-.post{display:block;background:#fff;border-radius:10px;padding:20px 24px;text-decoration:none;color:inherit;border:1px solid #ead8c0;transition:all .2s}
-.post:hover{transform:translateX(4px);border-color:#c9a87c;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.post .date{font-size:12px;color:#baa89a;margin-bottom:4px}
-.post h2{font-size:18px;color:#6a3e1e;margin-bottom:4px}
-.post .excerpt{font-size:14px;color:#8a7a6a;line-height:1.6}
-.post .tag{display:inline-block;font-size:11px;padding:2px 10px;border-radius:10px;margin-top:8px}
-.tag-brief{background:#fde8e8;color:#c0392b}
-.tag-weekly{background:#e8f0f8;color:#3a6090}
-.empty{text-align:center;color:#baa89a;padding:60px 0;font-size:15px}
-.footer{text-align:center;padding:20px;font-size:12px;color:#c4b49e}
-.footer a{color:#9b8c7c;text-decoration:none}
-.footer a:hover{color:#6a3e1e}
-@media(max-width:500px){
-  h1{font-size:22px}
+/* ================================================================
+   CSS Variables — matching briefings.html style
+   ================================================================ */
+:root {
+  --bg: #FFFFFF;
+  --cream: #FFFAF1;
+  --border: #f0ebe0;
+  --text: #2d2a24;
+  --muted: #8a8078;
+  --lighter: #faf7f0;
+  --accent: #faa634;
+  --accent-light: #fff5e6;
+  --accent-border: #fce0b0;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(60,30,20,.06);
+  --shadow-hover: 0 6px 24px rgba(60,30,20,.10);
+  --font: 'PingFang SC','Microsoft YaHei',-apple-system,sans-serif;
+}
+
+/* ================================================================
+   Reset & Base
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ================================================================
+   Sticky Top Bar
+   ================================================================ */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px clamp(16px, 4vw, 40px);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+}
+
+.top-bar-logo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-bar-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.top-bar-link {
+  font-size: 0.85rem;
+  color: var(--muted);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.top-bar-link:hover { color: var(--accent); }
+
+.top-bar-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.80rem;
+  color: var(--muted);
+  background: var(--cream);
+  padding: 5px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.top-bar-stats strong {
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+/* ================================================================
+   Sticky Tag Pills Bar
+   ================================================================ */
+.tag-pills-bar {
+  position: sticky;
+  top: 53px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px clamp(16px, 4vw, 40px);
+  background: rgba(255,255,255,0.84);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tag-pills-bar::-webkit-scrollbar { display: none; }
+
+.tag-pill {
+  flex-shrink: 0;
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.tag-pill:hover {
+  border-color: var(--accent-border);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.tag-pill.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* ================================================================
+   Hero Section
+   ================================================================ */
+.hero {
+  text-align: center;
+  padding: clamp(36px, 6vw, 64px) clamp(16px, 4vw, 40px) clamp(28px, 4vw, 44px);
+  background: linear-gradient(180deg, var(--cream) 0%, #fff 100%);
+}
+
+.hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.hero-sub {
+  font-size: clamp(0.88rem, 1.5vw, 1rem);
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: clamp(24px, 5vw, 56px);
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-num {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.hero-stat-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ================================================================
+   Main Content Area
+   ================================================================ */
+main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 28px clamp(16px, 3vw, 32px) 60px;
+}
+
+/* ================================================================
+   Post Cards
+   ================================================================ */
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.post-card {
+  display: block;
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-left: 4px solid transparent;
+  transition: all 0.22s ease;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.post-card:hover {
+  border-left-color: var(--accent);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.post-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.post-date {
+  font-size: 0.80rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.post-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.post-excerpt {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-card-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.post-card-tag.tag-brief {
+  background: #fde8ec;
+  color: #c0392b;
+}
+
+.post-card-tag.tag-weekly {
+  background: #e3ecf7;
+  color: #3a6090;
+}
+
+/* ================================================================
+   Empty State
+   ================================================================ */
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  padding: 60px 0;
+  font-size: 0.95rem;
+}
+
+/* ================================================================
+   Footer
+   ================================================================ */
+.footer {
+  text-align: center;
+  padding: 20px 16px;
+  font-size: 0.80rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.footer a {
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.footer a:hover { color: var(--accent); }
+
+/* ================================================================
+   AI Chat Widget (DeepSeek)
+   ================================================================ */
+.ai-chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  font-family: var(--font);
+}
+
+.ai-chat-toggle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(140deg, #1a3450 0%, #264a66 100%);
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 22px rgba(0,0,0,0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.ai-chat-toggle:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.40);
+}
+
+.ai-chat-toggle:active { transform: scale(0.94); }
+
+.ai-chat-indicator {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4caf50;
+  border: 2px solid #1a3450;
+  transition: background 0.3s;
+}
+
+.ai-chat-indicator.offline { background: #f44336; }
+
+/* Chat Panel */
+.ai-chat-panel {
+  position: absolute;
+  bottom: 62px;
+  right: 0;
+  width: 360px;
+  max-height: 500px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 56px rgba(0,0,0,0.20);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.ai-chat-panel.open { display: flex; }
+
+/* Dark header bar */
+.ai-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: linear-gradient(140deg, #1a3450 0%, #264a66 100%);
+  color: #d0dce8;
+  flex-shrink: 0;
+}
+
+.ai-chat-header-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ai-chat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.ai-chat-dot.offline { background: #f44336; }
+
+.ai-chat-close-btn {
+  background: none;
+  border: none;
+  color: #8098b0;
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 2px 7px;
+  border-radius: 5px;
+  line-height: 1;
+  transition: color 0.15s, background 0.15s;
+}
+
+.ai-chat-close-btn:hover { color: #fff; background: rgba(255,255,255,0.10); }
+
+/* Messages Area */
+.ai-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 330px;
+  min-height: 100px;
+  background: #fafaf8;
+}
+
+.ai-chat-messages::-webkit-scrollbar { width: 4px; }
+.ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+
+.ai-chat-msg {
+  max-width: 84%;
+  padding: 9px 14px;
+  border-radius: 14px;
+  font-size: 0.80rem;
+  line-height: 1.55;
+  word-break: break-word;
+  animation: ai-msg-in 0.26s ease-out;
+}
+
+@keyframes ai-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ai-chat-msg.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-chat-msg.assistant {
+  align-self: flex-start;
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.ai-chat-msg.assistant strong { color: #1a3450; font-weight: 700; }
+.ai-chat-msg.assistant code {
+  background: var(--cream);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: 'SF Mono','Fira Code',monospace;
+  color: #c0392b;
+}
+.ai-chat-msg.assistant ul,
+.ai-chat-msg.assistant ol { margin: 4px 0; padding-left: 20px; }
+.ai-chat-msg.assistant li { margin: 2px 0; }
+
+/* Typing indicator */
+.ai-chat-typing {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 11px 16px;
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  font-size: 0.75rem;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.ai-chat-typing span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c0b8a8;
+  animation: ai-dot-bounce 1.3s ease-in-out infinite;
+}
+
+.ai-chat-typing span:nth-child(2) { animation-delay: 0.18s; }
+.ai-chat-typing span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes ai-dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Input Area */
+.ai-chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.ai-chat-input {
+  flex: 1;
+  background: #fafaf8;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.80rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ai-chat-input::placeholder { color: #b8b0a8; }
+.ai-chat-input:focus { border-color: var(--accent-border); }
+
+.ai-chat-send {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  font-family: var(--font);
+  font-size: 0.80rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.ai-chat-send:hover { opacity: 0.88; }
+.ai-chat-send:active { transform: scale(0.95); }
+.ai-chat-send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ================================================================
+   Responsive
+   ================================================================ */
+@media (max-width: 640px) {
+  .top-bar {
+    padding: 10px 14px;
+  }
+  .top-bar-logo {
+    font-size: 0.95rem;
+  }
+  .top-bar-stats {
+    font-size: 0.73rem;
+    padding: 4px 10px;
+  }
+  .top-bar-stats strong {
+    font-size: 0.85rem;
+  }
+  .top-bar-link {
+    font-size: 0.78rem;
+  }
+  .tag-pills-bar {
+    top: 46px;
+    padding: 8px 14px;
+    gap: 6px;
+  }
+  .tag-pill {
+    padding: 5px 14px;
+    font-size: 0.76rem;
+  }
+  .hero {
+    padding: 28px 16px 24px;
+  }
+  .hero h1 {
+    font-size: 1.4rem;
+  }
+  .hero-stats {
+    gap: 28px;
+  }
+  .hero-stat-num {
+    font-size: 1.8rem;
+  }
+  .post-card {
+    padding: 16px 18px;
+  }
+  .post-title {
+    font-size: 0.95rem;
+  }
+  .ai-chat-panel {
+    width: calc(100vw - 28px);
+    right: -4px;
+    max-height: 430px;
+  }
+  .ai-chat-messages { max-height: 250px; }
+  .ai-chat-toggle {
+    width: 46px;
+    height: 46px;
+    font-size: 1.15rem;
+  }
 }
 </style>
+</head>
+<body>
+
+<!-- ================================================================
+     Sticky Top Bar
+     ================================================================ -->
+<div class="top-bar">
+  <div class="top-bar-logo">📜 阿森智库</div>
+  <div class="top-bar-links">
+    <a href="../index.html" class="top-bar-link">← 知识主板</a>
+    <div class="top-bar-stats">
+      <span>共</span><strong>23</strong><span>篇</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     Sticky Tag Pills Bar
+     ================================================================ -->
+<div class="tag-pills-bar" id="tagPillsBar">
+  <button class="tag-pill active" onclick="filterPosts('all', this)">全部</button>
+  <button class="tag-pill" onclick="filterPosts('brief', this)">📄 知识简报</button>
+  <button class="tag-pill" onclick="filterPosts('weekly', this)">📊 学术周报</button>
+</div>
+
+<!-- ================================================================
+     Hero Section
+     ================================================================ -->
+<section class="hero">
+  <h1>知识活用简报 · 学术前沿周报</h1>
+  <p class="hero-sub">每日知识碰撞与洞察存档 — 框架碰撞、行动建议、判断输出</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="heroBriefCount">21</div>
+      <div class="hero-stat-label">知识简报</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="heroWeeklyCount">2</div>
+      <div class="hero-stat-label">学术周报</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     Main Content — Post Cards
+     ================================================================ -->
 <main>
-<h1>📜 阿森智库</h1>
-<p class="sub">知识活用简报 · 学术前沿周报 — 完整版存档</p>
-<div class="filters">
-  <button class="active" onclick="filter('all')">全部</button>
-  <button onclick="filter('brief')">知识简报</button>
-  <button onclick="filter('weekly')">学术周报</button>
-</div>
 <div class="posts" id="posts">
-  <a class="post" data-tag="weekly" href="posts/2026-06-07-周报.html">
-    <div class="date">2026-06-07</div>
-    <h2>学术前沿周报 · 2026年6月7日</h2>
-    <div class="excerpt">存算一体跨越实验室（66×QPS），固态储能进入万次循环时代（>10K cycles），AI模型压缩走向极致（90% token削减）——算力基础设施的成本结构正在被三重技术浪潮同时改写。</div>
-    <span class="tag tag-weekly">学术周报</span>
+  <a class="post-card" data-tag="weekly" href="posts/2026-06-07-周报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-07</span>
+      <span class="post-card-tag tag-weekly">学术周报</span>
+    </div>
+    <div class="post-title">学术前沿周报 · 2026年6月7日</div>
+    <div class="post-excerpt">存算一体跨越实验室（66×QPS），固态储能进入万次循环时代（>10K cycles），AI模型压缩走向极致（90% token削减）——算力基础设施的成本结构正在被三重技术浪潮同时改写。</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-06-07-简报.html">
-    <div class="date">2026-06-07</div>
-    <h2>知识活用简报 · 2026年6月7日</h2>
-    <div class="excerpt">康盈11倍爆发不是销售奇迹——是韩系结构性撤出消费存储后，渠道真空期的红利信号。摩尔定律下半导体产品每两年贬值一半，渠道优势本质上是供需错配的时间差。把渠道从"货权管道"升级为"品牌化通路+技术支持中台"才是台积电式的分工价值。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-06-07-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-07</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年6月7日</div>
+    <div class="post-excerpt">康盈11倍爆发不是销售奇迹——是韩系结构性撤出消费存储后，渠道真空期的红利信号。摩尔定律下半导体产品每两年贬值一半，渠道优势本质上是供需错配的时间差。把渠道从"货权管道"升级为"品牌化通路+技术支持中台"才是台积电式的分工价值。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-06-06-简报.html">
-    <div class="date">2026-06-06</div>
-    <h2>知识活用简报 · 2026年6月6日</h2>
-    <div class="excerpt">AI正在经历杰文斯悖论的完美演绎——token越便宜，企业AI账单越贵。微软裁撤Claude Code许可证、Uber四个月烧完全年预算、Goldman Sachs预测token消耗量24倍增长。瓶颈从"芯片"转移到"能源基础设施"，宁德时代105亿跨界IDC+HVDC是算电协同的关键信号。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-06-06-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-06</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年6月6日</div>
+    <div class="post-excerpt">AI正在经历杰文斯悖论的完美演绎——token越便宜，企业AI账单越贵。微软裁撤Claude Code许可证、Uber四个月烧完全年预算、Goldman Sachs预测token消耗量24倍增长。瓶颈从"芯片"转移到"能源基础设施"，宁德时代105亿跨界IDC+HVDC是算电协同的关键信号。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-06-05-简报.html">
-    <div class="date">2026-06-05</div>
-    <h2>知识活用简报 · 2026年6月5日</h2>
-    <div class="excerpt">供票推广的真正阻力不是产品设计，而是"用一张票要过五道关"——每道关都是一笔交易费用，加总后企业宁愿不走这条路。来源：中科领创知识库 · 供应链票据与支付结算工具行业交流研讨会记录（2026-05-21） 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-06-05-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-05</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年6月5日</div>
+    <div class="post-excerpt">供票推广的真正阻力不是产品设计，而是"用一张票要过五道关"——每道关都是一笔交易费用，加总后企业宁愿不走这条路。来源：中科领创知识库 · 供应链票据与支付结算工具行业交流研讨会记录（2026-05-21） 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-06-03-简报.html">
-    <div class="date">2026-06-03</div>
-    <h2>知识活用简报 · 2026年6月3日</h2>
-    <div class="excerpt">AI产业正经历一场"需求暴增→上游通胀"的结构性传导——微软砍许可证、Uber预算四个月烧光只是表面，底层是芯片、电力、电源管理全链供应跟不上AI需求扩张的速度。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-06-03-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-03</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年6月3日</div>
+    <div class="post-excerpt">AI产业正经历一场"需求暴增→上游通胀"的结构性传导——微软砍许可证、Uber预算四个月烧光只是表面，底层是芯片、电力、电源管理全链供应跟不上AI需求扩张的速度。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-06-02-简报.html">
-    <div class="date">2026-06-02</div>
-    <h2>知识活用简报 · 2026年6月2日</h2>
-    <div class="excerpt">Uber四个月烧完全年AI预算，Goldman Sachs预测Agentic AI到2030年token消耗增长24倍——AI单价降、总成本却飙升，成本拐点已至。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-06-02-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-02</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年6月2日</div>
+    <div class="post-excerpt">Uber四个月烧完全年AI预算，Goldman Sachs预测Agentic AI到2030年token消耗增长24倍——AI单价降、总成本却飙升，成本拐点已至。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-06-01-简报.html">
-    <div class="date">2026-06-01</div>
-    <h2>知识活用简报 · 2026年6月1日</h2>
-    <div class="excerpt">微软砍Claude Code许可证、Uber四个月烧完全年AI预算——AI成本的结构性拐点正在到来，同时AI算力需求外溢正从GPU/HBM传导到模拟芯片和供电架构（来源：品味AI简报 2026-05-23）。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-06-01-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-06-01</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年6月1日</div>
+    <div class="post-excerpt">微软砍Claude Code许可证、Uber四个月烧完全年AI预算——AI成本的结构性拐点正在到来，同时AI算力需求外溢正从GPU/HBM传导到模拟芯片和供电架构（来源：品味AI简报 2026-05-23）。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-31-简报.html">
-    <div class="date">2026-05-31</div>
-    <h2>知识活用简报 · 2026年5月31日</h2>
-    <div class="excerpt">微软砍Claude Code许可、Uber四个月烧完全年AI预算——AI成本飙升不是泡沫，是技术冲击引发的正常市场调整。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-31-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-31</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月31日</div>
+    <div class="post-excerpt">微软砍Claude Code许可、Uber四个月烧完全年AI预算——AI成本飙升不是泡沫，是技术冲击引发的正常市场调整。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-30-简报.html">
-    <div class="date">2026-05-30</div>
-    <h2>知识活用简报 · 2026年5月30日</h2>
-    <div class="excerpt">AI成本悖论全面显形：token单价持续走低，但企业AI总支出失控飙升——Uber四个月烧完全年预算，微软大幅收缩Claude Code许可证。第二波AI红利正从GPU向电源基础设施扩散。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-30-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-30</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月30日</div>
+    <div class="post-excerpt">AI成本悖论全面显形：token单价持续走低，但企业AI总支出失控飙升——Uber四个月烧完全年预算，微软大幅收缩Claude Code许可证。第二波AI红利正从GPU向电源基础设施扩散。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-29-简报.html">
-    <div class="date">2026-05-29</div>
-    <h2>知识活用简报 · 2026年5月29日</h2>
-    <div class="excerpt">存储芯片行业出现拐点前兆。5月19日中行罗湖支行到访会议纪要揭示两个异常信号：① 长兴IPO净利率高达78.5%，远超行业常规——这是周期顶部的典型特征；② 头部云厂商（阿里、谷歌）云业务营收与毛利率双降，原预测持续到2028年的上行周期可能提前终结。 中科领创存储业务去年峰值8000万且仍在增长，库存周期控制在...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-29-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-29</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月29日</div>
+    <div class="post-excerpt">存储芯片行业出现拐点前兆。5月19日中行罗湖支行到访会议纪要揭示两个异常信号：① 长兴IPO净利率高达78.5%，远超行业常规——这是周期顶部的典型特征；② 头部云厂商（阿里、谷歌）云业务营收与毛利率双降，原预测持续到2028年的上行周期可能提前终结。 中科领创存储业务去年峰值8000万且仍在增长，库存周期控制在...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-28-简报.html">
-    <div class="date">2026-05-28</div>
-    <h2>知识活用简报 · 2026年5月28日</h2>
-    <div class="excerpt">AI成本正在上演"杰文斯悖论"的现实版。 微软取消大部分Claude Code许可证，Uber四个月烧完全年AI预算——当token单价持续下降，企业总成本反而飙升。Goldman Sachs预测Agentic AI到2030年推动token消耗量增长24倍，达到120 quadrillion tokens/月。...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-28-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-28</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月28日</div>
+    <div class="post-excerpt">AI成本正在上演"杰文斯悖论"的现实版。 微软取消大部分Claude Code许可证，Uber四个月烧完全年AI预算——当token单价持续下降，企业总成本反而飙升。Goldman Sachs预测Agentic AI到2030年推动token消耗量增长24倍，达到120 quadrillion tokens/月。...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-27-简报.html">
-    <div class="date">2026-05-27</div>
-    <h2>知识活用简报 · 2026年5月27日</h2>
-    <div class="excerpt">高温经济正在重塑中国消费地理版图。 东北三省空调销量爆发式增长（吉林+788%、辽宁+518%、黑龙江+817%），海尔单日安装突破40万套，美的创下25年纪录。与此同时防晒市场预计达958亿元，防晒唇膏月销暴涨552%。核心信号：消费者行为从"货比三家"转向"及时满足"——当舒适区被突破，支付意愿和决策速度双双...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-27-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-27</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月27日</div>
+    <div class="post-excerpt">高温经济正在重塑中国消费地理版图。 东北三省空调销量爆发式增长（吉林+788%、辽宁+518%、黑龙江+817%），海尔单日安装突破40万套，美的创下25年纪录。与此同时防晒市场预计达958亿元，防晒唇膏月销暴涨552%。核心信号：消费者行为从"货比三家"转向"及时满足"——当舒适区被突破，支付意愿和决策速度双双...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-26-简报.html">
-    <div class="date">2026-05-26</div>
-    <h2>知识活用简报 · 2026年5月26日</h2>
-    <div class="excerpt">三井财团凭「宗竺遗书」+「大元方」机制实现400年传承。宗竺遗书坚守财产不分割原则，防止家族力量内耗；大元方作为中央治理机构，统筹全局、规范业务运转、用激励制度激发经营活力。三井的案例说明：组织长青靠的不是天才创始人，而是能跨越代际的制度设计。 来源：Get 笔记「中科领创」知识库 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-26-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-26</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月26日</div>
+    <div class="post-excerpt">三井财团凭「宗竺遗书」+「大元方」机制实现400年传承。宗竺遗书坚守财产不分割原则，防止家族力量内耗；大元方作为中央治理机构，统筹全局、规范业务运转、用激励制度激发经营活力。三井的案例说明：组织长青靠的不是天才创始人，而是能跨越代际的制度设计。 来源：Get 笔记「中科领创」知识库 🧠</div>
   </a>
-  <a class="post" data-tag="weekly" href="posts/2026-05-25-周报.html">
-    <div class="date">2026-05-25</div>
-    <h2>学术前沿周报 · 2026年5月25日</h2>
-    <div class="excerpt">这标志着行业共识正在从"更大参数即更强能力"向"多组件协同的系统级智能"迁移。</div>
-    <span class="tag tag-weekly">学术周报</span>
+  <a class="post-card" data-tag="weekly" href="posts/2026-05-25-周报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-25</span>
+      <span class="post-card-tag tag-weekly">学术周报</span>
+    </div>
+    <div class="post-title">学术前沿周报 · 2026年5月25日</div>
+    <div class="post-excerpt">这标志着行业共识正在从"更大参数即更强能力"向"多组件协同的系统级智能"迁移。</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-25-简报.html">
-    <div class="date">2026-05-25</div>
-    <h2>知识活用简报 · 2026年5月25日</h2>
-    <div class="excerpt">中国在线餐饮外卖市场1.64万亿规模，京东2月强势入局——免佣金、骑手五险一金、百亿补贴三板斧直击美团腹地。美团以7.7亿用户+620万骑手网络应战，用闪购巩固高频消费场景，年增社保成本20亿。这不是外卖之争，是平台竞争维度升级：从"连接供需"变为"服务与创新决胜"。来源：Get笔记「中科领创」知识库，源啟惠商业...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-25-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-25</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月25日</div>
+    <div class="post-excerpt">中国在线餐饮外卖市场1.64万亿规模，京东2月强势入局——免佣金、骑手五险一金、百亿补贴三板斧直击美团腹地。美团以7.7亿用户+620万骑手网络应战，用闪购巩固高频消费场景，年增社保成本20亿。这不是外卖之争，是平台竞争维度升级：从"连接供需"变为"服务与创新决胜"。来源：Get笔记「中科领创」知识库，源啟惠商业...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-24-简报.html">
-    <div class="date">2026-05-24</div>
-    <h2>知识活用简报 · 2026年5月24日</h2>
-    <div class="excerpt">中行罗湖支行到访中科领创，一场半导体/AI产业链商务会谈释放了三个信号：(1) 跨境业务模式尚未定型——500万美元订单的汇率锁定是真实决策压力，香港交割+代采公司模式仍有汇差敞口；(2) 存储业务峰值8000万且仍在增长，但3-4个月库存周期的刻意控制说明对市场波动的深层警惕；(3) 芯片渠道商正集体经历"从贸...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-24-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-24</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月24日</div>
+    <div class="post-excerpt">中行罗湖支行到访中科领创，一场半导体/AI产业链商务会谈释放了三个信号：(1) 跨境业务模式尚未定型——500万美元订单的汇率锁定是真实决策压力，香港交割+代采公司模式仍有汇差敞口；(2) 存储业务峰值8000万且仍在增长，但3-4个月库存周期的刻意控制说明对市场波动的深层警惕；(3) 芯片渠道商正集体经历"从贸...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-22-简报.html">
-    <div class="date">2026-05-22</div>
-    <h2>知识活用简报 · 2026年5月22日</h2>
-    <div class="excerpt">AI正在从"聊天窗口"走向"直接操作你电脑"。2026年一季度，阿里QoderWork、Claude Cowork、MiniMax、阶跃星辰集中推出桌面Agent类产品——AI不再是你问它答的助手，而是直接操作本地文件、跑数据分析、出报告的工作者。这不是工具升级，是AI交互范式的代际切换。趁手工具推荐榜已将Qod...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-22-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-22</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月22日</div>
+    <div class="post-excerpt">AI正在从"聊天窗口"走向"直接操作你电脑"。2026年一季度，阿里QoderWork、Claude Cowork、MiniMax、阶跃星辰集中推出桌面Agent类产品——AI不再是你问它答的助手，而是直接操作本地文件、跑数据分析、出报告的工作者。这不是工具升级，是AI交互范式的代际切换。趁手工具推荐榜已将Qod...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-21-简报.html">
-    <div class="date">2026-05-21</div>
-    <h2>知识活用简报 · 2026年5月21日</h2>
-    <div class="excerpt">视觉IoT消费市场正在经历AI驱动的品类跃迁。2024年行业增速放缓、毛利与单价双降——传统"卖更多摄像头更便宜"的路径已触天花板。但AI大模型与视觉的融合正在创造新物种：摄像头不再是录像设备，而是具备类人分析能力的智能体。行业领袖的共识信号强烈——"抓住AI落地机遇有望实现跨越式增长"，但这也意味着"对深耕行业...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-21-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-21</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月21日</div>
+    <div class="post-excerpt">视觉IoT消费市场正在经历AI驱动的品类跃迁。2024年行业增速放缓、毛利与单价双降——传统"卖更多摄像头更便宜"的路径已触天花板。但AI大模型与视觉的融合正在创造新物种：摄像头不再是录像设备，而是具备类人分析能力的智能体。行业领袖的共识信号强烈——"抓住AI落地机遇有望实现跨越式增长"，但这也意味着"对深耕行业...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-20-简报.html">
-    <div class="date">2026-05-20</div>
-    <h2>知识活用简报 · 2026年5月20日</h2>
-    <div class="excerpt">中科领创正站在贸易商→技术型公司的转型岔路口。 5月19日中行罗湖支行到访的半导体商务会议纪要显示：存储业务去年峰值8000万且仍在增长，但整体市场萎缩、单价提升成为新变量。公司刻意控制库存3-4个月（防御性信号），同时布局东莞、投入研发，野心是从芯片渠道商跃迁为技术型公司。创始人"放羊论"（担心技术方向失控）暴...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-20-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-20</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月20日</div>
+    <div class="post-excerpt">中科领创正站在贸易商→技术型公司的转型岔路口。 5月19日中行罗湖支行到访的半导体商务会议纪要显示：存储业务去年峰值8000万且仍在增长，但整体市场萎缩、单价提升成为新变量。公司刻意控制库存3-4个月（防御性信号），同时布局东莞、投入研发，野心是从芯片渠道商跃迁为技术型公司。创始人"放羊论"（担心技术方向失控）暴...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-19-简报.html">
-    <div class="date">2026-05-19</div>
-    <h2>知识活用简报 · 2026年5月19日</h2>
-    <div class="excerpt">AI融资进入产业化验证期。深势科技C轮数亿元（AI+分子模拟）、Claude for Small Business（Anthropic首推SMB订阅）、灵雀智能A+轮（Agent平台商业化）——三件事指向同一信号：2024-2025年疯狂融资的AI公司，2026年集体进入"交付或死亡"窗口。投资者不再为"好技术"...</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-19-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-19</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月19日</div>
+    <div class="post-excerpt">AI融资进入产业化验证期。深势科技C轮数亿元（AI+分子模拟）、Claude for Small Business（Anthropic首推SMB订阅）、灵雀智能A+轮（Agent平台商业化）——三件事指向同一信号：2024-2025年疯狂融资的AI公司，2026年集体进入"交付或死亡"窗口。投资者不再为"好技术"...</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-18-简报.html">
-    <div class="date">2026-05-18</div>
-    <h2>知识活用简报 · 2026年5月18日</h2>
-    <div class="excerpt">日本三井财团凭借 宗竺遗书 （财产不分割原则）和 大元方机制 （统筹协调+激励分配），实现400年组织传承，至今仍是巴菲特重仓标的。核心信号： 组织长寿不是靠天才CEO，而是靠制度设计把"不分割"写进基因 。来源：Get笔记「中科领创」知识库，2025-05-09归档的源啟惠商业分析。 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-18-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-18</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月18日</div>
+    <div class="post-excerpt">日本三井财团凭借 宗竺遗书 （财产不分割原则）和 大元方机制 （统筹协调+激励分配），实现400年组织传承，至今仍是巴菲特重仓标的。核心信号： 组织长寿不是靠天才CEO，而是靠制度设计把"不分割"写进基因 。来源：Get笔记「中科领创」知识库，2025-05-09归档的源啟惠商业分析。 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-17-简报.html">
-    <div class="date">2026-05-17</div>
-    <h2>知识活用简报 · 2026年5月17日</h2>
-    <div class="excerpt">半导体行业进入AI超级周期，需求从概念转为真实生产力。行业赚的是资源溢价——上行周期"一年顶三年"，但超级周期的加速也在缩短自身的窗口期。 来源：中科领创知识库 · 行业会谈纪要 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-17-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-17</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月17日</div>
+    <div class="post-excerpt">半导体行业进入AI超级周期，需求从概念转为真实生产力。行业赚的是资源溢价——上行周期"一年顶三年"，但超级周期的加速也在缩短自身的窗口期。 来源：中科领创知识库 · 行业会谈纪要 🧠</div>
   </a>
-  <a class="post" data-tag="brief" href="posts/2026-05-16-简报.html">
-    <div class="date">2026-05-16</div>
-    <h2>知识活用简报 · 2026年5月16日</h2>
-    <div class="excerpt">半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。行业盈利本质是「赚资源的钱」，上行周期一年顶三年，下行周期三年不赚钱。 来源：中科领创知识库 · 行业会谈纪要 🧠</div>
-    <span class="tag tag-brief">知识简报</span>
+  <a class="post-card" data-tag="brief" href="posts/2026-05-16-简报.html">
+    <div class="post-card-header">
+      <span class="post-date">2026-05-16</span>
+      <span class="post-card-tag tag-brief">知识简报</span>
+    </div>
+    <div class="post-title">知识活用简报 · 2026年5月16日</div>
+    <div class="post-excerpt">半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。行业盈利本质是「赚资源的钱」，上行周期一年顶三年，下行周期三年不赚钱。 来源：中科领创知识库 · 行业会谈纪要 🧠</div>
   </a>
 </div>
+</main>
+
+<!-- ================================================================
+     Footer
+     ================================================================ -->
 <div class="footer">
   <a href="../index.html">← 返回知识主板</a>
 </div>
-</main>
+
+<!-- ================================================================
+     AI Chat Widget — DeepSeek
+     ================================================================ -->
+<div class="ai-chat-widget" id="aiChatWidget">
+  <button class="ai-chat-toggle" id="aiChatToggle" aria-label="AI 助手" title="阿森智库 · AI 助手">
+    <span style="line-height:1;">💬</span>
+    <span class="ai-chat-indicator" id="aiChatIndicator"></span>
+  </button>
+  <div class="ai-chat-panel" id="aiChatPanel">
+    <div class="ai-chat-header">
+      <span class="ai-chat-header-title">
+        <span class="ai-chat-dot" id="aiChatDot"></span>
+        阿森智库 · AI 助手
+      </span>
+      <button class="ai-chat-close-btn" id="aiChatClose">✕</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages"></div>
+    <div class="ai-chat-input-area">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="问一个关于简报的问题…" autocomplete="off">
+      <button class="ai-chat-send" id="aiChatSend">发送</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     Scripts
+     ================================================================ -->
 <script>
-function filter(tag){
-  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.querySelectorAll('.post').forEach(p=>{
-    if(tag==='all' || p.dataset.tag===tag) p.style.display='';
-    else p.style.display='none';
+/* =============================================================
+   Filter Posts
+   ============================================================= */
+function filterPosts(tag, btn) {
+  document.querySelectorAll('.tag-pill').forEach(function(b) {
+    b.classList.remove('active');
   });
+  btn.classList.add('active');
+
+  var visibleCount = { brief: 0, weekly: 0 };
+
+  document.querySelectorAll('.post-card').forEach(function(p) {
+    if (tag === 'all' || p.dataset.tag === tag) {
+      p.style.display = '';
+      if (p.dataset.tag === 'brief') visibleCount.brief++;
+      if (p.dataset.tag === 'weekly') visibleCount.weekly++;
+    } else {
+      p.style.display = 'none';
+    }
+  });
+
+  // Update hero stat numbers based on filter
+  document.getElementById('heroBriefCount').textContent = visibleCount.brief;
+  document.getElementById('heroWeeklyCount').textContent = visibleCount.weekly;
 }
+
+/* =============================================================
+   AI Chat Assistant (DeepSeek)
+   ============================================================= */
+(function() {
+  var API_URL = 'https://api.deepseek.com/v1/chat/completions';
+  var API_KEY = 'sk-f27a2f62b5514bb19d45e2faceb6966d';
+  var MODEL = 'deepseek-chat';
+  var REQUEST_TIMEOUT = 30000;
+
+  var SYSTEM_PROMPT = '你是阿森智库的AI助手，专注于帮助用户理解知识活用简报和学术前沿周报的内容。' +
+    '你了解半导体行业、AI产业趋势、商业策略和科技前沿。用简洁专业的中文回答。';
+
+  var chatPanel   = document.getElementById('aiChatPanel');
+  var chatMsgs    = document.getElementById('aiChatMessages');
+  var chatInput   = document.getElementById('aiChatInput');
+  var chatSend    = document.getElementById('aiChatSend');
+  var chatClose   = document.getElementById('aiChatClose');
+  var chatToggle  = document.getElementById('aiChatToggle');
+  var chatDot     = document.getElementById('aiChatDot');
+  var chatInd     = document.getElementById('aiChatIndicator');
+  var isOnline    = true;
+
+  /* ── Toggle panel ─────────────────────────────────── */
+  chatToggle.addEventListener('click', function() {
+    if (chatPanel.classList.contains('open')) {
+      chatPanel.classList.remove('open');
+    } else {
+      chatPanel.classList.add('open');
+      setTimeout(function() { chatInput.focus(); }, 150);
+    }
+  });
+
+  chatClose.addEventListener('click', function() {
+    chatPanel.classList.remove('open');
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && chatPanel.classList.contains('open') && document.activeElement !== chatInput) {
+      chatPanel.classList.remove('open');
+    }
+  });
+
+  /* ── Send on Enter ────────────────────────────────── */
+  chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  chatSend.addEventListener('click', sendMessage);
+
+  /* ── Markdown → HTML ──────────────────────────────── */
+  function renderMD(text) {
+    if (!text) return '';
+    var html = text
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\n\s*[-•]\s+(.+)/g, '\n<li>$1</li>')
+      .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+      .replace(/\n/g, '<br>');
+    return html;
+  }
+
+  /* ── Add message ──────────────────────────────────── */
+  function addMsg(role, content) {
+    var div = document.createElement('div');
+    div.className = 'ai-chat-msg ' + role;
+    if (role === 'assistant') {
+      div.innerHTML = renderMD(content);
+    } else {
+      div.textContent = content;
+    }
+    chatMsgs.appendChild(div);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    return div;
+  }
+
+  /* ── Typing indicator ─────────────────────────────── */
+  function showTyping() {
+    var el = document.createElement('div');
+    el.className = 'ai-chat-typing';
+    el.id = 'aiTyping';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    chatMsgs.appendChild(el);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function hideTyping() {
+    var el = document.getElementById('aiTyping');
+    if (el) el.remove();
+  }
+
+  /* ── Online/Offline ───────────────────────────────── */
+  function setOnline(online) {
+    isOnline = online;
+    var method = online ? 'remove' : 'add';
+    chatDot.classList[method]('offline');
+    chatInd.classList[method]('offline');
+  }
+
+  /* ── Fallback reply ───────────────────────────────── */
+  function fallbackReply(msg) {
+    if (msg.indexOf('简报') !== -1 || msg.indexOf('周报') !== -1) {
+      return '当前知识库共有 **20** 篇知识活用简报和 **2** 篇学术前沿周报。\n\n知识简报聚焦半导体行业、AI产业趋势、商业策略和科技前沿的每日洞察；学术周报则汇总近期学术前沿动态。\n\n您可以通过顶部的标签筛选浏览感兴趣的内容。';
+    }
+    if (msg.indexOf('半导体') !== -1) {
+      return '半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。相关简报涵盖了存算一体、存储芯片市场、供应链变化等话题。建议筛选"知识简报"标签查看相关文章。';
+    }
+    if (msg.indexOf('AI') !== -1 || msg.indexOf('人工智能') !== -1) {
+      return '多篇简报讨论了AI行业的成本悖论：token单价持续走低，但企业AI总支出失控飙升。这是一个典型的杰文斯悖论。建议浏览近期简报获取详细分析。';
+    }
+    return '抱歉，我暂时无法连接到AI服务。请稍后重试，或浏览页面上的简报内容。\n\n知识简报涵盖：半导体行业、AI产业趋势、商业策略、科技前沿等话题。';
+  }
+
+  /* ── Send message ─────────────────────────────────── */
+  function sendMessage() {
+    var text = chatInput.value.trim();
+    if (!text) return;
+
+    chatInput.value = '';
+    chatSend.disabled = true;
+    addMsg('user', text);
+    showTyping();
+
+    if (!isOnline) {
+      setTimeout(function() {
+        hideTyping();
+        addMsg('assistant', fallbackReply(text));
+        chatSend.disabled = false;
+        chatInput.focus();
+      }, 600 + Math.random() * 400);
+      return;
+    }
+
+    var ctrl = new AbortController();
+    var tid = setTimeout(function() { ctrl.abort(); }, REQUEST_TIMEOUT);
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + API_KEY
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: text }
+        ],
+        max_tokens: 800,
+        temperature: 0.6
+      }),
+      signal: ctrl.signal
+    })
+    .then(function(res) {
+      clearTimeout(tid);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      hideTyping();
+      var reply = '';
+      if (data.choices && data.choices[0] && data.choices[0].message) {
+        reply = data.choices[0].message.content || '';
+      }
+      if (!reply) reply = '（AI 未返回内容，请重试）';
+      addMsg('assistant', reply);
+      chatSend.disabled = false;
+      chatInput.focus();
+    })
+    .catch(function(err) {
+      clearTimeout(tid);
+      hideTyping();
+      console.warn('DeepSeek API error:', err.message);
+      setOnline(false);
+      addMsg('assistant', fallbackReply(text));
+      chatSend.disabled = false;
+      chatInput.focus();
+    });
+  }
+
+  /* ── Welcome message ──────────────────────────────── */
+  function showWelcome() {
+    addMsg('assistant',
+      '你好！我是阿森智库的 AI 助手。\n\n' +
+      '我可以帮你：\n' +
+      '• 理解知识活用简报的核心观点\n' +
+      '• 回答半导体、AI产业趋势相关问题\n' +
+      '• 解释商业策略和科技前沿概念\n\n' +
+      '请随时提问！'
+    );
+  }
+
+  // Show welcome after a short delay
+  setTimeout(function() {
+    if (chatMsgs.children.length === 0) showWelcome();
+  }, 400);
+
+})();
 </script>
+
+</body>
 </html>
