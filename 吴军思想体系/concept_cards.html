@@ -440,18 +440,7 @@ body.overlay-open { overflow: hidden; }
     filter var(--ease-card),
     box-shadow var(--ease-card),
     background var(--ease-card);
-  animation: underwater-sway 5s ease-in-out infinite;
-  animation-delay: var(--sway-delay, 0s);
   z-index: 3;
-}
-
-/* Underwater sway */
-@keyframes underwater-sway {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  14%      { transform: translateY(-2.6px) rotate(0.25deg); }
-  32%      { transform: translateY(1.2px) rotate(-0.20deg); }
-  52%      { transform: translateY(-1.6px) rotate(0.14deg); }
-  74%      { transform: translateY(2.0px) rotate(-0.22deg); }
 }
 
 /* Hover — float up, clear up */
@@ -462,7 +451,6 @@ body.overlay-open { overflow: hidden; }
   background: linear-gradient(160deg, var(--card-bg, #e8e8e8) 0%, rgba(255,255,255,0.88) 100%);
   box-shadow: var(--shadow-hover);
   z-index: 10;
-  animation-play-state: paused;
 }
 
 .card:active {
@@ -476,7 +464,6 @@ body.overlay-open { overflow: hidden; }
   filter: blur(3px);
   pointer-events: none;
   transform: scale(0.95);
-  animation-play-state: paused;
   transition: opacity 350ms ease, filter 350ms ease, transform 350ms ease;
 }
 
@@ -1359,11 +1346,6 @@ body.overlay-open { overflow: hidden; }
 
       // Category color as CSS variable for mosaic tile
       card.style.setProperty('--card-bg', catColor.bg);
-
-      // Sway delay staggered by grid position for organic underwater feel
-      var row = Math.floor(i / GRID_COLS);
-      var col = i % GRID_COLS;
-      card.style.setProperty('--sway-delay', ((row * 0.22 + col * 0.08) % 4).toFixed(2) + 's');
 
       card.innerHTML =
         '<span class="card-category">' + escHtml(concept.category) + '</span>' +
