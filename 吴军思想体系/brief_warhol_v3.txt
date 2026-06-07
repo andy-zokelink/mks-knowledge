@@ -1,0 +1,35 @@
+# Warhol Grid v3 — 脚本注入数据
+
+## 你的任务
+生成两个文件：
+1. `warhol_grid_template.html` — HTML/CSS/JS 完整页面，留一个 `{{ENTITIES_JSON}}` 占位符
+2. 然后用 Python 脚本把 `data/entities.json` 注入占位符，输出最终 `warhol_grid.html`
+
+## 数据注入 Python 脚本
+```python
+import json
+with open('data/entities.json') as f:
+    entities = json.load(f)
+with open('warhol_grid_template.html') as f:
+    template = f.read()
+# entities 格式: [{name, category, color, catLabel}, ...]
+html = template.replace('{{ENTITIES_JSON}}', json.dumps(entities, ensure_ascii=False))
+with open('warhol_grid.html', 'w') as f:
+    f.write(html)
+print(f'Done: {len(entities)} entities embedded')
+```
+
+## 视觉效果
+Warhol 金宝汤罐头：
+- 全屏 CSS Grid，正方形卡片，`grid-template-columns: repeat(auto-fill, minmax(70px, 1fr))`
+- 卡片背景 = entity.color（7 种高饱和色）
+- 暗色背景 #1a1a2e 衬托
+- 右上角类别图例
+- hover scale(3) 弹起 + 阴影
+- `content-visibility: auto` 性能优化
+- halftone 网点纹理（Warhol 丝网印刷感）
+
+## 验收
+1. 运行 Python 注入脚本 → 生成 HTML
+2. node -c 检查 HTML 内 JS 语法
+3. 确认 ENTITIES_JSON 已被替换

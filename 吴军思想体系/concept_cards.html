@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>概念卡片池 · 马赛克像素艺术 v3</title>
+<title>概念卡片池 · 马赛克像素艺术 v4</title>
 <style>
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -129,8 +129,8 @@ body.overlay-open { overflow: hidden; }
 
 /* ===== Legend Panel — Draggable, Floating ===== */
 .legend-panel {
-  position: absolute;
-  top: 16px;
+  position: fixed;
+  top: 60px;
   right: 16px;
   z-index: 50;
   background: rgba(255, 255, 255, 0.58);
@@ -145,25 +145,17 @@ body.overlay-open { overflow: hidden; }
   width: 250px;
   max-width: calc(100vw - 32px);
   overflow: hidden;
-  animation: legend-float 4s ease-in-out infinite;
   user-select: none;
   transition: box-shadow 0.3s ease;
 }
 
 .legend-panel.dragging {
-  animation-play-state: paused;
   box-shadow:
     0 16px 56px rgba(60, 110, 140, 0.24),
     0 4px 16px rgba(60, 110, 140, 0.12);
   cursor: grabbing;
 }
 
-@keyframes legend-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-
-/* Water reflection line at top */
 .legend-panel::before {
   content: '';
   display: block;
@@ -414,7 +406,7 @@ body.overlay-open { overflow: hidden; }
   justify-content: center;
 }
 
-/* ===== Individual Card (Grid Tile — NO absolute positioning) ===== */
+/* ===== Individual Card ===== */
 .card {
   background: linear-gradient(160deg, var(--card-bg, #e8e8e8) 0%, rgba(255,255,255,0.58) 100%);
   backdrop-filter: blur(6px);
@@ -443,7 +435,6 @@ body.overlay-open { overflow: hidden; }
   z-index: 3;
 }
 
-/* Hover — float up, clear up */
 .card:hover {
   transform: translateY(-7px) scale(1.04);
   filter: blur(0px);
@@ -458,7 +449,6 @@ body.overlay-open { overflow: hidden; }
   transition: transform 100ms ease-out;
 }
 
-/* Retrieved — ghost in grid */
 .card.retrieved {
   opacity: 0.15;
   filter: blur(3px);
@@ -467,7 +457,6 @@ body.overlay-open { overflow: hidden; }
   transition: opacity 350ms ease, filter 350ms ease, transform 350ms ease;
 }
 
-/* Hover ripple ring */
 .card::after {
   content: '';
   position: absolute;
@@ -570,7 +559,6 @@ body.overlay-open { overflow: hidden; }
 .detail-card::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
 .detail-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 10px; }
 
-/* Detail Header */
 .detail-header { margin-bottom: 24px; }
 
 .detail-tags {
@@ -600,7 +588,6 @@ body.overlay-open { overflow: hidden; }
   word-break: break-word;
 }
 
-/* Detail Body */
 .detail-body section { margin-bottom: 22px; }
 .detail-body section:last-child { margin-bottom: 0; }
 
@@ -654,7 +641,6 @@ body.overlay-open { overflow: hidden; }
 
 .detail-source p { font-size: 0.84rem !important; color: #889aaa !important; }
 
-/* Related Concepts */
 .related-tags {
   display: flex;
   flex-wrap: wrap;
@@ -746,69 +732,6 @@ body.overlay-open { overflow: hidden; }
   100% { width: 220px; height: 220px; opacity: 0; }
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .pool {
-    grid-template-columns: repeat(16, 1fr);
-    gap: 3px;
-    padding: 16px 6px 40px;
-  }
-  .card {
-    min-height: 52px;
-    padding: 6px 3px 6px;
-    border-radius: 8px;
-    aspect-ratio: 5 / 4;
-  }
-  .card-name { font-size: 0.50rem; }
-  .card-category { font-size: 0.38rem; }
-  .card-type { display: none; }
-  .detail-card { width: 94vw; max-width: 94vw; max-height: 84vh; }
-  .detail-card-inner { padding: 28px 22px 24px; grid-template-columns: 1fr; gap: 0; }
-  .detail-card-inner .detail-body-extras { grid-column: 1; }
-  .detail-name { font-size: 1.45rem; }
-  .legend-panel {
-    width: 220px;
-    top: 8px;
-    right: 8px;
-  }
-  .legend-title { font-size: 0.76rem; }
-  .legend-subtitle { font-size: 0.58rem; }
-  .legend-cats { font-size: 0.58rem; }
-}
-
-@media (max-width: 480px) {
-  .pool {
-    grid-template-columns: repeat(16, 1fr);
-    gap: 2px;
-    padding: 8px 3px 32px;
-  }
-  .card {
-    min-height: 34px;
-    padding: 3px 2px 3px;
-    border-radius: 5px;
-    filter: blur(0.6px);
-    opacity: 0.74;
-    aspect-ratio: 6 / 5;
-  }
-  .card-name { font-size: 0.38rem; }
-  .card-category { display: none; }
-  .card-type { display: none; }
-  .card::after { display: none; }
-  .detail-card { width: 96vw; max-width: 96vw; max-height: 80vh; border-radius: 16px; }
-  .detail-card-inner { padding: 24px 18px 20px; }
-  .detail-name { font-size: 1.30rem; }
-  .close-btn { top: 14px; right: 14px; width: 36px; height: 36px; font-size: 1rem; }
-  .legend-panel {
-    width: 175px;
-    top: 6px;
-    right: 6px;
-    border-radius: 12px;
-  }
-  .legend-title { font-size: 0.70rem; }
-  .legend-subtitle { font-size: 0.54rem; }
-  .legend-cats { font-size: 0.54rem; gap: 1px 5px; }
-}
-
 /* ========== CATEGORY NAV BAR ========== */
 .cat-nav {
   position: sticky; top: 0; z-index: 60;
@@ -855,7 +778,7 @@ body.overlay-open { overflow: hidden; }
 }
 .timer-text { font-size: 0.7rem; font-weight: 600; color: #4a7a6a; font-variant-numeric: tabular-nums; }
 
-/* Card highlight for category filter */
+/* Card highlight/dim for patterns and category filter */
 .card.dimmed { opacity: 0.18; filter: blur(1.5px); }
 .card.highlighted { opacity: 1; filter: blur(0); z-index: 5; box-shadow: 0 0 12px rgba(0,0,0,0.12); }
 
@@ -865,6 +788,68 @@ body.overlay-open { overflow: hidden; }
   .timer-text { font-size: 0.62rem; }
 }
 
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .pool {
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+    padding: 16px 6px 40px;
+  }
+  .card {
+    min-height: 52px;
+    padding: 6px 3px 6px;
+    border-radius: 8px;
+    aspect-ratio: 5 / 4;
+  }
+  .card-name { font-size: 0.50rem; }
+  .card-category { font-size: 0.38rem; }
+  .card-type { display: none; }
+  .detail-card { width: 94vw; max-width: 94vw; max-height: 84vh; }
+  .detail-card-inner { padding: 28px 22px 24px; grid-template-columns: 1fr; gap: 0; }
+  .detail-card-inner .detail-body-extras { grid-column: 1; }
+  .detail-name { font-size: 1.45rem; }
+  .legend-panel {
+    width: 220px;
+    top: 50px;
+    right: 8px;
+  }
+  .legend-title { font-size: 0.76rem; }
+  .legend-subtitle { font-size: 0.58rem; }
+  .legend-cats { font-size: 0.58rem; }
+}
+
+@media (max-width: 480px) {
+  .pool {
+    grid-template-columns: repeat(16, 1fr);
+    gap: 2px;
+    padding: 8px 3px 32px;
+  }
+  .card {
+    min-height: 34px;
+    padding: 3px 2px 3px;
+    border-radius: 5px;
+    filter: blur(0.6px);
+    opacity: 0.74;
+    aspect-ratio: 6 / 5;
+  }
+  .card-name { font-size: 0.38rem; }
+  .card-category { display: none; }
+  .card-type { display: none; }
+  .card::after { display: none; }
+  .detail-card { width: 96vw; max-width: 96vw; max-height: 80vh; border-radius: 16px; }
+  .detail-card-inner { padding: 24px 18px 20px; }
+  .detail-name { font-size: 1.30rem; }
+  .close-btn { top: 14px; right: 14px; width: 36px; height: 36px; font-size: 1rem; }
+  .legend-panel {
+    width: 175px;
+    top: 44px;
+    right: 6px;
+    border-radius: 12px;
+  }
+  .legend-title { font-size: 0.70rem; }
+  .legend-subtitle { font-size: 0.54rem; }
+  .legend-cats { font-size: 0.54rem; gap: 1px 5px; }
+}
 
 </style>
 </head>
@@ -874,21 +859,15 @@ body.overlay-open { overflow: hidden; }
 <div class="cat-nav" id="catNav">
   <div class="cat-nav-inner">
     <button class="cat-nav-btn active" data-cat="*" onclick="filterCategory('*', this)">全部</button>
-    <button class="cat-nav-btn" data-cat="方法论" onclick="filterCategory('方法论', this)">方法论</button>
-    <button class="cat-nav-btn" data-cat="科技" onclick="filterCategory('科技', this)">科技</button>
-    <button class="cat-nav-btn" data-cat="历史" onclick="filterCategory('历史', this)">历史</button>
-    <button class="cat-nav-btn" data-cat="经济学" onclick="filterCategory('经济学', this)">经济学</button>
-    <button class="cat-nav-btn" data-cat="教育" onclick="filterCategory('教育', this)">教育</button>
-    <button class="cat-nav-btn" data-cat="科学" onclick="filterCategory('科学', this)">科学</button>
     <button class="cat-nav-btn" data-cat="人物" onclick="filterCategory('人物', this)">人物</button>
-    <button class="cat-nav-btn" data-cat="社会" onclick="filterCategory('社会', this)">社会</button>
-    <button class="cat-nav-btn" data-cat="心理学" onclick="filterCategory('心理学', this)">心理学</button>
-    <button class="cat-nav-btn" data-cat="哲学" onclick="filterCategory('哲学', this)">哲学</button>
-    <button class="cat-nav-btn" data-cat="管理" onclick="filterCategory('管理', this)">管理</button>
-    <button class="cat-nav-btn" data-cat="数学" onclick="filterCategory('数学', this)">数学</button>
-    <button class="cat-nav-btn" data-cat="商业" onclick="filterCategory('商业', this)">商业</button>
-    <button class="cat-nav-btn" data-cat="文化" onclick="filterCategory('文化', this)">文化</button>
-    <button class="cat-nav-btn" data-cat="艺术" onclick="filterCategory('艺术', this)">艺术</button>
+    <button class="cat-nav-btn" data-cat="事件/运动" onclick="filterCategory('事件/运动', this)">事件运动</button>
+    <button class="cat-nav-btn" data-cat="理论/定律" onclick="filterCategory('理论/定律', this)">理论定律</button>
+    <button class="cat-nav-btn" data-cat="方法/框架" onclick="filterCategory('方法/框架', this)">方法框架</button>
+    <button class="cat-nav-btn" data-cat="概念/思想" onclick="filterCategory('概念/思想', this)">概念思想</button>
+    <button class="cat-nav-btn" data-cat="发明/技术" onclick="filterCategory('发明/技术', this)">发明技术</button>
+    <button class="cat-nav-btn" data-cat="经济/商业" onclick="filterCategory('经济/商业', this)">经济商业</button>
+    <button class="cat-nav-btn" data-cat="教育/社会" onclick="filterCategory('教育/社会', this)">教育社会</button>
+    <button class="cat-nav-btn" data-cat="时代/时期" onclick="filterCategory('时代/时期', this)">时代时期</button>
     <div class="cat-nav-timer" id="catNavTimer">
       <span class="timer-dot"></span>
       <span class="timer-text" id="timerText">60s</span>
@@ -901,13 +880,8 @@ body.overlay-open { overflow: hidden; }
 <div class="light-rays"></div>
 <canvas id="rippleCanvas"></canvas>
 
-<!-- Raindrops + ripples container -->
 <div class="raindrop-container" id="raindropContainer"></div>
-
-<!-- Bubbles container -->
 <div class="bubble-container" id="bubbleContainer"></div>
-
-<!-- Seaweed silhouettes -->
 <div class="seaweed-container" id="seaweedContainer"></div>
 
 <!-- Draggable Legend Panel -->
@@ -917,7 +891,7 @@ body.overlay-open { overflow: hidden; }
     <span class="legend-title">概念卡片池</span>
   </div>
   <div class="legend-body">
-    <div class="legend-subtitle"><span id="legendTotal">238</span> 个核心概念 · <span id="legendCatCount">15</span> 个类别</div>
+    <div class="legend-subtitle"><span id="legendTotal">0</span> 个核心概念 · <span id="legendCatCount">9</span> 个类别</div>
     <hr class="legend-divider">
     <div class="legend-cats" id="legendCats"></div>
     <div class="legend-pattern-badge" id="legendPatternBadge"></div>
@@ -936,47 +910,51 @@ body.overlay-open { overflow: hidden; }
 
 <button class="close-btn" id="closeBtn" aria-label="关闭">✕</button>
 
-<script src="data/concepts_enriched.js?v=3"></script>
+<script src="data/concepts_all.js?v=4"></script>
 <script>
 (function() {
   'use strict';
 
   // ── Data ───────────────────────────────────────────────
-  const CONCEPTS = window.CONCEPTS || [];
-  const conceptMap = Object.fromEntries(CONCEPTS.map(c => [c.name, c]));
+  // ALL_CONCEPTS is defined as global const in data/concepts_all.js
+  const CONCEPTS = (typeof ALL_CONCEPTS !== 'undefined') ? ALL_CONCEPTS : [];
+  const conceptMap = Object.fromEntries(CONCEPTS.map(function(c) { return [c.name, c]; }));
 
   const GRID_COLS = 16;
-  const GRID_ROWS = 15;
-  const GRID_CELLS = GRID_COLS * GRID_ROWS; // 240
+  const TOTAL_CARDS = CONCEPTS.length; // 1192
 
-  // ── Category Colors (15 categories) ────────────────────
+  // ── Display Category sort order ───────────────────────
+  const CATEGORY_SORT_ORDER = [
+    '概念/思想', '人物', '方法/框架', '事件/运动', '理论/定律',
+    '发明/技术', '经济/商业', '教育/社会', '时代/时期'
+  ];
+  const CATEGORY_RANK = {};
+  CATEGORY_SORT_ORDER.forEach(function(cat, i) { CATEGORY_RANK[cat] = i; });
+
+  // ── Display Category Colors (9 categories) ────────────
   const CATEGORY_COLORS = {
-    '经济学': { bg: '#f5e8d8', dot: '#c8a87c' },
-    '方法论': { bg: '#d8efe8', dot: '#6aab9a' },
-    '科技':   { bg: '#d8e4f0', dot: '#6a8eb8' },
-    '历史':   { bg: '#f0e4d4', dot: '#b8966a' },
-    '教育':   { bg: '#daf0da', dot: '#7aaa6a' },
-    '科学':   { bg: '#e0e0f0', dot: '#8a8ac0' },
-    '人物':   { bg: '#f0dce8', dot: '#b87a9a' },
-    '社会':   { bg: '#f0e0d8', dot: '#b88a7a' },
-    '心理学': { bg: '#e8dcf0', dot: '#9a7ab8' },
-    '哲学':   { bg: '#e8d8f0', dot: '#8a6ab8' },
-    '管理':   { bg: '#e8f0d8', dot: '#8aaa6a' },
-    '数学':   { bg: '#d8f0f0', dot: '#6aaaaa' },
-    '商业':   { bg: '#f0ecd8', dot: '#b8aa6a' },
-    '文化':   { bg: '#f0dcd4', dot: '#b88a7a' },
-    '艺术':   { bg: '#f0d8e4', dot: '#b87a9a' }
+    '人物':     { bg: '#f5e0e8', dot: '#d47088' },
+    '事件/运动': { bg: '#f5e8d4', dot: '#d49560' },
+    '理论/定律': { bg: '#d8e4f0', dot: '#6a8eb8' },
+    '方法/框架': { bg: '#d4efe4', dot: '#5a9a82' },
+    '概念/思想': { bg: '#e8dcf0', dot: '#9a7ab8' },
+    '发明/技术': { bg: '#d4e4f4', dot: '#5a80b0' },
+    '经济/商业': { bg: '#f0ecd8', dot: '#c8a840' },
+    '教育/社会': { bg: '#d8f0e8', dot: '#5aaa8a' },
+    '时代/时期': { bg: '#f0d8e0', dot: '#c87080' }
   };
 
-  function getCatColor(category) {
-    return CATEGORY_COLORS[category] || { bg: '#e8e8e8', dot: '#999' };
+  function getCatColor(displayCat) {
+    return CATEGORY_COLORS[displayCat] || { bg: '#e8e8e8', dot: '#999' };
   }
 
   // ── State ──────────────────────────────────────────────
   let activeConcept = null;
   let activeCardEl  = null;
   let isAnimating   = false;
-  let currentPattern = -1; // 0-5, set on init
+  let currentPattern = -1; // 0-5
+  let currentFilter  = '*'; // current category filter
+  let sortedConcepts = []; // fixed sorted order
 
   const PATTERN_NAMES = [
     '金字塔 · Pyramid',
@@ -984,7 +962,7 @@ body.overlay-open { overflow: hidden; }
     '脑网络 · Brain Network',
     '知识树 · Knowledge Tree',
     '同心涟漪 · Concentric Ripples',
-    '思想 OS · Thought OS'
+    '思想标志 · THOUGHT'
   ];
 
   // ── DOM ────────────────────────────────────────────────
@@ -998,326 +976,438 @@ body.overlay-open { overflow: hidden; }
 
   // ── Helpers ────────────────────────────────────────────
   function escHtml(str) {
+    if (!str) return '';
     var div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
 
+  function rowCol(index) {
+    return { row: Math.floor(index / GRID_COLS), col: index % GRID_COLS };
+  }
+
   // ═══════════════════════════════════════════════════════
-  //  MOSAIC PATTERN GENERATORS
-  //  Each returns a 2D array: mask[row][col] = category name | null
+  //  MOSAIC PATTERN GENERATORS (for 75×16 grid, 1192 cards)
+  //  Each returns flat array mask[i] = display_category
   // ═══════════════════════════════════════════════════════
 
-  // Pattern 1: PYRAMID
+  const ROWS = Math.ceil(TOTAL_CARDS / GRID_COLS); // 75
+  const CX = (GRID_COLS - 1) / 2; // 7.5
+  const CY = (ROWS - 1) / 2;     // 37
+
+  // All 9 categories in display order
+  const ALL_CATS = CATEGORY_SORT_ORDER.slice();
+
+
+  // Pattern 1: PYRAMID (triangle stacking, apex top center, base full width)
   function generatePyramidMask() {
-    var mask = [];
-    for (var r = 0; r < GRID_ROWS; r++) {
-      mask[r] = [];
-      var progress = r / (GRID_ROWS - 1);
-      // Pyramid width: narrow at top, wide at bottom
-      var pyraWidth = Math.max(2, Math.floor(2 + progress * 14));
-      var startCol = Math.floor((GRID_COLS - pyraWidth) / 2);
+    var mask = new Array(TOTAL_CARDS);
+    for (var i = 0; i < TOTAL_CARDS; i++) {
+      var rc = rowCol(i);
+      var r = rc.row, c = rc.col;
+      // Half-width grows from 1 at top to 7.5 at bottom
+      var halfW = 1 + 7 * r / (ROWS - 1);
+      var inside = Math.abs(c - CX) <= halfW;
 
-      for (var c = 0; c < GRID_COLS; c++) {
-        if (c >= startCol && c < startCol + pyraWidth) {
-          // Inside pyramid — layers by height
-          if (progress < 0.15) {
-            // Peak: philosophy, science, art
-            mask[r][c] = ['哲学','科学','艺术'][(c + r) % 3];
-          } else if (progress < 0.35) {
-            mask[r][c] = ['科学','数学','科技','哲学'][(c + r) % 4];
-          } else if (progress < 0.55) {
-            mask[r][c] = ['科技','经济','方法论','数学'][(c + r) % 4];
-          } else if (progress < 0.75) {
-            mask[r][c] = ['方法论','科技','历史','经济'][(c + r) % 4];
-          } else {
-            // Base: 方法论, 科技, 历史
-            mask[r][c] = ['方法论','科技','历史'][(c + r) % 3];
-          }
+      if (inside) {
+        // Pyramid layers — assign categories that roughly align with card blocks
+        var progress = r / (ROWS - 1);
+        if (progress < 0.13) {
+          mask[i] = ALL_CATS[(c + r) % 2 === 0 ? 4 : 2]; // 理论/定律, 概念/思想
+        } else if (progress < 0.26) {
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 4 : ((c + r) % 3 === 1 ? 3 : 2)]; // 概念/思想, 方法/框架, 理论/定律
+        } else if (progress < 0.40) {
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 3 : ((c + r) % 3 === 1 ? 4 : 0)]; // 方法/框架, 概念/思想, 人物
+        } else if (progress < 0.53) {
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 1 : ((c + r) % 3 === 1 ? 0 : 3)]; // 人物, 事件/运动, 方法/框架
+        } else if (progress < 0.67) {
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 1 : ((c + r) % 3 === 1 ? 4 : 5)]; // 事件/运动, 概念/思想, 发明/技术
+        } else if (progress < 0.80) {
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 5 : ((c + r) % 3 === 1 ? 2 : 6)]; // 发明/技术, 理论/定律, 经济/商业
+        } else if (progress < 0.93) {
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 6 : ((c + r) % 3 === 1 ? 7 : 1)]; // 经济/商业, 教育/社会, 事件/运动
         } else {
-          // Outside fill: 人物, 文化
-          mask[r][c] = ['人物','文化'][(c + r) % 2];
+          mask[i] = ALL_CATS[(c + r) % 3 === 0 ? 7 : ((c + r) % 3 === 1 ? 8 : 6)]; // 教育/社会, 时代/时期, 经济/商业
         }
-      }
-    }
-    return mask;
-  }
-
-  // Pattern 2: DNA HELIX
-  function generateDNAHelixMask() {
-    var mask = [];
-    for (var r = 0; r < GRID_ROWS; r++) {
-      mask[r] = [];
-      var phase = r * Math.PI * 2 / GRID_ROWS * 2; // 2 full cycles
-      var strand1X = 8 + 6 * Math.sin(phase);
-      var strand2X = 8 + 6 * Math.sin(phase + Math.PI);
-
-      for (var c = 0; c < GRID_COLS; c++) {
-        var dist1 = Math.abs(c - strand1X);
-        var dist2 = Math.abs(c - strand2X);
-        var onStrand1 = dist1 < 1.2;
-        var onStrand2 = dist2 < 1.2;
-
-        if (onStrand1 && onStrand2) {
-          // Crossing point
-          mask[r][c] = ['数学','经济学'][r % 2];
-        } else if (onStrand1) {
-          // Left strand — cool colors
-          mask[r][c] = ['方法论','科技','科学'][(r + c) % 3];
-        } else if (onStrand2) {
-          // Right strand — warm colors
-          mask[r][c] = ['历史','哲学','心理学'][(r + c) % 3];
-        } else {
-          // Background
-          mask[r][c] = ['教育','管理','商业'][(r + c) % 3];
-        }
-      }
-    }
-    return mask;
-  }
-
-  // Pattern 3: BRAIN/NETWORK
-  function generateBrainMask() {
-    var mask = [];
-    var cx = 7.5, cy = 7; // center
-    for (var r = 0; r < GRID_ROWS; r++) {
-      mask[r] = [];
-      for (var c = 0; c < GRID_COLS; c++) {
-        var dx = c - cx;
-        var dy = r - cy;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 2.8) {
-          // Dense center cluster
-          mask[r][c] = ['数学','科学','哲学'][(r + c) % 3];
-        } else if (dist < 4.5) {
-          // Dendrite layer
-          mask[r][c] = ['方法论','科技'][(r + c) % 2];
-        } else if (dist < 6.5) {
-          // Middle layer — left logical, right cultural
-          if (c < GRID_COLS / 2) {
-            mask[r][c] = ['科技','经济','管理'][(r + c) % 3];
-          } else {
-            mask[r][c] = ['文化','艺术','心理学'][(r + c) % 3];
-          }
-        } else {
-          // Outer ring
-          mask[r][c] = ['社会','经济','商业','教育'][(r + c) % 4];
-        }
-      }
-    }
-    return mask;
-  }
-
-  // Pattern 4: KNOWLEDGE TREE
-  function generateKnowledgeTreeMask() {
-    var mask = [];
-    var trunkCX = 7.5;
-    for (var r = 0; r < GRID_ROWS; r++) {
-      mask[r] = [];
-      var progressFromBottom = 1 - r / (GRID_ROWS - 1);
-
-      // Trunk width narrows, canopy widens going up
-      var treeWidth;
-      if (r >= 10) {
-        // Trunk bottom + roots
-        treeWidth = 2 + (r - 10) * 2; // narrower at bottom
       } else {
-        // Canopy — wider higher up
-        treeWidth = 4 + (1 - r / 10) * 10;
+        // Outside pyramid — use categories that DON'T match the card blocks at this row
+        // Card blocks go top→bottom: 概念/思想→人物→方法/框架→事件/运动→理论/定律→发明/技术→经济/商业→教育/社会→时代/时期
+        var cardBlockAtRow;
+        if (r < 22) cardBlockAtRow = 0;           // 概念/思想
+        else if (r < 35) cardBlockAtRow = 1;       // 人物
+        else if (r < 48) cardBlockAtRow = 2;       // 方法/框架
+        else if (r < 58) cardBlockAtRow = 3;       // 事件/运动
+        else if (r < 66) cardBlockAtRow = 4;       // 理论/定律
+        else if (r < 71) cardBlockAtRow = 5;       // 发明/技术
+        else if (r < 74) cardBlockAtRow = 6;       // 经济/商业
+        else cardBlockAtRow = 7;                    // 教育/社会 + 时代/时期
+
+        // Pick a category offset from the card block (to create dimming)
+        var offsetCat = (cardBlockAtRow + 3 + (c % 3)) % 9;
+        mask[i] = ALL_CATS[offsetCat];
       }
-      var startCol = Math.max(0, Math.floor(trunkCX - treeWidth / 2));
-      var endCol = Math.min(GRID_COLS - 1, Math.floor(trunkCX + treeWidth / 2));
+    }
+    return mask;
+  }
 
-      for (var c = 0; c < GRID_COLS; c++) {
-        var inTree = c >= startCol && c <= endCol;
+  // Pattern 2: DNA DOUBLE HELIX (two sine waves, 3 cycles)
+  function generateDNAHelixMask() {
+    var mask = new Array(TOTAL_CARDS);
+    var cycles = 3.5;
+    for (var i = 0; i < TOTAL_CARDS; i++) {
+      var rc = rowCol(i);
+      var r = rc.row, c = rc.col;
+      var phase = 2 * Math.PI * cycles * r / (ROWS - 1);
+      var strand1X = CX + 6.5 * Math.sin(phase);
+      var strand2X = CX + 6.5 * Math.sin(phase + Math.PI);
 
-        if (r >= 12) {
-          // Roots zone
-          mask[r][c] = inTree ? ['方法论','教育'][(c + r) % 2] : null;
-        } else if (r >= 9) {
+      var d1 = Math.abs(c - strand1X);
+      var d2 = Math.abs(c - strand2X);
+      var onS1 = d1 < 1.3;
+      var onS2 = d2 < 1.3;
+
+      var cardBlockAtRow;
+      if (r < 22) cardBlockAtRow = 0;
+      else if (r < 35) cardBlockAtRow = 1;
+      else if (r < 48) cardBlockAtRow = 2;
+      else if (r < 58) cardBlockAtRow = 3;
+      else if (r < 66) cardBlockAtRow = 4;
+      else if (r < 71) cardBlockAtRow = 5;
+      else if (r < 74) cardBlockAtRow = 6;
+      else cardBlockAtRow = 7;
+
+      if (onS1 && onS2) {
+        // Crossing point — use special categories
+        mask[i] = ALL_CATS[(r % 3 === 0) ? 8 : 4]; // 时代/时期, 概念/思想
+      } else if (onS1) {
+        // Strand 1 — analytical/cool categories
+        mask[i] = ALL_CATS[[2, 3, 5][(r + Math.floor(c)) % 3]]; // 理论/定律, 方法/框架, 发明/技术
+      } else if (onS2) {
+        // Strand 2 — humanistic/warm categories
+        mask[i] = ALL_CATS[[0, 1, 7][(r + Math.floor(c)) % 3]]; // 人物, 事件/运动, 教育/社会
+      } else {
+        // Background — mismatch with card blocks
+        var off = (cardBlockAtRow + 4 + (c % 2)) % 9;
+        mask[i] = ALL_CATS[off];
+      }
+
+      // Add horizontal "base pair" rungs periodically
+      if (r % 13 < 2) {
+        var bridgeCenter = (strand1X + strand2X) / 2;
+        if (Math.abs(c - bridgeCenter) < 1.5) {
+          mask[i] = ALL_CATS[6]; // 经济/商业
+        }
+      }
+    }
+    return mask;
+  }
+
+  // Pattern 3: BRAIN NETWORK (neuron connection network, center out)
+  function generateBrainMask() {
+    var mask = new Array(TOTAL_CARDS);
+    // Use a modified center — slightly higher for more visual balance
+    var bcx = CX;
+    var bcy = CY - 5;
+
+    // Precompute neuron node positions
+    var nodes = [];
+    var nodeCount = 28;
+    for (var ni = 0; ni < nodeCount; ni++) {
+      var angle = (ni / nodeCount) * Math.PI * 2;
+      var rad = 4 + (ni % 4) * 6 + Math.sin(ni * 3.7) * 3;
+      var nx = bcx + Math.cos(angle) * rad;
+      var ny = bcy + Math.sin(angle) * rad * 0.7;
+      nodes.push({ x: nx, y: ny, cat: ALL_CATS[ni % 9] });
+    }
+    // Add a few more in the core
+    for (var ci = 0; ci < 6; ci++) {
+      var ca = ci * Math.PI / 3;
+      var cr = 2 + ci * 0.5;
+      nodes.push({ x: bcx + Math.cos(ca) * cr, y: bcy + Math.sin(ca) * cr * 0.7, cat: ALL_CATS[(ci * 2) % 9] });
+    }
+
+    for (var i = 0; i < TOTAL_CARDS; i++) {
+      var rc = rowCol(i);
+      var r = rc.row, c = rc.col;
+      var dx = c - bcx;
+      var dy = r - bcy;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+
+      // Find nearest node
+      var minDist = Infinity;
+      var nearestCat = ALL_CATS[0];
+      for (var ni2 = 0; ni2 < nodes.length; ni2++) {
+        var ndx = c - nodes[ni2].x;
+        var ndy = r - nodes[ni2].y;
+        var nd = Math.sqrt(ndx * ndx + ndy * ndy);
+        if (nd < minDist) { minDist = nd; nearestCat = nodes[ni2].cat; }
+      }
+
+      if (dist < 3) {
+        // Core cluster
+        mask[i] = ALL_CATS[(Math.floor(dist) + Math.floor(c + r)) % 3 === 0 ? 4 : 2]; // 概念/思想, 理论/定律
+      } else if (dist < 8 && minDist < 2.5) {
+        // Near a node — use its category
+        mask[i] = nearestCat;
+      } else if (dist < 15) {
+        // Inner zone
+        if (c < bcx) {
+          mask[i] = ALL_CATS[[0, 3, 7][(r + c) % 3]]; // 人物, 方法/框架, 教育/社会
+        } else {
+          mask[i] = ALL_CATS[[1, 5, 6][(r + c) % 3]]; // 事件/运动, 发明/技术, 经济/商业
+        }
+      } else if (dist < 25) {
+        // Middle zone
+        mask[i] = ALL_CATS[(r + c) % 9];
+      } else {
+        // Outer — diffusion
+        mask[i] = ALL_CATS[((Math.floor(dist) % 3) * 3 + (r % 3)) % 9];
+      }
+
+      // Draw connections between close nodes as thin lines
+      for (var ci2 = 0; ci2 < nodes.length && minDist > 2.5; ci2++) {
+        var n1 = nodes[ci2];
+        for (var cj = ci2 + 1; cj < nodes.length; cj++) {
+          var n2 = nodes[cj];
+          var nd2 = Math.sqrt((n1.x - n2.x) * (n1.x - n2.x) + (n1.y - n2.y) * (n1.y - n2.y));
+          if (nd2 < 10) {
+            // Point-to-segment distance
+            var t = ((c - n1.x) * (n2.x - n1.x) + (r - n1.y) * (n2.y - n1.y)) / (nd2 * nd2);
+            t = Math.max(0, Math.min(1, t));
+            var px = n1.x + t * (n2.x - n1.x);
+            var py = n1.y + t * (n2.y - n1.y);
+            var pdist = Math.sqrt((c - px) * (c - px) + (r - py) * (r - py));
+            if (pdist < 0.7) {
+              mask[i] = ALL_CATS[((ci2 + cj) % 9)];
+            }
+          }
+        }
+      }
+    }
+    return mask;
+  }
+
+  // Pattern 4: KNOWLEDGE TREE (trunk + branches + canopy)
+  function generateKnowledgeTreeMask() {
+    var mask = new Array(TOTAL_CARDS);
+    var trunkCX = CX;
+    var trunkTop = 44;
+    var trunkBot = ROWS - 1;
+
+    for (var i = 0; i < TOTAL_CARDS; i++) {
+      var rc = rowCol(i);
+      var r = rc.row, c = rc.col;
+
+      // Trunk region (rows 44-74, narrow center)
+      if (r >= trunkTop) {
+        var trunkHalfW = 1.5 + (r - trunkTop) * 0.08; // slightly wider at bottom
+        var inTrunk = Math.abs(c - trunkCX) <= trunkHalfW;
+
+        if (r >= 70) {
+          // Roots — spread outward
+          var rootHalfW = trunkHalfW + (r - 70) * 0.4;
+          var inRoot = Math.abs(c - trunkCX) <= rootHalfW;
+          mask[i] = inRoot ? ALL_CATS[(c % 2 === 0) ? 3 : 7] : ALL_CATS[(c + r) % 2 === 0 ? 6 : 8];
+        } else {
           // Trunk
-          if (inTree) {
-            mask[r][c] = ['历史','哲学'][(c + r) % 2];
-          } else {
-            mask[r][c] = ['社会','文化'][(c + r) % 2];
-          }
-        } else if (r >= 5) {
-          // Lower canopy
-          if (inTree) {
-            mask[r][c] = ['科学','数学','科技'][(c + r) % 3];
-          } else {
-            mask[r][c] = ['经济','管理','教育'][(c + r) % 3];
-          }
-        } else if (r >= 2) {
-          // Mid canopy
-          if (inTree) {
-            mask[r][c] = ['科技','经济','科学'][(c + r) % 3];
-          } else {
-            mask[r][c] = ['文化','社会','管理'][(c + r) % 3];
-          }
-        } else {
-          // Upper canopy
-          if (inTree) {
-            mask[r][c] = ['文化','艺术','社会'][(c + r) % 3];
-          } else {
-            mask[r][c] = ['人物','商业','心理学'][(c + r) % 3];
-          }
+          mask[i] = inTrunk ? ALL_CATS[(r % 2 === 0) ? 2 : 3] : ALL_CATS[(c + Math.floor(r/3)) % 2 === 0 ? 1 : 7];
         }
       }
-    }
-    // Fill nulls
-    for (var r2 = 0; r2 < GRID_ROWS; r2++) {
-      for (var c2 = 0; c2 < GRID_COLS; c2++) {
-        if (!mask[r2][c2]) mask[r2][c2] = ['人物','文化','社会'][(r2 + c2) % 3];
+      // Branch zone (rows 15-43)
+      else if (r >= 15) {
+        var branchProgress = (r - 15) / (trunkTop - 15); // 0 at top, 1 at trunk
+        // Major branches: 2-3 main branches
+        var mainBranchOffsets = [-4, 0, 4];
+        var closestBranch = Infinity;
+        var mainBranchIdx = -1;
+
+        for (var bi = 0; bi < mainBranchOffsets.length; bi++) {
+          // Branch curves from trunk top to upper spread
+          var branchSpread = mainBranchOffsets[bi] * (1 - branchProgress) * 1.8;
+          var branchX = trunkCX + branchSpread;
+          // Branch width decreases upward
+          var branchHW = 1.8 - branchProgress * 1.0;
+          var distToBranch = Math.abs(c - branchX);
+          if (distToBranch < closestBranch) {
+            closestBranch = distToBranch;
+            mainBranchIdx = bi;
+          }
+        }
+
+        if (closestBranch < 2.0) {
+          // On a branch
+          mask[i] = ALL_CATS[(mainBranchIdx + (r % 3)) % 3 === 0 ? 4 : ((mainBranchIdx + (r % 3)) % 3 === 1 ? 5 : 0)];
+        } else {
+          // Between branches — secondary branches
+          var secondaryX = trunkCX + Math.sin(r * 0.8 + c * 0.3) * (8 * (1 - branchProgress));
+          var secDist = Math.abs(c - secondaryX);
+          mask[i] = secDist < 1.0 ? ALL_CATS[((r + c) % 9)] : ALL_CATS[(Math.floor(r/4) + 3 + c % 3) % 9];
+        }
+      }
+      // Canopy (rows 0-14)
+      else {
+        var canopyProgress = r / 14; // 0 at top, 1 at branch start
+        var canopyHW = 6 + canopyProgress * 4;
+        var inCanopy = Math.abs(c - trunkCX) < canopyHW;
+
+        if (inCanopy) {
+          // Leaves — mix of categories
+          mask[i] = ALL_CATS[[0, 1, 4, 5, 7, 8][(r + c) % 6]];
+        } else {
+          // Sky above canopy
+          var skyCats = [1, 6, 8];
+          mask[i] = ALL_CATS[skyCats[(r + c) % 3]];
+        }
       }
     }
     return mask;
   }
 
-  // Pattern 5: CONCENTRIC RIPPLES
+  // Pattern 5: CONCENTRIC RIPPLES (Chebyshev distance rings)
   function generateConcentricRipplesMask() {
-    var mask = [];
-    var cx = 7.5, cy = 7;
-    for (var r = 0; r < GRID_ROWS; r++) {
-      mask[r] = [];
-      for (var c = 0; c < GRID_COLS; c++) {
-        var dx = c - cx;
-        var dy = r - cy;
-        var dist = Math.max(Math.abs(dx), Math.abs(dy)); // Chebyshev distance for rectangular ripples
+    var mask = new Array(TOTAL_CARDS);
+    var rcx = CX;
+    var rcy = CY + 2;
 
-        if (dist <= 1) {
-          // Center 2×2
-          mask[r][c] = ['哲学','科学'][(r + c) % 2];
-        } else if (dist <= 2.5) {
-          mask[r][c] = ['数学','方法论'][(r + c) % 2];
-        } else if (dist <= 4) {
-          mask[r][c] = ['科技','经济'][(r + c) % 2];
-        } else if (dist <= 5.5) {
-          mask[r][c] = ['历史','教育'][(r + c) % 2];
-        } else if (dist <= 7) {
-          mask[r][c] = ['商业','管理'][(r + c) % 2];
-        } else {
-          mask[r][c] = ['文化','艺术','社会','人物','心理学'][(r + c) % 5];
+    // Define ring categories
+    var rings = [
+      { dist: 1.5,  cats: [ALL_CATS[4]] },                              // center: 概念/思想
+      { dist: 3.5,  cats: [ALL_CATS[4], ALL_CATS[2]] },                  // 概念/思想, 理论/定律
+      { dist: 6.5,  cats: [ALL_CATS[2], ALL_CATS[3]] },                  // 理论/定律, 方法/框架
+      { dist: 9.5,  cats: [ALL_CATS[3], ALL_CATS[0]] },                  // 方法/框架, 人物
+      { dist: 13,   cats: [ALL_CATS[0], ALL_CATS[1], ALL_CATS[5]] },     // 人物, 事件/运动, 发明/技术
+      { dist: 17,   cats: [ALL_CATS[1], ALL_CATS[5], ALL_CATS[6]] },     // 事件/运动, 发明/技术, 经济/商业
+      { dist: 21,   cats: [ALL_CATS[5], ALL_CATS[6], ALL_CATS[7]] },     // 发明/技术, 经济/商业, 教育/社会
+      { dist: 26,   cats: [ALL_CATS[6], ALL_CATS[7], ALL_CATS[8]] },     // 经济/商业, 教育/社会, 时代/时期
+      { dist: 32,   cats: ALL_CATS.slice() },                             // all
+      { dist: 99,   cats: [ALL_CATS[4], ALL_CATS[0], ALL_CATS[2]] }      // far: 概念/思想, 人物, 理论/定律
+    ];
+
+    for (var i = 0; i < TOTAL_CARDS; i++) {
+      var rc = rowCol(i);
+      var r = rc.row, c = rc.col;
+      var chebDist = Math.max(Math.abs(r - rcy), Math.abs(c - rcx));
+
+      var assigned = ALL_CATS[0];
+      for (var ri = 0; ri < rings.length; ri++) {
+        if (chebDist <= rings[ri].dist + 0.3) {
+          var ringCats = rings[ri].cats;
+          assigned = ringCats[(r + c) % ringCats.length];
+          break;
         }
       }
+      mask[i] = assigned;
     }
     return mask;
   }
 
-  // Pattern 6: THOUGHT OS LOGO
+  // Pattern 6: THOUGHT VERTICAL — large letters stacked top to bottom
   function generateThoughtOSMask() {
-    var mask = [];
-    // Initialize with background
-    for (var r = 0; r < GRID_ROWS; r++) {
-      mask[r] = [];
-      for (var c = 0; c < GRID_COLS; c++) {
-        mask[r][c] = ['教育','管理','商业','文化','人物'][(r + c) % 5];
+    var mask = new Array(TOTAL_CARDS);
+
+    // Background — mismatched categories for contrast
+    for (var i = 0; i < TOTAL_CARDS; i++) {
+      var rc = rowCol(i);
+      var r = rc.row, c = rc.col;
+      var blockIdx;
+      if (r < 22) blockIdx = 0;
+      else if (r < 35) blockIdx = 1;
+      else if (r < 48) blockIdx = 2;
+      else if (r < 58) blockIdx = 3;
+      else if (r < 66) blockIdx = 4;
+      else if (r < 71) blockIdx = 5;
+      else if (r < 74) blockIdx = 6;
+      else blockIdx = 7;
+      mask[i] = ALL_CATS[(blockIdx + 4 + (c % 3)) % 9];
+    }
+
+    // Letter helper — returns true if cell (lr, lc) is part of the letter shape
+    // lr: 0 to h-1, lc: 0 to w-1
+    function isLetterPixel(letter, lr, lc, w, h) {
+      var midCol = Math.floor(w / 2);
+      var midRow = Math.floor(h / 2);
+
+      switch (letter) {
+        case 'T':
+          // Top bar
+          if (lr === 0) return lc >= 1 && lc <= w - 2;
+          // Vertical stem
+          return lc === midCol || (w % 2 === 0 && lc === midCol - 1);
+        case 'H':
+          // Left stem
+          if (lc === 0 || lc === 1) return true;
+          // Right stem
+          if (lc === w - 1 || lc === w - 2) return true;
+          // Crossbar
+          if (lr === midRow || lr === midRow + 1) return lc > 1 && lc < w - 2;
+          return false;
+        case 'O':
+          // Top and bottom edges
+          if (lr === 0 || lr === h - 1) return lc > 0 && lc < w - 1;
+          // Left and right edges
+          return lc === 0 || lc === w - 1;
+        case 'U':
+          // Left edge
+          if (lc === 0 || lc === 1) return lr < h - 2;
+          // Right edge
+          if (lc === w - 1 || lc === w - 2) return lr < h - 2;
+          // Bottom
+          if (lr >= h - 2) return lc > 1 && lc < w - 2;
+          return false;
+        case 'G':
+          // Like C with a crossbar
+          if (lc === 0 || lc === 1) return lr > 0 && lr < h - 1;
+          if (lr === 0) return lc > 1;
+          if (lr === h - 1) return lc > 1 && lc < w - 1;
+          // Crossbar
+          if (lr >= midRow && lr <= midRow + 1) return lc >= midCol;
+          // Right edge lower half
+          if ((lc === w - 1 || lc === w - 2) && lr >= midRow) return true;
+          return false;
+        default:
+          return false;
       }
     }
 
-    // Define letters as pixel maps (each letter is W×H)
-    // Letter definitions: 1=pixel on, 0=off
-    // Letter width: 2 cols each, height: 5 rows each
-    // Letters positioned at: T(1), H(3), O(5), U(7), G(9), H(11), T(13)
-    // Total span: cols 1-14, rows 2-6
+    // Vertical THOUGHT: 7 letters, each 9 rows × 12 cols, stacked vertically
+    var letterHeight = 9;
+    var letterWidth = 12;
+    var letterPadTop = 1;
+    var totalLetterH = letterHeight + letterPadTop;
+    var startRow = 6;
+    var letterColStart = Math.floor((GRID_COLS - letterWidth) / 2); // center horizontally
 
-    var letters = {
-      'T': [
-        [1,1],[1,1],
-        [0,1],[0,1],
-        [0,1],[0,1],
-        [0,1],[0,1],
-        [0,1],[0,1]
-      ],
-      'H': [
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [1,1],[1,1],
-        [1,1],[0,1],
-        [1,1],[0,1]
-      ],
-      'O': [
-        [0,1],[1,0],
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [0,1],[1,0]
-      ],
-      'U': [
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [0,1],[1,0]
-      ],
-      'G': [
-        [0,1],[1,1],
-        [1,1],[0,0],
-        [1,1],[0,1],
-        [1,1],[0,1],
-        [0,1],[1,1]
-      ]
-    };
-
-    var letterColors = ['哲学','科学','数学','科技','艺术','心理学','方法论'];
     var word = 'THOUGHT';
-    var baseCol = 1;
-    var topRow = 2;
+    // Each letter gets a distinct category — use different ones from those nearby in card order
+    var letterColors = [ALL_CATS[0], ALL_CATS[3], ALL_CATS[2], ALL_CATS[5], ALL_CATS[4], ALL_CATS[1], ALL_CATS[7]];
 
     for (var li = 0; li < word.length; li++) {
       var ch = word[li];
-      var pix = letters[ch];
-      if (!pix) continue;
-      var col = baseCol + li * 2;
+      var baseRow = startRow + li * totalLetterH;
 
-      for (var pr = 0; pr < pix.length; pr++) {
-        for (var pc = 0; pc < 2; pc++) {
-          if (pix[pr][pc] === 1) {
-            var rr = topRow + pr;
-            var cc = col + pc;
-            if (rr < GRID_ROWS && cc < GRID_COLS) {
-              mask[rr][cc] = letterColors[li];
+      for (var lr = 0; lr < letterHeight; lr++) {
+        for (var lc = 0; lc < letterWidth; lc++) {
+          if (isLetterPixel(ch, lr, lc, letterWidth, letterHeight)) {
+            var gr = baseRow + lr;
+            var gc = letterColStart + lc;
+            if (gr >= 0 && gr < ROWS && gc >= 0 && gc < GRID_COLS) {
+              var gi = gr * GRID_COLS + gc;
+              if (gi < TOTAL_CARDS) {
+                mask[gi] = letterColors[li];
+              }
             }
           }
         }
       }
     }
 
-    // Bottom row: "2132" in small digits at row 12, cols 5-12
-    // Simple dot patterns for digits
-    var digits = {
-      '2': [
-        [1,1],[1,0],[0,1],[1,1],
-        [1,1],[0,1],[1,1],[0,0]
-      ],
-      '1': [
-        [0,1],[1,0],[0,1],[0,0],
-        [0,1],[1,0],[0,1],[0,0]
-      ],
-      '3': [
-        [1,1],[1,0],[0,1],[1,1],
-        [1,1],[1,0],[0,1],[1,1]
-      ]
-    };
-    var digitRow = 12;
-    var digitCol = 5;
-    var digitStr = '2132';
-    var digitColors = ['管理','商业','教育','文化'];
-    for (var di = 0; di < digitStr.length; di++) {
-      var dch = digitStr[di];
-      var dpix = digits[dch];
-      if (!dpix) continue;
-      var dcol = digitCol + di * 2;
-      for (var dr = 0; dr < 2; dr++) {
-        for (var dc = 0; dc < 2; dc++) {
-          if (dpix[dr][dc] === 1) {
-            var drr = digitRow + dr;
-            var dcc = dcol + dc;
-            if (drr < GRID_ROWS && dcc < GRID_COLS) {
-              mask[drr][dcc] = digitColors[di];
-            }
-          }
+    // Decorative horizontal bands between letters
+    for (var li2 = 0; li2 < word.length - 1; li2++) {
+      var bandRow = startRow + li2 * totalLetterH + letterHeight;
+      for (var bc = 0; bc < GRID_COLS; bc++) {
+        var bi = bandRow * GRID_COLS + bc;
+        if (bi < TOTAL_CARDS) {
+          mask[bi] = ALL_CATS[8]; // 时代/时期
         }
       }
     }
@@ -1326,113 +1416,74 @@ body.overlay-open { overflow: hidden; }
   }
 
   // ═══════════════════════════════════════════════════════
-  //  SORTING ENGINE — Arrange concepts to match mosaic mask
+  //  PATTERN DISPATCHER — deterministic mask for each pattern
   // ═══════════════════════════════════════════════════════
 
-  function sortConceptsForMosaic(mask) {
-    // Group concepts by category into buckets
-    var buckets = {};
-    CONCEPTS.forEach(function(c) {
-      if (!buckets[c.category]) buckets[c.category] = [];
-      buckets[c.category].push(c);
+  // Cache masks (seeded by pattern index)
+  var maskCache = {};
+
+  function getMask(patternIndex) {
+    if (maskCache[patternIndex]) return maskCache[patternIndex];
+    // Use a deterministic seed per pattern for reproducibility
+    var savedRandom = Math.random;
+    var seed = patternIndex * 137 + 42;
+    Math.random = function() {
+      seed = (seed * 16807 + 0) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+    var mask;
+    switch (patternIndex) {
+      case 0: mask = generatePyramidMask(); break;
+      case 1: mask = generateDNAHelixMask(); break;
+      case 2: mask = generateBrainMask(); break;
+      case 3: mask = generateKnowledgeTreeMask(); break;
+      case 4: mask = generateConcentricRipplesMask(); break;
+      case 5: mask = generateThoughtOSMask(); break;
+      default: mask = generatePyramidMask();
+    }
+    Math.random = savedRandom;
+    maskCache[patternIndex] = mask;
+    return mask;
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  SORT CONCEPTS — fixed order by display_category blocks
+  // ═══════════════════════════════════════════════════════
+
+  function sortConcepts() {
+    var sorted = CONCEPTS.slice();
+    sorted.sort(function(a, b) {
+      var rankA = CATEGORY_RANK[a.display_category] != null ? CATEGORY_RANK[a.display_category] : 99;
+      var rankB = CATEGORY_RANK[b.display_category] != null ? CATEGORY_RANK[b.display_category] : 99;
+      if (rankA !== rankB) return rankA - rankB;
+      // Within same category, sort by name
+      return (a.name || '').localeCompare(b.name || '', 'zh');
     });
-
-    // Fisher-Yates shuffle within each bucket so categories are mixed
-    Object.keys(buckets).forEach(function(cat) {
-      var arr = buckets[cat];
-      for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-      }
-    });
-
-    var sorted = [];
-    var usedIds = {};
-
-    // Flatten mask row-major; place matching concepts
-    for (var r = 0; r < GRID_ROWS; r++) {
-      for (var c = 0; c < GRID_COLS; c++) {
-        var targetCat = mask[r][c];
-        if (targetCat && buckets[targetCat] && buckets[targetCat].length > 0) {
-          var concept = buckets[targetCat].pop();
-          sorted.push(concept);
-          usedIds[concept.id] = true;
-        } else {
-          // Placeholder — will be filled from remaining
-          sorted.push(null);
-        }
-      }
-    }
-
-    // Fill null slots with remaining concepts
-    var remaining = [];
-    CONCEPTS.forEach(function(c) {
-      if (!usedIds[c.id]) remaining.push(c);
-    });
-    // Shuffle remaining
-    for (var i2 = remaining.length - 1; i2 > 0; i2--) {
-      var j2 = Math.floor(Math.random() * (i2 + 1));
-      var t = remaining[i2]; remaining[i2] = remaining[j2]; remaining[j2] = t;
-    }
-
-    var ri = 0;
-    for (var si = 0; si < sorted.length; si++) {
-      if (sorted[si] === null && ri < remaining.length) {
-        sorted[si] = remaining[ri++];
-      }
-    }
-
-    // If there are still remaining concepts, append them
-    while (ri < remaining.length) {
-      sorted.push(remaining[ri++]);
-    }
-
     return sorted;
   }
 
   // ═══════════════════════════════════════════════════════
-  //  PATTERN DISPATCHER
+  //  RENDER — one-time, all cards
   // ═══════════════════════════════════════════════════════
 
-  function generateMask(patternIndex) {
-    switch (patternIndex) {
-      case 0: return generatePyramidMask();
-      case 1: return generateDNAHelixMask();
-      case 2: return generateBrainMask();
-      case 3: return generateKnowledgeTreeMask();
-      case 4: return generateConcentricRipplesMask();
-      case 5: return generateThoughtOSMask();
-      default: return generatePyramidMask();
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  RENDER
-  // ═══════════════════════════════════════════════════════
-
-  function renderPool() {
+  function renderAllCards() {
     pool.innerHTML = '';
+    sortedConcepts = sortConcepts();
 
-    var mask = generateMask(currentPattern);
-    var sortedConcepts = sortConceptsForMosaic(mask);
+    var fragment = document.createDocumentFragment();
 
-    // Only render up to GRID_CELLS concepts
-    var renderCount = Math.min(sortedConcepts.length, GRID_CELLS);
-
-    sortedConcepts.slice(0, renderCount).filter(function(c) { return c != null; }).forEach(function(concept, i) {
-      var catColor = getCatColor(concept.category);
+    sortedConcepts.forEach(function(concept, i) {
+      var catColor = getCatColor(concept.display_category);
 
       var card = document.createElement('div');
       card.className = 'card';
       card.dataset.conceptId = concept.id;
-      card.dataset.category = concept.category;
+      card.dataset.displayCategory = concept.display_category;
       card.dataset.gridIndex = i;
-
-      // Category color as CSS variable for mosaic tile
       card.style.setProperty('--card-bg', catColor.bg);
 
       card.innerHTML =
-        '<span class="card-category">' + escHtml(concept.category) + '</span>' +
+        '<span class="card-category">' + escHtml(concept.display_category) + '</span>' +
         '<h3 class="card-name">' + escHtml(concept.name) + '</h3>' +
         '<span class="card-type">' + escHtml(concept.type) + '</span>';
 
@@ -1443,7 +1494,39 @@ body.overlay-open { overflow: hidden; }
         openCard(concept, card);
       });
 
-      pool.appendChild(card);
+      fragment.appendChild(card);
+    });
+
+    pool.appendChild(fragment);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  APPLY PATTERN — CSS class changes only, no DOM rebuild
+  // ═══════════════════════════════════════════════════════
+
+  function applyPattern(patternIndex) {
+    var mask = getMask(patternIndex);
+    var cards = pool.querySelectorAll('.card');
+
+    cards.forEach(function(card) {
+      var idx = parseInt(card.dataset.gridIndex, 10);
+      var cardCat = card.dataset.displayCategory;
+      var maskCat = mask[idx];
+
+      if (maskCat && cardCat === maskCat) {
+        card.classList.add('highlighted');
+        card.classList.remove('dimmed');
+      } else {
+        card.classList.add('dimmed');
+        card.classList.remove('highlighted');
+      }
+    });
+  }
+
+  function clearPatternClasses() {
+    var cards = pool.querySelectorAll('.card');
+    cards.forEach(function(card) {
+      card.classList.remove('highlighted', 'dimmed');
     });
   }
 
@@ -1454,10 +1537,15 @@ body.overlay-open { overflow: hidden; }
   function renderLegend() {
     var cats = {};
     CONCEPTS.forEach(function(c) {
-      if (!c || !c.category) return;
-      cats[c.category] = (cats[c.category] || 0) + 1;
+      if (!c || !c.display_category) return;
+      cats[c.display_category] = (cats[c.display_category] || 0) + 1;
     });
-    var sorted = Object.entries(cats).sort(function(a, b) { return b[1] - a[1]; });
+
+    // Sort by display order
+    var sorted = CATEGORY_SORT_ORDER.filter(function(cat) { return cats[cat]; }).map(function(cat) {
+      return [cat, cats[cat]];
+    });
+
     var html = '';
     sorted.forEach(function(pair) {
       var catColor = getCatColor(pair[0]);
@@ -1475,12 +1563,14 @@ body.overlay-open { overflow: hidden; }
   }
 
   // ═══════════════════════════════════════════════════════
-  //  LEGEND DRAGGING
+  //  LEGEND DRAGGING (Pointer Events)
   // ═══════════════════════════════════════════════════════
 
   (function initLegendDrag() {
     var isDragging = false;
     var startX, startY, startLeft, startTop;
+    var initialRight, initialTop;
+    var wasPositioned = false;
 
     function onPointerDown(e) {
       if (e.target.closest('.legend-cats') || e.target.closest('.legend-subtitle') ||
@@ -1489,18 +1579,22 @@ body.overlay-open { overflow: hidden; }
       }
       isDragging = true;
       legendPanel.classList.add('dragging');
-      legendPanel.style.animationPlayState = 'paused';
       legendPanel.setPointerCapture(e.pointerId);
 
       var rect = legendPanel.getBoundingClientRect();
       startX = e.clientX;
       startY = e.clientY;
-      startLeft = rect.left;
-      startTop = rect.top;
 
-      legendPanel.style.right = 'auto';
-      legendPanel.style.left = startLeft + 'px';
-      legendPanel.style.top = startTop + 'px';
+      if (!wasPositioned) {
+        // First drag — switch from right/top to left/top
+        legendPanel.style.right = 'auto';
+        legendPanel.style.left = rect.left + 'px';
+        legendPanel.style.top = rect.top + 'px';
+        wasPositioned = true;
+      }
+
+      startLeft = parseFloat(legendPanel.style.left) || rect.left;
+      startTop = parseFloat(legendPanel.style.top) || rect.top;
 
       e.preventDefault();
     }
@@ -1515,7 +1609,7 @@ body.overlay-open { overflow: hidden; }
       var maxLeft = window.innerWidth - legendPanel.offsetWidth - 8;
       var maxTop = window.innerHeight - legendPanel.offsetHeight - 8;
       newLeft = Math.max(8, Math.min(newLeft, maxLeft));
-      newTop = Math.max(8, Math.min(newTop, maxTop));
+      newTop = Math.max(50, Math.min(newTop, maxTop));
 
       legendPanel.style.left = newLeft + 'px';
       legendPanel.style.top = newTop + 'px';
@@ -1525,7 +1619,6 @@ body.overlay-open { overflow: hidden; }
       if (!isDragging) return;
       isDragging = false;
       legendPanel.classList.remove('dragging');
-      legendPanel.style.animationPlayState = 'running';
       legendPanel.releasePointerCapture(e.pointerId);
     }
 
@@ -1540,7 +1633,7 @@ body.overlay-open { overflow: hidden; }
   // ═══════════════════════════════════════════════════════
 
   function renderDetail(concept) {
-    var relatedHtml = concept.related_concepts.map(function(rc) {
+    var relatedHtml = (concept.related_concepts || []).map(function(rc) {
       var exists = rc in conceptMap;
       return '<span class="related-tag' + (exists ? ' clickable' : '') + '"' +
              ' data-concept-name="' + escHtml(rc) + '"' +
@@ -1559,10 +1652,15 @@ body.overlay-open { overflow: hidden; }
         '</section>';
     }
 
+    var sourceInfo = '';
+    if (concept.source) {
+      sourceInfo = (concept.source.course || '') + (concept.source.letter ? ' · ' + concept.source.letter : '');
+    }
+
     detailInner.innerHTML =
       '<div class="detail-header">' +
         '<div class="detail-tags">' +
-          '<span class="tag tag-category">' + escHtml(concept.category) + '</span>' +
+          '<span class="tag tag-category">' + escHtml(concept.display_category) + '</span>' +
           '<span class="tag tag-type">' + escHtml(concept.type) + '</span>' +
         '</div>' +
         '<h1 class="detail-name">' + escHtml(concept.name) + '</h1>' +
@@ -1580,13 +1678,10 @@ body.overlay-open { overflow: hidden; }
       '<div class="detail-body-extras">' +
         '<section>' +
           '<h3>事例</h3>' +
-          '<ul>' + concept.examples.map(function(e) { return '<li>' + escHtml(e) + '</li>'; }).join('') + '</ul>' +
+          '<ul>' + (concept.examples || []).map(function(e) { return '<li>' + escHtml(e) + '</li>'; }).join('') + '</ul>' +
         '</section>' +
         counterHtml +
-        '<section class="detail-source">' +
-          '<h3>来源</h3>' +
-          '<p>' + escHtml(concept.source.course) + ' · ' + escHtml(concept.source.letter) + '</p>' +
-        '</section>' +
+        (sourceInfo ? '<section class="detail-source"><h3>来源</h3><p>' + escHtml(sourceInfo) + '</p></section>' : '') +
         '<section>' +
           '<h3>关联概念</h3>' +
           '<div class="related-tags">' + relatedHtml + '</div>' +
@@ -1637,7 +1732,7 @@ body.overlay-open { overflow: hidden; }
 
     createSplash(cardCX, cardCY);
 
-    detailCard.offsetHeight; // force reflow
+    detailCard.offsetHeight;
 
     detailCard.style.transition =
       'transform 380ms cubic-bezier(0.22, 0.98, 0.36, 1.02), opacity 300ms ease-out';
@@ -1785,9 +1880,52 @@ body.overlay-open { overflow: hidden; }
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function() {
       if (activeConcept) closeCardInstant();
-      renderPool();
+      // Re-apply current pattern (no DOM rebuild needed)
+      if (currentPattern >= 0) {
+        applyPattern(currentPattern);
+      }
     }, 400);
   });
+
+  // ═══════════════════════════════════════════════════════
+  //  CATEGORY FILTER
+  // ═══════════════════════════════════════════════════════
+
+  function filterCategory(cat, btn) {
+    currentFilter = cat;
+
+    // Update active button
+    document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+
+    var cards = pool.querySelectorAll('.card');
+    if (cat === '*') {
+      // Show all — re-apply current pattern
+      cards.forEach(function(c) { c.classList.remove('dimmed', 'highlighted'); });
+      if (currentPattern >= 0) {
+        applyPattern(currentPattern);
+      }
+      return;
+    }
+
+    // Filter by display_category
+    cards.forEach(function(c) {
+      if (c.dataset.displayCategory === cat) {
+        c.classList.add('highlighted');
+        c.classList.remove('dimmed');
+      } else {
+        c.classList.add('dimmed');
+        c.classList.remove('highlighted');
+      }
+    });
+
+    // Scroll to first highlighted
+    var first = pool.querySelector('.card.highlighted');
+    if (first) {
+      first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+  window.filterCategory = filterCategory;
 
   // ═══════════════════════════════════════════════════════
   //  MOUSE RIPPLE TRAIL
@@ -2005,35 +2143,7 @@ body.overlay-open { overflow: hidden; }
   })();
 
   // ═══════════════════════════════════════════════════════
-  //  CATEGORY FILTER
-  // ═══════════════════════════════════════════════════════
-
-  function filterCategory(cat, btn) {
-    // Update active button
-    document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-
-    var cards = pool.querySelectorAll('.card');
-    if (cat === '*') {
-      cards.forEach(function(c) { c.classList.remove('dimmed', 'highlighted'); });
-      return;
-    }
-    cards.forEach(function(c) {
-      if (c.dataset.category === cat) {
-        c.classList.add('highlighted');
-        c.classList.remove('dimmed');
-      } else {
-        c.classList.add('dimmed');
-        c.classList.remove('highlighted');
-      }
-    });
-    var first = pool.querySelector('.card.highlighted');
-    if (first) { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-  }
-  window.filterCategory = filterCategory;
-
-  // ═══════════════════════════════════════════════════════
-  //  AUTO-ROTATION TIMER
+  //  AUTO-ROTATION TIMER (60s, last 15s red countdown)
   // ═══════════════════════════════════════════════════════
 
   var ROTATE_SECONDS = 60;
@@ -2050,12 +2160,18 @@ body.overlay-open { overflow: hidden; }
       if (rotateTimer <= 0) {
         rotateTimer = ROTATE_SECONDS;
         currentPattern = (currentPattern + 1) % 6;
-        renderPool();
-        renderLegend();
-        // Reset category filter
+
+        // Switch to new pattern with "全部" filter (no DOM rebuild)
+        clearPatternClasses();
+        applyPattern(currentPattern);
+        currentFilter = '*';
+
+        // Update nav button state
         document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
         var allBtn = document.querySelector('.cat-nav-btn[data-cat="*"]');
         if (allBtn) allBtn.classList.add('active');
+
+        renderLegend();
       }
     }, 1000);
   }
@@ -2063,7 +2179,6 @@ body.overlay-open { overflow: hidden; }
   function updateTimerDisplay() {
     var el = document.getElementById('timerText');
     if (el) el.textContent = rotateTimer + 's';
-    // Visual urgency when < 15s
     var timer = document.getElementById('catNavTimer');
     if (timer) {
       timer.style.borderColor = rotateTimer <= 15 ? 'rgba(220,100,80,0.5)' : 'rgba(180,210,225,0.4)';
@@ -2078,17 +2193,16 @@ body.overlay-open { overflow: hidden; }
 
   if (CONCEPTS.length > 0) {
     currentPattern = Math.floor(Math.random() * 6);
-    renderPool();
+    renderAllCards();
+    applyPattern(currentPattern);
     renderLegend();
     startRotationTimer();
   } else {
     pool.innerHTML = '<p style="text-align:center;color:#889;padding:60px 0;grid-column:1/-1;">概念数据加载中…</p>';
     window.addEventListener('load', function() {
-      if (window.CONCEPTS && window.CONCEPTS.length > 0 && !pool.querySelector('.card')) {
-        currentPattern = Math.floor(Math.random() * 6);
-        renderPool();
-        renderLegend();
-        startRotationTimer();
+      if (typeof ALL_CONCEPTS !== 'undefined' && ALL_CONCEPTS.length > 0 && !pool.querySelector('.card')) {
+        // Re-initialize since CONCEPTS was captured as empty
+        window.location.reload();
       }
     });
   }

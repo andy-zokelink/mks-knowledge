@@ -1,0 +1,32 @@
+# 沃霍尔罐头墙 — Creative Brief
+
+## 概念
+Andy Warhol 的《金宝汤罐头》——32 个统一尺寸的罐头排成网格。我们现在有 10,367 个"思想罐头"，每个是一个实体概念，7 种底色对应 7 个类别。
+
+## 数据
+- `/home/admin/mks-knowledge/吴军思想体系/data/entities.json` — 10,367 个实体，每个：{name, category, color, catLabel}
+- `/home/admin/mks-knowledge/吴军思想体系/data/categories.json` — 7 个类别配置
+
+## 视觉方向
+- **全屏网格**：cards 铺满整个视口，无滚动条，100vw × 100vh
+- **统一尺寸**：每个 card 是正方形小色块（大约 60-80px），类 Warhol 罐头
+- **按类别分色**：7 种类别各有一个底色（来自 categories.json 的 color 字段）
+- **波普感**：高饱和度、扁平、大胆用色。黑色或白色粗体字居中。像丝网印刷的质感
+- **排列**：按类别分组排列——左上方 方法/框架（紫色），然后 概念/思想（绿色），以此类推——形成 7 条色带从左上到右下
+- **hover 效果**：卡片放大弹出，显示完整名称+类别标签，像罐头从架子上被拿起
+- **右上角图例**：7 个色块+标签
+
+## 技术要求
+- 纯 HTML+CSS+JS，单文件，内联一切
+- CSS Grid 布局：`grid-template-columns: repeat(auto-fill, minmax(60px, 1fr))`
+- 全量 10,367 张卡片直接渲染到 DOM（不做 Canvas）——让浏览器做它擅长的布局
+- 响应式：手机上看就是一堵彩色小方块墙
+- 平滑 hover 动画，z-index 弹层
+- 页面顶部简洁标题："思想的罐头工厂 · Warhol Grid"
+
+## 验收闸门
+1. 浏览器打开后，10,367 张卡片全部可见铺满屏幕
+2. browser_console 零报错（必须检查！）
+3. hover 卡片有放大动画且流畅不卡顿（GPU 加速 transform）
+4. 7 种颜色清晰可辨，按类别区域分布
+5. 移动端响应式正常

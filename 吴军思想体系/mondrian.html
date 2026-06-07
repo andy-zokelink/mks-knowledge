@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蒙德里安色块 · 吴军思想体系</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #E3292E;
+  --yellow: #F5D300;
+  --blue: #0A4D9B;
+  --white: #FFFFFF;
+  --black: #1A1A1A;
+  --line: 8px;
+  --line-mobile: 5px;
+}
+
+body {
+  font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #000;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== MONDRIAN GRID ===== */
+.mondrian-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 200px 140px 260px 180px 220px;
+  gap: var(--line);
+  background: #000;
+  padding: var(--line);
+  min-height: 100vh;
+  /* Named areas — Mondrian asymmetrical layout */
+  grid-template-areas:
+    "p1  p1  p2  p2  p2  h1  h1  h1  e1  e1  e1  a1 "
+    "h2  h2  h2  h2  p3  p3  p3  e2  e2  e2  e2  a2 "
+    "m1  m1  m1  m1  m1  m1  m1  h3  h3  h3  h3  h3 "
+    "t1  t1  t1  t2  t2  t2  t2  t2  h4  h4  h4  a3 "
+    "c1  c1  c1  c1  c1  c1  c2  c2  c2  h5  h5  h5 ";
+}
+
+/* ===== BLOCK BASE ===== */
+.block {
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 12px 14px;
+}
+
+.block:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 3px #000, 0 8px 24px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* ===== COLOR FILLS ===== */
+.bg-red    { background: var(--red); }
+.bg-yellow { background: var(--yellow); }
+.bg-blue   { background: var(--blue); }
+.bg-white  { background: var(--white); }
+.bg-black  { background: var(--black); }
+
+/* ===== TEXT COLORS (complementary) ===== */
+.bg-red .entity,
+.bg-blue .entity,
+.bg-black .entity { color: rgba(255,255,255,0.9); }
+
+.bg-yellow .entity { color: rgba(0,0,0,0.85); }
+
+.bg-white .entity { color: rgba(0,0,0,0.8); }
+
+.bg-red .cat-label,
+.bg-blue .cat-label,
+.bg-black .cat-label { color: rgba(255,255,255,0.7); }
+
+.bg-yellow .cat-label,
+.bg-white .cat-label { color: rgba(0,0,0,0.6); }
+
+/* ===== CATEGORY BLOCK INTERNALS ===== */
+.cat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  width: 100%;
+  margin-bottom: 6px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.entity {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.55;
+  display: inline;
+  margin-right: 0.35em;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.block:hover .entity {
+  opacity: 0.55;
+}
+
+/* ===== HERO BLOCKS ===== */
+.block.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding: 20px;
+}
+
+.block.hero .hero-name {
+  font-size: clamp(22px, 3.5vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.block.hero .hero-cat {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  position: absolute;
+  bottom: 12px;
+}
+
+.bg-red.hero .hero-name,
+.bg-blue.hero .hero-name,
+.bg-black.hero .hero-name { color: #fff; }
+
+.bg-yellow.hero .hero-name { color: #000; }
+
+.bg-white.hero .hero-name { color: #000; }
+
+.bg-red.hero .hero-cat,
+.bg-blue.hero .hero-cat,
+.bg-black.hero .hero-cat { color: rgba(255,255,255,0.6); }
+
+.bg-yellow.hero .hero-cat,
+.bg-white.hero .hero-cat { color: rgba(0,0,0,0.6); }
+
+/* ===== ACCENT (empty color blocks) ===== */
+.block.accent {
+  cursor: default;
+  min-height: 60px;
+}
+.block.accent:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== HOVER TOOLTIP ===== */
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.block:hover .tooltip {
+  display: block;
+}
+
+.block.hero .tooltip {
+  top: auto;
+  bottom: 8px;
+  right: 8px;
+}
+
+/* ===== EXPANDED OVERLAY ===== */
+.expand-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #fff;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.expand-overlay.active {
+  display: block;
+}
+
+.expand-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 20px 28px;
+  border-bottom: 8px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.expand-header h2 {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.expand-header .count {
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+}
+
+.expand-close {
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  font-weight: 900;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expand-close:hover {
+  background: var(--red);
+  transform: scale(1.08);
+}
+
+.expand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+  padding: 6px;
+}
+
+.expand-card {
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: default;
+  transition: transform 0.15s, box-shadow 0.15s;
+  color: #fff;
+  border: 3px solid #000;
+  word-break: break-all;
+}
+
+.expand-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* ===== NAV BACK ===== */
+.nav-back {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  letter-spacing: 0.08em;
+  transition: background 0.2s;
+}
+
+.nav-back:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .mondrian-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto;
+    gap: var(--line-mobile);
+    padding: var(--line-mobile);
+    grid-template-areas:
+      "h1  h1  h2  h2  h2  h2 "
+      "p1  p1  p1  e1  e1  e1 "
+      "p2  p2  e2  e2  h3  h3 "
+      "m1  m1  m1  m1  a1  a1 "
+      "t1  t1  t2  t2  t2  t2 "
+      "h4  h4  h4  c1  c1  c1 "
+      "c2  c2  h5  h5  a2  a2 "
+      "p3  p3  p3  a3  a3  a3 ";
+  }
+
+  .block {
+    min-height: 90px;
+    padding: 10px;
+  }
+
+  .entity {
+    font-size: 8px;
+  }
+
+  .block.hero .hero-name {
+    font-size: clamp(16px, 5vw, 28px);
+  }
+
+  .expand-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .expand-card {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .expand-header h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .mondrian-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "h1  h1  h2  h2 "
+      "p1  p1  e1  e1 "
+      "p2  e2  h3  h3 "
+      "m1  m1  m1  m1 "
+      "t1  t1  t2  t2 "
+      "h4  h4  c1  c1 "
+      "c2  h5  h5  a1 "
+      "p3  p3  a2  a3 ";
+  }
+}
+</style>
+</head>
+<body>
+
+<a class="nav-back" href="index.html">← 思想星图</a>
+
+<!-- ===== MONDRIAN GRID ===== -->
+<div class="mondrian-grid" id="mondrianGrid">
+
+  <!-- p1: 人物 (Red) -->
+  <div class="block bg-red cat-block" data-category="人物" style="grid-area: p1;">
+    <span class="cat-label">人物</span>
+    <span class="tooltip">人物 · 175</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- p2: 事件/运动 (White) -->
+  <div class="block bg-white cat-block" data-category="事件/运动" style="grid-area: p2;">
+    <span class="cat-label">事件/运动</span>
+    <span class="tooltip">事件/运动 · 42</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- p3: 发明/技术 (Yellow) -->
+  <div class="block bg-yellow cat-block" data-category="发明/技术" style="grid-area: p3;">
+    <span class="cat-label">发明/技术</span>
+    <span class="tooltip">发明/技术 · 210</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- h1: Hero 凯恩斯 -->
+  <div class="block bg-yellow hero" style="grid-area: h1;">
+    <span class="hero-name">凯恩斯</span>
+    <span class="hero-cat">人物</span>
+  </div>
+
+  <!-- h2: Hero 工业革命 -->
+  <div class="block bg-blue hero" style="grid-area: h2;">
+    <span class="hero-name">工业革命</span>
+    <span class="hero-cat">事件/运动</span>
+  </div>
+
+  <!-- h3: Hero 能量×信息 -->
+  <div class="block bg-white hero" style="grid-area: h3;">
+    <span class="hero-name">能量×信息</span>
+    <span class="hero-cat">方法/框架</span>
+  </div>
+
+  <!-- h4: Hero 牛顿 -->
+  <div class="block bg-yellow hero" style="grid-area: h4;">
+    <span class="hero-name">牛顿</span>
+    <span class="hero-cat">人物</span>
+  </div>
+
+  <!-- h5: Hero 信息论 -->
+  <div class="block bg-red hero" style="grid-area: h5;">
+    <span class="hero-name">信息论</span>
+    <span class="hero-cat">理论/定律</span>
+  </div>
+
+  <!-- e1: 时代/时期 (White) -->
+  <div class="block bg-white cat-block" data-category="时代/时期" style="grid-area: e1;">
+    <span class="cat-label">时代/时期</span>
+    <span class="tooltip">时代/时期 · 1935</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- e2: 理论/定律 (Blue) -->
+  <div class="block bg-blue cat-block" data-category="理论/定律" style="grid-area: e2;">
+    <span class="cat-label">理论/定律</span>
+    <span class="tooltip">理论/定律 · 1263</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- m1: 方法/框架 (Red - largest block) -->
+  <div class="block bg-red cat-block" data-category="方法/框架" style="grid-area: m1;">
+    <span class="cat-label">方法/框架</span>
+    <span class="tooltip">方法/框架 · 3939</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- t1: 概念/思想 (Blue) -->
+  <div class="block bg-blue cat-block" data-category="概念/思想" style="grid-area: t1;">
+    <span class="cat-label">概念/思想</span>
+    <span class="tooltip">概念/思想 · 2803</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- t2: 理论/定律 (continued, Red) — actually let's reuse for depth -->
+  <div class="block bg-red cat-block" data-category="理论/定律" style="grid-area: t2;">
+    <span class="cat-label">理论/定律</span>
+    <span class="tooltip">理论/定律 · 1263</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- c1: 概念/思想 (White) -->
+  <div class="block bg-white cat-block" data-category="概念/思想" style="grid-area: c1;">
+    <span class="cat-label">概念/思想</span>
+    <span class="tooltip">概念/思想 · 2803</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- c2: 时代/时期 (Blue) -->
+  <div class="block bg-blue cat-block" data-category="时代/时期" style="grid-area: c2;">
+    <span class="cat-label">时代/时期</span>
+    <span class="tooltip">时代/时期 · 1935</span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- a1: Accent pure white -->
+  <div class="block bg-white accent" style="grid-area: a1;"></div>
+
+  <!-- a2: Accent pure yellow -->
+  <div class="block bg-yellow accent" style="grid-area: a2;"></div>
+
+  <!-- a3: Accent black -->
+  <div class="block bg-black accent" style="grid-area: a3;"></div>
+
+</div>
+
+<!-- ===== EXPAND OVERLAY ===== -->
+<div class="expand-overlay" id="expandOverlay">
+  <div class="expand-header" id="expandHeader">
+    <div>
+      <h2 id="expandTitle"></h2>
+      <span class="count" id="expandCount"></span>
+    </div>
+    <button class="expand-close" id="expandClose" title="关闭">✕</button>
+  </div>
+  <div class="expand-grid" id="expandGrid"></div>
+</div>
+
+<script>
+// ===== LOAD DATA =====
+let entities = [];
+let entityMap = {}; // category -> [entities]
+
+async function loadData() {
+  const grid = document.getElementById('mondrianGrid');
+  grid.style.opacity = '0.3';
+  try {
+    const resp = await fetch('data/entities.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    entities = await resp.json();
+    console.log(`Loaded ${entities.length} entities`);
+  } catch(e) {
+    console.error('Failed to load entities:', e);
+    grid.innerHTML = '<div style="color:#fff;padding:40px;grid-column:1/-1;text-align:center;font-size:18px;font-weight:700;">⚠️ 无法加载实体数据<br><small style="font-weight:400;opacity:0.6;">请确保从 HTTP 服务器打开此页面</small></div>';
+    return;
+  }
+  buildEntityMap();
+  populateBlocks();
+  grid.style.opacity = '1';
+  grid.style.transition = 'opacity 0.4s ease';
+}
+
+function buildEntityMap() {
+  entityMap = {};
+  for (const e of entities) {
+    if (!entityMap[e.category]) entityMap[e.category] = [];
+    entityMap[e.category].push(e);
+  }
+}
+
+// ===== POPULATE MONDRIAN BLOCKS (batch-insert via DocumentFragment) =====
+function populateBlocks() {
+  const catBlocks = document.querySelectorAll('.cat-block');
+  const rendered = {};
+
+  for (const block of catBlocks) {
+    const cat = block.dataset.category;
+    const list = entityMap[cat] || [];
+    if (list.length === 0) continue;
+
+    // Split entities across multiple blocks of the same category
+    const siblingBlocks = document.querySelectorAll(`.cat-block[data-category="${cat}"]`);
+    const blockIndex = Array.from(siblingBlocks).indexOf(block);
+    const totalBlocks = siblingBlocks.length;
+    const perBlock = Math.ceil(list.length / totalBlocks);
+    const start = blockIndex * perBlock;
+    const slice = list.slice(start, start + perBlock);
+
+    rendered[cat] = (rendered[cat] || 0) + slice.length;
+
+    const cloud = block.querySelector('.entity-cloud');
+    if (!cloud) continue;
+
+    const fragment = document.createDocumentFragment();
+    for (const e of slice) {
+      const span = document.createElement('span');
+      span.className = 'entity';
+      span.textContent = e.name;
+      fragment.appendChild(span);
+    }
+    cloud.appendChild(fragment);
+  }
+}
+
+// ===== CLICK TO EXPAND (full-screen card grid) =====
+const overlay = document.getElementById('expandOverlay');
+const expandTitle = document.getElementById('expandTitle');
+const expandCount = document.getElementById('expandCount');
+const expandGrid = document.getElementById('expandGrid');
+const expandClose = document.getElementById('expandClose');
+const expandHeader = document.getElementById('expandHeader');
+
+// Luminance check: return true if the color is "light" (needs dark text)
+function isLightColor(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  // Relative luminance approximation
+  return (0.299*r + 0.587*g + 0.114*b) > 150;
+}
+
+document.getElementById('mondrianGrid').addEventListener('click', (e) => {
+  const catBlock = e.target.closest('.cat-block');
+  if (!catBlock) return;
+
+  const cat = catBlock.dataset.category;
+  const list = entityMap[cat] || [];
+  const catColor = list.length > 0 ? list[0].color : '#000';
+  const light = isLightColor(catColor);
+  const textColor = light ? '#000' : '#fff';
+
+  expandHeader.style.background = catColor;
+  expandTitle.textContent = cat;
+  expandTitle.style.color = textColor;
+  expandCount.textContent = `${list.length} 个实体`;
+  expandCount.style.color = light ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.75)';
+
+  // Build cards via DocumentFragment for performance
+  expandGrid.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  for (const e of list) {
+    const card = document.createElement('div');
+    card.className = 'expand-card';
+    card.textContent = e.name;
+    card.style.background = e.color;
+    card.style.color = isLightColor(e.color) ? '#000' : '#fff';
+    fragment.appendChild(card);
+  }
+  expandGrid.appendChild(fragment);
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeOverlay() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  expandGrid.innerHTML = '';
+}
+
+expandClose.addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeOverlay();
+});
+
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) closeOverlay();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && overlay.classList.contains('active')) {
+    closeOverlay();
+  }
+});
+
+// ===== INIT =====
+loadData();
+</script>
+
+</body>
+</html>

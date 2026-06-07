@@ -1,0 +1,36 @@
+# Warhol Grid v2 — 数据已预嵌入，你只管视觉
+
+## 数据
+在 HTML 中引用：
+```html
+<script src="data/entities.js"></script>
+```
+这会注入：
+- `window.__ENTITIES` — Array of `[name, categoryId, color]`，10,367 条
+- `window.__CATEGORIES` — 7 个类别 `[{id, color, glow, label}]`
+
+数据是干净的——不要自己重新提取。
+
+## 视觉效果
+- Warhol 金宝汤罐头风格：全屏 CSS Grid，每个实体一个正方形卡片
+- 10,367 张卡片直接渲染到 DOM（不用 Canvas）
+- 卡片背景色 = `__ENTITIES[i][2]`（7 种颜色，按类别自然形成色带）
+- 卡片上显示实体名称（小字居中）
+- CSS: `grid-template-columns: repeat(auto-fill, minmax(70px, 1fr))`
+- 暗色背景，高饱和度色块
+- hover: 卡片 scale(3) 弹出，z-index 抬高，显示完整名称
+- 顶部标题栏 + 右上角类别图例
+
+## 技术要求
+- HTML 单文件，把 entities.js 的内容直接内嵌到 `<script>` 标签里（不要用外部引用，GH Pages 需要单文件）
+- `content-visibility: auto` 用于性能
+- 生成的卡片验证：随机抽 3 张检查名称和颜色是否匹配
+- browser_console 零报错
+
+## 验收
+1. 打开页面，10,367 张卡片全渲染
+2. 7 种颜色各自可见
+3. hover 动画流畅
+4. console 无错误
+
+输出到：`warhol_grid.html`（项目根目录）

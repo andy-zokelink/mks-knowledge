@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蒙德里安色块 · 吴军思想体系</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #E3292E;
+  --yellow: #F5D300;
+  --blue: #0A4D9B;
+  --white: #FAFAFA;
+  --black: #1A1A1A;
+  --line: 8px;
+  --line-mobile: 5px;
+}
+
+body {
+  font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #000;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== MONDRIAN GRID ===== */
+.mondrian-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 200px 140px 260px 180px 220px;
+  gap: var(--line);
+  background: #000;
+  padding: var(--line);
+  min-height: 100vh;
+  grid-template-areas:
+    "p1  p1  p2  p2  p2  h1  h1  h1  e1  e1  e1  a1 "
+    "h2  h2  h2  h2  p3  p3  p3  e2  e2  e2  e2  a2 "
+    "m1  m1  m1  m1  m1  m1  m1  h3  h3  h3  h3  h3 "
+    "t1  t1  t1  t2  t2  t2  t2  t2  h4  h4  h4  a3 "
+    "c1  c1  c1  c1  c1  c1  c2  c2  c2  h5  h5  h5 ";
+}
+
+/* ===== BLOCK BASE ===== */
+.block {
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 12px 14px;
+}
+
+.block:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 3px #000, 0 8px 24px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* ===== COLOR FILLS ===== */
+.bg-red    { background: var(--red); }
+.bg-yellow { background: var(--yellow); }
+.bg-blue   { background: var(--blue); }
+.bg-white  { background: var(--white); }
+.bg-black  { background: var(--black); }
+
+/* ===== TEXT COLORS ===== */
+.bg-red .entity,
+.bg-blue .entity,
+.bg-black .entity { color: rgba(255,255,255,0.9); }
+.bg-yellow .entity { color: rgba(0,0,0,0.85); }
+.bg-white .entity { color: rgba(0,0,0,0.8); }
+
+.bg-red .cat-label,
+.bg-blue .cat-label,
+.bg-black .cat-label { color: rgba(255,255,255,0.7); }
+.bg-yellow .cat-label,
+.bg-white .cat-label { color: rgba(0,0,0,0.6); }
+
+/* ===== CATEGORY BLOCK INTERNALS ===== */
+.cat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  width: 100%;
+  margin-bottom: 6px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.entity {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.55;
+  display: inline;
+  margin-right: 0.35em;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.block:hover .entity { opacity: 0.55; }
+
+/* ===== HERO BLOCKS ===== */
+.block.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding: 20px;
+}
+
+.block.hero .hero-name {
+  font-size: clamp(22px, 3.5vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.block.hero .hero-cat {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  position: absolute;
+  bottom: 12px;
+}
+
+.bg-red.hero .hero-name,
+.bg-blue.hero .hero-name,
+.bg-black.hero .hero-name { color: #fff; }
+.bg-yellow.hero .hero-name { color: #000; }
+.bg-white.hero .hero-name { color: #000; }
+
+.bg-red.hero .hero-cat,
+.bg-blue.hero .hero-cat,
+.bg-black.hero .hero-cat { color: rgba(255,255,255,0.6); }
+.bg-yellow.hero .hero-cat,
+.bg-white.hero .hero-cat { color: rgba(0,0,0,0.6); }
+
+/* ===== ACCENT ===== */
+.block.accent {
+  cursor: default;
+  min-height: 60px;
+}
+.block.accent:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== HOVER TOOLTIP ===== */
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.block:hover .tooltip { display: block; }
+.block.hero .tooltip {
+  top: auto;
+  bottom: 8px;
+  right: 8px;
+}
+
+/* ===== EXPAND OVERLAY ===== */
+.expand-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #fff;
+  overflow-y: auto;
+  padding: 0;
+}
+.expand-overlay.active { display: block; }
+
+.expand-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 20px 28px;
+  border-bottom: 8px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.expand-header h2 {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.expand-header .count {
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+}
+
+.expand-close {
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  font-weight: 900;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.expand-close:hover {
+  background: var(--red);
+  transform: scale(1.08);
+}
+
+.expand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+  padding: 6px;
+}
+
+.expand-card {
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: default;
+  transition: transform 0.15s, box-shadow 0.15s;
+  color: #fff;
+  border: 3px solid #000;
+  word-break: break-all;
+}
+.expand-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* ===== NAV BACK ===== */
+.nav-back {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  letter-spacing: 0.08em;
+  transition: background 0.2s;
+}
+.nav-back:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* ===== MOBILE: 2-column ===== */
+@media (max-width: 768px) {
+  .mondrian-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto;
+    gap: var(--line-mobile);
+    padding: var(--line-mobile);
+    grid-template-areas:
+      "h1  h1  h2  h2  h2  h2 "
+      "p1  p1  p1  e1  e1  e1 "
+      "p2  p2  e2  e2  h3  h3 "
+      "m1  m1  m1  m1  a1  a1 "
+      "t1  t1  t2  t2  t2  t2 "
+      "h4  h4  h4  c1  c1  c1 "
+      "c2  c2  h5  h5  a2  a2 "
+      "p3  p3  p3  a3  a3  a3 ";
+  }
+  .block { min-height: 90px; padding: 10px; }
+  .entity { font-size: 8px; }
+  .block.hero .hero-name { font-size: clamp(16px, 5vw, 28px); }
+  .expand-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  .expand-card { font-size: 11px; padding: 8px 10px; }
+  .expand-header h2 { font-size: 20px; }
+}
+
+/* ===== MOBILE: single-column ===== */
+@media (max-width: 400px) {
+  .mondrian-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: var(--line-mobile);
+    padding: var(--line-mobile);
+    grid-template-areas:
+      "h1" "h2" "h3" "h4" "h5"
+      "p1" "p2" "p3"
+      "e1" "e2"
+      "m1"
+      "t1" "t2"
+      "c1" "c2"
+      "a1" "a2" "a3";
+  }
+  .block { min-height: 80px; }
+  .block.hero .hero-name { font-size: clamp(20px, 8vw, 36px); }
+}
+</style>
+</head>
+<body>
+
+<a class="nav-back" href="index.html">← 思想星图</a>
+
+<!-- ===== MONDRIAN GRID ===== -->
+<div class="mondrian-grid" id="mondrianGrid">
+
+  <!-- p1: 发明/技术 — Red -->
+  <div class="block bg-red cat-block" data-category="发明/技术" style="grid-area: p1;">
+    <span class="cat-label">发明/技术</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- p2: 人物 — White -->
+  <div class="block bg-white cat-block" data-category="人物" style="grid-area: p2;">
+    <span class="cat-label">人物</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- p3: 时代/时期 — Yellow -->
+  <div class="block bg-yellow cat-block" data-category="时代/时期" style="grid-area: p3;">
+    <span class="cat-label">时代/时期</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- h1-h5: Hero blocks — populated from data -->
+  <div class="block bg-yellow hero" data-hero="0" style="grid-area: h1;">
+    <span class="hero-name"></span>
+    <span class="hero-cat"></span>
+  </div>
+  <div class="block bg-blue hero" data-hero="1" style="grid-area: h2;">
+    <span class="hero-name"></span>
+    <span class="hero-cat"></span>
+  </div>
+  <div class="block bg-white hero" data-hero="2" style="grid-area: h3;">
+    <span class="hero-name"></span>
+    <span class="hero-cat"></span>
+  </div>
+  <div class="block bg-yellow hero" data-hero="3" style="grid-area: h4;">
+    <span class="hero-name"></span>
+    <span class="hero-cat"></span>
+  </div>
+  <div class="block bg-red hero" data-hero="4" style="grid-area: h5;">
+    <span class="hero-name"></span>
+    <span class="hero-cat"></span>
+  </div>
+
+  <!-- e1: 事件/运动 — White -->
+  <div class="block bg-white cat-block" data-category="事件/运动" style="grid-area: e1;">
+    <span class="cat-label">事件/运动</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- e2: 理论/定律 — Blue -->
+  <div class="block bg-blue cat-block" data-category="理论/定律" style="grid-area: e2;">
+    <span class="cat-label">理论/定律</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- m1: 方法/框架 (widest block, 7 cols) — Red -->
+  <div class="block bg-red cat-block" data-category="方法/框架" style="grid-area: m1;">
+    <span class="cat-label">方法/框架</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- t1: 概念/思想 — Blue -->
+  <div class="block bg-blue cat-block" data-category="概念/思想" style="grid-area: t1;">
+    <span class="cat-label">概念/思想</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- t2: 理论/定律 (continued) — Red -->
+  <div class="block bg-red cat-block" data-category="理论/定律" style="grid-area: t2;">
+    <span class="cat-label">理论/定律</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- c1: 概念/思想 (continued) — White -->
+  <div class="block bg-white cat-block" data-category="概念/思想" style="grid-area: c1;">
+    <span class="cat-label">概念/思想</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- c2: 时代/时期 (continued) — Blue -->
+  <div class="block bg-blue cat-block" data-category="时代/时期" style="grid-area: c2;">
+    <span class="cat-label">时代/时期</span>
+    <span class="tooltip"></span>
+    <div class="entity-cloud"></div>
+  </div>
+
+  <!-- a1-a3: Accent color blocks -->
+  <div class="block bg-white accent" style="grid-area: a1;"></div>
+  <div class="block bg-yellow accent" style="grid-area: a2;"></div>
+  <div class="block bg-black accent" style="grid-area: a3;"></div>
+
+</div>
+
+<!-- ===== EXPAND OVERLAY ===== -->
+<div class="expand-overlay" id="expandOverlay">
+  <div class="expand-header" id="expandHeader">
+    <div>
+      <h2 id="expandTitle"></h2>
+      <span class="count" id="expandCount"></span>
+    </div>
+    <button class="expand-close" id="expandClose" title="关闭">✕</button>
+  </div>
+  <div class="expand-grid" id="expandGrid"></div>
+</div>
+
+<script>
+// ===== INJECTED DATA =====
+var ENTITIES = {{ENTITIES_JSON}};
+
+// ===== BUILD ENTITY MAP =====
+var entityMap = {};
+for (var i = 0; i < ENTITIES.length; i++) {
+  var e = ENTITIES[i];
+  if (!entityMap[e.category]) entityMap[e.category] = [];
+  entityMap[e.category].push(e);
+}
+
+// ===== POPULATE CATEGORY BLOCKS =====
+var catBlocks = document.querySelectorAll('.cat-block');
+
+for (var i = 0; i < catBlocks.length; i++) {
+  var block = catBlocks[i];
+  var cat = block.dataset.category;
+  var list = entityMap[cat] || [];
+  if (list.length === 0) continue;
+
+  // Find sibling blocks sharing this category, split entities evenly
+  var siblings = document.querySelectorAll('.cat-block[data-category="' + cat + '"]');
+  var blockIndex = Array.prototype.indexOf.call(siblings, block);
+  var totalBlocks = siblings.length;
+  var perBlock = Math.ceil(list.length / totalBlocks);
+  var start = blockIndex * perBlock;
+  var slice = list.slice(start, start + perBlock);
+
+  // Update tooltip
+  var tip = block.querySelector('.tooltip');
+  if (tip) tip.textContent = cat + ' · ' + list.length;
+
+  // Populate entity cloud
+  var cloud = block.querySelector('.entity-cloud');
+  if (!cloud) continue;
+
+  var frag = document.createDocumentFragment();
+  for (var k = 0; k < slice.length; k++) {
+    var span = document.createElement('span');
+    span.className = 'entity';
+    span.textContent = slice[k].name;
+    frag.appendChild(span);
+  }
+  cloud.appendChild(frag);
+}
+
+// ===== POPULATE HERO BLOCKS =====
+// Pick one hero from each of the top 5 largest categories
+var catKeys = Object.keys(entityMap);
+catKeys.sort(function(a, b) { return entityMap[b].length - entityMap[a].length; });
+
+var heroPicks = [];
+var seenHeroes = {};
+
+for (var h = 0; h < 5 && h < catKeys.length; h++) {
+  var candidates = entityMap[catKeys[h]] || [];
+  // Prefer short iconic names from top of the list
+  var pick = candidates[0];
+  for (var c = 0; c < Math.min(candidates.length, 80); c++) {
+    if (candidates[c].name.length <= 5 && !seenHeroes[candidates[c].name]) {
+      pick = candidates[c];
+      break;
+    }
+  }
+  if (pick && !seenHeroes[pick.name]) {
+    seenHeroes[pick.name] = true;
+    heroPicks.push(pick);
+  }
+}
+
+// Fallback: fill remaining hero slots from any category
+if (heroPicks.length < 5) {
+  for (var fi = 0; fi < ENTITIES.length && heroPicks.length < 5; fi++) {
+    if (!seenHeroes[ENTITIES[fi].name]) {
+      seenHeroes[ENTITIES[fi].name] = true;
+      heroPicks.push(ENTITIES[fi]);
+    }
+  }
+}
+
+var heroBlocks = document.querySelectorAll('.block.hero');
+for (var hi = 0; hi < heroBlocks.length; hi++) {
+  var heroData = heroPicks[hi];
+  if (!heroData) continue;
+  var nameEl = heroBlocks[hi].querySelector('.hero-name');
+  var catEl = heroBlocks[hi].querySelector('.hero-cat');
+  if (nameEl) nameEl.textContent = heroData.name;
+  if (catEl) catEl.textContent = heroData.category;
+}
+
+// ===== LUMINANCE CHECK =====
+function isLightColor(hex) {
+  var r = parseInt(hex.slice(1,3), 16);
+  var g = parseInt(hex.slice(3,5), 16);
+  var b = parseInt(hex.slice(5,7), 16);
+  return (0.299*r + 0.587*g + 0.114*b) > 150;
+}
+
+// ===== CLICK TO EXPAND =====
+var overlay = document.getElementById('expandOverlay');
+var expandTitle = document.getElementById('expandTitle');
+var expandCount = document.getElementById('expandCount');
+var expandGrid = document.getElementById('expandGrid');
+var expandClose = document.getElementById('expandClose');
+var expandHeader = document.getElementById('expandHeader');
+
+document.getElementById('mondrianGrid').addEventListener('click', function(e) {
+  var catBlock = e.target.closest('.cat-block');
+  if (!catBlock) return;
+
+  var cat = catBlock.dataset.category;
+  var list = entityMap[cat] || [];
+  var catColor = list.length > 0 ? list[0].color : '#000';
+  var light = isLightColor(catColor);
+  var textColor = light ? '#000' : '#fff';
+
+  expandHeader.style.background = catColor;
+  expandTitle.textContent = cat;
+  expandTitle.style.color = textColor;
+  expandCount.textContent = list.length + ' 个实体';
+  expandCount.style.color = light ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.75)';
+
+  expandGrid.innerHTML = '';
+  var frag = document.createDocumentFragment();
+  for (var ei = 0; ei < list.length; ei++) {
+    var ent = list[ei];
+    var card = document.createElement('div');
+    card.className = 'expand-card';
+    card.textContent = ent.name;
+    card.style.background = ent.color;
+    card.style.color = isLightColor(ent.color) ? '#000' : '#fff';
+    frag.appendChild(card);
+  }
+  expandGrid.appendChild(frag);
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeOverlay() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  expandGrid.innerHTML = '';
+}
+
+expandClose.addEventListener('click', function(e) {
+  e.stopPropagation();
+  closeOverlay();
+});
+
+overlay.addEventListener('click', function(e) {
+  if (e.target === overlay) closeOverlay();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && overlay.classList.contains('active')) {
+    closeOverlay();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>思想的罐头工厂 · Warhol Grid</title>
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;background:#1a1a2e}
+
+/* ===== Title Bar ===== */
+.title-bar{
+  position:sticky;top:0;z-index:10000;
+  display:flex;align-items:center;justify-content:space-between;
+  height:50px;padding:0 20px;
+  background:#0f0f1a;color:#fff;
+  border-bottom:1px solid #333;
+}
+.title-bar h1{
+  font-size:17px;font-weight:900;letter-spacing:2px;
+  background:linear-gradient(90deg,#a855f7,#10b981,#3b82f6,#f97316,#06b6d4,#f59e0b,#ef4444);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.title-bar .count{font-size:11px;color:#666;letter-spacing:1px}
+
+/* ===== Legend (fixed top-right) ===== */
+.legend{
+  position:fixed;top:56px;right:10px;z-index:10001;
+  display:flex;flex-direction:column;gap:2px;
+  background:rgba(15,15,26,0.94);backdrop-filter:blur(10px);
+  padding:8px 12px;border-radius:8px;border:1px solid #333;
+  pointer-events:none;
+}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:10px;color:#bbb;white-space:nowrap}
+.legend-swatch{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.legend-count{color:#555;font-size:9px;margin-left:1px}
+
+/* ===== Grid Container ===== */
+.grid-container{
+  width:100%;height:calc(100vh - 50px);
+  overflow-y:auto;overflow-x:hidden;
+  padding:3px;
+  scroll-behavior:smooth;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(70px,1fr));
+  gap:3px;
+}
+
+/* ===== Card ===== */
+.card{
+  position:relative;
+  aspect-ratio:1;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .22s ease,
+             border-radius .22s ease;
+  will-change:transform;
+  overflow:hidden;
+  border-radius:3px;
+  contain:layout style paint;
+  content-visibility:auto;
+  contain-intrinsic-size:70px;
+}
+/* Halftone dot overlay — Warhol screen-print texture */
+.card::after{
+  content:"";
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(0,0,0,.08) 1px,transparent 1px);
+  background-size:6px 6px;
+  pointer-events:none;z-index:0;
+}
+/* Glossy highlight stripe — soup can sheen */
+.card::before{
+  content:"";
+  position:absolute;top:0;left:0;right:0;height:35%;
+  background:linear-gradient(180deg,rgba(255,255,255,.28) 0%,transparent 100%);
+  pointer-events:none;z-index:0;
+  border-radius:3px 3px 0 0;
+}
+.card .card-text{
+  font-size:7.5px;font-weight:800;color:#fff;
+  text-align:center;line-height:1.15;
+  text-shadow:0 1px 3px rgba(0,0,0,.7);
+  padding:2px;position:relative;z-index:1;
+  overflow:hidden;text-overflow:ellipsis;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+  pointer-events:none;letter-spacing:.5px;
+  word-break:keep-all;
+}
+
+/* ===== Card Hover — "pick up a can from the shelf" ===== */
+.card:hover{
+  transform:scale(3);
+  z-index:9999!important;
+  box-shadow:0 12px 48px rgba(0,0,0,.65),0 0 0 4px #fff;
+  border-radius:5px;
+  overflow:visible!important;
+  contain:none!important;
+  content-visibility:visible!important;
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .18s ease,
+             border-radius .18s ease;
+}
+.card:hover::after,
+.card:hover::before{border-radius:5px}
+.card:hover .card-text{
+  font-size:8.5px;-webkit-line-clamp:unset;
+  display:flex;align-items:center;justify-content:center;
+  word-break:break-all;
+}
+/* Category label fades in on hover */
+.card:hover .card-cat{
+  opacity:1;
+}
+
+.card-cat{
+  position:absolute;bottom:3px;left:0;right:0;
+  font-size:5.5px;color:rgba(255,255,255,.82);text-align:center;
+  z-index:2;pointer-events:none;letter-spacing:1px;
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
+  opacity:0;transition:opacity .15s ease;
+}
+
+/* ===== Category Dividers ===== */
+.cat-divider{
+  grid-column:1/-1;
+  height:26px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;letter-spacing:3px;color:#fff;
+  margin:4px 0;position:relative;
+  contain:layout style paint;
+}
+.cat-divider::before,.cat-divider::after{
+  content:"";flex:1;height:1.5px;margin:0 10px;opacity:.45;
+}
+.cat-divider::before{background:linear-gradient(90deg,transparent,currentColor)}
+.cat-divider::after{background:linear-gradient(90deg,currentColor,transparent)}
+
+/* ===== Responsive ===== */
+@media(max-width:1024px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(55px,1fr));gap:2px}
+  .card .card-text{font-size:6.5px}
+  .card{contain-intrinsic-size:55px}
+  .card:hover{transform:scale(3.2)}
+  .card:hover .card-text{font-size:7.5px}
+}
+@media(max-width:768px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:2px}
+  .card .card-text{font-size:5.5px}
+  .card{contain-intrinsic-size:44px}
+  .card:hover{transform:scale(3.5)}
+  .card:hover .card-text{font-size:6.5px}
+  .title-bar h1{font-size:14px;letter-spacing:1px}
+  .title-bar{height:42px;padding:0 12px}
+  .grid-container{height:calc(100vh - 42px)}
+  .legend{top:48px;right:6px;padding:6px 10px}
+  .legend-item{font-size:9px;gap:5px}
+  .legend-swatch{width:10px;height:10px}
+  .cat-divider{font-size:9px;height:22px;letter-spacing:1px}
+  .card-cat{font-size:5px}
+}
+@media(max-width:480px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:1.5px}
+  .card .card-text{font-size:4.5px;-webkit-line-clamp:2}
+  .card{contain-intrinsic-size:36px;border-radius:2px}
+  .card:hover{transform:scale(4)}
+  .card:hover .card-text{font-size:5.5px}
+  .title-bar h1{font-size:12px;letter-spacing:.5px}
+  .title-bar{height:38px;padding:0 10px}
+  .grid-container{height:calc(100vh - 38px);padding:2px}
+  .legend{top:42px;right:3px;padding:4px 8px;gap:1px}
+  .legend-item{font-size:8px;gap:3px}
+  .legend-swatch{width:8px;height:8px}
+  .cat-divider{font-size:8px;height:18px;letter-spacing:.5px;margin:2px 0}
+  .card-cat{font-size:4px;bottom:1px}
+}
+
+/* ===== Scrollbar ===== */
+.grid-container::-webkit-scrollbar{width:5px}
+.grid-container::-webkit-scrollbar-track{background:#0f0f1a}
+.grid-container::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+.grid-container::-webkit-scrollbar-thumb:hover{background:#555}
+
+/* Keyhole — subtle vignette overlay for depth */
+.grid-container::after{
+  content:"";position:fixed;inset:0;top:50px;
+  box-shadow:inset 0 0 120px 30px rgba(0,0,0,.35);
+  pointer-events:none;z-index:500;
+}
+</style>
+</head>
+<body>
+
+<div class="title-bar">
+  <h1>思想的罐头工厂 · Warhol Grid</h1>
+  <span class="count" id="total-count">— cans</span>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="grid-container">
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+var ENTITIES = {{ENTITIES_JSON}};
+
+(function() {
+  var grid = document.getElementById('grid');
+  var legend = document.getElementById('legend');
+  var totalCount = document.getElementById('total-count');
+  var total = ENTITIES.length;
+
+  // --- Derive unique categories from entities (preserve first-seen order) ---
+  var catMap = {};   // catId -> {color, label, count}
+  var catOrder = []; // catId in discovery order
+  for (var i = 0; i < total; i++) {
+    var e = ENTITIES[i];
+    var cid = e.category;
+    if (!catMap[cid]) {
+      catMap[cid] = { color: e.color, label: e.catLabel, count: 0 };
+      catOrder.push(cid);
+    }
+    catMap[cid].count++;
+  }
+
+  // --- Build legend ---
+  var legendHTML = '';
+  for (var j = 0; j < catOrder.length; j++) {
+    var c = catMap[catOrder[j]];
+    legendHTML += '<div class="legend-item">' +
+      '<span class="legend-swatch" style="background:' + c.color + '"></span>' +
+      c.label +
+      '<span class="legend-count">' + c.count + '</span>' +
+      '</div>';
+  }
+  legend.innerHTML = legendHTML;
+  totalCount.textContent = total.toLocaleString() + ' cans';
+
+  // --- Sort entities by category (by catOrder index) ---
+  var catRank = {};
+  for (var k = 0; k < catOrder.length; k++) {
+    catRank[catOrder[k]] = k;
+  }
+  var sorted = ENTITIES.slice().sort(function(a, b) {
+    var d = catRank[a.category] - catRank[b.category];
+    return d !== 0 ? d : (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+  });
+
+  // --- Build grid with dividers ---
+  var fragment = document.createDocumentFragment();
+  var prevCat = -1;
+
+  for (var i = 0; i < total; i++) {
+    var e = sorted[i];
+    var ci = catRank[e.category];
+
+    if (ci !== prevCat) {
+      var d = document.createElement('div');
+      d.className = 'cat-divider';
+      d.style.color = catMap[catOrder[ci]].color;
+      d.textContent = catMap[catOrder[ci]].label + ' · ' + catOrder[ci];
+      fragment.appendChild(d);
+      prevCat = ci;
+    }
+
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.style.backgroundColor = e.color;
+
+    var t = document.createElement('span');
+    t.className = 'card-text';
+    t.textContent = e.name;
+    card.appendChild(t);
+
+    var cl = document.createElement('span');
+    cl.className = 'card-cat';
+    cl.textContent = e.catLabel;
+    card.appendChild(cl);
+
+    fragment.appendChild(card);
+  }
+
+  grid.appendChild(fragment);
+  console.log('%cWarhol Grid%c ' + total.toLocaleString() + ' cards · ' + catOrder.length + ' categories · ready',
+    'font-weight:900;color:#fff;background:#a855f7;padding:2px 6px;border-radius:3px', '');
+})();
+</script>
+</body>
+</html>
