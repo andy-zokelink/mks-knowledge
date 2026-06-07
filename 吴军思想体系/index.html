@@ -484,6 +484,105 @@
     .hero .stat-num { font-size: 1.2rem; }
     .layer-name { font-size: 1rem; }
   }
+
+  /* ========== PODCAST SECTION ========== */
+  .podcast-section {
+    max-width: 1100px; margin: 56px auto; padding: 0 24px;
+  }
+  .podcast-header {
+    text-align: center; margin-bottom: 32px;
+  }
+  .podcast-header h2 {
+    font-size: 1.5rem; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .podcast-header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 6px; }
+  .podcast-badge {
+    display: inline-block; background: #f0dcc8; color: var(--layer1);
+    padding: 4px 16px; border-radius: 20px; font-size: 0.85rem;
+    font-weight: 500; margin-bottom: 16px;
+  }
+
+  .podcast-list {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .podcast-ep {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px;
+    background: var(--surface); border: 1px solid var(--surface-border);
+    border-radius: var(--radius);
+    transition: all 0.25s;
+  }
+  .podcast-ep:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(2px);
+  }
+  .ep-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1rem; color: #fff;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .podcast-ep.ep-overview .ep-num { background: var(--layer1); }
+  .podcast-ep.ep-layer1 .ep-num { background: var(--layer1); }
+  .podcast-ep.ep-layer2 .ep-num { background: var(--layer2); }
+  .podcast-ep.ep-layer3 .ep-num { background: var(--layer3); }
+  .podcast-ep.ep-history .ep-num { background: var(--thread-2); }
+  .podcast-ep.ep-lens .ep-num { background: var(--thread-3); }
+  .podcast-ep.ep-cards .ep-num { background: var(--thread-4); }
+
+  .ep-info { flex: 1; min-width: 0; }
+  .ep-title { font-weight: 700; color: var(--text); font-size: 0.95rem; margin-bottom: 2px; }
+  .ep-desc { font-size: 0.82rem; color: var(--text-muted); }
+  .ep-duration { font-size: 0.78rem; color: var(--text-light); margin-top: 2px; }
+
+  .ep-play {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: none; background: var(--layer1); color: #fff;
+    cursor: pointer; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .ep-play:hover { transform: scale(1.1); box-shadow: var(--shadow-md); }
+  .ep-play.playing { background: var(--layer2); }
+
+  .podcast-player-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(253,246,240,0.95); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--surface-border);
+    padding: 12px 24px;
+    display: none; align-items: center; gap: 12px;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(58,42,26,0.08);
+  }
+  .podcast-player-bar.active { display: flex; }
+  .player-now { flex: 1; min-width: 0; }
+  .player-now .player-ep-title { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+  .player-controls { display: flex; align-items: center; gap: 12px; }
+  .player-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: none; background: var(--layer1); color: #fff;
+    cursor: pointer; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .player-btn:hover { transform: scale(1.08); }
+  .player-close {
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--surface-border);
+  }
+  .player-close:hover { color: var(--text); }
+
+  @media (max-width: 768px) {
+    .podcast-ep { flex-wrap: wrap; gap: 10px; }
+    .ep-play { order: 3; }
+    .podcast-player-bar { padding: 10px 16px; }
+  }
+
+
 </style>
 </head>
 <body>
@@ -499,6 +598,7 @@
     <a href="#os-stack">三层架构</a>
     <a href="#cross-threads">贯穿线索</a>
     <a href="#pyramid">思想金字塔</a>
+    <a href="#podcast">🎙️ 播客</a>
   </span>
 </nav>
 
@@ -886,6 +986,101 @@
   </div>
 </section>
 
+<!-- ====== PODCAST SECTION ====== -->
+<section class="podcast-section" id="podcast">
+  <div class="podcast-header">
+    <div class="podcast-badge">🎙️ 播客</div>
+    <h2>吴军思想体系 · 声音版</h2>
+    <p>7 期深度播客，从总览到每一层架构，从历史视角到概念卡片——用听的，理解吴军的思想操作系统</p>
+  </div>
+
+  <div class="podcast-list">
+
+    <div class="podcast-ep ep-overview" data-audio="podcast/audio/ep01.mp3">
+      <div class="ep-num">1</div>
+      <div class="ep-info">
+        <div class="ep-title">总览：一座三层的思想操作系统</div>
+        <div class="ep-desc">2132篇笔记 · 13门课程 · 三层架构 · 四条线索 —— 空中俯瞰吴军思想全景</div>
+        <div class="ep-duration">约 6 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+    <div class="podcast-ep ep-layer1" data-audio="podcast/audio/ep02.mp3">
+      <div class="ep-num">2</div>
+      <div class="ep-info">
+        <div class="ep-title">第一层：认知底座 — 怎么看世界</div>
+        <div class="ep-desc">逻辑为骨、数学为眼、信息论为血、计算机思维为魂 —— 思考的「操作系统内核」</div>
+        <div class="ep-duration">约 7 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+    <div class="podcast-ep ep-layer2" data-audio="podcast/audio/ep03.mp3">
+      <div class="ep-num">3</div>
+      <div class="ep-info">
+        <div class="ep-title">第二层：文明与方法论 — 世界怎么运转</div>
+        <div class="ep-desc">能量×信息双螺旋 · 文明兴衰规律 · 有效做功 W=F×D×cosθ</div>
+        <div class="ep-duration">约 8 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+    <div class="podcast-ep ep-layer3" data-audio="podcast/audio/ep04.mp3">
+      <div class="ep-num">4</div>
+      <div class="ep-info">
+        <div class="ep-title">第三层：人生操作系统 — 怎么活得好</div>
+        <div class="ep-desc">财富 · 职业 · 关系 · 决策 · 时代判断 —— 五个维度六大原则，编译认知到人生</div>
+        <div class="ep-duration">约 9 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+    <div class="podcast-ep ep-history" data-audio="podcast/audio/ep05.mp3">
+      <div class="ep-num">5</div>
+      <div class="ep-info">
+        <div class="ep-title">历史专题：能量×信息的双螺旋星河图</div>
+        <div class="ep-desc">从火的利用到GPT，能量和信息两条线在人类文明长河中纠缠起舞</div>
+        <div class="ep-duration">约 10 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+    <div class="podcast-ep ep-lens" data-audio="podcast/audio/ep06.mp3">
+      <div class="ep-num">6</div>
+      <div class="ep-info">
+        <div class="ep-title">双镜头：造物主视角 × 普通人视角</div>
+        <div class="ep-desc">万年尺度与一生尺度 —— 两种视角的张力，让历史既宏大又具体</div>
+        <div class="ep-duration">约 8 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+    <div class="podcast-ep ep-cards" data-audio="podcast/audio/ep07.mp3">
+      <div class="ep-num">7</div>
+      <div class="ep-info">
+        <div class="ep-title">概念卡片池：思想的原子单元</div>
+        <div class="ep-desc">8张精选核心概念卡片 —— 可叠加的进步、自由现金流、信息熵……思想的零件库</div>
+        <div class="ep-duration">约 12 分钟</div>
+      </div>
+      <button class="ep-play" onclick="playPodcast(this)" title="播放">▶</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====== BOTTOM PLAYER BAR ====== -->
+<div class="podcast-player-bar" id="playerBar">
+  <div class="player-now">
+    <div class="player-ep-title" id="playerTitle"></div>
+  </div>
+  <audio id="podcastAudio" style="display:none"></audio>
+  <div class="player-controls">
+    <button class="player-btn" onclick="togglePlayer()" title="暂停/播放">⏯</button>
+    <button class="player-btn player-close" onclick="closePlayer()" title="关闭">✕</button>
+  </div>
+</div>
+
 <!-- ====== FOOTER ====== -->
 <footer class="footer">
   <p>吴军思想体系全景图 · Thought OS</p>
@@ -899,6 +1094,7 @@
     <a href="history.html">📜 历史的双螺旋</a>
     <a href="history_lens.html">🔭 双镜头：造物主×普通人</a>
     <a href="concept_cards.html">🃏 概念卡片 · 知识图谱</a>
+    <a href="#podcast">🎙️ 播客</a>
   </div>
 </footer>
 
@@ -928,6 +1124,48 @@
       document.querySelectorAll('.os-layer.expanded').forEach(l => l.classList.remove('expanded'));
     }
   });
+
+  // ===== PODCAST PLAYER =====
+  let currentAudio = null;
+  let currentButton = null;
+
+  function playPodcast(btn) {
+    const ep = btn.closest('.podcast-ep');
+    const src = ep.dataset.audio;
+    const title = ep.querySelector('.ep-title').textContent;
+
+    if (currentButton === btn && currentAudio) {
+      if (currentAudio.paused) { currentAudio.play(); btn.textContent = '⏸'; }
+      else { currentAudio.pause(); btn.textContent = '▶'; }
+      return;
+    }
+
+    if (currentAudio) { currentAudio.pause(); currentAudio.remove(); }
+    if (currentButton) currentButton.textContent = '▶';
+
+    currentAudio = new Audio(src);
+    currentButton = btn;
+    document.getElementById('playerTitle').textContent = title;
+    document.getElementById('playerBar').classList.add('active');
+    btn.textContent = '⏸';
+
+    currentAudio.play();
+    currentAudio.onended = () => { btn.textContent = '▶'; currentAudio = null; currentButton = null; };
+    currentAudio.onerror = () => { btn.textContent = '⚠'; };
+  }
+
+  function togglePlayer() {
+    if (currentAudio) {
+      if (currentAudio.paused) { currentAudio.play(); if (currentButton) currentButton.textContent = '⏸'; }
+      else { currentAudio.pause(); if (currentButton) currentButton.textContent = '▶'; }
+    }
+  }
+
+  function closePlayer() {
+    if (currentAudio) { currentAudio.pause(); currentAudio.remove(); currentAudio = null; }
+    if (currentButton) { currentButton.textContent = '▶'; currentButton = null; }
+    document.getElementById('playerBar').classList.remove('active');
+  }
 
   // Entry animation
   document.addEventListener('DOMContentLoaded', () => {
