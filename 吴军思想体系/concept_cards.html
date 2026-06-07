@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>概念卡片池 · 水面捞出</title>
+<title>概念卡片池 · 水面捞出 v2</title>
 <style>
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,8 +15,6 @@
   --text-primary: #1a2a3a;
   --text-secondary: #4a6070;
   --text-muted: #7a8a96;
-  --card-bg: rgba(255, 255, 255, 0.52);
-  --card-bg-hover: rgba(255, 255, 255, 0.88);
   --shadow-card: 0 2px 8px rgba(60, 100, 130, 0.07);
   --shadow-hover: 0 10px 30px rgba(60, 100, 130, 0.13);
   --shadow-pop: 0 24px 64px rgba(0, 0, 0, 0.16);
@@ -58,7 +56,6 @@ body.overlay-open { overflow: hidden; }
     );
 }
 
-/* Caustics — large slow blobs */
 .water-bg::before {
   content: '';
   position: absolute;
@@ -72,7 +69,6 @@ body.overlay-open { overflow: hidden; }
   animation: caustics-drift 14s ease-in-out infinite;
 }
 
-/* Caustics — smaller faster highlights */
 .water-bg::after {
   content: '';
   position: absolute;
@@ -85,7 +81,6 @@ body.overlay-open { overflow: hidden; }
   animation: caustics-drift 9s ease-in-out infinite reverse;
 }
 
-/* Extra caustics overlay for more light play */
 .caustics-extra {
   position: fixed;
   inset: 0;
@@ -107,7 +102,6 @@ body.overlay-open { overflow: hidden; }
   78%      { transform: translate(-2.2%, -1.2%) rotate(-0.6deg) scale(0.98); }
 }
 
-/* Subtle light rays overlay */
 .light-rays {
   position: fixed;
   inset: 0;
@@ -132,34 +126,48 @@ body.overlay-open { overflow: hidden; }
   100% { transform: translateX(-6%) skewX(-2deg); }
 }
 
-/* ===== Legend Panel — Top Left Fixed ===== */
+/* ===== Legend Panel — Draggable, Floating ===== */
 .legend-panel {
-  position: fixed;
+  position: absolute;
   top: 16px;
-  left: 16px;
+  right: 16px;
   z-index: 50;
-  pointer-events: none;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 16px;
-  padding: 16px 20px 18px;
-  box-shadow: 0 4px 28px rgba(60, 110, 140, 0.12);
-  width: 260px;
+  padding: 0;
+  box-shadow:
+    0 8px 40px rgba(60, 110, 140, 0.16),
+    0 2px 8px rgba(60, 110, 140, 0.08);
+  width: 250px;
   max-width: calc(100vw - 32px);
-  transition: all 0.35s ease;
   overflow: hidden;
+  animation: legend-float 4s ease-in-out infinite;
+  user-select: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.legend-panel.dragging {
+  animation-play-state: paused;
+  box-shadow:
+    0 16px 56px rgba(60, 110, 140, 0.24),
+    0 4px 16px rgba(60, 110, 140, 0.12);
+  cursor: grabbing;
+}
+
+@keyframes legend-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
 
 /* Water reflection line at top */
 .legend-panel::before {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 16px;
-  right: 16px;
+  display: block;
   height: 2px;
+  margin: 0 16px;
   background: linear-gradient(90deg,
     transparent 0%,
     rgba(140, 200, 225, 0.5) 15%,
@@ -172,47 +180,84 @@ body.overlay-open { overflow: hidden; }
   border-radius: 1px;
 }
 
-.legend-panel .legend-title {
-  font-size: 0.88rem;
+.legend-title-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 8px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.legend-title-bar:active { cursor: grabbing; }
+
+.legend-drag-handle {
+  font-size: 0.9rem;
+  color: #90b8c8;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.legend-title {
+  font-size: 0.85rem;
   font-weight: 800;
   color: #1a3040;
-  margin-bottom: 2px;
   letter-spacing: 0.05em;
 }
 
-.legend-panel .legend-subtitle {
-  font-size: 0.65rem;
+.legend-body {
+  padding: 0 16px 14px;
+}
+
+.legend-subtitle {
+  font-size: 0.63rem;
   color: #5a7888;
   margin-bottom: 8px;
   font-weight: 500;
 }
 
-.legend-panel .legend-divider {
+.legend-divider {
   border: none;
   border-top: 1px dashed rgba(120, 170, 195, 0.25);
   margin: 0 0 8px 0;
 }
 
-.legend-panel .legend-cats {
+.legend-cats {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2px 10px;
-  font-size: 0.65rem;
+  gap: 1px 10px;
+  font-size: 0.63rem;
   color: #4a6678;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.legend-panel .legend-cat-item {
+.legend-cat-item {
   white-space: nowrap;
   display: flex;
   justify-content: space-between;
   gap: 4px;
+  align-items: center;
 }
 
-.legend-panel .legend-cat-num {
+.legend-cat-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+.legend-cat-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.legend-cat-num {
   font-weight: 700;
   color: #2a5068;
-  min-width: 20px;
+  min-width: 18px;
   text-align: right;
 }
 
@@ -221,6 +266,14 @@ body.overlay-open { overflow: hidden; }
   position: fixed;
   inset: 0;
   z-index: 5;
+  pointer-events: none;
+}
+
+/* ===== Constellation Lines Canvas ===== */
+#constellationCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   pointer-events: none;
 }
 
@@ -255,7 +308,6 @@ body.overlay-open { overflow: hidden; }
   100% { transform: translateY(var(--fall-distance, 300px)); opacity: 0.3; }
 }
 
-/* Rain ripple — expands from impact point */
 .rain-ripple {
   position: fixed;
   pointer-events: none;
@@ -303,9 +355,7 @@ body.overlay-open { overflow: hidden; }
     transform: translateY(0) translateX(0) scale(0.6);
     opacity: 0;
   }
-  8% {
-    opacity: 0.55;
-  }
+  8%  { opacity: 0.55; }
   40% {
     transform: translateY(calc(-40vh)) translateX(var(--wobble-1, 8px)) scale(1);
     opacity: 0.45;
@@ -339,9 +389,7 @@ body.overlay-open { overflow: hidden; }
   animation: seaweed-sway var(--sway-dur, 7s) ease-in-out var(--sway-delay, 0s) infinite;
 }
 
-.seaweed svg {
-  display: block;
-}
+.seaweed svg { display: block; }
 
 @keyframes seaweed-sway {
   0%, 100% { transform: rotate(0deg) scaleY(1); }
@@ -350,36 +398,21 @@ body.overlay-open { overflow: hidden; }
   75%      { transform: rotate(1.2deg) scaleY(1.01); }
 }
 
-/* ===== Page ===== */
-.page {
+/* ===== Pool — Card Container ===== */
+.pool {
   position: relative;
   z-index: 2;
   min-height: 100vh;
-  padding: 24px 20px 48px;
-}
-
-/* Remove the old centered title — legend panel replaces it */
-.page-title {
-  display: none;
-}
-
-/* ===== Card Grid ===== */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
-  gap: 6px;
-  max-width: 100%;
-  margin: 8px auto 0;
-  padding: 0 2px;
+  margin: 0 auto;
 }
 
 /* ===== Individual Card (Underwater) ===== */
 .card {
-  position: relative;
-  background: var(--card-bg);
+  position: absolute;
+  background: var(--card-gradient, linear-gradient(160deg, rgba(255,255,255,0.52) 0%, rgba(255,255,255,0.52) 100%));
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   padding: 10px 6px 10px;
   cursor: pointer;
   display: flex;
@@ -387,6 +420,7 @@ body.overlay-open { overflow: hidden; }
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 110px;
   min-height: 82px;
   border: 1px solid rgba(255, 255, 255, 0.45);
   box-shadow: var(--shadow-card);
@@ -401,6 +435,7 @@ body.overlay-open { overflow: hidden; }
     background var(--ease-card);
   animation: underwater-sway 5s ease-in-out infinite;
   animation-delay: var(--sway-delay, 0s);
+  z-index: 3;
 }
 
 /* Underwater sway */
@@ -412,12 +447,23 @@ body.overlay-open { overflow: hidden; }
   74%      { transform: translateY(2.0px) rotate(-0.22deg); }
 }
 
+/* Mandala slow rotation on the entire pool */
+.pool.pattern-mandala {
+  animation: mandala-pool-spin 200s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes mandala-pool-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 /* Hover — float up, clear up */
 .card:hover {
   transform: translateY(-7px) scale(1.04);
   filter: blur(0px);
   opacity: 1;
-  background: var(--card-bg-hover);
+  background: var(--card-gradient-hover, linear-gradient(160deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.88) 100%));
   box-shadow: var(--shadow-hover);
   z-index: 10;
   animation-play-state: paused;
@@ -428,7 +474,7 @@ body.overlay-open { overflow: hidden; }
   transition: transform 100ms ease-out;
 }
 
-/* Retrieved — ghost in grid */
+/* Retrieved — ghost in pool */
 .card.retrieved {
   opacity: 0.15;
   filter: blur(3px);
@@ -533,25 +579,15 @@ body.overlay-open { overflow: hidden; }
   gap: 0 36px;
 }
 
-.detail-card-inner .detail-header {
-  grid-column: 1 / -1;
-  margin-bottom: 18px;
-}
+.detail-card-inner .detail-header { grid-column: 1 / -1; margin-bottom: 18px; }
+.detail-card-inner .detail-body { grid-column: 1; }
+.detail-card-inner .detail-body-extras { grid-column: 2; }
 
-.detail-card-inner .detail-body {
-  grid-column: 1;
-}
-
-.detail-card-inner .detail-body-extras {
-  grid-column: 2;
-}
-
-/* Scrollbar */
 .detail-card::-webkit-scrollbar { width: 5px; }
 .detail-card::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
 .detail-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 10px; }
 
-/* ===== Detail Header ===== */
+/* Detail Header */
 .detail-header { margin-bottom: 24px; }
 
 .detail-tags {
@@ -581,7 +617,7 @@ body.overlay-open { overflow: hidden; }
   word-break: break-word;
 }
 
-/* ===== Detail Body ===== */
+/* Detail Body */
 .detail-body section { margin-bottom: 22px; }
 .detail-body section:last-child { margin-bottom: 0; }
 
@@ -635,7 +671,7 @@ body.overlay-open { overflow: hidden; }
 
 .detail-source p { font-size: 0.84rem !important; color: #889aaa !important; }
 
-/* ===== Related Concepts ===== */
+/* Related Concepts */
 .related-tags {
   display: flex;
   flex-wrap: wrap;
@@ -729,53 +765,54 @@ body.overlay-open { overflow: hidden; }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .card-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 5px; }
-  .card { min-height: 76px; padding: 10px 6px 10px; }
-  .card-name { font-size: 0.70rem; }
-  .card-category { font-size: 0.50rem; }
-  .card-type { font-size: 0.52rem; }
+  .card {
+    width: 96px;
+    min-height: 72px;
+    padding: 8px 4px 8px;
+    border-radius: 11px;
+  }
+  .card-name { font-size: 0.68rem; }
+  .card-category { font-size: 0.48rem; }
+  .card-type { font-size: 0.50rem; }
   .detail-card { width: 94vw; max-width: 94vw; max-height: 84vh; }
   .detail-card-inner { padding: 28px 22px 24px; grid-template-columns: 1fr; gap: 0; }
   .detail-card-inner .detail-body-extras { grid-column: 1; }
   .detail-name { font-size: 1.45rem; }
   .legend-panel {
     width: 220px;
-    padding: 12px 14px 14px;
     top: 8px;
-    left: 8px;
+    right: 8px;
   }
-  .legend-panel .legend-title { font-size: 0.78rem; }
-  .legend-panel .legend-subtitle { font-size: 0.60rem; }
-  .legend-panel .legend-cats { font-size: 0.60rem; }
+  .legend-title { font-size: 0.76rem; }
+  .legend-subtitle { font-size: 0.58rem; }
+  .legend-cats { font-size: 0.58rem; }
 }
 
 @media (max-width: 480px) {
-  .page { padding: 8px 2px 20px; }
-  .card-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 4px; }
   .card {
-    min-height: 68px;
-    padding: 8px 4px 8px;
+    width: 80px;
+    min-height: 64px;
+    padding: 6px 3px 6px;
     border-radius: 10px;
     filter: blur(0.8px);
     opacity: 0.72;
   }
-  .card-name { font-size: 0.65rem; }
-  .card-category { font-size: 0.48rem; }
-  .card-type { font-size: 0.50rem; padding: 1px 6px; }
+  .card-name { font-size: 0.62rem; }
+  .card-category { font-size: 0.45rem; }
+  .card-type { font-size: 0.46rem; padding: 1px 5px; }
   .detail-card { width: 96vw; max-width: 96vw; max-height: 80vh; border-radius: 16px; }
   .detail-card-inner { padding: 24px 18px 20px; }
   .detail-name { font-size: 1.30rem; }
   .close-btn { top: 14px; right: 14px; width: 36px; height: 36px; font-size: 1rem; }
   .legend-panel {
-    width: 180px;
-    padding: 10px 12px 12px;
+    width: 175px;
     top: 6px;
-    left: 6px;
+    right: 6px;
     border-radius: 12px;
   }
-  .legend-panel .legend-title { font-size: 0.72rem; }
-  .legend-panel .legend-subtitle { font-size: 0.56rem; }
-  .legend-panel .legend-cats { font-size: 0.56rem; gap: 1px 6px; }
+  .legend-title { font-size: 0.70rem; }
+  .legend-subtitle { font-size: 0.54rem; }
+  .legend-cats { font-size: 0.54rem; gap: 1px 5px; }
 }
 </style>
 </head>
@@ -792,19 +829,25 @@ body.overlay-open { overflow: hidden; }
 <!-- Bubbles container -->
 <div class="bubble-container" id="bubbleContainer"></div>
 
-<!-- Seaweed silhouettes at pool bottom -->
+<!-- Seaweed silhouettes -->
 <div class="seaweed-container" id="seaweedContainer"></div>
 
-<!-- Legend Panel — fixed top-left -->
+<!-- Draggable Legend Panel -->
 <div class="legend-panel" id="legendPanel">
-  <div class="legend-title">概念卡片池</div>
-  <div class="legend-subtitle"><span id="legendTotal">238</span> 个核心概念 · <span id="legendCatCount">15</span> 个类别</div>
-  <hr class="legend-divider">
-  <div class="legend-cats" id="legendCats"></div>
+  <div class="legend-title-bar" id="legendTitleBar">
+    <span class="legend-drag-handle" aria-hidden="true">⠿</span>
+    <span class="legend-title">概念卡片池</span>
+  </div>
+  <div class="legend-body">
+    <div class="legend-subtitle"><span id="legendTotal">238</span> 个核心概念 · <span id="legendCatCount">15</span> 个类别</div>
+    <hr class="legend-divider">
+    <div class="legend-cats" id="legendCats"></div>
+  </div>
 </div>
 
-<div class="page">
-  <div class="card-grid" id="cardGrid"></div>
+<!-- Pool — card container -->
+<div class="pool" id="pool">
+  <canvas id="constellationCanvas"></canvas>
 </div>
 
 <div class="overlay" id="overlay">
@@ -825,41 +868,583 @@ body.overlay-open { overflow: hidden; }
   const CONCEPTS = window.CONCEPTS || [];
   const conceptMap = Object.fromEntries(CONCEPTS.map(c => [c.name, c]));
 
+  // ── Category Colors ────────────────────────────────────
+  const CATEGORY_COLORS = {
+    '经济学': { bg: '#f5e8d8', dot: '#c8a87c' },
+    '方法论': { bg: '#d8efe8', dot: '#6aab9a' },
+    '科技':   { bg: '#d8e4f0', dot: '#6a8eb8' },
+    '历史':   { bg: '#f0e4d4', dot: '#b8966a' },
+    '教育':   { bg: '#daf0da', dot: '#7aaa6a' },
+    '科学':   { bg: '#e0e0f0', dot: '#8a8ac0' },
+    '人物':   { bg: '#f0dce8', dot: '#b87a9a' },
+    '社会':   { bg: '#f0e0d8', dot: '#b88a7a' },
+    '心理学': { bg: '#e8dcf0', dot: '#9a7ab8' },
+    '哲学':   { bg: '#e8d8f0', dot: '#8a6ab8' },
+    '管理':   { bg: '#e8f0d8', dot: '#8aaa6a' },
+    '数学':   { bg: '#d8f0f0', dot: '#6aaaaa' },
+    '商业':   { bg: '#f0ecd8', dot: '#b8aa6a' },
+    '文化':   { bg: '#f0dcd4', dot: '#b88a7a' },
+    '艺术':   { bg: '#f0d8e4', dot: '#b87a9a' }
+  };
+
+  function getCatColor(category) {
+    return CATEGORY_COLORS[category] || { bg: '#e8e8e8', dot: '#999' };
+  }
+
   // ── State ──────────────────────────────────────────────
   let activeConcept = null;
   let activeCardEl  = null;
   let isAnimating   = false;
+  let currentPattern = -1; // 0-5, set on init
 
   // ── DOM ────────────────────────────────────────────────
-  const grid        = document.getElementById('cardGrid');
-  const overlay     = document.getElementById('overlay');
-  const detailCard  = document.getElementById('detailCard');
-  const detailInner = document.getElementById('detailInner');
-  const closeBtn    = document.getElementById('closeBtn');
+  const pool         = document.getElementById('pool');
+  const overlay      = document.getElementById('overlay');
+  const detailCard   = document.getElementById('detailCard');
+  const detailInner  = document.getElementById('detailInner');
+  const closeBtn     = document.getElementById('closeBtn');
+  const legendPanel  = document.getElementById('legendPanel');
+  const legendTitleBar = document.getElementById('legendTitleBar');
 
-  // ── Build card grid ────────────────────────────────────
-  function renderGrid() {
-    grid.innerHTML = '';
-    CONCEPTS.forEach(function(concept, i) {
+  // ── Helpers ────────────────────────────────────────────
+  function escHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ── Pattern Names ──────────────────────────────────────
+  var PATTERN_NAMES = ['galactic', 'constellation', 'helix', 'rings', 'schools', 'mandala'];
+
+  // ═══════════════════════════════════════════════════════
+  //  LAYOUT ENGINES
+  // ═══════════════════════════════════════════════════════
+
+  function computeCardSize() {
+    var vw = window.innerWidth;
+    if (vw <= 480) return { w: 80, h: 68, gapX: 4, gapY: 4 };
+    if (vw <= 768) return { w: 96, h: 76, gapX: 6, gapY: 6 };
+    return { w: 110, h: 86, gapX: 8, gapY: 10 };
+  }
+
+  // --- Version 1: Galactic Spiral ---
+  function layoutSpiral(concepts) {
+    var cs = computeCardSize();
+    var count = concepts.length;
+    // Sort by category so related concepts cluster on the spiral
+    var sorted = concepts.slice().sort(function(a, b) {
+      return a.category.localeCompare(b.category) || a.name.localeCompare(b.name);
+    });
+
+    var goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~2.4 rad = ~137.5°
+    var a = 60;  // start radius
+    var b = 11;  // spread per radian
+    var maxR = a + b * count * goldenAngle / (2 * Math.PI);
+
+    var poolSize = Math.max(1400, Math.ceil(maxR * 2 + cs.w + 120));
+    var cx = poolSize / 2;
+    var cy = poolSize / 2;
+
+    var positions = [];
+    sorted.forEach(function(concept, i) {
+      var theta = i * goldenAngle;
+      var r = a + b * theta / (2 * Math.PI);
+      positions.push({
+        concept: concept,
+        x: cx + r * Math.cos(theta) - cs.w / 2,
+        y: cy + r * Math.sin(theta) - cs.h / 2
+      });
+    });
+
+    return { positions: positions, poolW: poolSize, poolH: poolSize };
+  }
+
+  // --- Version 2: Constellation ---
+  function layoutConstellation(concepts) {
+    var cs = computeCardSize();
+    var poolW = 1400, poolH = 2000;
+
+    // Merge small categories into 6 clusters
+    var groups = {};
+    concepts.forEach(function(c) {
+      if (!groups[c.category]) groups[c.category] = [];
+      groups[c.category].push(c);
+    });
+
+    var entries = Object.entries(groups).sort(function(a, b) { return b[1].length - a[1].length; });
+
+    // Distribute into 6 mega-clusters
+    var clusters = [[], [], [], [], [], []];
+    entries.forEach(function(entry, i) {
+      clusters[i % 6].push.apply(clusters[i % 6], entry[1]);
+    });
+
+    // Define 6 cluster centers spread across the pool
+    var centers = [
+      { cx: poolW * 0.25, cy: poolH * 0.18 },
+      { cx: poolW * 0.72, cy: poolH * 0.14 },
+      { cx: poolW * 0.15, cy: poolH * 0.48 },
+      { cx: poolW * 0.78, cy: poolH * 0.42 },
+      { cx: poolW * 0.45, cy: poolH * 0.72 },
+      { cx: poolW * 0.55, cy: poolH * 0.88 }
+    ];
+
+    var positions = [];
+    clusters.forEach(function(clusterConcepts, ci) {
+      var center = centers[ci];
+      var n = clusterConcepts.length;
+      // Ellipse radii proportional to cluster size
+      var rx = Math.max(80, Math.min(280, n * 12));
+      var ry = Math.max(60, Math.min(220, n * 9));
+
+      clusterConcepts.forEach(function(concept, i) {
+        // Use sunflower distribution within ellipse
+        var phi = i * Math.PI * (3 - Math.sqrt(5));
+        var rad = Math.sqrt((i + 0.5) / n);
+        var x = center.cx + rad * rx * Math.cos(phi) - cs.w / 2;
+        var y = center.cy + rad * ry * Math.sin(phi) - cs.h / 2;
+        // Add small random jitter
+        x += (Math.random() - 0.5) * 14;
+        y += (Math.random() - 0.5) * 10;
+        positions.push({ concept: concept, x: x, y: y, cluster: ci, cx: center.cx, cy: center.cy });
+      });
+    });
+
+    return { positions: positions, poolW: poolW, poolH: poolH };
+  }
+
+  // --- Version 3: Double Helix ---
+  function layoutDoubleHelix(concepts) {
+    var cs = computeCardSize();
+    var theoryTypes = ['概念', '定律', '原理', '模型', '框架'];
+    var strand1 = concepts.filter(function(c) { return theoryTypes.indexOf(c.type) !== -1; });
+    var strand2 = concepts.filter(function(c) { return theoryTypes.indexOf(c.type) === -1; });
+
+    var poolW = 1200, poolH = Math.max(2600, Math.max(strand1.length, strand2.length) * 22 + 200);
+    var cx = poolW / 2, cyCenter = poolH / 2;
+    var amplitude = poolW * 0.38;
+    var verticalSpacing = Math.max(18, Math.min(28, poolH / Math.max(strand1.length, strand2.length)));
+
+    function placeStrand(cards, phase) {
+      var positions = [];
+      var startY = 80;
+      cards.forEach(function(concept, i) {
+        var y = startY + i * verticalSpacing;
+        var x = cx + Math.sin(y * 0.008 + phase) * amplitude;
+        positions.push({
+          concept: concept,
+          x: x - cs.w / 2,
+          y: y - cs.h / 2,
+          strand: phase === 0 ? 1 : 2
+        });
+      });
+      return positions;
+    }
+
+    var allPositions = placeStrand(strand1, 0).concat(placeStrand(strand2, Math.PI));
+    return { positions: allPositions, poolW: poolW, poolH: poolH };
+  }
+
+  // --- Version 4: Concentric Rings ---
+  function layoutRings(concepts) {
+    var cs = computeCardSize();
+    var core = concepts.filter(function(c) { return c.importance === 'core'; });
+    var secondary = concepts.filter(function(c) { return c.importance === 'secondary'; });
+
+    var poolSize = 1700;
+    var cx = poolSize / 2, cy = poolSize / 2;
+
+    // Split core into inner and middle
+    var coreInner = core.slice(0, Math.ceil(core.length / 2));
+    var coreOuter = core.slice(Math.ceil(core.length / 2));
+
+    var rings = [
+      { cards: coreInner, radius: poolSize * 0.14 },
+      { cards: coreOuter, radius: poolSize * 0.28 },
+      { cards: secondary, radius: poolSize * 0.44 }
+    ];
+
+    var positions = [];
+    rings.forEach(function(ring) {
+      var n = ring.cards.length;
+      ring.cards.forEach(function(concept, i) {
+        var angle = (2 * Math.PI * i) / n - Math.PI / 2;
+        // Add small random perturbation
+        var r = ring.radius + (Math.random() - 0.5) * 20;
+        var x = cx + r * Math.cos(angle) - cs.w / 2;
+        var y = cy + r * Math.sin(angle) - cs.h / 2;
+        positions.push({ concept: concept, x: x, y: y, ring: ring.radius });
+      });
+    });
+
+    return { positions: positions, poolW: poolSize, poolH: poolSize };
+  }
+
+  // --- Version 5: Fish Schools ---
+  function layoutFishSchools(concepts) {
+    var cs = computeCardSize();
+    var poolW = 1400, poolH = 2400;
+
+    // Group by category
+    var groups = {};
+    concepts.forEach(function(c) {
+      if (!groups[c.category]) groups[c.category] = [];
+      groups[c.category].push(c);
+    });
+
+    var catEntries = Object.entries(groups);
+    // Place schools in a grid-like arrangement
+    var cols = 4;
+    var rows = Math.ceil(catEntries.length / cols);
+    var cellW = poolW / cols;
+    var cellH = poolH / rows;
+
+    var positions = [];
+    catEntries.forEach(function(entry, gi) {
+      var catConcepts = entry[1];
+      var col = gi % cols;
+      var row = Math.floor(gi / cols);
+      var centerX = cellW * col + cellW / 2;
+      var centerY = cellH * row + cellH / 2;
+
+      // Ellipse for the school
+      var count = catConcepts.length;
+      var rx = Math.max(60, Math.min(180, count * 8));
+      var ry = Math.max(40, Math.min(130, count * 5.5));
+
+      // Direction angle for this school (for visual coherence)
+      var dirAngle = (Math.random() * 0.6) - 0.3; // small angle variation
+
+      catConcepts.forEach(function(concept, i) {
+        // Sunflower within ellipse
+        var phi = i * Math.PI * (3 - Math.sqrt(5));
+        var rad = Math.sqrt((i + 0.5) / count);
+        var x = centerX + rad * rx * Math.cos(phi) - cs.w / 2;
+        var y = centerY + rad * ry * Math.sin(phi) - cs.h / 2;
+        // Random jitter
+        x += (Math.random() - 0.5) * 18;
+        y += (Math.random() - 0.5) * 12;
+
+        positions.push({
+          concept: concept,
+          x: x, y: y,
+          school: gi,
+          driftX: Math.cos(dirAngle) * (4 + Math.random() * 10),
+          driftY: Math.sin(dirAngle) * (3 + Math.random() * 8)
+        });
+      });
+    });
+
+    return { positions: positions, poolW: poolW, poolH: poolH };
+  }
+
+  // --- Version 6: Mandala ---
+  function layoutMandala(concepts) {
+    var cs = computeCardSize();
+    var poolSize = 1600;
+    var cx = poolSize / 2, cy = poolSize / 2;
+    var centerGap = 100; // blank center
+
+    // Group by category
+    var groups = {};
+    concepts.forEach(function(c) {
+      if (!groups[c.category]) groups[c.category] = [];
+      groups[c.category].push(c);
+    });
+
+    var catEntries = Object.entries(groups);
+    var numSectors = 12;
+    var sectorAngle = (2 * Math.PI) / numSectors;
+
+    // Assign categories to sectors
+    var sectorAssign = {};
+    var sectorCards = {};
+    catEntries.forEach(function(entry, i) {
+      var sector = i % numSectors;
+      sectorAssign[entry[0]] = sector;
+      if (!sectorCards[sector]) sectorCards[sector] = [];
+      sectorCards[sector].push.apply(sectorCards[sector], entry[1]);
+    });
+
+    var positions = [];
+    var maxR = poolSize * 0.45;
+
+    Object.keys(sectorCards).forEach(function(sectorStr) {
+      var sector = parseInt(sectorStr);
+      var cards = sectorCards[sector];
+      var n = cards.length;
+      var startAngle = sector * sectorAngle;
+
+      cards.forEach(function(concept, i) {
+        // Place cards radially within the sector
+        var r = centerGap + (maxR - centerGap) * ((i + 0.5) / n);
+        // Slight angular spread within sector
+        var spreadAngle = sectorAngle * 0.7;
+        var angle = startAngle + spreadAngle * (0.15 + 0.7 * (i / n));
+        var x = cx + r * Math.cos(angle) - cs.w / 2;
+        var y = cy + r * Math.sin(angle) - cs.h / 2;
+        positions.push({ concept: concept, x: x, y: y, sector: sector, r: r });
+      });
+    });
+
+    return { positions: positions, poolW: poolSize, poolH: poolSize, cx: cx, cy: cy };
+  }
+
+  // ── Layout Dispatcher ──────────────────────────────────
+  function computeLayout(patternIndex) {
+    switch (patternIndex) {
+      case 0: return layoutSpiral(CONCEPTS);
+      case 1: return layoutConstellation(CONCEPTS);
+      case 2: return layoutDoubleHelix(CONCEPTS);
+      case 3: return layoutRings(CONCEPTS);
+      case 4: return layoutFishSchools(CONCEPTS);
+      case 5: return layoutMandala(CONCEPTS);
+      default: return layoutSpiral(CONCEPTS);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  RENDER
+  // ═══════════════════════════════════════════════════════
+
+  var layoutData = null; // { positions, poolW, poolH, ... }
+
+  function renderPool() {
+    pool.innerHTML = '';
+    // Re-create constellation canvas
+    var newCanvas = document.createElement('canvas');
+    newCanvas.id = 'constellationCanvas';
+    pool.appendChild(newCanvas);
+    layoutData = computeLayout(currentPattern);
+    var patternName = PATTERN_NAMES[currentPattern];
+
+    pool.className = 'pool pattern-' + patternName;
+    pool.style.width = layoutData.poolW + 'px';
+    pool.style.height = layoutData.poolH + 'px';
+    pool.style.minHeight = layoutData.poolH + 'px';
+
+    // Setup constellation canvas
+    var cnv = newCanvas;
+    cnv.width = layoutData.poolW;
+    cnv.height = layoutData.poolH;
+    cnv.style.width = layoutData.poolW + 'px';
+    cnv.style.height = layoutData.poolH + 'px';
+    var cnvCtx = cnv.getContext('2d');
+
+    // Create cards
+    layoutData.positions.forEach(function(pos, i) {
+      var concept = pos.concept;
+      var catColor = getCatColor(concept.category);
+
       var card = document.createElement('div');
       card.className = 'card';
       card.dataset.conceptId = concept.id;
+      card.dataset.category = concept.category;
+      card.dataset.cluster = pos.cluster !== undefined ? pos.cluster : '';
+      card.dataset.school = pos.school !== undefined ? pos.school : '';
+      card.dataset.sector = pos.sector !== undefined ? pos.sector : '';
+
+      // Position
+      card.style.left = pos.x + 'px';
+      card.style.top = pos.y + 'px';
+      card.style.width = computeCardSize().w + 'px';
+      card.style.minHeight = computeCardSize().h + 'px';
+
+      // Category color gradient
+      var bgGradient = 'linear-gradient(160deg, ' + catColor.bg + ' 0%, rgba(255,255,255,0.58) 100%)';
+      var bgGradientHover = 'linear-gradient(160deg, ' + catColor.bg + ' 0%, rgba(255,255,255,0.32) 100%)';
+      card.style.setProperty('--card-gradient', bgGradient);
+      card.style.setProperty('--card-gradient-hover', bgGradientHover);
+
+      // Sway delay
       card.style.setProperty('--sway-delay', (i * 0.37).toFixed(2) + 's');
+
       card.innerHTML =
         '<span class="card-category">' + escHtml(concept.category) + '</span>' +
         '<h3 class="card-name">' + escHtml(concept.name) + '</h3>' +
         '<span class="card-type">' + escHtml(concept.type) + '</span>';
+
       card.addEventListener('click', function(e) {
         e.stopPropagation();
         if (isAnimating) return;
         if (activeConcept && activeConcept.id === concept.id) return;
         openCard(concept, card);
       });
-      grid.appendChild(card);
+
+      // Constellation hover: show connection lines
+      if (currentPattern === 1) {
+        card.addEventListener('mouseenter', function() {
+          drawConstellationLines(concept, pos, cnvCtx);
+        });
+        card.addEventListener('mouseleave', function() {
+          cnvCtx.clearRect(0, 0, cnv.width, cnv.height);
+        });
+      }
+
+      // Fish school: use staggered animation delays for organic school movement
+      if (currentPattern === 4 && pos.driftX !== undefined) {
+        // Vary animation duration per school for organic feel
+        var schoolDur = 4.5 + (pos.school % 5) * 0.8;
+        card.style.animationDuration = schoolDur + 's';
+        // Stagger within school based on radial position
+        card.style.animationDelay = ((pos.school * 0.3) + (i * 0.05) % 1.5).toFixed(2) + 's';
+      }
+
+      pool.appendChild(card);
     });
   }
 
-  // ── Render detail view ─────────────────────────────────
+  // ── Constellation Lines ────────────────────────────────
+  function drawConstellationLines(hoveredConcept, hoveredPos, cnvCtx) {
+    cnvCtx.clearRect(0, 0, cnvCtx.canvas.width, cnvCtx.canvas.height);
+
+    var cluster = hoveredPos.cluster;
+    if (cluster === undefined) return;
+
+    // Find all cards in the same cluster
+    var clusterCards = layoutData.positions.filter(function(p) {
+      return p.cluster === cluster && p.concept.name !== hoveredConcept.name;
+    });
+
+    // Draw lines to related concepts in same cluster
+    var relatedNames = hoveredConcept.related_concepts || [];
+    clusterCards.forEach(function(p) {
+      if (relatedNames.indexOf(p.concept.name) === -1) return;
+
+      var cs = computeCardSize();
+      var x1 = hoveredPos.x + cs.w / 2;
+      var y1 = hoveredPos.y + cs.h / 2;
+      var x2 = p.x + cs.w / 2;
+      var y2 = p.y + cs.h / 2;
+
+      cnvCtx.beginPath();
+      cnvCtx.moveTo(x1, y1);
+      cnvCtx.lineTo(x2, y2);
+      cnvCtx.strokeStyle = 'rgba(140, 190, 210, 0.30)';
+      cnvCtx.lineWidth = 0.8;
+      cnvCtx.setLineDash([4, 6]);
+      cnvCtx.stroke();
+
+      // Small dot at the connected card
+      cnvCtx.beginPath();
+      cnvCtx.arc(x2, y2, 3, 0, Math.PI * 2);
+      cnvCtx.fillStyle = 'rgba(140, 190, 210, 0.35)';
+      cnvCtx.fill();
+    });
+
+    // Also draw faint lines to ALL cards in the same cluster (background network)
+    clusterCards.forEach(function(p) {
+      if (relatedNames.indexOf(p.concept.name) !== -1) return; // already drawn
+      var cs = computeCardSize();
+      var x1 = hoveredPos.x + cs.w / 2;
+      var y1 = hoveredPos.y + cs.h / 2;
+      var x2 = p.x + cs.w / 2;
+      var y2 = p.y + cs.h / 2;
+
+      cnvCtx.beginPath();
+      cnvCtx.moveTo(x1, y1);
+      cnvCtx.lineTo(x2, y2);
+      cnvCtx.strokeStyle = 'rgba(160, 200, 220, 0.10)';
+      cnvCtx.lineWidth = 0.4;
+      cnvCtx.setLineDash([2, 10]);
+      cnvCtx.stroke();
+    });
+
+    cnvCtx.setLineDash([]);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  RENDER LEGEND
+  // ═══════════════════════════════════════════════════════
+
+  function renderLegend() {
+    var cats = {};
+    CONCEPTS.forEach(function(c) {
+      cats[c.category] = (cats[c.category] || 0) + 1;
+    });
+    var sorted = Object.entries(cats).sort(function(a, b) { return b[1] - a[1]; });
+    var html = '';
+    sorted.forEach(function(pair) {
+      var catColor = getCatColor(pair[0]);
+      html += '<span class="legend-cat-item">' +
+        '<span class="legend-cat-dot" style="background:' + catColor.dot + ';"></span>' +
+        '<span class="legend-cat-name">' + escHtml(pair[0]) + '</span>' +
+        '<span class="legend-cat-num">' + pair[1] + '</span>' +
+        '</span>';
+    });
+    document.getElementById('legendCats').innerHTML = html;
+    document.getElementById('legendTotal').textContent = CONCEPTS.length;
+    document.getElementById('legendCatCount').textContent = sorted.length;
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  LEGEND DRAGGING
+  // ═══════════════════════════════════════════════════════
+
+  (function initLegendDrag() {
+    var isDragging = false;
+    var startX, startY, startLeft, startTop;
+
+    function onPointerDown(e) {
+      if (e.target.closest('.legend-cats') || e.target.closest('.legend-subtitle') ||
+          e.target.closest('.legend-divider')) {
+        // Allow text selection in body area, but start drag from title bar
+        return;
+      }
+      isDragging = true;
+      legendPanel.classList.add('dragging');
+      legendPanel.style.animationPlayState = 'paused';
+      legendPanel.setPointerCapture(e.pointerId);
+
+      var rect = legendPanel.getBoundingClientRect();
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = rect.left;
+      startTop = rect.top;
+
+      // Switch from right-based to left-based positioning
+      legendPanel.style.right = 'auto';
+      legendPanel.style.left = startLeft + 'px';
+      legendPanel.style.top = startTop + 'px';
+
+      e.preventDefault();
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      var newLeft = startLeft + dx;
+      var newTop = startTop + dy;
+
+      // Clamp to viewport
+      var maxLeft = window.innerWidth - legendPanel.offsetWidth - 8;
+      var maxTop = window.innerHeight - legendPanel.offsetHeight - 8;
+      newLeft = Math.max(8, Math.min(newLeft, maxLeft));
+      newTop = Math.max(8, Math.min(newTop, maxTop));
+
+      legendPanel.style.left = newLeft + 'px';
+      legendPanel.style.top = newTop + 'px';
+    }
+
+    function onPointerUp(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      legendPanel.classList.remove('dragging');
+      legendPanel.style.animationPlayState = 'running';
+      legendPanel.releasePointerCapture(e.pointerId);
+    }
+
+    legendTitleBar.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerUp);
+  })();
+
+  // ═══════════════════════════════════════════════════════
+  //  DETAIL VIEW & FLIP ANIMATION
+  // ═══════════════════════════════════════════════════════
+
   function renderDetail(concept) {
     var relatedHtml = concept.related_concepts.map(function(rc) {
       var exists = rc in conceptMap;
@@ -914,7 +1499,6 @@ body.overlay-open { overflow: hidden; }
         '</section>' +
       '</div>';
 
-    // Bind related-concept clicks
     var clickables = detailInner.querySelectorAll('.related-tag.clickable');
     clickables.forEach(function(tag) {
       tag.addEventListener('click', function(e) {
@@ -928,7 +1512,6 @@ body.overlay-open { overflow: hidden; }
     detailCard.scrollTop = 0;
   }
 
-  // ── Open card (FLIP animation) ─────────────────────────
   function openCard(concept, cardEl) {
     if (activeConcept) {
       closeCardInstant();
@@ -948,26 +1531,20 @@ body.overlay-open { overflow: hidden; }
     var detailW = Math.min(560, vw * 0.92);
     var scaleFrom = Math.min(cardRect.width / detailW, 0.42);
 
-    // Build detail content
     renderDetail(concept);
 
-    // Position the detail card at the grid card's location
     detailCard.style.transition = 'none';
     detailCard.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scaleFrom + ')';
     detailCard.style.opacity = '0.55';
 
-    // Show overlay
     overlay.classList.add('active');
     closeBtn.classList.add('visible');
     document.body.classList.add('overlay-open');
 
-    // Splash at clicked position
     createSplash(cardCX, cardCY);
 
-    // Force reflow
-    detailCard.offsetHeight;
+    detailCard.offsetHeight; // force reflow
 
-    // Animate to center
     detailCard.style.transition =
       'transform 380ms cubic-bezier(0.22, 0.98, 0.36, 1.02), opacity 300ms ease-out';
     detailCard.style.transform = 'translate(0, 0) scale(1)';
@@ -980,7 +1557,6 @@ body.overlay-open { overflow: hidden; }
     setTimeout(function() { isAnimating = false; }, 400);
   }
 
-  // ── Close card ─────────────────────────────────────────
   function closeCard(instant) {
     if (!activeConcept) return;
 
@@ -1004,13 +1580,11 @@ body.overlay-open { overflow: hidden; }
     var detailW = Math.min(560, vw * 0.92);
     var scaleTo = Math.min(cardRect.width / detailW, 0.42);
 
-    // Animate back to grid position
     detailCard.style.transition =
       'transform 280ms cubic-bezier(0.4, 0, 0.6, 1), opacity 220ms ease-in';
     detailCard.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + scaleTo + ')';
     detailCard.style.opacity = '0.35';
 
-    // Fade overlay
     overlay.style.transition = 'opacity 280ms ease';
     overlay.style.opacity = '0';
 
@@ -1048,14 +1622,12 @@ body.overlay-open { overflow: hidden; }
     isAnimating = false;
   }
 
-  // ── Switch concept (from related link) ─────────────────
   function switchToConcept(concept) {
     if (isAnimating) return;
     isAnimating = true;
 
-    var newCardEl = grid.querySelector('[data-concept-id="' + concept.id + '"]');
+    var newCardEl = pool.querySelector('[data-concept-id="' + concept.id + '"]');
 
-    // Shrink
     detailCard.style.transition = 'transform 160ms ease-in, opacity 120ms ease-in';
     detailCard.style.transform = 'scale(0.92)';
     detailCard.style.opacity = '0.25';
@@ -1070,7 +1642,6 @@ body.overlay-open { overflow: hidden; }
       activeConcept = concept;
       activeCardEl  = newCardEl;
 
-      // Expand
       detailCard.style.transition =
         'transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms ease-out';
       detailCard.style.transform = 'scale(1)';
@@ -1080,7 +1651,6 @@ body.overlay-open { overflow: hidden; }
     }, 170);
   }
 
-  // ── Splash ─────────────────────────────────────────────
   function createSplash(x, y) {
     var splash = document.createElement('div');
     splash.className = 'splash';
@@ -1098,7 +1668,10 @@ body.overlay-open { overflow: hidden; }
     setTimeout(function() { if (splash.parentNode) splash.remove(); }, 800);
   }
 
-  // ── Events ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════
+  //  EVENTS
+  // ═══════════════════════════════════════════════════════
+
   closeBtn.addEventListener('click', function() { closeCard(false); });
 
   overlay.addEventListener('click', function(e) {
@@ -1118,143 +1691,115 @@ body.overlay-open { overflow: hidden; }
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function() {
       if (activeConcept) closeCardInstant();
-    }, 300);
+      // Re-render pool with same pattern on resize
+      renderPool();
+    }, 400);
   });
 
-  // ── Helpers ────────────────────────────────────────────
-  // ── Render legend panel ────────────────────────────────
-  function renderLegend() {
-    var cats = {};
-    CONCEPTS.forEach(function(c) {
-      cats[c.category] = (cats[c.category] || 0) + 1;
-    });
-    var sorted = Object.entries(cats).sort(function(a, b) { return b[1] - a[1]; });
-    var html = '';
-    sorted.forEach(function(pair) {
-      html += '<span class="legend-cat-item"><span>' + escHtml(pair[0]) + '</span><span class="legend-cat-num">' + pair[1] + '</span></span>';
-    });
-    document.getElementById('legendCats').innerHTML = html;
-    document.getElementById('legendTotal').textContent = CONCEPTS.length;
-    document.getElementById('legendCatCount').textContent = sorted.length;
-  }
+  // ═══════════════════════════════════════════════════════
+  //  MOUSE RIPPLE TRAIL
+  // ═══════════════════════════════════════════════════════
 
-  function escHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  // ── Mouse Ripple Trail (Enhanced) ──────────────────────
   (function() {
-    var canvas = document.getElementById('rippleCanvas');
-    var ctx = canvas.getContext('2d');
+    var rippleCanvas = document.getElementById('rippleCanvas');
+    var rctx = rippleCanvas.getContext('2d');
     var ripples = [];
     var mouseX = -100, mouseY = -100;
     var lastRippleTime = 0;
-    var prevMouseX = -100, prevMouseY = -100;
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    function resizeRipple() {
+      rippleCanvas.width = window.innerWidth;
+      rippleCanvas.height = window.innerHeight;
     }
-    resize();
-    window.addEventListener('resize', resize);
+    resizeRipple();
+    window.addEventListener('resize', resizeRipple);
 
     document.addEventListener('mousemove', function(e) {
-      prevMouseX = mouseX;
-      prevMouseY = mouseY;
       mouseX = e.clientX;
       mouseY = e.clientY;
       var now = Date.now();
-      if (now - lastRippleTime > 40) {  // was 60ms — denser ripples
+      if (now - lastRippleTime > 40) {
         ripples.push({ x: mouseX, y: mouseY, r: 0, opacity: 0.55, life: 1 });
         lastRippleTime = now;
-        if (ripples.length > 60) ripples.shift();  // was 40 — keep more
+        if (ripples.length > 60) ripples.shift();
       }
     });
 
-    // Also leave a trail when mouse is between grid updates
     document.addEventListener('mouseleave', function() {
       mouseX = -100;
       mouseY = -100;
     });
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function drawRipples() {
+      rctx.clearRect(0, 0, rippleCanvas.width, rippleCanvas.height);
 
-      // Persistent glow at mouse position — larger, more visible
       if (mouseX > 0 && mouseY > 0) {
-        var glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 140);
+        var glow = rctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 140);
         glow.addColorStop(0, 'rgba(180, 220, 240, 0.34)');
         glow.addColorStop(0.3, 'rgba(155, 215, 235, 0.20)');
         glow.addColorStop(0.6, 'rgba(140, 200, 225, 0.08)');
         glow.addColorStop(1, 'rgba(140, 200, 225, 0)');
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 140, 0, Math.PI * 2);
-        ctx.fill();
+        rctx.fillStyle = glow;
+        rctx.beginPath();
+        rctx.arc(mouseX, mouseY, 140, 0, Math.PI * 2);
+        rctx.fill();
 
-        // Inner brighter core
-        var coreGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 40);
+        var coreGlow = rctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 40);
         coreGlow.addColorStop(0, 'rgba(210, 240, 250, 0.40)');
         coreGlow.addColorStop(0.5, 'rgba(180, 225, 240, 0.15)');
         coreGlow.addColorStop(1, 'rgba(150, 210, 230, 0)');
-        ctx.fillStyle = coreGlow;
-        ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 40, 0, Math.PI * 2);
-        ctx.fill();
+        rctx.fillStyle = coreGlow;
+        rctx.beginPath();
+        rctx.arc(mouseX, mouseY, 40, 0, Math.PI * 2);
+        rctx.fill();
       }
 
-      // Animate ripples — expand further, higher opacity
       for (var i = ripples.length - 1; i >= 0; i--) {
         var r = ripples[i];
-        r.r += 1.5;  // faster expansion
-        r.life -= 0.010;  // slower fade → larger max radius
+        r.r += 1.5;
+        r.life -= 0.010;
         r.opacity = r.life * 0.55;
         if (r.life <= 0) { ripples.splice(i, 1); continue; }
 
-        // Main ring
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(150, 210, 235,' + (r.opacity * 0.7) + ')';
-        ctx.lineWidth = 1.6;
-        ctx.stroke();
+        rctx.beginPath();
+        rctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+        rctx.strokeStyle = 'rgba(150, 210, 235,' + (r.opacity * 0.7) + ')';
+        rctx.lineWidth = 1.6;
+        rctx.stroke();
 
-        // Inner softer ring
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, r.r * 0.55, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(180, 220, 240,' + (r.opacity * 0.5) + ')';
-        ctx.lineWidth = 1.0;
-        ctx.stroke();
+        rctx.beginPath();
+        rctx.arc(r.x, r.y, r.r * 0.55, 0, Math.PI * 2);
+        rctx.strokeStyle = 'rgba(180, 220, 240,' + (r.opacity * 0.5) + ')';
+        rctx.lineWidth = 1.0;
+        rctx.stroke();
 
-        // Outer faint ring
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, r.r * 1.4, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(170, 215, 235,' + (r.opacity * 0.25) + ')';
-        ctx.lineWidth = 0.7;
-        ctx.stroke();
+        rctx.beginPath();
+        rctx.arc(r.x, r.y, r.r * 1.4, 0, Math.PI * 2);
+        rctx.strokeStyle = 'rgba(170, 215, 235,' + (r.opacity * 0.25) + ')';
+        rctx.lineWidth = 0.7;
+        rctx.stroke();
       }
 
-      requestAnimationFrame(draw);
+      requestAnimationFrame(drawRipples);
     }
-    draw();
+    drawRipples();
   })();
 
-  // ── Raindrop System ─────────────────────────────────────
+  // ═══════════════════════════════════════════════════════
+  //  RAINDROP SYSTEM
+  // ═══════════════════════════════════════════════════════
+
   (function() {
     var container = document.getElementById('raindropContainer');
     var maxDrops = 8;
     var activeDrops = 0;
-    var dropIndex = 0;
 
     function createRaindrop() {
       if (activeDrops >= maxDrops) return;
       activeDrops++;
 
       var x = Math.random() * window.innerWidth;
-      // Water surface level — where the drop hits (varies slightly)
       var surfaceY = window.innerHeight * (0.4 + Math.random() * 0.45);
-      var fallDistance = surfaceY + 10; // start just above visible area
 
       var drop = document.createElement('div');
       drop.className = 'raindrop falling';
@@ -1266,15 +1811,12 @@ body.overlay-open { overflow: hidden; }
       drop.dataset.dropX = x;
       container.appendChild(drop);
 
-      // When the drop finishes falling, create ripple at impact point
       drop.addEventListener('animationend', function() {
         drop.remove();
-        // Create ripple at impact point
         createRainRipple(parseFloat(drop.dataset.dropX), parseFloat(drop.dataset.surfaceY));
         activeDrops--;
       });
 
-      // Fallback cleanup
       var dur = parseFloat(drop.style.getPropertyValue('--fall-duration')) * 1000 + 200;
       setTimeout(function() {
         if (drop.parentNode) {
@@ -1293,11 +1835,9 @@ body.overlay-open { overflow: hidden; }
       document.body.appendChild(ripple);
 
       ripple.addEventListener('animationend', function() { ripple.remove(); });
-      // Fallback
       setTimeout(function() { if (ripple.parentNode) ripple.remove(); }, 1800);
     }
 
-    // Spawn raindrops at random intervals
     function scheduleNext() {
       var delay = 1200 + Math.random() * 2200;
       setTimeout(function() {
@@ -1306,13 +1846,15 @@ body.overlay-open { overflow: hidden; }
       }, delay);
     }
 
-    // Start with 2 drops immediately for quick visual feedback
     setTimeout(function() { createRaindrop(); }, 400);
     setTimeout(function() { createRaindrop(); }, 900);
     scheduleNext();
   })();
 
-  // ── Bubble System ──────────────────────────────────────
+  // ═══════════════════════════════════════════════════════
+  //  BUBBLE SYSTEM
+  // ═══════════════════════════════════════════════════════
+
   (function() {
     var container = document.getElementById('bubbleContainer');
     var bubbleCount = 18;
@@ -1333,10 +1875,12 @@ body.overlay-open { overflow: hidden; }
     }
   })();
 
-  // ── Seaweed Silhouettes ────────────────────────────────
+  // ═══════════════════════════════════════════════════════
+  //  SEAWEED SILHOUETTES
+  // ═══════════════════════════════════════════════════════
+
   (function() {
     var container = document.getElementById('seaweedContainer');
-    // Generate simple SVG seaweed shapes
     var seaweedDefs = [
       { x: '5%', w: 20, h: 90, swayDur: '6s', swayDelay: '0s', opacity: 0.10 },
       { x: '14%', w: 14, h: 70, swayDur: '7.5s', swayDelay: '-2s', opacity: 0.08 },
@@ -1357,7 +1901,6 @@ body.overlay-open { overflow: hidden; }
       weed.style.setProperty('--sway-delay', def.swayDelay);
       weed.style.opacity = def.opacity;
 
-      // Simple blade-of-grass SVG
       var svg = '<svg width="' + (def.w * 2) + '" height="' + def.h + '" viewBox="0 0 ' + (def.w * 2) + ' ' + def.h + '">' +
         '<ellipse cx="' + def.w + '" cy="' + (def.h * 0.85) + '" rx="' + (def.w * 0.25) + '" ry="' + (def.h * 0.8) + '" fill="#5a8a6a" opacity="0.6"/>' +
         '<ellipse cx="' + (def.w * 0.65) + '" cy="' + (def.h * 0.75) + '" rx="' + (def.w * 0.18) + '" ry="' + (def.h * 0.6) + '" fill="#4a7a5a" opacity="0.5"/>' +
@@ -1368,15 +1911,20 @@ body.overlay-open { overflow: hidden; }
     });
   })();
 
-  // ── Init ───────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════
+  //  INIT
+  // ═══════════════════════════════════════════════════════
+
   if (CONCEPTS.length > 0) {
-    renderGrid();
+    currentPattern = Math.floor(Math.random() * 6);
+    renderPool();
     renderLegend();
   } else {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#889;padding:60px 0;">概念数据加载中…</p>';
+    pool.innerHTML = '<p style="text-align:center;color:#889;padding:60px 0;position:absolute;width:100%;">概念数据加载中…</p>';
     window.addEventListener('load', function() {
-      if (window.CONCEPTS && window.CONCEPTS.length > 0 && !grid.children.length) {
-        renderGrid();
+      if (window.CONCEPTS && window.CONCEPTS.length > 0 && !pool.querySelector('.card')) {
+        currentPattern = Math.floor(Math.random() * 6);
+        renderPool();
         renderLegend();
       }
     });
