@@ -1596,15 +1596,15 @@ body.overlay-open { overflow: hidden; }
   // ═══════════════════════════════════════════════════════
 
   function sortConcepts() {
-    var sorted = CONCEPTS.slice();
-    sorted.sort(function(a, b) {
-      var rankA = CATEGORY_RANK[a.display_category] != null ? CATEGORY_RANK[a.display_category] : 99;
-      var rankB = CATEGORY_RANK[b.display_category] != null ? CATEGORY_RANK[b.display_category] : 99;
-      if (rankA !== rankB) return rankA - rankB;
-      // Within same category, sort by name
-      return (a.name || '').localeCompare(b.name || '', 'zh');
-    });
-    return sorted;
+    // Fisher-Yates shuffle for random card layout
+    var shuffled = CONCEPTS.slice();
+    for (var i = shuffled.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = tmp;
+    }
+    return shuffled;
   }
 
   // ═══════════════════════════════════════════════════════
@@ -2006,6 +2006,15 @@ body.overlay-open { overflow: hidden; }
   //  EVENTS
   // ═══════════════════════════════════════════════════════
 
+  // Mouse ripple on card pool (throttled)
+  var lastSplashTime = 0;
+  pool.addEventListener('mousemove', function(e) {
+    var now = Date.now();
+    if (now - lastSplashTime < 120) return;
+    lastSplashTime = now;
+    createSplash(e.clientX, e.clientY);
+  });
+
   closeBtn.addEventListener('click', function() { closeCard(false); });
 
   overlay.addEventListener('click', function(e) {
@@ -2077,7 +2086,7 @@ body.overlay-open { overflow: hidden; }
   //  AUTO-ROTATION TIMER (60s, last 15s red countdown)
   // ═══════════════════════════════════════════════════════
 
-  var ROTATE_SECONDS = 60;
+  var ROTATE_SECONDS = 15;
   var rotateTimer = ROTATE_SECONDS;
   var rotateInterval = null;
 
