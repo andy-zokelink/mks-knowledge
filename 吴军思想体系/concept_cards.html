@@ -262,135 +262,6 @@ body.overlay-open { overflow: hidden; }
   text-align: center;
 }
 
-/* ===== Mouse Ripple Canvas ===== */
-#rippleCanvas {
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-}
-
-/* ===== Raindrops ===== */
-.raindrop-container {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.raindrop {
-  position: absolute;
-  width: 5px;
-  height: 8px;
-  background: linear-gradient(180deg,
-    rgba(180, 220, 240, 0.7) 0%,
-    rgba(140, 200, 225, 0.5) 100%
-  );
-  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-  pointer-events: none;
-  filter: drop-shadow(0 0 2px rgba(160, 210, 235, 0.5));
-}
-
-.raindrop.falling {
-  animation: raindrop-fall var(--fall-duration, 0.6s) ease-in forwards;
-}
-
-@keyframes raindrop-fall {
-  0%   { transform: translateY(0); opacity: 0.7; }
-  70%  { opacity: 0.6; }
-  100% { transform: translateY(var(--fall-distance, 300px)); opacity: 0.3; }
-}
-
-.rain-ripple {
-  position: fixed;
-  pointer-events: none;
-  z-index: 4;
-  border-radius: 50%;
-  border: 1.5px solid rgba(180, 215, 235, 0.55);
-  background: radial-gradient(circle, rgba(190, 220, 240, 0.15) 0%, transparent 65%);
-  transform: translate(-50%, -50%);
-}
-
-.rain-ripple.animating {
-  animation: rain-ripple-expand 1.6s ease-out forwards;
-}
-
-@keyframes rain-ripple-expand {
-  0%   { width: 6px; height: 6px; opacity: 0.7; }
-  100% { width: 140px; height: 140px; opacity: 0; }
-}
-
-/* ===== Bubbles ===== */
-.bubble-container {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.bubble {
-  position: absolute;
-  bottom: -20px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 35%,
-    rgba(220, 240, 250, 0.45) 0%,
-    rgba(140, 200, 225, 0.12) 60%,
-    rgba(140, 200, 225, 0.03) 100%
-  );
-  border: 1px solid rgba(180, 215, 235, 0.25);
-  pointer-events: none;
-  animation: bubble-rise var(--bubble-dur, 7s) ease-in-out var(--bubble-delay, 0s) infinite;
-}
-
-@keyframes bubble-rise {
-  0% {
-    transform: translateY(0) translateX(0) scale(0.6);
-    opacity: 0;
-  }
-  8%  { opacity: 0.55; }
-  40% {
-    transform: translateY(calc(-40vh)) translateX(var(--wobble-1, 8px)) scale(1);
-    opacity: 0.45;
-  }
-  70% {
-    transform: translateY(calc(-75vh)) translateX(var(--wobble-2, -6px)) scale(0.9);
-    opacity: 0.25;
-  }
-  100% {
-    transform: translateY(calc(-105vh)) translateX(var(--wobble-3, 4px)) scale(0.5);
-    opacity: 0;
-  }
-}
-
-/* ===== Seaweed silhouettes ===== */
-.seaweed-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  pointer-events: none;
-  height: 160px;
-}
-
-.seaweed {
-  position: absolute;
-  bottom: 0;
-  opacity: 0.08;
-  transform-origin: bottom center;
-  animation: seaweed-sway var(--sway-dur, 7s) ease-in-out var(--sway-delay, 0s) infinite;
-}
-
-.seaweed svg { display: block; }
-
-@keyframes seaweed-sway {
-  0%, 100% { transform: rotate(0deg) scaleY(1); }
-  25%      { transform: rotate(1.5deg) scaleY(1.02); }
-  50%      { transform: rotate(-1deg) scaleY(0.99); }
-  75%      { transform: rotate(1.2deg) scaleY(1.01); }
-}
-
 /* ===== Pool — Mosaic CSS Grid Container ===== */
 .pool {
   position: relative;
@@ -851,6 +722,263 @@ body.overlay-open { overflow: hidden; }
   .legend-cats { font-size: 0.54rem; gap: 1px 5px; }
 }
 
+/* ===== AI Chat Widget ===== */
+.ai-chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  font-family: var(--font-stack);
+}
+
+.ai-chat-toggle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: linear-gradient(140deg, #1a3450 0%, #264a66 100%);
+  color: #fff;
+  font-size: 1.35rem;
+  cursor: pointer;
+  box-shadow: 0 4px 22px rgba(0,0,0,0.32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.ai-chat-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 30px rgba(0,0,0,0.42);
+}
+
+.ai-chat-toggle:active { transform: scale(0.94); }
+
+.ai-chat-indicator {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4caf50;
+  border: 2px solid #1a3450;
+  transition: background 0.3s;
+}
+
+.ai-chat-indicator.offline { background: #f44336; }
+
+/* Panel */
+.ai-chat-panel {
+  position: absolute;
+  bottom: 66px;
+  right: 0;
+  width: 350px;
+  max-height: 490px;
+  background: rgba(16, 24, 38, 0.97);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  box-shadow: 0 18px 52px rgba(0,0,0,0.45);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.ai-chat-panel.open { display: flex; }
+
+.ai-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.025);
+  flex-shrink: 0;
+}
+
+.ai-chat-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  color: #a0bcd0;
+}
+
+.ai-chat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.ai-chat-dot.offline { background: #f44336; }
+
+.ai-chat-close {
+  background: none;
+  border: none;
+  color: #7a8ea0;
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 2px 7px;
+  border-radius: 5px;
+  line-height: 1;
+  transition: color 0.15s, background 0.15s;
+}
+
+.ai-chat-close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+/* Messages */
+.ai-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 310px;
+  min-height: 120px;
+}
+
+.ai-chat-messages::-webkit-scrollbar { width: 4px; }
+.ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 4px; }
+
+.ai-chat-msg {
+  max-width: 86%;
+  padding: 8px 13px;
+  border-radius: 13px;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  word-break: break-word;
+  animation: ai-msg-in 0.26s ease-out;
+}
+
+@keyframes ai-msg-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ai-chat-msg.user {
+  align-self: flex-end;
+  background: #2563eb;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-chat-msg.assistant {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.075);
+  color: #ced8e4;
+  border-bottom-left-radius: 4px;
+}
+
+.ai-chat-msg.assistant strong { color: #e8f0f8; font-weight: 700; }
+.ai-chat-msg.assistant code {
+  background: rgba(255,255,255,0.10);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.ai-chat-msg.assistant ul,
+.ai-chat-msg.assistant ol { margin: 3px 0; padding-left: 18px; }
+.ai-chat-msg.assistant li { margin: 1px 0; }
+
+/* Typing indicator */
+.ai-chat-typing {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.05);
+  color: #6a8090;
+  padding: 10px 16px;
+  border-radius: 13px;
+  border-bottom-left-radius: 4px;
+  font-size: 0.72rem;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.ai-chat-typing span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6a8090;
+  animation: ai-dot-bounce 1.3s ease-in-out infinite;
+}
+
+.ai-chat-typing span:nth-child(2) { animation-delay: 0.18s; }
+.ai-chat-typing span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes ai-dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Input area */
+.ai-chat-input-area {
+  display: flex;
+  gap: 7px;
+  padding: 10px 12px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.02);
+  flex-shrink: 0;
+}
+
+.ai-chat-input {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #d0dce8;
+  font-family: var(--font-stack);
+  font-size: 0.76rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ai-chat-input::placeholder { color: #5a6a7a; }
+.ai-chat-input:focus { border-color: rgba(100,160,220,0.45); }
+
+.ai-chat-send {
+  background: linear-gradient(140deg, #2563eb, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 17px;
+  font-family: var(--font-stack);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.ai-chat-send:hover { opacity: 0.88; }
+.ai-chat-send:active { transform: scale(0.95); }
+.ai-chat-send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .ai-chat-panel {
+    width: calc(100vw - 32px);
+    right: -2px;
+    max-height: 420px;
+  }
+  .ai-chat-messages { max-height: 240px; }
+  .ai-chat-toggle {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -878,11 +1006,6 @@ body.overlay-open { overflow: hidden; }
 <div class="water-bg"></div>
 <div class="caustics-extra"></div>
 <div class="light-rays"></div>
-<canvas id="rippleCanvas"></canvas>
-
-<div class="raindrop-container" id="raindropContainer"></div>
-<div class="bubble-container" id="bubbleContainer"></div>
-<div class="seaweed-container" id="seaweedContainer"></div>
 
 <!-- Draggable Legend Panel -->
 <div class="legend-panel" id="legendPanel">
@@ -909,6 +1032,28 @@ body.overlay-open { overflow: hidden; }
 </div>
 
 <button class="close-btn" id="closeBtn" aria-label="关闭">✕</button>
+
+<!-- ====== AI Chat Widget ====== -->
+<div class="ai-chat-widget" id="aiChatWidget">
+  <button class="ai-chat-toggle" id="aiChatToggle" aria-label="AI 助手" title="AI 知识库助手">
+    <span style="line-height:1;">💬</span>
+    <span class="ai-chat-indicator" id="aiChatIndicator"></span>
+  </button>
+  <div class="ai-chat-panel" id="aiChatPanel">
+    <div class="ai-chat-header">
+      <span class="ai-chat-status">
+        <span class="ai-chat-dot" id="aiChatDot"></span>
+        <span id="aiChatStatusText">DeepSeek 在线</span>
+      </span>
+      <button class="ai-chat-close" id="aiChatClose">✕</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages"></div>
+    <div class="ai-chat-input-area">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="问一个问题…" autocomplete="off">
+      <button class="ai-chat-send" id="aiChatSend">发送</button>
+    </div>
+  </div>
+</div>
 
 <script src="data/concepts_all.js?v=4"></script>
 <script>
@@ -1898,17 +2043,17 @@ body.overlay-open { overflow: hidden; }
     document.querySelectorAll('.cat-nav-btn').forEach(function(b) { b.classList.remove('active'); });
     if (btn) btn.classList.add('active');
 
-    var cards = pool.querySelectorAll('.card');
     if (cat === '*') {
-      // Show all — re-apply current pattern
-      cards.forEach(function(c) { c.classList.remove('dimmed', 'highlighted'); });
-      if (currentPattern >= 0) {
-        applyPattern(currentPattern);
-      }
+      // 全部 — clear all dim/highlight then re-apply current mosaic pattern
+      // Ensure patternIndex is valid (default to 0 if somehow unset)
+      var patternIdx = (currentPattern >= 0) ? currentPattern : (currentPattern = 0);
+      clearPatternClasses();
+      applyPattern(patternIdx);
       return;
     }
 
-    // Filter by display_category
+    // Filter by display_category — override pattern with category-only dim/highlight
+    var cards = pool.querySelectorAll('.card');
     cards.forEach(function(c) {
       if (c.dataset.displayCategory === cat) {
         c.classList.add('highlighted');
@@ -1927,220 +2072,9 @@ body.overlay-open { overflow: hidden; }
   }
   window.filterCategory = filterCategory;
 
-  // ═══════════════════════════════════════════════════════
-  //  MOUSE RIPPLE TRAIL
-  // ═══════════════════════════════════════════════════════
 
-  (function() {
-    var rippleCanvas = document.getElementById('rippleCanvas');
-    var rctx = rippleCanvas.getContext('2d');
-    var ripples = [];
-    var mouseX = -100, mouseY = -100;
-    var lastRippleTime = 0;
 
-    function resizeRipple() {
-      rippleCanvas.width = window.innerWidth;
-      rippleCanvas.height = window.innerHeight;
-    }
-    resizeRipple();
-    window.addEventListener('resize', resizeRipple);
 
-    document.addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      var now = Date.now();
-      if (now - lastRippleTime > 40) {
-        ripples.push({ x: mouseX, y: mouseY, r: 0, opacity: 0.55, life: 1 });
-        lastRippleTime = now;
-        if (ripples.length > 60) ripples.shift();
-      }
-    });
-
-    document.addEventListener('mouseleave', function() {
-      mouseX = -100;
-      mouseY = -100;
-    });
-
-    function drawRipples() {
-      rctx.clearRect(0, 0, rippleCanvas.width, rippleCanvas.height);
-
-      if (mouseX > 0 && mouseY > 0) {
-        var glow = rctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 140);
-        glow.addColorStop(0, 'rgba(180, 220, 240, 0.34)');
-        glow.addColorStop(0.3, 'rgba(155, 215, 235, 0.20)');
-        glow.addColorStop(0.6, 'rgba(140, 200, 225, 0.08)');
-        glow.addColorStop(1, 'rgba(140, 200, 225, 0)');
-        rctx.fillStyle = glow;
-        rctx.beginPath();
-        rctx.arc(mouseX, mouseY, 140, 0, Math.PI * 2);
-        rctx.fill();
-
-        var coreGlow = rctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 40);
-        coreGlow.addColorStop(0, 'rgba(210, 240, 250, 0.40)');
-        coreGlow.addColorStop(0.5, 'rgba(180, 225, 240, 0.15)');
-        coreGlow.addColorStop(1, 'rgba(150, 210, 230, 0)');
-        rctx.fillStyle = coreGlow;
-        rctx.beginPath();
-        rctx.arc(mouseX, mouseY, 40, 0, Math.PI * 2);
-        rctx.fill();
-      }
-
-      for (var i = ripples.length - 1; i >= 0; i--) {
-        var r = ripples[i];
-        r.r += 1.5;
-        r.life -= 0.010;
-        r.opacity = r.life * 0.55;
-        if (r.life <= 0) { ripples.splice(i, 1); continue; }
-
-        rctx.beginPath();
-        rctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-        rctx.strokeStyle = 'rgba(150, 210, 235,' + (r.opacity * 0.7) + ')';
-        rctx.lineWidth = 1.6;
-        rctx.stroke();
-
-        rctx.beginPath();
-        rctx.arc(r.x, r.y, r.r * 0.55, 0, Math.PI * 2);
-        rctx.strokeStyle = 'rgba(180, 220, 240,' + (r.opacity * 0.5) + ')';
-        rctx.lineWidth = 1.0;
-        rctx.stroke();
-
-        rctx.beginPath();
-        rctx.arc(r.x, r.y, r.r * 1.4, 0, Math.PI * 2);
-        rctx.strokeStyle = 'rgba(170, 215, 235,' + (r.opacity * 0.25) + ')';
-        rctx.lineWidth = 0.7;
-        rctx.stroke();
-      }
-
-      requestAnimationFrame(drawRipples);
-    }
-    drawRipples();
-  })();
-
-  // ═══════════════════════════════════════════════════════
-  //  RAINDROP SYSTEM
-  // ═══════════════════════════════════════════════════════
-
-  (function() {
-    var container = document.getElementById('raindropContainer');
-    var maxDrops = 8;
-    var activeDrops = 0;
-
-    function createRaindrop() {
-      if (activeDrops >= maxDrops) return;
-      activeDrops++;
-
-      var x = Math.random() * window.innerWidth;
-      var surfaceY = window.innerHeight * (0.4 + Math.random() * 0.45);
-
-      var drop = document.createElement('div');
-      drop.className = 'raindrop falling';
-      drop.style.left = x + 'px';
-      drop.style.top = '-12px';
-      drop.style.setProperty('--fall-distance', surfaceY + 'px');
-      drop.style.setProperty('--fall-duration', (0.45 + Math.random() * 0.35) + 's');
-      drop.dataset.surfaceY = surfaceY;
-      drop.dataset.dropX = x;
-      container.appendChild(drop);
-
-      drop.addEventListener('animationend', function() {
-        drop.remove();
-        createRainRipple(parseFloat(drop.dataset.dropX), parseFloat(drop.dataset.surfaceY));
-        activeDrops--;
-      });
-
-      var dur = parseFloat(drop.style.getPropertyValue('--fall-duration')) * 1000 + 200;
-      setTimeout(function() {
-        if (drop.parentNode) {
-          createRainRipple(parseFloat(drop.dataset.dropX), parseFloat(drop.dataset.surfaceY));
-          drop.remove();
-          activeDrops--;
-        }
-      }, dur);
-    }
-
-    function createRainRipple(x, y) {
-      var ripple = document.createElement('div');
-      ripple.className = 'rain-ripple animating';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      document.body.appendChild(ripple);
-
-      ripple.addEventListener('animationend', function() { ripple.remove(); });
-      setTimeout(function() { if (ripple.parentNode) ripple.remove(); }, 1800);
-    }
-
-    function scheduleNext() {
-      var delay = 1200 + Math.random() * 2200;
-      setTimeout(function() {
-        createRaindrop();
-        scheduleNext();
-      }, delay);
-    }
-
-    setTimeout(function() { createRaindrop(); }, 400);
-    setTimeout(function() { createRaindrop(); }, 900);
-    scheduleNext();
-  })();
-
-  // ═══════════════════════════════════════════════════════
-  //  BUBBLE SYSTEM
-  // ═══════════════════════════════════════════════════════
-
-  (function() {
-    var container = document.getElementById('bubbleContainer');
-    var bubbleCount = 18;
-
-    for (var i = 0; i < bubbleCount; i++) {
-      var bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      var size = 4 + Math.random() * 14;
-      bubble.style.width = size + 'px';
-      bubble.style.height = size + 'px';
-      bubble.style.left = (Math.random() * 94) + '%';
-      bubble.style.setProperty('--bubble-dur', (6 + Math.random() * 12) + 's');
-      bubble.style.setProperty('--bubble-delay', (Math.random() * 14) + 's');
-      bubble.style.setProperty('--wobble-1', ((Math.random() - 0.5) * 20) + 'px');
-      bubble.style.setProperty('--wobble-2', ((Math.random() - 0.5) * 16) + 'px');
-      bubble.style.setProperty('--wobble-3', ((Math.random() - 0.5) * 12) + 'px');
-      container.appendChild(bubble);
-    }
-  })();
-
-  // ═══════════════════════════════════════════════════════
-  //  SEAWEED SILHOUETTES
-  // ═══════════════════════════════════════════════════════
-
-  (function() {
-    var container = document.getElementById('seaweedContainer');
-    var seaweedDefs = [
-      { x: '5%', w: 20, h: 90, swayDur: '6s', swayDelay: '0s', opacity: 0.10 },
-      { x: '14%', w: 14, h: 70, swayDur: '7.5s', swayDelay: '-2s', opacity: 0.08 },
-      { x: '22%', w: 24, h: 110, swayDur: '5.5s', swayDelay: '-4s', opacity: 0.11 },
-      { x: '35%', w: 16, h: 60, swayDur: '8s', swayDelay: '-1s', opacity: 0.07 },
-      { x: '48%', w: 18, h: 85, swayDur: '6.5s', swayDelay: '-3s', opacity: 0.10 },
-      { x: '60%', w: 22, h: 100, swayDur: '7s', swayDelay: '-5s', opacity: 0.09 },
-      { x: '72%', w: 15, h: 75, swayDur: '5.8s', swayDelay: '-2.5s', opacity: 0.08 },
-      { x: '82%', w: 20, h: 95, swayDur: '6.8s', swayDelay: '-1.5s', opacity: 0.10 },
-      { x: '92%', w: 12, h: 55, swayDur: '7.2s', swayDelay: '-3.5s', opacity: 0.07 },
-    ];
-
-    seaweedDefs.forEach(function(def) {
-      var weed = document.createElement('div');
-      weed.className = 'seaweed';
-      weed.style.left = def.x;
-      weed.style.setProperty('--sway-dur', def.swayDur);
-      weed.style.setProperty('--sway-delay', def.swayDelay);
-      weed.style.opacity = def.opacity;
-
-      var svg = '<svg width="' + (def.w * 2) + '" height="' + def.h + '" viewBox="0 0 ' + (def.w * 2) + ' ' + def.h + '">' +
-        '<ellipse cx="' + def.w + '" cy="' + (def.h * 0.85) + '" rx="' + (def.w * 0.25) + '" ry="' + (def.h * 0.8) + '" fill="#5a8a6a" opacity="0.6"/>' +
-        '<ellipse cx="' + (def.w * 0.65) + '" cy="' + (def.h * 0.75) + '" rx="' + (def.w * 0.18) + '" ry="' + (def.h * 0.6) + '" fill="#4a7a5a" opacity="0.5"/>' +
-        '<ellipse cx="' + (def.w * 1.35) + '" cy="' + (def.h * 0.8) + '" rx="' + (def.w * 0.2) + '" ry="' + (def.h * 0.7) + '" fill="#5a8a6a" opacity="0.5"/>' +
-        '</svg>';
-      weed.innerHTML = svg;
-      container.appendChild(weed);
-    });
-  })();
 
   // ═══════════════════════════════════════════════════════
   //  AUTO-ROTATION TIMER (60s, last 15s red countdown)
@@ -2206,7 +2140,273 @@ body.overlay-open { overflow: hidden; }
       }
     });
   }
+
+  // ═══════════════════════════════════════════════════════
+  //  AI CHAT ASSISTANT (DeepSeek)
+  // ═══════════════════════════════════════════════════════
+
+  (function() {
+    var API_URL = 'https://api.deepseek.com/v1/chat/completions';
+    var API_KEY = 'sk-9cd2150c397f4294934ef02d7cb15822';
+    var MODEL = 'deepseek-v4-flash';
+    var HEALTH_URL = 'https://api.deepseek.com/v1/models';
+    var REQUEST_TIMEOUT = 30000;
+    var HEALTH_TIMEOUT = 5000;
+
+    var chatPanel = document.getElementById('aiChatPanel');
+    var chatMessages = document.getElementById('aiChatMessages');
+    var chatInput = document.getElementById('aiChatInput');
+    var chatSend = document.getElementById('aiChatSend');
+    var chatClose = document.getElementById('aiChatClose');
+    var chatToggle = document.getElementById('aiChatToggle');
+    var chatDot = document.getElementById('aiChatDot');
+    var chatIndicator = document.getElementById('aiChatIndicator');
+    var chatStatusText = document.getElementById('aiChatStatusText');
+    var isOnline = true;
+
+    // ── Toggle panel ─────────────────────────────────────
+    chatToggle.addEventListener('click', function() {
+      if (chatPanel.classList.contains('open')) {
+        chatPanel.classList.remove('open');
+      } else {
+        chatPanel.classList.add('open');
+        setTimeout(function() { chatInput.focus(); }, 150);
+      }
+    });
+
+    chatClose.addEventListener('click', function() {
+      chatPanel.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && chatPanel.classList.contains('open') && document.activeElement !== chatInput) {
+        chatPanel.classList.remove('open');
+      }
+    });
+
+    // ── Send on Enter ────────────────────────────────────
+    chatInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    chatSend.addEventListener('click', sendMessage);
+
+    // ── Build system prompt with live page context ───────
+    function buildSystemPrompt() {
+      var filterInfo = (currentFilter && currentFilter !== '*')
+        ? '当前分类筛选: ' + currentFilter
+        : '当前浏览全部概念（无分类筛选）';
+      var pi = (currentPattern >= 0) ? currentPattern : 0;
+      var patternName = PATTERN_NAMES[pi] || '未知图案';
+      return '你是吴军知识库 AI 助手，帮助用户探索吴军博士的思想体系知识库。' +
+        '知识库包含 1192 个跨课程核心概念，涵盖 9 个分类：' +
+        '概念/思想、人物、方法/框架、事件/运动、理论/定律、发明/技术、经济/商业、教育/社会、时代/时期。' +
+        '来源课程：硅谷来信、谷歌方法论、科技史纲60讲、世界文明史、信息论40讲、数学通识50讲、逻辑思维训练、教育方法、阅读与写作。' +
+        '【页面状态】' + filterInfo + '。马赛克图案：' + patternName + '。' +
+        '回答要求：简洁有洞察力（200字内），引用吴军课程中的具体概念。' +
+        '若问题与吴军思想体系完全无关，礼貌引导回知识库话题。';
+    }
+
+    // ── Simple Markdown → HTML ───────────────────────────
+    function renderMarkdown(text) {
+      if (!text) return '';
+      var html = text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\n\s*[-•]\s+(.+)/g, '\n<li>$1</li>')
+        .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+        .replace(/\n/g, '<br>');
+      return html;
+    }
+
+    // ── Add message bubble ───────────────────────────────
+    function addMessage(role, content) {
+      var div = document.createElement('div');
+      div.className = 'ai-chat-msg ' + role;
+      if (role === 'assistant') {
+        div.innerHTML = renderMarkdown(content);
+      } else {
+        div.textContent = content;
+      }
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return div;
+    }
+
+    // ── Typing indicator ─────────────────────────────────
+    function showTyping() {
+      var el = document.createElement('div');
+      el.className = 'ai-chat-typing';
+      el.id = 'aiTyping';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      chatMessages.appendChild(el);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function hideTyping() {
+      var el = document.getElementById('aiTyping');
+      if (el) el.remove();
+    }
+
+    // ── Online / Offline status ──────────────────────────
+    function setOnline(online) {
+      isOnline = online;
+      var method = online ? 'remove' : 'add';
+      chatDot.classList[method]('offline');
+      chatIndicator.classList[method]('offline');
+      chatStatusText.textContent = online ? 'DeepSeek 在线' : '离线模式';
+    }
+
+    // ── Mock reply (offline fallback) ────────────────────
+    function getMockReply(msg) {
+      var lower = msg.toLowerCase();
+
+      // Category mention → read legend data
+      var mentioned = [];
+      CATEGORY_SORT_ORDER.forEach(function(cat) {
+        if (lower.indexOf(cat) !== -1) mentioned.push(cat);
+      });
+
+      if (mentioned.length > 0) {
+        var counts = {};
+        CONCEPTS.forEach(function(c) {
+          if (!c || !c.display_category) return;
+          counts[c.display_category] = (counts[c.display_category] || 0) + 1;
+        });
+        var parts = mentioned.map(function(cat) {
+          return '**' + cat + '**：' + (counts[cat] || 0) + ' 个概念';
+        });
+        return '根据知识库数据，' + parts.join('，') + '。\n\n点击顶部导航栏的分类按钮可以筛选浏览，或点击亮起的概念卡片查看详细定义。';
+      }
+
+      if (lower.indexOf('定义') !== -1 || lower.indexOf('解释') !== -1 || lower.indexOf('是什么') !== -1) {
+        return '请点击页面中亮起的概念卡片查看详细定义。每张卡片包含：定义、类比、事例、反例和关联概念。您也可以使用顶部的分类导航筛选特定类别的概念。';
+      }
+
+      if (lower.indexOf('统计') !== -1 || lower.indexOf('多少') !== -1 || lower.indexOf('数量') !== -1 || lower.indexOf('总共') !== -1) {
+        var counts = {};
+        CONCEPTS.forEach(function(c) {
+          if (!c || !c.display_category) return;
+          counts[c.display_category] = (counts[c.display_category] || 0) + 1;
+        });
+        var lines = CATEGORY_SORT_ORDER.filter(function(cat) { return counts[cat]; }).map(function(cat) {
+          return '• **' + cat + '**：' + counts[cat];
+        });
+        return '知识库共 **' + CONCEPTS.length + '** 个概念：\n' + lines.join('\n') + '\n\n当前马赛克图案：' + (PATTERN_NAMES[currentPattern >= 0 ? currentPattern : 0] || '');
+      }
+
+      return '我正在离线模式，无法连接 DeepSeek API。请尝试：\n• 点击页面中的概念卡片查看详情\n• 使用顶部分类导航筛选特定类别\n• 观察不同马赛克图案中亮起的卡片\n\n网络恢复后我将能提供更详细的回答。';
+    }
+
+    // ── Send to API or fallback ──────────────────────────
+    function sendMessage() {
+      var text = chatInput.value.trim();
+      if (!text) return;
+
+      chatInput.value = '';
+      chatSend.disabled = true;
+      addMessage('user', text);
+      showTyping();
+
+      if (!isOnline) {
+        setTimeout(function() {
+          hideTyping();
+          addMessage('assistant', getMockReply(text));
+          chatSend.disabled = false;
+          chatInput.focus();
+        }, 700 + Math.random() * 500);
+        return;
+      }
+
+      var controller = new AbortController();
+      var tid = setTimeout(function() { controller.abort(); }, REQUEST_TIMEOUT);
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + API_KEY
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [
+            { role: 'system', content: buildSystemPrompt() },
+            { role: 'user', content: text }
+          ],
+          max_tokens: 600,
+          temperature: 0.6
+        }),
+        signal: controller.signal
+      })
+      .then(function(res) {
+        clearTimeout(tid);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        hideTyping();
+        var reply = '';
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          reply = data.choices[0].message.content || '';
+        }
+        if (!reply) reply = '（AI 未返回内容，请重试）';
+        addMessage('assistant', reply);
+        chatSend.disabled = false;
+        chatInput.focus();
+      })
+      .catch(function(err) {
+        clearTimeout(tid);
+        hideTyping();
+        console.warn('DeepSeek API 不可达，切换离线模式:', err.message);
+        setOnline(false);
+        addMessage('assistant', getMockReply(text));
+        chatSend.disabled = false;
+        chatInput.focus();
+      });
+    }
+
+    // ── Health check ──────────────────────────────────────
+    function healthCheck() {
+      var ctrl = new AbortController();
+      var tid = setTimeout(function() { ctrl.abort(); }, HEALTH_TIMEOUT);
+
+      fetch(HEALTH_URL, {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + API_KEY },
+        signal: ctrl.signal
+      })
+      .then(function(res) {
+        clearTimeout(tid);
+        setOnline(res.ok);
+      })
+      .catch(function(err) {
+        clearTimeout(tid);
+        console.warn('DeepSeek 健康检查失败:', err.message);
+        setOnline(false);
+      });
+    }
+
+    // ── Welcome ───────────────────────────────────────────
+    function showWelcome() {
+      addMessage('assistant',
+        '你好！我是吴军知识库 AI 助手。可以问我关于任何概念的问题——比如「香农的信息论核心是什么？」或「文艺复兴和启蒙运动有什么关系？」'
+      );
+    }
+
+    // ── Init ──────────────────────────────────────────────
+    healthCheck();
+    setTimeout(function() {
+      if (chatMessages.children.length === 0) showWelcome();
+    }, 350);
+
+  })();
+
 })();
 </script>
+
 </body>
 </html>
