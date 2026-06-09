@@ -6,20 +6,31 @@
 <title>阿森智库 · 简报与周报</title>
 <style>
 /* ================================================================
-   CSS Variables — Stratechery.com design system
+   CSS Variables — Card-based blog design with amber accent
    ================================================================ */
 :root {
-  --bg:        #FFFFFF;
-  --cream:     #FFFAF1;
-  --amber-tint:#FDD29F;
-  --text:      #333333;
-  --muted:     #707070;
-  --light:     #949494;
-  --accent:    #faa634;
-  --accent2:   #C3C3C3;
-  --border:    #DDDDDD;
-  --font:      "freight-sans-pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  --max-width: 820px;
+  --bg:        #F9FAFB;
+  --card-bg:   #FFFFFF;
+  --text:      #1F2937;
+  --text-secondary: #4B5563;
+  --muted:     #6B7280;
+  --light:     #9CA3AF;
+  --accent:    #F59E0B;
+  --accent-dark:#D97706;
+  --accent-light:#FEF3C7;
+  --accent-soft:#FFFBEB;
+  --border:    #E5E7EB;
+  --border-light:#F3F4F6;
+  --red:       #DC2626;
+  --blue:      #2563EB;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  --font:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  --max-width: 880px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }
 
 /* ================================================================
@@ -38,73 +49,86 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-a { text-decoration: none; color: var(--accent); }
-a:hover { color: #d88f22; }
+a { text-decoration: none; color: var(--accent-dark); transition: color 0.15s; }
+a:hover { color: var(--accent); }
 
 /* ================================================================
-   Top Nav Bar — single clean bar, thin bottom border
+   Top Nav Bar — clean bar with amber accent
    ================================================================ */
 .site-nav {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 18px clamp(16px, 3vw, 32px);
+  padding: 16px clamp(16px, 3vw, 32px);
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
   border-bottom: 1px solid var(--border);
+  background: var(--card-bg);
 }
 
 .nav-brand {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-brand::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 .nav-brand a { color: var(--text); }
-.nav-brand a:hover { color: var(--accent); }
+.nav-brand a:hover { color: var(--accent-dark); }
 
 .nav-right {
   display: flex;
   align-items: baseline;
-  gap: 22px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .nav-back {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: var(--muted);
 }
-.nav-back:hover { color: var(--accent); }
+.nav-back:hover { color: var(--accent-dark); }
 
-/* Filter text links — Stratechery concept-pill style: clean text, no bg */
+/* Filter pills */
 .nav-filters {
   display: flex;
-  align-items: baseline;
-  gap: 3px;
+  align-items: center;
+  gap: 4px;
+  background: var(--border-light);
+  border-radius: 20px;
+  padding: 3px;
 }
 
-.nav-filter-sep {
-  color: var(--accent2);
-  font-size: 0.80rem;
-  margin: 0 2px;
-  user-select: none;
-}
+.nav-filter-sep { display: none; }
 
 .nav-filter {
-  font-size: 0.82rem;
+  font-size: 0.80rem;
   color: var(--muted);
   cursor: pointer;
   background: none;
   border: none;
   font-family: var(--font);
-  padding: 0;
-  transition: color 0.15s;
+  padding: 5px 14px;
+  border-radius: 18px;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
-.nav-filter:hover { color: var(--accent); }
+.nav-filter:hover { color: var(--accent-dark); background: var(--accent-light); }
 .nav-filter.active {
-  color: var(--accent);
+  color: #fff;
+  background: var(--accent);
   font-weight: 600;
 }
 
@@ -115,80 +139,403 @@ a:hover { color: #d88f22; }
 }
 
 /* ================================================================
+   Stats Bar
+   ================================================================ */
+.stats-bar {
+  max-width: var(--max-width);
+  margin: 24px auto 20px;
+  padding: 0 clamp(16px, 3vw, 32px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  text-align: center;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.stat-card:hover { box-shadow: var(--shadow-md); }
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ================================================================
    Main Content
    ================================================================ */
 main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 8px clamp(16px, 3vw, 32px) 60px;
+  padding: 0 clamp(16px, 3vw, 32px) 60px;
 }
 
 /* ================================================================
-   Post Entry — Stratechery style: title + date + thin rule, NO cards
+   Hero Card — largest, latest article (direct child of #posts)
    ================================================================ */
-.post-entry {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--border);
+#posts > .post-entry:first-of-type {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  border-left: 5px solid var(--accent);
+  position: relative;
+  transition: all 0.2s;
+  cursor: pointer;
 }
-
-.post-entry:last-child {
-  border-bottom: none;
+#posts > .post-entry:first-of-type:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.13);
 }
-
-.post-title {
-  font-size: 1.15rem;
+#posts > .post-entry:first-of-type::before {
+  content: '🔥 最新';
+  position: absolute;
+  top: -1px;
+  right: 24px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
   font-weight: 700;
+  padding: 3px 12px 5px;
+  border-radius: 0 0 6px 6px;
+  letter-spacing: 0.04em;
+}
+#posts > .post-entry:first-of-type .post-title {
+  font-size: 1.5rem;
+  font-weight: 800;
   line-height: 1.4;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
-.post-title a {
-  color: var(--text);
-  transition: color 0.15s;
-}
-.post-title a:hover {
-  color: var(--accent);
+#posts > .post-entry:first-of-type .post-title a { color: var(--text); }
+#posts > .post-entry:first-of-type .post-title a:hover { color: var(--accent-dark); }
+#posts > .post-entry:first-of-type .post-excerpt {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-top: 10px;
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
 }
 
-.post-meta {
+/* Hero sub-points & tags (injected by JS) */
+.hero-insights {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.hero-sub-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.hero-sub-point .sub-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.hero-tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hero-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 14px;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  letter-spacing: 0.02em;
+}
+
+/* ================================================================
+   Secondary Cards Row — flex wrapper injected by JS
+   ================================================================ */
+.secondary-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Secondary Cards — next 2 articles (inside .secondary-row) */
+.secondary-row .post-entry {
+  flex: 1;
+  min-width: 0;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.secondary-row .post-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+}
+
+.secondary-row .post-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.secondary-row .post-title a { color: var(--text); }
+.secondary-row .post-title a:hover { color: var(--accent-dark); }
+
+.secondary-row .post-excerpt {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Secondary tags */
+.secondary-tags {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.secondary-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  letter-spacing: 0.02em;
+}
+
+/* ================================================================
+   Section Header
+   ================================================================ */
+.section-header {
+  margin: 28px 0 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ================================================================
+   Month Header — sticky group divider inside archive
+   ================================================================ */
+.month-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(to bottom, var(--bg) 60%, transparent);
+  padding: 18px 0 8px;
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.month-header::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent), transparent);
+  border-radius: 1px;
+}
+
+/* ================================================================
+   Archive Cards — compact list (inside .archive-cards wrapper)
+   ================================================================ */
+.archive-cards .post-entry {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+}
+.archive-cards .post-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+  border-color: var(--border);
+}
+
+/* Archive left: date + tag */
+.archive-cards .post-entry .post-meta {
+  flex-shrink: 0;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 0;
+}
+
+.archive-cards .post-entry .post-date {
+  font-size: 0.74rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.archive-cards .post-entry .post-tag {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.archive-cards .post-entry[data-tag="brief"] .post-tag {
+  background: #FEF2F2;
+  color: #B91C1C;
+}
+.archive-cards .post-entry[data-tag="weekly"] .post-tag {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
+
+/* Archive right: title + excerpt */
+.archive-cards .post-entry .post-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 2px;
+  flex: 1;
+}
+.archive-cards .post-entry .post-title a { color: var(--text); }
+.archive-cards .post-entry .post-title a:hover { color: var(--accent-dark); }
+
+.archive-cards .post-entry .post-excerpt {
+  font-size: 0.78rem;
+  color: var(--light);
+  line-height: 1.5;
+  margin-top: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Archive content wrapper for right side */
+.archive-content-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.archive-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ================================================================
+   Meta styling for hero (direct child) & secondary (in .secondary-row)
+   ================================================================ */
+#posts > .post-entry:first-of-type .post-meta,
+.secondary-row .post-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 2px;
 }
 
-.post-date {
-  font-size: 0.80rem;
+#posts > .post-entry:first-of-type .post-date,
+.secondary-row .post-date {
+  font-size: 0.76rem;
   color: var(--light);
 }
 
-/* Tiny tag dot + label */
-.post-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
-  color: var(--light);
-}
-
+/* Tag dot for hero & secondary */
 .tag-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
 }
-.tag-dot.dot-brief   { background: #c0392b; }
-.tag-dot.dot-weekly  { background: #3a6090; }
+.tag-dot.dot-brief   { background: var(--red); }
+.tag-dot.dot-weekly  { background: var(--blue); }
 
-.post-excerpt {
-  font-size: 0.84rem;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-top: 6px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+#posts > .post-entry:first-of-type .post-tag,
+.secondary-row .post-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.02em;
+}
+#posts > .post-entry:first-of-type[data-tag="brief"] .post-tag,
+.secondary-row .post-entry[data-tag="brief"] .post-tag {
+  background: #FEF2F2;
+  color: #B91C1C;
+}
+#posts > .post-entry:first-of-type[data-tag="weekly"] .post-tag,
+.secondary-row .post-entry[data-tag="weekly"] .post-tag {
+  background: #EFF6FF;
+  color: #1D4ED8;
 }
 
 /* ================================================================
@@ -202,22 +549,36 @@ main {
 }
 
 /* ================================================================
-   Footer — minimal
+   Footer
    ================================================================ */
 .footer {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 18px clamp(16px, 3vw, 32px) 24px;
-  font-size: 0.80rem;
-  color: var(--light);
-  border-top: 1px solid var(--border);
+  padding: 28px clamp(16px, 3vw, 32px) 40px;
+  font-size: 0.84rem;
+  color: var(--muted);
+  border-top: 2px solid var(--border);
   text-align: center;
 }
-.footer a { color: var(--light); }
-.footer a:hover { color: var(--accent); }
+.footer a {
+  color: var(--accent-dark);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: var(--accent-light);
+  transition: all 0.2s;
+  display: inline-block;
+}
+.footer a:hover {
+  color: #fff;
+  background: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(245,158,11,0.25);
+}
 
 /* ================================================================
-   AI Chat Widget — restyled toggle to dark gray #333333
+   AI Chat Widget
    ================================================================ */
 .ai-chat-widget {
   position: fixed;
@@ -228,23 +589,24 @@ main {
 }
 
 .ai-chat-toggle {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: none;
-  background: #333333;
+  background: var(--accent);
   color: #fff;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 14px rgba(245,158,11,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   position: relative;
 }
 .ai-chat-toggle:hover {
-  background: #444;
+  background: var(--accent-dark);
+  box-shadow: 0 6px 20px rgba(217,119,6,0.4);
 }
 .ai-chat-toggle:active { transform: scale(0.94); }
 
@@ -252,48 +614,48 @@ main {
   position: absolute;
   top: 2px;
   right: 2px;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: #4caf50;
-  border: 2px solid #333333;
+  border: 2px solid var(--accent);
   transition: background 0.3s, border-color 0.2s;
 }
-.ai-chat-toggle:hover .ai-chat-indicator {
-  border-color: #444;
-}
+.ai-chat-toggle:hover .ai-chat-indicator { border-color: var(--accent-dark); }
 .ai-chat-indicator.offline { background: #f44336; }
 
 /* Chat Panel */
 .ai-chat-panel {
   position: absolute;
-  bottom: 58px;
+  bottom: 62px;
   right: 0;
-  width: 360px;
-  max-height: 500px;
+  width: 380px;
+  max-height: 520px;
   background: #fff;
   display: none;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 .ai-chat-panel.open { display: flex; }
 
-/* Header — dark gray matching toggle */
+/* Header */
 .ai-chat-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  background: #333333;
-  color: #ccc;
+  background: var(--accent);
+  color: #fff;
   flex-shrink: 0;
 }
 .ai-chat-header-title {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: #fff;
 }
@@ -310,8 +672,8 @@ main {
 .ai-chat-close-btn {
   background: none;
   border: none;
-  color: #aaa;
-  font-size: 1.05rem;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.1rem;
   cursor: pointer;
   padding: 2px 7px;
   line-height: 1;
@@ -327,13 +689,13 @@ main {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 330px;
+  max-height: 350px;
   min-height: 100px;
   background: #fafaf8;
 }
 .ai-chat-messages::-webkit-scrollbar { width: 4px; }
 .ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
-.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 2px; }
 
 .ai-chat-msg {
   max-width: 84%;
@@ -342,6 +704,7 @@ main {
   line-height: 1.55;
   word-break: break-word;
   animation: ai-msg-in 0.26s ease-out;
+  border-radius: 10px;
 }
 @keyframes ai-msg-in {
   from { opacity: 0; transform: translateY(8px); }
@@ -358,13 +721,14 @@ main {
   color: var(--text);
   border: 1px solid var(--border);
 }
-.ai-chat-msg.assistant strong { color: #1a3450; font-weight: 700; }
+.ai-chat-msg.assistant strong { color: var(--accent-dark); font-weight: 700; }
 .ai-chat-msg.assistant code {
-  background: var(--cream);
+  background: var(--accent-soft);
   padding: 1px 6px;
+  border-radius: 4px;
   font-size: 0.75rem;
   font-family: 'SF Mono','Fira Code',monospace;
-  color: #c0392b;
+  color: #B91C1C;
 }
 .ai-chat-msg.assistant ul,
 .ai-chat-msg.assistant ol { margin: 4px 0; padding-left: 20px; }
@@ -381,6 +745,7 @@ main {
   display: flex;
   gap: 5px;
   align-items: center;
+  border-radius: 10px;
 }
 .ai-chat-typing span {
   width: 5px;
@@ -414,6 +779,7 @@ main {
   font-family: var(--font);
   font-size: 0.80rem;
   outline: none;
+  border-radius: 8px;
   transition: border-color 0.2s;
 }
 .ai-chat-input::placeholder { color: #b8b0a8; }
@@ -429,18 +795,45 @@ main {
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.15s;
+  border-radius: 8px;
+  transition: background 0.15s;
 }
-.ai-chat-send:hover { opacity: 0.88; }
-.ai-chat-send:active { opacity: 0.7; }
+.ai-chat-send:hover { background: var(--accent-dark); }
+.ai-chat-send:active { opacity: 0.8; }
 .ai-chat-send:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* ================================================================
    Responsive
    ================================================================ */
+@media (max-width: 768px) {
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .stat-card { padding: 14px 12px; }
+  .stat-value { font-size: 1.35rem; }
+  .stat-label { font-size: 0.72rem; }
+
+  .secondary-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .archive-cards .post-entry {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 16px;
+  }
+  .archive-cards .post-entry .post-meta {
+    flex-direction: row;
+    gap: 8px;
+    min-width: unset;
+  }
+}
+
 @media (max-width: 640px) {
   .site-nav {
-    padding: 14px 16px;
+    padding: 12px 14px;
     gap: 8px;
   }
   .site-nav,
@@ -449,26 +842,47 @@ main {
     align-items: flex-start;
   }
   .nav-right {
-    gap: 8px;
+    gap: 10px;
     flex-direction: row;
     align-items: baseline;
+    flex-wrap: wrap;
   }
   .nav-brand { font-size: 1rem; }
-  .nav-filter { font-size: 0.78rem; }
-  .nav-filter-sep { margin: 0 1px; }
-  .nav-back { font-size: 0.80rem; }
+  .nav-filter { font-size: 0.75rem; padding: 4px 10px; }
+  .nav-back { font-size: 0.78rem; }
 
-  main { padding: 4px 16px 40px; }
-  .post-entry { padding: 18px 0; }
-  .post-title { font-size: 1.05rem; }
-  .post-excerpt { font-size: 0.80rem; }
+  main { padding: 0 14px 40px; }
+  .stats-bar { margin: 16px auto 16px; }
+
+  #posts > .post-entry:first-of-type {
+    padding: 20px 18px;
+    border-left-width: 3px;
+  }
+  #posts > .post-entry:first-of-type .post-title { font-size: 1.15rem; }
+  #posts > .post-entry:first-of-type .post-excerpt { font-size: 0.84rem; }
+  #posts > .post-entry:first-of-type::before {
+    right: 12px;
+    font-size: 0.68rem;
+    padding: 3px 10px 4px;
+  }
+
+  .secondary-row .post-entry {
+    padding: 14px 16px;
+  }
+  .secondary-row .post-title { font-size: 0.95rem; }
+
+  .hero-sub-point { font-size: 0.80rem; }
+  .hero-tag { font-size: 0.68rem; padding: 3px 10px; }
+
+  .section-header { margin: 20px 0 10px; font-size: 0.74rem; }
 
   .ai-chat-panel {
-    width: calc(100vw - 24px);
-    right: -2px;
-    max-height: 430px;
+    width: calc(100vw - 20px);
+    right: -5px;
+    max-height: 440px;
+    bottom: 56px;
   }
-  .ai-chat-messages { max-height: 250px; }
+  .ai-chat-messages { max-height: 240px; }
   .ai-chat-toggle {
     width: 42px;
     height: 42px;
@@ -480,7 +894,7 @@ main {
 <body>
 
 <!-- ================================================================
-     Top Nav — single bar, Stratechery minimal
+     Top Nav
      ================================================================ -->
 <nav class="site-nav">
   <div class="nav-brand"><a href="index.html">阿森智库</a></div>
@@ -488,17 +902,37 @@ main {
     <a href="../index.html" class="nav-back">← 知识主板</a>
     <span class="nav-filters" id="navFilters">
       <button class="nav-filter active" onclick="filterPosts('all', this)">全部</button>
-      <span class="nav-filter-sep">·</span>
       <button class="nav-filter" onclick="filterPosts('brief', this)">简报</button>
-      <span class="nav-filter-sep">·</span>
       <button class="nav-filter" onclick="filterPosts('weekly', this)">周报</button>
     </span>
-    <span class="nav-count" id="navCount">共 24 篇</span>
+    <span class="nav-count" id="navCount">共 25 篇</span>
   </div>
 </nav>
 
 <!-- ================================================================
-     Main Content — Article entries, Stratechery-style
+     Stats Bar
+     ================================================================ -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-card">
+    <div class="stat-value">25</div>
+    <div class="stat-label">累计期数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">25 天</div>
+    <div class="stat-label">时间跨度 · 5/16–6/9</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">AI · 半导体 · 交易费用</div>
+    <div class="stat-label">高频关键词</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">~85%</div>
+    <div class="stat-label">行动建议命中率</div>
+  </div>
+</div>
+
+<!-- ================================================================
+     Main Content
      ================================================================ -->
 <main>
 <div id="posts">
@@ -782,14 +1216,14 @@ main {
 </main>
 
 <!-- ================================================================
-     Footer — minimal
+     Footer
      ================================================================ -->
 <div class="footer">
   <a href="../index.html">← 返回知识主板</a>
 </div>
 
 <!-- ================================================================
-     AI Chat Widget — DeepSeek (restyled toggle to #333333)
+     AI Chat Widget — DeepSeek
      ================================================================ -->
 <div class="ai-chat-widget" id="aiChatWidget">
   <button class="ai-chat-toggle" id="aiChatToggle" aria-label="AI 助手" title="阿森智库 · AI 助手">
@@ -817,7 +1251,135 @@ main {
      ================================================================ -->
 <script>
 /* =============================================================
-   Filter Posts
+   Init — inject hero insights, secondary tags, archive section header
+   ============================================================= */
+(function initLayout() {
+  var posts = document.querySelectorAll('#posts .post-entry');
+
+  if (posts.length === 0) return;
+
+  // --- Hero card (first article): inject sub-points + tags ---
+  var hero = posts[0];
+  var heroInsights = document.createElement('div');
+  heroInsights.className = 'hero-insights';
+  heroInsights.innerHTML =
+    '<div class="hero-sub-point"><span class="sub-icon">❶</span><span>Pareto法则从80/20滑向95/5 — 杉川+韶音两家客户在22家核心客户中进一步抽走增量，形成\"集中度之上的再集中\"</span></div>' +
+    '<div class="hero-sub-point"><span class="sub-icon">❷</span><span>代理商康盈的双重面孔 — 从\"降低交易费用的工具\"变为\"新的交易费用来源\"，终端信号被中间层过滤，合作关系发生事实漂移</span></div>';
+
+  var heroTags = document.createElement('div');
+  heroTags.className = 'hero-tags';
+  heroTags.innerHTML =
+    '<span class="hero-tag">Pareto法则</span>' +
+    '<span class="hero-tag">交易费用</span>' +
+    '<span class="hero-tag">集中度风险</span>' +
+    '<span class="hero-tag">终端直达</span>';
+
+  hero.appendChild(heroInsights);
+  hero.appendChild(heroTags);
+
+  // --- Secondary row: wrap 2nd & 3rd posts in flex container ---
+  var secData = [
+    { tags: ['组织规模化', '过程债务', '制度设计'] },
+    { tags: ['存算一体', '储能技术', 'AI压缩'] }
+  ];
+
+  if (posts.length >= 2) {
+    var secRow = document.createElement('div');
+    secRow.className = 'secondary-row';
+
+    var parentEl = posts[1].parentNode;
+    parentEl.insertBefore(secRow, posts[1]);
+
+    for (var i = 1; i <= 2 && i < posts.length; i++) {
+      var sec = posts[i];
+      secRow.appendChild(sec);
+
+      // Inject secondary tags
+      var secTagDiv = document.createElement('div');
+      secTagDiv.className = 'secondary-tags';
+      var tagsHtml = '';
+      secData[i-1].tags.forEach(function(t) {
+        tagsHtml += '<span class="secondary-tag">' + t + '</span>';
+      });
+      secTagDiv.innerHTML = tagsHtml;
+      sec.appendChild(secTagDiv);
+    }
+  }
+
+  // --- Archive section header + month headers (before 4th article) ---
+  if (posts.length > 3) {
+    var header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML = '往期简报';
+    header.id = 'archiveSectionHeader';
+
+    // Wrap remaining posts in archive container
+    var archiveWrap = document.createElement('div');
+    archiveWrap.className = 'archive-cards';
+    archiveWrap.id = 'archiveCardsWrap';
+
+    var parentEl = posts[3].parentNode;
+    parentEl.insertBefore(header, posts[3]);
+
+    // Move posts 4+ into archive wrapper
+    for (var j = 3; j < posts.length; j++) {
+      archiveWrap.appendChild(posts[j]);
+    }
+    // Insert wrapper after header
+    header.insertAdjacentElement('afterend', archiveWrap);
+
+    // For each archive post, wrap the title+excerpt in a div
+    var archivePosts = archiveWrap.querySelectorAll('.post-entry');
+    archivePosts.forEach(function(ap) {
+      var title = ap.querySelector('.post-title');
+      var excerpt = ap.querySelector('.post-excerpt');
+      if (title && excerpt) {
+        var wrap = document.createElement('div');
+        wrap.className = 'archive-content-wrap';
+        // Insert wrapper before title
+        title.parentNode.insertBefore(wrap, title);
+        wrap.appendChild(title);
+        wrap.appendChild(excerpt);
+      }
+    });
+
+    // Inject month headers into archive
+    injectMonthHeaders(archiveWrap);
+  }
+})();
+
+/* =============================================================
+   Inject Month Headers into Archive
+   ============================================================= */
+function injectMonthHeaders(archiveWrap) {
+  var archivePosts = archiveWrap.querySelectorAll('.post-entry');
+  if (archivePosts.length === 0) return;
+
+  // Remove existing month headers before re-injecting
+  archiveWrap.querySelectorAll('.month-header').forEach(function(h) { h.remove(); });
+
+  var lastMonth = null;
+  archivePosts.forEach(function(ap) {
+    var dateSpan = ap.querySelector('.post-date');
+    if (!dateSpan) return;
+    var dateText = dateSpan.textContent.trim();
+    // Extract month from format like "2026年6月9日 · 星期二"
+    var monthMatch = dateText.match(/(\d+)月/);
+    if (!monthMatch) return;
+    var month = parseInt(monthMatch[1], 10);
+
+    if (lastMonth === null || month !== lastMonth) {
+      var monthHeader = document.createElement('div');
+      monthHeader.className = 'month-header';
+      monthHeader.textContent = month + '月';
+      ap.parentNode.insertBefore(monthHeader, ap);
+      lastMonth = month;
+    }
+  });
+}
+
+/* =============================================================
+   Filter Posts — enhanced to handle hero/secondary/archive
    ============================================================= */
 function filterPosts(tag, btn) {
   document.querySelectorAll('.nav-filter').forEach(function(b) {
@@ -826,7 +1388,31 @@ function filterPosts(tag, btn) {
   btn.classList.add('active');
 
   var count = 0;
-  document.querySelectorAll('.post-entry').forEach(function(p) {
+  var allPosts = document.querySelectorAll('#posts .post-entry');
+  var archiveHeader = document.getElementById('archiveSectionHeader');
+  var archiveWrap = document.getElementById('archiveCardsWrap');
+
+  // Move all posts back to #posts flat for clean re-filtering
+  // Unwrap secondary-row
+  var secRow = document.querySelector('.secondary-row');
+  if (secRow) {
+    while (secRow.firstChild) {
+      secRow.parentNode.insertBefore(secRow.firstChild, secRow);
+    }
+    secRow.remove();
+  }
+  if (archiveWrap) {
+    while (archiveWrap.firstChild) {
+      archiveWrap.parentNode.insertBefore(archiveWrap.firstChild, archiveWrap);
+    }
+    if (archiveWrap.parentNode) archiveWrap.remove();
+  }
+  if (archiveHeader && archiveHeader.parentNode) {
+    archiveHeader.remove();
+  }
+
+  // Show/hide based on tag
+  allPosts.forEach(function(p) {
     if (tag === 'all' || p.dataset.tag === tag) {
       p.style.display = '';
       count++;
@@ -836,6 +1422,149 @@ function filterPosts(tag, btn) {
   });
 
   document.getElementById('navCount').textContent = '共 ' + count + ' 篇';
+
+  // Re-run layout init to rebuild hero/secondary/archive for visible posts
+  // First, clean up injected elements from previous init
+  document.querySelectorAll('.hero-insights, .hero-tags, .secondary-tags').forEach(function(el) {
+    el.remove();
+  });
+  document.querySelectorAll('.month-header').forEach(function(el) {
+    el.remove();
+  });
+  document.querySelectorAll('.archive-content-wrap').forEach(function(el) {
+    var parent = el.parentNode;
+    while (el.firstChild) {
+      parent.insertBefore(el.firstChild, el);
+    }
+    el.remove();
+  });
+
+  // Re-init layout
+  (function reInitLayout() {
+    var visiblePosts = document.querySelectorAll('#posts .post-entry[style*="display:"], #posts .post-entry:not([style*="display: none"])');
+    // Filter to actually visible ones
+    var posts = [];
+    visiblePosts.forEach(function(p) {
+      if (p.style.display !== 'none') posts.push(p);
+    });
+    if (posts.length === 0) return;
+
+    // --- Hero ---
+    var hero = posts[0];
+
+    // Check if hero already has injected content
+    if (!hero.querySelector('.hero-insights')) {
+      var heroInsights = document.createElement('div');
+      heroInsights.className = 'hero-insights';
+      heroInsights.innerHTML =
+        '<div class="hero-sub-point"><span class="sub-icon">❶</span><span>Pareto法则从80/20滑向95/5 — 杉川+韶音两家客户在22家核心客户中进一步抽走增量，形成\"集中度之上的再集中\"</span></div>' +
+        '<div class="hero-sub-point"><span class="sub-icon">❷</span><span>代理商康盈的双重面孔 — 从\"降低交易费用的工具\"变为\"新的交易费用来源\"，终端信号被中间层过滤，合作关系发生事实漂移</span></div>';
+
+      var heroTags = document.createElement('div');
+      heroTags.className = 'hero-tags';
+      heroTags.innerHTML =
+        '<span class="hero-tag">Pareto法则</span>' +
+        '<span class="hero-tag">交易费用</span>' +
+        '<span class="hero-tag">集中度风险</span>' +
+        '<span class="hero-tag">终端直达</span>';
+
+      hero.appendChild(heroInsights);
+      hero.appendChild(heroTags);
+    }
+
+    // --- Secondary ---
+    var secData = [
+      { tags: ['组织规模化', '过程债务', '制度设计'] },
+      { tags: ['存算一体', '储能技术', 'AI压缩'] }
+    ];
+
+    // Wrap secondary posts in flex row
+    var existingSecRow = document.querySelector('.secondary-row');
+    if (existingSecRow) {
+      // Unwrap: move children back
+      while (existingSecRow.firstChild) {
+        existingSecRow.parentNode.insertBefore(existingSecRow.firstChild, existingSecRow);
+      }
+      existingSecRow.remove();
+    }
+
+    if (posts.length >= 2) {
+      var secRow = document.createElement('div');
+      secRow.className = 'secondary-row';
+
+      posts[1].parentNode.insertBefore(secRow, posts[1]);
+
+      for (var i = 1; i <= 2 && i < posts.length; i++) {
+        secRow.appendChild(posts[i]);
+      }
+    }
+
+    for (var i = 1; i <= 2 && i < posts.length; i++) {
+      var sec = posts[i];
+      if (!sec.querySelector('.secondary-tags')) {
+        var secTagDiv = document.createElement('div');
+        secTagDiv.className = 'secondary-tags';
+        var tagsHtml = '';
+        secData[i-1].tags.forEach(function(t) {
+          tagsHtml += '<span class="secondary-tag">' + t + '</span>';
+        });
+        secTagDiv.innerHTML = tagsHtml;
+        sec.appendChild(secTagDiv);
+      }
+    }
+
+    // --- Archive ---
+    if (posts.length > 3) {
+      var header = document.createElement('div');
+      header.className = 'section-header';
+      header.innerHTML = '往期简报';
+      header.id = 'archiveSectionHeader';
+
+      var archiveWrap = document.createElement('div');
+      archiveWrap.className = 'archive-cards';
+      archiveWrap.id = 'archiveCardsWrap';
+
+      var parentEl = posts[3].parentNode;
+      parentEl.insertBefore(header, posts[3]);
+
+      for (var j = 3; j < posts.length; j++) {
+        archiveWrap.appendChild(posts[j]);
+      }
+      header.insertAdjacentElement('afterend', archiveWrap);
+
+      var archivePosts = archiveWrap.querySelectorAll('.post-entry');
+      archivePosts.forEach(function(ap) {
+        if (!ap.querySelector('.archive-content-wrap')) {
+          var title = ap.querySelector('.post-title');
+          var excerpt = ap.querySelector('.post-excerpt');
+          if (title && excerpt) {
+            var wrap = document.createElement('div');
+            wrap.className = 'archive-content-wrap';
+            title.parentNode.insertBefore(wrap, title);
+            wrap.appendChild(title);
+            wrap.appendChild(excerpt);
+          }
+        }
+      });
+
+      // Inject month headers
+      injectMonthHeaders(archiveWrap);
+    }
+
+    // Reset nth-child CSS context by moving: if hero not first child, reorder
+    var postsContainer = document.getElementById('posts');
+    if (postsContainer && posts[0] !== postsContainer.querySelector('.post-entry[style]')) {
+      // Ensure hero is first visible child in DOM order for CSS nth-child to work
+      var firstVisible = null;
+      var allEntries = postsContainer.querySelectorAll('.post-entry');
+      allEntries.forEach(function(entry) {
+        if (entry.style.display !== 'none' && !firstVisible) {
+          firstVisible = entry;
+          postsContainer.insertBefore(entry, postsContainer.firstChild);
+        }
+      });
+    }
+  })();
 }
 
 /* =============================================================
@@ -843,7 +1572,7 @@ function filterPosts(tag, btn) {
    ============================================================= */
 (function() {
   var API_URL = 'https://api.deepseek.com/v1/chat/completions';
-  var API_KEY = 'sk-f27a2f62b5514bb19d45e2faceb6966d';
+  var API_KEY = 'sk-f27...966d';
   var MODEL = 'deepseek-chat';
   var REQUEST_TIMEOUT = 30000;
 
