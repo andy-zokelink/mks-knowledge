@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人类演化与文明进程 — 科技参考3 MKS</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="home-btn">← 科技参考3 主板</a>
+  <span class="breadcrumb">人类演化与文明进程 · 32 篇文章</span>
+</div>
+
+<div class="container">
+  <div class="topic-header">
+    <div class="topic-icon">🧬</div>
+    <h2>人类演化与文明进程</h2>
+    <p class="topic-subtitle">从尼安德特人到AI，人类如何走到今天</p>
+    <p class="topic-desc">智人为什么战胜了尼安德特人？暴力如何在人类社会中消退？语言与文字如何涌现？32篇文章从演化生物学、人类学与历史维度审视人类文明的底层动力。</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-badge"><span class="num">32</span> 篇文章</div>
+    <div class="stat-badge">📅 2023-2024</div>
+    <div class="stat-badge">🎯 MKS 最小知识集</div>
+  </div>
+
+  <!-- Key Concepts -->
+  <div class="section-title">核心概念</div>
+  <div class="concepts-grid">
+    
+      <div class="concept-card">
+        <div class="concept-num">1</div>
+        <h5>战争如何起源</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">2</div>
+        <h5>新一代黄金，下一代帝国</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">3</div>
+        <h5>秩序的涌现</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">4</div>
+        <h5>人类对地球的“全面改造”（上）</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">5</div>
+        <h5>人类对地球的“全面改造”（下）</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">6</div>
+        <h5>重新审视数学课</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">7</div>
+        <h5>关于牛顿的《原理》背后的故事</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">8</div>
+        <h5>罗素绝处逢生</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">9</div>
+        <h5>生命诞出的几种争论</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">10</div>
+        <h5>牛顿为什么不愿发表成果+为什么有些人总是感冒</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">11</div>
+        <h5>演化中的脑残设计</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">12</div>
+        <h5>演化中的复杂设计</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+  </div>
+
+  <!-- Article List -->
+  <div class="section-title">全部文章</div>
+  <div class="articles-list">
+    
+      <div class="article-card">
+        <span class="art-num">#11</span>
+        <h4>战争如何起源？</h4>
+        <div class="art-summary">全球化进程在最近几年慢下来了，世界上爆发了两场战争。今天这期《科技参考》并不涉及任何一场，而是围绕人类历史谈一谈战争的起源。</div>
+        <div class="art-insights"><span class="insight-tag">在这个定义下，生物个体因为领地、食物、交配权等等发生的殊死搏斗就不能算战争</span>
+<span class="insight-tag">在这个定义下，考古学家普遍公认的最早的一个战争考古遗迹是杰贝尔·萨哈巴墓地（Jebel Sahaba graveyard），13400年前</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#20</span>
+        <h4>新一代黄金，下一代帝国</h4>
+        <div class="art-summary">2023年4月，马斯克在接受采访时带着抱怨的口气嘲讽到：现在每个人和他们的狗都在买GPU。他讽刺的其实是当下抢购GPU的风潮，带着抱怨的口气是因为马斯克自己的公司抢不到多少。</div>
+        <div class="art-insights"><span class="insight-tag">他讽刺的其实是当下抢购GPU的风潮，带着抱怨的口气是因为马斯克自己的公司抢不到多少</span>
+<span class="insight-tag">马斯克掌控着几家世界上最有钱的公司，如果连他都抢不到，那么可想而知，这是一个钱都搞不定的问题，或者说GPU比钱都值钱</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#86</span>
+        <h4>秩序的涌现</h4>
+        <div class="art-summary">秩序的涌现，是每一季《科技参考》我都会写到的内容。理解涌现，会大幅提升一个人的审美和价值观，他会更好地理解复杂现象，无论这个现象当前是否有完美的解释，起码他能一眼看出哪些解释肯定不靠谱。</div>
+        <div class="art-insights"><span class="insight-tag">后面这3条可以理解为，这种细胞需要一定量的同伴才能生存下去，太少就会死掉，太多也会因为资源不足而死掉，周围有2个是最合适的</span>
+<span class="insight-tag">之后就是最有意思的部分了！
+比如，4个黑色方块上下左右紧挨着组成一个大方块，说明这里有4个活细胞，那么之后它会怎样演化呢？感兴趣的话你可以算算，其实时间再走一格，图案不变，再往下走，都是不变</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#91</span>
+        <h4>人类对地球的“全面改造”（上）</h4>
+        <div class="art-summary">这两期《科技参考》，我们关注一下人类活动对地球的影响。我收集了最近几年多个方面的研究，分上下两期介绍给大家。</div>
+        <div class="art-insights"><span class="insight-tag">最热的一天，最热的一个月
+先说第一个变化，全球平均温度又创新高</span>
+<span class="insight-tag">老同学知道，咱们专栏一直关注环境问题，但我并不是什么环保主义者，只是在有关键的新信息出来时才播报一下，看看地球最近又发现了哪些异常现象是由人类活动导致的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#92</span>
+        <h4>人类对地球的“全面改造”（下）</h4>
+        <div class="art-summary">上期我预告了，这期咱们介绍一个叫作“地球限度”（Planetary boundaries）的理论，它是一个对地球9个维度的全面总结。</div>
+        <div class="art-insights"><span class="insight-tag">成员的最差水平就是一些在科学界没有任何影响力的机构，最好水平当然就是我们印象中最高大上的那些科学团体</span>
+<span class="insight-tag">但三个臭皮匠顶个诸葛亮，因为他们的理论确实说得通，所以相关的分析也有多篇发表在像《自然》这样的顶级期刊上</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#95</span>
+        <h4>重新审视数学课</h4>
+        <div class="art-summary">斯坦福大学的高级研究员——英国数学家凯斯·德弗林（Keith Devlin）最近写了一篇关于数学教育的文章。这篇文章从数学发展史的角度谈论了中学和大学的数学教育，很有启发。</div>
+        <div class="art-insights"><span class="insight-tag">斯坦福大学的高级研究员——英国数学家凯斯·德弗林（Keith Devlin）最近写了一篇关于数学教育的文章</span>
+<span class="insight-tag">中学数学课不涉及最近300年数学发展
+延续至今的数学，只有一条发展主线</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#101</span>
+        <h4>关于牛顿的《原理》背后的故事</h4>
+        <div class="art-summary">今天的《科技参考》，我们聊聊牛顿所有著作中影响力最大的《自然哲学的数学原理》，这套著作也是牛顿一生倾注心血最多的。</div>
+        <div class="art-insights"><span class="insight-tag">今天的《科技参考》，我们聊聊牛顿所有著作中影响力最大的《自然哲学的数学原理》，这套著作也是牛顿一生倾注心血最多的</span>
+<span class="insight-tag">如果数学是如此的神圣，那它就不仅是一种高效的工具，也不只是一种极为严谨的逻辑推理了，它可以说是已经触及到了自然的本质</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#103</span>
+        <h4>罗素绝处逢生</h4>
+        <div class="art-summary">最近，我在看罗素传记的时候发现了一个令人深思的故事。这期《科技参考》，我们就来说说。</div>
+        <div class="art-insights"><span class="insight-tag">对大部分普通民众来说，价值观是这样的：宗教=道德，罗素反宗教，所以罗素=邪恶</span>
+<span class="insight-tag">但教育董事会的投票结果是11票赞成、7票反对，最后还是决定任命罗素为市立学院的教授</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#104</span>
+        <h4>起源：生命诞出的几种争论</h4>
+        <div class="art-summary">这一系列内容，我们要说的是生命的起源。之所以要说这个话题，是因为这是一个建立演化思维的最好方式。</div>
+        <div class="art-insights"><span class="insight-tag">但由于这两本书的知识只更新到2015年，所以其中还补充了一些最近几年的新进展</span>
+<span class="insight-tag">各种关于“什么是生命”的定义如果求一个最大公约数，应该至少包含以下四条：
+具备新陈代谢机制（采集能量为己所用）</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#106</span>
+        <h4>问答：牛顿为什么不愿发表成果+为什么有些人总是感冒？</h4>
+        <div class="art-summary">今天是龙年大年初一，放假第一天，我祝大家龙年大吉！万事如意！咱们继续本周的答疑。</div>
+        <div class="art-insights"><span class="insight-tag">这周在讲牛顿的《原理》这本书的背景时，我给大家留了一道思考题：为什么他早早就证明出了行星运动规律，却迟迟不发表呢？
+
+
+对此，学术界并没有很统一的观点，我谈谈自己的看法</span>
+<span class="insight-tag">我认为，
+主要还是因为自己不太满意，但又没有时间全身心投入进去搞到满意，于是就把半成品一直搁置着</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#120</span>
+        <h4>起源：演化中的脑残设计</h4>
+        <div class="art-summary">），我们说到了能量发动机线粒体的出现，这期我们继续。</div>
+        <div class="art-insights"><span class="insight-tag">线粒体之所以重要，是因为有了它，很多细小的蛋白质才能像齿轮和传动轴那样工作起来</span>
+<span class="insight-tag">其实这是细胞内部真实发生的事情——毛毛虫一样的东西是驱动蛋白，大球是它要运输的蛋白质</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#121</span>
+        <h4>起源：演化中的复杂设计</h4>
+        <div class="art-summary">上一期我留了一个问题：既然细菌的发展趋势是越来越简单，而且还有基因水平转移的机制为越来越简单的趋势做保险，为什么今天地球生物却是如此的复杂呢？</div>
+        <div class="art-insights"><span class="insight-tag">上一期我留了一个问题：既然细菌的发展趋势是越来越简单，而且还有基因水平转移的机制为越来越简单的趋势做保险，为什么今天地球生物却是如此的复杂呢？
+这就要说到线粒体了</span>
+<span class="insight-tag">线粒体大约是在距今21亿年前产生的，而地球上最早的生命诞生于距今37亿年前</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#126</span>
+        <h4>为什么中国人喜欢玉？</h4>
+        <div class="art-summary">那一期，很多同学听完问了一个问题：玉为什么好像今天只有东亚人、只有中国人喜欢呢？</div>
+        <div class="art-insights"><span class="insight-tag">在
+《钻石最后的噱头：减碳》
+那一期，很多同学听完问了一个问题：玉为什么好像今天只有东亚人、只有中国人喜欢呢？
+今天这期《科技参考》，我们就来说说这个问题</span>
+<span class="insight-tag">人类祖先在开采矿石的过程中遇到过很多东西，比如——
+铁矿石
+我们的目标是开采金属铁，那么所谓的铁矿石如果按照含铁量的高低，其实有很多类，含铁量从低到高分别是：
+20%左右的绿泥石</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#135</span>
+        <h4>从尼安德特人到贝多芬，人类学新进展</h4>
+        <div class="art-summary">这期《科技参考》，我们来看看最近一年以来最新的关于人类学的研究，其中很多都是我们在过往几年《科技参考》、</div>
+        <div class="art-insights"><span class="insight-tag">这期《科技参考》，我们来看看最近一年以来最新的关于人类学的研究，其中很多都是我们在过往几年《科技参考》、
+《科学思维课》
+和
+《卓老板聊科技》
+里涉及到的，新的进展让人们对人类的形成有了更多的了解</span>
+<span class="insight-tag">2023年4月剑桥大学考古系和马克斯·普朗克研究所的科学家们在《当代生物学》上发表了对贝多芬DNA的研究，他们使用了五撮头发，这些都是都是贝多芬生命最后7年间的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#140</span>
+        <h4>爱新觉罗后裔：10万人</h4>
+        <div class="art-summary">前不久，在社交媒体上有一个日本美女火了。她毕业于东京大学医学部，博士学历，还是一所眼科诊所的院长，长相甜美不说，学历和工作都令人羡慕。此外，她还有一个身份——清朝皇室后裔，全名是爱新觉罗维。</div>
+        <div class="art-insights"><span class="insight-tag">那么，重复序列到底要重复多少次呢？
+就以刚刚举的第一个例子GGAA短序列来说，对全世界范围的人做测序后发现，有的人重复11次，有的人重复12次，有的人重复13次，最多的能重复到20次，中间的数字都有分布</span>
+<span class="insight-tag">哎！你说怎么是2个数字？因为人的DNA有两条链，一条拷贝自父亲，一条拷贝自母亲，那么STR重复14次这条是从父亲那里得到的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#162</span>
+        <h4>马斯克“第一性原理”的另一面</h4>
+        <div class="art-summary">2020年9月的特斯拉电池日上，他们公布了最新的4680电池。这个新闻我们曾经在第一季的《科技参考》中为大家解读过</div>
+        <div class="art-insights"><span class="insight-tag">如果纵观马斯克的各种革新，被关键元件卡住3年半这么久的时间，应该只有4680电池这一例</span>
+<span class="insight-tag">今天，我们就来说说难产的4680电池和那个脍炙人口的“第一性原理”</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#186</span>
+        <h4>破译两千年前烧毁的文字</h4>
+        <div class="art-summary">公元79年，维苏威火山爆发，所有人都听说过庞贝城被火山灰掩埋的故事。但其实，维苏威火山旁边有好多比庞贝小得多的城市也一并被掩埋，比如斯塔比亚（Stabiae）、奥普朗提斯（Oplontis）、波斯克雷阿莱（Boscoreale）和赫库兰尼姆（Herculanneum）。</div>
+        <div class="art-insights"><span class="insight-tag">但其实，维苏威火山旁边有好多比庞贝小得多的城市也一并被掩埋，比如斯塔比亚（Stabiae）、奥普朗提斯（Oplontis）、波斯克雷阿莱（Boscoreale）和赫库兰尼姆（Herculanneum）</span>
+<span class="insight-tag">之所以埋得比较浅，是因为埋葬庞贝的主要是火山灰，挖起来比较方便，而其他几座小城则分别被火山泥流、岩浆流掩盖</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#194</span>
+        <h4>丘成桐的批评值得认真听</h4>
+        <div class="art-summary">2024年4月30日，丘成桐在华中科技大学演讲的时候说，中国的数学水平还没有达到美国40年代的水平。一句话引发了大家的热议，很多媒体大V痛批丘成桐。而有些大V又被人挖出早年间高考数学没及格。也有人说，丘成桐的评论是非常恰当的。</div>
+        <div class="art-insights"><span class="insight-tag">丘成桐的学生中最出名的是田刚，他是2001年的中科院院士，2004年的美国文理科学院院士</span>
+<span class="insight-tag">丘成桐在数学上的成就有两个最有力的奖项：一个是1982年的菲尔兹奖</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#195</span>
+        <h4>人类的可怕之处（上）</h4>
+        <div class="art-summary">长久以来，狮子一直被认为是非洲最可怕的掠食者。但严谨地说，这是在不考虑人类的前提下，狮子才是最可怕的。很多人也理解其中的逻辑，毕竟人类从十万年前起就什么都吃，系统地、规模化地、批量地把几个大陆的大型哺乳类动物和大型鸟类全都吃光了。</div>
+        <div class="art-insights"><span class="insight-tag">很多人形容非洲野生动物总说成是“多种多样的”，但其实应该反着说才是正常逻辑，那就是：非洲是世界上仅存的还有很多大型哺乳类动物和大型鸟类的大陆</span>
+<span class="insight-tag">因为它们在如何躲避地球上最致命的猎手方面纯属于小白，于是纷纷在几百到几千年间灭绝了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#196</span>
+        <h4>问答：在古代官员能冒充吗?</h4>
+        <div class="art-summary">古人没有联网的身份证明和通达的通信手段，请问旧社会官员赴任的时候，地方政府怎么能保证来到任的这个人就是本人呢？例如，《让子弹飞》电影里面不就出现冒名顶替县令的情况了吗？</div>
+        <div class="art-insights"><span class="insight-tag">因为中国自古以来就讲究异地为官，否则担心本地生长起来的父母官更容易倾向于维护本地人的利益，而不是维护皇上的利益</span>
+<span class="insight-tag">所以，别看异地为官、还通常是离家乡越远越好，家乡和任职两地的老百姓几乎一辈子都不可能有交集，那么在路途中换个人，对当地百姓来说是不可能被发现的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#198</span>
+        <h4>人类的可怕之处（下）</h4>
+        <div class="art-summary">上期《科技参考》，我留了一个思考题：人类的狩猎采集时代已经过去太久了，按说对声音的熟悉或者恐惧怎么也会在几代野生动物繁衍后逐渐消失。为什么非洲野生动物对人类的恐惧时间持续这么久，强度维持得这么高呢？难道是把对人类的恐惧烙刻在基因里了吗？</div>
+        <div class="art-insights"><span class="insight-tag">所以更大的可能是，非洲野生动物并不只是在人类祖先的狩猎采集年代才被大规模地屠杀，而是这种屠杀一直延续到了今天，从未停止</span>
+<span class="insight-tag">这是哪里的结论呢？
+我们来看2023年6月29日发表在《通讯生物学》上的这篇研究（
+查看链接
+）</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#199</span>
+        <h4>从链球菌看致病微生物的演化</h4>
+        <div class="art-summary">这期《科技参考》，我们从链球菌入手来看看致病和非致病的微生物，这有助于我们了解人为什么会生病。</div>
+        <div class="art-insights"><span class="insight-tag">其实，如果细菌们有智力的话，99.9%的细菌是不愿意成为致病菌的，也就是不愿意感染其他生物</span>
+<span class="insight-tag">中性粒细胞是人体免疫系统数量最多的一种细胞，对不属于自身的异物非常敏感，对付外来入侵的一般方法就是吞噬，然后用体内的酶溶解入侵者</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#202</span>
+        <h4>问答：家务能代替锻炼吗？大型动物的消失还会影响文明水平？</h4>
+        <div class="art-summary">除螨仪是不是智商税？家务劳动能不能代替体育锻炼？</div>
+        <div class="art-insights"><span class="insight-tag">除螨仪是不是智商税？家务劳动能不能代替体育锻炼？
+简单地说，除螨仪不是智商税，因为它虽然没有国标，但是有行业标准——《QB/T5363-2019除螨机标准》，从2020年1月1日起开始实施的</span>
+<span class="insight-tag">有人觉得，吸尘器是不是也能代替除螨仪呢？其实不行，哪怕是强力的吸尘器效果也不好</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#217</span>
+        <h4>再谈姜萍事件</h4>
+        <div class="art-summary">上周答疑时，我说了对姜萍事件的看法，没想到姜萍事件的热度竟然持续这么久，出现了很多需要补充的新内容。</div>
+        <div class="art-insights"><span class="insight-tag">另外，我们也说说怎么下判断，怎么看待证据，怎么形成观点等等这些更重要的话题</span>
+<span class="insight-tag">这件事后来继续有人深挖，重要的事件发生了以下几个：
+首先，是有一段展示姜萍在笔记本上演算的过程，其实并不是在处理数学问题，而是对着老师王闰秋的笔记原封不动地抄写，而且还抄错了一些细节</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#250</span>
+        <h4>问答：今年还会非常热吗？维特根斯坦错了？</h4>
+        <div class="art-summary">今年夏天看上去好像并没有去年热得那么疯狂，是什么原因呢？</div>
+        <div class="art-insights"><span class="insight-tag">今年夏天看上去好像并没有去年热得那么疯狂，是什么原因呢？
+简单的说，局部没有热得那么疯狂，但整体上看，依然是创纪录的热</span>
+<span class="insight-tag">实际上按照欧洲哥白尼气候变化服务局（C3S）的统计数据，2024年7月6日和7月21日，全球平均温度还是两次打破了历史记录</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#256</span>
+        <h4>问答：缅怀李政道先生+如何给屋里降温？</h4>
+        <div class="art-summary">听说李政道先生去世了，但是对他还没有多少了解呢！希望卓老板介绍一下。</div>
+        <div class="art-insights"><span class="insight-tag">因为他的硕士生导师是王竹溪，而王竹溪又是第一代物理学家周培源的学生</span>
+<span class="insight-tag">虽然这种设备对当时的中国来说，实在有点超前太多了，但领导人还是接纳了这个建议，最终建立了北京正负电子对撞机</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#259</span>
+        <h4>早期智人和晚期智人的命运</h4>
+        <div class="art-summary">以下6种人里，哪些不可是今天中国人的祖先？</div>
+        <div class="art-insights"><span class="insight-tag">实际上，两种假说都认为人类是从非洲起源的，只不过多地起源说认为，人类（具体的说，应该是直立人）都是从非洲起源的，而此后直立人出走到各个大陆，形成了各个大陆的早期智人，然后这些早期智人又演化出各地的晚期智人</span>
+<span class="insight-tag">为什么多地起源说认为起码在直立人之前，人类祖先还是起源于非洲呢？
+
+
+因为今天全球发现的所有直立人和直立人之前的能人等早期人类祖先的化石全部出土于非洲，其他大陆几乎没有</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#275</span>
+        <h4>问答：5年生存率什么意思？中国古代人基因稳定吗？</h4>
+        <div class="art-summary">家里亲戚五十岁，诊断出乳腺癌了，大夫说“5年生存率是80%”，到底还能活多久？</div>
+        <div class="art-insights"><span class="insight-tag">具体来说，
+“5年生存率80%”的最正确理解是：在诊断结果出来后5年之内，此类诊断的患者有20%去世了</span>
+<span class="insight-tag">因为他经过治疗后，假如过了5年，78岁时还没有复发，但是81岁时去世了，这并不代表这种病在10年生存率统计中更容易复发，或者这种疗法效果有限，而是因为他本来就年事已高，到了岁数了，他是因为衰老而死的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#286</span>
+        <h4>趋同演化与庞然大物</h4>
+        <div class="art-summary">这期《科技参考》，我们讲一讲地球生命史上体型最大的一类动物的研究进展，就是那些脖子十几米长，中段儿几米长，还拖着一条十几米长的大尾巴的庞然大物，专业的说法叫“蜥脚类恐龙”。</div>
+        <div class="art-insights"><span class="insight-tag">这期《科技参考》，我们讲一讲地球生命史上体型最大的一类动物的研究进展，就是那些脖子十几米长，中段儿几米长，还拖着一条十几米长的大尾巴的庞然大物，专业的说法叫“蜥脚类恐龙”</span>
+<span class="insight-tag">之所以讲这个话题，有两个原因：一是在最近十几年，这个领域的突破比过去150年的总和还要多</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#296</span>
+        <h4>汉语拼音是怎么演化的？</h4>
+        <div class="art-summary">最近我看到一段短视频，有人乘坐北京地铁八通线，发现管庄站的拼音有问题，应该是Guan Zhuang，但是写成了Guaan Zhuang。“Guaan”里有两个字母a。我把图放在文稿中了，你可以看看。</div>
+        <div class="art-insights"><span class="insight-tag">最近我看到一段短视频，有人乘坐北京地铁八通线，发现管庄站的拼音有问题，应该是Guan Zhuang，但是写成了Guaan Zhuang</span>
+<span class="insight-tag">因为北京还有一个地铁站，叫关庄站，关庄的拼写是Guan Zhuang</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#298</span>
+        <h4>既是数学证明，也是社会契约</h4>
+        <div class="art-summary">《量子》杂志（Quanta Magazine）采访了数学家安德鲁·格兰维尔（Andrew Granville），以哲学的角度带数学圈外的人看什么是数学证明。这个采访能让很多人修正对数学世界的看法。这篇《科技参考》，我们就来介绍这次采访。</div>
+        <div class="art-insights"><span class="insight-tag">很多人对数学世界最大的误解就是，它是一个完美的逻辑体系，等待数学家们通过证明发现里面的每个命题</span>
+<span class="insight-tag">因为从古希腊开始，数学研究的对象就不再是物品交易、土地丈量了，而是脱离具体数值计算的证明</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#303</span>
+        <h4>复活尼安德特人</h4>
+        <div class="art-summary">比如，从洞穴遗迹里看到各种动物碎裂的头盖骨，就可以推断人类祖先曾经以很多食肉动物都吃不到的骨髓和大脑为食。这个场景和穿着兽皮、举着长矛围猎野猪的场景相距甚远，非常具有故事性。</div>
+        <div class="art-insights"><span class="insight-tag">而之所以能被结核菌感染，很可能是因为在密闭空间里长期使用火的缘故</span>
+<span class="insight-tag">因为古人类学领域最领先、最深入的，就是针对尼安德特人这个物种的研究</span>
+</div>
+      </div>
+  </div>
+
+  <footer class="footer">
+    <p><a href="index.html">← 返回科技参考3 主板</a> · 卓克 · 科技参考3 · MKS</p>
+  </footer>
+</div>
+
+</body>
+</html>

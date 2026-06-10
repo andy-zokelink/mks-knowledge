@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科技参考3 · 卓克 · MKS 知识主板</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="../index.html" class="home-btn">← 返回知识总库</a>
+  <span class="breadcrumb">卓克 · 科技参考3</span>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <div class="icon-row">🔬🚀🤖🧬📐</div>
+    <h1>卓克 · <span class="accent">科技参考3</span></h1>
+    <p class="subtitle">311篇精选 · 七大知识领域 · 最小知识集</p>
+    <p class="meta">2023-2024年度 · 科技前沿与科学思维的系统梳理</p>
+  </div>
+
+  <div class="divider"><div class="dot"></div></div>
+
+  <div class="topics-grid">
+    
+    <a href="1-AI与芯片革命.html" class="topic-card">
+      <div class="card-icon">🤖</div>
+      <h3>AI与芯片革命</h3>
+      <div class="card-subtitle">大模型、半导体与智能时代的底层博弈</div>
+      <div class="card-desc">从GPT到Sora，从英伟达到EUV光刻机，人工智能与芯片技术正在重塑人类文明的底层逻辑。75篇文章覆盖AI大模型原理、芯片制造博弈、智能驾驶演进与AI安全等核心议题。</div>
+      <div class="card-count">
+        <span class="badge">75 篇文章</span>
+      </div>
+    </a>
+    <a href="2-航天与太空探索.html" class="topic-card">
+      <div class="card-icon">🚀</div>
+      <h3>航天与太空探索</h3>
+      <div class="card-subtitle">从星舰到月球基地，人类走出地球的征途</div>
+      <div class="card-desc">SpaceX星舰的每一次发射、月球基地的务实规划、旅行者号的星际远航——航天科技正以前所未有的速度推进。20篇文章覆盖火箭技术、太空旅行与宇宙科学。</div>
+      <div class="card-count">
+        <span class="badge">20 篇文章</span>
+      </div>
+    </a>
+    <a href="3-医学与健康前沿.html" class="topic-card">
+      <div class="card-icon">🔬</div>
+      <h3>医学与健康前沿</h3>
+      <div class="card-subtitle">疾病机制、衰老研究与医疗突破</div>
+      <div class="card-desc">从癌症治疗到抗衰老研究，从朊病毒到超级细菌，现代医学正在分子层面重新理解生命。59篇文章深入探讨疾病的生物学机制、前沿疗法与健康科学的最新发现。</div>
+      <div class="card-count">
+        <span class="badge">59 篇文章</span>
+      </div>
+    </a>
+    <a href="4-食品营养与安全.html" class="topic-card">
+      <div class="card-icon">🍽️</div>
+      <h3>食品营养与安全</h3>
+      <div class="card-subtitle">从餐桌到实验室，吃背后的科学真相</div>
+      <div class="card-desc">代糖真的致癌吗？化工罐车装食用油有多严重？水果为什么越来越甜？44篇文章用科学方法审视食品安全、营养学争议与日常饮食决策，揭开「吃」这件事背后的科学逻辑。</div>
+      <div class="card-count">
+        <span class="badge">44 篇文章</span>
+      </div>
+    </a>
+    <a href="5-消费品评测与避坑.html" class="topic-card">
+      <div class="card-icon">🛒</div>
+      <h3>消费品评测与避坑</h3>
+      <div class="card-subtitle">科技消费品的理性选购指南</div>
+      <div class="card-desc">电动车、手机、家电、眼镜、降噪耳机……科技消费品琳琅满目，智商税无处不在。47篇文章提供基于科学原理与工程逻辑的选购方法论，帮你避开消费陷阱。</div>
+      <div class="card-count">
+        <span class="badge">47 篇文章</span>
+      </div>
+    </a>
+    <a href="6-人类演化与文明进程.html" class="topic-card">
+      <div class="card-icon">🧬</div>
+      <h3>人类演化与文明进程</h3>
+      <div class="card-subtitle">从尼安德特人到AI，人类如何走到今天</div>
+      <div class="card-desc">智人为什么战胜了尼安德特人？暴力如何在人类社会中消退？语言与文字如何涌现？32篇文章从演化生物学、人类学与历史维度审视人类文明的底层动力。</div>
+      <div class="card-count">
+        <span class="badge">32 篇文章</span>
+      </div>
+    </a>
+    <a href="7-科学方法与认知论.html" class="topic-card">
+      <div class="card-icon">📐</div>
+      <h3>科学方法与认知论</h3>
+      <div class="card-subtitle">批判性思维、统计素养与知识生产机制</div>
+      <div class="card-desc">统计学如何识破假唱？同行评议为何失效？什么才是可靠的知识？34篇文章聚焦科学方法论本身——我们如何知道我们知道的东西？知识与认知的边界在哪里？</div>
+      <div class="card-count">
+        <span class="badge">34 篇文章</span>
+      </div>
+    </a>
+  </div>
+
+  <footer class="footer">
+    <p>卓克 · 科技参考3 · MKS 最小知识集 · <a href="../index.html">返回知识总库</a></p>
+    <p>共 311 篇文章，覆盖 7 大知识领域</p>
+  </footer>
+</div>
+
+</body>
+</html>

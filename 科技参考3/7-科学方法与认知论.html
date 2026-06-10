@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科学方法与认知论 — 科技参考3 MKS</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="home-btn">← 科技参考3 主板</a>
+  <span class="breadcrumb">科学方法与认知论 · 34 篇文章</span>
+</div>
+
+<div class="container">
+  <div class="topic-header">
+    <div class="topic-icon">📐</div>
+    <h2>科学方法与认知论</h2>
+    <p class="topic-subtitle">批判性思维、统计素养与知识生产机制</p>
+    <p class="topic-desc">统计学如何识破假唱？同行评议为何失效？什么才是可靠的知识？34篇文章聚焦科学方法论本身——我们如何知道我们知道的东西？知识与认知的边界在哪里？</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-badge"><span class="num">34</span> 篇文章</div>
+    <div class="stat-badge">📅 2023-2024</div>
+    <div class="stat-badge">🎯 MKS 最小知识集</div>
+  </div>
+
+  <!-- Key Concepts -->
+  <div class="section-title">核心概念</div>
+  <div class="concepts-grid">
+    
+      <div class="concept-card">
+        <div class="concept-num">1</div>
+        <h5>一起见证科技的“奇迹年”</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">2</div>
+        <h5>ITER</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">3</div>
+        <h5>人类最大规模实验即将烂尾</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">4</div>
+        <h5>LK-99</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">5</div>
+        <h5>室温超导事件回顾</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">6</div>
+        <h5>炼金术一样的超导能用在哪些方面</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">7</div>
+        <h5>用外星人遗骸盈利</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">8</div>
+        <h5>统计学规律解释五月天假唱风波</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">9</div>
+        <h5>惯性约束，可控核聚变转向了</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">10</div>
+        <h5>同行评议制的出现</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">11</div>
+        <h5>AI奇迹年，回顾+预测</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">12</div>
+        <h5>宇宙在膨胀，身体也会一起膨胀吗</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+  </div>
+
+  <!-- Article List -->
+  <div class="section-title">全部文章</div>
+  <div class="articles-list">
+    
+      <div class="article-card">
+        <span class="art-num">#1</span>
+        <h4>发刊词：一起见证科技的“奇迹年”</h4>
+        <div class="art-summary">一直在得到上讲解科技新闻和科学故事，不知不觉，这已经是我陪伴你的第八个年头了。</div>
+        <div class="art-insights"><span class="insight-tag">在《科技参考》第一季上线时我说：
+给世界带来最大颠覆和变革的，不是自然灾害，不是金融风暴，而是科学技术</span>
+<span class="insight-tag">于是，我们需要了解科技，需要跟全球最新的科技变化保持同步，这些我为你持续追踪</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#18</span>
+        <h4>ITER：人类最大规模实验即将烂尾</h4>
+        <div class="art-summary">今天我要介绍的一项规模巨大的科学实验叫作“国际热核聚变实验堆”，简称ITER。</div>
+        <div class="art-insights"><span class="insight-tag">这个项目的核心就是一个总体积16000立方米，重2.3万吨的大罐子，高30米，直径28米</span>
+<span class="insight-tag">而要让这个核心装置正常工作，外部设施更是庞杂，整个实验基地大约和一个大型机场面积差不多</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#23</span>
+        <h4>LK-99：室温超导事件回顾</h4>
+        <div class="art-summary">2023年7月底，科学界的一篇文章破了圈，很多普通人都在转发，那就是韩国科学家找到了一种室温超导材料LK-99。但后来事情结果如何呢？根本不是室温超导，甚至连导体都不是。</div>
+        <div class="art-insights"><span class="insight-tag">这次的室温超导之所以能再次破圈，是因为它比上次还要夸张，因为之前那类室温超导都有以下3个大难点：
+1.需要极大的压力，比如几万到几十万个大气压才能实现一粒面粉大小的物质的超导</span>
+<span class="insight-tag">而这次的超导只需要1个大气压，甚至在127℃的高温下都可以实现，而且实现超导的物质质量还挺多，至少有几克重，更关键的是，操作难度极低，一个中学物理实验室就可以操作，难怪它可以再次破圈</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#24</span>
+        <h4>炼金术一样的超导能用在哪些方面</h4>
+        <div class="art-summary">上一期，我们仔细介绍了LK-99室温超导乌龙事件。由于这类非常不靠谱的科学奇闻已经把大众对室温超导的热情消耗殆尽，相信之后若干次室温超导的论文已经无法破圈到大众媒体、吸引大家的关注了，也不知道下一次大家再关注到超导还要多久。</div>
+        <div class="art-insights"><span class="insight-tag">所以，今天这期《科技参考》，我们把所有关于超导的问题一起补充在这里</span>
+<span class="insight-tag">BCS理论具体说的是什么呢？如果用最粗糙的方式描述是这样的：
+一份可以导电的材料，在常温下是由一个个整齐排列的晶格组成的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#26</span>
+        <h4>用外星人遗骸盈利</h4>
+        <div class="art-summary">2023年9月12日，在墨西哥城的墨西哥国家会议中心举行了一场国会听证会，被很多媒体以“墨西哥发现外星人存在的证据”或者“墨西哥承认外星人存在”的标题报道。很多同学在得到的后台询问我能不能说说，这期《科技参考》，我们就来看看外星人。</div>
+        <div class="art-insights"><span class="insight-tag">因为他跟科幻电影《E.T.外星人》里的外星人差不多：小灰人+皮肤光滑+大脑袋+细长的脖子+大大的眼睛+瘦瘦的样子</span>
+<span class="insight-tag">答案是，外星人文化发源自美国，落地在中南美洲，墨西哥因为受美国影响最大，所以外星人事件也格外多</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#53</span>
+        <h4>统计学规律解释五月天假唱风波</h4>
+        <div class="art-summary">前一阵子，五月天假唱的新闻被大家关注，正反方激烈争吵。</div>
+        <div class="art-insights"><span class="insight-tag">因为文化部早在2005年就公布了《营业性演出管理条例实施细则》，其中第二十八条规定：
+第二十八条　营业性演出不得以假唱、假演奏等手段欺骗观众</span>
+<span class="insight-tag">所以，假唱不假唱已经不是艺德的问题，而是违法条例，不但会受到处罚，而且会有更严重的后续影响，非常看中内地市场的五月天在假唱与否上肯定倾向于否认</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#62</span>
+        <h4>惯性约束，可控核聚变转向了</h4>
+        <div class="art-summary">之前我们说过的几次可控核聚变实验都是基于托卡马克装置的。这一季《科技参考》也说过一次，就是ITER那个大装置很可能成为科技史上最大的烂尾工程。</div>
+        <div class="art-insights"><span class="insight-tag">这一季《科技参考》也说过一次，就是ITER那个大装置很可能成为科技史上最大的烂尾工程</span>
+<span class="insight-tag">相比于托卡马克装置，惯性约束这条技术路线上的核聚变和氢弹爆炸的原理更接近，只不过规模缩小了非常非常多</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#73</span>
+        <h4>同行评议制的出现</h4>
+        <div class="art-summary">江湖纷争可以是个人恩怨，也可以是帮派恩怨。这一期我们先说个人恩怨，就是同行评议制。</div>
+        <div class="art-insights"><span class="insight-tag">今天我们评价一个研究成果、一个结论是否靠谱，最简单的方法就是看它是否发表在一个有同行评议的期刊上</span>
+<span class="insight-tag">其实，
+同行评议制度的历史并不太久，它成为学术界江湖规则的时间点，大约在第二次世界大战结束的时候</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#77</span>
+        <h4>AI奇迹年，回顾+预测</h4>
+        <div class="art-summary">《科技参考3》是2023年10月中旬开播的。发刊词里，我把2023年称为“奇迹年”。因为</div>
+        <div class="art-insights"><span class="insight-tag">因为
+科学史上曾经有过两个公认的奇迹年——1666年和1905年
+，具体内容我就不重复了</span>
+<span class="insight-tag">但时过境迁，我大致总结了一下，曾经在科技热点刷屏后被我猛浇凉水的有以下几个：
+1、5G的一盆凉水
+
+
+2、元宇宙的一盆凉水
+
+
+3、飞行汽车的一盆凉水
+
+
+4、人形机器人的一盆凉水
+
+
+5、脑机接口的一盆凉水
+
+
+6、室温超导的一盆凉水
+
+</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#82</span>
+        <h4>问答：宇宙在膨胀，身体也会一起膨胀吗？</h4>
+        <div class="art-summary">如果说宇宙在不停膨胀，那我们的身体也在“膨胀”吗？只不过因为所有事物都在等比例地膨胀，我们缺少了参照而观察不到膨胀吗？</div>
+        <div class="art-insights"><span class="insight-tag">如果说宇宙在不停膨胀，那我们的身体也在“膨胀”吗？只不过因为所有事物都在等比例地膨胀，我们缺少了参照而观察不到膨胀吗？
+
+
+不是这样的</span>
+<span class="insight-tag">原因是，
+在身体受到的多重作用力里，暗能量的作用力占比太小，完全无法和引力与电磁力抗衡</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#84</span>
+        <h4>学术论文的商业模式</h4>
+        <div class="art-summary">之前我留了一个问题，为什么欧洲长久以来一直没有出现同行评议，而到了二战后的美国，同行评议一下子成为学术界标准流程了呢？</div>
+        <div class="art-insights"><span class="insight-tag">之前我留了一个问题，为什么欧洲长久以来一直没有出现同行评议，而到了二战后的美国，同行评议一下子成为学术界标准流程了呢？
+简单地说，
+同行评议在美国出现，是因为突然间学术圈的外人进入圈内的速度太快，人数又太多</span>
+<span class="insight-tag">而在二战之前，欧洲的秩序保留了大量的封建制传统，一个行业有一个行业的界限，圈外人是很难半途进入的，关键是也没有多少人愿意跨圈进入其他行业</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#97</span>
+        <h4>微软再次崛起，谷歌开始衰落</h4>
+        <div class="art-summary">这期《科技参考》，我们说说全球两家顶级公司的不同发展态势——一个是微软的再次崛起，一个是谷歌的衰落。</div>
+        <div class="art-insights"><span class="insight-tag">比尔·盖茨领导下完成的历代Windows和Office是微软的核心业务</span>
+<span class="insight-tag">这个版本的Windows的使用寿命最长，从2001年发布，到2019年才宣布终止支持</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#102</span>
+        <h4>钻石最后的噱头：减碳</h4>
+        <div class="art-summary">“钻石恒久远，一颗永流传”是1993年戴比尔斯进入中国后选中的广告词。此后，中国人结婚前买钻戒成了约定俗成的惯例。而这个习惯即便放在西方，也是1960年代才开始兴起的。统计是这样的：二战前，美国人结婚前只有不到10%的人送钻戒；而1990年时，这个比例上升到了80%。</div>
+        <div class="art-insights"><span class="insight-tag">戒指在3000年前最初用于印章，而印章是身份的认证，只有贵族和统治者才会有，所以戒指也代表着权力</span>
+<span class="insight-tag">所以
+200年前，钻石的名贵不需要任何噱头，一颗葡萄干大小的钻石换几百亩好地是没有任何问题的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#109</span>
+        <h4>追踪：过往话题的新进展</h4>
+        <div class="art-summary">咱们这一季《科技参考》已经进行了一百多期，其实每一个话题在一段时间后都有后续进展，只不过大多数没人关注。这期内容，我挑一些有意思的给你补充。</div>
+        <div class="art-insights"><span class="insight-tag">咱们这一季《科技参考》已经进行了一百多期，其实每一个话题在一段时间后都有后续进展，只不过大多数没人关注</span>
+<span class="insight-tag">生命游戏后来在数学上被证明是图灵完备的，也就是说，理论上拥有和今天计算机一样的计算可能性，所以也被称为“细胞自动机”</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#110</span>
+        <h4>整顿学术圈：公开匿名评议</h4>
+        <div class="art-summary">我们在往期内容里说过很多学术造假的原因和同行评议制的出现，其实如今的学术界已经进展到了下一阶段，那就是：</div>
+        <div class="art-insights"><span class="insight-tag">我们在往期内容里说过很多学术造假的原因和同行评议制的出现，其实如今的学术界已经进展到了下一阶段，那就是：
+期刊论文发表过程中的那个“同行评议制”已经千疮百孔、形同虚设了</span>
+<span class="insight-tag">但不知名的突然冒出来的专家和学者又如此之多，经费和补贴又是成百上千亿，不能不进行同行评议，可怎么知道一个学者是否造假？怎么知道一篇论文是不是禁得住真正的同行评议呢？
+今天互联网上其实已经孕育出了另外一个同行评议的机制——公开匿名评议制</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#150</span>
+        <h4>追踪：往期内容的最新进展</h4>
+        <div class="art-summary">这期《科技参考》，我们再回顾一下往期内容最新的进展：</div>
+        <div class="art-insights"><span class="insight-tag">这期《科技参考》，我们再回顾一下往期内容最新的进展：
+iOS 18中的AI模型初定
+在131期
+《苹果的AI在哪里？请看iOS 18》
+中，我们曾经透露过，iOS的大版本更新到18后，会在系统里集成一个AI模型，全面取代当前非常落后的Sir</span>
+<span class="insight-tag">它有80M、250M、1B和3B四个版本的大小，
+其中哪怕最小的80M的模型都已经比GPT-4的表现更好，
+而这个尺寸的模型是可以直接装进运存的，
+最大的3B模型的表现更是超过GPT-4一大截</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#159</span>
+        <h4>高质量数据堪比黄金</h4>
+        <div class="art-summary">有人听了往期内容的最新进展之后问，《纽约时报》起诉OpenAI的事情有没有什么新的进展呢？</div>
+        <div class="art-insights"><span class="insight-tag">有人听了往期内容的最新进展之后问，《纽约时报》起诉OpenAI的事情有没有什么新的进展呢？
+具体到这个案件，并没有新的进展，但是这类纠纷在以更剧烈的方式演化着</span>
+<span class="insight-tag">其实我平时也用这个工具去扒视频字幕，只是为了看字幕快一点，看视频太浪费时间</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#160</span>
+        <h4>问答：精英的避难所+弱智吧弱智吗？</h4>
+        <div class="art-summary">在《高质量数据堪比黄金》那一期，很多同学问，弱智吧里都是些什么内容？</div>
+        <div class="art-insights"><span class="insight-tag">在《高质量数据堪比黄金》那一期，很多同学问，弱智吧里都是些什么内容？
+其实有不少经典笑话，比如：
+“为了让自己更文雅一些，拉面改名方便面</span>
+<span class="insight-tag">他说，在全球核战争的大背景下，月球很可能也会被列为攻击目标，因为它太近了，这一点是月球不利的地方</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#177</span>
+        <h4>谷歌搜索会失败吗？不</h4>
+        <div class="art-summary">不久前，谷歌公布了2024年第一季度财报，非常亮眼——1-3月总营收805亿美元，同比增长15%，净利润同比增长57%。如果细看其中最主要的收入，搜索引擎内嵌的广告占全部收入的 57%，再把其他业务里的广告也涵盖进去，就要占到全部收入的75%了，所以全球最大的广告公司其实是谷歌。</div>
+        <div class="art-insights"><span class="insight-tag">如果细看其中最主要的收入，搜索引擎内嵌的广告占全部收入的 57%，再把其他业务里的广告也涵盖进去，就要占到全部收入的75%了，所以全球最大的广告公司其实是谷歌</span>
+<span class="insight-tag">而今天谷歌内部的人都知道，谷歌搜索引擎已经慢慢腐烂五六年了，而且最近两年还在受到新一代搜索技术的威胁</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#184</span>
+        <h4>问答：核聚变发电的进展如何？</h4>
+        <div class="art-summary">核聚变发电最近有很多进展，能不能介绍一下？</div>
+        <div class="art-insights"><span class="insight-tag">核聚变发电最近有很多进展，能不能介绍一下？
+确实，最近几个月来，核聚变的几条不同的路径都出现了进展</span>
+<span class="insight-tag">都有哪些路径呢？3条——
+一个是尺寸比较大的，也是最传统的托卡马克装置</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#206</span>
+        <h4>路痴基本不遗传，方位感都靠练习</h4>
+        <div class="art-summary">有些人的方位识别能力特别强，跟他一起出差就很安心。在陌生的环境中，只要他去过一次，之后再去什么展馆、会议室、酒店的大致方位他都能准确把握。</div>
+        <div class="art-insights"><span class="insight-tag">之前科学界也有不少关于方位感的研究，不少都指向一个结论——对地点和方向的把控能力受到遗传基因的影响很大</span>
+<span class="insight-tag">新研究的结论
+既然大家都是研究，为什么这个就能推翻其他的研究呢？主要是被试者的规模</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#207</span>
+        <h4>意识与自由能最低原理</h4>
+        <div class="art-summary">意识是什么，这是一个古老的哲学问题。现代科学没出现之前的绝大部分讨论，放在今天顶级的神经科学领域看，最多也只能算科普的开胃小菜。哪怕现代科学出现后，也要神经科学发达了，才有了更好的解释。</div>
+        <div class="art-insights"><span class="insight-tag">现代科学没出现之前的绝大部分讨论，放在今天顶级的神经科学领域看，最多也只能算科普的开胃小菜</span>
+<span class="insight-tag">先简单说结论：
+意识的出现依照物理规律，尤其是这一条物理规律——所有系统都会自发地倾向于保持在自由能最低的状态</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#264</span>
+        <h4>科学方法下的社会研究</h4>
+        <div class="art-summary">今天我们介绍两个科学方法下的社会研究——一个是针对中国人50岁后工作状况的，一个是针对给全民直接发现金的。</div>
+        <div class="art-insights"><span class="insight-tag">这些研究都是有前瞻性的，因为全球都面临着同样的困境——
+一个是人的寿命越来越长，退休到去世中间间隔的时间逐渐拉大后，社会福利的负担逐渐加重，怎么办呢？
+一个是当AI飞速发展，真的有相当比例的人掌握的技能完全无法和AI与机器人相比以后，这些人</span>
+<span class="insight-tag">中国马上就要实施延迟退休政策，最晚不超过2025年就会开始，之后每过一年，退休年龄会延后2-4个月，直到逐渐把退休年龄延迟到65岁为止</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#265</span>
+        <h4>为新加坡中学生拦截不良信息</h4>
+        <div class="art-summary">最近新加坡发生了一件大事——13000多名中学生电脑里的数据全部被清空。其中1/4的同学正在准备今年的O级考试，相当于咱们的中考，而电脑里的数据对他们的复习和备考来说非常重要。</div>
+        <div class="art-insights"><span class="insight-tag">最近新加坡发生了一件大事——13000多名中学生电脑里的数据全部被清空</span>
+<span class="insight-tag">其中1/4的同学正在准备今年的O级考试，相当于咱们的中考，而电脑里的数据对他们的复习和备考来说非常重要</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#266</span>
+        <h4>谷歌前CEO的“大实话”（上）</h4>
+        <div class="art-summary">8月14日，谷歌前CEO施密特（Eric Schmidt）在斯坦福大学计算机学院进行了一场2个多小时的演讲，被很多人认为是行业内的大实话。</div>
+        <div class="art-insights"><span class="insight-tag">但也因为说了太多不合时宜的内容，在第二天就被斯坦福大学设置为不公开，施密特也向谷歌道歉了</span>
+<span class="insight-tag">于是又引起更多人的好奇——他到底说了哪些敏感的内容呢？
+由于很多有心人提前录屏了，所以最近这三期《科技参考》，我们就来说说这场演讲的内容</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#267</span>
+        <h4>《黑神话：悟空》：中国游戏工业的升级</h4>
+        <div class="art-summary">今天这期《科技参考》，我们说说最近一个最热门的游戏——《黑神话：悟空》。这款游戏和今天中国许多推出成功产品的领域都有相似之处。</div>
+        <div class="art-insights"><span class="insight-tag">今天这期《科技参考》，我们说说最近一个最热门的游戏——《黑神话：悟空》</span>
+<span class="insight-tag">但广谋认为，那个白脸的（唐僧）似乎容易对付，但毛脸的（孙悟空）可能比较难对付，万一杀不成还给自己惹麻烦，所以提议放火烧</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#270</span>
+        <h4>谷歌前CEO的“大实话”（中）</h4>
+        <div class="art-summary">上一期，我们说了谷歌前CEO施密特在斯坦福的演讲中引起争议的部分。很多文章只写这些吸引眼球的，实际上没有争议的部分的洞见更值得参考。</div>
+        <div class="art-insights"><span class="insight-tag">很多文章只写这些吸引眼球的，实际上没有争议的部分的洞见更值得参考</span>
+<span class="insight-tag">而施密特说，他和OpenAI的CEO阿尔特曼是好朋友，阿尔特曼现在认为，其实1000亿美元是远远不够的，3000亿可能都不一定够</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#271</span>
+        <h4>谷歌前CEO的“大实话”（下）</h4>
+        <div class="art-summary">在场的同学还问施密特，因为AI已经展现出很强的编程能力，今后还需要学习编程吗？</div>
+        <div class="art-insights"><span class="insight-tag">在场的同学还问施密特，因为AI已经展现出很强的编程能力，今后还需要学习编程吗？
+
+
+施密特的观点是，当然还需要</span>
+<span class="insight-tag">AI编程最能发挥作用的场合就是那些编程水平处于中档的人，AI是他们很好的助手</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#276</span>
+        <h4>历史级别的地震警告</h4>
+        <div class="art-summary">2024年8月8日晚，日本气象厅发布了巨大地震警告，说之后一周内南海海槽发生8-9级地震的概率在上升。</div>
+        <div class="art-insights"><span class="insight-tag">因为日本自古以来就是一个地震多发的国家，民众对地震早已习以为常，对待地震远比其他国家的人更淡定</span>
+<span class="insight-tag">经常出现的情况是，其他国家的游客在日本遇到地震，穿着内衣、光着脚就从酒店逃出来了，但等他跑到大堂时就会感觉有点不对劲，因为整个酒店好像只有他一个人在逃跑</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#278</span>
+        <h4>至少还有150PB的数据没用上</h4>
+        <div class="art-summary">最近Scale AI的创始人Alexandr Wang在一期播客节目中做嘉宾，谈了谈他对数据行业的最新观点，非常有洞见。</div>
+        <div class="art-insights"><span class="insight-tag">最近Scale AI的创始人Alexandr Wang在一期播客节目中做嘉宾，谈了谈他对数据行业的最新观点，非常有洞见</span>
+<span class="insight-tag">他是MIT物理系的底子，创办的公司是一家训练机器学习模型的公司，同时为客户提供数据标注服务，可以算是用最好的数据训练模型上的专家</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#279</span>
+        <h4>传统软件的终结</h4>
+        <div class="art-summary">上一期，我们介绍了Alexandr Wang在做客Harry Stebbings的播客时谈到的内容。今天这期《科技参考》我们继续说后半段——先是关于算法的，然后是关于软件行业的变革的。</div>
+        <div class="art-insights"><span class="insight-tag">它最大的优势在于长文本上下文的处理，说不定会帮助人们实现接近超级长度的上下文关联</span>
+<span class="insight-tag">不过由于先发优势的原因，今天人们对Transformer模型的各种缺陷都有很全面的了解和规避方法，而对其他算法里的缺点该如何处理还比较生疏</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#295</span>
+        <h4>不可信：濒死回忆与前世回忆</h4>
+        <div class="art-summary">在奇闻怪事中，最吸引人的一类故事就是濒死状态下的记忆，还有催眠下的前世回忆、童年回忆。咱们专栏曾经在去年解读过一篇论文，研究的是患者死前30秒的脑电波（</div>
+        <div class="art-insights"><span class="insight-tag">在奇闻怪事中，最吸引人的一类故事就是濒死状态下的记忆，还有催眠下的前世回忆、童年回忆</span>
+<span class="insight-tag">听完之后，你会对历史上和未来出现的所有此类奇闻怪事不再大惊小怪，并能把这个过程里的一些迹象对应到科学原理上</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#301</span>
+        <h4>什么生物离开地球后可以生存？</h4>
+        <div class="art-summary">马斯克最大的愿望就是移民火星，且不说在火星上怎么克服地表严酷的自然环境，单说飞过去就已经是困难重重了。</div>
+        <div class="art-insights"><span class="insight-tag">马斯克最大的愿望就是移民火星，且不说在火星上怎么克服地表严酷的自然环境，单说飞过去就已经是困难重重了</span>
+<span class="insight-tag">理论上可以在火星和地球间距最短的时刻到来之前，提前从地球上飞一个直线，指向火星将要出现的位置，这样的话，总共只需要飞5600万公里就到了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#312</span>
+        <h4>年度总结：预测大盘点</h4>
+        <div class="art-summary">今天终于到了《科技参考3》的最后一期节目。今天我们就不再说具体的科技事件了，咱们来复盘一下。</div>
+        <div class="art-insights"><span class="insight-tag">复盘是因为，我在2024年1月5日为专栏截止日时AI世界的状态做过5个预测</span>
+<span class="insight-tag">一般来说，只有10个月的时间，科技世界是不必预测的，因为就算有新发现也都是渐变式的</span>
+</div>
+      </div>
+  </div>
+
+  <footer class="footer">
+    <p><a href="index.html">← 返回科技参考3 主板</a> · 卓克 · 科技参考3 · MKS</p>
+  </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>航天与太空探索 — 科技参考3 MKS</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="home-btn">← 科技参考3 主板</a>
+  <span class="breadcrumb">航天与太空探索 · 20 篇文章</span>
+</div>
+
+<div class="container">
+  <div class="topic-header">
+    <div class="topic-icon">🚀</div>
+    <h2>航天与太空探索</h2>
+    <p class="topic-subtitle">从星舰到月球基地，人类走出地球的征途</p>
+    <p class="topic-desc">SpaceX星舰的每一次发射、月球基地的务实规划、旅行者号的星际远航——航天科技正以前所未有的速度推进。20篇文章覆盖火箭技术、太空旅行与宇宙科学。</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-badge"><span class="num">20</span> 篇文章</div>
+    <div class="stat-badge">📅 2023-2024</div>
+    <div class="stat-badge">🎯 MKS 最小知识集</div>
+  </div>
+
+  <!-- Key Concepts -->
+  <div class="section-title">核心概念</div>
+  <div class="concepts-grid">
+    
+      <div class="concept-card">
+        <div class="concept-num">1</div>
+        <h5>星舰发射看点预告</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">2</div>
+        <h5>星舰第二次发射复盘</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">3</div>
+        <h5>木卫二上的生命迹象</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">4</div>
+        <h5>极其廉价的星舰怎么造</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">5</div>
+        <h5>火箭发动机知识普及</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">6</div>
+        <h5>当前马斯克的星舰很难登月</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">7</div>
+        <h5>月球基地，更务实的目标</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">8</div>
+        <h5>旅行者号最后的遗言</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">9</div>
+        <h5>旅行者1号唱片哪里可以听到</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">10</div>
+        <h5>成熟体诞生</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">11</div>
+        <h5>星舰第三次发射</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">12</div>
+        <h5>登月总工为什么语塞</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+  </div>
+
+  <!-- Article List -->
+  <div class="section-title">全部文章</div>
+  <div class="articles-list">
+    
+      <div class="article-card">
+        <span class="art-num">#34</span>
+        <h4>星舰发射看点预告</h4>
+        <div class="art-summary">SpaceX的星舰第二次发射暂定于2023年11月18日北京时间的晚10点。今天的《科技参考》，就是为了给大家说一说预备知识。这样晚上看的时候才知道有哪些看点。</div>
+        <div class="art-insights"><span class="insight-tag">但其实，火箭是被六根粗粗的支架顶起二十米高，而且喷射气流是垂直向下的方向，力量足可以顶起5000吨的质量，怎么可能有水泥块逆着这么强的冲击飞上来把发动机撞坏呢？
+其实，真正的问题还是在系统稳定性上</span>
+<span class="insight-tag">因为这些发动机并不是在高度一致的批量化生产中制造出来的，而是各有各的改进，所以把它们凑在一起，本来就比完全一致的工艺下发动机的并联更难控制</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#35</span>
+        <h4>星舰第二次发射复盘</h4>
+        <div class="art-summary">上周六的内容，我向大家预报了星舰第二次发射的看点。这期我们来复盘一下，看透马斯克的火箭设计思路。</div>
+        <div class="art-insights"><span class="insight-tag">因为星舰是迄今为止人类发射过的最大最沉的飞行器，从体积到重量，从推力到运载能力，都大出格了</span>
+<span class="insight-tag">虽然这个失去联络的问题细节还有待分析，但按常理来说，已经到了这么高的高度，本应该是不会出问题的场合还出了问题，为什么说本不应该出问题呢？因为已经是真空环境了，空气阻力造成的各种震动、不稳定全都消失了，这个问题的挑战远远低于在空气中飞行，竟然</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#72</span>
+        <h4>木卫二上的生命迹象</h4>
+        <div class="art-summary">2023年9月21日的《科学》杂志上刊登了詹姆斯·韦伯空间望远镜的新发现，结论是，</div>
+        <div class="art-insights"><span class="insight-tag">2023年9月21日的《科学》杂志上刊登了詹姆斯·韦伯空间望远镜的新发现，结论是，
+在木星的卫星欧罗巴（Europa），也就是经常被叫作“木卫二”的卫星表面，检测到可观的二氧化碳，这个证据增加了欧罗巴上存在生命的可能</span>
+<span class="insight-tag">其实，发现的具体内容很好理解：
+两个团队都在木卫二上一个被称为“塔拉雷吉欧”（Tara Regio）的区域检测到了大量的二氧化碳</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#78</span>
+        <h4>极其廉价的星舰怎么造？</h4>
+        <div class="art-summary">星舰的运载能力尽管已经很强，但历史上毕竟还是有一个土星五号和它处于同一水准，还有当前正在服役的美国太空发射系统SLS，这个重型运载火箭有3个不同配置，顶配的运载能力130吨，大约是星舰的一半。所以，</div>
+        <div class="art-insights"><span class="insight-tag">所以，
+并不能说星舰在运载能力上把它们秒了，星舰秒掉它们的优势在于发射成本</span>
+<span class="insight-tag">当然，马斯克特别爱在性能已经很炸裂的产品上吹牛，一般来说，那个吹牛的数值比这类产品最终定型后的情况还要再优秀一截</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#79</span>
+        <h4>火箭发动机知识普及</h4>
+        <div class="art-summary">上次咱们说到了星舰灌注燃料时浓密的白色烟雾是什么，主要是液氮和液氧，少部分是空气中的水珠。</div>
+        <div class="art-insights"><span class="insight-tag">之所以有液氧，是因为发动机要预热，当然，实际是预冷，让两种燃料充分地进入涡轮增压室和主燃烧室</span>
+<span class="insight-tag">那是因为，美国的环保法令禁止直接向空气中排放甲烷，也不能燃烧掉，所以同样灌入发动机的甲烷再喷出来后，必须要回收到冷凝塔里，重新做成液态甲烷保存好</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#80</span>
+        <h4>当前马斯克的星舰很难登月</h4>
+        <div class="art-summary">上次我们说到，马斯克为了带更多的物资去火星，也为了弥补那个笨重的不锈钢304L的壳子，选择把火箭发动机做到极致。业内甚至预测，化学燃料火箭的极限就会在马斯克手里达成。</div>
+        <div class="art-insights"><span class="insight-tag">如果不是全流量发动机，而是最初级的那种开放式循环发动机，主燃烧室的压力不要说80MPa了，连8MPa都达不到</span>
+<span class="insight-tag">马斯克说“这种发动机25万美元一台”应该是吹牛，实际上，二百万美元一台倒是很有可能</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#83</span>
+        <h4>月球基地，更务实的目标</h4>
+        <div class="art-summary">上次我们说到，马斯克的星舰即便未来可以完成登月，也是很勉强的，这需要大幅改进火箭性能。而且，这次美国的登月计划已经和几十年前大不相同，区别在于，这次要为建立月球长期基地做准备，而人类第一次登月只是为了炫技，没有长远打算。</div>
+        <div class="art-insights"><span class="insight-tag">原因主要有两条：一，外太空没有保护，精密仪器很容易受到太空辐射或者太空垃圾的撞击而毁坏</span>
+<span class="insight-tag">要知道，水星是离太阳最近的，赤道白天有400多摄氏度，一直认为不太可能有水</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#85</span>
+        <h4>旅行者号最后的遗言</h4>
+        <div class="art-summary">01001010111111100，以上这段0和1的代码就是旅行者1号留给人类最后的遗言。这段代码不能靠任何之前约定的编码方式解码，而且当旅行者号团队尝试让它重启后，它依然没能返回正常数据。</div>
+        <div class="art-insights"><span class="insight-tag">01001010111111100，以上这段0和1的代码就是旅行者1号留给人类最后的遗言</span>
+<span class="insight-tag">所以，旅行者1号当前还是能接受来自地球的指令并执行，只不过无法将科学数据和工程状态正确地发送给地球</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#93</span>
+        <h4>问答：旅行者1号唱片哪里可以听到？</h4>
+        <div class="art-summary">先说一个周末的直播。上周六晚上，得到请周鸿祎做了一场直播。我看了，而且发知识城邦和朋友圈推荐大家看。我是这么推荐的：</div>
+        <div class="art-insights"><span class="insight-tag">这是因为，这场2个小时的直播是得到新商学板块的内容，要回看得加入新商学会员才行</span>
+<span class="insight-tag">之所以推荐大家看，是因为起码在不说套话、捞干的这方面，周鸿祎是个好范例</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#130</span>
+        <h4>成熟体诞生：星舰第三次发射</h4>
+        <div class="art-summary">北京时间2024年3月14日晚10点25分，也就是昨天晚上，星舰第三次发射。这期《科技参考》，咱们就来说说这次发射，看看改进在哪里，今后的发展趋势是什么。</div>
+        <div class="art-insights"><span class="insight-tag">4.第二级SN28在太空中重新点火猛禽发动机
+不知道是什么原因，这个任务被取消了，所以算失败</span>
+<span class="insight-tag">也就是说，
+史上运载能力最大的火箭、且可以全部回收的星舰，在2024年就能进化出完全体</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#185</span>
+        <h4>问答：登月总工为什么语塞？纯电动车被加关税</h4>
+        <div class="art-summary">最近嫦娥六号发射成功，而裴总工程师在一次采访中提到，“没找到阿波罗盆地”。这句话引起了争议，有些登月质疑者认为，这是在说没找到美国阿波罗号登月的遗迹。这次任务是否真的与阿波罗登月遗迹有关？如果无关，我们应当如何给误会的人辟谣？</div>
+        <div class="art-insights"><span class="insight-tag">最近嫦娥六号发射成功，而裴总工程师在一次采访中提到，“没找到阿波罗盆地”</span>
+<span class="insight-tag">主持人这个引导是对的，因为后面要介绍嫦娥六号着陆的具体位置和相关内容，但是艾特肯盆地范围太广了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#208</span>
+        <h4>问答：为什么会以貌取人？星舰第四次发射怎么样？</h4>
+        <div class="art-summary">为什么这个社会都是以貌取人的？一个人的水平和能力才是核心，可为什么哪怕已经拿出获奖证书和履历，只因为穿着很普通，面试官对自己的态度就很不好，质疑一切呢？</div>
+        <div class="art-insights"><span class="insight-tag">为什么这个社会都是以貌取人的？一个人的水平和能力才是核心，可为什么哪怕已经拿出获奖证书和履历，只因为穿着很普通，面试官对自己的态度就很不好，质疑一切呢？
+简单地说，这是智力的副作用导致的</span>
+<span class="insight-tag">在解释原理之前，我先说一个真实的故事，是一个英国医生分享的经历：
+他在深夜急诊中遇到一个40岁出头的中年男性</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#218</span>
+        <h4>太空旅行1：火箭的极限速度</h4>
+        <div class="art-summary">很多人在我谈到全球变暖和物种灭绝时都问到，今天逃离地球的可能性有多高？</div>
+        <div class="art-insights"><span class="insight-tag">因为地球的质量有点大，所以脱离地球引力就需要11.2公里/秒的速度</span>
+<span class="insight-tag">而今天，在各种安全实验中发现，人体能承受的加速度最高也只有重力加速度的10倍左右</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#219</span>
+        <h4>太空旅行2：瞬移是不可能的</h4>
+        <div class="art-summary">上一期，我们以火箭方程出发分析了在考虑相对论后，太空旅行的单程距离的合理范围是多少。但我们一直回避了一个重要问题，就是靠什么把速度加到接近光速。之所以回避，是因为这是一个无解的问题，因为我们没有那么多能量啊！</div>
+        <div class="art-insights"><span class="insight-tag">之所以回避，是因为这是一个无解的问题，因为我们没有那么多能量啊！
+于是还有一些科幻式的想法，试图据此接近太空旅行，比如说电影《星际迷航》里那个瞬移器（Transporter），当时两位主角从钻井平台上掉下去，马上就要砸到地面了，进取号上的船</span>
+<span class="insight-tag">那个瞬移器传输的到底是什么呢？其实，并不是把粒子以某种速度从A发射到B，真正需要传输的是那些有关生命微观组成的完整信息</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#222</span>
+        <h4>太空旅行3：钻虫洞</h4>
+        <div class="art-summary">很多科幻小说都把虫洞当作太空旅行的捷径。最常用的比喻就是，苹果的表面是一个二维的曲面，一面红，一面绿，小虫子从红的那一面爬到绿的那一面要爬过很长的距离，而小虫子可以不沿着表面爬，而是从红的那面开始向内啃食，走直线到达绿色那一面。由虫子钻出来的捷径就叫虫洞。但其实，虫洞也包含着更远的距离。</div>
+        <div class="art-insights"><span class="insight-tag">最常用的比喻就是，苹果的表面是一个二维的曲面，一面红，一面绿，小虫子从红的那一面爬到绿的那一面要爬过很长的距离，而小虫子可以不沿着表面爬，而是从红的那面开始向内啃食，走直线到达绿色那一面</span>
+<span class="insight-tag">这对一个本身就是天文学家的人来说相当有意思，因为他不会抛弃他的知识背景乱安排一些违反物理规律的情节</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#227</span>
+        <h4>问答：端到端是今后智驾主流吗？河南火箭发射失败是怎么回事？</h4>
+        <div class="art-summary">现在特斯拉FSDV12端到端自动驾驶技术的出现，给整个智驾行业带来了一股端到端的潮流，国内不少智驾企业开始争相研发端到端智驾方案。请问端到端是否是一个注定成功的路线？实现的难度怎么样？未来中国会有某个端到端智驾大模型一统天下吗？</div>
+        <div class="art-insights"><span class="insight-tag">请问端到端是否是一个注定成功的路线？实现的难度怎么样？未来中国会有某个端到端智驾大模型一统天下吗？
+非常巧，因为周五晚上理想汽车刚刚发布了它们的端到端智驾，可以说是一个理解难度比较高的发布会，我也正在写一个智能驾驶的内容，到时候这些问题都会</span>
+<span class="insight-tag">虽然听起来差很远，但实际上，五年之内车企只要愿意砸几十亿美元，训练的算力是有可能摸到这个值的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#240</span>
+        <h4>波音故障宇航员滞留太空，怎么办？</h4>
+        <div class="art-summary">最近很多人都让我说说NASA的宇航员在空间站回不来的问题。他们想知道，是不是被印度人坑了，是不是不好意思求助中国。还有说是波音不想修，只想让宇航员死在太空里，然后赔款。</div>
+        <div class="art-insights"><span class="insight-tag">结果航天飞机接送的成本越来越高，到了2011年最后一次执行飞行任务的时候一算，整个航天飞机历史，单次平均飞行成本16亿美元</span>
+<span class="insight-tag">所以，从2011年7月后的8年时间里，美国宇航员去国际空间站都只能坐俄罗斯的联盟号飞船，票价是每个座位7000万美元</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#263</span>
+        <h4>问答：猛禽3发动机先进吗？什么人才能参加女子比赛？</h4>
+        <div class="art-summary">据说SpaceX的猛禽3发动机刚刚发布，能不能解读一下？</div>
+        <div class="art-insights"><span class="insight-tag">据说SpaceX的猛禽3发动机刚刚发布，能不能解读一下？
+其实猛禽发动机3代最好的解读时间点是用它承载的星舰发射的时候，那时候才是一个完全体</span>
+<span class="insight-tag">不过最近围绕猛禽3发动机有一件乌龙事件倒是值得说一说，从这个乌龙事件里我们可以大致领略到猛禽3的领先幅度有多大</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#283</span>
+        <h4>1吨月球土壤含水50公斤？</h4>
+        <div class="art-summary">最近很多同学在后台问我关于月球土壤含水的问题。其实这个问题我们早在8个月前的星舰系列专题的“月球基地”那一期（</div>
+        <div class="art-insights"><span class="insight-tag">其实这个问题我们早在8个月前的星舰系列专题的“月球基地”那一期（
+《月球基地，更务实的目标》
+）就说过了</span>
+<span class="insight-tag">这一次之所以成为热门话题，是因为8月22日有新闻报道：
+我国科研人员利用嫦娥5号带回的月壤样品发现了大量生产水的办法</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#299</span>
+        <h4>问答：行星大都含水？BP机爆炸是怎么回事？</h4>
+        <div class="art-summary">为什么大部分行星的南北极都含有很多水合矿物质？</div>
+        <div class="art-insights"><span class="insight-tag">那期我提到，太阳系内不少行星或者卫星的极地都被发现有水，所以这位用户就想问问为什么</span>
+<span class="insight-tag">证据最充足的就是火星的极地，还有木卫二，在极地附近都有大面积冰盖，冰下还可能有大规模的液态湖</span>
+</div>
+      </div>
+  </div>
+
+  <footer class="footer">
+    <p><a href="index.html">← 返回科技参考3 主板</a> · 卓克 · 科技参考3 · MKS</p>
+  </footer>
+</div>
+
+</body>
+</html>

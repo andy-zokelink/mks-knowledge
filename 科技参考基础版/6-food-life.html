@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品营养与生活科学 · 卓克科技参考</title>
+<style>
+:root {
+    --bg: #fffdf7;
+    --card: #ffffff;
+    --accent: #F59E0B;
+    --accent-dark: #D97706;
+    --accent-light: #FDE68A;
+    --text: #1f1f1f;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --radius: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: "PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    min-height: 100vh;
+}
+/* TOP BAR */
+.top-bar{
+    position: sticky; top:0; z-index:100;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.top-bar .course-title{
+    font-size: clamp(14px, 2.2vw, 18px);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+.top-bar .home-link{
+    color: var(--accent-light);
+    font-size: 13px;
+    border: 1px solid var(--accent-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.top-bar .home-link:hover{
+    background: var(--accent-light);
+    color: #1a1a2e;
+}
+/* CONTAINER */
+.container{
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 28px);
+}
+/* HEADER */
+.theme-header{
+    text-align: center;
+    padding: clamp(24px, 5vw, 40px) 0 clamp(16px, 3vw, 24px);
+}
+.theme-header .theme-icon{
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: 12px;
+    animation: float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.theme-header h1{
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+.theme-header .subtitle{
+    font-size: clamp(13px, 1.8vw, 15px);
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+.theme-header .article-count{
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+/* DIVIDER */
+.divider{
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 auto 32px; max-width: 400px;
+}
+.divider::before,.divider::after{
+    content:'';flex:1;height:1px;
+    background: linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.divider span{color:var(--accent);font-size:16px}
+/* CARD GRID */
+.card-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.article-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: clamp(16px, 3vw, 22px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.article-card:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+.article-card::before{
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.article-card:hover::before{
+    opacity: 1;
+}
+.article-card .card-num{
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+.article-card .card-title{
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.article-card .card-summary{
+    font-size: clamp(12px, 1.4vw, 14px);
+    color: var(--text-light);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.article-card .card-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+}
+.article-card .tag{
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #fef3c7;
+    color: var(--accent-dark);
+    font-weight: 500;
+}
+/* KEY CONCEPTS SECTION */
+.section-title{
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 32px 0 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+}
+.concept-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.concept-card{
+    background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--accent-light);
+    border-left: 4px solid var(--accent);
+}
+.concept-card h4{
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+}
+.concept-card p{
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+/* STATS ROW */
+.stats-row{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+.stat-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.stat-card .stat-value{
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 800;
+    color: var(--accent-dark);
+}
+.stat-card .stat-label{
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+/* FOOTER */
+.page-footer{
+    text-align: center;
+    padding: 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+}
+.page-footer a{
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border: 2px solid var(--accent);
+    border-radius: 24px;
+    transition: all 0.2s;
+    display: inline-block;
+    margin: 4px 8px;
+}
+.page-footer a:hover{
+    background: var(--accent);
+    color: #fff;
+}
+/* MOBILE */
+@media(max-width:640px){
+    .card-grid{grid-template-columns:1fr}
+    .concept-grid{grid-template-columns:1fr}
+    .top-bar{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+    <span class="course-title">📡 卓克 · 科技参考基础版 · 食品营养与生活科学</span>
+    <a class="home-link" href="index.html">← 返回知识主板</a>
+</div>
+
+<div class="container">
+    <div class="theme-header">
+        <div class="theme-icon">🍽️</div>
+        <h1>食品营养与生活科学</h1>
+        <p class="subtitle">从食品安全到营养补剂、从睡眠科学到防骗指南——用科学守护日常生活</p>
+        <span class="article-count">共 17 篇文章</span>
+    </div>
+
+    <div class="divider"><span>◆</span></div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value">17</div>
+            <div class="stat-label">核心文章</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">4</div>
+            <div class="stat-label">关键概念</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">17</div>
+            <div class="stat-label">知识碎片</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">★ 核心概念</h2>
+    <div class="concept-grid">
+        
+    <div class="concept-card">
+        <h4>营养保健 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(3篇)</span></h4>
+        <p>燕窝、NMN、控糖电饭煲——用科学拆解保健品营销话术</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>食品安全 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(2篇)</span></h4>
+        <p>从硫磺八角到微塑料，现代食品工业的安全隐患与科学甄别</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>演化思维 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>达尔文演化论的三大缺陷与当代修正：用描述代替解释</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>VR/元宇宙 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>虚拟现实技术经过9年沉淀进入上升期，元宇宙概念引发虚实边界重定义</p>
+    </div>
+    </div>
+
+    <h2 class="section-title">📄 全部文章卡片</h2>
+    <div class="card-grid">
+        
+    <div class="article-card">
+        <div class="card-num">112 |</div>
+        <div class="card-title">112 | 意外：电竞训练营成了网瘾戒除所</div>
+        <div class="card-summary">这倒不是因为他们在某个世界大赛上又拿了冠军，而是因为他们成了很多家长心中完美的网瘾戒除所。这个电竞团队名叫RNG，在国内属于准一流的水平，出过Uzi和xiaohu等知名的选手。经过几天强化训练和教练指导后，让他们和RNG的青训队来一次正式比赛，比赛结果往往都是以0:3或者0:5这样悬殊的比分落败。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">149 |</div>
+        <div class="card-title">149 | 如何发现三星堆的亮点：陶器篇</div>
+        <div class="card-summary">前面几类物品比较容易抓人眼球，除了因为它们很多在今天还非常值钱之外，还因为保存的完整度比陶器要好。用它种花养草的好处是，盆体本身就吸水，浇花时，某一次水多水少都可以由盆本身来充当缓冲池。如果在三星堆墓葬里发现了瓷器，那可能将是全世界最重大的考古发现了。</div>
+        <div class="card-tags"><span class="tag">演化思维</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">256 |</div>
+        <div class="card-title">256 | 科学式训练：苏炳添为什么能跑9秒83？</div>
+        <div class="card-summary">2021年8月1日，东京奥运会田径的第三天比赛中，老将苏炳添以9秒83的成绩晋级奥运会百米决赛，之后又在决赛中以9秒98获得第六名。首先，如果9秒83的成绩出现在最后的决赛，那么苏炳添是可以拿银牌的，因为最终决赛的银牌是美国选手克里以9秒84获得的。1. 苏炳添成绩提升最重要的因素是科学化的训练，另一个重要原因是他没有过度开发身体。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">058 |</div>
+        <div class="card-title">058 | 提纯：燕窝和补品无效的逻辑</div>
+        <div class="card-summary">经过几番较量，这个品牌的燕窝连同以直播方式售卖的主播最终承认在推广宣传中夸大宣传，答应召回全部产品，并且退一赔三。无意中他发现峭壁上有很多燕窝，也就是燕子筑的窝，于是命令水手采回来，洗干净后用清水炖熟，然后吃了下去。但现在科学家没有方法合成这类试剂，只能从鲎的身上提取，于是每年要捕捉100万只左右的鲎去实验室献血。</div>
+        <div class="card-tags"><span class="tag">营养保健</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">069 |</div>
+        <div class="card-title">069 | 肉链3：人类吃不上肉的历史</div>
+        <div class="card-summary">当农作物成为人类主要的食物来源时，人类对动物的驯化也一并出现了。当农业出现之后，只用了几百年就快速出现了四种驯化动物，它们分别是11000年前被驯化的山羊和绵羊、10500年前被驯化的猪、10000年前被驯化的牛。有人类学家（Nikola Koepke, Joerg Baten）测量了公元1世纪到公元18世纪欧洲西部和中部9477具骨骼的情况，结论是——在1700年时间里，欧洲人的身高没有增长。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">071 |</div>
+        <div class="card-title">071 | 肉链5：全球食谱大更替</div>
+        <div class="card-summary">肉的消费量和吃进肚子里的量是两个不同的概念，因为肉在储存、运输中会有损失，比如腐败掉了;在烹调时，有人会去掉一些他认为不合适的部分；在进餐时，也会有吃剩下的最终被倒掉。这个概念很容易懂，但要弄清楚结论是非常费劲的，因为这需要耗费大量人力长期监督多个家庭的用餐情况。纯真的小朋友可能会相信，但当他照此方法连续践行了100天，发现世界和从前没有任何变化，这些宣传也就会渐渐失去效果。</div>
+        <div class="card-tags"><span class="tag">营养保健</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">075 |</div>
+        <div class="card-title">075 | 现代灭菌工艺：罐头最多能保存多久？</div>
+        <div class="card-summary">好在国家粮食储备足够，大家抢购了一阵后发现粮食价格几乎没变，谣言也就不攻自破。在这次打赌中，出现了大家都很熟悉的肉汤和鹅颈瓶的实验，才让人们认识到了微生物是其中的关键。其实，很多人对罐头都存在严重的误解，认为本该腐烂而十几年都不会腐烂的食物，一定是用防腐剂浸泡过的，就像生物实验室里福尔马林浸泡的尸体那样，这种东西不到万不得已是不能吃的。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">127 |</div>
+        <div class="card-title">127 | 盐1：选择哪一种更合适？</div>
+        <div class="card-summary">在古代，盐、铁、土地一直是最重要的税收来源。1993年的世界卫生大会上通过了一项决议，要求各成员国采用全民加碘的方法消灭碘缺乏病。这也是很多人买了低钠盐之后后悔的原因：本来想少吃点钠，结果发现不够咸，于是又放了很多低钠盐。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">128 |</div>
+        <div class="card-title">128 | 盐2：为什么今后的盐里会有铁？</div>
+        <div class="card-summary">而这个组织的成员几乎囊括了全球所有的国家和地区，所以这项决议通过的前提是，对于成员国里经济水平哪怕是后十名的国家，加碘的改进也已经算不上是什么负担了。虽然美国和欧洲发达国家早在决议推出前六七十年就自己加了碘，但推动这项决议的一个重大因素其实是一个印度人——曼纳尔（Venkatesh Mannar）。这个成本，对发达国家来说，根本不是问题，但关键的问题在于，发达国家缺铁的问题本来也不严重，如果最需要</div>
+        <div class="card-tags"><span class="tag">营养保健</span><span class="tag">VR/元宇宙</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">222 |</div>
+        <div class="card-title">222 | 未来食品：抗风险+低能耗</div>
+        <div class="card-summary">但其实在生活中，有很多细节我们是避免不了把虫子吃进去的，比如骑车的时候飞到嘴里的腻虫，或者买回来的鲜杨梅，如果你用浓盐水泡一下，半个小时后几乎一定会发现水面上飘着一些白色的小虫，这些小虫就是果蝇的幼虫。科学研究中发现，大约50%的杨梅果上都有已经孵化出来的幼虫。而且如果你看了上面那张图片还会发现，这个影响标注的颜色还和传统食物来源受到影响的颜色不同，传统食物一律受到红色影响，也就是可以造成致命的短</div>
+        <div class="card-tags"><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">293 |</div>
+        <div class="card-title">293 | 无糖月饼：为什么可能引起腹泻？</div>
+        <div class="card-summary">$_IGET_USER_NAME_$，你好。之前我们介绍过吃螃蟹时的各种问题，这篇《科技参考》，我们来说说吃月饼的各种问题。如果你去搜一搜“无糖月饼+腹泻”这个关键词就会发现，每年都有腹泻的报道，只不过拉肚子的人缺乏媒体影响力，所以这类事件一直没有映入大家的眼帘。</div>
+        <div class="card-tags"><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">143 |</div>
+        <div class="card-title">143 |《2020年中国睡眠指数报告》解读</div>
+        <div class="card-summary">而世界睡眠日也并不是历史悠久的传统，它是2008年才出现的，参与推广宣传的主力就是各大床上用品品牌。这样一来，入睡和醒来的时间点、睡眠时长、深度睡眠时间、睡前活动和运动锻炼对睡眠的影响都能分析得更准。去查一查相关的统计数据，实际情况是，因为各个研究对失眠的定义不同，所以这个比例各国从10%-30%的都有。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">254 |</div>
+        <div class="card-title">254 | 误区：空调与电扇的典型使用错误</div>
+        <div class="card-summary">这一讲《科技参考》，我们就从科学的角度讲一讲空调的有关知识。但其实，并不是大部分欧洲家庭都像中国和美国家庭那样装空调的。空调其实是一个比家具、日用品更容易滋生细菌的地方，因为空调室内机的空间里存在温度的大幅变化，通常是5℃-35℃这个区间范围，于是空气中的水分就会在里面凝结、形成水珠。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">296 |</div>
+        <div class="card-title">296 | 辟谣：关于视力的各种误区</div>
+        <div class="card-summary">一个是说，陕西省出台了一项规定，要求全省中小学从2021年9月份开始，每年两次向教委报送学生的视力监测结果。这种保温杯并不是大到可以塞进一个手机的那种普通保温杯，而是专门设计了一个塞手机的夹层，手机是从保温杯底部塞进去的，把底盖拧好，从外部根本看不出来。在随机统计中，科学家还发现了一个高相关因素，这个因素不论在东亚还是在欧美都普遍适用，就是户外运动时间的长短，尤其是低年龄段孩子的户外运动时间，对视</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">038 |</div>
+        <div class="card-title">038 | 问答：怎样挑选羽绒服才不花冤枉钱？</div>
+        <div class="card-summary">户外御寒最有效的装备就是羽绒服，所以我就说说怎么挑选羽绒服才能把钱花在刀刃上。买羽绒服和其他性能模糊的日用品，不花冤枉钱的方法都是一致的，就是去找行业内的衡量参数。这也是iPhone软件漏洞少、软件之间互相争夺系统资源的情况比较少的根本原因，因为每个软件都是经过苹果严格审查后才上架的。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">080 |</div>
+        <div class="card-title">080 | 问答：冬天到处都是静电，怎么办？</div>
+        <div class="card-summary">这周，我们讲了一个“罐头能保存多久”的问题，而且说全年《科技参考》结束的时候，我计划来一个试吃的直播。但是我仔细想了一下，如果用学术标准做一个“过期半年的罐头能不能品尝出来”的实验，直播一小时的时间是远远不够的。这样轮一轮，大约需要十几分钟，上一次品尝罐头留在嘴里的味道会在唾液的浸润下消散，避免对下一次品尝结果的影响。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">213｜</div>
+        <div class="card-title">213｜问答：“桃饱杏伤人，李子树下埋死人”是真的吗？</div>
+        <div class="card-summary">最近又到了桃子、杏上市的季节，民间总有“桃饱杏伤人，李子树下埋死人”的说法，意思是桃子可以多吃，杏就对身体有伤害了，而李子的害处更大，都到了埋死人的地步。简单说，这句俗话有一点点科学依据，但也非常不准确。你发现没有，桃子、李子、杏这三种水果，从结构到口感上都有点像。</div>
+        <div class="card-tags"></div>
+    </div>
+    </div>
+
+    <div class="page-footer">
+        <a href="index.html">← 返回知识主板</a>
+    </div>
+</div>
+</body>
+</html>

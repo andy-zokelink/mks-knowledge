@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能源环境与碳中和 · 卓克科技参考</title>
+<style>
+:root {
+    --bg: #fffdf7;
+    --card: #ffffff;
+    --accent: #F59E0B;
+    --accent-dark: #D97706;
+    --accent-light: #FDE68A;
+    --text: #1f1f1f;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --radius: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: "PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    min-height: 100vh;
+}
+/* TOP BAR */
+.top-bar{
+    position: sticky; top:0; z-index:100;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.top-bar .course-title{
+    font-size: clamp(14px, 2.2vw, 18px);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+.top-bar .home-link{
+    color: var(--accent-light);
+    font-size: 13px;
+    border: 1px solid var(--accent-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.top-bar .home-link:hover{
+    background: var(--accent-light);
+    color: #1a1a2e;
+}
+/* CONTAINER */
+.container{
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 28px);
+}
+/* HEADER */
+.theme-header{
+    text-align: center;
+    padding: clamp(24px, 5vw, 40px) 0 clamp(16px, 3vw, 24px);
+}
+.theme-header .theme-icon{
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: 12px;
+    animation: float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.theme-header h1{
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+.theme-header .subtitle{
+    font-size: clamp(13px, 1.8vw, 15px);
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+.theme-header .article-count{
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+/* DIVIDER */
+.divider{
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 auto 32px; max-width: 400px;
+}
+.divider::before,.divider::after{
+    content:'';flex:1;height:1px;
+    background: linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.divider span{color:var(--accent);font-size:16px}
+/* CARD GRID */
+.card-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.article-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: clamp(16px, 3vw, 22px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.article-card:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+.article-card::before{
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.article-card:hover::before{
+    opacity: 1;
+}
+.article-card .card-num{
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+.article-card .card-title{
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.article-card .card-summary{
+    font-size: clamp(12px, 1.4vw, 14px);
+    color: var(--text-light);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.article-card .card-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+}
+.article-card .tag{
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #fef3c7;
+    color: var(--accent-dark);
+    font-weight: 500;
+}
+/* KEY CONCEPTS SECTION */
+.section-title{
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 32px 0 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+}
+.concept-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.concept-card{
+    background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--accent-light);
+    border-left: 4px solid var(--accent);
+}
+.concept-card h4{
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+}
+.concept-card p{
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+/* STATS ROW */
+.stats-row{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+.stat-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.stat-card .stat-value{
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 800;
+    color: var(--accent-dark);
+}
+.stat-card .stat-label{
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+/* FOOTER */
+.page-footer{
+    text-align: center;
+    padding: 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+}
+.page-footer a{
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border: 2px solid var(--accent);
+    border-radius: 24px;
+    transition: all 0.2s;
+    display: inline-block;
+    margin: 4px 8px;
+}
+.page-footer a:hover{
+    background: var(--accent);
+    color: #fff;
+}
+/* MOBILE */
+@media(max-width:640px){
+    .card-grid{grid-template-columns:1fr}
+    .concept-grid{grid-template-columns:1fr}
+    .top-bar{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+    <span class="course-title">📡 卓克 · 科技参考基础版 · 能源环境与碳中和</span>
+    <a class="home-link" href="index.html">← 返回知识主板</a>
+</div>
+
+<div class="container">
+    <div class="theme-header">
+        <div class="theme-icon">🌍</div>
+        <h1>能源环境与碳中和</h1>
+        <p class="subtitle">碳中和国策、核能安全、电池技术、气候变化——人类如何与地球共生</p>
+        <span class="article-count">共 36 篇文章</span>
+    </div>
+
+    <div class="divider"><span>◆</span></div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value">36</div>
+            <div class="stat-label">核心文章</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">8</div>
+            <div class="stat-label">关键概念</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">36</div>
+            <div class="stat-label">知识碎片</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">★ 核心概念</h2>
+    <div class="concept-grid">
+        
+    <div class="concept-card">
+        <h4>电池技术 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(16篇)</span></h4>
+        <p>从锂电池到固态电池再到钠电池，动力电池在十年徘徊中寻找突破</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>碳中和 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(12篇)</span></h4>
+        <p>中国承诺2060年前实现碳中和，一场100万亿级别的能源体系重构</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>5G/通信 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(3篇)</span></h4>
+        <p>从5G建设到星链计划，通信基础设施的军备竞赛刚刚开始</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>操作系统 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(2篇)</span></h4>
+        <p>鸿蒙挑战安卓生态，操作系统之争从手机延伸到物联网</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>VR/元宇宙 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>虚拟现实技术经过9年沉淀进入上升期，元宇宙概念引发虚实边界重定义</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>营养保健 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>燕窝、NMN、控糖电饭煲——用科学拆解保健品营销话术</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>芯片技术 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>全球芯片缺货潮揭示半导体产业的结构性脆弱与地缘博弈</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>加密货币 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>从比特币到NFT，区块链技术引发的金融实验与能源争议</p>
+    </div>
+    </div>
+
+    <h2 class="section-title">📄 全部文章卡片</h2>
+    <div class="card-grid">
+        
+    <div class="article-card">
+        <div class="card-num">013 |</div>
+        <div class="card-title">013 | 核污染：福岛核电站要向太平洋排污？</div>
+        <div class="card-summary">要把本来应该存储在福岛核电站内部的核污染水，一共130多万吨，排向太平洋。在这9年里，日本东电公司也想过好几种其他办法处理越积越多的核污染废水，比如打一个2500米深的洞，把核污染水注入地层深处，或者把污染水做成固体的水泥深埋到地下20米处，或者把污染水电解等方法。但并不是一次性直接排空，而是先去除大部分放射性物质，最终只留下氚这种有放射性物质的东西，再用现有的海水稀释40倍之后，由特种船只运输到</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">156 |</div>
+        <div class="card-title">156 | 日本核污水对我们有多大影响？</div>
+        <div class="card-summary">4月13日，日本政府批准了福岛核电站向太平洋的排污方案，引起了全球所有关注者的反对。很多用户专门翻到了《科技参考》半年前的第13期《福岛核电站要向太平洋排污》，然后在下面留言，问为什么现在突然又出现了大规模的反对声音。在排污方案和废水的保存上，这半年并没有发生什么重大变化，变化的是当最终决定快要做出时，福岛县和周边几个县出现了非常激烈的反对。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">035 |</div>
+        <div class="card-title">035 | 趋势：可拆卸电池的手机会再次成为主流吗？</div>
+        <div class="card-summary">结果查了查发现，还不止这一款，三星在2020年8月份推出的新机Galaxy A01 Core，电池也是可拆卸的。其实，只要查查这两款可拆卸电池的手机就会发现，它们都是典型的低端产品，售价只有几百块钱。你知道手机变慢的原因是系统配合电池故意降低了性能，要解决这个问题只要更换电池就可以了，但因为电池都集成在手机内部，自己没法动手，于是只能找苹果售后或者其他维修店换。</div>
+        <div class="card-tags"><span class="tag">操作系统</span><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">124 |</div>
+        <div class="card-title">124 | 互联网气球：靠谱的科技创新什么样？</div>
+        <div class="card-summary">谷歌早在2011年，也就是连4G都还没有在各国普及的时候，就规划了这个为边远地区提供互联网服务的计划。从前，气象学家们也经常会用平流层气球收集地球上空的数据，但那些实验一般也就是几周到几个月时间，而且对位置的控制并不那么严格。但是，谷歌团队没有想到另外一个影响更大的因素——这些设想里最需要上网的人，同样也是最需要一份工作的人、最需要粮食的人、最需要医院和学校的人，如果有可能的话，也是最需要离开当地</div>
+        <div class="card-tags"><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">227 |</div>
+        <div class="card-title">227 | 操作系统：时隔六年，Windows 11 来了</div>
+        <div class="card-summary">6月24日，微软股价达到了267美元，成为继苹果之后，第二家市值超过2万亿美元的公司。在同一天，微软发布了新版操作系统 Windows 11。这是微软历史上 Windows 大版本更新间隔最久的一次，距离 Windows 10 发布已经过去了6年，相当于过去2个操作系统更新的间隔。</div>
+        <div class="card-tags"><span class="tag">操作系统</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">010 |</div>
+        <div class="card-title">010 | 特高压2：一个陌生的世界</div>
+        <div class="card-summary">其实，第一次看到“特高压”这个词，我也只知道它是发电站往远处传输电力时需要用到的特殊技术，怎么也想不到它竟然会成为新基建的大方向。我专门查了很多资料，跟你分享一下其中有意思的事。在耐高压实验中，普通的单层橡胶手套被正负极钳住后，在8000V时会被击穿，也就是电流一下就冲过去了，在固定点留下烧黑了的痕迹；干燥的花盆，材质是陶的，大约有1cm厚的壁，可以耐受8500V的电压；陶瓷盘子，可以耐压5000</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">016 |</div>
+        <div class="card-title">016 | 核能2：切尔诺贝利核事故是怎么发生的？</div>
+        <div class="card-summary">有了昨天的预备知识，今天我们就来了解二战后建成的最早一批核电站其中的一个事故，也就是切尔诺贝利核电站事故。重水中的氢原子因为核心有了中子，所以就很难再吸收中子了，于是重水在燃料棒周围流动就只有两个作用，一个是冷却，一个是给中子减速。值夜班的人大都没有专业技术，只会盯仪表盘、记录关键事件，根本不知道这次测试的详细流程，也就只能听总工程师的指令。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">017 |</div>
+        <div class="card-title">017 | 核能3：核安全，总是个隐患</div>
+        <div class="card-summary">第一，一次核电站事故就会让一个国家乃至全世界的民众，对核电失去信心，取消新建核电站的计划，并且加速淘汰现有核电站。是，小问题当然没必要同时停机，但《核电周刊》就在1998年报道过一次：当时，其中一个反应堆压力容器的顶盖出现了裂缝，结果法国所有的反应堆都不得不马上停机，法国只能临时从邻国调配电力。这一点在福岛核电站后续测试中也有印证：弘前大学的研究人员对比了事故影响最严重的浪江町市不同小鼠身上338</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">019 |</div>
+        <div class="card-title">019 | 核能5：核战争会不会突然爆发？</div>
+        <div class="card-summary">那之前，美国在意大利和土耳其部署了17分钟内就能射到莫斯科的核发射装置，苏联随后在古巴部署了一系列同样威胁美国全境的核弹头。因为那需要在一个非常大的面积里安装采样设备、监视设备，还要处理大量卫星数据，保证能发现各种秘密设施，核查人员的数量也要大幅增加。比如，日本的奥姆真理教被摧毁后，人们发现，他们之前计划从俄罗斯购买完整的核武器套装，但没有成功；而后，他们在澳大利亚买了一片铀矿，但只会开采，不会浓</div>
+        <div class="card-tags"><span class="tag">VR/元宇宙</span><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">033 |</div>
+        <div class="card-title">033 | 拉尼娜：中国今年冬天60年来最冷？</div>
+        <div class="card-summary">最近，有一个关于温度的传闻，说“今年冬天将是60年来最寒冷的，这一切都是拉尼娜现象导致的”。“拉尼娜”是西班牙语中圣婴的意思，也就是小女孩，指的是太平洋海水大面积持续变冷的现象。小女孩和小男孩性别相反，在气候中作用也是相反的，厄尔尼诺现象指的是太平洋海水大面积的升温。</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">营养保健</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">036 |</div>
+        <div class="card-title">036 | 电池储能：有序的代价</div>
+        <div class="card-summary">对于汽车来说，50公斤汽油大约可以提供700公里的续航。第一个锂离子在非常靠近负极的位置变成了金属，是金属就会导电，于是这个锂和负极接触在一起成了负极的一部分；接着，第二个锂离子也在同样的机制下成为负极的一部分……于是，负极的锂就像排队买票一样，按顺序形成一条长长的队伍。最关键的发挥能量转移作用的这1克的锂，大约只有0.5-0.7克实际参与了电能的传输。</div>
+        <div class="card-tags"><span class="tag">芯片技术</span><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">057 |</div>
+        <div class="card-title">057 | 石墨烯电池：典型的忽悠</div>
+        <div class="card-summary">今天，我们继续讲二阶科淆产品，就是披着科学外衣混淆视听的产品。“石墨烯”这个词是2010年底突然火起来的，因为那一年的诺贝尔奖颁给了石墨烯的制备和研究。当时，给大家留下最深印象的就是，原来最早的石墨烯是用透明胶带一层一层的从石墨上撕下来的。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">060 |</div>
+        <div class="card-title">060 | 氢燃料电池（上）：表面上的优势</div>
+        <div class="card-summary">今天的内容，源于大家在《电池储能：有序的代价》这篇参考下提的问题。很多同学都想了解氢燃料电池，所以我们就花两天时间简单说一下。此前70年，卡文迪许就研究了氢气加氧气变成水的过程；此前50年，尼克尔森（William Nicolson）就研究了刚刚那个过程的逆反应，也就是电解水生成氢气和氧气。</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">061 |</div>
+        <div class="card-title">061 | 氢燃料电池（下）：襁褓难离</div>
+        <div class="card-summary">氢燃料电池车要想行驶，需要带一个储氢罐，这个储氢罐内的压力是700个大气压（70MPa）。综合所有的方法看下来，以现有技术对比：最便宜的是用管道，每公斤氢的运输成本大约是1.2元，但是需要前期几亿的投资铺设管道。氢燃料电池车对比纯电动汽车无法胜出的本质原因是，氢燃料提供的能源和电能提供的能源都不是一次能源。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">096 |</div>
+        <div class="card-title">096 | 说好了全球变暖，为什么今年这么冷？</div>
+        <div class="card-summary">7年时间，今年第一次看到好几个半热熔轮胎前后轮全都冻裂的帖子。0.7℃是一个绝大部分人仔细体会也无法察觉的温度变化，这和大家这两个月以来的感受截然相反。这是因为城市的地下水被抽得过量了，而下雨后，雨水直接顺着排水沟流到了污水厂，沥青水泥的路面根本没机会让雨水渗入到城市下方的土壤，久而久之，地下水被抽走了，又没有新的水补充进来，于是就形成了巨大空洞，塌方了。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">101 |</div>
+        <div class="card-title">101 | 特斯拉新型电池：究竟提升在哪儿？</div>
+        <div class="card-summary">咱们专栏介绍电池的内容已经有一些了，相信你已经具备一定的基础了。2020年9月在特斯拉电池日上宣布的新型号4680电池。据说，除了特斯拉自己生产这种电池之外，特斯拉曾经密切合作但后来又撕破脸的老伙伴——松下，也将帮助特斯拉生产4680电池以补足产能的缺口。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">109 |</div>
+        <div class="card-title">109 | 能源系列：关于碳中和、废旧锂电池和光伏发电的问答</div>
+        <div class="card-summary">也就是在日照强烈的地方，上面一层太阳能光伏板吸收部分能量，下面还可以种地，立体空间充分利用。所以，这个行业其实在最近几年已经进入了良性发展阶段，也就是主要凭技术实力竞争，在成本和市场推广上自生自灭。不过在2015年时，科学界的研究得到了一个大致的共识：如果按照从1998年到2015年这样的碳排放趋势，到2100年，全球温升将妥妥的超过3℃，所以联合国又组织重新签署了《巴黎气候协定》。</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">158 |</div>
+        <div class="card-title">158 | 今年还会有多场沙尘暴吗？</div>
+        <div class="card-summary">实际上，在2005年之前，这样黄沙漫天的情景对于春天和夏天的北京来说，实在是太常见了。偶尔一天早上出门时没有把窗户关严实，回家后桌子上可能都是薄薄的一层土，第二天早上到学校，本来是红绿色塑胶面的操场也已经全是黄色了。虽然这样做能减缓乌兰巴托的沙尘暴天气，但对上千公里外的中国北方城市根本没有什么影响。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">239 |</div>
+        <div class="card-title">239 | 空调成为电站，全球气温降半度？</div>
+        <div class="card-summary">最近，不少用户问到了同一个问题：据说格力开发了一种新技术，可以把空调变成发电装置，如果普及后，可以让全球气温降低0.5摄氏度。在具体介绍这项技术之前，不用查具体的信息，我们就能给这样的成就定一个大致的级别。2021年7月6日，格力董事长董明珠在中国新消费品牌增长峰会上说，格力开发了一种新技术，可以把光能、储能设施和空调结合起来，让空调成为一个发电站——不需要通过城市电网，不需要远程输送，在保证有空</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">240 |</div>
+        <div class="card-title">240 | 碳中和1：碳中和是必须的吗？</div>
+        <div class="card-summary">据估计，这项国策的政府投资规模会超过100万亿，可能是建国以来最大规模基础设施的投资。而它之所以重要，除了投资规模大以外，还因为它在跨代升级能源。其实不是，全球变暖正是“灰犀牛”一样正在逼近且影响巨大的威胁，一旦等它临近了以后，任何方法都无法挽回了。</div>
+        <div class="card-tags"><span class="tag">碳中和</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">242 |</div>
+        <div class="card-title">242 | 碳中和3：中国的第一步怎么走？</div>
+        <div class="card-summary">从碳排放高峰到中和，其他国家有六七十年的时间，这个时长大约是两代人的职业生涯加起来的时间。也就是说，如果一个人在减排政策刚刚推出时20岁，找工作时进入了传统的高耗能企业，那么，虽然他走入社会的第一步就已经入错行了，但减排措施对他一生的影响也不是很大。电动汽车讲究尽量提高能量密度，但清洁能源的储能对能量密度很不敏感，在大西北、大沙漠，要多少地方有多少地方，只用挖一个巨大的坑，把电池放在里面，能量密度</div>
+        <div class="card-tags"><span class="tag">碳中和</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">244 |</div>
+        <div class="card-title">244 | 碳中和4：中国的第二步怎么走？</div>
+        <div class="card-summary">前面说过，中国实现碳中和有四个重要环节——淘汰、替换、回收、节能。在生活场景里，废物利用和节省开支好像在全部需求中占比不是那么显著，但中国的情况却不是这样的。即便是处理洋垃圾，虽然总量上并不少，但是回收过程带来的二次污染也是惊人的，比如会产生著名的毒素二噁英，这也是美国为什么对铝材回收率那么高，但却把塑料垃圾往外运的其中一个原因。</div>
+        <div class="card-tags"><span class="tag">碳中和</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">245 |</div>
+        <div class="card-title">245 | 碳中和5：二氧化碳怎么捕捉？</div>
+        <div class="card-summary">前面几天，我们讲了很多碳中和的内容，但都没有涉及过怎么把已经存在于大气层里的二氧化碳捕捉出来的技术。起码在第一次听说“碳中和”这个词的时候，我凭直觉认为，怎么把二氧化碳重新收集起来、从空气中固化出来才是碳中和的核心。其实这和产生煤气的方法类似——在高温水蒸气的作用下，化石燃料会气化，生成二氧化碳、一氧化碳、甲烷、氢气、氮气，其中氢气、甲烷和一氧化碳是之后燃烧的主要成分，而首先分离出的二氧化碳就可以</div>
+        <div class="card-tags"><span class="tag">碳中和</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">292 |</div>
+        <div class="card-title">292 | 新能源：锂电池回收困境</div>
+        <div class="card-summary">$_IGET_USER_NAME_$，你好。在今年春节期间《科技参考》的答疑中，我曾经简单介绍过锂电池的回收。知道了以上几个因素，你就会明白为什么锂电池回收根本没有形成产业，甚至十年后也不会有本质变化。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">310 |</div>
+        <div class="card-title">310 | 能源：拉闸限电是怎么回事？</div>
+        <div class="card-summary">今天的《科技参考》，我们讲讲近期影响最大的事件——拉闸限电。如果它是主要因素，那么如今影响这么大，只需要取消拉闸限电的政策，负面影响就能马上消除，但实际上，拉闸限电的状况在之后一段时间还会持续下去。因为在那里，居民用电比例占全社会用电的比例更高，而且所处区域的电网就算有剩余电力，也都输送给北京、天津了，轮不上从周边把电力输送给东北，此外，再叠加管理的落后这些影响，于是东三省的拉闸限电终于大面积地直</div>
+        <div class="card-tags"><span class="tag">碳中和</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">037 |</div>
+        <div class="card-title">037 | 电动汽车：“换电”的方案可行吗？</div>
+        <div class="card-summary">工信部在10月15日发布了一则答复函，其中提到：。下一步，将加大对充换电基础设施项目建设用地等共性问题的解决力度，并行支持“充电”“换电”两种发展模式，为新能源汽车推广应用创造良好环境。工信部过去一直支持新能源汽车的充电设施，而现在，也要以同样的力度支持换电了。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">118 |</div>
+        <div class="card-title">118 | 析锂：电动汽车为什么怕低温？</div>
+        <div class="card-summary">和往年不同，由于电动汽车逐渐普及，尤其是造车新势力幸存下来的几家企业确实有实力，它们推出的纯电动汽车已经批量开卖，于是在这个冬天，很多媒体都组织了电动汽车的冬季续航测试。结果发现，第一名是吉利几何C，比值是79.3%；保时捷卡宴的电动版也不错，比值是78.7%；特斯拉 Model 3 磷酸铁锂版的是68.2%；小鹏P7是66.5%；蔚来ES6是65.8%。但是在真实研究中发现，这些树枝状的分叉结构</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">131 |</div>
+        <div class="card-title">131 | 测试：电动汽车续航里程的虚标</div>
+        <div class="card-summary">每年冬天，我们都会看到这样的新闻：某位买了纯电动汽车的消费者抱怨，自己的车充满电之后连官方宣传的续航里程的一半都跑不到，虚标非常严重。这里当然有我们前面讲过的技术细节，也就是低温充电时析锂导致的问题，但更是由另外几个其他因素导致的，其中最重要的就是续航里程的标注规范。今天在中国市场上买到的新能源汽车，续航里程都是按照NEDC标注测试的，它的全称是“新欧洲标准循环测试”。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">233 |</div>
+        <div class="card-title">233 | 电动汽车：未来十年，动力电池的徘徊</div>
+        <div class="card-summary">有人认为，解决石油短缺问题的重要手段就是发展中国自己的纯电动汽车。当然，比亚迪董事长的言外之意是突出自己公司磷酸铁锂电池的优势，因为这种锂电池中并不包含容易被卡脖子的原材料，而且比亚迪在磷酸铁锂动力电池这个领域中，已经是全球最顶级的水平了。我们从百度指数上查“磷酸铁锂”这个关键词，也可以看到，从2015年到2020年，这个词的指数一直平稳的维持在300左右，快速增长就是从2020年5月份开始的，一</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">232 |</div>
+        <div class="card-title">232 | 比特币危机：矿难真的来了</div>
+        <div class="card-summary">在之前的《科技参考》里，我们曾介绍了一篇由中科院数学与系统科学研究院与清华大学共同发表的研究，研究的是比特币挖矿的耗能和3种不同的监管政策对比特币挖矿带来的影响。这实际上就是一个信号，尤其是在中国向世界承诺了碳中和的目标后，这些研究会直接成为政策参考的依据。不过现实中，政策实施得更快，而且没有采取那篇研究中的任何一种方式，而是直接采取了更加坚决果断的措施，对挖矿行为做了严厉的打击。</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">加密货币</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">020 |</div>
+        <div class="card-title">020 | 问答：新能源什么时候会成为主流？</div>
+        <div class="card-summary">我不理解的是，既然海水只是发挥一个冷却的作用，那为什么不把用过的海水重新注入反应堆，实现冷却水循环使用呢。原因是需要通过循环，过滤掉冷却水中的铯-134、铯-137、锶-90、钴-60等一共六十多种放射性物质。之所以从5%开始算，而不是从第一次发现就开始算，是因为很多能源可能第一次出现后几百年都没有增长，而5%算是一个关键点，达到这个数量级后，就已经算一个不可忽视的品种了，可以单独列出来。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">159 |</div>
+        <div class="card-title">159 | 问答：福岛核废水还有其他解决方法吗？</div>
+        <div class="card-summary">在《156 | 日本核污水对我们有多大影响。这个错误在156期参考里已经更正过来了，但如果你之前学习到的是错误版本，现在可以再留意一下我的更正。就是当前储水罐中废水的总辐射量，这个错误是我从科学计数法到中文“万”和“亿”的表达中弄混了，这还多亏用户Zero的提醒。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">237 |</div>
+        <div class="card-title">237 | 问答：电动车着火了怎么办？</div>
+        <div class="card-summary">最近，你一定看过不少电梯监控拍到的电动车在电梯里自燃的视频了，所以这个问题值得一说。先说结论，如果使用锂电池做动力的电动车着火，灭火方法基本得是专业消防队员使用水灭火。对于普通的燃烧物，灭火的原理就是隔绝氧气，所以干粉灭火器也好，堆沙土也好，只要把空气中的氧气与可燃物隔离了，于是剧烈的氧化反应马上就停止了，火就灭了。</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">243 |</div>
+        <div class="card-title">243 | 问答：郑州为什么会下特大暴雨？</div>
+        <div class="card-summary">从这周二开始，很多用户都在问，为什么郑州会出现那场特大暴雨。其实，大背景是气候巨变，和历年截然不同的大气环流的。之所以形成这样一道斜线，是西伯利亚南下的冷空气，与来自印度洋、孟加拉湾那个方向的暖空气交汇的结果。</div>
+        <div class="card-tags"><span class="tag">碳中和</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">255 |</div>
+        <div class="card-title">255 | 问答：垃圾发电+四元电池+防骗指南</div>
+        <div class="card-summary">因为今天全球城市化已经很深，有能力建垃圾焚烧发电厂的地区，城市化的规模已经不太可能几十倍的增长了，甚至别说几十倍了，两三倍都很难。而城市规模就直接对应了城市垃圾的总量，城市规模不能猛增，垃圾焚烧发电厂的燃料就不可能猛增，发电总量就有限，就不会在能源结构中大到足够单独列为一项的地步。具体来说，在半个月前，全国碳排放权交易市场在上海环境能源交易所正式启动的时候，生态环境部应对气候变化司司长做了一番介绍</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">315 |</div>
+        <div class="card-title">315 | 年度总结：说科技，谁推动着科技？</div>
+        <div class="card-summary">因为当时这么做确实成本低又有效，于是被各国效仿，后来又随着两次世界大战，民权从全民少数精英普及到所有人的头上，于是科学研究就从纯个人间兴趣或私人间资助的契约，演化成了国家行为。基于利益这一点，我们也能知道，横空出世的所谓“重大技术突破”很难和这个领域中在传统工艺基础上做出了一点点改进，从而降低了成本的技术突破相抗衡的。真正重大的技术突破大都诞生于利益博弈的一线，而不太可能诞生于象牙塔和类似性质的研</div>
+        <div class="card-tags"><span class="tag">5G/通信</span></div>
+    </div>
+    </div>
+
+    <div class="page-footer">
+        <a href="index.html">← 返回知识主板</a>
+    </div>
+</div>
+</body>
+</html>

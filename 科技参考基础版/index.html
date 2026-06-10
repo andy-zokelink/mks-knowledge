@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卓克·科技参考基础版 · MKS知识主板</title>
+<style>
+:root {
+    --bg: #fffdf7;
+    --accent: #F59E0B;
+    --accent-dark: #D97706;
+    --accent-light: #FDE68A;
+    --text: #1f1f1f;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+    --border: #e5e7eb;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: "PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+}
+/* GRADIENT TOP */
+.hero-bg{
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 60%, #fffdf7 100%);
+    padding: clamp(30px, 6vw, 56px) 20px clamp(40px, 8vw, 80px);
+    text-align: center;
+    color: #fff;
+}
+.hero-bg .hero-badge{
+    display: inline-block;
+    background: var(--accent);
+    color: #1a1a2e;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+}
+.hero-bg h1{
+    font-size: clamp(24px, 5vw, 42px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+}
+.hero-bg .hero-sub{
+    font-size: clamp(13px, 1.8vw, 16px);
+    color: #e5e7eb;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.hero-bg .hero-stats{
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+.hero-bg .hero-stat{
+    text-align: center;
+}
+.hero-bg .hero-stat .hs-num{
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 900;
+    color: var(--accent);
+}
+.hero-bg .hero-stat .hs-label{
+    font-size: 12px;
+    color: #9ca3af;
+}
+/* MAIN CONTENT */
+.main-content{
+    max-width: 1160px;
+    margin: -20px auto 0;
+    padding: 0 20px 40px;
+    position: relative;
+    z-index: 1;
+}
+/* THEME GRID */
+.theme-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+.theme-card{
+    background: #fff;
+    border-radius: var(--radius);
+    padding: clamp(18px, 3vw, 26px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+.theme-card:hover{
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+.theme-card::after{
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.25s;
+}
+.theme-card:hover::after{
+    transform: scaleX(1);
+}
+.theme-card-icon{
+    font-size: clamp(28px, 4vw, 40px);
+    margin-bottom: 8px;
+}
+.theme-card-num{
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+}
+.theme-card-title{
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+}
+.theme-card-desc{
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+}
+.theme-card-count{
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    background: #fef3c7;
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    align-self: flex-start;
+    margin-bottom: 8px;
+}
+.theme-card-samples{
+    font-size: 11px;
+    color: var(--text-muted);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/* ABOUT SECTION */
+.about-section{
+    background: #fff;
+    border-radius: var(--radius);
+    padding: clamp(18px, 3vw, 28px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    text-align: center;
+}
+.about-section h2{
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+}
+.about-section p{
+    font-size: 14px;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+/* FOOTER */
+.page-footer{
+    text-align: center;
+    padding: 28px;
+    border-top: 1px solid var(--border);
+}
+.page-footer p{
+    font-size: 13px;
+    color: var(--text-muted);
+}
+/* MOBILE */
+@media(max-width:640px){
+    .theme-grid{grid-template-columns:1fr}
+    .hero-bg .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero-bg">
+    <div class="hero-badge">MKS · 最小知识集</div>
+    <h1>卓克 · 科技参考基础版</h1>
+    <p class="hero-sub">每天跟上全球科技新变化 —— 317篇深度解读提炼为8大专题知识体系，帮你用最少时间掌握最核心的科技认知</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="hs-num">317</div><div class="hs-label">文章总数</div></div>
+        <div class="hero-stat"><div class="hs-num">8</div><div class="hs-label">知识专题</div></div>
+        <div class="hero-stat"><div class="hs-num">2020-2021</div><div class="hs-label">时间跨度</div></div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="about-section">
+        <h2>📡 关于本课程</h2>
+        <p>《科技参考》是卓克在得到App开设的日更科技新闻解读专栏，覆盖人工智能、生物医学、能源环境、芯片通信、航天探索等前沿领域。本主板将全部317篇文章按8大专题重组，每个专题提炼核心概念与关键知识卡片，让你快速建立科技认知框架。</p>
+    </div>
+
+    <div class="theme-grid">
+        
+        <a class="theme-card" href="1-ai-digital.html">
+            <div class="theme-card-icon">🤖</div>
+            <div class="theme-card-num">专题1</div>
+            <h3 class="theme-card-title">人工智能与数字科技</h3>
+            <p class="theme-card-desc">从AI预测蛋白质结构到脑机接口、自动驾驶与元宇宙——数字智能如何重塑人类能力边界</p>
+            <div class="theme-card-count">59 篇文章</div>
+            <div class="theme-card-samples">048 | 一小步突破：人工智能预测蛋白质结构 · 059 | 时间窗口：身高、视力、牙齿与语言 · 164 | 偷看三百年前的密信</div>
+        </a>
+
+        <a class="theme-card" href="2-biomed.html">
+            <div class="theme-card-icon">🧬</div>
+            <div class="theme-card-num">专题2</div>
+            <h3 class="theme-card-title">生物医学与健康前沿</h3>
+            <p class="theme-card-desc">癌症治疗新突破、基因编辑、抗衰老研究、神经科学——现代医学如何攻克人类健康最大难题</p>
+            <div class="theme-card-count">70 篇文章</div>
+            <div class="theme-card-samples">发刊词 | 来，每天跟上全球科技新变化 · 040 | 新发现：女猎人比例不低意味着什么？ · 064 | 新发现：癌症转移的规律被窥探</div>
+        </a>
+
+        <a class="theme-card" href="3-covid.html">
+            <div class="theme-card-icon">🦠</div>
+            <div class="theme-card-num">专题3</div>
+            <h3 class="theme-card-title">新冠疫情全追踪</h3>
+            <p class="theme-card-desc">从疫苗研发到病毒变异、从核酸测试到群体免疫——全球大流行的科学全貌</p>
+            <div class="theme-card-count">46 篇文章</div>
+            <div class="theme-card-samples">234 | 准诺奖：体内基因编辑技术 · 274｜元宇宙：能模拟真实世界吗？ · 095 | 疫情中演化出的作弊工具</div>
+        </a>
+
+        <a class="theme-card" href="4-energy.html">
+            <div class="theme-card-icon">🌍</div>
+            <div class="theme-card-num">专题4</div>
+            <h3 class="theme-card-title">能源环境与碳中和</h3>
+            <p class="theme-card-desc">碳中和国策、核能安全、电池技术、气候变化——人类如何与地球共生</p>
+            <div class="theme-card-count">36 篇文章</div>
+            <div class="theme-card-samples">013 | 核污染：福岛核电站要向太平洋排污？ · 156 | 日本核污水对我们有多大影响？ · 035 | 趋势：可拆卸电池的手机会再次成为主流吗？</div>
+        </a>
+
+        <a class="theme-card" href="5-chips.html">
+            <div class="theme-card-icon">💻</div>
+            <div class="theme-card-num">专题5</div>
+            <h3 class="theme-card-title">芯片通信与信息技术</h3>
+            <p class="theme-card-desc">芯片产业博弈、5G星链、操作系统之争、加密货币——信息时代的底层基础设施</p>
+            <div class="theme-card-count">24 篇文章</div>
+            <div class="theme-card-samples">099 | 隔空充电的一盆冷水 · 191 | 标准：更快更统一，新USB口来了 · 188 | 计算机：用bug修复bug，然后被禁了</div>
+        </a>
+
+        <a class="theme-card" href="6-food-life.html">
+            <div class="theme-card-icon">🍽️</div>
+            <div class="theme-card-num">专题6</div>
+            <h3 class="theme-card-title">食品营养与生活科学</h3>
+            <p class="theme-card-desc">从食品安全到营养补剂、从睡眠科学到防骗指南——用科学守护日常生活</p>
+            <div class="theme-card-count">17 篇文章</div>
+            <div class="theme-card-samples">112 | 意外：电竞训练营成了网瘾戒除所 · 149 | 如何发现三星堆的亮点：陶器篇 · 256 | 科学式训练：苏炳添为什么能跑9秒83？</div>
+        </a>
+
+        <a class="theme-card" href="7-thinking.html">
+            <div class="theme-card-icon">🧠</div>
+            <div class="theme-card-num">专题7</div>
+            <h3 class="theme-card-title">科学思维与认知方法</h3>
+            <p class="theme-card-desc">控制论、演化思维、信息量化、学术秩序——科学方法论如何升级我们的底层操作系统</p>
+            <div class="theme-card-count">16 篇文章</div>
+            <div class="theme-card-samples">024 | 为什么诺贝尔奖得主还要论文造假？(中) · 025 | 为什么诺贝尔奖得主还要论文造假？(下) · 148 | 如何发现三星堆的亮点：金与青铜篇</div>
+        </a>
+
+        <a class="theme-card" href="8-space.html">
+            <div class="theme-card-icon">🚀</div>
+            <div class="theme-card-num">专题8</div>
+            <h3 class="theme-card-title">航天探索与物理前沿</h3>
+            <p class="theme-card-desc">从量子计算到时间晶体、从火星移民到暗物质——人类认知边界的极限拓展</p>
+            <div class="theme-card-count">49 篇文章</div>
+            <div class="theme-card-samples">022 | 室温超导：只是实验室内的突破 · 065 | 新研究：人类可以返老还童了？ · 130 | 变化：地球自转加速，该怎么理解？</div>
+        </a>
+    </div>
+
+    <div class="page-footer">
+        <p>卓克 · 科技参考基础版 · MKS最小知识集 · 基于得到App课程内容整理</p>
+    </div>
+</div>
+
+</body>
+</html>

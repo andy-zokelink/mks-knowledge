@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI与芯片革命 — 科技参考3 MKS</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="home-btn">← 科技参考3 主板</a>
+  <span class="breadcrumb">AI与芯片革命 · 75 篇文章</span>
+</div>
+
+<div class="container">
+  <div class="topic-header">
+    <div class="topic-icon">🤖</div>
+    <h2>AI与芯片革命</h2>
+    <p class="topic-subtitle">大模型、半导体与智能时代的底层博弈</p>
+    <p class="topic-desc">从GPT到Sora，从英伟达到EUV光刻机，人工智能与芯片技术正在重塑人类文明的底层逻辑。75篇文章覆盖AI大模型原理、芯片制造博弈、智能驾驶演进与AI安全等核心议题。</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-badge"><span class="num">75</span> 篇文章</div>
+    <div class="stat-badge">📅 2023-2024</div>
+    <div class="stat-badge">🎯 MKS 最小知识集</div>
+  </div>
+
+  <!-- Key Concepts -->
+  <div class="section-title">核心概念</div>
+  <div class="concepts-grid">
+    
+      <div class="concept-card">
+        <div class="concept-num">1</div>
+        <h5>EUV光刻机被我们攻克了吗</h5>
+        <p>相关文章 2 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">2</div>
+        <h5>《未来简史》作者怎么看待AI危机</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">3</div>
+        <h5>高通发布CPU，这次搅局要成功</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">4</div>
+        <h5>OpenAI首届开发者大会</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">5</div>
+        <h5>熟食的安全性+国内AI大模型性能如何</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">6</div>
+        <h5>马斯克在AI世界的恩怨</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">7</div>
+        <h5>台积电、苹果携手硬扛3nm工艺</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">8</div>
+        <h5>美国半导体制造回归，没戏</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">9</div>
+        <h5>OpenAI内部动荡解读</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">10</div>
+        <h5>几年后人类迎来通用人工智能</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">11</div>
+        <h5>GPT模型怎么工作</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">12</div>
+        <h5>GPT模型怎么理解抽象概念</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+  </div>
+
+  <!-- Article List -->
+  <div class="section-title">全部文章</div>
+  <div class="articles-list">
+    
+      <div class="article-card">
+        <span class="art-num">#3</span>
+        <h4>《未来简史》作者怎么看待AI危机？</h4>
+        <div class="art-summary">ChatGPT大火之后，AI威胁论掀起一波高潮，顶点是2023年3月29日的一封公开信，有1100多位业界大佬呼吁停止大型AI实验。参与签名的人包括特斯拉的马斯克、苹果的联合创始人沃兹尼亚克、人工智能教父级人物杰弗里·辛顿（Geoffrey Hinton）。</div>
+        <div class="art-insights"><span class="insight-tag">因为一些先锋的公司，比如Buzzfeed这个曾经以趣味测试、星座算卦为主业的公司也开始涉足短视频和影视剧领域，它和OpenAI合作后裁掉了180人，因为AI创作的内容成本低，效率高</span>
+<span class="insight-tag">更大的威胁在于，从前每次大罢工结束后，影视剧都会有大半年的空窗期，因为这么久的时间全行业编剧都没上班，他们也肯定不会偷偷在家写稿</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#5</span>
+        <h4>EUV光刻机被我们攻克了吗？（上）</h4>
+        <div class="art-summary">9月14日，有一条科技新闻刷屏了，说的是EUV光刻机被清华使用SSMB技术攻克了。很多同学在后台给我发消息，想听听具体是怎么攻克的。</div>
+        <div class="art-insights"><span class="insight-tag">简单说结论，
+这是一个民间以讹传讹的谣言，在6天时间里不断发酵，版本不断演化，拼贴上了不同时期、来源不同的图片和微信聊天记录，在9月14日达到传播高峰时的版本已经是谣言大荟萃了</span>
+<span class="insight-tag">谣言的最早版本是9月8日晚7点微博上一个湖北的军事博主发的微博，为中国EUV光刻机的研发列出了三条路径，其中第三条路线就是后来大家刷屏的与清华大学有关的内容</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#6</span>
+        <h4>EUV光刻机被我们攻克了吗？（下）</h4>
+        <div class="art-summary">昨天，我们解释了刷了屏的“EUV光刻机被清华攻克了”为什么是谣言，最后还留了一个问题：《稳态微聚束原理的实验演示》这篇论文确实和EUV光刻机有点关系啊？为什么不能当作技术突破去看待呢？</div>
+        <div class="art-insights"><span class="insight-tag">昨天，我们解释了刷了屏的“EUV光刻机被清华攻克了”为什么是谣言，最后还留了一个问题：《稳态微聚束原理的实验演示》这篇论文确实和EUV光刻机有点关系啊？为什么不能当作技术突破去看待呢？
+如果和光刻机一点联系都没有，也不会被刷屏式的传播，但关</span>
+<span class="insight-tag">我们来看清华SSMB项目的负责人唐传祥在2021年是怎么解读这个成果的：
+“EUV光刻机的自主研发还有很长的路要走，基于SSMB的EUV光源，有望实现更大的平均功率，并具备向更短波长扩展的潜力，为大功率EUV光源的突破提供了全新的解决思路，</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#16</span>
+        <h4>高通发布CPU，这次搅局要成功</h4>
+        <div class="art-summary">高通在人们的印象中一直是手机处理器和通信芯片最强。2023年10月24日，他们举办了一年一度的峰会。</div>
+        <div class="art-insights"><span class="insight-tag">可是自从2019年后，骁龙处理器的性能提升陷入瓶颈，而且每一代都是火炉，发热越来越严重，所以大家对新品的期待也越来越低</span>
+<span class="insight-tag">但这次的峰会，一改最近几年的挤牙膏模式，几款产品绝对能勾起大家买买买的欲望</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#25</span>
+        <h4>OpenAI首届开发者大会</h4>
+        <div class="art-summary">2023年11月7日，OpenAI在首届开发者大会上公布了大改版的GPT。</div>
+        <div class="art-insights"><span class="insight-tag">一个翻译过程能参考前后4000字的内容来修正翻译细节，其实已经能把翻译水平做得很好了，没必要参考前后几万字</span>
+<span class="insight-tag">拿最简单的说，我在之前答疑里就介绍过的，新版ChatGPT可以支持你任意把一个数据文件拽进对话框，然后根据这里的内容提问，可以是Excel表格，也可以是PDF，也可以是其他主流的数据文件</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#27</span>
+        <h4>问答：熟食的安全性+国内AI大模型性能如何？</h4>
+        <div class="art-summary">火腿罐头里没有亚硝酸盐，这算加工肉吗？还有，我家楼下便民超市门口的熟食店，都是现做现卖的熟肉，不是那种塑封批量运输和售卖的，这算加工肉吗？</div>
+        <div class="art-insights"><span class="insight-tag">说是现做现卖，其实都是前一天或者前几天做好的，否则不可能有足够的供应量</span>
+<span class="insight-tag">但我看他那盆里装的肉，和便民超市里熟食店的肉的最大区别，就是色系不一样</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#30</span>
+        <h4>马斯克在AI世界的恩怨</h4>
+        <div class="art-summary">马斯克是互联网时代的老贵族，和他一个年代成功的人今天很多已经早早退休，而他还在为5家公司忙活。而且今天，AI在他的3个公司中的发展都越来越重要。</div>
+        <div class="art-insights"><span class="insight-tag">其实，马斯克和今天全球最重要的3个研发AI产品的机构——谷歌、OpenAI、DeepMind都有很深的渊源，但最终又都决裂了</span>
+<span class="insight-tag">矛盾的关键是，大家在聊起人工智能将往什么方向发展时，两个人的价值观严重对立</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#31</span>
+        <h4>芯片：台积电、苹果携手硬扛3nm工艺</h4>
+        <div class="art-summary">2023年，半导体行业进入3nm工艺。水准最高的台积电尽管把首批3nm工艺的所有产能全部匀给了苹果，翘首以待的英伟达、AMD、联发科都没有份，但实质上，在这场先进工艺的竞争里，台积电和苹果其实都付出了不少成本。</div>
+        <div class="art-insights"><span class="insight-tag">水准最高的台积电尽管把首批3nm工艺的所有产能全部匀给了苹果，翘首以待的英伟达、AMD、联发科都没有份，但实质上，在这场先进工艺的竞争里，台积电和苹果其实都付出了不少成本</span>
+<span class="insight-tag">2023年9月，苹果发布了iPhone15系列手机，只有Pro版本才使用了最新的A17 Pro芯片，不带Pro版本的iPhone用的还是14代iPhone的A16芯片</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#32</span>
+        <h4>美国半导体制造回归，没戏</h4>
+        <div class="art-summary">2022年8月9日，拜登总统签署了《芯片与科学法案》，其中的大头，390亿美元，用于资助制造设施的新建和扩张。实际上，这笔钱的大部分都要发给台积电、三星、镁光、英特尔的。</div>
+        <div class="art-insights"><span class="insight-tag">因为这些企业在半导体制造业的占比非常大，美国政府也非常希望早已流往海外几十年的半导体制造业重新回归美国本土</span>
+<span class="insight-tag">而半导体行业，因为体量过于巨大，世界上没有任何国家可以扭转这个行业的发展</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#36</span>
+        <h4>OpenAI内部动荡解读</h4>
+        <div class="art-summary">这期《科技参考》，我们追一个科技界近些年最大的八卦，就是OpenAI公司的内斗。</div>
+        <div class="art-insights"><span class="insight-tag">这期《科技参考》，我们追一个科技界近些年最大的八卦，就是OpenAI公司的内斗</span>
+<span class="insight-tag">我们先关注截至11月21日上午为止的剧情，最后谈一谈我怎么看这件事的后续影响</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#41</span>
+        <h4>几年后人类迎来通用人工智能</h4>
+        <div class="art-summary">一场是《纽约日报》对OpenAI的CEO阿尔特曼（Sam Altman）和CTO米拉·穆拉迪（Mira Murati）的，另一场是矮人播客（Dwarkesh Podcast）对DeepMind的创始人兼首席科学家肖恩·莱格（Shane Legg）的。话题全都集中在通用人工智能（AGI）和AGI对人类未来的影响。</div>
+        <div class="art-insights"><span class="insight-tag">最近，有两场采访值得关注：
+一场是《纽约日报》对OpenAI的CEO阿尔特曼（Sam Altman）和CTO米拉·穆拉迪（Mira Murati）的，另一场是矮人播客（Dwarkesh Podcast）对DeepMind的创始人兼首席科学家</span>
+<span class="insight-tag">由于这是今天全球人工智能领域最重要的两个公司最高决策层的观点，所以这期《科技参考》，我就帮大家总结一下两场话题的主要观点，并附上一些个人评论</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#42</span>
+        <h4>心智1：GPT模型怎么工作？</h4>
+        <div class="art-summary">这个系列，我们用几期内容深入讨论一下今后十年里最重要的发明——大语言模型。</div>
+        <div class="art-insights"><span class="insight-tag">这个系列，我们用几期内容深入讨论一下今后十年里最重要的发明——大语言模型</span>
+<span class="insight-tag">咱们《科技参考》的用户当然要比普通科技爱好者更懂行一些，所以这个系列，我们就来仔细讨论</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#43</span>
+        <h4>心智2：GPT模型怎么理解抽象概念？</h4>
+        <div class="art-summary">昨天我们介绍了GPT模型的推理细节，你会发现，很多人不屑一顾说GPT是做文字接龙，这种说法太不可靠了。它其实玩儿的接龙游戏远远超过咱们过节时做的文字接龙。GPT玩的那种接龙水平，肯定得是一个能理解并会运用语言的人才能续写下去的，完全不是查查字典能应付的。</div>
+        <div class="art-insights"><span class="insight-tag">如果你这么想，那就错了，因为GPT模型确实可以正确回答很多训练材料里没有的问题</span>
+<span class="insight-tag">999亿9999万9999乘以2939万4817等于多少？答案是一个两百九十三万万亿量级的数字，这个数字远远超过训练素材文字个数5000亿的数字，所以这么大的数字不可能在训练素材中记下来的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#44</span>
+        <h4>心智3：GPT的智能有多强？</h4>
+        <div class="art-summary">昨天我们看到了GPT-2大语言模型中单个神经元到底学会了什么，也确认了大语言模型确实学会了一些训练素材里肯定没有的技能，比如数学计算的能力。但参数规模足够大，就一定会涌现出一些之前没有的能力吗？</div>
+        <div class="art-insights"><span class="insight-tag">其实并不是因为训练量加大，性能才增加，而是因为增加了模型的参数规模，所以训练完一个模型所需的计算总量才增加</span>
+<span class="insight-tag">有大家最熟悉的GPT-3，另外四个都是来自 DeepMind开发的——LaMDA、PalM、Gopher和Chinchilla</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#48</span>
+        <h4>AI保守派故事（1）：辛顿的灰暗人生</h4>
+        <div class="art-summary">前段时间，咱们仔细说了阿尔特曼被解雇又重返OpenAI的大瓜，但OpenAI公司内斗的剧情还没有讲完。</div>
+        <div class="art-insights"><span class="insight-tag">马斯克发推说：我收到一份关于OpenAI的信件，里面提到的问题似乎值得调查，但这封信很快被删除了</span>
+<span class="insight-tag">它们的报道中说，在阿尔特曼被解雇前4天，OpenAI内部的研究员曾经向董事会发过一封信，称发现了一个可能威胁人类的强大AI，而这个进展也是OpenAI的联合创始人兼首席科学家伊利亚最终决定罢免阿尔特曼的导火索</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#49</span>
+        <h4>AI保守派故事（2）：AI威胁论</h4>
+        <div class="art-summary">上期我们说了AI保守派扛大旗者辛顿的学术生涯，今天我们来看看这支保守派凭什么认为AI会对人类的存亡产生威胁。</div>
+        <div class="art-insights"><span class="insight-tag">永生的智慧体
+对人类来说，最坏的一种可能是什么呢？
+保守派认为，很可能人类只是智慧演化过程的一个过渡阶段</span>
+<span class="insight-tag">因为数字智能太过精致和复杂了，无法直接演化出来，于是生物性质的智慧首先演化出来，它们是数字智慧体的创造者</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#50</span>
+        <h4>AI保守派故事（3）：反叛者伊利亚</h4>
+        <div class="art-summary">昨天结尾说到，如果Q*项目真的能合成高质量数据，我们多少应该就能理解首席科学家伊利亚突然发起叛乱，解雇阿尔特曼的苦衷了。</div>
+        <div class="art-insights"><span class="insight-tag">认栽就认栽，干嘛还弄这些虚情假意的套路？实际上，了解伊利亚背景的人就会知道，这根本不是互舔，伊利亚闪电政变和深表后悔都是真诚的</span>
+<span class="insight-tag">其实之前的进展大约是这样——每年的冠军能降低1%-2%的错误率就已经非常不容易了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#51</span>
+        <h4>谷歌Gemini发布，实在不堪</h4>
+        <div class="art-summary">2023年12月7日，谷歌又一次发布了他们的AI产品——Gemini（双子座）。很多媒体都根据谷歌提供的专题页面做了报告。你可以</div>
+        <div class="art-insights"><span class="insight-tag">报告里用非常扭捏的姿态旁敲侧击的解释了CoT@32的意思，那就是，“使用思维链提示方法，从32个结果中挑最好的”</span>
+<span class="insight-tag">其实这个问题还真是有点专业，因为绝大部分人压根就没听说过什么GLUT4</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#59</span>
+        <h4>“超级对齐”是怎么对齐的？</h4>
+        <div class="art-summary">11月中旬OpenAI的那次公司内斗，引起了全球科技爱好者的关注，咱们专栏也追了几期热点。</div>
+        <div class="art-insights"><span class="insight-tag">什么是“对齐”？这个在内斗剧情里我曾经提过，这其实是OpenAI初心的一部分，就是不能让AI作恶，为了保证大模型今后的发展符合人类道德观，需要让AI和人类，或者说至少是和一组人类道德专家对齐</span>
+<span class="insight-tag">其实，
+OpenAI从成立起就一直存在负责对齐的部门，从GPT-2开始，每一个版本的GPT在预训练完成后都会做对齐的动作</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#64</span>
+        <h4>问答：AI和游戏怎么结合？维生素D跌落神坛？</h4>
+        <div class="art-summary">掌机的崛起（下）这一期提到了游戏产业的衰老，您认为是否有新技术可以挽救游戏产业的衰老？比如，把游戏和人工智能相结合之类的新技术。</div>
+        <div class="art-insights"><span class="insight-tag">今天并不是没有其他模式，但其他模式还主要是因为老一代玩家人近中年，还有消费能力</span>
+<span class="insight-tag">再往后十年二十年，就得看今天这种最赚钱的模式中还能不能分化出更多子类型</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#65</span>
+        <h4>新处理器的四大变化</h4>
+        <div class="art-summary">2023年12月14日，英特尔发布了酷睿Ultra移动处理器。这期《科技参考》，我们借它来介绍一下处理器上发生的四大变化。</div>
+        <div class="art-insights"><span class="insight-tag">为什么还要专门说呢？就是因为
+这种大拆大建不只是英特尔处理器上会发生的，在最近几年，任何品牌的处理器，也包含手机处理器，都将会出现类似的设计</span>
+<span class="insight-tag">所以，了解这一款处理器上的N种新设计，对今后5年大多数新处理器都会有更深的理解</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#66</span>
+        <h4>AI的两个内源性缺陷</h4>
+        <div class="art-summary">今天我们介绍两个人工智能的缺陷，准确的说，是大语言模型自带的问题。听过以后，你会对人工智能的局限多一些了解。</div>
+        <div class="art-insights"><span class="insight-tag">什么叫逆转诅咒呢？
+最简单的例子就是，给模型输入“奥拉夫·朔尔茨是德国第九任总理”，但再问它“谁是德国第九任总理”的时候，它基本回答不上来</span>
+<span class="insight-tag">文章的第一部分实验是利用GPT-4这个当前表现最好的大语言模型</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#96</span>
+        <h4>首个疑似AI深度参与的爆款游戏</h4>
+        <div class="art-summary">最近，在全球最大的游戏平台Steam上出现了一个爆款游戏《幻兽帕鲁》（Palworld）。1月19日上线，满5天的销售量突破700万份，同时在线人数达到200万。以108元人民币的较低售价来看，也突破了1亿美元销售额。仅就同时在线人数200万来看，也已经是Steam历史上的第二名了。而且，这还仅仅是上线5天的成绩，排历史第一的《绝地求生》的300万同时在线记录，很可能会被打破。</div>
+        <div class="art-insights"><span class="insight-tag">最近，在全球最大的游戏平台Steam上出现了一个爆款游戏《幻兽帕鲁》（Palworld）</span>
+<span class="insight-tag">因为已经成功的人希望把自己的成功归因到自身的努力或某些特质上，这样才更心安理得</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#108</span>
+        <h4>OpenAI还要融资7万亿美元</h4>
+        <div class="art-summary">OpenAI的CEO阿尔特曼从2023年起就在运作一个历史级别的项目。这个项目规模之大，足以让公司内部产生分歧，也就是2023年11月17日那次由公司内部的首席科学家伊利亚挑起的内斗。</div>
+        <div class="art-insights"><span class="insight-tag">但当时没有人了解细节，什么叫“过度商业化”呢？
+最近，《华尔街日报》的一篇文章里透露了细节，“过度”指的是要募集5万亿-7万亿美元</span>
+<span class="insight-tag">而且，考虑到阿尔特曼这个项目的实施可能需要十年，而今后更高制程的半导体厂，建立的成本还会继续增加，所以我们保守地按照每个工厂需要300亿美元算，建立50个先进的工厂就需要1.5万亿美元</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#111</span>
+        <h4>问答：AI生成视频是颠覆吗？足贴的原理是什么？</h4>
+        <div class="art-summary">听说OpenAI发布了可以通过文字生成视频的产品Sora，卓老板可以说说吗？</div>
+        <div class="art-insights"><span class="insight-tag">听说OpenAI发布了可以通过文字生成视频的产品Sora，卓老板可以说说吗？
+
+
+
+
+这个其实不方便用语音说清楚，因为涉及到视频呈现效果的细节</span>
+<span class="insight-tag">所以，Sora制作出的视频具体效果如何，咱们以音频为载体的内容是没法直接呈现的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#113</span>
+        <h4>Sora是怎么实现超越的？</h4>
+        <div class="art-summary">OpenAI在2024年2月17日公布了Sora这个视频产品。不过目前为止，只有很少数研究者才能试用，大部分人都只能看到一些流出的效果图，有些效果图甚至还是阿尔特曼在X上接网友的单，用自己的账号帮忙生成的。</div>
+        <div class="art-insights"><span class="insight-tag">这也是为什么目前没有开放给大众使用的原因，估计后续的优化还有很多</span>
+<span class="insight-tag">最大的挑战是两点：一个是，单独一帧画面里的所有元素在空间中的关系是否合理</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#114</span>
+        <h4>怎么整体把握众多的“AI突破”？</h4>
+        <div class="art-summary">咱们这一季《科技参考》开播时说过，2023年是AI的奇迹年。也是从这一年之后，占比一半以上的重要科技新闻都和AI方面的突破有关系。以我这些年写《科技参考》的对比来看，这样的局面是从未出现过的。</div>
+        <div class="art-insights"><span class="insight-tag">也是从这一年之后，占比一半以上的重要科技新闻都和AI方面的突破有关系</span>
+<span class="insight-tag">今天的AI产品有点像1920年代的量子力学领域，或者60年代的芯片行业，或者90年代的显卡行业，处于多样性极大丰富的阶段，生命力最旺盛的阶段</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#115</span>
+        <h4>HBM显存迫使芯片行业洗牌</h4>
+        <div class="art-summary">2023年，全球最紧俏的商品是什么？AI计算卡。AI计算卡为什么那么紧俏？表面原因是计算卡需要用到的HBM显存紧缺，深层一点的原因是HBM显存需要用到的封装工艺只有台积电一个公司能完成，本质原因在于冯·诺依曼结构对计算芯片的制约。</div>
+        <div class="art-insights"><span class="insight-tag">AI计算卡为什么那么紧俏？表面原因是计算卡需要用到的HBM显存紧缺，深层一点的原因是HBM显存需要用到的封装工艺只有台积电一个公司能完成，本质原因在于冯·诺依曼结构对计算芯片的制约</span>
+<span class="insight-tag">全球第一台计算机ENIAC诞生，它最初是由宾夕法尼亚大学的莫奇力（John Mauchly）和艾克特（John Eckert）完成的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#116</span>
+        <h4>三年赶超英伟达，Groq芯片能做到吗？</h4>
+        <div class="art-summary">最近，有一家硬件公司火了——Groq，发音和马斯克开发的那个AI（Grok）是一样的，不过拼写不同。它们最近放言，三年内要超越英伟达。</div>
+        <div class="art-insights"><span class="insight-tag">最近，有一家硬件公司火了——Groq，发音和马斯克开发的那个AI（Grok）是一样的，不过拼写不同</span>
+<span class="insight-tag">但大家知道，AMD也在这个计算卡超级紧俏的时代推出了MI 300，性能比英伟达的H100还要好不少，依然也是买不到，为什么？
+因为不论是谁出品的计算卡，最后都要找台积电制造</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#119</span>
+        <h4>马斯克状告 OpenAI 不是为了钱</h4>
+        <div class="art-summary">2024年2月29日，马斯克向美国旧金山高等法院提起诉讼，以违反合同为由，状告OpenAI CEO萨姆·阿尔特曼（Sam Altman），OpenAI联合创始人、总裁格雷格·布罗克曼（Greg Brockman），以及OpenAI多个实体。诉求有三点：</div>
+        <div class="art-insights"><span class="insight-tag">当然，背后还有一个很强的动机，就是和谷歌的AI对抗，因为谷歌的佩奇抢走了马斯克之前看中的DeepMind</span>
+<span class="insight-tag">马斯克通过自己掏腰包和召集大家凑钱的模式，顶多弄到一点几亿美元的捐赠，后续每年最多也就是一两千万美元的持续捐赠</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#127</span>
+        <h4>史上最大版权案，AI是被告</h4>
+        <div class="art-summary">2023年12月27日，《纽约时报》（以下简称NYT）正式向美国联邦地方法院起诉OpenAI和微软，指控它们未经许可使用了NYT数百万篇文章用于训练GPT模型，创建包括ChatGPT和Copilot在内的AI 产品，要求它们对“非法复制和使用独特价值的作品承担数十亿美元的法定和实际损害赔偿”，还要销毁所有包含NYT版权材料的模型和训练数据。</div>
+        <div class="art-insights"><span class="insight-tag">所以这期《科技参考》，我们来看看正反方的观点，我再谈谈自己的看法</span>
+<span class="insight-tag">由于公共爬虫数据库每月都会更新几十亿个新页面，所以粗糙地说，“公共爬虫”数据库里存的就是从2007年以来互联网上一切允许“公共爬虫”访问的内容</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#128</span>
+        <h4>用AI写论文、找媳妇都不靠谱</h4>
+        <div class="art-summary">最近，AI社区里疯传一则消息，就是俄罗斯一个23岁的小伙子亚历山大（Aleksandr Zhadan）用GPT在交友软件上聊了5239个女生，最后和其中一个订了婚。</div>
+        <div class="art-insights"><span class="insight-tag">最近，AI社区里疯传一则消息，就是俄罗斯一个23岁的小伙子亚历山大（Aleksandr Zhadan）用GPT在交友软件上聊了5239个女生，最后和其中一个订了婚</span>
+<span class="insight-tag">最开始，GPT-3表现得非常差，经常忘了刚说过的话，让女孩觉得这人不正常吧？而且，即便有些女孩同意了，留了自己的Telegram，类似于微信，希望用那个和他继续聊，可亚历山大做出来的软件不支持访问Telegram，于是也错过了很多后续联系</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#133</span>
+        <h4>苹果的AI在哪里？请看 iOS 18</h4>
+        <div class="art-summary">在2023-2024年的AI爆发过程中，科技巨头里我们唯独没有见到苹果的产品。</div>
+        <div class="art-insights"><span class="insight-tag">苹果未来几个月最重要的产品并不是什么新硬件，其实是操作系统，iOS 18</span>
+<span class="insight-tag">我们可以最保守地、最粗糙地按照每10亿参数占用1GB内存去换算，那么2000亿参数就需要200GB内存，然后为了保证其他软件的顺利运行，还需要额外多准备出十几GB的内存，于是能运行Ferret大语言模型的苹果手机可能需要配210GB内存</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#136</span>
+        <h4>问答：AI诊疗有什么新进展？淀粉肠有什么问题？</h4>
+        <div class="art-summary">AI诊疗领域有什么新的发展吗？韩国医生罢工的影响，您怎么看？</div>
+        <div class="art-insights"><span class="insight-tag">AI诊疗领域有什么新的发展吗？韩国医生罢工的影响，您怎么看？
+先说第一个问题：
+当前，AI在诊疗中实际的进展，其实是几年前深度神经网络的突破带来的后续效果，最主要的就是影像学，比如肺结节检测、肿瘤检测的辅助等等</span>
+<span class="insight-tag">也就是说，现在利用深度神经网络AI做诊疗，研发的高峰是在2017年，而通过FDA批准的高峰其实是2022年，错后了五年</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#137</span>
+        <h4>问答：GPT-5什么样？基因检测值得做吗？</h4>
+        <div class="art-summary">很多同学问，GPT-5什么时候上线？性能如何？</div>
+        <div class="art-insights"><span class="insight-tag">在构建AGI的过程中，最大的困难是训练的数据量不够，未来要开发使用更少数据量进行训练的新模型</span>
+<span class="insight-tag">阿尔特曼这个说法也暗示了，在当下这条竞争模式里，训练量和参数规模其实都是一直大幅增加的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#143</span>
+        <h4>问答：星链怎么样了？+ AI工具再推荐</h4>
+        <div class="art-summary">有用户问我怎么评价星链。因为他知道，我在2020年的第一季《科技参考》是不看好星链的。如今3年过去了，马斯克都公布说，星链收支平衡了，问我是不是改变了看法。</div>
+        <div class="art-insights"><span class="insight-tag">导致我改变的最大因素不是马斯克说的收支平衡，而是发射星链的卫星（星舰）离成功回收越来越近</span>
+<span class="insight-tag">今后正式版的2.0卫星，一颗就有1250公斤（只按重量算实际是不能这么算的，因为塞不进去，但是咱们就按重量算），每次发射只能带5颗，所以这样继续发射就太不划算了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#144</span>
+        <h4>Transformer模型诞生的故事</h4>
+        <div class="art-summary">2024年3月18日，英伟达举办了今年的开发者大会，这次会议的主题就是AI，参展商200多家，演讲20多场。哪怕是黄仁勋亲自登场的演讲很多也都是商业互吹，但唯独有一场讨论干货密集，那就是黄仁勋和7个人的对聊。</div>
+        <div class="art-insights"><span class="insight-tag">这个模型当年是以论文的形式发表的，论文名称叫《Attention is All You Need》，它并不是“只需要全神贯注”的意思，而应该翻译成“只需要关注自注意力机制”</span>
+<span class="insight-tag">如果说
+今天所有的人工智能只有一个最近的共同祖先，这个祖先就是这篇论文</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#148</span>
+        <h4>问答：成吉思汗的后代在哪里？小数据模型是什么？</h4>
+        <div class="art-summary">上周那期《爱新觉罗后裔：10万人》下面有特别多人评论，很多问题也都和著名人物的世代传承有关。比如有人问，成吉思汗的后代考古有没有研究？或者宋元时期的人口更替，还有最近1000年来东亚几次人口灭亡，这些有没有基因上的研究？</div>
+        <div class="art-insights"><span class="insight-tag">比如有人问，成吉思汗的后代考古有没有研究？或者宋元时期的人口更替，还有最近1000年来东亚几次人口灭亡，这些有没有基因上的研究？
+其实这方面的研究挺多的，我只是挑一个离今天比较近、证据比较可靠的介绍给大家</span>
+<span class="insight-tag">有人觉得，DNA怎么能保存这么久？
+是的，绝大部分DNA保存不了太久，几年就不行了，所以并不是每个墓葬中的遗骸都能获取到DNA</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#149</span>
+        <h4>问答：从小米SU7和Transformer模型看创新</h4>
+        <div class="art-summary">在《Transformer模型诞生的故事》那期，很多同学对“一个宽松包容的多样性环境是创新的土壤”这个结论很感兴趣，希望我展开说说，还有很多同学让我评价小米SU7。</div>
+        <div class="art-insights"><span class="insight-tag">在《Transformer模型诞生的故事》那期，很多同学对“一个宽松包容的多样性环境是创新的土壤”这个结论很感兴趣，希望我展开说说，还有很多同学让我评价小米SU7</span>
+<span class="insight-tag">我想，小米开发布会都不说价格，又推迟了好多个月才公布，这期间一定经历了大降价，最初打算在发布会上宣布的价格估计比今天的价格高5-10万</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#151</span>
+        <h4>即将大火的 AI PC 还只是过渡</h4>
+        <div class="art-summary">从2023年AI突然崛起后，所有公司都希望把自己的产品跟AI结合，已经沉寂很久的PC和笔记本也是如此。而且它们本来就离 AI 就很近，因为实际上，从7年前开始，PC配件中就已经有一些设备为AI计算专门设计了单元。</div>
+        <div class="art-insights"><span class="insight-tag">而且它们本来就离 AI 就很近，因为实际上，从7年前开始，PC配件中就已经有一些设备为AI计算专门设计了单元</span>
+<span class="insight-tag">比如，2019年推出的第10代酷睿i9-10980XE中，就引入了16位的“DL BOOST”的指令，相比于9代酷睿，在处理深度学习和AI应用时，同频率、同核心的情况下，理论上计算效率会高出一倍</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#152</span>
+        <h4>英伟达简史1：为游戏而生</h4>
+        <div class="art-summary">这个系列的节目，我将带你回顾AI领域最重要的硬件厂商——英伟达，看看它崛起的过程。</div>
+        <div class="art-insights"><span class="insight-tag">这个系列的节目，我将带你回顾AI领域最重要的硬件厂商——英伟达，看看它崛起的过程</span>
+<span class="insight-tag">主要是因为黄仁勋的大舅在家里排行老大，而黄仁勋的妈妈罗采秀在家里排行第12，兄妹相差19岁，之后家族里很多人分散到美国、瑞士等地，没有太多隔代人聚齐的机会</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#153</span>
+        <h4>英伟达简史2：对手被收购</h4>
+        <div class="art-summary">英伟达和ATi的竞争到2002年时遇到了最大的困难。他们推出了旗舰型号FX5800 Ultra，用这张显卡去对战ATi晚半年发布的上一代的旗舰Radeon 9700 Pro，尽管这只能算是落后半代，但性能差异实在太大，差出了50%以上。</div>
+        <div class="art-insights"><span class="insight-tag">这可能是英伟达自从做显卡以来被ATi领先最惨的一段时间，大约持续了1年半</span>
+<span class="insight-tag">这表面上看好像是Geforce3下一代显卡的研发没跟上，但其实背后原因是英伟达被大客户所累</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#154</span>
+        <h4>问答：苹果的模型为什么能超越GPT-4？</h4>
+        <div class="art-summary">很多同学听到苹果手机iOS 18内置在机身中的大语言模型ReALM-80M的性能就已经堪比GPT-4，更大版本的性能甚至大幅超过了GPT-4后，想问这是哪儿来的结果。</div>
+        <div class="art-insights"><span class="insight-tag">我们可以看到，ReALM最小的版本——80M的那个，和GPT-4的得分对比具体是这样——
+
+
+在对话数据集上：96.7 vs 97.0，几乎一样
+在合成数据集上：99.5 vs 58.7，ReALM大胜
+在屏幕数据集上：88.9 vs 90</span>
+<span class="insight-tag">比如，你的手机里最近装了一个小米su7汽车的App（咱们假设雷军之后真给这个车开发了一个App），那么当用户说出和这个新App里的新功能有关的操作时，肯定不在之前训练的数据集里，但模型应该也能正确理解，并执行相应的功能</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#156</span>
+        <h4>英伟达简史3：显卡为什么适合跑游戏？</h4>
+        <div class="art-summary">上期咱们说了，ATi被AMD收购给英伟达留出了巨大的发展空间，英伟达也从2006年起开发出一代新的显卡，就是GTX 8800系列，而且这一系列的性能远远胜过AMD的旗舰型号。</div>
+        <div class="art-insights"><span class="insight-tag">英伟达在这一代显卡性能上的胜利意义和从前比很不一样——胜利的直接原因是，
+英伟达从硬件设计上把从前Direct 3D标准规定的几个从事不同工种的计算单元统一了起来，
+也就是把“顶点着色器”“几何着色器”“像素着色器”都统一到同一个处理单元中</span>
+<span class="insight-tag">这个统一的处理单元被称为“着色器核心”（shader core）</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#157</span>
+        <h4>英伟达简史4：靠挖矿撑到了AI时代</h4>
+        <div class="art-summary">上一期，我们了解了为什么显卡处理游戏画面要比CPU快得多。这种特长又是怎么从对游戏画面的计算迁移到工程领域的应用或者科学计算上的，又是怎么运用到AI模型训练上的呢？</div>
+        <div class="art-insights"><span class="insight-tag">原因是，
+工程领域、科学计算里有很多任务和图像处理高度类似，尽管任务中需要用到的指令可能很多，但主体部分，也就是需求计算量最大的部分，大都是浮点运算和矩阵运算</span>
+<span class="insight-tag">因为矩阵提供了一种数学上简洁而且强大的方式来表示一整组数的处理和线性变换，所以不论是在分析流体，还是结构工程，或者电路分析、量子力学、信号处理、经济模型、金融分析、蛋白质结构预测、基因序列分析，用到的全都是矩阵</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#161</span>
+        <h4>问答：AI会在多大范围取代体力劳动？</h4>
+        <div class="art-summary">能不能聊一下AI对机器人产业的赋能在未来几年能达到什么水平？有没有可能出现家务机器人，并且在很大范围内替代体力劳动者？AI能不能帮助机器人产业降低成本，从而更大范围替代人的劳动？如果机器人更广泛地替代体力劳动者，广大靠体力为生的劳动者将何去何从？</div>
+        <div class="art-insights"><span class="insight-tag">他说，如果把AGI定义为比最聪明的那部分人类还要聪明的话，我认为它很可能在2025年出现</span>
+<span class="insight-tag">我要补充一下这个定义，什么叫做“比最聪明的那部分人还要聪明”？就是在专业的领域也能超过表现最好的人类，比如今天诺贝尔奖获奖者还要好的那种水平</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#167</span>
+        <h4>问答：GPT的护城河还在吗？地磁暴导致失眠？</h4>
+        <div class="art-summary">GPT的护城河好像完全不比之前想得深，不知道我理解的有问题吗？</div>
+        <div class="art-insights"><span class="insight-tag">而这里我还得补充说一下：今天冒出一个超越GPT-4，明天冒出一个超越GPT-4，这些模型是不是那种为了自吹自擂而发的水文，其实是用测试集的数据做的训练，专门为考试刷分而生的大模型呢？不是的</span>
+<span class="insight-tag">在性能表现已经很不错的GPT-3的基础上，还需要怎么优化才能大幅提升性能，还需要怎么优化硬件计算效率，作为
+领头羊其实是不知道的，它只能摸着黑往前走</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#174</span>
+        <h4>用 AI 写论文有多普遍？</h4>
+        <div class="art-summary">自从ChatGPT在2022年底上线后，论文里写作使用AI的现象就越来越普遍。网上搜一搜论文写作润色，或者如何用ChatGPT写论文的教程，一搜一大把。在2023年里，很多科技新闻都报道过这样的例子。比如：</div>
+        <div class="art-insights"><span class="insight-tag">这样的论文到底有多少呢？哪个学术领域最严重呢？
+2024年4月1日，在斯坦福大学和加州大学圣芭芭拉分校的几位中国学生在arXiv上发表了一篇论文，以统计学角度详细描绘了论文中使用大语言模型的情况</span>
+<span class="insight-tag">文章的结论是：自从ChatGPT上线后，各个学科使用AI写论文的情况都是猛增的，其中增幅最猛的是计算机科学、电子工程和系统科学这两个学科</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#175</span>
+        <h4>人形机器人不再是噱头</h4>
+        <div class="art-summary">这一期中，专门给人形机器人浇过一盆凉水。那一期的逻辑，简单说是这样：</div>
+        <div class="art-insights"><span class="insight-tag">那一期的逻辑，简单说是这样：
+人形机器人在完成承诺的其他任务前，仅仅解决平稳行走就已经很吃力了</span>
+<span class="insight-tag">这次转折最明显的信号是，2024年4月19日波士顿动力用一种另类艺术的方式正式宣布，历时11年的老版人形机器人Atlas退役，并宣布了新一代的电动人形机器人，不过名字还是叫Atlas</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#176</span>
+        <h4>AI 硬件和投资上的智商税</h4>
+        <div class="art-summary">今天我们说说和AI有关的智商税。先说和硬件相关的，再说和投资相关的。</div>
+        <div class="art-insights"><span class="insight-tag">如果总结一句话就是：所有和AI密切相关的技术都在飞速发展，至少还要好几年，才能出现垄断的巨头，产品背后的原理和产品形态才能稳定</span>
+<span class="insight-tag">其他关键配件是这样：处理器是联发科的Helio P35，和骁龙S625水平一样，是2018年千元级手机CPU的性能，有4GB内存和128GB存储空间</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#180</span>
+        <h4>问答：AI搜索的成本高吗？氨糖软骨素有用吗？</h4>
+        <div class="art-summary">对传统的谷歌搜索来说，每次搜索的成本大约是0.2美分。而AI搜索既包含了传统搜索的过程，还要对已经收集到的结果页面使用大语言模型分析的步骤，再输出一段总结的步骤，而且往往还要在正确的位置加上出处，这些任务比一般的大语言模型输出结果还要费劲。</div>
+        <div class="art-insights"><span class="insight-tag">而10万日活的平台，其实对广告商来说吸引力并不怎么大，这个用户量带来的广告收益也很难填平AI搜索的高消耗</span>
+<span class="insight-tag">本质上说，AI搜索的思路并不复杂，代码实现应该也不难，一个程序员足可以搞定全部</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#181</span>
+        <h4>给OpenAI浇的一盆凉水</h4>
+        <div class="art-summary">5月14日凌晨，OpenAI在春季新品发布会上展示了新一代模型GPT-4o。很多媒体对这次发布会给予了很高的评价，比如“震撼全场”“深夜重磅”“干翻所有”“你想要的一切”“成精了”“炸裂更新”等等。</div>
+        <div class="art-insights"><span class="insight-tag">为什么？因为真人聊天中存在着一种“插话”的现象，而且对延迟的要求比较高，当对方的回复说出口时，如果比你预想的速度慢了1秒钟以上，你就已经明显察觉到沟通障碍了，于是沟通就会退化为下达指令和等待执行这样的程序交互模式</span>
+<span class="insight-tag">而且，真实对话里会时不时出现“打断+插话”的现象，尤其是当对方没有完全理解你的意思，或者说着说着跑偏了，或者重要的环节你没有听懂的时候，经常会打断</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#187</span>
+        <h4>AI安全性问题暂时无解</h4>
+        <div class="art-summary">2024年5月17日，OpenAI的首席科学家伊利亚宣布离职。本以为这是一次平静的分手，但没想到在他离职后，事件逐渐发酵，被很多人说成是OpenAI的“宫斗大戏”第二季。</div>
+        <div class="art-insights"><span class="insight-tag">这个项目应该是他的志向所在，所以他离职其实和OpenAI是有价值观上不可调和的矛盾的</span>
+<span class="insight-tag">这个协议是要在离职之后签署的，但一个离职的员工怎么可能还自觉自愿地受前公司的约束呢？原因是在入职的时候，他们签署的工作合同里包括了一项“在离开公司的60天内，你必须签署一份包含一般豁免的离职文件</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#193</span>
+        <h4>AI创业企业为什么不在乎泡沫？</h4>
+        <div class="art-summary">在5月14日的节目中，我给OpenAI的发布会浇了一盆凉水。而且当天晚上，在万维钢老师的《精英日课》的开学仪式上，我们也讨论了AI泡沫的问题。</div>
+        <div class="art-insights"><span class="insight-tag">我这期就来说说，为什么那些AI创业企业都不在乎泡沫呢？以算法为核心和以产品为核心的经营思路有什么区别呢？
+以算法为核心的经验，之前的例子我们举过太多了</span>
+<span class="insight-tag">而且这方面不只是花精力，耗资也是最大的，比如正在实施中的和微软共建一个1000亿美元的超级服务器集群，还有传说中的不知道进度如何的、相当于全球芯片产业十几倍的7万亿美元造芯计划</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#197</span>
+        <h4>问答：脑机接口新进展？微软AI PC怎么样？</h4>
+        <div class="art-summary">马斯克的脑机接口公司的那个新进展怎么样了？不是成功完成第一例人体手术了吗？</div>
+        <div class="art-insights"><span class="insight-tag">手术的核心是开颅以后，在对应手部的运动皮层区域插上一片直径2.3厘米、厚8毫米的芯片，和硬币大小差不多</span>
+<span class="insight-tag">无线传输协议是Neuralink自己开发的，并不是蓝牙，所以延迟比较低，不需要考虑蓝牙那么复杂的兼容性</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#205</span>
+        <h4>下一代高端处理器</h4>
+        <div class="art-summary">一年一度的台北电脑展又落幕了！这次由于时间点的关系，各大芯片厂商都有大动作。</div>
+        <div class="art-insights"><span class="insight-tag">虽然指令与指令之间需要执行的时间长短差异很大，但如果任务足够丰富、足够全面，其实各种处理器处理的指令就相差无几了</span>
+<span class="insight-tag">业界习惯使用SPEC2017这样的专业测试软件去跑，因为它既包含了整数、浮点运算指令，也包含了内存访问指令、条件跳转、分支预测和循环控制，是很全面的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#216</span>
+        <h4>人形机器人哪家强？特斯拉</h4>
+        <div class="art-summary">今天的《科技参考》，我们讨论一个关于机器人普及的话题。</div>
+        <div class="art-insights"><span class="insight-tag">因为不久前，马斯克曾经在年度股东大会上说，特斯拉公司今后的主力产品是人形机器人Optimus，其次才是纯电动车</span>
+<span class="insight-tag">未来特斯拉公司的市值会达到25万亿美元，而今天市值最高公司的英伟达也才3.3万亿美元</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#223</span>
+        <h4>AI创业产品的鄙视链</h4>
+        <div class="art-summary">2024年6月25日，OpenAI给所有开发者都发去了官方电子邮件，里面通知——从7月9日开始，阻止来自非支持国家和地区的API流量。</div>
+        <div class="art-insights"><span class="insight-tag">因为在此之前，人们处理语言使用的主要是循环神经网络（RNN）和卷积神经网络（CNN），但效果都不理想</span>
+<span class="insight-tag">Transformer模型的原始结构里包含两个核心组件——编码器、解码器</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#228</span>
+        <h4>智能驾驶1：什么是端到端？</h4>
+        <div class="art-summary">在《科技参考》第一季里，我曾经做过一个《自动驾驶》的系列内容。</div>
+        <div class="art-insights"><span class="insight-tag">所以时隔三年，我们再开一个“智能驾驶”的系列专题，提前为大家讲解这个转变</span>
+<span class="insight-tag">这场发布会的关键词是“端到端”特性（end-to-end）和“无图NOA”</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#229</span>
+        <h4>智能驾驶2：程序员被取代</h4>
+        <div class="art-summary">昨天我们说了，Transformer模型的自注意力机制能够注意到程序员可以写出的所有需要关注的对象，更能注意到那些人们很难意识到、说不清道不明但又需要关注的特征。这又是一些什么特征呢？</div>
+        <div class="art-insights"><span class="insight-tag">昨天我们说了，Transformer模型的自注意力机制能够注意到程序员可以写出的所有需要关注的对象，更能注意到那些人们很难意识到、说不清道不明但又需要关注的特征</span>
+<span class="insight-tag">尤其是最后一个激活元素，神经元关注的并不是这个完整的短语，而是关注这个短语中“看见”（seeing）这个词和“dominoes”这个词的词尾复数形式中的“es”</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#230</span>
+        <h4>智能驾驶3：工程上的妥协</h4>
+        <div class="art-summary">上期我们说了在Scaling Law信仰加持下端到端的神奇效果，但那个效果背后的成本是非常高的。</div>
+        <div class="art-insights"><span class="insight-tag">特斯拉的这些算力不止为智能驾驶服务，也为特斯拉的人形机器人Optimus训练服务，所以几年内三四百亿美元的算力投入是奔着制霸两个领域去的，还是比较划算的</span>
+<span class="insight-tag">可是现在算力是吃紧的，所以对摄像头和雷达捕捉到的和视觉相关的内容，只能换用另外一个效果也还不错，但更节约计算资源的卷积神经网络去处理</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#241</span>
+        <h4>为什么大模型觉得9.11比9.8更大？</h4>
+        <div class="art-summary">前一阵子，有一个新闻在朋友圈刷屏了：有人发现十几个大语言模型都无法准确回答一个特别简单的问题，就是9.11大还是9.8大。最初测试结果，十几个大模型集体翻车。等新闻发酵了一段时间后，有记者再去验证，情况有所改进，一半的大模型能答对，但还是有一半答错，看来是这些公司对这个热点错误做了一些改进的结果。</div>
+        <div class="art-insights"><span class="insight-tag">这个新闻之所以刷屏，是因为这个问题对大部分人来说是可以理解的，但实际上大语言模型基因中的缺陷还有很多，比如黑匣子问题（不可解释）、逆转诅咒、灾难性遗忘……这些缺陷有的是源于自注意力机制，有的是和训练过程密切相关，总之，需要更深入的了解大语言</span>
+<span class="insight-tag">9.11比9.8更大，为什么会发生呢？
+因为一个问题扔给大语言模型后，第一步加工都会把它token化</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#248</span>
+        <h4>不止是英特尔的麻烦，芯片制造都越来越难</h4>
+        <div class="art-summary">最近英特尔摊上了大麻烦，简单的说，是严重的产品质量问题。</div>
+        <div class="art-insights"><span class="insight-tag">两个经销商故障率差异大主要是因为——一个面向普通用户，平时使用CPU时大都是办公环境，负载很轻</span>
+<span class="insight-tag">一个是服务于游戏开发和服务器，CPU一般都是满载，所以故障率很高</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#252</span>
+        <h4>小模型吃大模型的红利</h4>
+        <div class="art-summary">AI的研发从2023年下半年就出现了一个新趋势——小模型，也就是参数规模在几十亿或者几百亿规模的语言模型更加流行。</div>
+        <div class="art-insights"><span class="insight-tag">咱们先梳理一下最重要的几家公司推出的小模型：
+
+
+首先是OpenAI发布的GPT-4o mini</span>
+<span class="insight-tag">有一个指标很重要，就是OpenAI已经用GPT-4o mini替代了之前免费版的ChatGPT使用的GPT-3.5 Turbo，而且端口调用的费用还降低了60%</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#257</span>
+        <h4>问答：头菜里加庆大霉素怎么回事？英特尔还有救吗？</h4>
+        <div class="art-summary">是否可以聊聊酒店厨师在菜里添加庆大霉素一事？普通食客如何辨别菜里是否添加这些药品呢？</div>
+        <div class="art-insights"><span class="insight-tag">因为要识别食物中是不是混入庆大霉素，通常需要使用专业仪器和设备，比如液相色谱-质谱仪或者免疫荧光机</span>
+<span class="insight-tag">庆大霉素在上世纪七八十年代曾经是一个广泛使用的抗生素类药物，但最近30年很少使用了，原因是效果并不优秀，而且副作用很大，主要是两点：第一是对耳蜗听神经的损坏，第二是对肾功能的损害</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#258</span>
+        <h4>OpenAI将长期处于半死不活状态</h4>
+        <div class="art-summary">2023年一整年，全球科技最大的明星就是OpenAI，它每次发布的新产品都让人惊呼下一个时代提前到来，连它公司内部的纷争都可以直接拿来改编成科幻大片。</div>
+        <div class="art-insights"><span class="insight-tag">2023年一整年，全球科技最大的明星就是OpenAI，它每次发布的新产品都让人惊呼下一个时代提前到来，连它公司内部的纷争都可以直接拿来改编成科幻大片</span>
+<span class="insight-tag">按说这也算是一个重要产品，但如今已经过去十多天了，并没有看到多少人分享它的使用体验，更没有人讨论它</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#261</span>
+        <h4>AI营销和诈骗水准一直在进化</h4>
+        <div class="art-summary">相信大家这几年接到的来电，90%以上都是陌生人的营销电话了，贷款的、理财的、卖保险的、改套餐的、优惠促销的等等。在2023年之前，这些电话还都是真人打来的，现在已经90%都变成了AI。在从真人切换到AI语音时，我们最初还感觉意外和新鲜，后来也就见怪不怪了。</div>
+        <div class="art-insights"><span class="insight-tag">在从真人切换到AI语音时，我们最初还感觉意外和新鲜，后来也就见怪不怪了</span>
+<span class="insight-tag">厉害的人每天可以打出700个电话，其中300个接通了，但有意向的可能不到30个，最终成交的可能只有2个</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#262</span>
+        <h4>问答：纯电动车不怕泡水吗+OpenAI的最新变动</h4>
+        <div class="art-summary">纯电动汽车是不是不怕水，没有泡水车的风险？</div>
+        <div class="art-insights"><span class="insight-tag">纯电动汽车是不是不怕水，没有泡水车的风险？
+最近几年，每个夏天都有几次特大暴雨导致城市内涝的情况发生，所以开车的人很多都担心车过不去水坑</span>
+<span class="insight-tag">因为原本水深40厘米，你在猛冲进去后，车头顶起的水波浪始终有七八十厘米的高度，这种高度下，发动机进气口一定会涌进水的，肯定会熄火的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#289</span>
+        <h4>英特尔是不是快撑不住了？</h4>
+        <div class="art-summary">最近一个月是它成立56年以来最困难的时期。9月2日，半导体行业的资深老将陈立武从英特尔董事会离职，更是让股价暴跌6%。</div>
+        <div class="art-insights"><span class="insight-tag">实际上，负面消息还不止这些，一个月前咱们《科技参考》说过其中几个：
+1. 13代和14代酷睿因为半导体工艺缺陷，导致大面积型号蓝屏死机</span>
+<span class="insight-tag">实际上由于这个会并不像英特尔开发者大会那样有好几十年的传统，之前只连续举办了几届，所以在节约开支的大背景下，更可能的结果是今后也永久取消了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#291</span>
+        <h4>OpenAI o1，高水准理工科研究生</h4>
+        <div class="art-summary">2024年9月14日凌晨，OpenAI悄悄上线了o1模型。这个新版实在让人等了太久！在发布前，曾经一度传为Q*计划，也曾一度被认为是大家期待的GPT-5，还曾被当作阿尔特曼在X发的草莓图里的草莓，但实际上最后的名字是o1。这是自GPT-4发布后，相比前一版提升最大的。</div>
+        <div class="art-insights"><span class="insight-tag">这个新版实在让人等了太久！在发布前，曾经一度传为Q*计划，也曾一度被认为是大家期待的GPT-5，还曾被当作阿尔特曼在X发的草莓图里的草莓，但实际上最后的名字是o1</span>
+<span class="insight-tag">美国在选拔国家队的时候有两个阶段的考试：第一阶段叫AMC10，能参加这个比赛的学生差不多都是各重点中学数学最拔尖的2-3个同学</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#292</span>
+        <h4>7nm芯片光刻机造出来了吗？还没有</h4>
+        <div class="art-summary">最近很多人都关心，中国的7nm光刻机是不是造出来了？这期《科技参考》，我们就来说一说。</div>
+        <div class="art-insights"><span class="insight-tag">最近很多人都关心，中国的7nm光刻机是不是造出来了？这期《科技参考》，我们就来说一说</span>
+<span class="insight-tag">目前纯国产的光刻机能生产的芯片，最高水平的工艺还是在65nm左右</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#293</span>
+        <h4>问答：o1模型为什么很吃力？鱼子酱因中国而廉价？</h4>
+        <div class="art-summary">为什么说OpenAI做到o1是极为吃力的？</div>
+        <div class="art-insights"><span class="insight-tag">因为它使用了思维链技术，所以当你给它时间越久，它就可以把问题考虑得越全面，就越会尝试更多的角度理解问题，最后甚至可能找出多种解法</span>
+<span class="insight-tag">所以，o1和今后o2、o3在训练和推理两个分离的环节都开始对算力有着疯狂的需求</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#294</span>
+        <h4>问答：用铝锅做饭有害吗？芯片工艺的极限在哪里？</h4>
+        <div class="art-summary">我们家高压锅是铝的，粥锅是铝的，小奶锅是铝的，除此之外，还有汤锅、勺子、叉子、水壶、咖啡壶，也都是铝制的。铝元素摄入对身体有害吗？</div>
+        <div class="art-insights"><span class="insight-tag">为什么还允许在餐具上使用呢？
+原因是，
+餐具中的铝真正能析出到食物中的量实在太少了</span>
+<span class="insight-tag">其实准确地说，不应该说“难溶于水”，而是不溶于水，起码以今天的用来检测痕量物质的检测设备来说，是检测不到水中溶解的氧化铝的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#300</span>
+        <h4>问答：谁的GPU最多？思维链为什么牛？</h4>
+        <div class="art-summary">今天GPU如此重要，谁的GPU最多呢？是OpenAI吗？</div>
+        <div class="art-insights"><span class="insight-tag">今天GPU如此重要，谁的GPU最多呢？是OpenAI吗？
+简单回答，当前GPU最多的是美国的6个巨头和中国的3个巨头</span>
+<span class="insight-tag">最近牛津大学的教授Vili Lehdonvirta发表了一篇调查文章，统计了全球用来做大模型的GPU的分布</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#311</span>
+        <h4>问答：OpenAI分崩离析了？董宇辉科普出错怎么看？</h4>
+        <div class="art-summary">油耗新规发布了，2026年之后，燃油车油耗不能超过3.3L/百公里，不然会被禁售。这标准是不是太严格了？</div>
+        <div class="art-insights"><span class="insight-tag">有人一听，征求意见稿，就觉得是走形式，实际上这个标准还真的经历过两次大修改，分别是在2014年、2019年修改的</span>
+<span class="insight-tag">修改的还真就是关键数值，油耗限值，而且修改幅度还真不小：2019年那次修改，对应这次3.3L/百公里油耗的及格线，那次是4.02L/百公里，其实是越修改越严格的</span>
+</div>
+      </div>
+  </div>
+
+  <footer class="footer">
+    <p><a href="index.html">← 返回科技参考3 主板</a> · 卓克 · 科技参考3 · MKS</p>
+  </footer>
+</div>
+
+</body>
+</html>

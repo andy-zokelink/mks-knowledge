@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新冠疫情全追踪 · 卓克科技参考</title>
+<style>
+:root {
+    --bg: #fffdf7;
+    --card: #ffffff;
+    --accent: #F59E0B;
+    --accent-dark: #D97706;
+    --accent-light: #FDE68A;
+    --text: #1f1f1f;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --radius: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: "PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    min-height: 100vh;
+}
+/* TOP BAR */
+.top-bar{
+    position: sticky; top:0; z-index:100;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.top-bar .course-title{
+    font-size: clamp(14px, 2.2vw, 18px);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+.top-bar .home-link{
+    color: var(--accent-light);
+    font-size: 13px;
+    border: 1px solid var(--accent-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.top-bar .home-link:hover{
+    background: var(--accent-light);
+    color: #1a1a2e;
+}
+/* CONTAINER */
+.container{
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 28px);
+}
+/* HEADER */
+.theme-header{
+    text-align: center;
+    padding: clamp(24px, 5vw, 40px) 0 clamp(16px, 3vw, 24px);
+}
+.theme-header .theme-icon{
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: 12px;
+    animation: float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.theme-header h1{
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+.theme-header .subtitle{
+    font-size: clamp(13px, 1.8vw, 15px);
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+.theme-header .article-count{
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+/* DIVIDER */
+.divider{
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 auto 32px; max-width: 400px;
+}
+.divider::before,.divider::after{
+    content:'';flex:1;height:1px;
+    background: linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.divider span{color:var(--accent);font-size:16px}
+/* CARD GRID */
+.card-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.article-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: clamp(16px, 3vw, 22px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.article-card:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+.article-card::before{
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.article-card:hover::before{
+    opacity: 1;
+}
+.article-card .card-num{
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+.article-card .card-title{
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.article-card .card-summary{
+    font-size: clamp(12px, 1.4vw, 14px);
+    color: var(--text-light);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.article-card .card-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+}
+.article-card .tag{
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #fef3c7;
+    color: var(--accent-dark);
+    font-weight: 500;
+}
+/* KEY CONCEPTS SECTION */
+.section-title{
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 32px 0 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+}
+.concept-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.concept-card{
+    background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--accent-light);
+    border-left: 4px solid var(--accent);
+}
+.concept-card h4{
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+}
+.concept-card p{
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+/* STATS ROW */
+.stats-row{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+.stat-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.stat-card .stat-value{
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 800;
+    color: var(--accent-dark);
+}
+.stat-card .stat-label{
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+/* FOOTER */
+.page-footer{
+    text-align: center;
+    padding: 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+}
+.page-footer a{
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border: 2px solid var(--accent);
+    border-radius: 24px;
+    transition: all 0.2s;
+    display: inline-block;
+    margin: 4px 8px;
+}
+.page-footer a:hover{
+    background: var(--accent);
+    color: #fff;
+}
+/* MOBILE */
+@media(max-width:640px){
+    .card-grid{grid-template-columns:1fr}
+    .concept-grid{grid-template-columns:1fr}
+    .top-bar{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+    <span class="course-title">📡 卓克 · 科技参考基础版 · 新冠疫情全追踪</span>
+    <a class="home-link" href="index.html">← 返回知识主板</a>
+</div>
+
+<div class="container">
+    <div class="theme-header">
+        <div class="theme-icon">🦠</div>
+        <h1>新冠疫情全追踪</h1>
+        <p class="subtitle">从疫苗研发到病毒变异、从核酸测试到群体免疫——全球大流行的科学全貌</p>
+        <span class="article-count">共 46 篇文章</span>
+    </div>
+
+    <div class="divider"><span>◆</span></div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value">46</div>
+            <div class="stat-label">核心文章</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">9</div>
+            <div class="stat-label">关键概念</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">46</div>
+            <div class="stat-label">知识碎片</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">★ 核心概念</h2>
+    <div class="concept-grid">
+        
+    <div class="concept-card">
+        <h4>新冠疫情 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(40篇)</span></h4>
+        <p>从疫苗研发到变异追踪，从核酸检测到群体免疫，全程记录人类与病毒的攻防战</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>基因编辑 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(5篇)</span></h4>
+        <p>CRISPR体内基因编辑首次治愈肝病，&quot;返老还童&quot;重编辑技术从眼开始</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>演化思维 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(4篇)</span></h4>
+        <p>达尔文演化论的三大缺陷与当代修正：用描述代替解释</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>食品安全 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(4篇)</span></h4>
+        <p>从硫磺八角到微塑料，现代食品工业的安全隐患与科学甄别</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>VR/元宇宙 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(2篇)</span></h4>
+        <p>虚拟现实技术经过9年沉淀进入上升期，元宇宙概念引发虚实边界重定义</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>电池技术 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(2篇)</span></h4>
+        <p>从锂电池到固态电池再到钠电池，动力电池在十年徘徊中寻找突破</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>芯片技术 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>全球芯片缺货潮揭示半导体产业的结构性脆弱与地缘博弈</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>脑机接口 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>从马斯克的Neuralink到脑电波治疗自闭症，人机融合从科幻走向现实</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>碳中和 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>中国承诺2060年前实现碳中和，一场100万亿级别的能源体系重构</p>
+    </div>
+    </div>
+
+    <h2 class="section-title">📄 全部文章卡片</h2>
+    <div class="card-grid">
+        
+    <div class="article-card">
+        <div class="card-num">234 |</div>
+        <div class="card-title">234 | 准诺奖：体内基因编辑技术</div>
+        <div class="card-summary">2021年6月26日，一项意义重大的生物医学新技术公布了结果，具体消息是这样的：。单剂NTLA-2001导致血清中的转甲状腺素蛋白水平（简称TTR）平均下降了87%，而在实验的第28天，TTR的降低幅度最大可达96%。如果这项技术在后续的临床三期试验中被证明有效，今后被获批，利用这套技术生产的药物能用来治疗若干种基因缺陷导致的疾病，尤其是那些患病比例极低但种类又非常多的各种罕见病的话，。</div>
+        <div class="card-tags"><span class="tag">基因编辑</span><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">274｜</div>
+        <div class="card-title">274｜元宇宙：能模拟真实世界吗？</div>
+        <div class="card-summary">皮衣是假的，厨房是假的，连他自己都是假的》在上午刷屏了朋友圈，连很少发朋友圈的我都转载了。著名的图形芯片公司英伟达（Nvidia）2021年度的GPU技术大会，因为疫情的原因选择了线上视频的方式。所以，当我们再对比一下前后两个动图就会发现，如果第一个真人的动图是通过人工智能和GPU渲染出来的，那确实有点让人怀疑自己是不是对世界变化太不敏感了，以至于先进到如此地步自己却还没有察觉。</div>
+        <div class="card-tags"><span class="tag">芯片技术</span><span class="tag">新冠疫情</span><span class="tag">VR/元宇宙</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">095 |</div>
+        <div class="card-title">095 | 疫情中演化出的作弊工具</div>
+        <div class="card-summary">新冠疫情出现一年多了，对学生的影响很大，很多学生全年在校时间从9个月降低到了5个月。不过最近，有一位在罗格斯大学（Rutgers University）任教的华人教师，发微博说了一件怪事：。他们参考后台运行的记录，结果就发现，在疫情初期的2020年1月到3月间，系统中一共进行了34万次考试，不到1%的人作弊。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span><span class="tag">演化思维</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">290 |</div>
+        <div class="card-title">290 | 信用：五万家店铺被亚马逊封号</div>
+        <div class="card-summary">$_IGET_USER_NAME_$，你好。2020年疫情以来，中国的感染数字除了最开始的两个月比较高，此后一直都是很低的。14亿人口规模的国家可以把感染人数控制在这个低水平，也给中国的跨境电商行业留足了机会。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">313 |</div>
+        <div class="card-title">313 | 父亲给儿子制药：什么是幸福？</div>
+        <div class="card-summary">一个只有高中学历的父亲，为了挽救儿子的生命，在一年多时间里，一直不断地把自制药注射到孩子体内，而且得到的结果可以说和目前可以获得的最好结果相差无几。光是前期实验的费用就高达80多万，而且审批流程全走完，几年都过去了，孩子智力发育的关键期早就过了。但由于这种方法现在还是科学前沿，针对徐灏洋的门克斯综合症并没有治疗方法，所以他爸爸最近在突破的就是自制体内基因编辑药物。</div>
+        <div class="card-tags"><span class="tag">脑机接口</span><span class="tag">基因编辑</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">139 |</div>
+        <div class="card-title">139 | 爆发与传播3：活在网络中</div>
+        <div class="card-summary">一条疯狗在某天下午咬了其他几条狗和十几个人，这几条被咬的狗表现出症状后又咬了几十个人。而反观2020年初，新冠病毒出现在美国足足一个多月的时间里，人们还以为它会像从前的中东呼吸综合征或者埃博拉那样不会怎么样，结果白白耽误了宝贵时间。但是金融海啸到来的时候，美国政府的资金根本兜不住底，只有少部分公司能得到救急用的贷款，于是雷曼兄弟最终也没能拿到救急贷款。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">137 |</div>
+        <div class="card-title">137 | 爆发与传播1：找出超级传播者</div>
+        <div class="card-summary">自从新冠病毒爆发以来，各国学术界都在为它建立数学模型，因为这样就可以预测实施某些禁行、禁止聚会的政策后会对削弱病毒传播起到多大的作用。关于流行病结束的原因到底是什么，有两种比较常见的观点：第一种观点认为，易感人群会逐渐减少进而完全消失，最终导致了疾病传播的停止；第二种观点认为，随着流行病的发展，它的感染性会越来越弱，所以最后就感染不了人了。在数学参与传染病传播的研究时，有一个重要的参数就显现了出来</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">276 |</div>
+        <div class="card-title">276 | 气候变化：IPCC第六次报告</div>
+        <div class="card-summary">IPCC全称是“政府间气候变化专门委员会”，它是联合国下属机构，也是全球气候变化问题最权威的组织。这份报告之所以重要，不光因为里面综合了最近五年所有重要的气候研究结论，更是因为报告中还对政策制定的方向和力度有指导意义。可惜的是，第六次报告一共由三个小组撰写，在2021年8月9日时只有第一个小组发布了“气候变化的自然科学基础”这部分，另外两部分关于“如何减缓气候变化”和综述性的内容还没有发布。</div>
+        <div class="card-tags"><span class="tag">碳中和</span><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">126 |</div>
+        <div class="card-title">126 | 飞行汽车 ≈ 不靠谱</div>
+        <div class="card-summary">早在2020年夏天，就传出过很多车企和新车创业品牌要推出自己的飞行汽车，比如优步、吉利和小鹏。在今年因为疫情而没有观众现场参与的 CES 2021 大展上，通用汽车也展出了自己的飞行汽车。当下，飞行汽车行业逐渐成为了风险投资关注的领域，甚至还出现了丰田一家就投了4亿美元，优步和SKT联合投资2亿美元的案例。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">105 |</div>
+        <div class="card-title">105 | 品质生活：关于去甲醛、冥想、白头发和秃顶的问答</div>
+        <div class="card-summary">影响装修能否入住的主要因素就是甲醛，甲醛主要在胶合板、贴墙纸的胶水、油漆与涂料中存在。央视曾经公布过一个检测结果，1000元以下的41款测甲醛的网红测试仪全部都不合格，示数都比真实值低很多，于是就会出现示数上是合格的但是非常呛人的情况。与此同时，科学家们测量老鼠交感神经兴奋程度、去甲肾上腺素、皮质醇浓度等，然后排除了皮质醇对白头发的影响，最后发现，。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">077 |</div>
+        <div class="card-title">077 | FDA的历史1：祖传秘方横行的美国</div>
+        <div class="card-summary">如果从美国政府中选一个对人们的生活影响最大的部门，那既不是邮政局，也不是国会，因为任何人都可以经营邮政业务，国会对各州的人的制约能力也很有限。这个影响力最大的部门应该是今天被称为“美国食品药品监督管理局”的机构，也就是我们常说的FDA。解剖学上发现肾小管和很不容易发现的肾上腺，知道了血管收缩的原因是平滑肌，并研究了动脉。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">083 |</div>
+        <div class="card-title">083 | FDA的历史4：处方药的来历</div>
+        <div class="card-summary">之前我们说过，FDA是全球医药行业的标准制定者，我们熟悉的处方药的各种规章制度，也都来自于FDA。今天，我们就来看看处方药是怎么出现的，以及FDA如何防控概率很小但危害大的药物风险。比如默沙东，它给大学的研究人员开了高工资，把他们挖到公司，研发维生素、磺胺类和激素类的药物。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">089 |</div>
+        <div class="card-title">089 | 人口2：增长不会持续</div>
+        <div class="card-summary">在这段时间里，大航海的出现给农业施加了足够多的影响。在全球物种大交换里，成为主粮的玉米、土豆，以及花生、西红柿、南瓜、向日葵都是从美洲转移到欧亚大陆的；而从欧洲转移到美洲的物种有大豆、小麦、甘蔗、水稻、洋葱、苹果等。虽说妇女地位的提高、生活水平的提升和生育率下降不能拴成因果对儿，但这样的现象先是在发达国家陆续出现，几十年后又在发展中国家里发展得比较好的国家相继出现，于是这样高相关度的事情就引起了很</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">218 |</div>
+        <div class="card-title">218 | FDA的历史7：FDA为什么那么自律？</div>
+        <div class="card-summary">我们之前了解了很多FDA对药品和治疗方法的监管措施，也知道这是一个把手伸到老百姓吃喝拉撒睡的部门，更知道世界各国今天都纷纷效仿FDA的模式，建立了自己的食品药品管理部门，同样也赋予了它们等量的权力。但奇怪的是，为什么印度、土耳其、巴西这些国家的食品问题会层出不穷，疫苗不安全、医药系统低效的事故频发呢。汉佛莱对比了同一时期FDA对这款药的官方记录和医学期刊上登载的这款药的不良反应报告，发现FDA只象</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">136 |</div>
+        <div class="card-title">136 | Zoom疲劳：线上会议更疲劳，怎么办？</div>
+        <div class="card-summary">2020年2月23日，斯坦福大学的研究人员在《技术、心智与行为》（Technology, Mind and Behavior）上发布了一篇非常有意思的论文，讨论的是一个新现象——Zoom疲劳。但是没过两个月人们就发现，用Zoom开会也挺累的，于是就管这种累叫作“Zoom疲劳”（Zoom Fatigue）。虽然这里依据的心理学原理或者实验证据不如经典物理实验那么坚实，但也很值得其他App的开发者参考</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">251 |</div>
+        <div class="card-title">251 | 远程办公：疫情改变办公模式</div>
+        <div class="card-summary">从2020年初就爆发的新冠疫情到今天已经延续了超过一年半的时间，除了造成全球金融秩序的大动荡，也改变了世界人民的习惯。比如说上下班这件事，从前每天都要通勤，在重点城市的核心区，尤其是高科技企业集中的地区，附近租房价格很高，因此很多程序员就选择住在20公里以外，上下班路上都要超过3小时。最初，这个变化让雇主和雇员都很欣喜，但随着习惯的养成，可能双方都会发现很多不利因素，尤其是那些高科技企业。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">259 |</div>
+        <div class="card-title">259 | 实证：老生常谈的口罩问题</div>
+        <div class="card-summary">今天的内容，我们看一个科学家如何高质量证明一个结论的具体例子，那就是“口罩对预防新冠病毒有没有用”。有人认为，医生活动在病毒浓度高的地方，戴口罩会对他们起到至关重要的作用；而普通人的生活范围里不可能有高浓度的病毒颗粒，尤其是在室外环境里，所以，要求普通人全部佩戴口罩，不仅对普通人没有起到多少保护作用，还浪费了宝贵的库存，间接伤害了医生。对于不同的患者来说，统计出来的结果是这样的：流感病毒患者呼出的</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">002 |</div>
+        <div class="card-title">002 | 疫苗：我们离完善的疫苗还有多远？</div>
+        <div class="card-summary">而另一方面，新冠疫苗也是新闻不断，一会儿这个团队取得了新进展，一会儿又听说疫苗在人体临床试验中表现良好。如果把完善的疫苗定义为安全、有效和长期保护，这就相当于是在问三个问题：当前研发的疫苗安全不安全。经过相当长的一段时间后，注射疫苗和注射安慰剂这两个组的人分别有若干，比如几十到几百人感染以后，两个组在药效上的差异才能体现出来，这款疫苗是不是有效才能从统计学上证明出来。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">027 |</div>
+        <div class="card-title">027 | 疫苗：90%有效率的新冠疫苗出现了？</div>
+        <div class="card-summary">首先得说，“辉瑞制药的疫苗有效率90%”，这并不是正式的实验结论，而是实验做到一半时的初步统计。而且，它还不是自己做试验、自己公布数据这样的自卖自夸，而是由一个第三方独立监测委员会公布出来的。而且，不论是受试者还是实验人员，都不知道谁到底注射了什么，由第三方机构在背后做详细标记和统计最终效果。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">081 |</div>
+        <div class="card-title">081 | 疫苗：那两针别任性，按时间去</div>
+        <div class="card-summary">你发现没有，人体暴露在病毒下的时候，如果是第一次面对这种病毒的话，竟然给病毒留了一周的时间积蓄力量繁殖大部队。这个反应迅速的IgM并不能让我们平安无事，一来是因为，它会被大量的病毒消耗殆尽，更关键的是，它基本只分布在血液中，如果病毒寄居在血管以外的部位，比如粘膜上、体液里，IgM是基本无能为力的。但是，如果已经对这类病毒的入侵有记忆了，是第二次入侵，那中间很多步骤都可以加速，IgG和IgM两种免疫</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">093 |</div>
+        <div class="card-title">093 | 新冠疫苗：近期要闻全解读</div>
+        <div class="card-summary">这期参考，咱们就针对这一时期出现的各种新闻集中说说，防止你看到一些谣言以后引起不必要的担心。中国的疫苗接种已经开展了一个多月了，上千万人已经完成了接种，很多人甚至第二针都打完了，没有出现批量的意外。假如在后续研究中发现，9个月后，中和抗体的滴度下降了很多，那可能会先看看补打一针的效果如何。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">094 |</div>
+        <div class="card-title">094 | 新冠：令人担忧的病毒变异出现了</div>
+        <div class="card-summary">我们知道，新冠病毒至今已经有一万多种突变了，其中比较有威胁的只有几种，比如2020年夏天出现的D614G，还有2020年12月底确认的英国的N501Y。之后，辉瑞和摩德那两家公司都用自己的疫苗对英国发现的病毒新品种N501Y做了测试，得到的初步结论是，N501Y不会对疫苗的防护作用有明显影响。因为不止南非的这个研究所做了测试，不同的实验室在初期实验中也都发现了同样的趋势，而此前的几次变异都没有这么</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">122 |</div>
+        <div class="card-title">122 | 新冠：这辈子见证了历史</div>
+        <div class="card-summary">谁都没想到，去年春节前的一个大事件到今年春节后依然持续着，而且在全球很多地方反而比去年还要严重。如果500年后的人类历史学家梳理改变人类的传染病的话，我估计，2020年的这场新冠一定会被列入其中。科学家对新冠病毒的估测是：按照现在欧美实施的社交隔离效果，为了控制住病毒，至少需要人群中55%的人接种疫苗；如果社交隔离完全解除，至少需要70%左右的人接种疫苗才能形成群体免疫。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">142 |</div>
+        <div class="card-title">142 | 新冠：病毒突变和疫苗最新进展</div>
+        <div class="card-summary">梳理一下，至今比较重要的变异，按时间顺序已经有了英国变种（B.1.1.7）、南非变种（B.1.351）、巴西变种（B.1.28）、尼日利亚变种（B.1.525）。这些变种前面都带了一个国家名，并不意味着这个新变种是从那里起源的，更多是因为对病毒测序，然后根据第一个感染者的国籍确认的。在全球最大的流感病毒和新型冠状病毒数据平台里，病毒序列里有45%是英国研究机构上传的。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">162 |</div>
+        <div class="card-title">162 | 新冠：被忽视的动物感染</div>
+        <div class="card-summary">因为有一些病毒即便在人类范围内暂时消失，如果它有感染动物的能力的话，也还可能会再次回到人类世界。在2020年4月到9月的那波疫情中，德国诊断病毒研究所对全境范围的920只猫做了血样的抽样检测，结果只有6只发现了新冠病毒的抗体，占比是7‰，比当时德国人口3.4‰的感染率略高一些，基本属于一个量级。不过，当研究人员在实验中用新冠病毒滴入猪鼻子、主动感染它们之后发现，不论是在猪仔还是成年猪的身上，病毒都</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span><span class="tag">演化思维</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">172｜</div>
+        <div class="card-title">172｜印度：新冠疫情的最大隐患</div>
+        <div class="card-summary">在全球范围内，新冠疫情从2021年2月份就开始已经明显趋于缓和，这和疫苗大量接种密不可分。本以为之后可以继续放宽限制，然后在今年冬季到来前让疫情告一段落，结果印度出事了。截止我写这篇参考的4月22日，印度已经连续8天确诊人数超过20万，而且相信节目播出时，印度单日的感染数字已经超过30万很多天了。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">173 |</div>
+        <div class="card-title">173 | 新冠后遗症：可能比你想得更严重</div>
+        <div class="card-summary">之前，我们所有关于新冠病毒的内容都集中在感染前和感染中，而今天这期科技参考，我要向你介绍一下感染之后的情况。可能有人觉得奇怪，如果治疗得及时有效，感染后半个月差不多就痊愈了，更别提一个月后、一年后了，不都好利索了吗。还有一个研究是利用美国退伍军人医疗系统数据库做的统计，统计了7.3万名确诊后没有住院的退伍士兵，所以他们都不是重症，然后和系统里没有感染的另外500万名健康老兵作对比。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">184 |</div>
+        <div class="card-title">184 | 疫苗：怎么理解美国放弃新冠疫苗专利？</div>
+        <div class="card-summary">2021年5月5日，美国政府宣布支持世界贸易组织（WTO）对放弃新冠疫苗知识产权保护的倡议。这期《科技参考》，我们就来说说这个话题，借此让你对医药领域的技术专利增进了解。看到这个新闻的人，首先应该感到疑惑，因为把知识产权保护好是全球共识，尤其在美国，对知识产权最为重视，为什么它要在5月5日跳出来专门表个态，说我们觉得不保护新冠疫苗知识产权挺好呢。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">202 |</div>
+        <div class="card-title">202 | 新冠：两个好消息和一个坏消息</div>
+        <div class="card-summary">进入五月末，不光是中国境内，全球各地的新冠疫情也都有了反弹，之前一直控制还不错的日本也爆发了大量病例，已经推迟一年的东京奥运会甚至可能会再次受到影响。前两条是好消息，第一个是，科学家发现了对新冠病毒的长效体液免疫机制；第二个是，国药的两款灭活疫苗的三期临床结果发表了，科兴疫苗也进入了世界卫生组织WHO紧急使用名单。但一直以来，印度医学研究委员会完全是站在Bharat生物技术公司一边的，在疫苗数据不</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">216 |</div>
+        <div class="card-title">216 | 新冠：关于喷雾型疫苗的三个重点</div>
+        <div class="card-summary">这个问题其实来自于2021年6月3日在上海举行的浦江创新论坛大会，陈薇院士在演讲中说到，她带领团队与康希诺合作研发出了吸入式重组新冠疫苗。传统的重组疫苗一般是通过基因技术，先把某种细菌的DNA改一改，把这些病毒表面的蛋白质对应的序列插入其中，然后在细菌的繁殖过程中，就会大量的把这些蛋白质表达出来。这里多说一句，虽然灭活疫苗不用这么复杂，但同样存在问题，就是在加入毒素或者使用X光照射进行灭活的时候，</div>
+        <div class="card-tags"><span class="tag">基因编辑</span><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">221 |</div>
+        <div class="card-title">221 | 新冠：关于病毒和疫苗的最新进展</div>
+        <div class="card-summary">今年4月份以来，从印度开始的大爆发快速蔓延全球，很多地区甚至出现了比第一波更严重的感染。然后为了让结论更直观，结果就用加号来显示，加号越多，证明在变异后这方面增强得越明显。在统计中，科学家还发现了一个非常重要的病毒携带数量的特征——2%的感染者携带了病毒总数的90%。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">230 |</div>
+        <div class="card-title">230 | 下一步：吃药治疗新冠</div>
+        <div class="card-summary">大多数时候，我们感染了病毒后都不需要吃药，其实根本原因是没有什么针对病毒的特效药，就算是病毒感染后吃了药，也大都是为了让人感觉舒服一些，病毒的清除主要还是依赖自身免疫力。但是在临床实验的时候发现，它对丙肝病毒、呼吸道合胞病毒没有效果，去试其他病毒感染时才发现，对埃博拉病毒和马尔堡病毒有效果，后来在MERS爆发的时候也试了试，也有明显缓解作用。但有的时候会出现意想不到的好效果，也就是只要药量控制合适</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">268 |</div>
+        <div class="card-title">268 | 规模：核酸检测1人和1000万人的区别</div>
+        <div class="card-summary">Delta款新冠病毒的传播力大约是原始款的两倍，这也是2021年夏天全球各地疫情再次反弹的主要原因。这期的《科技参考》，我就来介绍一下核酸检测的过程和细节，帮助你了解这个环节在疫情防控中的作用。简单原理就是，用一根棉签在咽喉深处或者鼻腔深处擦拭一下，刮下部分上皮细胞，然后检测这些上皮细胞有没有被病毒入侵。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">269 |</div>
+        <div class="card-title">269 | 新冠病毒：德尔塔 &amp; 拉姆达的危害</div>
+        <div class="card-summary">最近几个月，全球疫情又达到了高峰，而且除了德尔塔变种之外，还有一些新闻报道了新冠病毒的另外一个变种——拉姆达款（Lambda）。群体免疫说的是，只要有足够高比例的人对病毒有了抗体，这些人就会在病毒的传播路径上形成足够厚的墙，病毒虽然也在传播，但撞不透墙，于是传播就会渐渐终止，病毒最终就会在这群人中消失。Delta款变异自从2020年12月第一次在印度被发现以来，只用了3个多月的时间，在印度的感染比</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">270 |</div>
+        <div class="card-title">270 | 新冠：疫苗加强针要不要打？</div>
+        <div class="card-summary">在“新冠疫苗要不要打第三针”这个问题上，有两个针锋相对的观点：一个认为要打，因为这可以让抗体水平提升好几倍；另一个观点认为不要，比如世界卫生组织，理由是没有必要，世界上大多数人连第一针都没打上呢。比如有些孩子随父母移民到海外，要在当地上学时，却已经找不到当年的接种记录了，于是就会先化验一下，看看血液中针对各种病毒的抗体是否足够高，如果结果都合格，那就就把手续补齐、交给学校。也就是说，对病毒有中和作</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">281 |</div>
+        <div class="card-title">281 | 视角：三个角度下理解“与病毒共存”</div>
+        <div class="card-summary">$_IGET_USER_NAME_$，你好。张文宏这条微博说的是，在面临新情况时，防疫的措施要跟着变化，长期的严防死守既然已经不可能完全消灭病毒，那么现在就应该全面考量得失，否则肯定会影响很多行业，造成更严重的问题。研究者发现，人体内竟然还有相当多数量的细菌，它们分布在人体的各个部位，主要是肠道，另外在口腔、各种粘膜，甚至酸性的胃中都有大量细菌。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">302 |</div>
+        <div class="card-title">302 | 新冠：关于病毒变异的新研究</div>
+        <div class="card-summary">最近有新闻曝出，英国科学家的研究证实，新冠病毒差不多一周变异一次，变异速度比之前还要高50%以上。这期《科技参考》，我们就来介绍一下这个研究，因为它综述了近一年多以来病毒变异的所有规律。这项研究统计了以色列250万人的数据，分析了从2021年1月份到2月份之间接种过疫苗，且过去从未感染过新冠病毒的人群，看看他们在半年多后的8月份之前，有多少感染了新冠。</div>
+        <div class="card-tags"><span class="tag">基因编辑</span><span class="tag">新冠疫情</span><span class="tag">演化思维</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">014 |</div>
+        <div class="card-title">014 | 问答：韩国流感疫苗事件的真相</div>
+        <div class="card-summary">我先重点解答两个重要问题，然后再给你分享几个咱们专栏的使用技巧。既然美国有跟中国技术脱钩的趋向，为何审查重大并购案还需要中国商务部同意。卓老师，为什么中国企业不去收购ARM，为什么英伟达的收购需要中国政府同意呢。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span><span class="tag">VR/元宇宙</span><span class="tag">演化思维</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">062 |</div>
+        <div class="card-title">062 | 问答：新冠病毒突变，传播力增强70%？</div>
+        <div class="card-summary">目前，知识城邦和留言功能部分恢复，所以如果你有问题和想说的，还是请尽量留在课程文稿下的评论里。因为很多变异根本不会被表达成蛋白质，或者即便表达成蛋白质了，但氨基酸的些许改变没能影响蛋白质的折叠，蛋白质外表面总体还是原来的样子，于是功能依旧，感染途径依旧，毒性依旧。我们之前讲过，它是新冠病毒和细胞表面结合的部位，是病毒最重要的部分，如果这里发生了巨大的改变，病毒的感染途径、毒性之类的关键功能就会改变</div>
+        <div class="card-tags"><span class="tag">基因编辑</span><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">086 |</div>
+        <div class="card-title">086 | 问答：怎样筛选出好药？</div>
+        <div class="card-summary">从过往80多期和之前两年的内容看，我知道，问答类的内容是最受欢迎而且听起来压力最小的。而且今年情况很特殊，回家过年还要持有7日内的核酸检测证明，北方有些地区可能拿着这个证明都要隔离很久，不少人说不定就原地过年了。而另一个更重要的指标叫作“溶出曲线”，也就是药物里的有效成分在血液中的浓度随时间变化的曲线。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">098 |</div>
+        <div class="card-title">098 | 问答：进口产品表面新冠病毒阳性，值得担心吗？</div>
+        <div class="card-summary">我先预告一下下周的安排：《科技参考》的内容只有周一到周三，周四的时候是大年三十，就进入春节的10天答疑了。春节前，我和编辑商量着安排几个有时效性的内容，一个是近期教育部提到的培养阳刚之气的解读，一个是刚刚发布的新技术——隔空充电，还有一个是特斯拉在电池日宣布的即将装车的4680无极耳电池的技术细节。这个实验之所以算是突破，是因为对人类早产儿的统计是这样的：22周的话，存活率只有万分之七；满23周，</div>
+        <div class="card-tags"><span class="tag">电池技术</span><span class="tag">新冠疫情</span><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">177 |</div>
+        <div class="card-title">177 | 问答：新冠疫苗对印度双重变异病毒失效了吗？</div>
+        <div class="card-summary">老年人睡不好觉的原因非常多，褪黑素分泌量不够只是其中众多的原因之一。而且吃褪黑素基本不太可能解决问题，需要先找到原因，睡眠才能改善。那个环境里，最让人竖大拇哥的是，某个奇才仔细研究了所有环节，发现改进某几个环节可以节省30%的成本，但老板竟然没给足他奖励，然后他离职自己创业，5年后成为老板的竞争对手，干掉了老东家。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">219 |</div>
+        <div class="card-title">219 | 问答：骨传导耳机值得买吗？疱疹疫苗值得打吗？</div>
+        <div class="card-summary">骨传导耳机价格有2000多的，也有100多的，效果到底好不好。骨传导耳机价格的变化范围确实非常大，这和它采用的技术的先进程度还有品牌的附加价值有关系。它是一种专用型耳机，如果不在要求的使用场景中使用的话，其实效果是远不及普通耳机的，那2000块钱就白花了。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">231 |</div>
+        <div class="card-title">231 | 问答：琥珀中的DNA能还原吗？</div>
+        <div class="card-summary">在电影《侏罗纪公园》的故事里，那只一亿年前的蚊子叮咬了恐龙，吸的血液里包含了恐龙的DNA，于是在琥珀中被保存了下来，最终用于一亿年后复活恐龙。比如，2013年曼彻斯特大学的研究员就分析了几个不同年代的虫珀，年代最近的仅仅是60年前形成的，比较远的是1万零600多年前形成的，这两块虫珀中的昆虫遗骸部分，就已经完全不含有内源性的DNA了。所以，也有一些研究发现了8000多万年前鸭嘴龙化石中的胶原蛋白，</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">249 |</div>
+        <div class="card-title">249 | 问答：纯电动汽车涉水能力更强吗？</div>
+        <div class="card-summary">网上有一些短视频，把电动汽车涉水的视频做成了一个大合集，我们可以看到，水位都已经深到其他燃油车只能停在周边，甚至连公交车都不走了，但电动汽车还在乘风破浪，甚至水都涌过了前挡风玻璃还在开。在国家标准GB/T 31467.3里，在“电动汽车用锂电池的安全性要求和测试方法”中就规定，电池包防水等级要大于等于IPX7，而比IPX7更高的只有一个IPX8了。但是当时封城了，没有道路救援服务，结果大半个车身就</div>
+        <div class="card-tags"><span class="tag">电池技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">309｜</div>
+        <div class="card-title">309｜问答：乐感好的人数学也好吗？</div>
+        <div class="card-summary">它的作用原理是，在人体内这种药物会呈现两种结构，一种结构很像胞嘧啶(C)，一种很像尿嘧啶(U)。结果发现，有大约7%的服用了药物的人后来转去住院了，也就是转成了重症，但即便转为重症，后来也没有死亡。所以这个100%预防死亡只是针对这组数据的结果，在真实情况里不会达到严格的100%这么高。</div>
+        <div class="card-tags"><span class="tag">新冠疫情</span></div>
+    </div>
+    </div>
+
+    <div class="page-footer">
+        <a href="index.html">← 返回知识主板</a>
+    </div>
+</div>
+</body>
+</html>

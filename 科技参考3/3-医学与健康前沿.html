@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医学与健康前沿 — 科技参考3 MKS</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="home-btn">← 科技参考3 主板</a>
+  <span class="breadcrumb">医学与健康前沿 · 59 篇文章</span>
+</div>
+
+<div class="container">
+  <div class="topic-header">
+    <div class="topic-icon">🔬</div>
+    <h2>医学与健康前沿</h2>
+    <p class="topic-subtitle">疾病机制、衰老研究与医疗突破</p>
+    <p class="topic-desc">从癌症治疗到抗衰老研究，从朊病毒到超级细菌，现代医学正在分子层面重新理解生命。59篇文章深入探讨疾病的生物学机制、前沿疗法与健康科学的最新发现。</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-badge"><span class="num">59</span> 篇文章</div>
+    <div class="stat-badge">📅 2023-2024</div>
+    <div class="stat-badge">🎯 MKS 最小知识集</div>
+  </div>
+
+  <!-- Key Concepts -->
+  <div class="section-title">核心概念</div>
+  <div class="concepts-grid">
+    
+      <div class="concept-card">
+        <div class="concept-num">1</div>
+        <h5>阿斯巴甜</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">2</div>
+        <h5>代糖致癌风波回顾</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">3</div>
+        <h5>碍于面子，狂犬病发作</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">4</div>
+        <h5>红肉、加工肉为什么被列入致癌物</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">5</div>
+        <h5>顶级减肥药</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">6</div>
+        <h5>4090显卡被禁+食肉动物会得癌吗</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">7</div>
+        <h5>冷冻再复活，又迈进一大步</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">8</div>
+        <h5>支原体感染+上亿度的温度怎么测</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">9</div>
+        <h5>饭后多久才能运动</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">10</div>
+        <h5>才能洗澡</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">11</div>
+        <h5>最近的“不明原因肺炎”是怎么回事</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">12</div>
+        <h5>能杀死一切实体肿瘤的药什么时候上市</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+  </div>
+
+  <!-- Article List -->
+  <div class="section-title">全部文章</div>
+  <div class="articles-list">
+    
+      <div class="article-card">
+        <span class="art-num">#2</span>
+        <h4>阿斯巴甜：代糖致癌风波回顾</h4>
+        <div class="art-summary">2023年5月到7月间，阿斯巴甜被推上风口浪尖，因为国际癌症研究机构（IARC）把它定为2B类致癌物。</div>
+        <div class="art-insights"><span class="insight-tag">2023年5月到7月间，阿斯巴甜被推上风口浪尖，因为国际癌症研究机构（IARC）把它定为2B类致癌物</span>
+<span class="insight-tag">想必很多人在这波热潮中都看到了正确的结论：
+和以往相比，阿斯巴甜并没有被发现有任何陡然增加的癌症风险，只要控制在限量内，依然是安全的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#8</span>
+        <h4>碍于面子，狂犬病发作</h4>
+        <div class="art-summary">2023年9月16日，国家疾控中心和卫健委发布了2023版的《狂犬病暴露预防处置工作规范》，</div>
+        <div class="art-insights"><span class="insight-tag">别看死亡的人数少，实际上每年接种狂犬疫苗的人数大约有1500万左右</span>
+<span class="insight-tag">考虑到《科技参考》近1000多期都没有提及到狂犬病的内容，所以这期我们来说一说</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#10</span>
+        <h4>问答：红肉、加工肉为什么被列入致癌物？</h4>
+        <div class="art-summary">很多同学对阿斯巴甜那期提到的红肉致癌、加工肉致癌非常关心，想问问是怎么回事。</div>
+        <div class="art-insights"><span class="insight-tag">这两个咱们分开说，因为
+红肉是在2类致癌物的A级里，而加工红肉是最高的1类致癌</span>
+<span class="insight-tag">之所以叫它红肉，是因为肌肉里包含大量肌红蛋白和血红蛋白，外观是深红色的，所以叫红肉</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#13</span>
+        <h4>劝退：顶级减肥药</h4>
+        <div class="art-summary">因为严格地说，第一代安全有效的减肥药才刚刚在几个月前国内获批上市。之前中国虽然也上市了几款被人们当作是减肥药的药，但其实都是以2型糖尿病为适应症使用的，不是专门用来减肥的。</div>
+        <div class="art-insights"><span class="insight-tag">因为严格地说，第一代安全有效的减肥药才刚刚在几个月前国内获批上市</span>
+<span class="insight-tag">之前中国虽然也上市了几款被人们当作是减肥药的药，但其实都是以2型糖尿病为适应症使用的，不是专门用来减肥的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#17</span>
+        <h4>问答：4090显卡被禁+食肉动物会得癌吗？</h4>
+        <div class="art-summary">上周六我追了一把新闻热点，介绍了高通的峰会，临时把答疑调整到今天。咱们今天继续上周的第二个答疑。</div>
+        <div class="art-insights"><span class="insight-tag">价格为什么坐了一个过山车呢？
+因为美国最开始公布的先进计算芯片出口管制新规里包含了4090显卡，但是十几个小时之后，美国商务部又对出口管制文件做了澄清，对4090的禁令是这样解释的，“消费级出口产品可以申请豁免”，
+所以4090显卡可以在中</span>
+<span class="insight-tag">为什么美国公布了管制新规呢？
+因为美国很多企业为了把高性能芯片卖给中国，钻旧规的漏洞，其中NV首当其冲</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#19</span>
+        <h4>冷冻再复活，又迈进一大步</h4>
+        <div class="art-summary">2023年6月底，《自然》和《科学》两大期刊先后刊登了一篇器官冷冻的研究，《科学》杂志甚至还把它排在了6月的封面文章，可见这个研究有多么吸引人。</div>
+        <div class="art-insights"><span class="insight-tag">其实到今天，已经有几百万人使用过了，那就是试管婴儿，今天采精和采卵并不需要同时进行，丈夫先取精子，或者妻子先取卵子都可以，中间隔几个月或者隔几年都可以，卵细胞一般会取10个左右</span>
+<span class="insight-tag">而这个服务中使用的冷冻技术，其实就是这期内容我们要说的，
+先把组织冷冻，等需要时再激活</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#28</span>
+        <h4>问答：支原体感染+上亿度的温度怎么测？</h4>
+        <div class="art-summary">最近这周，周围人感冒的不少，特别是学校里的低龄学生，支原体感染有的几乎占班级一半以上。大家都反映，自从新冠一阳、二阳之后，呼吸系统免疫力有明显下降，不知道你们身边有没有类似情况？</div>
+        <div class="art-insights"><span class="insight-tag">最近这周，周围人感冒的不少，特别是学校里的低龄学生，支原体感染有的几乎占班级一半以上</span>
+<span class="insight-tag">因为新冠几年，大部分国家都施行了比较严格的风控措施，人人也都习惯了戴口罩，于是连续几年呼吸道传染病大幅降低</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#33</span>
+        <h4>问答：饭后多久才能运动？才能洗澡？</h4>
+        <div class="art-summary">常听人说“饭后不能运动”，否则容易阑尾炎。请问吃多少就不能剧烈运动了？为什么呢？还有就是，要消食到什么程度才能够运动呢？</div>
+        <div class="art-insights"><span class="insight-tag">但饭后不许孩子跑出去玩，那都是饭后半小时内的时段，所以是没有道理的</span>
+<span class="insight-tag">进而就要问了，是不是夜里1点就不能蹦蹦跳跳啊？没错，因为会吵到别人睡觉</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#45</span>
+        <h4>问答：最近的“不明原因肺炎”是怎么回事？</h4>
+        <div class="art-summary">2023年11月22日，世卫组织正式要求中国提供有关“不明原因肺炎”的更多细节。这是怎么回事呢？是不是“新新冠病毒”来了？要怎么防护呢？</div>
+        <div class="art-insights"><span class="insight-tag">2023年11月22日，世卫组织正式要求中国提供有关“不明原因肺炎”的更多细节</span>
+<span class="insight-tag">只不过因为全球所有人的免疫系统在2-3年时间里没有接触过它们，于是再次生产出足够量抗体的时间比3年前稍慢了几天，于是病情就加重了很多</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#54</span>
+        <h4>问答：能杀死一切实体肿瘤的药什么时候上市？</h4>
+        <div class="art-summary">首先，有好几位同学都提到了一种能治疗70多种癌症的新药AOH1996，据说正在做临床试验，而且他们的亲朋好友中就有癌症患者，期待这种药能给他们更多的希望。问我这个药的前景如何。</div>
+        <div class="art-insights"><span class="insight-tag">但是，癌细胞之所以没死，还能继续疯狂增值，是因为致命错误发生时有一个修复机制解决了错误，这个修复机制就和PCNA密切相关</span>
+<span class="insight-tag">正常细胞由于并不会疯狂复制，所以不太会发生撞车事故，于是正常细胞对PCNA修复机制的依赖程度就低</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#55</span>
+        <h4>掌机的复苏，游戏的衰老（上）</h4>
+        <div class="art-summary">今天的《科技参考》，我们说一个轻松的话题：游戏掌机。之所以聊这个，是因为最近两年以来，游戏掌机复苏了。</div>
+        <div class="art-insights"><span class="insight-tag">这一系列的内容有上、下两集，第一集分析一下市场上掌机的状况，第二集分析一下掌机复苏的原因</span>
+<span class="insight-tag">因为掌机的历史远超过手机游戏，最早的掌机和最早的游戏机都是上世纪70年代出现的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#56</span>
+        <h4>掌机的复苏，游戏的衰老（下）</h4>
+        <div class="art-summary">昨天我们说到，完美的掌机有这么几个标准：重量在200多克，续航超过8小时，游戏品质出色，机器价格低于1000块钱。这种掌机有吗？还真有，就是开源掌机。</div>
+        <div class="art-insights"><span class="insight-tag">之所以叫“开源”，是因为操作系统大部分用的是Linux或者安卓，里面装的都是各种模拟器，它们全都是开源的</span>
+<span class="insight-tag">模拟器最初是在特殊场合用的，比如40年前在一些特别老的机器上运行的程序，如今机器硬件早都找不到了，可还需要运行程序，那就用软件环境模拟出老机器的处理器、声卡、控制按钮等等，这样起码能把老程序运行起来</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#58</span>
+        <h4>问答：正确读音从何而来？下雪会清除病毒吗？</h4>
+        <div class="art-summary">听音频的时候，听到您说“驯化综合征”还以为是“驯化综合症”，原来是特征的征，光听音频以为是您读错了，或者是我之前竟然读错了症的读音。就像一些常见字大家也都会读错，比如细菌的菌是读一声还是三声等等。</div>
+        <div class="art-insights"><span class="insight-tag">因为“驯化综合征”的“征”是特征，不是病症的意思，属于词就不一样，只不过发音有点类似，属于英语中 feature 和 symptom 的区别了</span>
+<span class="insight-tag">当然，咱们不否认其中很多读音背后都有一大套理论，有清晰的正确与否的标准，但还有相当多其实没有历史渊源，只是硬性规定</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#63</span>
+        <h4>问答：周末为什么会头疼？</h4>
+        <div class="art-summary">自己容易偏头痛。因为经常疼，所以也摸到一些规律。最容易引起偏头痛的就是睡眠不足。只要睡眠不足，第二天准会疼。但奇怪的是，经常会在周末疼，有时候忙碌了一周，小心谨慎的维持着作息，工作日都没疼。周末终于可以休息了，还睡了个好觉，结果竟然会疼。而且，经常会在周末没有压力、心情放松时还疼。这是为什么？</div>
+        <div class="art-insights"><span class="insight-tag">有些人其实是颅内肿瘤、出血、脑膜炎、颅内压增高、鼻窦的感染、流感、严重脱水、甲状腺问题、青光眼、颈椎病等导致的头疼</span>
+<span class="insight-tag">它说的是，
+导致偏头痛的原因并不是压力本身，而是压力的波动，所以压力突然增大会偏头痛，压力突然减小也会偏头痛</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#71</span>
+        <h4>问答：勤剃光头有利于头发生长吗？</h4>
+        <div class="art-summary">不能，而且也要看光头是什么定义。如果就是光溜溜的，在剪掉头发后还要用刮刀走一遍的话，甚至还会对头发有害。</div>
+        <div class="art-insights"><span class="insight-tag">之所以一些人认为孩子多剃光头，头发就能长得更粗更多，是因为前后对比强烈</span>
+<span class="insight-tag">因为剃掉的只是头发的毛干部分，这部分头发已经没有活细胞了，甚至剪下来放一百年也能维持原样不变</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#100</span>
+        <h4>问答：12种呼吸道疾病检测该不该做？</h4>
+        <div class="art-summary">最近美团推出了一个12种呼吸道疾病病原体的上门检测服务，这是不是智商税呢？</div>
+        <div class="art-insights"><span class="insight-tag">最近美团推出了一个12种呼吸道疾病病原体的上门检测服务，这是不是智商税呢？
+
+
+简单回答，不是智商税，但对大多数人来说没有必要，还容易增加焦虑</span>
+<span class="insight-tag">但其实，这些信息只对临床医生才有一些价值，对医学知识不足的普通人来说，更多的作用是产生焦虑，甚至促进乱用药</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#112</span>
+        <h4>问答：注射干细胞好吗？东亚为什么是生育洼地？</h4>
+        <div class="art-summary">最近身边朋友有打干细胞的，说是能增强抵抗力，请您讲讲干细胞吧。</div>
+        <div class="art-insights"><span class="insight-tag">真要想达到最好的疗效和最高的安全性，自己本身得是生物医药领域的内行才可以</span>
+<span class="insight-tag">这四方面哪个出了问题都会引起严重事故，比如毒性会感染新的病毒，或者因为干细胞对免疫信号的调节失控，导致免疫疾病</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#122</span>
+        <h4>起源：免疫系统的奇迹</h4>
+        <div class="art-summary">今天我们说说免疫系统两个令人不可思议的能力。第一个奇迹般的能力是，它是怎么能认得出那么多种不同样式的入侵者的？第二个是，它是怎么出现的？</div>
+        <div class="art-insights"><span class="insight-tag">由于它们是由那把特殊的钥匙激活的，所以身上长满了配合那种钥匙的孔，能很好地抓握住入侵者，并把入侵者杀死</span>
+<span class="insight-tag">免疫系统虽然可以这样杀敌，理论上也可以应付大部分入侵，但事情总有特殊情况，在入侵者干掉身体重要器官之前，那些针对性强的免疫细胞得能把入侵者全都杀掉才行，否则就来不及了，所以记忆性保证了下一次入侵者到来后，针对性强的免疫细胞量产的时间会缩短很</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#138</span>
+        <h4>韩国医生大规模辞职</h4>
+        <div class="art-summary">这个事件是从2024年2月20日开始的韩国医生大辞职、大罢工、大罢课。直到今天已经一个多月了，依然在持续。</div>
+        <div class="art-insights"><span class="insight-tag">其实这1/10的医生承担了韩国全部医疗服务工作量的35%左右，所以韩国现在有超过一半的手术是做不了的，所有的急诊都不能再进人了</span>
+<span class="insight-tag">如果是平摊，10%的医务工作者应该只承担10%的工作量，但之所以他们承担了几倍的工作量，是因为他们都是基层医生</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#139</span>
+        <h4>长新冠对人脑的改变</h4>
+        <div class="art-summary">下文有两张对比照片，方便的话你可以先看看，都是典型的活力美女在12-24个月内迅速衰老的例子，第一张隔了24个月，第二张隔了12个月。</div>
+        <div class="art-insights"><span class="insight-tag">由于时间足够长，除了某些封禁措施最严格的国家之外，其余国家60%左右的人口全都被动感染过新冠了</span>
+<span class="insight-tag">第二阶段是从2020年12月到2021年12月，整整一年的时间，这一时期，被动的感染仍然在继续，但至关重要的因素出现了，就是对预防感染和重症非常有效的辉瑞与摩德纳的新冠疫苗开始批量接种</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#141</span>
+        <h4>一剂猛药：地球工程</h4>
+        <div class="art-summary">看了《人类对地球的全面改造》系列之后，可能很多同学对今后的环境非常忧虑，所以这期我来介绍一下急救措施。这和当前全球都在施行的减排、减碳措施是非常不一样的。</div>
+        <div class="art-insights"><span class="insight-tag">看了《人类对地球的全面改造》系列之后，可能很多同学对今后的环境非常忧虑，所以这期我来介绍一下急救措施</span>
+<span class="insight-tag">这类措施见效快，温度马上就能降下来，可碳太多的问题解决不了，而且还会引入更多的副作用，所以我称之为“一剂猛药”</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#142</span>
+        <h4>问答：韩国医院问题为什么严重？牙结石能在家处理吗？</h4>
+        <div class="art-summary">有很多同学问，为什么韩国的医疗体系变得这么不平衡？</div>
+        <div class="art-insights"><span class="insight-tag">有很多同学问，为什么韩国的医疗体系变得这么不平衡？
+原因很明显，就是公立医院占比太少了，只有5%，于是自由市场竞争就只保留利润最高的一批模式，淘汰掉了利润低、风险高的模式，于是儿科、胸外科、神经外科和一切急诊提供的就比较少</span>
+<span class="insight-tag">简单说，什么不赚钱、什么风险高、什么没人愿意做，它们才应该去做什么，而不是把最赚钱的行业霸占住，然后把脏活累活甩出去</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#145</span>
+        <h4>梅西躲过了阿尔兹海默症</h4>
+        <div class="art-summary">我们知道，球星梅西的官方身高是169cm，放在今天的足坛，说成是矮子一点也不过分。</div>
+        <div class="art-insights"><span class="insight-tag">但即便169cm，也是因为梅西从11岁开始每天训练完注射一剂生长激素才摸到的这个身高</span>
+<span class="insight-tag">因为他10岁的时候，身高只有127cm，而那个年龄的平均身高是140cm</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#155</span>
+        <h4>问答：二甲双胍抗衰老的研究怎么样了？</h4>
+        <div class="art-summary">NMN作为保健品已经被叫停了，那么一直呼声很高的二甲双胍抗衰老药的研究怎么样了？</div>
+        <div class="art-insights"><span class="insight-tag">原因倒不是发现了什么不利的证据，而且相反，有利的证据越来越多，按道理说，它应该是一个有潜力的抗衰老药物</span>
+<span class="insight-tag">尽管这个药用在二型糖尿病上已经好几十年了，安全性和很多方面的作用机理也都研究得非常透彻了，但毕竟衰老是另外一种病症，想成为抗衰老药物上市去销售，依然需要通过FDA的严格审核，于是耗费资金最多的临床三期实验也就省不掉了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#158</span>
+        <h4>来自日本的非处方药和保健品（续）</h4>
+        <div class="art-summary">之前我们曾经说到来自日本的各种非处方猛药，很多同学在评论中问的药也都是代购中常见的。所以这期内容，咱们继续挑一些著名的来说说。</div>
+        <div class="art-insights"><span class="insight-tag">不过很多人容易忽视的是，
+最影响晕车药发挥药效的因素其实是服用的时间点</span>
+<span class="insight-tag">其实30分钟对一些人是不够的，你可以适当再提前些，比如提前60-80分钟吃，大约在上车前已经有一点困意的时候，才是药物起效的时候</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#163</span>
+        <h4>羊瘙痒症、疯牛病、克雅氏病和库鲁病</h4>
+        <div class="art-summary">今天的《科技参考》，我们细致地说一说朊粒（Prion），当然也有称作“朊蛋白”“朊病毒”的，但最合适它的名字还是朊粒。</div>
+        <div class="art-insights"><span class="insight-tag">今天的《科技参考》，我们细致地说一说朊粒（Prion），当然也有称作“朊蛋白”“朊病毒”的，但最合适它的名字还是朊粒</span>
+<span class="insight-tag">羊瘙痒症
+提到朊粒，有三种疾病都会被一并提到——最早的是羊瘙痒症，然后是克雅氏病，最后是疯牛病</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#164</span>
+        <h4>朊粒、朊蛋白、朊病毒</h4>
+        <div class="art-summary">上次我们提到，美国医生盖杜谢克（Daniel Carleton Gajdusek）在参观了新几内亚食人族部落脑部病变的展览后意识到，库鲁症和羊瘙痒症可能是同一种疾病，然后在《柳叶刀》发论文，建议相关科学家做灵长类的感染实验。</div>
+        <div class="art-insights"><span class="insight-tag">5年后，实验结果终于出来了——
+最初接受感染组织注射的3只黑猩猩中，有一只表现出了症状</span>
+<span class="insight-tag">随着澳大利亚政府对弗雷族的帮助扩大，一些经济作物也成了部族人的重要收入来源，越来越多的人过上了现代人的生活，食人的习惯也逐渐消失了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#166</span>
+        <h4>问答：轻断食增加死亡率？</h4>
+        <div class="art-summary">很多同学问到，16+8的轻断食方法大幅增加死亡率了吗？能不能说说？</div>
+        <div class="art-insights"><span class="insight-tag">而最近很多公众号一起发文章说“16+8轻断食跌落神坛，大幅增加死亡率”</span>
+<span class="insight-tag">这和此前很多研究结论完全相反，咱们是不是应该警惕这种轻断食方法呢？
+以上就是这个问题的背景</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#168</span>
+        <h4>扑朔迷离的衰老实验</h4>
+        <div class="art-summary">由于衰老在2018年6月《国际疾病分类》第11次修订中被列在其中，这个变动可以看作是医学界把衰老定义为一种疾病，所以之后相关的研究和药物会井喷式出现。</div>
+        <div class="art-insights"><span class="insight-tag">由于衰老在2018年6月《国际疾病分类》第11次修订中被列在其中，这个变动可以看作是医学界把衰老定义为一种疾病，所以之后相关的研究和药物会井喷式出现</span>
+<span class="insight-tag">原因是到目前为止，FDA都还没有批准任何一个抗衰老药物或疗法进行人体实验</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#171</span>
+        <h4>表观遗传与返老还童</h4>
+        <div class="art-summary">今天我们来说说表观遗传。这部分内容可以解释——为什么相同的基因最终表现出来的结果却不一样。</div>
+        <div class="art-insights"><span class="insight-tag">这部分内容可以解释——为什么相同的基因最终表现出来的结果却不一样</span>
+<span class="insight-tag">因为长久以来，我们都知道，基因序列决定了我们大部分的特性，但我们不知道的是，实际上是“基因+表达与否”这两个因素才决定了我们的特性</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#172</span>
+        <h4>问答：电影中名人被杜撰+疫苗致癌吗？</h4>
+        <div class="art-summary">今天看了一部电影《决胜21点》。其中老师给学生们讲物理知识，顺带提到了牛顿三大定律，但被一个学生质疑：万有引力公式从未出现在牛顿任何的书籍文献中，说他的定律也是剽窃的约瑟夫·拉佛森。请问这个约瑟夫究竟是谁？为什么会有牛顿剽窃他的科学成果之说？</div>
+        <div class="art-insights"><span class="insight-tag">请问这个约瑟夫究竟是谁？为什么会有牛顿剽窃他的科学成果之说？
+
+
+另外，这让我想起来另一部电影作品，说莎士比亚根本就毫无文学功底，之所以他署名出版那么多经典著作，全然是因为当时社会风气的问题，写书的人和我们旧社会唱戏、剃头的一样，没有身份地</span>
+<span class="insight-tag">而这些名著背后真正的作者是一位达官显贵，所以就找了莎士比亚，借其之名，圆自己的梦</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#173</span>
+        <h4>问答：如何避免朊粒？+如何鉴别古玩？+灵芝孢子粉</h4>
+        <div class="art-summary">很多同学听了朊粒那期之后都很担心，典型的问题我梳理一下，比如：</div>
+        <div class="art-insights"><span class="insight-tag">很多同学听了朊粒那期之后都很担心，典型的问题我梳理一下，比如：
+
+
+1.肉骨粉这种东西是不是很危险？烤肠里不是就有吗？
+
+
+2.猪头肉、猪脑、鸡脑、鱼头、鸭头、羊蝎子、火锅里的内脏，是不是感染朊粒的风险很大？
+
+
+3.喝牛奶、吃牛肉会不会是</span>
+<span class="insight-tag">那么，实际情况是什么呢？
+研究中，感染最大的源头就是把用动物尸体磨成的肉骨粉喂给家畜，所以有饲料禁令</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#179</span>
+        <h4>问答：比特币为什么大涨？+阿斯利康承认疫苗致死？</h4>
+        <div class="art-summary">看到最近比特币大涨，思考了很多，它到底为什么会形成“贵重”的共识呢？</div>
+        <div class="art-insights"><span class="insight-tag">看到最近比特币大涨，思考了很多，它到底为什么会形成“贵重”的共识呢？
+这位同学从稀缺、美、便于传承、国家信用等角度考虑，也和钻石、黄金做了比较</span>
+<span class="insight-tag">如果货币的购买力不变，而我们每个月能节约30%的开销，积累50年，自然可以实现在人生的最后10年，积攒起很大一笔购买能力来应对养老</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#182</span>
+        <h4>给正常孩子打增高针</h4>
+        <div class="art-summary">那一期，我们本来是借梅西注射生长激素的话题说说阿尔兹海默症可以传染，而这个证据是由完善的保存数据的循证医学方法得到的。但后台很多评论都在关注另一个问题，就是孩子的身高。</div>
+        <div class="art-insights"><span class="insight-tag">先说最短的结论：
+是不是可以注射生长激素，判断标准比较严格，也比较复杂</span>
+<span class="insight-tag">就算骨骼最终多伸长了一些，换来的也是畸形的骨骼形态和一身基础病</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#188</span>
+        <h4>超级细菌怎么应对（上）？</h4>
+        <div class="art-summary">最近两期《科技参考》，我们说一说耐药菌的事情。</div>
+        <div class="art-insights"><span class="insight-tag">所以这个系列的内容，我们就说说细菌的耐药、人的免疫系统和今后的应对方法</span>
+<span class="insight-tag">其实这个故事的大部分逻辑是弗莱明在多次接受采访中对研究过程的美化</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#189</span>
+        <h4>超级细菌怎么应对（下）？</h4>
+        <div class="art-summary">细菌耐药的问题我们之前说过，不光是针对人体的滥用会孕育出超级细菌，哪怕是针对人体的合规足量使用也一样会孕育超级细菌，只不过是出现在环境中，而不是患者体内。</div>
+        <div class="art-insights"><span class="insight-tag">而针对人使用的抗生素还只是超级细菌出现的次要原因，超级细菌更主要的来源，是过去50年以来，各国牲畜养殖为了给牲畜增肥而喂的微量抗生素</span>
+<span class="insight-tag">虽然最近十年，各国都纷纷颁布了禁令，牲畜养殖不许再低剂量喂抗生素</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#191</span>
+        <h4>问答：换血抗衰老吗？NASA为什么不辟谣？</h4>
+        <div class="art-summary">咨询卓老板，老年人通过换年轻人的血液的方式延缓衰老，这个有科学依据吗？</div>
+        <div class="art-insights"><span class="insight-tag">因为这个人体实验的质量很差，一股脑把包含了上万种物质的血液输到其他人体内，然后声称有统计学效果，但它并不能聚焦在一种或者几种有效成分上，更没有介绍每个成分是怎么对衰老起到抵抗效果的</span>
+<span class="insight-tag">这个富豪最出名的标签是抗衰老，每年花在抗衰老上的身体维护费用至少二百万美元</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#200</span>
+        <h4>一批被改判为及格的抗衰老成分</h4>
+        <div class="art-summary">今天我们介绍一个关于衰老研究上的小反转。这个研究为很多曾经被打入冷宫的抗衰老物质重新正了名。都哪些物质呢？</div>
+        <div class="art-insights"><span class="insight-tag">因为在他们脑中，二甲双胍就算没有板上钉钉的具有抗衰老效果，起码也是非常有潜力的候选者吧？是的</span>
+<span class="insight-tag">关于它在抗衰老上的研究确实很多，但如果用统一的标准去衡量学术界的风气，抗衰老界应该算是排倒数，所以相当多的研究可靠度都存疑</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#201</span>
+        <h4>大科学家拥有连环杀手基因</h4>
+        <div class="art-summary">今天我们讲一个拥有潜在连环杀手特质、却最终没能发展成连环杀手的故事。通过这个故事，大家可以领略到基因在多大程度上对应一个功能和一类行为，和在多大程度上影响一个人。</div>
+        <div class="art-insights"><span class="insight-tag">今天我们讲一个拥有潜在连环杀手特质、却最终没能发展成连环杀手的故事</span>
+<span class="insight-tag">因为此前，医学领域并不认为这类罪犯是病人，哪怕在精神病诊疗手册中也没有对这类人的定义，传统上就是把这些罪犯归类到罪大恶极的人，是往人性的卑劣这个角度去定义的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#213</span>
+        <h4>忽悠了三十年的“亚健康”</h4>
+        <div class="art-summary">我们身边有很多概念都和医学相关，但真的去查这些概念，在全球医学界压根就没有定义，也不被认可，比如排毒、上火、碱性体质、肾虚、亚健康等等。</div>
+        <div class="art-insights"><span class="insight-tag">所以即便当年真的有一个这样的学者，创造过这样的概念“第三状态”，也肯定从未被主流医学界接纳过</span>
+<span class="insight-tag">可为什么轮到王育学去创立新的医学概念？他为什么没有针对一种具体的疾病做研究，而是从上万种疾病目录里搜肠刮肚地找目前没有定义的疾病呢？为什么医学新概念没有出现在中国医学研究水平最高的研究机构，而是轮到了青岛医学院？
+答案在央视网的一篇主持人手</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#220</span>
+        <h4>问答：亚洲为什么叫“亚洲”？年轻时膝盖受冻，老了会关节炎吗？</h4>
+        <div class="art-summary">很多同学听了“亚健康溯源”的那期节目后，都对“亚”字的含义感兴趣。既然“亚”是次于、临近的意思，那“亚洲”的“亚”是什么意思？是说我们这个洲不如其他洲，歧视我们吗？</div>
+        <div class="art-insights"><span class="insight-tag">在腓尼基语中，Asia对应的词是Asu，泛指爱琴海以东的地区，其实就是几百年后罗马帝国亚细亚省的地方</span>
+<span class="insight-tag">为什么会用Asu指代那片区域呢？因为这个词的本意是“太阳升起之处”，太阳从东方升起嘛，于是就用它指代特别远的东方</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#224</span>
+        <h4>球员猝死责任在谁？</h4>
+        <div class="art-summary">2024年6月30日晚，在印尼举办的亚洲青年羽毛球锦标赛中，17岁的中国队男单选手张志杰在比赛直播中突发倒地抽搐，随后被送往医院，在几个小时后宣布死亡。</div>
+        <div class="art-insights"><span class="insight-tag">这段时间，医疗救助和对待中暑或者崴脚是差不多的，最后竟然用担架把运动员抬下去了</span>
+<span class="insight-tag">专业运动员发病率也存在显著差异——14岁-25岁的年轻运动员发病率最高，根据运动项目不同，可以达到十万分之二到一万分之一的“运动员年”</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#237</span>
+        <h4>远古病毒导致的衰老</h4>
+        <div class="art-summary">人类的基因组是由大约32亿个碱基对形成的，不过真正表达成蛋白质的基因只占其中大约2%。</div>
+        <div class="art-insights"><span class="insight-tag">有的是非编码的RNA基因，有的是内含子，有的是调控序列，它们在基因表达多少、什么时候开始表达、什么时候停止表达、细胞的分化、染色质的修饰上都起着关键作用</span>
+<span class="insight-tag">由于尿酸在一定程度上可以弥补维生素C抗氧化的作用，所以从一定程度上说，也拯救了那些无法自己合成维生素C的灵长类祖先</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#239</span>
+        <h4>问答：晒背运动好吗？萝卜快跑是假无人驾驶吗？</h4>
+        <div class="art-summary">最近好像一下就流行起了各种晒背，有上午晒的，中午晒的，下午晒的，还说什么有各种好处。这靠谱吗？</div>
+        <div class="art-insights"><span class="insight-tag">最近好像一下就流行起了各种晒背，有上午晒的，中午晒的，下午晒的，还说什么有各种好处</span>
+<span class="insight-tag">这靠谱吗？
+简单的说，这是一种好处多坏处少的流行风潮，而且还符合流量的趋势，所以很火</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#242</span>
+        <h4>永生的细胞1：海拉细胞是如何来的？</h4>
+        <div class="art-summary">2023年8月1日，全球生命科学试剂领域的巨头赛默飞（Thermo Fisher）公司和一个名为拉克丝（Lacks）的家族达成和解协议，具体协议内容是保密的，但外界猜测，至少是千万美元的经济赔偿和一系列权利的声明与纪念活动。</div>
+        <div class="art-insights"><span class="insight-tag">因为拉克丝家族的老祖母就是今天生物医学依然在使用的海拉细胞（HeLa）的提供者，而当年约翰霍普金斯医院的医生就是从他们家老祖母身上以不太讲道义的方式取走海拉细胞的</span>
+<span class="insight-tag">她生活在巴尔的摩最贫困的黑人街区，14岁的时候就和自己的表哥生下了第一个孩子</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#243</span>
+        <h4>永生的细胞2：为什么海拉细胞如此特殊？</h4>
+        <div class="art-summary">昨天的最后我们说到，海拉细胞今天已经分裂超过23000代了，分裂出的细胞总质量超过5000万吨，而且还在不停的分裂中。</div>
+        <div class="art-insights"><span class="insight-tag">昨天的最后我们说到，海拉细胞今天已经分裂超过23000代了，分裂出的细胞总质量超过5000万吨，而且还在不停的分裂中</span>
+<span class="insight-tag">如果给到一个生物医学专业的本科生，让他培养海拉细胞，可能最初几次都会养死，要不就是温度不对，要不就是被微生物污染，要不就是血清浓度没有控制好，要不就是培养液的pH值不对</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#246</span>
+        <h4>永生的细胞3：违反伦理道德的实验</h4>
+        <div class="art-summary">医学界用海拉细胞做的实验非常多，其中最违反伦理道德的事情发生在美国斯隆-凯特琳癌症研究中心。</div>
+        <div class="art-insights"><span class="insight-tag">医学界用海拉细胞做的实验非常多，其中最违反伦理道德的事情发生在美国斯隆-凯特琳癌症研究中心</span>
+<span class="insight-tag">而这些病人因为患的是白血病，也注定会在不久后死亡，所以索瑟姆总觉得，这不是什么问题</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#247</span>
+        <h4>永生的细胞4：医学界知情权为何很晚才出现？</h4>
+        <div class="art-summary">一个是，海拉细胞的故事到底是怎么过了20多年才被海瑞塔家族的人知道的？</div>
+        <div class="art-insights"><span class="insight-tag">这条线索眼看就要断了，但医学界反而主动联系了拉克丝家族，希望抽他们家族的人一点血，原因是细胞污染</span>
+<span class="insight-tag">1966年的时候，细胞和组织培养第二十届大会上有科学家分享了自己的发现：在18种最常见的培养细胞中都存在一个罕见的遗传标记G6PD-A，这个标记几乎只在美国黑人体内出现</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#249</span>
+        <h4>大家以为的超雄XYY，其实是嵌合体</h4>
+        <div class="art-summary">2024年7月20日，一位四川的孕妇在网上发布了一份医院检查报告。报告单上看，她已经怀孕25周+5天了，而检测结果是“检测到样本Y染色体数目偏多，推测为XY与XYY嵌合或其他复杂核型”。</div>
+        <div class="art-insights"><span class="insight-tag">因为很多人说，XYY是恶魔基因，天生的高犯罪率，身边的定时炸弹</span>
+<span class="insight-tag">但实际上，这个胎儿并不是超雄综合征，家属出示的材料中，提到XYY超雄综合征的只是其中一份，后续的第二份检查就没人提了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#251</span>
+        <h4>问答：五分熟牛排能吃吗？老烟枪更不容易患肺癌？</h4>
+        <div class="art-summary">牛排几成熟能吃？有人说，五成熟时还有血水，是不能吃的。是这样吗？</div>
+        <div class="art-insights"><span class="insight-tag">因为它在制作过程中工序比较多，肉又都是碎肉，和空气接触面积远大于原切牛排，而空气中又普遍弥漫着细菌孢子，所以合成牛排内部滋生有害菌的概率和速度都远远大于原切牛排，这种牛排务必全做熟再吃</span>
+<span class="insight-tag">屠宰或者切割过程就算引入，因为始终保持着完全的组织结构，所以也只有接触面有机会受到污染</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#253</span>
+        <h4>运动员是男还是女，很难说</h4>
+        <div class="art-summary">今年奥运会上的一场女子拳击比赛引起了大家的关注——</div>
+        <div class="art-insights"><span class="insight-tag">按照常理说，一个拳手在拳台上只打了46秒时间，既没有破相，也没有站立不稳，只因为脸部挨了两计重拳，疼得受不了而直接举手投降、放弃比赛，其实是一个非常罕见也非常有失水准的行为</span>
+<span class="insight-tag">而后她在绳圈里直接哭了出来，并且拒绝和对手凯利夫握手，并且在后续采访中说这是一场不公平的比赛，暗示对手是一个变性人，实际上是以男子的力量降级来打真正的女子</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#255</span>
+        <h4>染发剂致癌吗？不，只伤头发</h4>
+        <div class="art-summary">这个问题可能是后台提问最多、积累最久的问题了，尤其是之前我提到过，世界卫生组织旗下的癌症研究机构把理发师职业也列入致癌因素的2A组，更是让很多人联系到，染发剂是不是导致癌症呢？理发师接触染发剂会致癌，我还往脑袋上抹呢！那不是更致癌了吗？</div>
+        <div class="art-insights"><span class="insight-tag">这个问题可能是后台提问最多、积累最久的问题了，尤其是之前我提到过，世界卫生组织旗下的癌症研究机构把理发师职业也列入致癌因素的2A组，更是让很多人联系到，染发剂是不是导致癌症呢？理发师接触染发剂会致癌，我还往脑袋上抹呢！那不是更致癌了吗？
+
+</span>
+<span class="insight-tag">因为很多特定段落的基因突变只会导致细胞损伤和死亡，只有那些控制细胞修复、增殖或者停止分裂的DNA突变出现，才有可能让细胞无法抑制的一直分裂下去，才会是癌症</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#268</span>
+        <h4>问答：猴痘病毒又来了？吃维生素有害？</h4>
+        <div class="art-summary">简单回答，这次流行的款式不一样。目前还没有在非洲以外的地区广泛流传开，而一旦流行开来就会很危险。</div>
+        <div class="art-insights"><span class="insight-tag">首先，为什么一直以来局限在非洲的病毒会传出去呢？其次，那一时期欧美各国还在疫情末期，管控措施依然很多，人员流动远远低于疫情爆发前，按说病毒更不应该传出非洲，所以那次世界卫生组织很重视</span>
+<span class="insight-tag">感染的患者95%以上集中在男同性恋和双性恋人群，所以很可能跟男性间的性行为有关，所以大家也没有什么可恐惧的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#274</span>
+        <h4>问答：《黑神话：悟空》的影响力如何？流感疫苗选哪个？</h4>
+        <div class="art-summary">在游戏《黑神话：悟空》的节目里，同学们讨论非常热烈。我梳理了一下，核心有以下两个问题：</div>
+        <div class="art-insights"><span class="insight-tag">我梳理了一下，核心有以下两个问题：
+这次《黑神话：悟空》的大热会不会是今后中国游戏产业的良好开端？
+《黑神话：悟空》这款游戏在全球范围的影响怎么样？老外对《西游记》的熟悉度如何？
+先说它是不是今后中国游戏产业的良好开端</span>
+<span class="insight-tag">比如，同样是以《西游记》为主的网络游戏《梦幻西游》，由于是十多年前开发的，而且成本大头在后来十几年的运营中，并不像单机游戏那样大头在开发，所以不太好直接对比它们的成本</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#281</span>
+        <h4>问答：中原的基因真的稳定吗？</h4>
+        <div class="art-summary">感觉这一期基因稳定性与之前讲爱新觉罗后裔那一期有些矛盾啊！爱新觉罗后裔到现在已经有十万人，这只过了300多年。朱元璋后代在明末已经近百万，到现在起码得再提升一个数量级吧？按照这个速度，之前蒙古、隋唐乃至更早的五胡乱华，应该都留下了更多的后人，应该改写了一些中原基因啊！我自己做祖源分析，82%北方汉族，11%南方汉族，2%藏缅族群，4%东北亚，这里感觉都写了不少民族融合的历史。望卓老板解惑。</div>
+        <div class="art-insights"><span class="insight-tag">这位同学举了三个在他看来的反例：
+一个是我们曾经在这一季第138期说到的结论——今天通过测序和家谱的交叉验证，推算爱新觉罗家族后裔大约有10万人（
+爱新觉罗后裔：10万人
+）</span>
+<span class="insight-tag">为什么它们不能算反例？有强弱两个理由：
+比较弱的理由是——
+基因频繁的大规模的混杂大都集中在最近100年间，而各种研究对基因稳定性的描述主要是指文字出现后到清末这三千多年时间</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#285</span>
+        <h4>偏头痛：没有残疾证的残疾</h4>
+        <div class="art-summary">今天我们说一个对人类影响非常大，但又没有彻底治愈方法的疾病——偏头痛。</div>
+        <div class="art-insights"><span class="insight-tag">2020年更新的《全球疾病负担研究》发现，仅偏头痛一项就是残疾损失生命年（YLD）的第六大原因，所有的头痛疾病加在一起是第三大原因</span>
+<span class="insight-tag">因为很多头疼是由其他疾病引起的，比如颅内的肿瘤、出血、脑膜炎、颅内压增高、鼻窦的感染、流感、严重脱水、甲状腺问题、青光眼、颈椎病等等</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#290</span>
+        <h4>未来可期，再谈偏头痛</h4>
+        <div class="art-summary">上次偏头痛的内容是一年前写的，当时国内针对偏头痛的药物除了非甾体类药物外，只有三种曲普坦类药物。而就在这一年时间里，又批准了另外一类新药，而且我还发现了一些新的治疗仪，所以相关信息也在这期给大家补充上来。</div>
+        <div class="art-insights"><span class="insight-tag">而就在这一年时间里，又批准了另外一类新药，而且我还发现了一些新的治疗仪，所以相关信息也在这期给大家补充上来</span>
+<span class="insight-tag">作用原理是电磁脉冲影响神经系统，只要找对部位，就能打断偏头痛的发作进程</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#307</span>
+        <h4>吃得了苦，才能长寿</h4>
+        <div class="art-summary">在衰老界有一个很流行的理论，叫做毒物兴奋效应（Hormesis）。尽管这个理论在医学界是有很多争议的，但它在衰老界还是有很多人研究。</div>
+        <div class="art-insights"><span class="insight-tag">毒物兴奋效应
+最原始的含义说的是：高剂量的毒素对身体有害，但低剂量的毒素反而有可能对生物有益</span>
+<span class="insight-tag">因为低剂量时，它起到了刺激作用，激活生物体的修复机制，增加对细胞的保护性蛋白的表达</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#309</span>
+        <h4>当产科遇到危机</h4>
+        <div class="art-summary">今天的人谈到月经，会天然地认为这是女人一个月一次的事情。但这种情况对中国来说，在1970年之前是极为罕见的。因为在那之前，大多数人不使用避孕药和避孕套，所以大多数女性在可以生产的年龄，不是处于怀孕期就是处于哺乳期，等到好不容易哺乳结束，该来月经了，又怀上了。比如，我们的爷爷奶奶家，很多都是4-8个孩子，女性从20岁到40岁这二十年里，一直处于肚子里面怀着一个，手里抱着一个，地上跑着几个的状态。所以长期以来，产科都是中国医院里特别繁忙的科室。</div>
+        <div class="art-insights"><span class="insight-tag">因为在那之前，大多数人不使用避孕药和避孕套，所以大多数女性在可以生产的年龄，不是处于怀孕期就是处于哺乳期，等到好不容易哺乳结束，该来月经了，又怀上了</span>
+<span class="insight-tag">如果问什么是人类社会出现的最早的接近今天现代医学分科的科室，无疑就是产科</span>
+</div>
+      </div>
+  </div>
+
+  <footer class="footer">
+    <p><a href="index.html">← 返回科技参考3 主板</a> · 卓克 · 科技参考3 · MKS</p>
+  </footer>
+</div>
+
+</body>
+</html>

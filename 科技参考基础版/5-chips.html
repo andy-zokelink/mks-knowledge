@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>芯片通信与信息技术 · 卓克科技参考</title>
+<style>
+:root {
+    --bg: #fffdf7;
+    --card: #ffffff;
+    --accent: #F59E0B;
+    --accent-dark: #D97706;
+    --accent-light: #FDE68A;
+    --text: #1f1f1f;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --radius: 10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: "PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    min-height: 100vh;
+}
+/* TOP BAR */
+.top-bar{
+    position: sticky; top:0; z-index:100;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.top-bar .course-title{
+    font-size: clamp(14px, 2.2vw, 18px);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+.top-bar .home-link{
+    color: var(--accent-light);
+    font-size: 13px;
+    border: 1px solid var(--accent-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.top-bar .home-link:hover{
+    background: var(--accent-light);
+    color: #1a1a2e;
+}
+/* CONTAINER */
+.container{
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 28px);
+}
+/* HEADER */
+.theme-header{
+    text-align: center;
+    padding: clamp(24px, 5vw, 40px) 0 clamp(16px, 3vw, 24px);
+}
+.theme-header .theme-icon{
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: 12px;
+    animation: float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.theme-header h1{
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+.theme-header .subtitle{
+    font-size: clamp(13px, 1.8vw, 15px);
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+.theme-header .article-count{
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+/* DIVIDER */
+.divider{
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 auto 32px; max-width: 400px;
+}
+.divider::before,.divider::after{
+    content:'';flex:1;height:1px;
+    background: linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.divider span{color:var(--accent);font-size:16px}
+/* CARD GRID */
+.card-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.article-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: clamp(16px, 3vw, 22px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.article-card:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+.article-card::before{
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.article-card:hover::before{
+    opacity: 1;
+}
+.article-card .card-num{
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+.article-card .card-title{
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.article-card .card-summary{
+    font-size: clamp(12px, 1.4vw, 14px);
+    color: var(--text-light);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.article-card .card-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+}
+.article-card .tag{
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #fef3c7;
+    color: var(--accent-dark);
+    font-weight: 500;
+}
+/* KEY CONCEPTS SECTION */
+.section-title{
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 32px 0 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+}
+.concept-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.concept-card{
+    background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--accent-light);
+    border-left: 4px solid var(--accent);
+}
+.concept-card h4{
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+}
+.concept-card p{
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+/* STATS ROW */
+.stats-row{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+.stat-card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.stat-card .stat-value{
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 800;
+    color: var(--accent-dark);
+}
+.stat-card .stat-label{
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+/* FOOTER */
+.page-footer{
+    text-align: center;
+    padding: 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+}
+.page-footer a{
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border: 2px solid var(--accent);
+    border-radius: 24px;
+    transition: all 0.2s;
+    display: inline-block;
+    margin: 4px 8px;
+}
+.page-footer a:hover{
+    background: var(--accent);
+    color: #fff;
+}
+/* MOBILE */
+@media(max-width:640px){
+    .card-grid{grid-template-columns:1fr}
+    .concept-grid{grid-template-columns:1fr}
+    .top-bar{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+    <span class="course-title">📡 卓克 · 科技参考基础版 · 芯片通信与信息技术</span>
+    <a class="home-link" href="index.html">← 返回知识主板</a>
+</div>
+
+<div class="container">
+    <div class="theme-header">
+        <div class="theme-icon">💻</div>
+        <h1>芯片通信与信息技术</h1>
+        <p class="subtitle">芯片产业博弈、5G星链、操作系统之争、加密货币——信息时代的底层基础设施</p>
+        <span class="article-count">共 24 篇文章</span>
+    </div>
+
+    <div class="divider"><span>◆</span></div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value">24</div>
+            <div class="stat-label">核心文章</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">7</div>
+            <div class="stat-label">关键概念</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">24</div>
+            <div class="stat-label">知识碎片</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">★ 核心概念</h2>
+    <div class="concept-grid">
+        
+    <div class="concept-card">
+        <h4>操作系统 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(6篇)</span></h4>
+        <p>鸿蒙挑战安卓生态，操作系统之争从手机延伸到物联网</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>芯片技术 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(6篇)</span></h4>
+        <p>全球芯片缺货潮揭示半导体产业的结构性脆弱与地缘博弈</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>5G/通信 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(5篇)</span></h4>
+        <p>从5G建设到星链计划，通信基础设施的军备竞赛刚刚开始</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>VR/元宇宙 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(5篇)</span></h4>
+        <p>虚拟现实技术经过9年沉淀进入上升期，元宇宙概念引发虚实边界重定义</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>演化思维 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>达尔文演化论的三大缺陷与当代修正：用描述代替解释</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>食品安全 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>从硫磺八角到微塑料，现代食品工业的安全隐患与科学甄别</p>
+    </div>
+
+    <div class="concept-card">
+        <h4>加密货币 <span style="font-size:11px;color:var(--text-muted);font-weight:400">(1篇)</span></h4>
+        <p>从比特币到NFT，区块链技术引发的金融实验与能源争议</p>
+    </div>
+    </div>
+
+    <h2 class="section-title">📄 全部文章卡片</h2>
+    <div class="card-grid">
+        
+    <div class="article-card">
+        <div class="card-num">099 |</div>
+        <div class="card-title">099 | 隔空充电的一盆冷水</div>
+        <div class="card-summary">最近，我看到有一家公司推出了隔空充电技术的广告，看起来非常炫酷。家企业，而是仅仅基于广告中透露的细节，带你了解隔空充电这个技术的关键。所以，后续如果那些专业素质并不是太高的科技媒体没有把隔空充电中最不靠谱的东西拿出来大说特说的话，可能在不久之后，你会看到其他手机品牌也开始宣传隔空充电之类的根本上市不了的技术。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">191 |</div>
+        <div class="card-title">191 | 标准：更快更统一，新USB口来了</div>
+        <div class="card-summary">如果最近你要买Mac笔记本或者最新的高端显示器，那么就不要错过一个重要的接口——USB4。虽然最早支持USB4的产品在2020年底已经出现了，但直到今天，这样的产品还并不太多。USB推广联盟的CEO特地解释了：USB4是一个品牌名称，不是技术版本号，所以今后也不会有什么USB4.1，USB4.2之类的叫法。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">188 |</div>
+        <div class="card-title">188 | 计算机：用bug修复bug，然后被禁了</div>
+        <div class="card-summary">最近，程序员圈里发生了一件轰动事件，整个明尼苏达大学的人都被禁止向Linux内核提交代码了。具体来说，Linux的内核包含了它最重要的部分，比如进程是怎么调度的、内存是怎么管理的、虚拟文件怎么管理、网络通信怎么管理、硬件设备怎么映射到虚拟地址、接口怎么调用等等。但是，想要顺利完成这些操作，需要非常熟悉系统结构才行，而且控制方法非常复杂，普通用户根本没法掌握。</div>
+        <div class="card-tags"><span class="tag">操作系统</span><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">252 |</div>
+        <div class="card-title">252 | 工信部打击养卡囤号是怎么回事？</div>
+        <div class="card-summary">最近，出现了一条新闻：工信部持续推进断卡、打猫、互联网反诈、短信预警等涉及群众利益的重点事项，推动形成标本兼治、协同联动长效机制，坚决维护好广大人民群众的合法利益与财产安全。虽然国家很早就要求每个入网的号码都必须实名制，但现实中总有些人会搞到没有实名制的卡，或者即便号码实名制了，但是属于“被实名”，也就是登记身份证的那个人根本不知道自己有这个手机号。如果你感兴趣，可以查查“微信如何养号”这类关键词</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">001 |</div>
+        <div class="card-title">001 | 5G：真正要走的路还很长</div>
+        <div class="card-summary">当然，这并不说5G不好，作为全球都将实施的第五代通信技术，5G当然比4G先进得多。也就是说，不论我们是用4G还是5G，或者用联通宽带，最终使用英特网上的资源和服务时有两条路可选，一条走无线的，一条走有线的。除了终端用的是手机还是电脑这个不同之外，有线和无线的差别还在于，无线通信里有基站和核心网，它们在有线通信里是不存在的。</div>
+        <div class="card-tags"><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">003 |</div>
+        <div class="card-title">003 | 英伟达收购ARM：为什么引起芯片行业震动？</div>
+        <div class="card-summary">最近，半导体行业有个重大新闻，英伟达（NVIDIA）这个芯片行业的巨头，要以400亿美元收购另一家芯片企业ARM。而在移动领域，比如手机和平板电脑，有苹果、高通、博通、三星、华为等公司，它们都在研发自己的芯片，不过并不是完全独创，而是在同一个工作平台，也就是ARM构架上，改造出自己个性的处理器。到底使用哪个指令集，当然和技术细节有关系，但最重要的是生态圈是否形成，也就是用户、软件开发者、广告商、渠</div>
+        <div class="card-tags"><span class="tag">芯片技术</span><span class="tag">VR/元宇宙</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">021 |</div>
+        <div class="card-title">021 | 芯片：苹果公司为什么要给Mac换“芯”？</div>
+        <div class="card-summary">在2020年苹果WWDC发布会上有一条消息说，“采用苹果自研桌面级芯片Apple Silicon的Mac电脑，将在年底前上市”。而且在11月3日，苹果还向媒体发布了邀请函，将在“双11”的凌晨2点在线上举办发布会。因为台式机和笔记本在苹果的所有业务中占比很少，重要性下降，就算有问题也不紧急，所以就算这次切换过程不顺利，对苹果的收入影响也不大。</div>
+        <div class="card-tags"><span class="tag">芯片技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">185 |</div>
+        <div class="card-title">185 | 芯片：IBM把制造工艺推进到了2nm</div>
+        <div class="card-summary">2021年5月7日，IBM发布了全球首个2nm制程的芯片的工艺技术。IBM向全球宣布，他们已经掌握了制造2nm工艺芯片的方法。实际上，IBM只是在实验室中成功制造了出来，离小规模试产、大规模量产还隔着几年时间呢。</div>
+        <div class="card-tags"><span class="tag">芯片技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">210 |</div>
+        <div class="card-title">210 | 鸿蒙2：谷歌的生态系统</div>
+        <div class="card-summary">今天，我们熟悉的很多所谓的“安卓手机操作系统”，比如小米的MIUI、魅族的Flyme、一加的氢OS、OPPO的ColorOS、锤子的 Smartisan OS，最初都是在安卓开源项目（AOSP）的基础上根据各家自己的风格设计的一套用户界面，其实并不能算操作系统。也就是那些零件应该如何显示、弹出效果怎么保证流畅、翻页或者下滑的时候都显示什么工具、什么按钮等等工作，就是用户界面的范畴。首先是MIUI，</div>
+        <div class="card-tags"><span class="tag">操作系统</span><span class="tag">VR/元宇宙</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">212｜</div>
+        <div class="card-title">212｜鸿蒙4：物联网上的鸿蒙</div>
+        <div class="card-summary">昨天的内容最后我提到了，鸿蒙被很多程序员说成是安卓套了一个壳，其实这指的是手机鸿蒙操作系统；而号称一行安卓源代码都没有使用的鸿蒙系统其实是另外一个，那是一个准备给物联网系统使用的操作系统。华为要原创一个操作系统，核心动作就是把图中粉色部分，也就是刚才说的Dalvik虚拟机和Java核心库取代掉，用一个更加便捷的开发语言来替代，然后实现一个更加具有统一性的开发环境。分布式软总线想要保证通信连接的低延</div>
+        <div class="card-tags"><span class="tag">操作系统</span><span class="tag">演化思维</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">224 |</div>
+        <div class="card-title">224 | 芯片：全球的缺货潮还在加剧</div>
+        <div class="card-summary">这期《科技参考》我们就来看看现在芯片的状况，然后分析一下它对我们工作和生活的影响。当街明抢几百万这种事情，在八十年代的香港确实出现过，但当时抢劫的无非是运钞车、银行、珠宝店，而6月16日的大劫案抢走的竟然是14箱芯片，价值500多万港元，是快递公司在给客户递送上楼的阶段由3名匪徒抢走的。真实的芯片是在那个银色的大铜盖子下面的，我们平时看不到，而我们看不到的那个核心面积大约只有200多平方毫米，一共</div>
+        <div class="card-tags"><span class="tag">芯片技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">160 |</div>
+        <div class="card-title">160 | 小米造车靠谱吗？</div>
+        <div class="card-summary">雷军说，他之前根本没有造车的计划，但很多人都来劝他，而最终让他决定造车的，是小米的用户和粉丝。雷军个人除了投资过今后可能是对手的蔚来汽车与小鹏汽车之外，还投资过汽车电子电动系统的奥易克斯、激光雷达厂商北醒、研究传统汽车技术的车米科技、自动驾驶技术的智行者和Momenta、车载智能硬件的睿米、地图导航的凯立德、车内智能交互系统的新案科技。此外，不是雷军个人投资，而是小米投资的还包括珞石机器人——这是</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">263 |</div>
+        <div class="card-title">263 | 玻尿酸食品与饮料：真的能美容吗？</div>
+        <div class="card-summary">在科学研究中我们发现，玻尿酸占人体比重会从童年时的万分之四降到70岁的万分之一。但是，在最初注射玻尿酸的实验中人们就发现，即便是提纯问题解决得很好，注射后用不了五六天，注射部位的玻尿酸也就被人体代谢掉了，皮肤又回到了缺水和褶皱的状态。在中国最大的玻尿酸生产商举办的应用前景研讨会上，原国家卫计委主任、中国卫生信息与健康医疗大数据学会会长金小桃在发言中就直言不讳的说：“生产可食用玻尿酸产品不是说就走到</div>
+        <div class="card-tags"><span class="tag">食品安全</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">134 |</div>
+        <div class="card-title">134 | 学术期刊历史3：重建秩序</div>
+        <div class="card-summary">昨天我们留下的问题是，很多二战之后出生的学者把论文格式当作金科玉律，并且真的以为这些就是搞学术的重要部分。现在当然不好说，但参考《自然》这个级别的杂志150多年的历史就知道，它需要依赖2-3次世纪级别的科学突破或者世纪大争论，就像当年进化论的骂战、关于灵魂是否存在的互相鄙视、冷聚变到底是不是造假的验证一样。虽然很多人号称可以为某某网站做搜索结果优化的服务，让它们出现在搜索结果更靠前的顺序，但实际上</div>
+        <div class="card-tags"><span class="tag">VR/元宇宙</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">114 |</div>
+        <div class="card-title">114 | 垃圾短信：究竟该怎么处理？</div>
+        <div class="card-summary">2020年9月初，工信部再次对《通信短信息和语音呼叫服务管理规定》公开征求意见，强调任何组织或个人未经用户同意、请求或者用户明确表示拒绝的，不得向其发送商业性短信息或拨打商业性电话。别看广告内容是什么，你发现没有，它都有相同的格式——黑括号里是发送短信的机构名字，结尾还标注了如果想退订的话就回复什么，比如“回复TD退订”，也有的是回复T，有的是回复中文。所以虽然国家明令禁止发送垃圾短信，但运营商要</div>
+        <div class="card-tags"><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">115 |</div>
+        <div class="card-title">115 | 信号：iPhone的信号为什么弱？</div>
+        <div class="card-summary">信号好坏本身就是一个起伏变化很大的问题，而且普通用户也没有专业的测试设备，所以最初有人抱怨信号差时并没有被重视。但是没想到，这个问题竟然持续了几年之久，以至于国内外众多媒体都做过详细的对比测试，发现同样的运营商服务、同样的时间、同样的地点，苹果手机确实比其他安卓系手机的信号差一大截。但换个角度来说，这些要求也可以视为一种不至于导致iPhone灭绝的生存压力，它会提供特定的演化方向，让苹果的工程师在</div>
+        <div class="card-tags"><span class="tag">芯片技术</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">200 |</div>
+        <div class="card-title">200 | 模型：微信朋友圈里的科学规律</div>
+        <div class="card-summary">最近，清华大学的科学家研究了一下我们的朋友圈，然后得出了一些比较有意思的规律，还创建了一套预测模型，可以预测一个人在朋友圈转发一篇文章后谁会点开、谁会点赞，预测的精度超过80%。它一共使用了4800万个用户、6125万篇微信文章和75亿次互动的数据，包括是谁分享的文章、分享者的年龄、性别、分享者好友的年龄、点击文章的好友是谁、谁又在点击文章后点了赞或者点击文章页面里的“在看”。这是研究团队根据微信</div>
+        <div class="card-tags"><span class="tag">VR/元宇宙</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">205 |</div>
+        <div class="card-title">205 | 信息安全：为什么各种App都要获取我们的定位？</div>
+        <div class="card-summary">2021年5月22日，国家网信办又通报了一批违法收集、使用用户个人信息的App，一共105款，包括我们熟悉的快手、抖音、360浏览器、领英等等。实际上，这已经不是网信办第一次通报App违法使用个人信息了。在今年1月份，小米公布了一组MIUI系统上采集的数据，是各种App获取各类权限的次数。</div>
+        <div class="card-tags"></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">266 |</div>
+        <div class="card-title">266 | 隐私保护：iPhone越来越严格</div>
+        <div class="card-summary">苹果公司每年有两次定期更新，一个是6月份的WWDC，也就是全球开发者大会，一个是9月份的新产品发布会，一个面向开发者，一个面向用户。当然，大部分用户是没有能力在设置界面对那么多隐私保护的选项都有了解的，所以在那些App第一次运行并且要获取用户数据之前，都会弹出一个对话框，比如App要追踪用户数据，那弹出的对话框里就会有两个按钮：A 要求App不追踪；B 允许。比如，百度地图会把用户的位置信息传给百</div>
+        <div class="card-tags"><span class="tag">操作系统</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">150｜</div>
+        <div class="card-title">150｜NFT：一个头像卖5000万</div>
+        <div class="card-summary">而且有一天，一个真正的艺术家跟我聊天的时候也提到，最近很多人都疯狂的和他推荐NFT，问这个东西到底靠谱吗。NFT的全称是“非同质化代币”（Non-Fungible Token），是区块链各种币的一种。曾经有些人就把不希望被删除的新闻刻入了其中，如果有人认为这些新闻对他极其重要、更有价值，那么谁对这个块的产出做出了贡献，谁就应该获得更高的奖励，那么挖币后得到的奖励就不一样了，于是币和币就非同质化了。</div>
+        <div class="card-tags"><span class="tag">加密货币</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">008 |</div>
+        <div class="card-title">008 | 问答：5G的需求在哪里？</div>
+        <div class="card-summary">如果每周只有一次的答疑都集中在这些问题上，内容就会很零散，而且不少问题都是个人性质的。翻翻这周五篇专栏文章你就会发现，很多问题我已经在评论里回复过了，每篇下面大致都有一二十个问题的回答。人们发现，新技术更划算、性能更好，最开始抢着买，预约抢购、摇号抢购，商家自然跟着订货。</div>
+        <div class="card-tags"><span class="tag">VR/元宇宙</span><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">189 |</div>
+        <div class="card-title">189 | 问答：都设计CPU，为什么苹果的M1那么强？</div>
+        <div class="card-summary">想问一下，就芯片而言，并没有听过苹果有2nm或者更先进的技术，为什么苹果的M1芯片就要比英特尔的强很多呢。简单地说，这是因为苹果的M1芯片工作在一个更加容易优化性能的生态系统中，而英特尔和AMD的处理器工作在一个复杂的生态系统中，所以几十年以来，不得不为大到微软的Windows软件、惠普、戴尔等主机厂商，小到普通用户做兼容。我们不具体描述乱序执行的细节，只大致描述一下结果就是，把所有指令都拆成零零</div>
+        <div class="card-tags"><span class="tag">操作系统</span><span class="tag">芯片技术</span><span class="tag">5G/通信</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">208 |</div>
+        <div class="card-title">208 | 问答：鸿蒙系统的安全性如何？</div>
+        <div class="card-summary">听了《为什么各种App都要获取我们的定位》后，很多同学都有类似的问题：既然iOS系统比安卓普遍安全好几个档次，那另外一个国产新操作系统——鸿蒙——的安全性如何呢。第二个实验是让已经患有代谢性疾病的小鼠过量表达GPR3，结果发现，它们的代谢性疾病消失了。其实，之前科学家们也找到过其他激活褐色脂肪的受体，比如β-肾上腺素能受体，但这样做也会带来一些更严重的副作用，就是心率和血压失常，这会造成猝死。</div>
+        <div class="card-tags"><span class="tag">操作系统</span></div>
+    </div>
+
+    <div class="article-card">
+        <div class="card-num">285｜</div>
+        <div class="card-title">285｜问答：为什么不要用高级理由压制第一反应？</div>
+        <div class="card-summary">有用户在听完对《个人信息保护法》的解读后问，“无感打卡”之类的管理手段，会不会在未来引发争议。无感打卡就是，通过在公司入口设置人脸识别装置，在上班时间自动识别人员的进出，员工不必再刻意地按指纹，或者对着一个镜头做人脸识别，甚至是刷卡、签字，就像没有打卡环节那样进出公司就可以。因为《个人信息保护法》的目的是规范公司，尤其是互联网公司对用户数据的滥用，完全不是禁止使用个人信息。</div>
+        <div class="card-tags"></div>
+    </div>
+    </div>
+
+    <div class="page-footer">
+        <a href="index.html">← 返回知识主板</a>
+    </div>
+</div>
+</body>
+</html>

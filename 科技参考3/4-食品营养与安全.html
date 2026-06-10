@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品营养与安全 — 科技参考3 MKS</title>
+<style>
+/* ============================================================
+   科技参考3 · MKS 知识主板
+   设计：白底 + 琥珀色(#F59E0B)强调 + 卡片式布局
+   纯 HTML/CSS，移动端响应式
+   ============================================================ */
+
+:root {
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --accent-light: #FEF3C7;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --text-lighter: #9ca3af;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-dark); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.top-nav .home-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.top-nav .home-btn:hover {
+  background: var(--accent-dark);
+  color: #fff;
+}
+.top-nav .breadcrumb {
+  font-size: 13px; color: var(--text-light);
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============================================================
+   INDEX PAGE — HERO
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 40px 16px 32px;
+}
+.hero .icon-row {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.hero h1 .accent {
+  color: var(--accent-dark);
+}
+.hero .subtitle {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.hero .meta {
+  font-size: 0.8rem;
+  color: var(--text-lighter);
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================================
+   INDEX — TOPIC CARDS GRID
+   ============================================================ */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 28px 24px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.topic-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 0 0 2px 2px;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+.topic-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.topic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-card .card-subtitle {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.topic-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  flex: 1;
+}
+.topic-card .card-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-lighter);
+  display: flex; align-items: center; gap: 6px;
+}
+.topic-card .card-count .badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* ============================================================
+   TOPIC PAGE — HEADER
+   ============================================================ */
+.topic-header {
+  text-align: center;
+  padding: 30px 16px 24px;
+}
+.topic-header .topic-icon {
+  font-size: 44px;
+  margin-bottom: 8px;
+}
+.topic-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.topic-header .topic-subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.topic-header .topic-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+.stat-badge .num {
+  font-weight: 700;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.articles-list {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  transition: all var(--transition);
+  border-left: 4px solid transparent;
+}
+.article-card:hover {
+  box-shadow: var(--shadow);
+  border-left-color: var(--accent);
+}
+.article-card .art-num {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--text-lighter);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+.article-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.article-card .art-summary {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.article-card .art-insights {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.article-card .insight-tag {
+  font-size: 0.75rem;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   KEY CONCEPTS section
+   ============================================================ */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+}
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  transition: all var(--transition);
+}
+.concept-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.concept-card .concept-num {
+  display: inline-block;
+  width: 28px; height: 28px; line-height: 28px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.concept-card h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-card p {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 32px 20px 16px;
+  color: var(--text-lighter);
+  font-size: 0.72rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 48px;
+}
+.footer a { color: var(--accent-dark); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 16px 12px 40px;
+  }
+  .article-card {
+    padding: 16px;
+  }
+  .hero {
+    padding: 24px 12px 20px;
+  }
+  .top-nav {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .topics-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr;
+  }
+  .topic-card {
+    padding: 20px 16px;
+  }
+  .article-card h4 {
+    font-size: 0.92rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="index.html" class="home-btn">← 科技参考3 主板</a>
+  <span class="breadcrumb">食品营养与安全 · 44 篇文章</span>
+</div>
+
+<div class="container">
+  <div class="topic-header">
+    <div class="topic-icon">🍽️</div>
+    <h2>食品营养与安全</h2>
+    <p class="topic-subtitle">从餐桌到实验室，吃背后的科学真相</p>
+    <p class="topic-desc">代糖真的致癌吗？化工罐车装食用油有多严重？水果为什么越来越甜？44篇文章用科学方法审视食品安全、营养学争议与日常饮食决策，揭开「吃」这件事背后的科学逻辑。</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-badge"><span class="num">44</span> 篇文章</div>
+    <div class="stat-badge">📅 2023-2024</div>
+    <div class="stat-badge">🎯 MKS 最小知识集</div>
+  </div>
+
+  <!-- Key Concepts -->
+  <div class="section-title">核心概念</div>
+  <div class="concepts-grid">
+    
+      <div class="concept-card">
+        <div class="concept-num">1</div>
+        <h5>酱香拿铁，高科技</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">2</div>
+        <h5>咖啡能瘦脸消肿吗</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">3</div>
+        <h5>不一定是惯出的坏毛病</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">4</div>
+        <h5>近期三聚氰胺事件解读</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">5</div>
+        <h5>文心一言性能如何</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">6</div>
+        <h5>喝硬水会不会结石</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">7</div>
+        <h5>大白菜上有黑点还能不能吃</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">8</div>
+        <h5>微塑料污染的正反方观点</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">9</div>
+        <h5>水果变的越来越甜</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">10</div>
+        <h5>越来越甜的水果是不是转基因</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">11</div>
+        <h5>硅基生命存在吗</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-num">12</div>
+        <h5>无抗鸡蛋是智商税</h5>
+        <p>相关文章 1 篇</p>
+      </div>
+  </div>
+
+  <!-- Article List -->
+  <div class="section-title">全部文章</div>
+  <div class="articles-list">
+    
+      <div class="article-card">
+        <span class="art-num">#4</span>
+        <h4>酱香拿铁，高科技</h4>
+        <div class="art-summary">2023年9月4日，瑞幸跟茅台联名的酱香拿铁刷屏了，开卖当天，不论是线上线下，都买不到。一天之后，瑞幸公布24小时销售业绩，542万杯，销售突破1亿元，刷新瑞幸以往所有单品销售记录。</div>
+        <div class="art-insights"><span class="insight-tag">什么是非酒精饮料呢？各国标准略有差异，中国和美国的划线是在酒精含量0.5%以上，日本是1.0%以上，欧盟是1.2%以上，酱香拿铁中酒精的含量是0.3%，所以可以正大光明地标注自己是非酒精饮料</span>
+<span class="insight-tag">这又是为什么？因为测试方法本身就错了，退一步说，就算测对了，那也依然不是酒驾</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#9</span>
+        <h4>问答：咖啡能瘦脸消肿吗？</h4>
+        <div class="art-summary">这周二（10月17日），《科技参考3》终于上线了，让同学们久等了。现在咱们开始专栏的第一次答疑。</div>
+        <div class="art-insights"><span class="insight-tag">首先，很多同学问，
+为什么是每天晚上19:17，在这么一个奇怪的数字更新？
+其实，这是2016年年度日更时留下的一个痕迹</span>
+<span class="insight-tag">其实3和5、5和7、11和13也都是孪生素数，之所以用17和19，而且还颠倒了一下，只是为了和其他专栏错开更新时间而已</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#12</span>
+        <h4>挑食：不一定是惯出的坏毛病</h4>
+        <div class="art-summary">挑食是很多人在小时候都会出现的状况，严重的孩子甚至只愿意吃两三种食物，但绝大多数人随着年龄增加就会大幅改善。</div>
+        <div class="art-insights"><span class="insight-tag">如果已经为人父母的话，我们也可以留意一下，不要冤枉了孩子，因为有些情况下，逼迫孩子吃不愿意吃的东西反而对他们不好</span>
+<span class="insight-tag">因为通常在孩子超过了1岁，食物才渐渐丰富起来，挑食问题才会随着年龄增长开始显现</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#15</span>
+        <h4>问答：近期三聚氰胺事件解读</h4>
+        <div class="art-summary">咱们先补充一个上周埋下的坑，那就是酱香拿铁那期提到的食品行业的鄙视链。</div>
+        <div class="art-insights"><span class="insight-tag">其实食品行业有很多鄙视链，比如老字号瞧不上网红店，有厨师提供正餐的店瞧不上烧烤店，单店模式的认为连锁店缺乏灵魂，直营店认为加盟品牌都是草台班子等等</span>
+<span class="insight-tag">让这种食物既有味道，成本还不能太高，还能产出食客需要的那么多量，这其实是一个很脆弱的状态，于是这样的店的价格高一些无可厚非</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#22</span>
+        <h4>问答：文心一言性能如何？喝硬水会不会结石？</h4>
+        <div class="art-summary">首先，有好几位同学都问了“左旋肉碱保健品是不是智商税”这个问题。</div>
+        <div class="art-insights"><span class="insight-tag">左旋肉碱保健品都是打着减肥的功效卖的，所以简单回答，都是智商税</span>
+<span class="insight-tag">具体来说，身体消耗脂肪的过程是这样：当身体满足一些条件，调用脂肪作为能量来源时，存储的脂肪先变成游离的脂肪酸进入血液，最后由左旋肉碱作为载体，把脂肪酸运到线粒体内，线粒体上的呼吸链把脂肪酸代谢掉、产生能量</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#46</span>
+        <h4>问答：大白菜上有黑点还能不能吃？</h4>
+        <div class="art-summary">大白菜上面经常会有洗都洗不掉的黑点，这些黑点是什么？能吃吗？</div>
+        <div class="art-insights"><span class="insight-tag">实际上，这些黑点是大白菜的叶柄细胞在分裂时发生了一些错误，细胞壁没有闭合，于是细胞就执行了自杀程序，那些已经合成的物质在蛋白酶的分解作用下留下了一些痕迹，也就是那个黑点</span>
+<span class="insight-tag">所以，我们有时候买回来的白菜，刚开始白菜帮子还是洁白的，楼道里放了一个月再吃时，帮子上就很多黑点了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#47</span>
+        <h4>微塑料污染的正反方观点</h4>
+        <div class="art-summary">最早的塑料出现在大约150年前，最初用作伤口的敷料，后来又用来替代象牙制品，比如台球，在相机出现后，又成为了底片的材料。但塑料真正大规模的使用还是最近六七十年的事情，石油工业产生了大量副产品，其中的聚丙烯、聚乙烯就是塑料的原料。</div>
+        <div class="art-insights"><span class="insight-tag">最早的塑料出现在大约150年前，最初用作伤口的敷料，后来又用来替代象牙制品，比如台球，在相机出现后，又成为了底片的材料</span>
+<span class="insight-tag">但塑料真正大规模的使用还是最近六七十年的事情，石油工业产生了大量副产品，其中的聚丙烯、聚乙烯就是塑料的原料</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#67</span>
+        <h4>水果变的越来越甜</h4>
+        <div class="art-summary">那一期，我提了一句，说“今天的水果相比几十年前已经甜了太多”。很多同学都想知道具体情况，这样的变化会有什么影响吗？</div>
+        <div class="art-insights"><span class="insight-tag">比如这两年非常火的“浪漫红宝石葡萄”“宫崎芒果”“夕张甜瓜”“太阳之子芒果”“红颜草莓”“阳光玫瑰葡萄”“千雪苹果”“朱诺之心樱桃”“白色椰子菠萝”，最初都是来自日本</span>
+<span class="insight-tag">很多1990年之前出生的人应该还记得苹果有一个品种叫“国光”，还有一个品种叫“红富士”，其实这两种都是我们从日本引进的，如今这两个品种已经被日本来的新款取代了，原因很简单，甜度不够，上一代甜度只有13左右，而今天市场上热卖的品种全都超过15</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#76</span>
+        <h4>问答：越来越甜的水果是不是转基因？</h4>
+        <div class="art-summary">上周说到了水果越来越甜，大家还问了很多相关的问题，我也把典型的问题汇总一下回答。</div>
+        <div class="art-insights"><span class="insight-tag">而转基因作物往往是针对一个或者几个基因做调整，所以既得到了想要的形状，也知道改变了哪些基因</span>
+<span class="insight-tag">之所以到现在只有两种水果，是因为转基因的水果从研发到上市，尤其是监管，成本很高，而且必要性也远不如主粮</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#81</span>
+        <h4>问答：硅基生命存在吗？无抗鸡蛋是智商税？</h4>
+        <div class="art-summary">首先，我们要定义一下什么算硅基生命。就是相对于地球生命体以碳元素构造骨架的，硅元素以同等地位和作用把其他元素连在一起形成的生命体。</div>
+        <div class="art-insights"><span class="insight-tag">之所以要规范一下，就是为了避免今后人工智能也主动为自己优化程序，最终进化到自己为自己创造能量条件，复制自己、延续自己的情况，这就不算硅基生命了</span>
+<span class="insight-tag">因为这种AI形成的智能体只是在处理信息的部分使用了硅，其他部分都不必用到硅</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#88</span>
+        <h4>问答：汤泡饭有害吗？</h4>
+        <div class="art-summary">公众号发布了很多消息，其中一条是说，吃泡饭不利于健康。我不确定这篇文章是否值得相信。请问卓老板，如果你是我，你会怎么去判断这篇文章的可靠性呢？可以讲讲你的思考步骤和判断依据吗？</div>
+        <div class="art-insights"><span class="insight-tag">请问卓老板，如果你是我，你会怎么去判断这篇文章的可靠性呢？可以讲讲你的思考步骤和判断依据吗？
+
+
+这篇文章我看了，介绍了上海泡饭和温州泡饭，然后采访了广州中医药大学附属医院的中医师，说泡饭不利于健康主要是以下两点原因：
+1.人们在吃汤泡饭时</span>
+<span class="insight-tag">实际上，
+这些建议只对那些消化功能近乎完全丧失的人有些用处，对绝大部分消化功能正常的人来说都是多余的，而且很多理由里包含了错误</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#89</span>
+        <h4>从草莓馅饼没草莓说起（上）</h4>
+        <div class="art-summary">2021年10月，美国食品企业家乐氏公司（Kellogg Co）遭到集体诉讼，起诉的理由是，它们旗下一款草莓土司馅饼（Pop-Tarts），商品从名字到包装都是满满的草莓，但实际成分里并没有草莓，这是对消费者的欺诈，索赔500万美元。</div>
+        <div class="art-insights"><span class="insight-tag">其实，“草莓味食品里没有草莓”是食品行业从业者的常识，但这却是违背大部分人的常识的</span>
+<span class="insight-tag">吃过草莓冰淇淋、草莓果冻、草莓饼干的人，如果客观地评价，都会承认这些食品里的草莓味和真正的草莓味道相去甚远</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#90</span>
+        <h4>从草莓馅饼没草莓说起（下）</h4>
+        <div class="art-summary">上一期我留了一个问题，既然我们已经可以用气相色谱仪分析真实水果中几百种挥发物质的化学成分了，为什么不按比例认认真真添加360种化合物，把草莓味馅饼做得像真草莓一样呢？</div>
+        <div class="art-insights"><span class="insight-tag">更具体来说，有两个原因：
+第一个原因是，
+还原草莓的味道，其实属于顶级难题，比还原榴莲味道要难得多</span>
+<span class="insight-tag">你可能觉得有点意外，榴莲那种奇怪到噎人的味道，怎么可能模拟起来很轻松呢？其实，凡是气味强烈、浓重的水果，味道都属于比较好还原的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#94</span>
+        <h4>问答：剩菜为什么味道不好闻？</h4>
+        <div class="art-summary">剩菜热过后为什么有股难闻的味儿？明明刚做出来时味道很好。到底发生了哪些可测量到的化学变化呢？</div>
+        <div class="art-insights"><span class="insight-tag">之所以食品科学关注剩菜剩饭，是因为有很多提供给消费者的食物难免是这类复热型的</span>
+<span class="insight-tag">碳和碳之间形成一个共价键后，剩下的小手抓住的如果全是氢原子，最后尾巴上又连着一个氧原子和一个氢氧根的话，这就是饱和脂肪酸</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#98</span>
+        <h4>蛋白质也是一种语言</h4>
+        <div class="art-summary">今天的《科技参考》，我来说说蛋白质语言模型。</div>
+        <div class="art-insights"><span class="insight-tag">微生物感染是当下的潜在危机，因为抗生素耐药性的问题越来越严重，很多感染用普通的抗生素，效果和50年前比已经削弱太多了</span>
+<span class="insight-tag">因为蛋壳存在气孔，细菌是有可能从这里进入鸡蛋的，而一旦进入，那里可全都是营养物质，细菌就会快速繁殖，鸡蛋就臭了，就没法孵化成小鸡了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#117</span>
+        <h4>问答：刷牙要只吐沫不漱口？能量会变成质量吗？</h4>
+        <div class="art-summary">上周听书栏目里有一本书《远离那个牙医》，里面介绍了一个观点，说刷牙之后沫子可以吐，但不要漱口，因为漱口后，牙膏中的氟化物也就被漱掉了，刷牙的效果就变差了。这种说法有没有道理？</div>
+        <div class="art-insights"><span class="insight-tag">上周听书栏目里有一本书《远离那个牙医》，里面介绍了一个观点，说刷牙之后沫子可以吐，但不要漱口，因为漱口后，牙膏中的氟化物也就被漱掉了，刷牙的效果就变差了</span>
+<span class="insight-tag">这种说法有没有道理？
+我最初还在评论里回复过一位同学，我说不科学</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#118</span>
+        <h4>问答：胚芽米是智商税吗？视觉分辨率极限是多少？</h4>
+        <div class="art-summary">好几位同学问到了胚芽米、胚芽粉。有的是自己家里人对这个东西特别推崇，有的是看到宣传说，胚芽米特别好，能润肠通便、减肥、健脑、治疗糖尿病、抗癌、保护心血管。这是不是智商税？</div>
+        <div class="art-insights"><span class="insight-tag">以大米为例，大米的壳是褐色的，脱壳后的大米其实是黄色的，继续打磨后会把黄黄的外表磨掉，露出里面洁白的米粒颜色，同时，一端的胚芽会掉下来，在米粒上形成一个凹陷</span>
+<span class="insight-tag">因为今天我们吃的白花花的米粒里基本就没有其他营养成分和微量元素了，就是纯纯地提供淀粉、提供碳水化合物</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#125</span>
+        <h4>问答：血液净化是智商税吗？补充维生素D是骗局？</h4>
+        <div class="art-summary">血液净化算智商税吗？家里父母身体不好，基础病很多，每天都要吃药，老去做这个，说做了感觉身体好很多，不咋生病了。不知道是安慰剂效应还是真有用呢？</div>
+        <div class="art-insights"><span class="insight-tag">其实，凡是拉老年人做这个项目的，医院几乎都没有相应的审批资质，哪怕是民营医院，也99%没有</span>
+<span class="insight-tag">医院对血液的操作就是输血、透析、血浆置换等等，可以说是管控最严格的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#132</span>
+        <h4>问答：父母硬要吃有害保健品怎么办？</h4>
+        <div class="art-summary">很多同学听了上周答疑中血液净化的骗术后很感慨，也问了很多家里长辈吃保健品的问题。比如，不但自己吃，还要强迫孩子吃，怎么办？</div>
+        <div class="art-insights"><span class="insight-tag">因为父母知道你不同意他们掏钱，知道你的感情倾向之后，你再说任何反对意见，效果都不好</span>
+<span class="insight-tag">如果你觉得还不够，可以继续搜一搜最近几年的《科技参考》，课程里我至少说了10种这类东西，你可以换着样给他们尝试，很难有老年人不动心的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#146</span>
+        <h4>来自日本的智商税（上）</h4>
+        <div class="art-summary">2024年3月22日，日本著名的企业小林制药宣布，它销售的特定批次的保健品《红麹（曲）胆固醇颗粒》出现了食用后导致肾脏疾病的报告，决定召回产品。</div>
+        <div class="art-insights"><span class="insight-tag">因为中国市场上的保健品很多，其中有一大类是来自日本，或者由来自日本的概念包装而来的</span>
+<span class="insight-tag">小林制药这个名字听起来虽然像药企，但实际上，它和现代医学体系下的药企是两码事</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#147</span>
+        <h4>来自日本的智商税（下）</h4>
+        <div class="art-summary">上一期，我们说了小林制药的红曲保健品致死致伤的事故，说了来自日本的保健品收割中国消费者的逻辑。这期我们挑几个销量最大、知名度很高的来自日本的智商税产品来说说。</div>
+        <div class="art-insights"><span class="insight-tag">这期我们挑几个销量最大、知名度很高的来自日本的智商税产品来说说</span>
+<span class="insight-tag">虽然之前详细说过，但还是简要总结一下：
+退热贴不靠谱的根本原因是，发烧发热是人体应对细菌或者病毒入侵的正常机制，大部分人在不难受的情况下没必要退热</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#183</span>
+        <h4>NMN和白藜芦醇，抗衰老的丑闻</h4>
+        <div class="art-summary">抗衰老界名气最响的科学家是哈佛大学教授大卫·辛克莱尔（David Sinclair）。和这个名字关系最密切的是两类保健品——NMN和白藜芦醇。这两种物质也是最近几年抗衰老界出现最多的，多到了每次《科技参考》涉及到衰老问题时，都会有用户在评论里问，NMN有效果吗？我买的白藜芦醇呢？</div>
+        <div class="art-insights"><span class="insight-tag">抗衰老界名气最响的科学家是哈佛大学教授大卫·辛克莱尔（David Sinclair）</span>
+<span class="insight-tag">这两种物质也是最近几年抗衰老界出现最多的，多到了每次《科技参考》涉及到衰老问题时，都会有用户在评论里问，NMN有效果吗？我买的白藜芦醇呢？
+今天的《科技参考》，我们就来说说</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#192</span>
+        <h4>飞上天后，有人突然要开舱门</h4>
+        <div class="art-summary">飞机在天上飞，突然有乘客脑子短路了，要打开舱门，结果会怎样呢？</div>
+        <div class="art-insights"><span class="insight-tag">好在当时距离降落只有一分钟，这才没有造成太大的人员伤亡，只有12名乘客因为不舒服而被送去医院检查</span>
+<span class="insight-tag">他自己的理由是，因为失业压力过大，当时是想打开舱门跳机自杀的，但是被距离舱门最近的那位穿红袜子的乘客死死地抓住了，没能跳出去</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#203</span>
+        <h4>如何看待叶黄素、藏红花等保健品？</h4>
+        <div class="art-summary">我在后台看大家留言，经常遇到这样的问题：什么什么保健品是智商税吗？什么什么东西真值那么高的价格吗？</div>
+        <div class="art-insights"><span class="insight-tag">而具体到某一款叶黄素保健品，能不能产生益处就难说了，因为这是一种日常食物中非常充足的微量元素</span>
+<span class="insight-tag">医学界之所以认为叶黄素对眼睛健康有益处，是因为对视觉贡献非常大的视网膜黄斑区域的类胡萝卜素的浓度，和黄斑的健康度有高度相关性，而叶黄素就是类胡萝卜中重要的一种，它能吸收入射到黄斑区域的有害光</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#211</span>
+        <h4>牙齿再生近在眼前</h4>
+        <div class="art-summary">今天的《科技参考》，我们说一个将于今年9月开启的人体临床试验——牙齿再生。</div>
+        <div class="art-insights"><span class="insight-tag">因为一个人一辈子只有两套牙齿——乳牙和恒牙，乳牙在大约6岁时开始逐渐脱落，十二三岁时随着乳牙全部掉落后，恒牙也就都长出来了</span>
+<span class="insight-tag">因为在40多年前，人们普遍没有刷牙的好习惯，更没有人知道要定期洗牙</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#212</span>
+        <h4>泡菜发酵，越久越好吗？</h4>
+        <div class="art-summary">这期《科技参考》，我们从微生物的角度来说说泡菜。</div>
+        <div class="art-insights"><span class="insight-tag">世界各地的人做饭时都追求鲜味儿，而且从现代烹饪的工艺来看，如何使用鲜味儿也是最重要的环节</span>
+<span class="insight-tag">所以，内地的烹饪中也经常见到用蔬菜和豆类发酵的方法产生鲜味儿，比如辣椒酱、豆瓣酱和泡菜</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#214</span>
+        <h4>问答：能效仿鲨鱼牙齿再生吗？智驾哪家强？</h4>
+        <div class="art-summary">很多同学听了牙齿再生那一期，都提到鲨鱼。他们说，鲨鱼的牙齿就可以无限再生，这个机制能不能改造一下被医学利用上呢？这不是也用不着干细胞吗？</div>
+        <div class="art-insights"><span class="insight-tag">他们说，鲨鱼的牙齿就可以无限再生，这个机制能不能改造一下被医学利用上呢？这不是也用不着干细胞吗？
+
+
+这是个好问题，因为它涉及到牙齿的演化</span>
+<span class="insight-tag">可能很多人觉得，鲨鱼的皮肤好像很光滑，哪儿来的鱼鳞？其实是有的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#231</span>
+        <h4>化工罐车装食用油严重吗？</h4>
+        <div class="art-summary">上周就有很多同学在后台问我，用盛煤油的容器装食用油，这个会产生什么危害？我第一次看到很不理解，尽管咱们可以敞开了问问题，但这种脱离常识的问题有什么可问的？结果后来我才发现，其实是有真事对应的，那就是《新京报》记者暗访中发现的，卸完煤制油的油罐车马上就装上食用油出发了，洗都没洗。</div>
+        <div class="art-insights"><span class="insight-tag">上周就有很多同学在后台问我，用盛煤油的容器装食用油，这个会产生什么危害？我第一次看到很不理解，尽管咱们可以敞开了问问题，但这种脱离常识的问题有什么可问的？结果后来我才发现，其实是有真事对应的，那就是《新京报》记者暗访中发现的，卸完煤制油的油</span>
+<span class="insight-tag">因为这是一个范围广且说不清具体覆盖面的、微量的、多种多样复杂的有毒有害物质的长期摄入，只能按时体检，注意身体健康，尤其是重视消化道内窥镜的检查</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#233</span>
+        <h4>问答：化工罐车装食用油会反转吗？萝卜快跑能取代网约车吗？</h4>
+        <div class="art-summary">对于拉化工原料的油罐车污染食用油的新闻，网上有一些大V说，《新京报》是不良媒体——那个采访镜头里有个运单，显示收货方是一个物流集团下的金属材料有限公司，所以这个大豆油是给工业用的基础油。等着事情反转打脸！</div>
+        <div class="art-insights"><span class="insight-tag">对于拉化工原料的油罐车污染食用油的新闻，网上有一些大V说，《新京报》是不良媒体——那个采访镜头里有个运单，显示收货方是一个物流集团下的金属材料有限公司，所以这个大豆油是给工业用的基础油</span>
+<span class="insight-tag">因为采访的人一共10个，司机7个人，他们都用不同的方式表达过，知道化工原料和食用油混装，且知道不应该这么做</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#234</span>
+        <h4>食用油污染，健康风险初步分析（上）</h4>
+        <div class="art-summary">食用油被污染的问题过去十几天了，这期间，很少有文章仔细分析食用油被污染到了什么程度。这当中，主要原因是没有人公布全面的实测结果，历史上也没有科学家对长期摄入微量矿物油对身体健康影响的研究。但哪怕缺少这些内容，我们依然还是可以给被污染的食用油到底污染得多严重做一个大致的定量分析。</div>
+        <div class="art-insights"><span class="insight-tag">这当中，主要原因是没有人公布全面的实测结果，历史上也没有科学家对长期摄入微量矿物油对身体健康影响的研究</span>
+<span class="insight-tag">最近两期《科技参考》，我就来给大家定量分析，并对大家因过度担忧而做出的错误决策做一些提醒</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#235</span>
+        <h4>食用油污染，健康风险初步分析（下）</h4>
+        <div class="art-summary">昨天的专栏里，我们分析了煤制油和食用油混装后风险增加的程度，今天我们结合实际情况进一步分析。</div>
+        <div class="art-insights"><span class="insight-tag">把油料坯打碎后，使用食品级的正己烷喷淋浸泡，然后再经过脱固体杂质、脱胶、脱酸、脱色、脱臭、脱蜡这6个步骤，最后高温蒸发掉正己烷，剩下的就是成品油</span>
+<span class="insight-tag">所以，如果是毛油和煤制油混合运输的话，这种运输方式引入的杂质几乎全都能在后续精炼过程里去除</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#236</span>
+        <h4>NMN是怎么被禁的？</h4>
+        <div class="art-summary">几个月前，我看到有一个著名电商直播平台的主播在微博上兜售NMN保健品，我就在那条买买买的微博下留了评论。</div>
+        <div class="art-insights"><span class="insight-tag">其实我平时因为写稿压力大，根本没空用手机挨个字打这么多细节，主要是那条微博有点典型，经常引用各种所谓论文里的相关内容，给出一些检测报告，再把自己的朋友、邻居、战友、同事、亲戚、同学的真的假的的前后服用对比体验放上来，用科学装点门面，用情绪提</span>
+<span class="insight-tag">我觉得，这种微博和这样的人相比其他保健品商，可以收割到更大一批曾经不会被保健品收割的人群，所以才留了言，结果不出所料地被拉黑了</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#238</span>
+        <h4>问答：选什么专业？炼猪油好吗？燃油车为什么不智驾？</h4>
+        <div class="art-summary">卓老板，如果让您选择大学专业，您会选择哪个或哪几个中的一个？小孩子还需要学计算机编程吗？现在小学生编程兴趣班一年得两三万元。</div>
+        <div class="art-insights"><span class="insight-tag">我从兴趣出发会选择和信息有关的专业，比如电子工程、计算机、通信工程，因为我从四年级就对这些领域感兴趣</span>
+<span class="insight-tag">其实还是刚刚说的那些专业——电子工程、计算机、通信工程、光电、自动化</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#245</span>
+        <h4>问答：矿泉水溴酸盐事故？BBC提倡吃猪油？</h4>
+        <div class="art-summary">香港查出矿泉水里有溴酸盐，这个食品安全事故能解读一下吗？</div>
+        <div class="art-insights"><span class="insight-tag">饮用水都要经过消毒，使用最广泛的就是氯化物，全球自来水厂用的都是这个</span>
+<span class="insight-tag">而臭氧之后会自行分解为氧气，飘出去也好，溶解在水里也好，都是无害的，所以有害残留就特别少</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#260</span>
+        <h4>食品安全谣言号的特征</h4>
+        <div class="art-summary">别看我的职业是科普，但是实际上，我们家的微信群也是每天都在转发大量的食品安全类谣言。要知道，这些内容其实都是父母和长辈们看过以后觉得比较重要和希望我们看到的。</div>
+        <div class="art-insights"><span class="insight-tag">别看我的职业是科普，但是实际上，我们家的微信群也是每天都在转发大量的食品安全类谣言</span>
+<span class="insight-tag">要知道，这些内容其实都是父母和长辈们看过以后觉得比较重要和希望我们看到的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#272</span>
+        <h4>喝汤真那么不值一提吗？</h4>
+        <div class="art-summary">比如，冬天了，喝点羊肉汤暖暖身子；夏天了，喝点绿豆汤祛暑；感冒了，熬点鸡汤驱驱寒；怀孕了，弄点鲫鱼汤下奶；骨折了，补点排骨汤壮骨。这些都是常见的。</div>
+        <div class="art-insights"><span class="insight-tag">很多科普在谈到喝汤时的观点都是：汤里没什么营养物质，油脂、盐分和水才是主要的，所以喝汤最主要的功效就是补水和增肥</span>
+<span class="insight-tag">因为喝下去的热汤假如是65℃，它在体内会很快降到37℃，降温时放出的热量被身体吸收掉了，所以夏天喝热汤会满头大汗，冬天喝热汤浑身暖洋洋</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#288</span>
+        <h4>问答：刮痧刮出的是什么？硫磺熏枸杞事件解读</h4>
+        <div class="art-summary">刮痧，真的能祛除体内的湿气，有排毒、疏通经络的作用吗？如今去店里面按摩，都是推荐刮痧。刮痧后，后背简直可怕，说是因为体内湿气大。这是不是伪科学呢？</div>
+        <div class="art-insights"><span class="insight-tag">具体的说，刮痧排的毒也好，湿气也好，都不属于主流医学中的概念，因为它们要不就是没法验证，要不就是指代不明</span>
+<span class="insight-tag">但随着人们认知的进步，
+在治疗疾病方面，已经有越来越多的人依赖可验证的方法，这种方法论下产生的治疗方法对疾病的治疗效果是最好的</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#297</span>
+        <h4>人的胃酸为什么那么强？</h4>
+        <div class="art-summary">前几天，我在微博上看到一个提问：人吃了生肉有可能被寄生虫感染，像狮子、老虎，常年吃生肉，为什么不会被寄生虫感染？</div>
+        <div class="art-insights"><span class="insight-tag">其实真正的原因是，野生食肉动物大都感染了寄生虫，我们不知道而已</span>
+<span class="insight-tag">不论是最常见的弓形虫，还是钩虫、蛔虫、绦虫、球虫、杆线虫，只要感染就算，比例有多高呢？在88%-100%之间</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#302</span>
+        <h4>最辣的辣椒有多辣？</h4>
+        <div class="art-summary">2023年9月，吉尼斯世界纪录宣布，PepperX这种辣椒正式成为世界上最辣的辣椒。而上一次最辣的辣椒记录还是在十年前创下的，就是今天世界各地吃辣挑战赛和猎奇食物里出现的卡罗来纳死神辣椒（Carolina Reaper Pepper）。这两款辣椒都是由美国辣椒育种专家艾德·库里（Ed Currie）经过十多年的育种培育出来的。</div>
+        <div class="art-insights"><span class="insight-tag">2023年9月，吉尼斯世界纪录宣布，PepperX这种辣椒正式成为世界上最辣的辣椒</span>
+<span class="insight-tag">而上一次最辣的辣椒记录还是在十年前创下的，就是今天世界各地吃辣挑战赛和猎奇食物里出现的卡罗来纳死神辣椒（Carolina Reaper Pepper）</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#304</span>
+        <h4>怎么科学地去鱼腥味？</h4>
+        <div class="art-summary">很多人把鱼买回家自己做都觉得有腥味；而去饭店时，同样的鱼，却吃不出腥味。有时还会请教厨师是怎么做的，自己回家照着厨师的方法做，口味上确实有点变化，但腥味并没有减弱。这是为什么？</div>
+        <div class="art-insights"><span class="insight-tag">鱼腥味涉及的那几十种挥发性物质都有什么呢？咱们挑十几种念念：
+2,4,7-癸三烯醛 
+2,4-癸二烯醛 
+δ-氨基戊醛 
+δ-氨基戊酸 
+二甲胺 
+三甲胺 
+氧化三甲胺 
+六氢吡啶 
+土臭素 
+2-甲基异茨醇 
+1-辛烯-3-醇 
+2,3,</span>
+<span class="insight-tag">如果在这6种中继续挑出更重要的，那就是土臭素（GSM）、2-甲基异茨醇（2-MIB）</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#305</span>
+        <h4>问答：皮蛋含铅高吗？大陆人为什么都能认繁体字？</h4>
+        <div class="art-summary">今天超市里卖的正规的有品牌有包装的皮蛋，都是完全不用担心的；而农贸市场散装的、小作坊做的那种皮蛋，也只有不足10%的概率铅超标。</div>
+        <div class="art-insights"><span class="insight-tag">具体原因是这样：
+皮蛋可以用鸡蛋、鸭蛋、鹌鹑蛋做，方法就是用碱性环境把蛋腌制1个月左右</span>
+<span class="insight-tag">但铅对人体是有害的，所以从前这个配料表工艺下的皮蛋真的对身体有害</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#306</span>
+        <h4>问答：月饼防腐剂事件+胃酸演化问题合集</h4>
+        <div class="art-summary">月饼里有脱氢乙酸钠，这个能不能吃？这是不是安全事故？这是热炒的谣言吗？</div>
+        <div class="art-insights"><span class="insight-tag">月饼里有脱氢乙酸钠，这个能不能吃？这是不是安全事故？这是热炒的谣言吗？
+具体来说就是，网上流传一条消息，说咱们吃的月饼很多都是出口给韩国的，因为添加了非法防腐剂脱氢乙酸钠，被退回18次了</span>
+<span class="insight-tag">而且，2023年8月到2024年8月的一年间，稻香村月饼也确实因为含有脱氢乙酸钠防腐剂，出口韩国时被退回过18次</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#308</span>
+        <h4>误解：木薯淀粉vs红薯淀粉</h4>
+        <div class="art-summary">在最近的直播带货集中治理活动中，有一个食品安全事件引起了大家的注意，那就是很多卖粉条的主播把配料表中的木薯淀粉故意抹去，号称自己是纯红薯淀粉粉条。因为很多人听说木薯有剧毒，这种东西做的淀粉也便宜，于是商家写配料表就想隐瞒这个成分。那么，真是这样吗？</div>
+        <div class="art-insights"><span class="insight-tag">在最近的直播带货集中治理活动中，有一个食品安全事件引起了大家的注意，那就是很多卖粉条的主播把配料表中的木薯淀粉故意抹去，号称自己是纯红薯淀粉粉条</span>
+<span class="insight-tag">因为很多人听说木薯有剧毒，这种东西做的淀粉也便宜，于是商家写配料表就想隐瞒这个成分</span>
+</div>
+      </div>
+      <div class="article-card">
+        <span class="art-num">#310</span>
+        <h4>防腐剂：争议最大的添加剂</h4>
+        <div class="art-summary">今天我们来说说食品添加剂中争议最大的一类——防腐剂。防腐剂有很多种，我们可以在食品包装上看到它们的名字——亚硝酸钠、丙酸钙、苯甲酸钠、山梨酸钾。还有今年中秋一度刷屏的脱氢乙酸钠，这个我们在之前答疑里仔细说过了。</div>
+        <div class="art-insights"><span class="insight-tag">先说结论——
+添加防腐剂带来的健康风险，远远小于不添加防腐剂带来的健康损失</span>
+<span class="insight-tag">这些假设适用于全球的食品工业，所以防腐剂今天在全球都是食品添加剂的重要成分</span>
+</div>
+      </div>
+  </div>
+
+  <footer class="footer">
+    <p><a href="index.html">← 返回科技参考3 主板</a> · 卓克 · 科技参考3 · MKS</p>
+  </footer>
+</div>
+
+</body>
+</html>
