@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS 2.0 · 批处理流水线时代</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-elevated: #1a1a28;
+    --text: #d4d4dc;
+    --text-muted: #8888a0;
+    --accent: #c9a96e;
+    --accent-dim: #6b5b3e;
+    --border: #2a2a3a;
+    --tag-bg: #1e1e30;
+    --code-bg: #0d0d18;
+    --danger: #a05050;
+    --success: #50a070;
+    --info: #5080a0;
+    font-size: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .version-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .version-nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 0;
+    padding: 0 1.5rem; overflow-x: auto;
+  }
+  .version-nav a {
+    display: block; padding: 0.85rem 1.4rem;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s; white-space: nowrap;
+  }
+  .version-nav a:hover { color: var(--text); border-bottom-color: var(--accent-dim); }
+  .version-nav a.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .page-header {
+    text-align: center; padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border); margin-bottom: 2.5rem;
+  }
+  .version-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #5a8a3c, #3a5a20);
+    color: #90c070;
+    padding: 0.35rem 1.2rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+  .page-header h1 {
+    font-size: 2.8rem; font-weight: 800; color: #e8e0d0;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .page-header .subtitle { color: var(--text-muted); font-size: 1.15rem; margin-top: 0.6rem; }
+  .page-header .period {
+    display: inline-block; margin-top: 0.8rem;
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    padding: 0.3rem 1rem; border-radius: 6px;
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .page-header .period::before { content: '📅 '; }
+
+  .section { margin: 3rem 0; }
+  .section-title {
+    font-size: 1.55rem; font-weight: 700; color: #e0d8c8;
+    margin-bottom: 1.2rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-title .icon { font-size: 1.4rem; }
+
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem 1.8rem; margin-bottom: 1.2rem;
+  }
+  .card h3 { color: var(--accent); font-size: 1.15rem; margin-bottom: 0.8rem; }
+  .card p, .card li { color: var(--text-muted); font-size: 0.95rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+  .tag {
+    display: inline-block; background: var(--tag-bg); border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem; border-radius: 5px;
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  .tag.highlight { border-color: #5a8a3c; color: #90c070; }
+
+  .feature-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .feature-col { flex: 1; min-width: 260px; }
+
+  .work-card {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid #5a8a3c;
+  }
+  .work-card h4 { color: #d8cfb8; font-size: 1rem; margin-bottom: 0.4rem; }
+  .work-card .meta { font-size: 0.8rem; color: var(--text-muted); }
+
+  .challenge-card {
+    background: var(--bg-elevated); border: 1px solid #5a3a3a;
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--danger);
+  }
+  .challenge-card h4 { color: #d0a0a0; font-size: 1rem; margin-bottom: 0.4rem; }
+
+  .scene-badge {
+    display: inline-block;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-size: 0.78rem; color: #90c070; font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--border); text-align: center;
+  }
+  .footer a { color: var(--accent); text-decoration: none; font-size: 0.95rem; font-weight: 600; }
+  .footer a:hover { color: #e0c080; }
+
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 2rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .version-nav a { padding: 0.7rem 1rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="version-nav">
+  <div class="version-nav-inner">
+    <a href="v1.0.html">v1.0 · 单页提取</a>
+    <a href="v2.0.html" class="active">v2.0 · 批处理流水线</a>
+    <a href="v2.20.html">v2.20 · 品控体系</a>
+    <a href="v2.36.html">v2.36 · 全场景平台</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<header class="page-header">
+  <div class="version-badge">MKS BUILDER v2.0</div>
+  <h1>批处理流水线时代</h1>
+  <p class="subtitle">从单篇手作到工业级批量生产的关键转折</p>
+  <span class="period">2026年5月</span>
+</header>
+
+<!-- ════════════ 概述 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🏭</span> 时代概览</h2>
+  <div class="card">
+    <p>
+      v2.0 标志着 MKS Builder 从「手工作坊」进入「工业流水线」时代。核心突破是<strong style="color:var(--accent);">场景维度的爆炸式扩展</strong>——
+      从单一的场景 A（单个 MKS 提取）扩展到覆盖 A/B/D/E/F/G 六大场景的全能平台。
+      SQLite 本地数据库的引入终结了对 API 的绝对依赖，Graphviz 自动布局替代了手写 SVG 坐标，
+      GitHub Pages + 飞书云盘的双轨发布机制建立了持久化的知识资产管理体系。
+    </p>
+  </div>
+</section>
+
+<!-- ════════════ 新增场景 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🎬</span> 场景能力扩展</h2>
+
+  <div class="card">
+    <h3><span class="scene-badge">场景 A</span> 单个 MKS 提取（继承优化）</h3>
+    <p>保留 v1.0 的核心能力，融入新增的 9 标签统一规范和 SQLite 本地缓存，质量和速度双提升。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3><span class="scene-badge">场景 B</span> 大规模批量 MKS 流水线</h3>
+    <p>v2.0 的<strong style="color:var(--accent);">核心新增能力</strong>。支持一次操作覆盖上百篇文章的批量提取。通过 delegate_task 并行调用多个 Claude Code 实例，每个子 agent 独立处理一个专题，实现真正的并行生产。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3><span class="scene-badge">场景 D</span> 旧版 HTML 重生成</h3>
+    <p>将 v1.0 时代生成的老旧 MKS HTML 自动升级到 v2.0 的 gold template 标准。包括翻新翻转卡片样式、合并题库系统、统一导航条和响应式布局。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3><span class="scene-badge">场景 E</span> 跨课程合并 MKS</h3>
+    <p>将来自不同专栏/课程的知识集合并为一个统一的 MKS 成果。例如将硅谷来信多个专题的知识卡片汇入共享池。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3><span class="scene-badge">场景 F</span> Meta-MKS 跨课思想体系重组</h3>
+    <p>v2.0 最具野心的场景。跨越课程边界，从多门课程的概念池中提取高层级的思想体系——不是合并卡片，而是重组认知结构。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3><span class="scene-badge">场景 G</span> 播客制作</h3>
+    <p>将 MKS 知识集转化为播客脚本和音频内容，实现知识的多模态输出。</p>
+  </div>
+</section>
+
+<!-- ════════════ 技术升级 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🔧</span> 核心技术升级</h2>
+
+  <div class="feature-row">
+    <div class="feature-col">
+      <div class="card">
+        <h3>🗄️ SQLite 本地数据库</h3>
+        <p>引入 <code style="background:var(--code-bg); padding:0.1rem 0.4rem; border-radius:3px;">getnote_kb.db</code> 作为本地知识库存储，缓存 Get Notes 专栏内容。告别实时 API 查询的脆弱性，支持离线检索和批量处理。</p>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>📐 Graphviz dot 自动布局 SVG</h3>
+        <p>用 Graphviz 的 dot 语言描述概念关系图，自动生成 SVG 布局，彻底替代 v1.0 的手写坐标模式。效率提升 10 倍以上，且布局质量更优。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-row" style="margin-top:1.2rem;">
+    <div class="feature-col">
+      <div class="card">
+        <h3>🚀 GitHub Pages + 飞书云盘</h3>
+        <p>双轨发布与持久化存档。GitHub Pages 提供公网访问的知识集展示，飞书云盘作为内部备份和团队共享的知识资产管理。</p>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>⚡ delegate_task 并行 Claude Code</h3>
+        <p>通过 delegate_task 机制启动多个 Claude Code 子进程并行处理不同专题。这是 v2.0 批处理能力的核心引擎，但也带来了新的稳定性挑战。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 关键改进 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">✨</span> 关键设计改进</h2>
+
+  <div class="card">
+    <ul>
+      <li style="margin-bottom:0.8rem;"><strong style="color:var(--accent);">9 标签统一规范：</strong>所有 MKS HTML 强制使用相同的 9 标签结构和命名，消除 v1.0 的碎片化问题</li>
+      <li style="margin-bottom:0.8rem;"><strong style="color:var(--accent);">选择题+简答题合并：</strong>将原本分离的两套题目标签合并为统一的「题库系统」，改善用户体验</li>
+      <li style="margin-bottom:0.8rem;"><strong style="color:var(--accent);">翻转卡片 Gold Template：</strong>建立翻转卡片的黄金模板（以硅谷来信1_v2 和 4-历史与文明对话.html 为基准），所有新生成和重生成的卡片样式严格对齐</li>
+      <li style="margin-bottom:0.8rem;"><strong style="color:var(--accent);">validate_mks_html.js 校验器：</strong>自动化 HTML 质量检查脚本，检测结构完整性、标签命名、SVG 有效性等</li>
+      <li style="margin-bottom:0.8rem;"><strong style="color:var(--accent);">弯引号检测：</strong>自动检测并修复中文弯引号（""''）导致的编码问题</li>
+      <li><strong style="color:var(--accent);">MCQ 答案均匀分布：</strong>强制选择题答案分布为 <code style="background:var(--code-bg); padding:0.1rem 0.4rem; border-radius:3px;">{0:5, 1:5, 2:5, 3:5}</code>，避免答案模式可被猜测</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════ 代表作 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🏆</span> 代表性产出</h2>
+
+  <div class="card-grid">
+    <div class="work-card">
+      <h4>🏛️ 吴军思想体系三层金字塔</h4>
+      <div class="meta">1018 篇跨课重组 · Meta-MKS</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        场景 F 的巅峰之作。横跨吴军多门课程（硅谷来信1/2/3、谷歌方法论、科技史纲等），从 1018 篇文章中
+        提炼出三层思想体系金字塔——底层思维工具、中层领域认知、顶层世界观。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>📗 硅谷来信3 七专题全量重生成</h4>
+      <div class="meta">7 专题 · 场景 D 批量重生成</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        将 v1.0 的硅谷来信1_v2 质量水平应用于硅谷来信3，七个专题全部按照 gold template 标准重生成，
+        验证了场景 D 的批量升级能力。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>📕 吴军来信1 · 世界文明史</h4>
+      <div class="meta">317 篇 · 5 专题 · 全量 MKS</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        场景 B 的大规模验证。317 篇文章按 5 个专题拆分，通过 delegate_task 并行生成，
+        产出完整的文明史知识体系 MKS。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 新挑战 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">⚠️</span> 新浮现的挑战</h2>
+
+  <div class="card-grid">
+    <div class="challenge-card">
+      <h4>🧊 Claude Code 静默卡死</h4>
+      <p>当传递的 JSON 数据超过约 1MB 时，Claude Code 会在不报错的情况下静默卡死，无任何超时或错误提示，导致整个批处理流水线停滞。</p>
+    </div>
+    <div class="challenge-card">
+      <h4>👻 并行 CC 进程僵尸</h4>
+      <p>并行启动的 Claude Code 子进程偶尔会变成僵尸进程——已完成工作但未通知父进程，造成延迟通知和资源泄漏。</p>
+    </div>
+    <div class="challenge-card">
+      <h4>🔌 delegate_task 子 agent 中断</h4>
+      <p>delegate_task 调用的子 agent 可能被父进程意外中断（如父进程超时或被用户取消），导致部分专题生成不完整。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><a href="../hub.html">← 返回知识总纲</a></p>
+  <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.8rem;">MKS Builder · 版本历史档案馆 · v2.0</p>
+</footer>
+
+</div>
+</body>
+</html>

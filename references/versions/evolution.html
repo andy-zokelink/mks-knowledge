@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS Builder · 演化全史</title>
+<style>
+/* ============================================================
+   MKS BUILDER — EVOLUTION ARCHIVE
+   Metaphor: Ancient Chronologer's Scroll Hall —
+   each version a sealed vault wing, each lesson a carved tablet.
+   ============================================================ */
+
+/* ===== CSS Variables ===== */
+:root {
+  --void: #06090f;
+  --vault: #0b1018;
+  --surface: #111827;
+  --surface-raised: #1a2332;
+  --surface-hover: #1f2a3a;
+
+  --text-primary: #d8dce6;
+  --text-secondary: #94a0b8;
+  --text-dim: #5a6680;
+  --text-bright: #f0f2f8;
+
+  /* Version accent palette */
+  --v1-gold: #d4a854;
+  --v1-gold-light: #e8c97a;
+  --v1-gold-deep: #a07828;
+  --v1-gold-glow: rgba(212,168,84,0.20);
+
+  --v2-transition: #a78bfa;
+  --v2-transition-light: #c4b5fd;
+  --v2-transition-deep: #7c3aed;
+  --v2-transition-glow: rgba(167,139,250,0.18);
+
+  --v220-bronze: #d97736;
+  --v220-bronze-light: #f0a060;
+  --v220-bronze-deep: #9a4d1c;
+  --v220-bronze-glow: rgba(217,119,54,0.18);
+
+  --v236-aurora: #38bdf8;
+  --v236-aurora-light: #7dd3fc;
+  --v236-aurora-deep: #0284c7;
+  --v236-aurora-glow: rgba(56,189,248,0.18);
+
+  --accent-white: rgba(255,255,255,0.06);
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-medium: rgba(255,255,255,0.08);
+  --border-glow: rgba(255,255,255,0.12);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --ease-out: 0.35s cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --font-display: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-body: "Noto Serif SC", "Source Han Serif SC", Georgia, "SimSun", serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--text-primary);
+  line-height: 1.85;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Cosmic Background ===== */
+.cosmic-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 18%, rgba(212,168,84,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 55% at 15% 40%, rgba(30,64,120,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 55% at 85% 40%, rgba(20,50,100,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 20% 30% at 75% 22%, rgba(56,189,248,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(6,9,15,0.97) 100%);
+}
+
+.archive-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+}
+
+/* ===== Floating Particles ===== */
+.particle-field {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: var(--v1-gold);
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+  opacity: 0;
+}
+.particle:nth-child(odd) { background: var(--v236-aurora); }
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.2; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
+/* ===== Layout ===== */
+.main-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ===== Hero Section ===== */
+.hero {
+  text-align: center;
+  padding: 100px 0 60px;
+  position: relative;
+}
+.hero-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v1-gold);
+  border: 1px solid rgba(212,168,84,0.25);
+  border-radius: 100px;
+  padding: 6px 22px;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--v1-gold-light) 0%, var(--text-bright) 40%, var(--v236-aurora-light) 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+/* ===== Stats Bar ===== */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 0 0 80px;
+  flex-wrap: wrap;
+}
+.stat-item {
+  text-align: center;
+  padding: 22px 32px;
+  border-right: 1px solid var(--border-subtle);
+  min-width: 110px;
+}
+.stat-item:last-child { border-right: none; }
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--v1-gold-light);
+  line-height: 1.1;
+}
+.stat-label {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+.stat-delta {
+  font-size: 0.72rem;
+  color: var(--v236-aurora);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* ===== Section Headers ===== */
+.section {
+  margin-bottom: 80px;
+}
+.section-header {
+  margin-bottom: 36px;
+}
+.section-number {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: 0.03em;
+  position: relative;
+  display: inline-block;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px; left: 0;
+  width: 48px; height: 2px;
+  background: var(--v1-gold);
+  border-radius: 2px;
+}
+
+/* ===== Prose ===== */
+.prose {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+.prose p { margin-bottom: 16px; }
+.prose strong { color: var(--text-bright); font-weight: 600; }
+.prose em { color: var(--v1-gold-light); font-style: normal; }
+.prose .highlight {
+  background: linear-gradient(135deg, var(--v1-gold-glow), transparent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--v1-gold-light);
+}
+
+/* ===== Quote Blocks ===== */
+.insight-block {
+  background: var(--surface);
+  border-left: 3px solid var(--v1-gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 22px 28px;
+  margin: 28px 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--text-primary);
+  position: relative;
+}
+.insight-block::before {
+  content: '◆';
+  position: absolute;
+  top: -12px; left: -10px;
+  font-size: 0.7rem;
+  color: var(--v1-gold);
+}
+.insight-block .attribution {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ===== Timeline ===== */
+.timeline {
+  position: relative;
+  padding: 20px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 44px;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom,
+    var(--v1-gold-glow) 0%,
+    var(--v1-gold) 15%,
+    var(--v2-transition) 35%,
+    var(--v220-bronze) 55%,
+    var(--v236-aurora) 80%,
+    transparent 100%);
+}
+.timeline-node {
+  position: relative;
+  padding: 0 0 60px 100px;
+}
+.timeline-node:last-child { padding-bottom: 0; }
+.timeline-marker {
+  position: absolute;
+  left: 32px;
+  top: 0;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 3px solid var(--vault);
+  z-index: 2;
+  box-shadow: 0 0 18px var(--v1-gold-glow);
+}
+.timeline-marker.v1 { background: var(--v1-gold); box-shadow: 0 0 20px var(--v1-gold-glow); }
+.timeline-marker.v2 { background: var(--v2-transition); box-shadow: 0 0 20px var(--v2-transition-glow); }
+.timeline-marker.v220 { background: var(--v220-bronze); box-shadow: 0 0 20px var(--v220-bronze-glow); }
+.timeline-marker.v236 { background: var(--v236-aurora); box-shadow: 0 0 20px var(--v236-aurora-glow); }
+.timeline-date {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.timeline-version {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.timeline-version.v1 { color: var(--v1-gold-light); }
+.timeline-version.v2 { color: var(--v2-transition-light); }
+.timeline-version.v220 { color: var(--v220-bronze-light); }
+.timeline-version.v236 { color: var(--v236-aurora-light); }
+.timeline-subtitle {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+}
+.timeline-card {
+  background: var(--surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.timeline-card ul {
+  list-style: none;
+  padding: 0;
+}
+.timeline-card li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+}
+.timeline-card li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--v1-gold);
+  font-size: 0.7rem;
+  top: 2px;
+}
+.timeline-card .pain-point {
+  background: rgba(255,80,60,0.08);
+  border: 1px solid rgba(255,80,60,0.15);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  color: #e89080;
+}
+.timeline-card .pain-point::before {
+  content: '⚠ ';
+}
+
+/* ===== Phase-specific accent blocks ===== */
+.accent-block {
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+.accent-block.v1 {
+  background: linear-gradient(135deg, rgba(212,168,84,0.06), rgba(212,168,84,0.02));
+  border: 1px solid rgba(212,168,84,0.12);
+}
+.accent-block.v2 {
+  background: linear-gradient(135deg, rgba(167,139,250,0.06), rgba(167,139,250,0.02));
+  border: 1px solid rgba(167,139,250,0.12);
+}
+.accent-block.v220 {
+  background: linear-gradient(135deg, rgba(217,119,54,0.06), rgba(217,119,54,0.02));
+  border: 1px solid rgba(217,119,54,0.12);
+}
+.accent-block.v236 {
+  background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(56,189,248,0.02));
+  border: 1px solid rgba(56,189,248,0.12);
+}
+.accent-block h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+.accent-block.v1 h4 { color: var(--v1-gold-light); }
+.accent-block.v2 h4 { color: var(--v2-transition-light); }
+.accent-block.v220 h4 { color: var(--v220-bronze-light); }
+.accent-block.v236 h4 { color: var(--v236-aurora-light); }
+.accent-block p, .accent-block li {
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+  line-height: 1.8;
+}
+
+/* ===== Philosophy Evolution Table ===== */
+.evo-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 20px 0;
+  font-size: 0.9rem;
+}
+.evo-table th {
+  font-family: var(--font-display);
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--surface);
+  color: var(--text-dim);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  border-bottom: 1px solid var(--border-medium);
+}
+.evo-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+.evo-table tr:hover td { background: rgba(255,255,255,0.015); }
+.evo-table .arrow-cell {
+  color: var(--v1-gold);
+  font-weight: 700;
+  text-align: center;
+  font-size: 0.85rem;
+  width: 50px;
+}
+
+/* ===== Top 10 Lesson Cards ===== */
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  margin: 28px 0;
+}
+.lesson-card {
+  background: var(--surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  transition: border-color var(--ease-out), transform var(--ease-out);
+}
+.lesson-card:hover {
+  border-color: var(--v1-gold-glow);
+  transform: translateY(-2px);
+}
+.lesson-num {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--v1-gold-deep);
+  line-height: 1;
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+.lesson-card:nth-child(2) .lesson-num { color: var(--v2-transition-deep); }
+.lesson-card:nth-child(3) .lesson-num { color: var(--v220-bronze-deep); }
+.lesson-card:nth-child(4) .lesson-num { color: var(--v236-aurora-deep); }
+.lesson-card:nth-child(5) .lesson-num { color: var(--v1-gold-deep); }
+.lesson-card:nth-child(6) .lesson-num { color: var(--v2-transition-deep); }
+.lesson-card:nth-child(7) .lesson-num { color: var(--v220-bronze-deep); }
+.lesson-card:nth-child(8) .lesson-num { color: var(--v236-aurora-deep); }
+.lesson-card:nth-child(9) .lesson-num { color: var(--v1-gold-deep); }
+.lesson-card:nth-child(10) .lesson-num { color: var(--v2-transition-deep); }
+.lesson-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.lesson-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.lesson-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-top: 10px;
+  background: rgba(255,255,255,0.04);
+  color: var(--text-dim);
+}
+
+/* ===== Data Stats Section ===== */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin: 28px 0;
+}
+.data-card {
+  background: var(--surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius);
+  padding: 22px;
+  text-align: center;
+}
+.data-card .from-to {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.data-card .number {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--v1-gold-light);
+}
+.data-card .arrow {
+  color: var(--v236-aurora);
+  margin: 0 8px;
+}
+.data-note {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ===== Navigation Footer ===== */
+.footer-nav {
+  text-align: center;
+  padding: 60px 0 80px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 60px;
+}
+.footer-nav a {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--v1-gold);
+  text-decoration: none;
+  padding: 12px 32px;
+  border: 1px solid rgba(212,168,84,0.2);
+  border-radius: 100px;
+  transition: all var(--ease-out);
+  letter-spacing: 0.04em;
+}
+.footer-nav a:hover {
+  background: rgba(212,168,84,0.08);
+  border-color: rgba(212,168,84,0.4);
+  color: var(--v1-gold-light);
+  box-shadow: 0 0 24px var(--v1-gold-glow);
+}
+.footer-crumb {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 16px;
+  letter-spacing: 0.06em;
+}
+.footer-crumb span { color: var(--text-secondary); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero { padding: 60px 0 40px; }
+  .hero h1 { font-size: 1.8rem; }
+  .hero .subtitle { font-size: 0.95rem; }
+  .stats-bar { gap: 0; margin-bottom: 50px; }
+  .stat-item { min-width: 80px; padding: 14px 16px; }
+  .stat-value { font-size: 1.4rem; }
+  .timeline::before { left: 24px; }
+  .timeline-node { padding-left: 60px; }
+  .timeline-marker { left: 14px; width: 22px; height: 22px; }
+  .section-title { font-size: 1.35rem; }
+  .lessons-grid { grid-template-columns: 1fr; }
+  .data-grid { grid-template-columns: repeat(2, 1fr); }
+  .evo-table { font-size: 0.78rem; }
+  .evo-table th, .evo-table td { padding: 8px 10px; }
+  .main-container { padding: 0 16px; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.5rem; }
+  .stats-bar { flex-direction: column; gap: 0; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border-subtle); }
+  .stat-item:last-child { border-bottom: none; }
+  .data-grid { grid-template-columns: 1fr; }
+  .timeline-node { padding-left: 48px; }
+  .timeline-marker { left: 8px; width: 18px; height: 18px; }
+  .timeline::before { left: 16px; }
+}
+
+/* ===== Fade-in animation ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="cosmic-bg"></div>
+<div class="archive-grid"></div>
+
+<div aria-hidden="true" class="particle-field" id="particles"></div>
+
+<div class="main-container">
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="hero-badge">Evolution Archive</div>
+  <h1>MKS Builder · 演化全史</h1>
+  <p class="subtitle">从单页工具到知识操作系统 —— 一个技能的 3 个月进化笔记</p>
+</header>
+
+<!-- ===== STATS BAR ===== -->
+<div class="stats-bar fade-in">
+  <div class="stat-item">
+    <div class="stat-value">1,200<span class="stat-delta">+</span></div>
+    <div class="stat-label">技能行数</div>
+    <div class="stat-delta">← 200 行</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">90<span class="stat-delta">+</span></div>
+    <div class="stat-label">References 文档</div>
+    <div class="stat-delta">← 0</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">7</div>
+    <div class="stat-label">全场景覆盖</div>
+    <div class="stat-delta">← 1</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">65<span class="stat-delta">+</span></div>
+    <div class="stat-label">知识专题</div>
+    <div class="stat-delta">← 7</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">1,000<span class="stat-delta">+</span></div>
+    <div class="stat-label">核心概念</div>
+    <div class="stat-delta">← 70</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">40<span class="stat-delta">+</span></div>
+    <div class="stat-label">版本迭代</div>
+    <div class="stat-delta">3 个月</div>
+  </div>
+</div>
+
+<!-- ===== EVOLUTION TIMELINE ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <h2 class="section-title">演化时间线</h2>
+  </div>
+
+  <div class="timeline">
+
+    <!-- v1.0 -->
+    <div class="timeline-node">
+      <div class="timeline-marker v1"></div>
+      <div class="timeline-date">2026 年 4 月</div>
+      <div class="timeline-version v1">v1.0 · 单页提取</div>
+      <div class="timeline-subtitle">9标签模板 + 翻转卡片</div>
+      <div class="timeline-card">
+        <ul>
+          <li>知识集总览 → 知识卡片 → 题库 → 考试 → 复习 → 思维导图 → 深度追问 → 案例分析 → 实战决策</li>
+          <li>翻转卡片设计：正面概念名 → 点击翻转 → 背面定义/类比/示例/反例</li>
+          <li>手写 SVG 坐标，每次布局调整都要手动改几十个坐标点</li>
+          <li>代表作：硅谷来信1_v2（7 个专题）、谷歌方法论</li>
+        </ul>
+        <div class="pain-point">手写 SVG 坐标的痛点：每次调整布局都要手动改几十个坐标点</div>
+      </div>
+    </div>
+
+    <!-- v2.0 -->
+    <div class="timeline-node">
+      <div class="timeline-marker v2"></div>
+      <div class="timeline-date">2026 年 5 月</div>
+      <div class="timeline-version v2">v2.0 · 批处理流水线</div>
+      <div class="timeline-subtitle">SQLite + Graphviz + GitHub Pages</div>
+      <div class="timeline-card">
+        <ul>
+          <li>关键转折：从「一次一个专题」到「一次一批课程」</li>
+          <li>SQLite 本地数据库：摆脱 Get Notes API 速率限制</li>
+          <li>Graphviz 自动布局引擎：告别手写 SVG 坐标</li>
+          <li>Claude Code 并行调度：7 个进程同时生成 → 3-5 个成功 → 重跑失败的</li>
+          <li>GitHub Pages 部署：手机电脑均可直接访问</li>
+        </ul>
+        <div class="pain-point">Claude Code 静默卡死、大 JSON 超 1MB、僵尸进程延迟通知</div>
+      </div>
+    </div>
+
+    <!-- v2.20 -->
+    <div class="timeline-node">
+      <div class="timeline-marker v220"></div>
+      <div class="timeline-date">2026 年 6 月初</div>
+      <div class="timeline-version v220">v2.20 · 品控体系</div>
+      <div class="timeline-subtitle">课程 MKS + 质量闸门 + 标杆驱动</div>
+      <div class="timeline-card">
+        <ul>
+          <li>血的教训：文章摘要目录被当成 MKS 交付（零概念提取，全量重做）</li>
+          <li>课程正文 MKS ≠ 笔记 MKS 的重大发现</li>
+          <li>品控铁律的诞生：规则 + 复核 = 质量</li>
+          <li>质量闸门：Claude Code 自检 → Hermes 浏览器复核 → 用户验收</li>
+          <li>三大共同回归的模式化（翻转卡片 / 题库 / 思维导图）</li>
+          <li>标杆驱动：用最优专题对齐其他</li>
+        </ul>
+        <div class="pain-point">文章摘要目录被当成 MKS 交付 —— 零概念提取，全量重做</div>
+      </div>
+    </div>
+
+    <!-- v2.36 -->
+    <div class="timeline-node">
+      <div class="timeline-marker v236"></div>
+      <div class="timeline-date">2026 年 6 月中</div>
+      <div class="timeline-version v236">v2.36 · 创意模式库</div>
+      <div class="timeline-subtitle">全场景平台 + 多作者 Hub + Creative Patterns</div>
+      <div class="timeline-card">
+        <ul>
+          <li>「禁止卡片罗列」—— Andy 的三次强调</li>
+          <li>从「套用统一模板」到「每个专题独立设计」</li>
+          <li>创意模式库的诞生：840 行可复用方法论</li>
+          <li>隐喻选择矩阵、5 大叙事模式、13 种交互形式</li>
+          <li>多作者体系：Hub 总纲 → 系列首页 → 具体课程</li>
+          <li>从工具到平台的跨越：90+ references 文档，全场景覆盖</li>
+        </ul>
+        <div class="pain-point">禁止卡片罗列 —— 每个专题需要 4-6 种不同呈现方式</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 1. ORIGIN ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <h2 class="section-title">起源：为什么需要 MKS</h2>
+  </div>
+  <div class="prose">
+    <p>
+      一切始于<span class="highlight">刘雪峰「最小知识集」理论</span>：一个领域 80% 的价值，集中在 20% 的核心概念上。掌握这些概念，就能在短时间内建立对该领域的结构化认知。
+    </p>
+    <p>
+      <strong>Get 笔记</strong>积累了大量课程笔记——硅谷来信、谷歌方法论、数学通识、世界文明史……但这些笔记是线性的、碎片化的。需要一种方式，将海量笔记<em>结构化提取</em>，提炼出每门课程的核心概念网络。
+    </p>
+    <p>
+      最初只是单次对话中的一句：「<em>帮我搭一下 XX 的最小知识集</em>」。没想到这句话，开启了一场持续 3 个月的技能演化。
+    </p>
+  </div>
+  <div class="insight-block">
+    一个领域 80% 的价值，集中在 20% 的核心概念上。掌握这些概念，就能在短时间内建立对该领域的结构化认知。
+    <span class="attribution">—— 刘雪峰「最小知识集」理论</span>
+  </div>
+</section>
+
+<!-- ===== 2. v1.0 ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <h2 class="section-title">v1.0：从手工到模板</h2>
+  </div>
+  <div class="prose">
+    <p>
+      第一版 MKS 是一个<strong>单页 HTML</strong>，包含 9 个功能标签：
+    </p>
+    <p>
+      知识集总览 → 知识卡片 → 题库 → 考试 → 复习 → 思维导图 → 深度追问 → 案例分析 → 实战决策
+    </p>
+    <p>
+      其中最受欢迎的是<strong>翻转卡片</strong>设计：正面只显示概念名，点击翻转后，背面展示定义、类比、示例、反例——形成「先回忆、再验证」的主动学习闭环。
+    </p>
+  </div>
+
+  <div class="accent-block v1">
+    <h4>✦ v1.0 代表产出</h4>
+    <p><strong>硅谷来信1_v2</strong>：7 个专题，覆盖科技商业逻辑、思维方法论、投资财富、历史文明、艺术审美、教育成长、职场智慧。</p>
+    <p><strong>谷歌方法论</strong>：系统化提取 Google 工程文化与思维工具。</p>
+  </div>
+
+  <div class="prose">
+    <p>
+      但 v1.0 有一个巨大的痛点：<strong>手写 SVG 坐标</strong>。思维导图的每个节点位置都需要手动指定 (x, y) 坐标，每次调整布局都要改几十个坐标点，效率极低。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 3. v2.0 ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <h2 class="section-title">v2.0：批处理与自动化</h2>
+  </div>
+  <div class="prose">
+    <p>
+      这是<strong>最关键的一次跳跃</strong>——从「一次一个专题」到「一次一批课程」。
+    </p>
+    <p>
+      <strong>SQLite 本地数据库</strong>的引入，让我们摆脱了 Get Notes API 的速率限制。所有笔记下载到本地，随心所欲地查询和分析。
+    </p>
+    <p>
+      <strong>Graphviz 自动布局引擎</strong>彻底告别了手写 SVG 坐标的痛苦——只要定义节点和边，布局由算法自动完成。
+    </p>
+    <p>
+      <strong>Claude Code 并行调度</strong>是另一大突破：同时启动 7 个进程生成不同专题，3-5 个成功，失败的自动重跑。但这也带来了新问题。
+    </p>
+  </div>
+
+  <div class="accent-block v2">
+    <h4>✦ v2.0 新问题</h4>
+    <ul style="list-style:none;padding:0;">
+      <li style="margin-bottom:6px;">• Claude Code 静默卡死——进程看着还在，实际已停滞</li>
+      <li style="margin-bottom:6px;">• 大 JSON 超过 1MB——模型输出截断导致数据结构损坏</li>
+      <li>• 僵尸进程延迟通知——任务失败了 10 分钟才被告知</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <p>
+      <strong>GitHub Pages 部署</strong>让我们第一次实现了「手机电脑均可访问」——生成的 MKS 不再只是本地文件，而是可以通过 URL 分享的完整知识站点。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 4. v2.20 ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">05</div>
+    <h2 class="section-title">v2.20：品控体系的建立</h2>
+  </div>
+  <div class="prose">
+    <p>
+      这是<strong>用血的教训换来的版本</strong>。
+    </p>
+  </div>
+
+  <div class="insight-block">
+    文章摘要目录被当成 MKS 交付了。零概念提取，只有标题列表。我们必须全量重做。
+    <span class="attribution">—— v2.20 的起点：一次全量返工事故</span>
+  </div>
+
+  <div class="prose">
+    <p>
+      这次事故让我们发现了一个<strong>重大区别</strong>：<em>课程正文 MKS ≠ 笔记 MKS</em>。笔记是学习者自己的理解和摘要，而课程正文是原作者的系统论述。两者的信息密度和结构完全不同——从笔记提取概念，比从原文提取更困难，因为笔记已经丢失了大量原作者的逻辑线索。
+    </p>
+    <p>
+      于是，<strong>品控铁律</strong>诞生了：
+    </p>
+  </div>
+
+  <div class="accent-block v220">
+    <h4>✦ 品控铁律：规则 + 复核 = 质量</h4>
+    <p><strong>质量闸门三道防线：</strong></p>
+    <ol style="padding-left:20px;color:var(--text-secondary);line-height:2;">
+      <li><strong>Claude Code 自检</strong>——生成后自动运行校验脚本，检查结构完整性</li>
+      <li><strong>Hermes 浏览器复核</strong>——在真实浏览器中渲染，确认交互和视觉正确（grep 通过 ≠ 渲染正确）</li>
+      <li><strong>用户验收</strong>——人工抽查关键专题，确认概念提取质量和叙事逻辑</li>
+    </ol>
+  </div>
+
+  <div class="prose">
+    <p>
+      此外，我们发现了<strong>三大共同回归的模式化问题</strong>：翻转卡片、题库、思维导图——不同专题的这三个模块经常出现同类错误。通过建立<strong>标杆驱动</strong>机制（用最优专题作为标准，对齐其他专题），我们大幅降低了同类错误的复发率。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 5. v2.36 ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">06</div>
+    <h2 class="section-title">v2.36：创意的系统化</h2>
+  </div>
+  <div class="prose">
+    <p>
+      Andy 曾<strong>三次强调</strong>：「<em>禁止卡片罗列</em>」。每个专题不能只是把概念卡片排成一排——那是最懒惰的设计。每个专题应该有自己独特的叙事结构和交互体验。
+    </p>
+    <p>
+      这推动了一次根本性的转变：从「套用统一模板」到「每个专题独立设计」。
+    </p>
+  </div>
+
+  <div class="accent-block v236">
+    <h4>✦ 创意模式库 · Creative Patterns（840 行可复用方法论）</h4>
+    <table style="width:100%;color:var(--text-secondary);font-size:0.9rem;">
+      <tr>
+        <td style="padding:6px 12px;vertical-align:top;color:var(--v236-aurora-light);white-space:nowrap;">隐喻选择矩阵</td>
+        <td style="padding:6px 12px;">根据课程气质匹配合适的视觉隐喻——古典学术用档案馆、科学技术用控制台、文明史用星图</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;vertical-align:top;color:var(--v236-aurora-light);white-space:nowrap;">5 大叙事模式</td>
+        <td style="padding:6px 12px;">时间轴叙事 / 概念地图 / 对话博弈 / 案例驱动 / 思维实验</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;vertical-align:top;color:var(--v236-aurora-light);white-space:nowrap;">13 种交互形式</td>
+        <td style="padding:6px 12px;">翻转卡片、渐进式展开、拖拽排序、矩阵对比、时间轴滑动、关系图谱、决策树、闪卡测验、场景模拟、概念拼接、层级钻取、双栏对照、自由探索</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>
+      更重要的是，我们建立了<strong>多作者体系</strong>：
+    </p>
+    <p style="text-align:center;font-family:var(--font-display);color:var(--text-primary);letter-spacing:0.03em;line-height:2.2;">
+      Hub 总纲 → 系列首页 → 具体课程<br>
+      <span style="color:var(--text-dim);">（知识总纲） （作者门户） （知识专题）</span>
+    </p>
+    <p>
+      这标志着 MKS Builder 从<strong>一个工具</strong>，跨越为<strong>一个平台</strong>。90+ references 文档，覆盖 A/B/D/E/F/G 全场景——从单次生成到持续维护，从个人使用到多作者协作。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 6. CORE PHILOSOPHY EVOLUTION ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">07</div>
+    <h2 class="section-title">核心设计哲学演变</h2>
+  </div>
+  <div class="prose">
+    <p>每一次版本跃迁，都伴随着设计哲学的根本转向：</p>
+  </div>
+  <div style="overflow-x:auto;">
+  <table class="evo-table">
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th style="color:var(--v1-gold-light);">v1.0</th>
+        <th class="arrow-cell">→</th>
+        <th style="color:var(--v2-transition-light);">v2.0</th>
+        <th class="arrow-cell">→</th>
+        <th style="color:var(--v220-bronze-light);">v2.20</th>
+        <th class="arrow-cell">→</th>
+        <th style="color:var(--v236-aurora-light);">v2.36</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>驱动模式</strong></td>
+        <td>模板驱动</td><td class="arrow-cell">→</td>
+        <td>规则驱动</td><td class="arrow-cell">→</td>
+        <td>标杆驱动</td><td class="arrow-cell">→</td>
+        <td>愿景驱动</td>
+      </tr>
+      <tr>
+        <td><strong>代码生成</strong></td>
+        <td>Hermes 手写</td><td class="arrow-cell">→</td>
+        <td>Claude Code 批量</td><td class="arrow-cell">→</td>
+        <td colspan="3">Hermes 规划 + Claude Code 执行</td>
+      </tr>
+      <tr>
+        <td><strong>分发形态</strong></td>
+        <td>单个 HTML</td><td class="arrow-cell">→</td>
+        <td>GitHub Pages</td><td class="arrow-cell">→</td>
+        <td colspan="3">独立仓库 + 多作者体系</td>
+      </tr>
+      <tr>
+        <td><strong>体验目标</strong></td>
+        <td>信息展示</td><td class="arrow-cell">→</td>
+        <td>交互体验</td><td class="arrow-cell">→</td>
+        <td colspan="3">叙事体验</td>
+      </tr>
+      <tr>
+        <td><strong>质量保障</strong></td>
+        <td>人工目检</td><td class="arrow-cell">→</td>
+        <td>脚本自检</td><td class="arrow-cell">→</td>
+        <td>质量闸门</td><td class="arrow-cell">→</td>
+        <td>标杆 + 闸门 + Hermes</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="insight-block">
+    「规范驱动」→「标杆驱动」→「愿景驱动」：放权比规范更出质量。给设计师一个愿景 brief，而不是一份规范 check list。
+    <span class="attribution">—— 核心哲学转向</span>
+  </div>
+</section>
+
+<!-- ===== 7. DATA STATISTICS ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">08</div>
+    <h2 class="section-title">数据统计</h2>
+  </div>
+  <div class="data-grid">
+    <div class="data-card">
+      <div class="from-to">技能行数</div>
+      <div class="number"><span style="color:var(--text-dim);">200</span> <span class="arrow">→</span> 1,200<span style="font-size:0.7em;color:var(--v236-aurora);">+</span></div>
+      <div class="data-note">6× 增长</div>
+    </div>
+    <div class="data-card">
+      <div class="from-to">References 文档</div>
+      <div class="number"><span style="color:var(--text-dim);">0</span> <span class="arrow">→</span> 90<span style="font-size:0.7em;color:var(--v236-aurora);">+</span></div>
+      <div class="data-note">从零构建</div>
+    </div>
+    <div class="data-card">
+      <div class="from-to">支持场景</div>
+      <div class="number"><span style="color:var(--text-dim);">1</span> <span class="arrow">→</span> 7</div>
+      <div class="data-note">A/B/D/E/F/G 全场景</div>
+    </div>
+    <div class="data-card">
+      <div class="from-to">覆盖课程</div>
+      <div class="number"><span style="color:var(--text-dim);">2</span> <span class="arrow">→</span> 15<span style="font-size:0.7em;color:var(--v236-aurora);">+</span></div>
+      <div class="data-note">7.5× 增长</div>
+    </div>
+    <div class="data-card">
+      <div class="from-to">产出专题</div>
+      <div class="number"><span style="color:var(--text-dim);">7</span> <span class="arrow">→</span> 65<span style="font-size:0.7em;color:var(--v236-aurora);">+</span></div>
+      <div class="data-note">9× 增长</div>
+    </div>
+    <div class="data-card">
+      <div class="from-to">核心概念</div>
+      <div class="number"><span style="color:var(--text-dim);">~70</span> <span class="arrow">→</span> 1,000<span style="font-size:0.7em;color:var(--v236-aurora);">+</span></div>
+      <div class="data-note">14× 增长</div>
+    </div>
+    <div class="data-card">
+      <div class="from-to">版本迭代</div>
+      <div class="number">40<span style="font-size:0.7em;color:var(--v236-aurora);">+</span></div>
+      <div class="data-note">3 个月内</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. TOP 10 LESSONS ===== -->
+<section class="section fade-in">
+  <div class="section-header">
+    <div class="section-number">09</div>
+    <h2 class="section-title">关键教训 Top 10</h2>
+  </div>
+  <div class="lessons-grid">
+
+    <div class="lesson-card">
+      <div class="lesson-num">01</div>
+      <div class="lesson-title">文章摘要目录 ≠ MKS</div>
+      <div class="lesson-desc">最大事故——把文章标题列表当作最小知识集交付，零概念提取，导致全量重做。教训：交付前必须确认「概念」二字是否落实。</div>
+      <span class="lesson-tag">v2.20 · 品控</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">02</div>
+      <div class="lesson-title">课程正文必须串行</div>
+      <div class="lesson-desc">并行处理课程正文 = 质量断崖。并行适合独立专题，但同一课程的各专题之间存在隐含依赖关系，必须串行以保证一致性。</div>
+      <span class="lesson-tag">v2.0 · 架构</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">03</div>
+      <div class="lesson-title">源数据标签不可信</div>
+      <div class="lesson-desc">航天专题 AI 编造内容——Get Notes 的 AI 摘要有时会「创造性补充」原文没有的信息。永远以原文为准，标签只是参考。</div>
+      <span class="lesson-tag">v2.20 · 数据</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">04</div>
+      <div class="lesson-title">静默卡死有规律</div>
+      <div class="lesson-desc">Claude Code 静默卡死的主要根因是大 JSON 超过 1MB。解决方案：分片输出，每个 JSON 控制在 500KB 以内。</div>
+      <span class="lesson-tag">v2.0 · 工程</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">05</div>
+      <div class="lesson-title">CDN 缓存迷惑调试</div>
+      <div class="lesson-desc">GitHub Pages 的 CDN 缓存导致「改完了但用户看不到」。调试时必须强制刷新（Ctrl+Shift+R）或使用无痕模式。</div>
+      <span class="lesson-tag">v2.0 · 部署</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">06</div>
+      <div class="lesson-title">翻转卡片 CSS 三根因</div>
+      <div class="lesson-desc">WebKit 前缀缺失、父容器塌陷、ID 不匹配——三个根因导致的翻转卡片故障，每条都需要独立排查。</div>
+      <span class="lesson-tag">v1.0 · 前端</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">07</div>
+      <div class="lesson-title">放权比规范更出质量</div>
+      <div class="lesson-desc">给设计师一个愿景 brief，而不是一份规范 check list。愿景驱动下产出的设计，比逐条对照规范做出来的更有灵魂。</div>
+      <span class="lesson-tag">v2.36 · 设计</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">08</div>
+      <div class="lesson-title">禁止卡片罗列</div>
+      <div class="lesson-desc">每个专题必须使用 4-6 种不同的呈现方式。卡片罗列是最懒惰的设计——叙事体验来自形式的多样性。</div>
+      <span class="lesson-tag">v2.36 · 设计</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">09</div>
+      <div class="lesson-title">delegate_task 不适合长任务</div>
+      <div class="lesson-desc">MKS 生成通常需要 5-15 分钟，而 delegate_task 的超时和状态管理不适合这种长时任务。改用直接调用 + 主动轮询。</div>
+      <span class="lesson-tag">v2.0 · 工程</span>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-num">10</div>
+      <div class="lesson-title">Hermes 浏览器复核不可跳过</div>
+      <div class="lesson-desc">grep 通过 ≠ 渲染正确。文本层面的校验无法发现 CSS 布局问题、JS 交互异常、响应式断裂。浏览器复核是质量闸门的最后一道防线。</div>
+      <span class="lesson-tag">v2.20 · 品控</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FOOTER NAVIGATION ===== -->
+<footer class="footer-nav">
+  <a href="../../hub.html">← 返回知识总纲</a>
+  <div class="footer-crumb">
+    <span>MKS Builder · Evolution Archive</span> &nbsp;·&nbsp; 2026年4月 – 2026年6月 &nbsp;·&nbsp; v1.0 → v2.36
+  </div>
+</footer>
+
+</div><!-- /main-container -->
+
+<script>
+// ===== Floating Particles =====
+(function() {
+  const field = document.getElementById('particles');
+  const count = 35;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (12 + Math.random() * 24) + 's';
+    p.style.animationDelay = Math.random() * 18 + 's';
+    p.style.width = (1 + Math.random() * 2) + 'px';
+    p.style.height = p.style.width;
+    field.appendChild(p);
+  }
+})();
+
+// ===== Scroll-triggered fade-in =====
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Also reveal any that are already in view on load
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+  }, 200);
+})();
+</script>
+
+</body>
+</html>

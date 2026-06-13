@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS 1.0 · 单页提取时代</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-elevated: #1a1a28;
+    --text: #d4d4dc;
+    --text-muted: #8888a0;
+    --accent: #c9a96e;
+    --accent-dim: #6b5b3e;
+    --border: #2a2a3a;
+    --tag-bg: #1e1e30;
+    --code-bg: #0d0d18;
+    --danger: #a05050;
+    --success: #50a070;
+    --info: #5080a0;
+    font-size: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── Navigation Bar ── */
+  .version-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+  .version-nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 0;
+    padding: 0 1.5rem;
+    overflow-x: auto;
+  }
+  .version-nav a {
+    display: block; padding: 0.85rem 1.4rem;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .version-nav a:hover { color: var(--text); border-bottom-color: var(--accent-dim); }
+  .version-nav a.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+
+  /* ── Layout ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* ── Header ── */
+  .page-header {
+    text-align: center; padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .version-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-dim), #4a3a1e);
+    color: var(--accent);
+    padding: 0.35rem 1.2rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+  .page-header h1 {
+    font-size: 2.8rem; font-weight: 800; color: #e8e0d0;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .page-header .subtitle {
+    color: var(--text-muted); font-size: 1.15rem; margin-top: 0.6rem;
+  }
+  .page-header .period {
+    display: inline-block; margin-top: 0.8rem;
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    padding: 0.3rem 1rem; border-radius: 6px;
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .page-header .period::before { content: '📅 '; }
+
+  /* ── Timeline ── */
+  .timeline { position: relative; padding: 1rem 0 1rem 3rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 14px; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(to bottom, var(--accent-dim), var(--border), var(--border));
+  }
+  .timeline-item { position: relative; margin-bottom: 2.5rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.5rem; top: 0.6rem;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent-dim); border: 2px solid var(--bg);
+  }
+  .timeline-item:first-child::before { background: var(--accent); box-shadow: 0 0 12px rgba(201,169,110,0.4); }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem 1.8rem; margin-bottom: 1.2rem;
+  }
+  .card h3 { color: var(--accent); font-size: 1.15rem; margin-bottom: 0.8rem; }
+  .card p, .card li { color: var(--text-muted); font-size: 0.95rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+
+  /* ── Sections ── */
+  .section { margin: 3rem 0; }
+  .section-title {
+    font-size: 1.55rem; font-weight: 700; color: #e0d8c8;
+    margin-bottom: 1.2rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-title .icon { font-size: 1.4rem; }
+
+  /* ── Tags / Badges ── */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+  .tag {
+    display: inline-block; background: var(--tag-bg); border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem; border-radius: 5px;
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  .tag.highlight { border-color: var(--accent-dim); color: var(--accent); }
+
+  /* ── Feature rows ── */
+  .feature-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .feature-col { flex: 1; min-width: 260px; }
+
+  /* ── Representative works ── */
+  .work-card {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--accent-dim);
+  }
+  .work-card h4 { color: #d8cfb8; font-size: 1rem; margin-bottom: 0.4rem; }
+  .work-card .meta { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ── Code / pre ── */
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto;
+    font-size: 0.85rem; color: #b0b0c0; line-height: 1.6;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--border); text-align: center;
+  }
+  .footer a {
+    color: var(--accent); text-decoration: none;
+    font-size: 0.95rem; font-weight: 600;
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: #e0c080; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 2rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .timeline { padding-left: 2.2rem; }
+    .version-nav-inner { gap: 0; }
+    .version-nav a { padding: 0.7rem 1rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════ Version Navigation ════════════ -->
+<nav class="version-nav">
+  <div class="version-nav-inner">
+    <a href="v1.0.html" class="active">v1.0 · 单页提取</a>
+    <a href="v2.0.html">v2.0 · 批处理流水线</a>
+    <a href="v2.20.html">v2.20 · 品控体系</a>
+    <a href="v2.36.html">v2.36 · 全场景平台</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ════════════ Header ════════════ -->
+<header class="page-header">
+  <div class="version-badge">MKS BUILDER v1.0</div>
+  <h1>单页提取时代</h1>
+  <p class="subtitle">从手动笔记到结构化知识集的第一次跃迁</p>
+  <span class="period">2026年4月 — 5月初</span>
+</header>
+
+<!-- ════════════ 概述 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">📜</span> 时代概览</h2>
+  <div class="card">
+    <p>
+      MKS Builder 技能的起点。彼时「最小知识集」（Minimal Knowledge Set）概念刚刚成型——从一篇或多篇专栏文章中提取核心知识点，
+      并以结构化的 HTML 页面承载交互式学习体验。v1.0 的核心范式是 <strong style="color:var(--accent);">「单篇提取、单页呈现」</strong>，
+      所有内容聚合在一个 HTML 文件中，通过内联 CSS 和 JavaScript 实现翻转卡片、选择题、简答题等交互。
+    </p>
+  </div>
+</section>
+
+<!-- ════════════ 核心能力 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">⚙️</span> 核心能力矩阵</h2>
+
+  <div class="card">
+    <h3>🎯 场景 A — 单个 MKS 提取</h3>
+    <p>从 Get Notes API 拉取指定文章集合，按 9 标签模板生成单一 HTML 知识集。输入为专栏标签（如「硅谷来信1」），输出为一个包含完整交互功能的 HTML 文件。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>🏷️ 基础 9 标签模板</h3>
+    <div class="tag-list">
+      <span class="tag highlight">📋 知识集总览</span>
+      <span class="tag highlight">🃏 知识卡片</span>
+      <span class="tag highlight">📝 题库系统</span>
+      <span class="tag highlight">🎓 考试模式</span>
+      <span class="tag highlight">🔄 复习模式</span>
+      <span class="tag highlight">🧠 思维导图</span>
+      <span class="tag highlight">🔍 深度追问</span>
+      <span class="tag highlight">📊 案例分析</span>
+      <span class="tag highlight">🎯 实战决策</span>
+    </div>
+    <p style="margin-top:0.6rem;">这 9 个标签构成了 MKS 最原始的交互骨架——知识输入（卡片）、理解验证（题库/考试）、深度加工（追问/案例/决策）、视觉梳理（思维导图）。</p>
+  </div>
+</section>
+
+<!-- ════════════ 技术栈 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🔧</span> 技术栈与架构</h2>
+
+  <div class="feature-row">
+    <div class="feature-col">
+      <div class="card">
+        <h3>🖥️ 前端架构</h3>
+        <ul>
+          <li>纯 HTML 单文件，无外部依赖</li>
+          <li>内联 CSS 样式系统</li>
+          <li>内联 JavaScript 实现全部交互</li>
+          <li>flip-card 翻转卡片（CSS 3D transform）</li>
+          <li>localStorage 持久化答题进度</li>
+        </ul>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>📊 视觉技术</h3>
+        <ul>
+          <li>概念关系图：<strong>手写 SVG 坐标</strong></li>
+          <li>思维导图：纯 CSS + HTML 嵌套列表</li>
+          <li>翻转卡片：正面仅显示概念名</li>
+          <li>选择题 + 简答题：<strong>独立 tab 分开展示</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>📡 数据获取</h3>
+    <p>完全依赖 <strong>Get Notes API</strong> 实时查询专栏文章。每次生成 MKS 时需在线拉取原文内容，无本地缓存机制。这也意味着离线不可用，且对 API 稳定性有强依赖。</p>
+  </div>
+</section>
+
+<!-- ════════════ 代表作 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🏆</span> 代表性产出</h2>
+
+  <div class="card-grid">
+    <div class="work-card">
+      <h4>📘 硅谷来信1_v2</h4>
+      <div class="meta">7 个专题 · 完整 9 标签 · 翻转卡片交互</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        v1.0 时代的标杆作品。7 个专题分别独立生成 MKS HTML，建立了专题拆分的初始范式。
+        每个专题包含完整的知识卡片、题库系统和思维导图。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>📙 谷歌方法论</h4>
+      <div class="meta">多专题 · 概念关系 SVG 手写</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        验证了 9 标签模板的通用性。手写 SVG 坐标绘制概念关系图，
+        为后续 Graphviz 自动化埋下了「必须改进」的种子。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 关键特征 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🔑</span> 关键设计特征</h2>
+
+  <div class="card">
+    <table style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align:left; padding:0.6rem 0; color:var(--accent); font-size:0.9rem;">特征</th>
+          <th style="text-align:left; padding:0.6rem 0; color:var(--accent); font-size:0.9rem;">说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.6rem 0.8rem 0.6rem 0; font-weight:600;">概念关系图手写 SVG</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">每个专题的概念关系图需手动计算节点坐标，效率低但精确</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.6rem 0.8rem 0.6rem 0; font-weight:600;">选择题 + 简答题独立 tab</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">两套题目系统各自独立展示，未合并为统一的题库界面</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.6rem 0.8rem 0.6rem 0; font-weight:600;">概念卡片仅正面显示概念名</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">翻转卡片的正面只展示概念名称，翻转后显示详细解释</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 0.8rem 0.6rem 0; font-weight:600;">localStorage 持久化</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">用户的答题记录和复习进度存储在浏览器本地，无服务端</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════ 局限性 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">⚠️</span> 已知局限</h2>
+
+  <div class="card">
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+        <span style="color:var(--danger); margin-right:0.5rem;">✘</span>
+        <strong>无批量处理：</strong>每个专题需手动逐个生成，无法并行或自动化
+      </li>
+      <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+        <span style="color:var(--danger); margin-right:0.5rem;">✘</span>
+        <strong>无 SQLite 本地库：</strong>所有数据依赖 API 实时查询，无本地存储与索引
+      </li>
+      <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+        <span style="color:var(--danger); margin-right:0.5rem;">✘</span>
+        <strong>API 强依赖：</strong>Get Notes API 不可用时，MKS 生成完全阻塞
+      </li>
+      <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+        <span style="color:var(--danger); margin-right:0.5rem;">✘</span>
+        <strong>SVG 手写坐标效率低：</strong>每个概念关系图需手动计算和调整节点位置
+      </li>
+      <li style="padding: 0.5rem 0;">
+        <span style="color:var(--danger); margin-right:0.5rem;">✘</span>
+        <strong>翻转卡片设计不统一：</strong>不同专题的卡片样式和交互存在差异
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════ 时间线 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">⏳</span> 演化时间线</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="card">
+        <h3>2026.4 初 · MKS 概念诞生</h3>
+        <p>从硅谷来信专栏中提取核心知识点，首次提出「最小知识集」结构化理念。确立 9 标签模板作为 MKS 的标准骨架。</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="card">
+        <h3>2026.4 中 · 硅谷来信1_v2</h3>
+        <p>首个完整专题 MKS 产出，7 个专题全部上线。验证了单页 HTML 架构的可行性和 9 标签模板的通用性。</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="card">
+        <h3>2026.4 末 · 谷歌方法论扩展</h3>
+        <p>将 MKS 模板推广至谷歌方法论专栏，验证了跨专栏的适用性。暴露出 SVG 手写坐标和缺乏批量处理的核心痛点。</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="card">
+        <h3>2026.5 初 · 迈向 v2.0</h3>
+        <p>随着专栏数量增长和批量需求的迫切，单页提取模式已无法满足规模要求。MKS Builder 进入批处理流水线时代。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ Footer ════════════ -->
+<footer class="footer">
+  <p><a href="../hub.html">← 返回知识总纲</a></p>
+  <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.8rem;">MKS Builder · 版本历史档案馆 · v1.0</p>
+</footer>
+
+</div>
+</body>
+</html>

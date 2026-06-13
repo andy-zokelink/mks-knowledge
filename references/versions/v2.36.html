@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS 2.36 · 创意模式库与全场景平台</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-elevated: #1a1a28;
+    --text: #d4d4dc;
+    --text-muted: #8888a0;
+    --accent: #c9a96e;
+    --accent-dim: #6b5b3e;
+    --accent-glow: rgba(201,169,110,0.3);
+    --border: #2a2a3a;
+    --tag-bg: #1e1e30;
+    --code-bg: #0d0d18;
+    --danger: #a05050;
+    --success: #50a070;
+    --info: #5080a0;
+    --warn: #c09040;
+    --purple: #9070c0;
+    font-size: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .version-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .version-nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 0;
+    padding: 0 1.5rem; overflow-x: auto;
+  }
+  .version-nav a {
+    display: block; padding: 0.85rem 1.4rem;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s; white-space: nowrap;
+  }
+  .version-nav a:hover { color: var(--text); border-bottom-color: var(--accent-dim); }
+  .version-nav a.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .page-header {
+    text-align: center; padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border); margin-bottom: 2.5rem;
+  }
+  .version-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-dim), #5a3a8a);
+    color: var(--accent);
+    padding: 0.35rem 1.2rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+  .page-header h1 {
+    font-size: 2.8rem; font-weight: 800; color: #e8e0d0;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .page-header .subtitle { color: var(--text-muted); font-size: 1.15rem; margin-top: 0.6rem; }
+  .page-header .period {
+    display: inline-block; margin-top: 0.8rem;
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    padding: 0.3rem 1rem; border-radius: 6px;
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .page-header .period::before { content: '📅 '; }
+  .version-meta {
+    margin-top: 1rem; font-size: 0.9rem; color: var(--accent);
+    font-weight: 600;
+  }
+
+  .section { margin: 3rem 0; }
+  .section-title {
+    font-size: 1.55rem; font-weight: 700; color: #e0d8c8;
+    margin-bottom: 1.2rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-title .icon { font-size: 1.4rem; }
+
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem 1.8rem; margin-bottom: 1.2rem;
+  }
+  .card h3 { color: var(--accent); font-size: 1.15rem; margin-bottom: 0.8rem; }
+  .card p, .card li { color: var(--text-muted); font-size: 0.95rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+  .tag {
+    display: inline-block; background: var(--tag-bg); border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem; border-radius: 5px;
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  .tag.highlight { border-color: var(--accent-dim); color: var(--accent); }
+
+  .feature-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .feature-col { flex: 1; min-width: 260px; }
+
+  .work-card {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--accent);
+  }
+  .work-card h4 { color: #d8cfb8; font-size: 1rem; margin-bottom: 0.4rem; }
+  .work-card .meta { font-size: 0.8rem; color: var(--text-muted); }
+
+  .principle-card {
+    background: var(--bg-elevated); border: 1px solid #5a4a3a;
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--warn);
+  }
+  .principle-card h4 { color: var(--accent); font-size: 1rem; margin-bottom: 0.4rem; }
+
+  .narrative-card {
+    background: var(--bg-elevated); border: 1px solid #3a3a5a;
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--purple);
+  }
+  .narrative-card h4 { color: #b0a0d0; font-size: 1rem; margin-bottom: 0.4rem; }
+
+  .capability-matrix {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.8rem;
+  }
+  .cap-cell {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.2rem; text-align: center;
+  }
+  .cap-cell .scene { color: var(--accent); font-weight: 700; font-size: 1.1rem; }
+  .cap-cell .label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem; }
+  .cap-cell .check { color: var(--success); font-size: 1.2rem; margin-top: 0.5rem; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--border); text-align: center;
+  }
+  .footer a { color: var(--accent); text-decoration: none; font-size: 0.95rem; font-weight: 600; }
+  .footer a:hover { color: #e0c080; }
+
+  /* Current version glow */
+  .current-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #8a6a3a);
+    color: #0a0a0f; padding: 0.2rem 0.7rem; border-radius: 100px;
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em;
+    vertical-align: middle; margin-left: 0.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 2rem; }
+    .card-grid, .capability-matrix { grid-template-columns: 1fr; }
+    .version-nav a { padding: 0.7rem 1rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="version-nav">
+  <div class="version-nav-inner">
+    <a href="v1.0.html">v1.0 · 单页提取</a>
+    <a href="v2.0.html">v2.0 · 批处理流水线</a>
+    <a href="v2.20.html">v2.20 · 品控体系</a>
+    <a href="v2.36.html" class="active">v2.36 · 全场景平台</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<header class="page-header">
+  <div class="version-badge">MKS BUILDER v2.36 <span class="current-badge">CURRENT</span></div>
+  <h1>创意模式库与全场景平台</h1>
+  <p class="subtitle">从知识提取工具到创意方法论平台——MKS 的最终形态</p>
+  <span class="period">2026年6月中旬至今</span>
+  <div class="version-meta">当前技能版本：v2.36.0 · 90+ references 文档 · 全面沉淀</div>
+</header>
+
+<!-- ════════════ 概述 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🌟</span> 时代概览</h2>
+  <div class="card">
+    <p>
+      v2.36 标志着 MKS Builder 从「知识提取工具」进化为<strong style="color:var(--accent);">「创意方法论平台」</strong>。
+      核心突破在于：不再满足于把知识「正确地呈现出来」，而是建立了一套
+      <strong style="color:var(--accent);">可复用的创作方法论</strong>——创意模式库（Creative Patterns Library，840 行 8 章），
+      指导每个专题如何用不同的叙事方式、交互形式、视觉隐喻来呈现知识。
+      同时，多作者总导航页（Hub 模式）和跨课程 MKS 知识体系的建立，让平台从单兵作战升级为可以容纳多作者、多系列的创作生态。
+    </p>
+  </div>
+</section>
+
+<!-- ════════════ 创意模式库 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🎨</span> 创意模式库（Creative Patterns Library）</h2>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3>📚 840 行 · 8 章 · 可复用创作方法论</h3>
+    <p>创意模式库是 v2.36 最核心的知识资产。它不是操作手册，而是<strong>创作方法论</strong>——
+    告诉设计者「如何思考内容的呈现方式」，而非「按什么步骤操作」。8 章覆盖从设计哲学到具体技法的完整链路。</p>
+  </div>
+
+  <h3 style="color:#e0d8c8; margin:1.5rem 0 1rem; font-size:1.1rem;">🎯 核心创意铁律</h3>
+
+  <div class="principle-card" style="margin-bottom:1rem;">
+    <h4>🚫 禁止卡片罗列</h4>
+    <p>每个专题至少使用 <strong>4-6 种不同的内容呈现方式</strong>。不允许一个专题全是翻转卡片、或全是列表。多样性不是装饰——不同的知识类型需要不同的认知交互。</p>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem;">
+    <h3>🧭 隐喻选择矩阵</h3>
+    <p>7 种知识类型对应 7 种隐喻方向：</p>
+    <div class="tag-list" style="margin-top:0.5rem;">
+      <span class="tag highlight">层级结构 → 金字塔</span>
+      <span class="tag highlight">流程知识 → 河流/管道</span>
+      <span class="tag highlight">对比知识 → 天平/镜像</span>
+      <span class="tag highlight">演化知识 → 树/年轮</span>
+      <span class="tag highlight">网络知识 → 星座/星系</span>
+      <span class="tag highlight">工具知识 → 工具箱/瑞士军刀</span>
+      <span class="tag highlight">叙事知识 → 旅程/地图</span>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-col">
+      <div class="narrative-card">
+        <h4>📖 5 大核心叙事模式</h4>
+        <ul>
+          <li><strong>层级递进</strong> — 从基础到高阶</li>
+          <li><strong>旅程渐进</strong> — 学习者的成长弧线</li>
+          <li><strong>解密戏剧</strong> — 悬念→线索→揭示</li>
+          <li><strong>训练营闯关</strong> — 挑战→练习→升级</li>
+          <li><strong>史书展开</strong> — 时间线→事件→因果</li>
+        </ul>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="narrative-card">
+        <h4>🧰 13 种交互形式工具箱</h4>
+        <ul>
+          <li>翻转卡片 / 拖拽排序 / 填空</li>
+          <li>时间线滑块 / 对比滑块</li>
+          <li>概念地图 / 嵌套展开</li>
+          <li>场景决策树 / 角色扮演</li>
+          <li>拼图匹配 / 渐进揭示 / 自由探索</li>
+          <li>模拟沙盘</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>🎬 首页视觉图必须有叙事弧线</h3>
+    <p>禁止教科书式图解——那是「解释」而非「邀请」。首页视觉图必须讲述一个有弧线的故事：
+    设问 → 探索 → 揭示。让学习者在进入内容之前就已经被叙事吸引。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>🔑 放权比规范更出质量</h3>
+    <p>设计师 brief 写愿景不写规范——告诉 Claude Code「我想让学习者感受到概念的层层递进」，
+    而不是「用 3 层嵌套列表+翻转卡片」。这是从 v2.20「目标导向 prompt」理念的进一步深化。</p>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>📐 数据 → 设计五步转化法</h3>
+    <ol style="margin-top:0.5rem; color: var(--text-muted); padding-left: 1.2rem;">
+      <li>分析内容的知识类型</li>
+      <li>选择对应的隐喻方向</li>
+      <li>确定叙事模式</li>
+      <li>从工具箱中选择 4-6 种交互形式</li>
+      <li>设计首页叙事弧线</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ════════════ 平台能力 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🏗️</span> 平台能力矩阵</h2>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3>🌐 多作者体系隔离</h3>
+    <p>每位作者拥有独立的 GitHub Pages 仓库，知识体系完全隔离：</p>
+    <div class="feature-row" style="margin-top:0.8rem;">
+      <div class="feature-col">
+        <div class="card" style="background:var(--bg-elevated);">
+          <h4 style="font-size:0.95rem;">吴军 · mks-knowledge</h4>
+          <p style="font-size:0.85rem;">硅谷来信系列 / 谷歌方法论 / 科技史纲 / 文明史 / 思想体系</p>
+        </div>
+      </div>
+      <div class="feature-col">
+        <div class="card" style="background:var(--bg-elevated);">
+          <h4 style="font-size:0.95rem;">卓克 · mks-zhuoke</h4>
+          <p style="font-size:0.85rem;">科技参考系列 / 科学思维课 / 数学通识</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3>🧭 系列级 Hub 总纲导航</h3>
+    <p>每个系列有一个 Hub 总纲导航页——不展开子项，只列出系列名称和简要描述。
+    用户点击后跳转至各系列的自有首页，而非在 Hub 中展开全部内容。保持导航简洁，尊重各系列的独立设计。</p>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3>🃏 概念卡片池</h3>
+    <p><strong>1,192 个概念</strong> · <strong>15 个分类</strong> · 马赛克像素拼图 UI。
+    所有 MKS 中提取的概念汇入统一的卡片池，用户可按分类筛选、自由探索。
+    马赛克拼图 UI 让概念之间的关系可视化——相邻的概念在语义上也相近。</p>
+  </div>
+
+  <div class="card">
+    <h3>🎬 全场景覆盖</h3>
+    <div class="capability-matrix" style="margin-top:0.8rem;">
+      <div class="cap-cell">
+        <div class="scene">场景 A</div>
+        <div class="label">单个 MKS 提取</div>
+        <div class="check">✅ 成熟</div>
+      </div>
+      <div class="cap-cell">
+        <div class="scene">场景 B</div>
+        <div class="label">大规模批量流水线</div>
+        <div class="check">✅ 成熟</div>
+      </div>
+      <div class="cap-cell">
+        <div class="scene">场景 D</div>
+        <div class="label">旧版 HTML 重生成</div>
+        <div class="check">✅ 成熟</div>
+      </div>
+      <div class="cap-cell">
+        <div class="scene">场景 E</div>
+        <div class="label">跨课程合并 MKS</div>
+        <div class="check">✅ 成熟</div>
+      </div>
+      <div class="cap-cell">
+        <div class="scene">场景 F</div>
+        <div class="label">Meta-MKS 思想重组</div>
+        <div class="check">✅ 成熟</div>
+      </div>
+      <div class="cap-cell">
+        <div class="scene">场景 G</div>
+        <div class="label">播客制作</div>
+        <div class="check">✅ 成熟</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 代表作 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🏆</span> 代表性产出</h2>
+
+  <div class="card-grid">
+    <div class="work-card">
+      <h4>🔬 卓克科技参考 3</h4>
+      <div class="meta">8 个独立交互设计专题 · 零模板重复</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        v2.36 创意模式库的旗舰验证。8 个专题各自使用完全不同的交互设计方案——
+        禁止卡片罗列铁律的极致体现。每个专题都有独特的叙事弧线、视觉隐喻和交互形式组合。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>🏛️ 吴军思想体系（三层金字塔）</h4>
+      <div class="meta">1018 篇跨课重组 · Meta-MKS 跨课体系</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        从 v2.0 延续并持续迭代的旗舰项目。三层金字塔在 v2.36 中用创意模式库的方法重新设计呈现，
+        底部思维工具层使用工具箱隐喻，中部领域认知层使用地图隐喻，顶部世界观层使用星座隐喻。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>📖 创意模式库</h4>
+      <div class="meta">840 行 · 8 章 · 可复用创作方法论</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        MKS 平台自身的元知识——关于如何做 MKS 的 MKS。从数百次创作中提炼出的可复用模式，
+        是平台从工具进化为方法论体系的关键标志。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>🧭 MKS 知识总纲 Hub</h4>
+      <div class="meta">多作者 · 多系列 · 总导航</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        所有 MKS 产出的总入口。Hub 模式下不展开子项，提供清晰的系列级导航。
+        多作者体系各自独立，但在总纲中形成完整的知识版图。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 当前技能状态 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">📊</span> 当前技能状态</h2>
+
+  <div class="feature-row">
+    <div class="feature-col">
+      <div class="card">
+        <h3>📦 版本</h3>
+        <p style="font-size:1.6rem; font-weight:800; color:var(--accent);">v2.36.0</p>
+        <p style="margin-top:0.5rem;">稳定版本，全场景成熟</p>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>📚 文档规模</h3>
+        <p style="font-size:1.6rem; font-weight:800; color:var(--accent);">90+</p>
+        <p style="margin-top:0.5rem;">references 文档，全面沉淀</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>🧬 技能 DNA</h3>
+    <p>MKS Builder 的核心基因已完全成型：</p>
+    <ul style="margin-top:0.8rem;">
+      <li><strong>方法论层：</strong>创意模式库 + 品控铁律 + 课程正文 MKS 路径</li>
+      <li><strong>工程层：</strong>SQLite 本地库 + Graphviz 自动布局 + GitHub Pages 发布</li>
+      <li><strong>平台层：</strong>多作者隔离 + Hub 导航 + 概念卡片池</li>
+      <li><strong>场景层：</strong>A/B/D/E/F/G 六大场景全覆盖</li>
+      <li><strong>质量层：</strong>8 大类自查清单 + CC 自检自修 + 浏览器渲染复核</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════ 版本演化路径总结 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🗺️</span> 完整演化路径</h2>
+
+  <div class="card">
+    <table style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align:left; padding:0.6rem 0; color:var(--accent);">版本</th>
+          <th style="text-align:left; padding:0.6rem 0; color:var(--accent);">时期</th>
+          <th style="text-align:left; padding:0.6rem 0; color:var(--accent);">核心突破</th>
+          <th style="text-align:left; padding:0.6rem 0; color:var(--accent);">关键教训</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.6rem 0; font-weight:600;"><a href="v1.0.html" style="color:var(--accent); text-decoration:none;">v1.0</a></td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">4月-5月初</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">单页 MKS 概念诞生</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">手写 SVG 效率低</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.6rem 0; font-weight:600;"><a href="v2.0.html" style="color:var(--accent); text-decoration:none;">v2.0</a></td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">5月</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">批量流水线 + SQLite + Graphviz</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">CC 静默卡死、僵尸进程</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.6rem 0; font-weight:600;"><a href="v2.20.html" style="color:var(--accent); text-decoration:none;">v2.20</a></td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">6月初</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">课程正文 MKS + 品控铁律</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">摘要≠MKS、并行质量断崖</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 0; font-weight:600; color:var(--accent);">v2.36</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">6月中至今</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">创意模式库 + 多作者平台</td>
+          <td style="padding:0.6rem 0; color:var(--text-muted);">持续沉淀中</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><a href="../hub.html">← 返回知识总纲</a></p>
+  <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.8rem;">MKS Builder · 版本历史档案馆 · v2.36 · 当前版本</p>
+</footer>
+
+</div>
+</body>
+</html>

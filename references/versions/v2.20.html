@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS 2.20 · 课程正文MKS与品控体系</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-elevated: #1a1a28;
+    --text: #d4d4dc;
+    --text-muted: #8888a0;
+    --accent: #c9a96e;
+    --accent-dim: #6b5b3e;
+    --border: #2a2a3a;
+    --tag-bg: #1e1e30;
+    --code-bg: #0d0d18;
+    --danger: #a05050;
+    --success: #50a070;
+    --info: #5080a0;
+    --warn: #c09040;
+    font-size: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .version-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .version-nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 0;
+    padding: 0 1.5rem; overflow-x: auto;
+  }
+  .version-nav a {
+    display: block; padding: 0.85rem 1.4rem;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s; white-space: nowrap;
+  }
+  .version-nav a:hover { color: var(--text); border-bottom-color: var(--accent-dim); }
+  .version-nav a.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .page-header {
+    text-align: center; padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border); margin-bottom: 2.5rem;
+  }
+  .version-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #4a6a8a, #2a4a6a);
+    color: #80b0d0;
+    padding: 0.35rem 1.2rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+  .page-header h1 {
+    font-size: 2.8rem; font-weight: 800; color: #e8e0d0;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .page-header .subtitle { color: var(--text-muted); font-size: 1.15rem; margin-top: 0.6rem; }
+  .page-header .period {
+    display: inline-block; margin-top: 0.8rem;
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    padding: 0.3rem 1rem; border-radius: 6px;
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .page-header .period::before { content: '📅 '; }
+
+  .section { margin: 3rem 0; }
+  .section-title {
+    font-size: 1.55rem; font-weight: 700; color: #e0d8c8;
+    margin-bottom: 1.2rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-title .icon { font-size: 1.4rem; }
+
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem 1.8rem; margin-bottom: 1.2rem;
+  }
+  .card h3 { color: var(--accent); font-size: 1.15rem; margin-bottom: 0.8rem; }
+  .card p, .card li { color: var(--text-muted); font-size: 0.95rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+  .tag {
+    display: inline-block; background: var(--tag-bg); border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem; border-radius: 5px;
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  .tag.highlight { border-color: #4a6a8a; color: #80b0d0; }
+
+  .feature-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .feature-col { flex: 1; min-width: 260px; }
+
+  .work-card {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid #4a6a8a;
+  }
+  .work-card h4 { color: #d8cfb8; font-size: 1rem; margin-bottom: 0.4rem; }
+  .work-card .meta { font-size: 0.8rem; color: var(--text-muted); }
+
+  .lesson-card {
+    background: var(--bg-elevated); border: 1px solid #5a3a3a;
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--danger);
+  }
+  .lesson-card h4 { color: #d0a0a0; font-size: 1rem; margin-bottom: 0.4rem; }
+
+  .insight-block {
+    background: var(--bg-elevated); border: 1px solid #4a5a3a;
+    border-radius: 8px; padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--success);
+  }
+  .insight-block h4 { color: #90c070; font-size: 1rem; margin-bottom: 0.4rem; }
+
+  .checklist-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.8rem;
+  }
+  .checklist-item {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+  .checklist-item .num { color: var(--accent); font-weight: 700; margin-right: 0.4rem; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--border); text-align: center;
+  }
+  .footer a { color: var(--accent); text-decoration: none; font-size: 0.95rem; font-weight: 600; }
+  .footer a:hover { color: #e0c080; }
+
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 2rem; }
+    .card-grid, .checklist-grid { grid-template-columns: 1fr; }
+    .version-nav a { padding: 0.7rem 1rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="version-nav">
+  <div class="version-nav-inner">
+    <a href="v1.0.html">v1.0 · 单页提取</a>
+    <a href="v2.0.html">v2.0 · 批处理流水线</a>
+    <a href="v2.20.html" class="active">v2.20 · 品控体系</a>
+    <a href="v2.36.html">v2.36 · 全场景平台</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<header class="page-header">
+  <div class="version-badge">MKS BUILDER v2.20</div>
+  <h1>课程正文MKS与品控体系</h1>
+  <p class="subtitle">方法论的根本性突破——从「分类整理」到「概念抽象」</p>
+  <span class="period">2026年6月初</span>
+</header>
+
+<!-- ════════════ 概述 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🔬</span> 时代概览</h2>
+  <div class="card">
+    <p>
+      v2.20 是 MKS Builder 方法论<strong style="color:var(--accent);">最深刻的一次范式转变</strong>。
+      在此之前的笔记 MKS 本质上是对已有笔记的「主题分类重组」——而课程正文 MKS 要求
+      <strong style="color:var(--accent);">逐篇通读原文、抽象概念、自建知识架构</strong>。
+      这不仅是技术升级，更是认知方法论的颠覆。与此同时，品控铁律体系在这一时期成型——
+      「规则 + 复核 = 质量」成为不可动摇的交付准则。
+    </p>
+  </div>
+</section>
+
+<!-- ════════════ 课程正文 MKS 方法论 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">📖</span> 课程正文 MKS 方法论突破</h2>
+
+  <div class="insight-block" style="margin-bottom:1.2rem;">
+    <h4>💡 核心理念：课程正文 MKS ≠ 笔记 MKS</h4>
+    <p style="color:var(--text-muted);">
+      笔记 MKS 的路径是「主题分类」——你有已消化的笔记，按主题重组即可。
+      课程正文 MKS 则完全不同：你需要<strong>逐篇通读原文</strong>、在脑中建立概念空间、
+      识别高层抽象、构建自洽的知识架构。effort = max，一门课必须串行，不能并行拆分。
+    </p>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-col">
+      <div class="card">
+        <h3>📏 大课程拆分铁律</h3>
+        <p>>200 篇必修文章的课程必须拆分 5-7 个子专题。每个子专题独立生成 MKS HTML，但需保持概念体系的整体一致性。不是按篇数均分，而是按<strong>概念边界</strong>切分。</p>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>🎯 目标导向 Prompt</h3>
+        <p>给 Claude Code 目标而不是微操指令。「构建这门课的概念体系」优于「列出前50篇的概念」。Claude Code 自建的概念体系<strong>优于</strong> Hermes 强制的预设框架——放权比规范更出质量。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-row" style="margin-top:1.2rem;">
+    <div class="feature-col">
+      <div class="card">
+        <h3>🏅 标杆驱动质量提升</h3>
+        <p>以最优专题为参照标杆，其他专题对齐其质量标准。不是抽象的「做好一点」，而是具体的「做到和专题3一样好」。</p>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>🔄 两阶段生成恢复策略</h3>
+        <p>HTML + SVG 先 commit，再补充 JavaScript 交互层。这样即使 JS 生成失败，静态内容已经安全落盘，避免从头重来。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 品控体系 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🛡️</span> 品控铁律体系</h2>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3>⚖️ 核心原则：规则 + 复核 = 质量</h3>
+    <p>单纯的规则约束不够——Claude Code 可能产出看似符合规则但实际有缺陷的内容。必须加上<strong>复核</strong>环节——验证规则是否被真正遵守。这就是品控体系的本质。</p>
+  </div>
+
+  <h3 style="color:#e0d8c8; margin:1.5rem 0 1rem; font-size:1.1rem;">📋 交付前自查清单（8 大类）</h3>
+  <div class="checklist-grid">
+    <div class="checklist-item"><span class="num">01</span> 代码质量（HTML 有效性、CSS 一致性）</div>
+    <div class="checklist-item"><span class="num">02</span> MCQ（题目质量、答案分布、解析完整）</div>
+    <div class="checklist-item"><span class="num">03</span> 知识卡片（内容准确、翻转逻辑正确）</div>
+    <div class="checklist-item"><span class="num">04</span> 思维导图（结构完整、SVG 有效）</div>
+    <div class="checklist-item"><span class="num">05</span> SVG（Graphviz 生成正确、渲染无异常）</div>
+    <div class="checklist-item"><span class="num">06</span> 导航条（9 标签齐全、链接正确）</div>
+    <div class="checklist-item"><span class="num">07</span> 响应式（移动端适配、断点合理）</div>
+    <div class="checklist-item"><span class="num">08</span> 持久化（localStorage 功能正常）</div>
+  </div>
+
+  <div class="feature-row" style="margin-top:1.5rem;">
+    <div class="feature-col">
+      <div class="card">
+        <h3>🔍 Claude Code 自检自修</h3>
+        <p>交付前 Claude Code 必须逐条自查清单，发现问题自行修复。修完后<strong>重新逐条验证</strong>，确认全部通过后方可交付。这是验收闸门的硬性条件。</p>
+      </div>
+    </div>
+    <div class="feature-col">
+      <div class="card">
+        <h3>🌐 浏览器渲染复核</h3>
+        <p>仅靠 grep 验证 HTML 源码是不够的。必须<strong>逐 tab 在浏览器中打开确认</strong>——翻转卡片是否真的可翻转？题库是否正确计分？SVG 是否正常渲染？浏览器才是最终裁判。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.2rem;">
+    <h3>🔄 三大共同回归模式化</h3>
+    <p>经过大量专题的反复打磨，三个最常出问题的交互模块形成了固定的品控模式：</p>
+    <ul style="margin-top:0.8rem;">
+      <li><strong>翻转卡片：</strong>检查 CSS 3D transform 兼容性、正面/背面内容映射、移动端触摸响应</li>
+      <li><strong>题库系统：</strong>验证答案均匀分布、选项随机化、计分逻辑、考试/复习模式切换</li>
+      <li><strong>思维导图：</strong>确认 SVG viewBox 正确、节点文本不溢出、连线逻辑符合概念关系</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════ 代表作 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">🏆</span> 代表性产出</h2>
+
+  <div class="card-grid">
+    <div class="work-card">
+      <h4>🔬 科学思维课 v4</h4>
+      <div class="meta">6 专题 + 认知透镜导航页 · 目标导向自建架构</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        v2.20 的标杆作品。完全采用「目标导向 prompt + 自建概念架构」方法，
+        Claude Code 自主构建的科学思维概念体系优于任何预设框架。
+        创新的「认知透镜」导航页用隐喻引导学习者进入每个专题。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>📊 科技参考基础版 v4</h4>
+      <div class="meta">课程正文 MKS · 全文通读方法论验证</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        验证了「逐篇通读→概念抽象化」路径在大体量课程中的可行性。
+        品控体系的 8 大类自查清单在这个项目中首次全面应用。
+      </p>
+    </div>
+    <div class="work-card">
+      <h4>📐 数学通识 50 讲 MKS</h4>
+      <div class="meta">50 篇正文通读 · 概念体系自建</div>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted);">
+        中等规模课程的典型 MKS。验证了标杆驱动的对齐策略——
+        以最优专题为参照，其他专题品质显著提升。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 教训沉淀 ════════════ -->
+<section class="section">
+  <h2 class="section-title"><span class="icon">💀</span> 重大教训沉淀</h2>
+
+  <div class="card-grid">
+    <div class="lesson-card">
+      <h4>🚨 文章摘要目录 ≠ MKS</h4>
+      <p>最严重的事故。某次交付中 Claude Code 仅读取了文章摘要和目录就号称完成了「概念提取」，实际零概念被真正提取。用户全量驳回，全部重做。教训：<strong>必须逐篇全文通读，effort = max</strong>。</p>
+    </div>
+    <div class="lesson-card">
+      <h4>📉 并行 CC 导致质量断崖</h4>
+      <p>试图并行推进多个专题的课程正文 MKS 时，每个子 agent 对概念体系的理解片段化，产出的概念互不兼容、大量重复和遗漏。教训：<strong>课程正文 MKS 必须串行</strong>。</p>
+    </div>
+    <div class="lesson-card">
+      <h4>🖼️ 实体卡片 5K+ 需 Canvas 虚拟化</h4>
+      <p>当概念卡片数量超过 5,000 张时，DOM 渲染性能急剧下降。需要 Canvas 虚拟化渲染方案，而非直接 DOM 挂载。当时仅识别问题，未解决。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><a href="../hub.html">← 返回知识总纲</a></p>
+  <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.8rem;">MKS Builder · 版本历史档案馆 · v2.20</p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS 创意模式库 · Creative Patterns Library</title>
+<style>
+/* ============================================================
+   MKS CREATIVE PATTERNS LIBRARY — 创意模式库
+   Metaphor: Archive Codex — a craftsman's illuminated manuscript
+   Dark archive theme consistent with hub.html
+   ============================================================ */
+
+/* ===== CSS Variables (matching hub.html) ===== */
+:root {
+  --void: #06090f;
+  --vault: #0b1018;
+  --surface: #111827;
+  --surface-raised: #1a2332;
+  --surface-hover: #1f2a3a;
+
+  --text-primary: #d8dce6;
+  --text-secondary: #94a0b8;
+  --text-dim: #5a6680;
+  --text-bright: #f0f2f8;
+
+  --wj-gold: #d4a854;
+  --wj-gold-light: #e8c97a;
+  --wj-gold-deep: #a07828;
+  --wj-gold-glow: rgba(212,168,84,0.18);
+  --wj-amber: #c8903a;
+
+  --zk-cyan: #38bdf8;
+  --zk-cyan-light: #7dd3fc;
+  --zk-cyan-deep: #0284c7;
+  --zk-cyan-glow: rgba(56,189,248,0.16);
+
+  --accent-white: rgba(255,255,255,0.06);
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-medium: rgba(255,255,255,0.08);
+  --border-glow: rgba(255,255,255,0.12);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --ease-out: 0.35s cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --font-display: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-body: "Noto Serif SC", "Source Han Serif SC", Georgia, "SimSun", serif;
+  --font-mono: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Consolas", monospace;
+
+  /* Sidebar widths */
+  --sidebar-width: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--text-primary);
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   COSMIC AMBIENT BACKGROUND
+   ============================================================ */
+.cosmic-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 22%, rgba(212,168,84,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 55% at 10% 45%, rgba(30,64,120,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 55% at 90% 45%, rgba(20,50,100,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 25% 35% at 78% 28%, rgba(56,189,248,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 25% 35% at 22% 28%, rgba(212,168,84,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(6,9,15,0.95) 100%);
+}
+
+.archive-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+}
+
+/* Floating particles */
+.particle-field {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.dust {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--wj-gold);
+  animation: dust-float linear infinite;
+  opacity: 0;
+}
+@keyframes dust-float {
+  0%   { opacity: 0; transform: translateY(0) scale(1); }
+  15%  { opacity: 0.6; }
+  40%  { opacity: 0.2; }
+  70%  { opacity: 0.03; }
+  100% { opacity: 0; transform: translateY(-140px) scale(0.4); }
+}
+.dust:nth-child(1)  { left: 8%;  top: 78%; width: 2px; height: 2px; animation-duration: 16s; animation-delay: 0s; }
+.dust:nth-child(2)  { left: 15%; top: 85%; width: 1px; height: 1px; animation-duration: 20s; animation-delay: 2s; }
+.dust:nth-child(3)  { left: 23%; top: 72%; width: 2px; height: 2px; animation-duration: 14s; animation-delay: 5s; }
+.dust:nth-child(4)  { left: 31%; top: 90%; width: 1px; height: 1px; animation-duration: 22s; animation-delay: 1s; }
+.dust:nth-child(5)  { left: 38%; top: 80%; width: 2px; height: 2px; animation-duration: 18s; animation-delay: 3s; }
+.dust:nth-child(6)  { left: 45%; top: 95%; width: 1px; height: 1px; animation-duration: 24s; animation-delay: 7s; }
+.dust:nth-child(7)  { left: 52%; top: 75%; width: 2px; height: 2px; animation-duration: 15s; animation-delay: 4s; }
+.dust:nth-child(8)  { left: 60%; top: 88%; width: 1px; height: 1px; animation-duration: 21s; animation-delay: 6s; }
+.dust:nth-child(9)  { left: 68%; top: 70%; width: 2px; height: 2px; animation-duration: 13s; animation-delay: 8s; }
+.dust:nth-child(10) { left: 75%; top: 82%; width: 1px; height: 1px; animation-duration: 19s; animation-delay: 2.5s; }
+.dust:nth-child(11) { left: 83%; top: 92%; width: 2px; height: 2px; animation-duration: 17s; animation-delay: 5.5s; }
+.dust:nth-child(12) { left: 90%; top: 76%; width: 1px; height: 1px; animation-duration: 23s; animation-delay: 1.5s; }
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(6,9,15,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 28px;
+}
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-brand:hover { color: var(--wj-gold-light); }
+.nav-brand::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--wj-gold);
+  box-shadow: 0 0 8px var(--wj-gold-glow);
+  animation: lamp-pulse 3s ease-in-out infinite;
+}
+@keyframes lamp-pulse {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 6px var(--wj-gold-glow); }
+  50% { opacity: 1; box-shadow: 0 0 14px rgba(212,168,84,0.35); }
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color var(--ease-out);
+  position: relative;
+  padding: 4px 0;
+}
+.nav-links a:hover { color: var(--wj-gold-light); }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 1.5px;
+  background: var(--wj-gold);
+  border-radius: 1px;
+  transition: width var(--ease-out);
+  box-shadow: 0 0 6px var(--wj-gold-glow);
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* Mobile TOC toggle */
+.toc-toggle {
+  display: none;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: all var(--ease-out);
+}
+.toc-toggle:hover { color: var(--wj-gold-light); border-color: rgba(212,168,84,0.3); }
+
+/* ============================================================
+   PAGE LAYOUT — Sidebar + Content
+   ============================================================ */
+.page-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  padding: 0;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: sticky;
+  top: 50px;
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+  padding: 28px 20px 40px 24px;
+  background: rgba(11,16,24,0.5);
+  border-right: 1px solid var(--border-subtle);
+  backdrop-filter: blur(8px);
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 3px; }
+
+.sidebar-label {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+  opacity: 0.6;
+}
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav li { }
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.03em;
+  transition: all var(--ease-out);
+  border-left: 2px solid transparent;
+}
+.sidebar-nav a .toc-num {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--wj-gold);
+  opacity: 0.5;
+  min-width: 22px;
+  text-align: right;
+  transition: opacity var(--ease-out);
+}
+.sidebar-nav a:hover {
+  color: var(--text-bright);
+  background: rgba(212,168,84,0.04);
+  border-left-color: rgba(212,168,84,0.2);
+}
+.sidebar-nav a:hover .toc-num { opacity: 0.9; }
+.sidebar-nav a.active {
+  color: var(--wj-gold-light);
+  background: rgba(212,168,84,0.06);
+  border-left-color: var(--wj-gold);
+  font-weight: 600;
+}
+.sidebar-nav a.active .toc-num { opacity: 1; color: var(--wj-gold-light); }
+
+/* Sidebar sub-sections */
+.sidebar-subs {
+  list-style: none;
+  margin-left: 32px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sidebar-subs a {
+  font-size: 0.7rem;
+  padding: 5px 10px;
+  border-left: none;
+  opacity: 0.7;
+}
+
+/* ===== MAIN CONTENT ===== */
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 36px 40px 80px 44px;
+  max-width: 900px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.page-hero {
+  margin-bottom: 48px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+.page-hero .hero-badge {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--wj-gold);
+  margin-bottom: 14px;
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid rgba(212,168,84,0.2);
+  border-radius: 20px;
+  background: rgba(212,168,84,0.05);
+}
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  background: linear-gradient(180deg, #f8e8c0 0%, #d4a854 30%, #c8903a 55%, #8b6914 85%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 16px rgba(212,168,84,0.25));
+}
+.page-hero .subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.page-hero .meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: center;
+}
+.page-hero .meta-item {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.page-hero .meta-item .meta-icon { opacity: 0.5; font-size: 0.85rem; }
+.page-hero .meta-item .meta-val { color: var(--text-secondary); }
+
+/* Quote block at top */
+.hero-quote {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(212,168,84,0.04);
+  border-left: 3px solid rgba(212,168,84,0.25);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.hero-quote strong { color: var(--wj-gold-light); }
+
+/* ============================================================
+   CHAPTER SECTIONS
+   ============================================================ */
+.chapter {
+  margin-bottom: 60px;
+  scroll-margin-top: 70px;
+}
+
+/* Chapter heading with number decor */
+.chapter-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+  position: relative;
+}
+.chapter-num {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  color: var(--wj-gold);
+  opacity: 0.18;
+  line-height: 0.85;
+  flex-shrink: 0;
+  margin-top: -4px;
+  user-select: none;
+}
+.chapter-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--text-bright);
+  line-height: 1.3;
+  padding-top: 4px;
+}
+
+/* Chapter divider */
+.chapter-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(212,168,84,0.15), transparent 70%);
+  margin: 48px 0 0;
+}
+
+/* ===== SUB-SECTIONS ===== */
+.chapter h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--wj-gold-light);
+  margin: 32px 0 14px;
+  letter-spacing: 0.03em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(212,168,84,0.08);
+}
+.chapter h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 24px 0 10px;
+  letter-spacing: 0.02em;
+}
+
+.chapter p {
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* ===== LISTS ===== */
+.chapter ul, .chapter ol {
+  margin: 10px 0 18px 20px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.chapter li { margin-bottom: 6px; line-height: 1.7; }
+.chapter li strong { color: var(--text-bright); }
+
+/* Task list checkboxes */
+.chapter ul input[type="checkbox"] {
+  accent-color: var(--wj-gold);
+  margin-right: 6px;
+}
+.chapter ul li:has(input[type="checkbox"]) {
+  list-style: none;
+  margin-left: -18px;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.chapter table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 24px;
+  font-size: 0.82rem;
+  background: rgba(17,24,39,0.4);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.chapter thead {
+  background: rgba(212,168,84,0.08);
+}
+.chapter th {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--wj-gold-light);
+  text-align: left;
+  padding: 12px 16px;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(212,168,84,0.15);
+}
+.chapter td {
+  padding: 10px 16px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.chapter tr:nth-child(even) td {
+  background: rgba(255,255,255,0.015);
+}
+.chapter tr:hover td {
+  background: rgba(212,168,84,0.03);
+}
+.chapter td strong { color: var(--text-bright); }
+.chapter td code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: rgba(255,255,255,0.06);
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: var(--wj-gold-light);
+}
+
+/* ============================================================
+   CODE BLOCKS — Dark Terminal Style
+   ============================================================ */
+.chapter pre {
+  background: #0a0f18;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 16px 0 24px;
+  overflow-x: auto;
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+.chapter pre::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,84,0.2), transparent);
+}
+.chapter pre code {
+  color: #c4c8d8;
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  padding: 0;
+}
+/* Syntax highlighting hints */
+.chapter pre .kw { color: #c792ea; }  /* keyword */
+.chapter pre .fn { color: #82aaff; }  /* function */
+.chapter pre .str { color: #c3e88d; } /* string */
+.chapter pre .num { color: #f78c6c; } /* number */
+.chapter pre .cm { color: #546e7a; font-style: italic; } /* comment */
+.chapter pre .prop { color: #ffcb6b; } /* property */
+
+/* Inline code */
+.chapter :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.06);
+  padding: 1px 7px;
+  border-radius: 4px;
+  color: var(--wj-gold-light);
+}
+
+/* ============================================================
+   BLOCKQUOTES
+   ============================================================ */
+.chapter blockquote {
+  margin: 18px 0 24px;
+  padding: 14px 20px;
+  background: rgba(56,189,248,0.04);
+  border-left: 3px solid rgba(56,189,248,0.2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   HORIZONTAL RULES
+   ============================================================ */
+.chapter hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  margin: 36px 0;
+}
+
+/* ============================================================
+   SPECIAL ELEMENTS
+   ============================================================ */
+
+/* Decision tree / flow chart styling */
+.flow-chart {
+  background: rgba(17,24,39,0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin: 18px 0 24px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.8;
+  color: #c4c8d8;
+}
+
+/* Step-by-step workflow */
+.workflow-steps {
+  margin: 18px 0 24px;
+}
+.workflow-step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  background: rgba(17,24,39,0.35);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+}
+.workflow-step:nth-child(1) { border-left-color: #f78c6c; }
+.workflow-step:nth-child(2) { border-left-color: #ffcb6b; }
+.workflow-step:nth-child(3) { border-left-color: #c3e88d; }
+.workflow-step:nth-child(4) { border-left-color: #82aaff; }
+.workflow-step:nth-child(5) { border-left-color: #c792ea; }
+.workflow-step:nth-child(6) { border-left-color: #89ddff; }
+.workflow-step .step-num {
+  font-family: Georgia, serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+  min-width: 24px;
+}
+.workflow-step .step-body { font-size: 0.85rem; color: var(--text-secondary); }
+.workflow-step .step-body strong { color: var(--text-bright); }
+
+/* Anti-pattern red warning blocks */
+.anti-pattern {
+  margin: 10px 0 18px;
+  padding: 12px 18px;
+  background: rgba(220,80,80,0.06);
+  border-left: 3px solid rgba(220,80,80,0.25);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 48px 28px 40px;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 20px;
+}
+.footer-ornament {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.footer-ornament span {
+  display: block;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+}
+.footer-ornament span:nth-child(1) { background: var(--wj-gold); opacity: 0.8; }
+.footer-ornament span:nth-child(2) { background: var(--zk-cyan); opacity: 0.8; }
+.footer-ornament span:nth-child(3) { background: var(--wj-gold); opacity: 0.5; }
+.footer-ornament span:nth-child(4) { background: var(--zk-cyan); opacity: 0.5; }
+.footer-ornament span:nth-child(5) { background: rgba(255,255,255,0.15); }
+.footer p {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+.footer .closing-quote {
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  :root { --sidebar-width: 220px; }
+  .content { padding: 28px 24px 60px 32px; }
+}
+@media (max-width: 768px) {
+  .page-layout { flex-direction: column; }
+
+  /* Sidebar becomes top dropdown */
+  .sidebar {
+    position: relative;
+    top: 0;
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: none;
+    padding: 14px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    overflow-y: visible;
+  }
+  .sidebar-label { display: none; }
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s var(--ease-out);
+  }
+  .sidebar-nav.expanded { max-height: 600px; }
+  .sidebar-nav a {
+    font-size: 0.7rem;
+    padding: 5px 10px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    border-radius: 0;
+  }
+  .sidebar-nav a:hover,
+  .sidebar-nav a.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--wj-gold);
+  }
+  .sidebar-nav a .toc-num { display: none; }
+  .sidebar-subs { display: none; }
+
+  .toc-toggle { display: block; }
+
+  .content { padding: 24px 18px 50px; }
+
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 0.7rem; }
+
+  .page-hero .meta-row { gap: 16px; }
+  .chapter table { font-size: 0.72rem; }
+  .chapter th, .chapter td { padding: 8px 10px; }
+  .chapter pre { padding: 14px 16px; font-size: 0.7rem; }
+  .chapter-num { font-size: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .nav-bar { padding: 0 14px; }
+  .nav-brand { font-size: 0.68rem; letter-spacing: 0.1em; }
+  .page-hero h1 { font-size: 1.7rem; }
+  .page-hero .subtitle { font-size: 0.82rem; }
+  .chapter-head h2 { font-size: 1.15rem; }
+  .chapter h3 { font-size: 1rem; }
+  .chapter table { display: block; overflow-x: auto; }
+  .flow-chart { padding: 16px; font-size: 0.68rem; }
+}
+
+/* ============================================================
+   SCROLL REVEAL (subtle)
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     COSMIC AMBIENT
+     ============================================================ -->
+<div class="cosmic-bg" aria-hidden="true"></div>
+<div class="archive-grid" aria-hidden="true"></div>
+<div class="particle-field" aria-hidden="true">
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+</div>
+
+<!-- ============================================================
+     TOP NAV BAR
+     ============================================================ -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../hub.html">MKS Archives</a>
+    <div class="nav-links">
+      <a href="../hub.html">← 返回总纲</a>
+      <button class="toc-toggle" id="tocToggle" aria-label="Toggle table of contents">☰ 目录</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE LAYOUT
+     ============================================================ -->
+<div class="page-layout">
+
+  <!-- ===== SIDEBAR / TOC ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-label">目录 · Contents</div>
+    <ul class="sidebar-nav" id="sidebarNav">
+      <li><a href="#ch1"><span class="toc-num">01</span> 隐喻选择框架</a></li>
+      <li><a href="#ch2"><span class="toc-num">02</span> 叙事模式分类</a></li>
+      <li><a href="#ch3"><span class="toc-num">03</span> 交互工具箱</a></li>
+      <li><a href="#ch4"><span class="toc-num">04</span> 视觉系统规范</a></li>
+      <li><a href="#ch5"><span class="toc-num">05</span> 数据→设计转化流程</a></li>
+      <li><a href="#ch6"><span class="toc-num">06</span> 设计反模式</a></li>
+      <li><a href="#ch7"><span class="toc-num">07</span> 逐页设计决策回顾</a></li>
+      <li><a href="#ch8"><span class="toc-num">08</span> 快速决策速查表</a></li>
+    </ul>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="content">
+
+    <!-- ===== HERO ===== -->
+    <header class="page-hero">
+      <div class="hero-badge">Creative Patterns Library</div>
+      <h1>MKS 创意模式库</h1>
+      <p class="subtitle">可复用的创作方法论 · Creative Patterns Library</p>
+      <div class="meta-row">
+        <span class="meta-item"><span class="meta-icon">📅</span> 更新日期 <span class="meta-val">2026-06-13</span></span>
+        <span class="meta-item"><span class="meta-icon">📡</span> 覆盖范围 <span class="meta-val">卓克 · 科技参考3（8个页面）、吴军MKS系列</span></span>
+      </div>
+      <div class="hero-quote">
+        <strong>定位：</strong>这不是工作总结，是<strong>可复用的创作方法论</strong>。<br>
+        后续创作者（包括未来的 Claude Code）读完后，应能理解：为什么某个设计决策被做出？如何在新项目中复用这些模式？
+      </div>
+    </header>
+
+    <!-- ============================================================
+         CHAPTER 1 — 隐喻选择框架
+         ============================================================ -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head">
+        <span class="chapter-num">01</span>
+        <h2>隐喻选择框架</h2>
+      </div>
+
+      <h3>1.1 核心原则：隐喻不是装饰，是认知脚手架</h3>
+      <p>好的母隐喻做三件事：</p>
+      <ol>
+        <li><strong>降低认知门槛</strong> — 用熟悉的概念解释陌生的领域</li>
+        <li><strong>组织信息层级</strong> — 决定页面的空间结构和导航逻辑</li>
+        <li><strong>引发情感共鸣</strong> — 让读者觉得「这个主题很酷」而非「这个主题很重要」</li>
+      </ol>
+
+      <h3>1.2 隐喻选择矩阵</h3>
+      <table>
+        <thead>
+          <tr><th>知识类型</th><th>推荐隐喻方向</th><th>示例</th><th>原因</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>层次/深度结构</strong></td><td>垂直空间（跃迁、深海、地层）</td><td>AI → N层跃迁</td><td>知识有明确的层级递进关系</td></tr>
+          <tr><td><strong>旅程/过程叙事</strong></td><td>旅行（巡航、航线、探险）</td><td>航天 → 深空巡航</td><td>内容沿空间或时间线展开</td></tr>
+          <tr><td><strong>系统/网络</strong></td><td>宇宙（星系、微观世界）</td><td>医学 → 微观宇宙</td><td>多组件相互作用、多尺度并存</td></tr>
+          <tr><td><strong>判定/甄别</strong></td><td>工具（解码器、武器、X光）</td><td>食品 → 解码器、科学方法 → 武器库</td><td>核心目标是教会读者「如何判断」</td></tr>
+          <tr><td><strong>角色扮演</strong></td><td>职业身份（特工、侦探、科学家）</td><td>消费品 → 特工训练营</td><td>读者需要转换视角来审视熟悉事物</td></tr>
+          <tr><td><strong>时间/演化</strong></td><td>史书、卷轴、化石</td><td>人类演化 → 史书</td><td>内容本质是按时间展开的积累过程</td></tr>
+          <tr><td><strong>光学/分光</strong></td><td>棱镜、光谱、信号阵列</td><td>首页 → EUV光刻机</td><td>一个源头分解为多个维度</td></tr>
+        </tbody>
+      </table>
+
+      <h3>1.3 隐喻选择的检查清单</h3>
+      <p>选定隐喻前，问自己：</p>
+      <ul>
+        <li><input type="checkbox" disabled> 这个隐喻的「物理结构」是否与内容的「认知结构」同构？</li>
+        <li><input type="checkbox" disabled> 读者是否需要专业知识才能理解这个隐喻？（如果是，换掉）</li>
+        <li><input type="checkbox" disabled> 这个隐喻能否贯穿整个页面？（不能只在Hero用一次就扔）</li>
+        <li><input type="checkbox" disabled> 隐喻会不会「抢戏」——形式压倒内容？（科技参考系列的答案是：宁可偏克制）</li>
+      </ul>
+
+      <h3>1.4 失败案例与教训</h3>
+      <ul>
+        <li><strong>首页 v0「分光镜」</strong> — 隐喻弱，太抽象，用户无法直观理解"棱镜分光"与"7个科技领域"的对应关系。→ 改为 <strong>EUV光刻机</strong> 后，叙事立刻清晰：光源 → 反射镜组 → 7束曝光光束 → 7个领域。</li>
+        <li><strong>早期吴军「金字塔」</strong> — 过于说教，隐喻本身没有情感温度。→ 后来加入「跨课重组」「概念马赛克」等具象化表达。</li>
+      </ul>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 2 — 叙事模式分类
+         ============================================================ -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head">
+        <span class="chapter-num">02</span>
+        <h2>叙事模式分类</h2>
+      </div>
+
+      <h3>2.1 五大核心叙事结构</h3>
+
+      <h4>模式 A：层级深度递进（Layer Dive）</h4>
+      <p><strong>适用场景：</strong>知识有清晰的从基础到高级、从底层到应用的层次结构</p>
+      <p><strong>案例：</strong><code>1-AI与芯片革命.html</code> — 「硅基思维的N层跃迁」</p>
+      <p><strong>结构：</strong></p>
+      <pre><code>Hero（总览 + 核心数据）
+  ↓
+Layer 1: 硅与光（芯片制造的物理基础）      ← 最底层
+  ↓
+Layer 2: 架构革命（Transformer注意力机制）  ← 中间层
+  ↓
+Layer 3: 规模定律（Scaling Law是烧钱逻辑）
+  ↓
+Layer 4: 涌现之谜（意料之外的能力与盲区）
+  ↓
+Layer 5: 对齐困局（安全与商业化的矛盾）
+  ↓
+Layer 6: 社会冲击（AI如何改变每个人的决策）← 最顶层</code></pre>
+      <p><strong>关键特征：</strong></p>
+      <ul>
+        <li>每层有独立的颜色标识（红→橙→绿→紫→金→橙）</li>
+        <li>从物理→算法→经济→社会，学科边界逐层跨越</li>
+        <li>底层的理解是上层的基础（读者必须先理解芯片，才能理解Scaling Law）</li>
+      </ul>
+      <p><strong>在其他项目中的复用潜力：</strong></p>
+      <ul>
+        <li>任何「从基础原理到社会影响」的主题（如气候变化：物理机制→排放数据→政策博弈→个人行动）</li>
+        <li>任何「从硬件到软件到体验」的技术主题</li>
+      </ul>
+
+      <hr>
+
+      <h4>模式 B：旅程/航段渐进（Mission Zones）</h4>
+      <p><strong>适用场景：</strong>内容沿空间距离、时间推进或逻辑顺序自然展开</p>
+      <p><strong>案例：</strong><code>2-航天与太空探索.html</code> — 「深空巡航」</p>
+      <p><strong>结构：</strong></p>
+      <pre><code>Hero（任务加载中… + 核心统计）
+  ↓
+航段 01 · 火星表面（5500万km）  ← 机智号首飞
+  ↓
+航段 02 · 地球轨道             ← 马斯克火箭6部曲
+  ↓
+航段 03 · 近地轨道（400km）    ← 空间站日常与出舱
+  ↓
+航段 04 · 亚轨道（86-100km）   ← 太空旅游
+  ↓
+航段 05 · 月球轨道（38万km）   ← 中国航天+氦-3
+  ↓
+航段 06 · 火星表面             ← 移民可行性冷静评估
+  ↓
+航段 07 · 星际空间（240亿km）  ← 旅行者号的启示</code></pre>
+      <p><strong>关键特征：</strong></p>
+      <ul>
+        <li>每个航段有物理距离标注，创造「正在离开地球」的沉浸感</li>
+        <li>距离递增创造自然的叙事张力（越远越宏大）</li>
+        <li>可用「数据面板」（data-panel）在每个航段快速建立语境</li>
+      </ul>
+      <p><strong>在其他项目中的复用潜力：</strong></p>
+      <ul>
+        <li>任何有「距离/时间/阶段」递增特性的主题</li>
+        <li>历史时间线（但用空间隐喻重新包装）</li>
+        <li>产品从研发到量产的技术成熟度旅程</li>
+      </ul>
+
+      <hr>
+
+      <h4>模式 C：解密/拆穿工作流（Decoder Workflow）</h4>
+      <p><strong>适用场景：</strong>核心目标是教会读者「如何自行判断」，而非仅仅知识传授</p>
+      <p><strong>案例：</strong><code>4-食品营养与安全.html</code> — 「焦虑解码器」</p>
+      <p><strong>结构：</strong></p>
+      <pre><code>Hero（核心公式：危害 × 暴露量 = 风险）
+  ↓
+Section 1: 风险方程式     ← 交互滑块：亲身体验公式
+  ↓
+Section 2: 科学法庭       ← 案例审判：让证据说话
+  ↓
+Section 3: 体内旅程       ← 消化道追踪：食物在体内的真实路径
+  ↓
+Section 4: 证据金字塔     ← 可展开层级：学会判断证据等级
+  ↓
+Section 5: 文章宇宙       ← 全部原始文章的可筛选索引</code></pre>
+      <p><strong>关键特征：</strong></p>
+      <ul>
+        <li>起步于一个可操作的思维框架（公式），而非事实罗列</li>
+        <li>每个section是一种「解码技能」的教学</li>
+        <li>最后回到原始材料（文章索引）供读者自行练习</li>
+      </ul>
+      <p><strong>变体：</strong><code>7-科学方法与认知论.html</code> — 「认知武器库」，采用 <strong>戏剧结构</strong> 替代工作流：</p>
+      <pre><code>Act I:   诱饵 — 提出「红酒有益心脏」这个诱人结论
+Act II:  逐层拆解 — 5层解剖（偏误→迷宫→p-hacking→复现危机→真实vs教科书路径）
+Act III: 真相揭示 — 你来当审稿人（同行评议模拟）
+Act IV:  认知武装 — 第一性原理拆解器 + 方法论武器墙
+Coda:    收束 — 「你不再需要'相信'科学」</code></pre>
+      <p><strong>在其他项目中的复用潜力：</strong></p>
+      <ul>
+        <li>任何「辟谣」类内容</li>
+        <li>任何需要教授「批判性思维」的主题</li>
+        <li>投资理财（教读者识别金融骗局）</li>
+      </ul>
+
+      <hr>
+
+      <h4>模式 D：训练营/闯关制（Training Camp）</h4>
+      <p><strong>适用场景：</strong>读者需要从被动接收者转变为主动实践者</p>
+      <p><strong>案例：</strong><code>5-消费品评测与避坑.html</code> — 「消费者特工训练营」</p>
+      <p><strong>结构：</strong></p>
+      <pre><code>Hero（任务简报：你不是在逛商场，是在执行侦察任务）
+  ↓
+Mission 01 · 识破伪装    ← 营销话术 vs 工程真相（6个案例自动轮播）
+  ↓
+Mission 02 · 透视扫描    ← 成本X光机（5个产品自动扫描）
+  ↓
+Mission 03 · 反诈测试    ← 智商税闯关（3级8题，学徒→猎手→大师）
+  ↓
+Mission 04 · 核心技能    ← 参数思维训练营（3步交互）
+  ↓
+Mission 05 · 战场地图    ← 避坑地图（按生活场景组织）
+  ↓
+Mission 06 · 情报档案    ← 47篇文章可搜索可筛选</code></pre>
+      <p><strong>关键特征：</strong></p>
+      <ul>
+        <li>「训练」隐喻贯穿始终：关卡、进度条、得分、段位系统</li>
+        <li>从「看别人拆」→「自己试着拆」→「检验段位」的渐进路径</li>
+        <li>交互密度远高于其他页面——这是刻意为之（消费品评测天然适合「动手」）</li>
+      </ul>
+      <p><strong>在其他项目中的复用潜力：</strong></p>
+      <ul>
+        <li>任何以「技能培养」为目标的内容</li>
+        <li>投资入门：模拟交易→真实案例→风险测试</li>
+        <li>编程入门：看代码→改代码→自己写→项目挑战</li>
+      </ul>
+
+      <hr>
+
+      <h4>模式 E：时间轴/史书展开（Chronicle Unfolding）</h4>
+      <p><strong>适用场景：</strong>内容本质上是「时间的积累」——演化、历史、文明进程</p>
+      <p><strong>案例：</strong><code>6-人类演化与文明进程.html</code> — 「演化史书」</p>
+      <p><strong>结构（注意：7种布局交替使用，避免卡片罗列疲劳）：</strong></p>
+      <pre><code>Hero（DNA = 时间卷轴）
+  ↓
+Layout 1: SVG演化时间线    ← 40亿年关键节点，可点击展示详情
+  ↓
+Layout 2: 朊粒悖论专题      ← 特殊视觉处理（大问号背景，挑战生命定义）
+  ↓
+Layout 3: DNA病毒插入可视化 ← 远古病毒「化石」在基因组中的分布
+  ↓
+Layout 4: 嵌合体翻转卡片    ← 杂交水稻/遗传算法/转基因蚊子/人工淀粉
+  ↓
+Layout 5: 迁徙世界地图      ← 走出非洲的基因路线
+  ↓
+Layout 6: 尼安德特人对比面板 ← 双栏对比+DNA遗产可视化
+  ↓
+Layout 7: 大脑演化手风琴    ← 5层脑结构，可逐层展开
+  ↓
+Layout 8: 文明手风琴        ← 语言·心理·极限·性别·实时演化</code></pre>
+      <p><strong>关键特征：</strong></p>
+      <ul>
+        <li>布局多样性是核心设计决策——40亿年的跨度如果用单一布局，读者会疲劳</li>
+        <li>每种布局服务于其内容的独特需求（对比用双栏、路线用地图、层级用手风琴）</li>
+        <li>「打开文章弹窗」作为统一的信息深化入口</li>
+      </ul>
+      <p><strong>在其他项目中的复用潜力：</strong></p>
+      <ul>
+        <li>任何「大跨度时间」主题（宇宙史、文明史、技术史）</li>
+        <li>企业/产品发展史</li>
+        <li>「XX的演化」类科普（语言的演化、货币的演化、法律的演化）</li>
+      </ul>
+
+      <hr>
+
+      <h3>2.2 叙事模式选择决策树</h3>
+      <div class="flow-chart">
+内容有清晰层次结构？ → YES → 模式A：层级深度递进
+                 → NO ↓
+内容沿空间/时间自然展开？ → YES → 模式B：旅程航段渐进
+                       → NO ↓
+核心目标是教判断方法？ → YES → 模式C：解密工作流
+                     → NO ↓
+读者需要动手实践？ → YES → 模式D：训练营闯关制
+                   → NO ↓
+内容是大跨度时间积累？ → YES → 模式E：史书展开
+                       → NO → 混合模式或重新审视内容结构
+      </div>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 3 — 交互工具箱
+         ============================================================ -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head">
+        <span class="chapter-num">03</span>
+        <h2>交互工具箱</h2>
+      </div>
+
+      <h3>3.1 交互形式总览</h3>
+      <table>
+        <thead>
+          <tr><th>交互形式</th><th>适用场景</th><th>使用的页面</th><th>设计要点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>翻转卡片</strong></td>
+            <td>有「惊喜」或「反转」的事实；卡片正面是问题/概念，反面是深度解释</td>
+            <td>AI（涌现）、医学（疫苗/药物）、演化（基因工程）、科学方法（认知偏误）</td>
+            <td>正面必须有足够吸引力让人想翻；反面信息密度可以高；200-280px高度最合适</td>
+          </tr>
+          <tr>
+            <td><strong>时间线（可展开）</strong></td>
+            <td>按时间排列的事件序列；读者可以跳读感兴趣的事件</td>
+            <td>AI（OpenAI安全事件）、航天（SpaceX火箭史）、医学（医学发现里程碑）、消费品（文章档案）</td>
+            <td>左边竖线+圆点是最稳定的模式；点击展开/折叠；关键事件可默认展开</td>
+          </tr>
+          <tr>
+            <td><strong>决策模拟器</strong></td>
+            <td>教授判断技能；需要读者「做出选择→看到后果」</td>
+            <td>AI（社会冲击4场景）、医学（诊断思维）、消费品（智商税8题）、科学方法（认知迷宫5关+同行评议）</td>
+            <td>必须有「为什么对/错」的反馈——这比选择本身更重要；错误反馈要教方法论；用分数/段位增加重玩动力</td>
+          </tr>
+          <tr>
+            <td><strong>交互滑块</strong></td>
+            <td>两个变量相互作用产生结果；教授「权衡」概念</td>
+            <td>食品（危害×暴露量=风险）</td>
+            <td>预设场景（点击按钮加载预设值）+ 自由调节双模式；即时视觉反馈（颜色变化）</td>
+          </tr>
+          <tr>
+            <td><strong>手风琴/可展开面板</strong></td>
+            <td>信息量大但有明确层级；读者需要先看到标题再决定深入</td>
+            <td>演化（脑结构5层、文明4项）、食品（证据金字塔5层）、科学方法（第一性原理6层）</td>
+            <td>一次只展开一个（手风琴模式）vs 允许多个同时展开（按需）；层级>5时考虑手风琴模式减少滚动</td>
+          </tr>
+          <tr>
+            <td><strong>左右对比面板</strong></td>
+            <td>需要进行A/B比较：营销vs真相、尼人vs智人、教科书vs现实</td>
+            <td>消费品（营销vs工程）、演化（尼人vs智人）、科学方法（两种科学路径）</td>
+            <td>颜色编码必须对立（红vs绿）；结构必须镜像（相同指标逐行对比）</td>
+          </tr>
+          <tr>
+            <td><strong>SVG交互图</strong></td>
+            <td>空间关系、流程图、概念关系</td>
+            <td>首页（EUV光学系统）、AI（p-hacking决策树）、演化（DNA病毒插入、迁徙地图）、科学方法（证据金字塔3D、复现率柱状图）</td>
+            <td>SVG优于Canvas——可点击、可缩放、文字清晰；用CSS动画而非SMIL（兼容性更好）；hover区域的点击热区要足够大</td>
+          </tr>
+          <tr>
+            <td><strong>粒子/Canvas背景</strong></td>
+            <td>创造沉浸式氛围；暗示「深度」「宇宙」「微观」「数据流」</td>
+            <td>几乎所有页面</td>
+            <td>粒子数控制在40-90；性能优先——避免在高密度粒子时做连接线计算；用<code>requestAnimationFrame</code>和<code>visibilitychange</code>事件做节能</td>
+          </tr>
+          <tr>
+            <td><strong>进度追踪器</strong></td>
+            <td>页面有多个section需要探索；给读者完成感</td>
+            <td>AI（知识探索进度）、食品（解码进度）、消费品（训练进度）、演化（滚动进度条）</td>
+            <td>最好用IntersectionObserver自动追踪而非手动点击；固定右下角不干扰阅读</td>
+          </tr>
+          <tr>
+            <td><strong>轮播/自动切换</strong></td>
+            <td>有多个平行案例需要展示</td>
+            <td>消费品（营销vs真相6案例9秒轮播、成本X光5产品12秒轮播）</td>
+            <td>自动轮播必须有暂停（用户hover时）；手动切换按钮必须清晰可见；案例数>3再考虑轮播</td>
+          </tr>
+          <tr>
+            <td><strong>产品选择器+动态内容</strong></td>
+            <td>同一交互模式应用于多个产品/场景</td>
+            <td>消费品（参数游戏3产品）、科学方法（第一性原理4物品）</td>
+            <td>按钮切换→内容刷新；保持交互逻辑不变，只更换数据</td>
+          </tr>
+          <tr>
+            <td><strong>可筛选文章网格</strong></td>
+            <td>大量原始文章需要按主题/标签检索</td>
+            <td>食品（35篇按5标签筛选）、消费品（47篇按6场景+搜索筛选）</td>
+            <td>标签+搜索框双模式；显示筛选计数；空状态提示清晰</td>
+          </tr>
+          <tr>
+            <td><strong>弹窗文章详情</strong></td>
+            <td>在页面内快速查看文章片段而不跳转</td>
+            <td>演化（点击文章tag弹出摘要）</td>
+            <td>必须有明确的关闭按钮；用backdrop-filter模糊背景；弹窗内容不宜过长（一屏以内）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>3.2 交互复杂度分级</h3>
+      <table>
+        <thead>
+          <tr><th>级别</th><th>特征</th><th>代表页面</th><th>开发工作量</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>轻交互</strong></td><td>主要是hover效果、滚动揭示、可展开面板</td><td>航天</td><td>1x</td></tr>
+          <tr><td><strong>中交互</strong></td><td>有1-2个复杂交互组件（翻转卡片+时间线+滑块）</td><td>演化、医学、食品</td><td>2-3x</td></tr>
+          <tr><td><strong>重交互</strong></td><td>多组件联动、游戏化系统、状态管理复杂</td><td>AI、消费品、科学方法</td><td>4-6x</td></tr>
+        </tbody>
+      </table>
+      <p><strong>决策原则：</strong>交互复杂度应与内容的「行动导向性」成正比。纯粹知识传递→轻交互；教授判断技能→重交互。</p>
+
+      <h3>3.3 交互设计反模式</h3>
+      <ul>
+        <li>❌ <strong>为了交互而交互</strong> — 翻转卡片如果正反面信息量差不多，翻转就没有意义</li>
+        <li>❌ <strong>没有反馈的交互</strong> — 决策模拟器中，只说「错了」而不说「为什么错」是浪费机会</li>
+        <li>❌ <strong>隐藏过深</strong> — 重要信息埋在需要3次点击才能到达的地方</li>
+        <li>❌ <strong>动画阻塞阅读</strong> — 过度炫目的背景动画（>90个粒子+连接线）在移动端会掉帧</li>
+      </ul>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 4 — 视觉系统规范
+         ============================================================ -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head">
+        <span class="chapter-num">04</span>
+        <h2>视觉系统规范</h2>
+      </div>
+
+      <h3>4.1 深色科技风（Dark Tech Aesthetic）核心参数</h3>
+      <p>这是科技参考3系列所有页面的共同基础。</p>
+      <pre><code><span class="cm">/* ===== 色彩基础 ===== */</span>
+<span class="prop">--bg-deep</span>: #05051a ~ #0a0a0f;        <span class="cm">/* 最深背景 — 近似纯黑但保留色调 */</span>
+<span class="prop">--bg-card</span>: rgba(14,14,42,0.75);      <span class="cm">/* 卡片半透明 — 让背景粒子透出 */</span>
+<span class="prop">--text</span>: #c4c0d8;                      <span class="cm">/* 正文 — 略带蓝紫的暖灰 */</span>
+<span class="prop">--text-bright</span>: #ede8f8;               <span class="cm">/* 标题/强调 */</span>
+<span class="prop">--text-dim</span>: #767498;                  <span class="cm">/* 次要文字 */</span>
+<span class="prop">--border</span>: rgba(180,175,210,0.07);    <span class="cm">/* 极淡边框 — 不用纯白边框 */</span>
+
+<span class="cm">/* ===== 间距 ===== */</span>
+<span class="prop">--radius</span>: 12px;                       <span class="cm">/* 卡片圆角 */</span>
+<span class="prop">--radius-lg</span>: 18px;                    <span class="cm">/* 大面板圆角 */</span>
+<span class="prop">--radius-sm</span>: 8px;                     <span class="cm">/* 小元素圆角 */</span>
+
+<span class="cm">/* ===== 动画 ===== */</span>
+<span class="prop">--ease</span>: 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);   <span class="cm">/* 主要过渡 */</span>
+<span class="prop">--ease-out</span>: 0.35s cubic-bezier(0, 0, 0.2, 1);       <span class="cm">/* 出场过渡 */</span></code></pre>
+
+      <h3>4.2 主题色编码系统</h3>
+      <p><strong>原则：</strong>每个页面/领域有一个主导色系，但不是单一颜色——是一个 <strong>调色板家族</strong>。</p>
+      <table>
+        <thead>
+          <tr><th>页面/领域</th><th>主导色系</th><th>核心色</th><th>衍生色</th><th>隐喻来源</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>首页（EUV光源）</td><td>暖金 + 七色光谱</td><td><code>#f5d078</code>（光源金）</td><td>红橙绿青蓝靛紫7色</td><td>EUV等离子体光源</td></tr>
+          <tr><td>AI与芯片</td><td>金 + 领域色</td><td><code>#f0c060</code>（金）</td><td>红（硅层）蓝（架构）绿（规模）紫（涌现）</td><td>硅晶圆的金色反光</td></tr>
+          <tr><td>航天</td><td>橙金 + 蓝</td><td><code>#f59e0b</code>（推进器焰）</td><td>蓝（轨道）红（火星）绿（生命）</td><td>火箭发动机尾焰</td></tr>
+          <tr><td>医学</td><td>生物荧光绿</td><td><code>#00e5a0</code></td><td>青（分子）蓝（细胞）琥珀（诊断）红（免疫）</td><td>GFP绿色荧光蛋白</td></tr>
+          <tr><td>食品</td><td>紫罗兰</td><td><code>#a78bfa</code></td><td>红（危害）琥珀（暴露）绿（安全）</td><td>实验室UV检测光</td></tr>
+          <tr><td>消费品</td><td>琥珀/警戒橙</td><td><code>#f59e0b</code></td><td>红（营销）蓝（工程）绿（价值）</td><td>工业扫描仪/X射线</td></tr>
+          <tr><td>演化</td><td>时间渐变</td><td><code>#ff6b4a→#ffd700</code></td><td>冥古红→太古橙→元古金→寒武绿→中生蓝→新生紫→人类金</td><td>地质年代色谱</td></tr>
+          <tr><td>科学方法</td><td>紫罗兰 + 玫瑰</td><td><code>#9b59b6</code> / <code>#f472b6</code></td><td>玫瑰（诱饵）紫（解构）金（武器）青（真相）</td><td>紫外光/不可见光谱</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.3 粒子效果规范</h3>
+      <p><strong>目的：</strong>不是装饰，是 <strong>用运动暗示空间深度</strong>。</p>
+      <table>
+        <thead>
+          <tr><th>页面</th><th>粒子隐喻</th><th>数量</th><th>速度</th><th>特殊行为</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>首页</td><td>深空星场+光谱尘埃</td><td>15颗星+7彩尘</td><td>慢</td><td>光谱尘埃从EUV光源附近浮现</td></tr>
+          <tr><td>AI</td><td>金色神经网络节点</td><td>80</td><td>中</td><td>鼠标吸引（模拟注意力机制）</td></tr>
+          <tr><td>航天</td><td>星空+星云团</td><td>400星+8星云</td><td>慢</td><td>鼠标视差+滚动视差</td></tr>
+          <tr><td>医学</td><td>细胞/蛋白/病原</td><td>40（分4类）</td><td>慢-中</td><td>不同类别不同形状/光晕</td></tr>
+          <tr><td>食品</td><td>分子节点网络</td><td>70</td><td>中</td><td>近距离连线（模拟分子键）</td></tr>
+          <tr><td>消费品</td><td>X射线扫描环</td><td>90</td><td>中</td><td>中央扫描环旋转+网格线</td></tr>
+          <tr><td>演化</td><td>演化粒子流</td><td>Canvas</td><td>极慢</td><td>时间隐喻——粒子极其缓慢移动</td></tr>
+        </tbody>
+      </table>
+      <p><strong>性能守则：</strong></p>
+      <ul>
+        <li>粒子总数 ≤ 90（桌面端），移动端考虑减半</li>
+        <li>粒子的<code>animation-duration</code>在5-25s范围（太快=焦虑，太慢=卡顿）</li>
+        <li>始终使用<code>requestAnimationFrame</code> + <code>visibilitychange</code>暂停（页面不可见时停止动画）</li>
+        <li>粒子连接线只在距离<100px时计算（O(n²)问题）</li>
+        <li>永远加<code>pointer-events: none</code></li>
+      </ul>
+
+      <h3>4.4 字体与排版</h3>
+      <pre><code>标题字体: "Noto Serif SC", "Source Han Serif SC", Georgia, serif
+  → 衬线字体传达「深度」「经典」「权威」
+  → 用于 Hero 标题、Section 标题、引用块
+
+正文字体: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif
+  → 无衬线字体确保小字号下的可读性
+  → 用于正文、卡片内容、数据面板
+
+数字/数据: "Georgia", "Times New Roman", serif
+  → 等宽数字（tabular numbers）在数据面板中对齐
+  → 用于统计数据、进度百分比、大数字展示
+
+字号梯度（桌面端）:
+  Hero 标题: 3-4rem
+  Section 标题: 1.5-2.2rem
+  卡片标题: 1.0-1.1rem
+  正文: 0.85-0.95rem
+  辅助文本: 0.68-0.78rem
+  标签/元数据: 0.62-0.72rem</code></pre>
+
+      <h3>4.5 卡片设计公约</h3>
+      <pre><code><span class="cm">/* 标准卡片 */</span>
+<span class="prop">background</span>: rgba(14,14,42,0.75);   <span class="cm">/* 半透明深色 */</span>
+<span class="prop">border</span>: 1px solid rgba(180,175,210,0.07);  <span class="cm">/* 极淡边框 */</span>
+<span class="prop">border-radius</span>: 12px;                <span class="cm">/* 统一圆角 */</span>
+<span class="prop">backdrop-filter</span>: blur(8px);         <span class="cm">/* 毛玻璃效果 */</span>
+<span class="prop">box-shadow</span>: 0 2px 8px rgba(0,0,0,0.3);  <span class="cm">/* 轻微阴影 */</span>
+
+<span class="cm">/* Hover状态 */</span>
+<span class="prop">:hover</span> {
+  transform: translateY(-3px ~ -6px);  <span class="cm">/* 上浮 */</span>
+  border-color: rgba(255,255,255,0.15); <span class="cm">/* 边框变亮 */</span>
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5); <span class="cm">/* 阴影加强 */</span>
+}
+
+<span class="cm">/* 顶部色条（用于分类） */</span>
+<span class="prop">::before</span> { height: 3-4px; }  <span class="cm">/* 每个领域色 */</span></code></pre>
+
+      <h3>4.6 滚动揭示动画</h3>
+      <pre><code><span class="prop">.reveal</span> {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+<span class="prop">.reveal.visible</span> { opacity: 1; transform: translateY(0); }
+
+<span class="cm">/* JS 使用 IntersectionObserver */</span>
+<span class="kw">const</span> <span class="fn">observer</span> = <span class="kw">new</span> IntersectionObserver((entries) => {
+  entries.forEach(e => { <span class="kw">if</span> (e.isIntersecting) e.target.classList.add(<span class="str">'visible'</span>); });
+}, { threshold: 0.12, rootMargin: <span class="str">'0px 0px -40px 0px'</span> });</code></pre>
+      <p><strong>注意：</strong><code>rootMargin</code> 设为 <code>-40px</code> 底部让元素在进入视口 40px 后才触发，避免页面底部元素在不可见时就已动画完成。</p>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 5 — 数据→设计转化流程
+         ============================================================ -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head">
+        <span class="chapter-num">05</span>
+        <h2>数据→设计转化流程</h2>
+      </div>
+
+      <h3>5.1 从原始文章到视觉叙事的五步法</h3>
+      <p>这是每次创作中反复实践的核心流程：</p>
+
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <span class="step-num">Step 1</span>
+          <div class="step-body">
+            <strong>聚类扫描（Cluster Scan）</strong><br>
+            → 通读原始文章列表（通常50-100篇），按照主题自动聚类<br>
+            → 输出：5-8个核心主题簇，每个簇5-20篇文章<br>
+            → 工具：凭感觉聚类，辅以文章标题的关键词频率
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">Step 2</span>
+          <div class="step-body">
+            <strong>提取锚点（Anchor Extraction）</strong><br>
+            → 从每个主题簇中找出「最具冲击力」的单个事实/数字/故事<br>
+            → 输出：每个主题1-3个「锚点」——这些就是交互组件的素材<br>
+            → 反例：不要把文章标题罗列为「目录」——那是信息管理，不是设计
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">Step 3</span>
+          <div class="step-body">
+            <strong>构建叙事弧（Arc Construction）</strong><br>
+            → 确定这5-8个主题的关系：是层级递进？时序展开？还是平行并列？<br>
+            → 输出：叙事大纲（哪个主题在前、哪个在后、为什么）<br>
+            → 关键洞察：不是所有主题都同等重要——确定一个「主轴」主题
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">Step 4</span>
+          <div class="step-body">
+            <strong>匹配交互形式（Interaction Matching）</strong><br>
+            → 参照本文 §3，为每个锚点选择最合适的交互形式<br>
+            → 原则：锚点的「认知结构」决定交互形式的「物理结构」<br>
+            → 示例：对比类锚点→左右面板；层级类锚点→手风琴；判断类锚点→决策模拟器
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">Step 5</span>
+          <div class="step-body">
+            <strong>统一隐喻包装（Metaphor Wrapping）</strong><br>
+            → 用单一母隐喻包裹所有主题和交互<br>
+            → 检查：隐喻是否贯穿Hero→Section→Footer？每个交互是否与隐喻一致？<br>
+            → 反例：Hero是「宇宙」隐喻但 Section 变成普通卡片列表 = 断裂
+          </div>
+        </div>
+      </div>
+
+      <h3>5.2 具体案例：如何从35篇食品文章转化为「焦虑解码器」</h3>
+      <pre><code>Step 1 — 聚类扫描:
+  35篇文章 → 5个聚类
+  • 食品安全检测（6篇）：八角硫磺、罐头灭菌、螃蟹中的科学
+  • 营养与饮食（16篇）：肉链5部曲、盐的选择、减肥药
+  • 食品科技（6篇）：人造肉、杂交水稻、人工合成淀粉
+  • 饮品（5篇）：咖啡、无糖月饼、玻尿酸饮料
+  • 保健品（4篇）：燕窝、益生菌、碳水阻断剂
+
+Step 2 — 提取锚点:
+  • 「硫磺八角」→ 95%的广西八角使用了超量硫磺——触目惊心的数据
+  • 「阿斯巴甜2B类」→ 跟泡菜同级——反直觉的认知冲击
+  • 「胃酸让酶失活」→ 碳水阻断剂在胃里就失效了——生物化学打脸
+  • 「证据金字塔」→ 这不是食品特有，但食品领域最需要
+  • 「危害×暴露量=风险」→ 卓克反复强调的框架思维
+
+Step 3 — 构建叙事弧:
+  决定采用「从教公式→看法庭→跟旅程→登金字塔→去探索」的递进路径。
+  不是按聚类平铺（那是目录），而是按「技能培养」的弧线组织。
+
+Step 4 — 匹配交互形式:
+  • 危害×暴露量=风险 → 交互滑块（双变量可视化）
+  • 食品安全争议 → 科学法庭（案例审判制）
+  • 食物在体内的旅程 → 交互消化道（手风琴展开）
+  • 证据等级 → 可展开金字塔（层级递进）
+  • 原始文章 → 可筛选网格
+
+Step 5 — 统一隐喻包装:
+  「解码器」隐喻 — 食品焦虑是被编码的营销信息，你需要解码工具。
+  检查一致性：
+  • Hero: 核心公式 = 解码算法 ✓
+  • 科学法庭: 法官审视证据 = 解码争议 ✓
+  • 体内旅程: 追踪食物 = 解码消化过程 ✓
+  • 证据金字塔: 从噪声到信号 = 解码信息质量 ✓</code></pre>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 6 — 设计反模式
+         ============================================================ -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head">
+        <span class="chapter-num">06</span>
+        <h2>设计反模式</h2>
+      </div>
+
+      <h3>6.1 要避免的做法</h3>
+      <table>
+        <thead>
+          <tr><th>反模式</th><th>问题</th><th>修正</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>信息过载墙</strong></td>
+            <td>把所有文章全部列在一页上，密密麻麻</td>
+            <td>聚类→隐藏→按需展示；用筛选/搜索让读者自主导航</td>
+          </tr>
+          <tr>
+            <td><strong>单一布局疲劳</strong></td>
+            <td>整页都是同一种卡片网格，滚3屏就乏了</td>
+            <td>参考演化页面：7种布局交替使用，至少保证每2屏切换一次视觉节奏</td>
+          </tr>
+          <tr>
+            <td><strong>隐喻断裂</strong></td>
+            <td>Hero是太空隐喻，Section变成普通商务风</td>
+            <td>检查每个section的视觉语言是否与隐喻一致</td>
+          </tr>
+          <tr>
+            <td><strong>交互孤岛</strong></td>
+            <td>某个复杂交互组件与页面其余部分没有任何关联</td>
+            <td>交互组件的产出（如分数、选择）应在页面其他地方有呼应</td>
+          </tr>
+          <tr>
+            <td><strong>色彩失序</strong></td>
+            <td>每个section用不同颜色但没有逻辑——纯粹为了「好看」</td>
+            <td>颜色编码必须有语义：比如光谱顺序、时间演进、危害等级</td>
+          </tr>
+          <tr>
+            <td><strong>数据裸奔</strong></td>
+            <td>直接展示原始数字而不提供比较基准</td>
+            <td>数字必须有上下文：「14罐无糖可乐/天」比「50mg/kg ADI」好理解100倍</td>
+          </tr>
+          <tr>
+            <td><strong>文档心态</strong></td>
+            <td>把MKS页面做成了「文章目录+摘要」的信息管理工具</td>
+            <td>核心是叙事体验，不是文档索引。文章链接是补充，不是主角</td>
+          </tr>
+          <tr>
+            <td><strong>PC中心主义</strong></td>
+            <td>假设所有人都在27寸显示器上全屏浏览</td>
+            <td>移动端先用<code>clamp()</code>做字号，再用<code>@media</code>调整布局</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>6.2 技术债务清单</h3>
+      <ul>
+        <li><strong>纯HTML+CSS+JS架构</strong> — 适合快速迭代和部署，但不适合多人协作。如果未来需要多人维护，考虑模板引擎。</li>
+        <li><strong>嵌入式数据</strong> — 所有文章数据和交互数据都写在<code>&lt;script&gt;</code>标签中。优点是零依赖、单文件部署；缺点是数据更新需要修改HTML。</li>
+        <li><strong>Canvas性能</strong> — 多个页面有Canvas背景动画，但部分未做移动端降级。在低端设备上可能出现掉帧。</li>
+        <li><strong>字体加载</strong> — 中文字体（Noto Serif/Sans SC）体积大，首屏渲染可能闪烁。考虑字体子集化或使用系统字体fallback。</li>
+      </ul>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 7 — 逐页设计决策回顾
+         ============================================================ -->
+    <section class="chapter" id="ch7">
+      <div class="chapter-head">
+        <span class="chapter-num">07</span>
+        <h2>逐页设计决策回顾</h2>
+      </div>
+
+      <h3>7.1 首页：EUV光刻机光学系统</h3>
+      <p><strong>核心隐喻：</strong>极紫外光穿透多层镀膜反射镜，分解为七束光谱——每一束照亮一个前沿领域。</p>
+      <p><strong>为什么选这个隐喻？</strong></p>
+      <ul>
+        <li>科技参考3覆盖7个完全不同的领域（AI、航天、医学、食品、消费品、演化、科学方法）——需要一个「一分为七」的结构</li>
+        <li>EUV光刻机的光学路径天然提供了这个结构：光源→反射镜组→七束曝光光束→七个领域</li>
+        <li>光刻机本身就是「人类最精密工程」的象征，与「科技参考」的品牌高度契合</li>
+      </ul>
+      <p><strong>叙事结构：</strong>模块并列（7个等权重的窗口卡片）</p>
+      <ul>
+        <li>每个领域分配一个光谱色（红→紫，真光谱顺序）</li>
+        <li>窗口卡片hover时各自显示对应颜色的光晕</li>
+      </ul>
+      <p><strong>关键设计决策：</strong></p>
+      <ul>
+        <li>色带（spectral-bar）放置在所有section标题之上，持续提醒「七色光谱」概念</li>
+        <li>路径轨道（path-track）让7个节点线性排列，展示科技参考的「观察序列」</li>
+        <li>进度条用不同颜色分段，每个领域对应其光谱色</li>
+        <li><strong>踩过的坑：</strong>最初用的是「分光镜」隐喻——过于抽象，用户想象不出具体画面。EUV光刻机虽然更专业，但有SVG图辅助理解，反而更具象。</li>
+      </ul>
+
+      <h3>7.2 AI与芯片革命：「硅基思维的N层跃迁」</h3>
+      <p><strong>核心隐喻：</strong>「跃迁」——量子力学中电子在能级间的非连续跳跃。对应AI能力的非线性涌现。</p>
+      <p><strong>为什么选这个隐喻？</strong></p>
+      <ul>
+        <li>「跃迁」精准捕捉了AI发展的本质：不是渐进提升，而是在规模阈值处发生质的飞跃</li>
+        <li>「N层」暗示了多个层级的结构——从物理层（芯片）到社会层（Impact）</li>
+      </ul>
+      <p><strong>叙事结构：</strong>层级深度递进（模式A）——6个Layer从底层硅芯片到顶层社会冲击</p>
+      <p><strong>交互形式选择：</strong></p>
+      <ul>
+        <li>Hero：Canvas粒子网络+鼠标吸引（隐喻：神经网络节点互联）</li>
+        <li>Layer1-芯片：EUV制造流程交互步骤（5步点击切换）</li>
+        <li>Layer2-架构：自注意力机制可视化（点击词→观察注意力权重变化）——这是最具教学价值的交互</li>
+        <li>Layer3-规模：GPT模型对比卡片</li>
+        <li>Layer4-涌现：翻转卡片</li>
+        <li>Layer5-安全：时间线+事件展开</li>
+        <li>Layer6-社会：决策模拟器4场景</li>
+      </ul>
+      <p><strong>视觉语言：</strong>金色为主色（芯片硅晶圆的金色反光、AI的「金矿」隐喻）。每层layer有独立的标题渐变色。</p>
+      <p><strong>踩过的坑：</strong>最初试图用「EUV制造流程」作为唯一交互形式——发现过于狭窄，只能覆盖Layer1。决定每层使用不同的交互形式：这个决定虽然增加了复杂性，但让读者在滚动过程中不会疲劳。</p>
+
+      <h3>7.3 航天与太空探索：「深空巡航」</h3>
+      <p><strong>核心隐喻：</strong>「巡航」——不是一次性的「发射」，而是沿预定轨道、经停多个站点的持续航行。</p>
+      <p><strong>叙事结构：</strong>旅程航段渐进（模式B）——8个航段按距离递增排列</p>
+      <p><strong>交互形式选择：</strong>相对轻交互：滚动揭示、星空Canvas（400星+8星云+鼠标视差）、数据面板、可展开文章详情。为什么轻交互？航天内容的原始文章更像是「报道/故事」——叙事本身已经有足够的张力，不需要复杂的交互来增加趣味。</p>
+      <p><strong>视觉语言：</strong>橙色为主色（火箭发动机尾焰），蓝色为辅助色（轨道蓝）。每个航段使用不同色调。</p>
+      <p><strong>踩过的坑：</strong>最初考虑做3D轨道交互——放弃了。纯CSS+JS实现3D轨道旋转的性能和可访问性都不理想。</p>
+
+      <h3>7.4 医学与健康前沿：「人体微观宇宙」</h3>
+      <p><strong>核心隐喻：</strong>「微观宇宙」——你体内37万亿个细胞、100万亿个细菌、每个细胞内的分子机器……这个复杂度堪比一个宇宙。</p>
+      <p><strong>叙事结构：</strong>混合模式——尺度导航器（类似旅程但按生物尺度而非空间距离组织）+ 层级递进</p>
+      <p><strong>交互形式选择：</strong>6层生物尺度导航器、免疫战场卡片、mRNA疫苗步骤序列、新冠全身影响系统图、证据金字塔、FDA审批流程、诊断思维模拟器、翻转卡片、医学发现时间线（蛇形左右交替布局）。</p>
+      <p><strong>视觉语言：</strong>生物荧光绿为主色（GFP绿色荧光蛋白的视觉联想）。辅助色：青色（分子）、蓝色（细胞）、琥珀（诊断）、红色（免疫）、紫色（大脑）。</p>
+      <p><strong>踩过的坑：</strong>内容量极大（59期参考）——最大的挑战是「不做什么」。最终选择了6个「高光主题」深度展开，其他内容用翻转卡片和可展开面板收纳。</p>
+
+      <h3>7.5 食品营养与安全：「焦虑解码器」</h3>
+      <p><strong>核心隐喻：</strong>「解码器」——食品安全领域的焦虑是被营销和误传「编码」的信息，你需要解码工具来还原真相。</p>
+      <p><strong>叙事结构：</strong>解密工作流（模式C）——5个Section按「技能培养」的逻辑递进</p>
+      <p><strong>交互形式选择（这是交互密度最高的页面之一）：</strong></p>
+      <ul>
+        <li>风险方程式：交互双滑块+预设场景按钮（6个食品场景）——这是全系列最成功的「框架教学」交互</li>
+        <li>科学法庭：6个案件点击切换判决书</li>
+        <li>消化道旅程：6个节点左右交替+粒子旅行动画</li>
+        <li>证据金字塔：5层可展开（倒三角形宽度递增）</li>
+        <li>文章宇宙：35篇可筛选（5标签）+ 可搜索</li>
+      </ul>
+      <p><strong>视觉语言：</strong>紫罗兰色为主色（实验室检测的UV光联想）。红（危害）/ 琥珀（暴露）/ 绿（安全）三色编码贯穿全页。</p>
+      <p><strong>踩过的坑：</strong>最初想按「营养素类别」组织（碳水、蛋白、脂肪…），发现太像教科书——读者不会看完。改为「技能线」组织后，每个section的标题都变成了「教会你一个技能」（而非「介绍一个知识点」）。</p>
+
+      <h3>7.6 消费品评测与避坑：「消费者特工训练营」</h3>
+      <p><strong>核心隐喻：</strong>「特工训练营」——你不是在逛商场，你是在执行侦察任务。每一件商品都是敌方伪装，你的武器是参数思维。</p>
+      <p><strong>叙事结构：</strong>训练营闯关制（模式D）——6个Mission</p>
+      <p><strong>交互形式选择（交互密度最高的页面之一）：</strong></p>
+      <ul>
+        <li>Mission 01·识破伪装：左右对比面板（6个案例自动轮播，9秒/个，带「打碎玻璃」动画）</li>
+        <li>Mission 02·透视扫描：X光机动画+成本分解条（5产品，12秒/个自动切换，带扫描线+标注点依次出现）</li>
+        <li>Mission 03·智商税闯关：三级段位系统（学徒2题/猎手3题/大师2题），不同段位锁定/解锁</li>
+        <li>Mission 04·参数训练营：三步交互（拖拽分类参数→查看国家标准→计算智商税指数）</li>
+        <li>Mission 05·避坑地图：4个生活场景的陷阱地图</li>
+        <li>Mission 06·情报档案：47篇文章的时间线（可筛选+可搜索+可展开）</li>
+      </ul>
+      <p><strong>视觉语言：</strong>琥珀/警戒橙为主色（工业扫描仪的标识色）。红色=营销/谎言侧，蓝色/绿色=工程/真相侧。</p>
+      <p><strong>踩过的坑：</strong>智商税闯关的段位锁定机制最初因为bug导致题目顺序混乱——教训是：游戏化逻辑需要更严谨的状态管理。</p>
+
+      <h3>7.7 人类演化与文明进程：「演化史书」</h3>
+      <p><strong>核心隐喻：</strong>「史书」——DNA是记录了40亿年演化历史的「分子史书」，每一次翻开都是时间回溯。</p>
+      <p><strong>叙事结构：</strong>史书展开（模式E）——7个章节，7种不同的布局</p>
+      <p><strong>交互形式选择（布局多样性是该页最显著的特征）：</strong></p>
+      <ul>
+        <li>第一章：SVG演化时间线（9个节点+弧形连线+详情面板）+ 朊粒悖论专题</li>
+        <li>第二章：DNA双链可视化（病毒插入片段高亮）+ 4个病毒类型可点击图例+信息面板</li>
+        <li>第三章：翻转卡片（杂交水稻、遗传算法、转基因蚊子、人工合成淀粉）</li>
+        <li>第四章：世界迁徙地图（8条路线+点击路线显示详情面板）</li>
+        <li>第五章：尼安德特人vs智人双栏对比 + DNA遗产比例条</li>
+        <li>第六章：大脑演化5层手风琴</li>
+        <li>第七章：文明手风琴 + 文章弹窗系统</li>
+      </ul>
+      <p><strong>视觉语言：</strong>地质年代色带（冥古红→太古橙→元古金→寒武绿→中生蓝→新生紫→人类金）。滚动进度条使用地质年代色带渐变。</p>
+      <p><strong>踩过的坑：</strong>内容横跨40亿年、涉及数十个主题——最初的方案是按「时间线」线性排列所有内容，结果是信息过载。改为「7章7布局」后，读者可以在任何一章停下来，不会感到被信息淹没。</p>
+
+      <h3>7.8 科学方法与认知论：「认知武器库」</h3>
+      <p><strong>核心隐喻：</strong>「武器库」——科学方法的本质是一套可重复使用的认知工具。走出这个页面时，你手里不只有「红酒骗局」这一个故事——你握着一整套可以反复使用的认知武器。</p>
+      <p><strong>叙事结构：</strong>戏剧四幕结构（模式C的变体）</p>
+      <ul>
+        <li>Act I: 诱饵（The Seduction）——提出「红酒有益心脏」的美丽结论</li>
+        <li>Act II: 逐层拆解（Layer-by-Layer）——5层解剖一个谎言的制造过程</li>
+        <li>Act III: 真相揭示（The Revelation）——你来当审稿人</li>
+        <li>Act IV: 认知武装（Armament）——装备你自己的思维工具</li>
+        <li>Coda: 收束 — 「你不再需要'相信'科学」</li>
+      </ul>
+      <p><strong>交互形式选择（全系列交互最复杂的页面）：</strong>认知偏误翻转卡片、认知谬误迷宫（5关分支选择）、p-hacking决策树SVG、复现危机领域对比柱状图SVG、教科书vs真实科学路径对比SVG、同行评议模拟器（10个flag项，评分系统）、3D证据金字塔SVG、第一性原理拆解器（4个对象可选，6层逐层展开）、武器墙（10个方法论标签）、文章分类索引。</p>
+      <p><strong>视觉语言：</strong>紫罗兰色为主色（第7光谱带），玫瑰色为辅色（诱饵/罗曼蒂克的欺骗）。金/琥珀用于「真相」和「武器」相关元素。Canvas背景使用CSS网格+噪点纹理（而非粒子动画——科学方法页面应该更「冷」更「理性」）。</p>
+      <p><strong>踩过的坑：</strong>这是最后完成的页面，也是设计迭代最多的。最初方案是「教科书式」的——按科学方法论的主题排列（假说检验、统计、复现…），非常无聊。改为戏剧结构后，页面有了明确的情感弧线：被诱饵吸引→被拆解震撼→在模拟中亲自体验→获得武器→走出来。</p>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         CHAPTER 8 — 快速决策速查表
+         ============================================================ -->
+    <section class="chapter" id="ch8">
+      <div class="chapter-head">
+        <span class="chapter-num">08</span>
+        <h2>快速决策速查表</h2>
+      </div>
+
+      <h3>8.1 拿到一个新MKS主题后的决策流程</h3>
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <strong>内容分析（30分钟）</strong><br>
+            ☐ 通读文章列表，标记高频关键词<br>
+            ☐ 聚类：这个知识体系有几个主要分支？<br>
+            ☐ 识别「锚点」：哪些事实/数字/故事最具冲击力？<br>
+            ☐ 确定关系：分支之间是层级、时序、并列还是因果？
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <strong>隐喻选定（20分钟）</strong><br>
+            ☐ 参照 §1.2 隐喻选择矩阵<br>
+            ☐ 检验：隐喻的物理结构 = 内容的认知结构？<br>
+            ☐ 检验：普通读者不需要专业知识就能理解隐喻？<br>
+            ☐ 检验：隐喻能否贯穿Hero→Sections→Footer？
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <strong>叙事模式选定（15分钟）</strong><br>
+            ☐ 参照 §2.2 决策树<br>
+            ☐ 如果内容不适合单一模式→考虑混合（参考演化页面）
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <strong>交互匹配（45分钟）</strong><br>
+            ☐ 对每个「锚点」，参照 §3.1 选择交互形式<br>
+            ☐ 控制交互密度：轻交互页面≤3种交互形式，重交互页面≤6种<br>
+            ☐ 检查：交互形式是否服务于内容理解？还是为了交互而交互？
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">5</span>
+          <div class="step-body">
+            <strong>视觉调色（20分钟）</strong><br>
+            ☐ 参照 §4.2 选择主色系<br>
+            ☐ 定义辅助色和语义编码<br>
+            ☐ 定义粒子/背景类型
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">6</span>
+          <div class="step-body">
+            <strong>实施（天级别）</strong><br>
+            ☐ 先做HTML结构和CSS变量<br>
+            ☐ 再做Section布局（不做交互）<br>
+            ☐ 然后逐个Section添加交互<br>
+            ☐ 最后做Hero和Footer<br>
+            ☐ 移动端适配测试
+          </div>
+        </div>
+      </div>
+
+      <h3>8.2 不同内容规模的策略</h3>
+      <table>
+        <thead>
+          <tr><th>文章数量</th><th>策略</th><th>参考页面</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>10-20篇</td><td>1-2个核心交互 + 叙事为主</td><td>航天</td></tr>
+          <tr><td>20-40篇</td><td>3-4个交互 + 聚类展示</td><td>食品、演化</td></tr>
+          <tr><td>40-60篇</td><td>4-6个交互 + 分层叙事 + 文章索引</td><td>AI、医学、消费品</td></tr>
+          <tr><td>60+篇</td><td>需要评估是否拆分多个页面</td><td>科学方法（作为收束篇）</td></tr>
+        </tbody>
+      </table>
+
+      <h3>8.3 交互组件复用性评估</h3>
+      <table>
+        <thead>
+          <tr><th>组件</th><th>复用难度</th><th>可复用性</th><th>注意事项</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>翻转卡片</td><td>★☆☆☆☆</td><td>极高</td><td>CSS only，改变数据即可</td></tr>
+          <tr><td>可展开时间线</td><td>★★☆☆☆</td><td>极高</td><td>JS模板化后复用</td></tr>
+          <tr><td>决策模拟器</td><td>★★★☆☆</td><td>高</td><td>题目数据结构标准化后可复用</td></tr>
+          <tr><td>左右对比面板</td><td>★★☆☆☆</td><td>高</td><td>只需要换文本</td></tr>
+          <tr><td>交互滑块（双变量）</td><td>★★☆☆☆</td><td>高</td><td>数学逻辑通用</td></tr>
+          <tr><td>手风琴/可展开面板</td><td>★☆☆☆☆</td><td>极高</td><td>CSS only</td></tr>
+          <tr><td>SVG交互图</td><td>★★★★☆</td><td>中</td><td>每个SVG需手绘，但设计模式可复用</td></tr>
+          <tr><td>粒子Canvas</td><td>★★☆☆☆</td><td>高</td><td>参数模板化后可快速调整</td></tr>
+          <tr><td>证据金字塔</td><td>★★★☆☆</td><td>中</td><td>层数和宽度调整即可复用</td></tr>
+          <tr><td>认知迷宫（分支选择）</td><td>★★★★☆</td><td>中</td><td>数据结构标准化后复用，但问题需重写</td></tr>
+          <tr><td>同行评议模拟</td><td>★★★★☆</td><td>中</td><td>论文内容需重写，评判逻辑可复用</td></tr>
+          <tr><td>第一性原理拆解器</td><td>★★★☆☆</td><td>高</td><td>数据结构标准化——换产品数据即可</td></tr>
+        </tbody>
+      </table>
+
+      <div class="chapter-divider"></div>
+    </section>
+
+    <!-- ============================================================
+         APPENDIX — 技术栈约定
+         ============================================================ -->
+    <section class="chapter" style="margin-bottom: 0;">
+      <div class="chapter-head">
+        <span class="chapter-num" style="opacity: 0.1;">§</span>
+        <h2>附录：技术栈约定</h2>
+      </div>
+      <ul>
+        <li><strong>单文件HTML+CSS+JS</strong> — 零构建步骤，零依赖，一键部署</li>
+        <li><strong>CSS变量</strong> — 所有颜色、间距、圆角、动画曲线集中定义在<code>:root</code></li>
+        <li><strong>IntersectionObserver</strong> — 用于滚动揭示、进度追踪、导航高亮</li>
+        <li><strong>Canvas 2D</strong> — 仅用于粒子/背景动画；内容交互使用DOM+CSS</li>
+        <li><strong>SVG</strong> — 用于需要精确布局的图表（时间线、决策树、柱状图、金字塔）</li>
+        <li><strong>移动端优先的响应式</strong> — 用<code>clamp()</code>处理字号，<code>@media (max-width: 768px/480px)</code>处理布局降级</li>
+        <li><strong>字体</strong> — 衬线<code>Noto Serif SC</code>用于标题，无衬线<code>Noto Sans SC</code>用于正文，<code>Georgia</code>用于数字</li>
+      </ul>
+
+      <hr>
+
+      <blockquote>
+        <strong>这份文档是一个活文档。</strong>每完成一个新的MKS页面，都应该回到这里：<br>
+        1. 如果是新的模式/交互/隐喻，新增条目<br>
+        2. 如果某些经验被验证为通用规律，升级为「原则」<br>
+        3. 如果某些做法被证明是错的，移到「反模式」<br><br>
+        最终目标：让后续的创作者（包括未来的Claude Code）站在这一次的经验之上，而不是从零开始。
+      </blockquote>
+    </section>
+
+  </main><!-- /content -->
+</div><!-- /page-layout -->
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-ornament" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <p>MKS · 最小知识集档案馆 · Creative Patterns Library</p>
+  <p class="closing-quote">"让后续的创作者站在这一次的经验之上，而不是从零开始。"</p>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script>
+'use strict';
+
+// ===== TOC Mobile Toggle =====
+(function() {
+  var toggle = document.getElementById('tocToggle');
+  var nav = document.getElementById('sidebarNav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function() {
+      nav.classList.toggle('expanded');
+      toggle.textContent = nav.classList.contains('expanded') ? '✕ 关闭' : '☰ 目录';
+    });
+  }
+})();
+
+// ===== Active TOC Link Highlight via IntersectionObserver =====
+(function() {
+  var chapters = document.querySelectorAll('.chapter[id]');
+  var links = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+
+  if (!chapters.length || !links.length) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var id = entry.target.getAttribute('id');
+        links.forEach(function(link) {
+          var href = link.getAttribute('href');
+          if (href === '#' + id) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '-80px 0px -40% 0px'
+  });
+
+  chapters.forEach(function(ch) { observer.observe(ch); });
+})();
+
+// ===== Scroll Reveal =====
+(function() {
+  var reveals = document.querySelectorAll('.reveal');
+  if (!reveals.length) return;
+
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+  reveals.forEach(function(el) { revealObserver.observe(el); });
+})();
+
+// ===== Smooth sidebar scroll on mobile =====
+(function() {
+  var sidebar = document.getElementById('sidebar');
+  var nav = document.getElementById('sidebarNav');
+  if (!sidebar || !nav) return;
+
+  // Close mobile TOC after clicking a link
+  nav.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        nav.classList.remove('expanded');
+        var toggle = document.getElementById('tocToggle');
+        if (toggle) toggle.textContent = '☰ 目录';
+      }
+    });
+  });
+})();
+
+console.log('MKS Creative Patterns Library — ready.');
+</script>
+
+</body>
+</html>
