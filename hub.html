@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKS 知识总纲 · 最小知识集档案馆</title>
+<style>
+/* ============================================================
+   MKS KNOWLEDGE ARCHIVE — 知识总纲
+   Metaphor: Grand Archive Vault — a digital-age Library of Alexandria
+   Deep cosmic archive where each teacher is a wing,
+   each course a curated collection behind illuminated glass.
+   ============================================================ */
+
+/* ===== CSS Variables ===== */
+:root {
+  /* Archive depth palette */
+  --void: #06090f;
+  --vault: #0b1018;
+  --surface: #111827;
+  --surface-raised: #1a2332;
+  --surface-hover: #1f2a3a;
+
+  /* Text */
+  --text-primary: #d8dce6;
+  --text-secondary: #94a0b8;
+  --text-dim: #5a6680;
+  --text-bright: #f0f2f8;
+
+  /* Wu Jun — Warm Gold / Bronze / Amber (classical scholarship) */
+  --wj-gold: #d4a854;
+  --wj-gold-light: #e8c97a;
+  --wj-gold-deep: #a07828;
+  --wj-gold-glow: rgba(212,168,84,0.18);
+  --wj-amber: #c8903a;
+  --wj-bronze: #8b6914;
+
+  /* Zhuo Ke — Cool Cyan / Teal (scientific precision) */
+  --zk-cyan: #38bdf8;
+  --zk-cyan-light: #7dd3fc;
+  --zk-cyan-deep: #0284c7;
+  --zk-cyan-glow: rgba(56,189,248,0.16);
+  --zk-teal: #2dd4bf;
+  --zk-sky: #0ea5e9;
+
+  /* Universal accent */
+  --accent-white: rgba(255,255,255,0.06);
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-medium: rgba(255,255,255,0.08);
+  --border-glow: rgba(255,255,255,0.12);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --ease-out: 0.35s cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --font-display: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-body: "Noto Serif SC", "Source Han Serif SC", Georgia, "SimSun", serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--text-primary);
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   COSMIC AMBIENT BACKGROUND
+   ============================================================ */
+.cosmic-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    /* Central warm glow — the archive's eternal lamp */
+    radial-gradient(ellipse 60% 40% at 50% 22%, rgba(212,168,84,0.06) 0%, transparent 55%),
+    /* Deep blue nebula left */
+    radial-gradient(ellipse 40% 55% at 10% 45%, rgba(30,64,120,0.07) 0%, transparent 55%),
+    /* Deep blue nebula right */
+    radial-gradient(ellipse 40% 55% at 90% 45%, rgba(20,50,100,0.06) 0%, transparent 55%),
+    /* Cyan accent top-right — Zhuo Ke wing */
+    radial-gradient(ellipse 25% 35% at 78% 28%, rgba(56,189,248,0.04) 0%, transparent 50%),
+    /* Gold accent top-left — Wu Jun wing */
+    radial-gradient(ellipse 25% 35% at 22% 28%, rgba(212,168,84,0.05) 0%, transparent 50%),
+    /* Edge fade to void */
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(6,9,15,0.95) 100%);
+}
+
+/* Subtle archive grid */
+.archive-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+}
+
+/* ===== Floating Particles ===== */
+.particle-field {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.dust {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--wj-gold);
+  animation: dust-float linear infinite;
+  opacity: 0;
+}
+@keyframes dust-float {
+  0%   { opacity: 0; transform: translateY(0) scale(1); }
+  15%  { opacity: 0.6; }
+  40%  { opacity: 0.2; }
+  70%  { opacity: 0.03; }
+  100% { opacity: 0; transform: translateY(-140px) scale(0.4); }
+}
+.dust:nth-child(1)  { left: 8%;  top: 78%; width: 2px; height: 2px; animation-duration: 16s; animation-delay: 0s; }
+.dust:nth-child(2)  { left: 15%; top: 85%; width: 1px; height: 1px; animation-duration: 20s; animation-delay: 2s; }
+.dust:nth-child(3)  { left: 23%; top: 72%; width: 2px; height: 2px; animation-duration: 14s; animation-delay: 5s; }
+.dust:nth-child(4)  { left: 31%; top: 90%; width: 1px; height: 1px; animation-duration: 22s; animation-delay: 1s; }
+.dust:nth-child(5)  { left: 38%; top: 80%; width: 2px; height: 2px; animation-duration: 18s; animation-delay: 3s; }
+.dust:nth-child(6)  { left: 45%; top: 95%; width: 1px; height: 1px; animation-duration: 24s; animation-delay: 7s; }
+.dust:nth-child(7)  { left: 52%; top: 75%; width: 2px; height: 2px; animation-duration: 15s; animation-delay: 4s; }
+.dust:nth-child(8)  { left: 60%; top: 88%; width: 1px; height: 1px; animation-duration: 21s; animation-delay: 6s; }
+.dust:nth-child(9)  { left: 68%; top: 70%; width: 2px; height: 2px; animation-duration: 13s; animation-delay: 8s; }
+.dust:nth-child(10) { left: 75%; top: 82%; width: 1px; height: 1px; animation-duration: 19s; animation-delay: 2.5s; }
+.dust:nth-child(11) { left: 83%; top: 92%; width: 2px; height: 2px; animation-duration: 17s; animation-delay: 5.5s; }
+.dust:nth-child(12) { left: 90%; top: 76%; width: 1px; height: 1px; animation-duration: 23s; animation-delay: 1.5s; }
+.dust:nth-child(13) { left: 18%; top: 65%; width: 1px; height: 1px; animation-duration: 25s; animation-delay: 3.5s; }
+.dust:nth-child(14) { left: 55%; top: 68%; width: 2px; height: 2px; animation-duration: 20s; animation-delay: 9s; }
+.dust:nth-child(15) { left: 70%; top: 60%; width: 1px; height: 1px; animation-duration: 16s; animation-delay: 4.5s; }
+
+/* Cyan dust for Zhuo Ke zone */
+.dust-cyan {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--zk-cyan);
+  animation: dust-float linear infinite;
+  opacity: 0;
+}
+.dust-cyan:nth-child(16) { left: 72%; top: 45%; width: 2px; height: 2px; animation-duration: 18s; animation-delay: 1s; }
+.dust-cyan:nth-child(17) { left: 80%; top: 55%; width: 1px; height: 1px; animation-duration: 22s; animation-delay: 3s; }
+.dust-cyan:nth-child(18) { left: 65%; top: 50%; width: 2px; height: 2px; animation-duration: 15s; animation-delay: 6s; }
+.dust-cyan:nth-child(19) { left: 88%; top: 42%; width: 1px; height: 1px; animation-duration: 20s; animation-delay: 2s; }
+.dust-cyan:nth-child(20) { left: 76%; top: 62%; width: 2px; height: 2px; animation-duration: 17s; animation-delay: 5s; }
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* ============================================================
+   TOP NAV BAR
+   ============================================================ */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6,9,15,0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 28px;
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-brand::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--wj-gold);
+  box-shadow: 0 0 8px var(--wj-gold-glow);
+  animation: lamp-pulse 3s ease-in-out infinite;
+}
+@keyframes lamp-pulse {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 6px var(--wj-gold-glow); }
+  50% { opacity: 1; box-shadow: 0 0 14px rgba(212,168,84,0.35); }
+}
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color var(--ease-out);
+  position: relative;
+  padding: 4px 0;
+}
+.nav-links a:hover { color: var(--wj-gold-light); }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 1.5px;
+  background: var(--wj-gold);
+  border-radius: 1px;
+  transition: width var(--ease-out);
+  box-shadow: 0 0 6px var(--wj-gold-glow);
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.zk-link:hover { color: var(--zk-cyan-light); }
+.nav-links a.zk-link:hover::after { background: var(--zk-cyan); box-shadow: 0 0 6px var(--zk-cyan-glow); }
+
+/* ============================================================
+   HERO — Grand Archive Entrance
+   ============================================================ */
+.hero {
+  text-align: center;
+  padding: 72px 0 36px;
+  position: relative;
+}
+.hero-crown {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 200px;
+  background: radial-gradient(ellipse 50% 80% at 50% 100%, rgba(212,168,84,0.1), transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  display: inline-block;
+  position: relative;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.3rem;
+  color: var(--wj-gold);
+  opacity: 0.5;
+}
+.hero-eyebrow::before { left: -30px; }
+.hero-eyebrow::after  { right: -30px; }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(180deg, #f8e8c0 0%, #d4a854 30%, #c8903a 55%, #8b6914 85%, #6b4c10 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 20px rgba(212,168,84,0.3));
+}
+.hero .tagline {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  color: var(--text-secondary);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.hero .sub-tagline {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+/* ===== Archive Stats Ribbon ===== */
+.stats-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+  margin: 42px auto 0;
+  max-width: 900px;
+}
+.stat-block {
+  flex: 1 1 120px;
+  min-width: 100px;
+  text-align: center;
+  padding: 20px 18px;
+  background: rgba(17,24,39,0.55);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--ease-spring);
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+.stat-block:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.stat-block:last-child  { border-radius: 0 var(--radius) var(--radius) 0; }
+.stat-block::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 15%; right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,84,0.3), transparent);
+  opacity: 0;
+  transition: opacity var(--ease-out);
+}
+.stat-block:hover {
+  background: rgba(26,35,50,0.7);
+  border-color: rgba(212,168,84,0.2);
+  transform: translateY(-3px);
+}
+.stat-block:hover::after { opacity: 1; }
+.stat-num {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 900;
+  color: var(--wj-gold-light);
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+.stat-lbl {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 640px) {
+  .stat-block:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+  .stat-block:last-child  { border-radius: 0 0 var(--radius) var(--radius); }
+  .stat-block { border-radius: 0; }
+}
+
+/* ============================================================
+   SECTION COMMONS
+   ============================================================ */
+.teacher-section {
+  margin: 64px 0 32px;
+  position: relative;
+}
+
+/* Section header with wing indicator */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+/* Ornamental line */
+.section-ornament {
+  flex: 1;
+  height: 1px;
+  position: relative;
+}
+.section-ornament::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+
+/* Wu Jun ornament */
+.section-wj .section-ornament::before {
+  background: linear-gradient(90deg, transparent, rgba(212,168,84,0.25), rgba(212,168,84,0.08), transparent);
+}
+
+/* Zhuo Ke ornament */
+.section-zk .section-ornament::before {
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.25), rgba(56,189,248,0.08), transparent);
+}
+
+.section-badge {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.section-wj .section-badge {
+  color: var(--wj-gold);
+  border: 1px solid rgba(212,168,84,0.25);
+  background: rgba(212,168,84,0.06);
+}
+.section-zk .section-badge {
+  color: var(--zk-cyan);
+  border: 1px solid rgba(56,189,248,0.25);
+  background: rgba(56,189,248,0.06);
+}
+
+.section-title-group {
+  flex-shrink: 0;
+}
+.section-title-group h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+.section-wj .section-title-group h2 { color: var(--wj-gold-light); }
+.section-zk .section-title-group h2 { color: var(--zk-cyan-light); }
+
+.section-title-group .sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* ===== Teacher Portal (featured entry) ===== */
+.teacher-portal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.portal-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: rgba(17,24,39,0.5);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 22px;
+  transition: all var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+.portal-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  transition: height var(--ease-out);
+}
+.portal-card:hover { transform: translateY(-4px); }
+.portal-card:hover::before { height: 5px; }
+
+.section-wj .portal-card::before { background: linear-gradient(90deg, var(--wj-gold-deep), var(--wj-gold-light), var(--wj-gold-deep)); }
+.section-wj .portal-card:hover {
+  border-color: rgba(212,168,84,0.25);
+  box-shadow: 0 8px 40px rgba(212,168,84,0.08);
+}
+
+.section-zk .portal-card::before { background: linear-gradient(90deg, var(--zk-cyan-deep), var(--zk-cyan-light), var(--zk-cyan-deep)); }
+.section-zk .portal-card:hover {
+  border-color: rgba(56,189,248,0.25);
+  box-shadow: 0 8px 40px rgba(56,189,248,0.08);
+}
+
+.portal-icon {
+  font-size: 2rem;
+  margin-bottom: 14px;
+  width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+.section-wj .portal-icon { background: rgba(212,168,84,0.08); border: 1px solid rgba(212,168,84,0.12); }
+.section-zk .portal-icon { background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.12); }
+
+.portal-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+.portal-card .portal-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  flex: 1;
+}
+.portal-card .portal-meta {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+.section-wj .portal-meta { color: var(--wj-gold); }
+.section-zk .portal-meta { color: var(--zk-cyan); }
+
+.portal-arrow {
+  position: absolute;
+  bottom: 20px; right: 24px;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: all var(--ease-out);
+  transform: translateX(-8px);
+}
+.portal-card:hover .portal-arrow { opacity: 0.5; transform: translateX(0); }
+
+/* ============================================================
+   COURSE CARD GRID
+   ============================================================ */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.course-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: rgba(17,24,39,0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 22px 20px 18px;
+  transition: all var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  transition: all var(--ease-out);
+  opacity: 0.5;
+  border-radius: 0 2px 2px 0;
+}
+.section-wj .course-card::before { background: var(--wj-gold); }
+.section-zk .course-card::before { background: var(--zk-cyan); }
+
+.course-card:hover {
+  transform: translateY(-3px);
+  background: rgba(26,35,50,0.55);
+}
+.course-card:hover::before { opacity: 1; width: 4px; }
+.section-wj .course-card:hover {
+  border-color: rgba(212,168,84,0.18);
+  box-shadow: 0 6px 32px rgba(212,168,84,0.06);
+}
+.section-zk .course-card:hover {
+  border-color: rgba(56,189,248,0.18);
+  box-shadow: 0 6px 32px rgba(56,189,248,0.06);
+}
+
+/* Card glow spot on hover */
+.course-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--ease-out);
+  pointer-events: none;
+}
+.section-wj .course-card::after { background: radial-gradient(circle, rgba(212,168,84,0.06), transparent 70%); }
+.section-zk .course-card::after { background: radial-gradient(circle, rgba(56,189,248,0.06), transparent 70%); }
+.course-card:hover::after { opacity: 1; }
+
+.card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.card-title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+.card-topic-count {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.section-wj .card-topic-count { color: var(--wj-gold); }
+.section-zk .card-topic-count { color: var(--zk-cyan); }
+
+.card-desc {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+.card-arrow {
+  align-self: flex-end;
+  margin-top: 10px;
+  font-size: 1rem;
+  opacity: 0;
+  transition: all var(--ease-out);
+  transform: translateX(-6px);
+  position: relative;
+  z-index: 1;
+}
+.course-card:hover .card-arrow { opacity: 0.4; transform: translateX(0); }
+
+/* ============================================================
+   FUTURE EXPANSION ZONE
+   ============================================================ */
+.future-section {
+  margin: 80px 0 32px;
+  text-align: center;
+  position: relative;
+}
+.future-divider {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.future-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), rgba(255,255,255,0.04), transparent);
+}
+.future-icon {
+  font-size: 1.3rem;
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+.future-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.future-slot {
+  padding: 32px 24px;
+  background: rgba(17,24,39,0.2);
+  border: 1px dashed rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  text-align: center;
+  transition: all var(--ease-out);
+}
+.future-slot:hover {
+  border-color: rgba(255,255,255,0.1);
+  background: rgba(17,24,39,0.35);
+}
+.future-slot .slot-icon {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  opacity: 0.3;
+}
+.future-slot .slot-label {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+.future-slot .slot-hint {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  opacity: 0.4;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 48px 28px 40px;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 60px;
+}
+.footer-ornament {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.footer-ornament span {
+  display: block;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+}
+.footer-ornament span:nth-child(1) { background: var(--wj-gold); opacity: 0.8; }
+.footer-ornament span:nth-child(2) { background: var(--zk-cyan); opacity: 0.8; }
+.footer-ornament span:nth-child(3) { background: var(--wj-gold); opacity: 0.5; }
+.footer-ornament span:nth-child(4) { background: var(--zk-cyan); opacity: 0.5; }
+.footer-ornament span:nth-child(5) { background: rgba(255,255,255,0.15); }
+.footer p {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .main { padding: 0 16px 60px; }
+  .hero { padding: 48px 0 24px; }
+  .teacher-portal { grid-template-columns: 1fr; }
+  .course-grid { grid-template-columns: 1fr; }
+  .section-head { flex-wrap: wrap; gap: 12px; }
+  .section-ornament { flex: 0 0 100%; height: 1px; order: 3; }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 0.7rem; }
+  .stats-ribbon { gap: 1px; }
+  .stat-block { min-width: 70px; padding: 14px 10px; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.2rem; }
+  .hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; }
+  .portal-card { padding: 20px 18px 16px; }
+  .course-card { padding: 18px 16px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     COSMIC AMBIENT
+     ============================================================ -->
+<div class="cosmic-bg" aria-hidden="true"></div>
+<div class="archive-grid" aria-hidden="true"></div>
+<div class="particle-field" aria-hidden="true">
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust"></div><div class="dust"></div><div class="dust"></div>
+  <div class="dust-cyan"></div><div class="dust-cyan"></div><div class="dust-cyan"></div>
+  <div class="dust-cyan"></div><div class="dust-cyan"></div>
+</div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-brand">MKS Archive</div>
+    <div class="nav-links">
+      <a href="#wu-jun">吴军</a>
+      <a href="#zhuo-ke" class="zk-link">卓克</a>
+      <a href="#future">即将到来</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div class="main">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero-crown" aria-hidden="true"></div>
+    <div class="hero-eyebrow">Minimum Knowledge Set &middot; Archive</div>
+    <h1>MKS 知识总纲</h1>
+    <p class="tagline">最小知识集 &middot; 跨课程知识体系档案馆</p>
+    <p class="sub-tagline">从信息洪流中蒸馏本质，构建可迁移的认知操作系统</p>
+
+    <div class="stats-ribbon">
+      <div class="stat-block">
+        <span class="stat-num">2</span>
+        <span class="stat-lbl">学者</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num">15</span>
+        <span class="stat-lbl">已拆解课程</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num">65+</span>
+        <span class="stat-lbl">知识专题</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num">3,800+</span>
+        <span class="stat-lbl">篇笔记提炼</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num">1,000+</span>
+        <span class="stat-lbl">核心概念</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       WU JUN — 吴军系列
+       ============================================================ -->
+  <section class="teacher-section section-wj" id="wu-jun">
+    <div class="section-head">
+      <div class="section-badge">Wing A &middot; Classical Scholarship</div>
+      <div class="section-ornament" aria-hidden="true"></div>
+      <div class="section-title-group">
+        <h2>🎓 吴军 · 系列</h2>
+        <div class="sub">跨课思想体系 × 12 门课程最小知识集</div>
+      </div>
+    </div>
+
+    <!-- Featured portals: Thought System + Civilization History -->
+    <div class="teacher-portal">
+      <a class="portal-card" href="吴军思想体系/">
+        <span class="portal-icon">🏗️</span>
+        <h3>吴军思想体系 · 全景图</h3>
+        <p class="portal-desc">13 门课程跨课重组 · 三层金字塔（认知底座→文明方法论→人生操作系统）· 四条贯穿线索 · 1,003 个概念卡片</p>
+        <span class="portal-meta">跨课综合分析 · 知识图谱</span>
+        <span class="portal-arrow">→</span>
+      </a>
+      <a class="portal-card" href="吴军来信1-世界文明史/">
+        <span class="portal-icon">🌌</span>
+        <h3>世界文明史 · 时间线导航</h3>
+        <p class="portal-desc">从走出非洲到近现代转型的文明全景 · 暗→亮文明进化 · 能量×信息双螺旋视角</p>
+        <span class="portal-meta">5 专题 · 317 篇笔记</span>
+        <span class="portal-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Course cards -->
+    <div class="course-grid">
+      <a class="course-card" href="吴军来信2/">
+        <span class="card-icon">🧬</span>
+        <span class="card-title">吴军来信 2</span>
+        <span class="card-topic-count">7 专题</span>
+        <span class="card-desc">认知操作系统 — 不讲想什么，讲怎么想。用科学原理重建认知框架</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="硅谷来信1_v2/">
+        <span class="card-icon">✉️</span>
+        <span class="card-title">硅谷来信 1</span>
+        <span class="card-topic-count">7 专题</span>
+        <span class="card-desc">科技商业 / 思维方法论 / 投资财富 / 历史文明 / 艺术审美 / 教育成长 / 职场人生</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="硅谷来信3/">
+        <span class="card-icon">📬</span>
+        <span class="card-title">硅谷来信 3</span>
+        <span class="card-topic-count">7 专题</span>
+        <span class="card-desc">哲学思想 / 教育成长 / 文明制度 / 科技趋势 / 财富投资 / 人生算法 / 文学艺术</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="谷歌方法论/">
+        <span class="card-icon">🔬</span>
+        <span class="card-title">谷歌方法论</span>
+        <span class="card-topic-count">7 专题</span>
+        <span class="card-desc">世界名校 / 人生算法 / 发明创新 / 投资决策 / 文明全球化 / 硅谷Google / 计算机思维</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="科技史纲60讲/">
+        <span class="card-icon">⚙️</span>
+        <span class="card-title">科技史纲 60 讲</span>
+        <span class="card-topic-count">2 专题</span>
+        <span class="card-desc">文明底层与古代技术 / 科学革命到信息前沿 — 能量×信息双螺旋驱动的人类进步史</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="数学通识50讲/">
+        <span class="card-icon">📐</span>
+        <span class="card-title">数学通识 50 讲</span>
+        <span class="card-topic-count">2 专题</span>
+        <span class="card-desc">数学思维·数与几何 / 微积分·概率与数学应用 — 从具体到抽象的认知阶梯</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="教育的方法50讲/">
+        <span class="card-icon">🎓</span>
+        <span class="card-title">教育的方法 50 讲</span>
+        <span class="card-topic-count">2 专题</span>
+        <span class="card-desc">理念筑基与方法落地 / 大学淬炼与职场跃迁 — 教育的顶层设计与实操路径</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="逻辑思维训练50讲/">
+        <span class="card-icon">🧩</span>
+        <span class="card-title">逻辑思维训练 50 讲</span>
+        <span class="card-topic-count">1 专题</span>
+        <span class="card-desc">命题逻辑 / 三段论 / 逻辑谬误 / 实验设计 / 统计分析 — 思考的元能力</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="阅读与写作50讲/">
+        <span class="card-icon">📖</span>
+        <span class="card-title">阅读与写作 50 讲</span>
+        <span class="card-topic-count">1 专题</span>
+        <span class="card-desc">理解与表达的双螺旋 — 阅读解码 + 写作编码，信息时代的元技能</span>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="course-card" href="信息论与智能时代/">
+        <span class="card-icon">🧠</span>
+        <span class="card-title">信息论与智能时代</span>
+        <span class="card-topic-count">3 模块</span>
+        <span class="card-desc">信息论 42 讲 + GPT 13 讲 + 5G 8 讲 — 信息时代的底层操作系统</span>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ZHUO KE — 卓克系列
+       ============================================================ -->
+  <section class="teacher-section section-zk" id="zhuo-ke">
+    <div class="section-head">
+      <div class="section-badge">Wing B &middot; Scientific Observation</div>
+      <div class="section-ornament" aria-hidden="true"></div>
+      <div class="section-title-group">
+        <h2>🎙️ 卓克 · 系列</h2>
+        <div class="sub">科学思维 × 科技前沿追踪</div>
+      </div>
+    </div>
+
+    <!-- Featured portal -->
+    <div class="teacher-portal">
+      <a class="portal-card" href="https://andy-zokelink.github.io/mks-zhuoke/科学思维课/">
+        <span class="portal-icon">🧠</span>
+        <h3>科学思维课 · 核心</h3>
+        <p class="portal-desc">极限思维 · 演化论 · 医学真相 · 伪科学鉴别 · 科学文明史 · 认知科学 — 334 篇构建科学世界观</p>
+        <span class="portal-meta">6 专题 · 334 篇文章</span>
+        <span class="portal-arrow">→</span>
+      </a>
+      <a class="portal-card" href="https://andy-zokelink.github.io/mks-zhuoke/科技参考3/">
+        <span class="portal-icon">🔬</span>
+        <h3>科技参考 3 · 前沿追踪</h3>
+        <p class="portal-desc">AI芯片 / 航天太空 / 医学健康 / 食品营养 / 消费品评测 / 人类演化 / 科学方法 — 年度科技前沿深度追踪</p>
+        <span class="portal-meta">7 专题 · 311 篇文章</span>
+        <span class="portal-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Course cards -->
+    <div class="course-grid">
+      <a class="course-card" href="https://andy-zokelink.github.io/mks-zhuoke/科技参考基础版/">
+        <span class="card-icon">📡</span>
+        <span class="card-title">科技参考 · 基础版</span>
+        <span class="card-topic-count">6 专题</span>
+        <span class="card-desc">AI底层代码 / 生命科学 / 能源博弈 / 芯片战争 / 航天科技 / 地球系统 — 科技新闻深度解读</span>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FUTURE EXPANSION — 即将到来
+       ============================================================ -->
+  <section class="future-section" id="future">
+    <div class="future-divider">
+      <span class="future-line" aria-hidden="true"></span>
+      <span class="future-icon">🔮</span>
+      <span class="future-line" aria-hidden="true"></span>
+    </div>
+    <h2 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-dim);letter-spacing:0.12em;margin-bottom:8px;">即将到来</h2>
+    <p style="font-size:0.78rem;color:var(--text-dim);opacity:0.5;margin-bottom:32px;">更多学者的知识体系正在入库中&hellip;</p>
+
+    <div class="future-grid">
+      <div class="future-slot">
+        <div class="slot-icon">📚</div>
+        <div class="slot-label">万维钢 · 精英日课</div>
+        <div class="slot-hint">等待入库</div>
+      </div>
+      <div class="future-slot">
+        <div class="slot-icon">🏛️</div>
+        <div class="slot-label">薛兆丰 · 经济学课</div>
+        <div class="slot-hint">等待入库</div>
+      </div>
+      <div class="future-slot">
+        <div class="slot-icon">🧭</div>
+        <div class="slot-label">更多学者&hellip;</div>
+        <div class="slot-hint">持续扩展中</div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-ornament" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <p>MKS · 最小知识集档案馆 · andy-zokelink · GitHub Pages</p>
+</footer>
+
+</body>
+</html>
