@@ -267,6 +267,81 @@ body {
 .nav-links a.zk-link:hover { color: var(--zk-cyan-light); }
 .nav-links a.zk-link:hover::after { background: var(--zk-cyan); box-shadow: 0 0 6px var(--zk-cyan-glow); }
 
+/* Dropdown */
+.nav-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-dropdown > a {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-dropdown > a::after {
+  content: '▾';
+  font-size: 0.55rem;
+  opacity: 0.5;
+  transition: transform var(--ease-out);
+}
+.nav-dropdown:hover > a::after {
+  transform: rotate(180deg);
+}
+.nav-dropdown > a:hover { color: var(--method-silver); }
+.nav-dropdown > a:hover::after { background: none !important; box-shadow: none !important; width: 0 !important; }
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: -12px;
+  min-width: 220px;
+  background: var(--surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  z-index: 200;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(2px);
+}
+.nav-dropdown-item {
+  display: block;
+  padding: 8px 18px;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav-dropdown-item:hover {
+  background: var(--surface-hover);
+  color: var(--method-silver);
+}
+.nav-dropdown-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 6px 12px;
+}
+.nav-dropdown-label {
+  display: block;
+  padding: 6px 18px 2px;
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  opacity: 0.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 /* ============================================================
    HERO — Grand Archive Entrance
    ============================================================ */
@@ -893,6 +968,19 @@ body {
       <a href="#wu-jun">吴军</a>
       <a href="#zhuo-ke" class="zk-link">卓克</a>
       <a href="#future">即将到来</a>
+      <span class="nav-dropdown">
+        <a>方法论</a>
+        <div class="nav-dropdown-menu">
+          <a class="nav-dropdown-item" href="references/creative-patterns.html">🎨 创意模式库</a>
+          <a class="nav-dropdown-item" href="references/versions/evolution.html">📜 技能演化全史</a>
+          <div class="nav-dropdown-divider"></div>
+          <span class="nav-dropdown-label">版本历史</span>
+          <a class="nav-dropdown-item" href="references/versions/v1.0.html">&nbsp;&nbsp;MKS 1.0 · 单页提取</a>
+          <a class="nav-dropdown-item" href="references/versions/v2.0.html">&nbsp;&nbsp;MKS 2.0 · 批处理流水线</a>
+          <a class="nav-dropdown-item" href="references/versions/v2.20.html">&nbsp;&nbsp;MKS 2.20 · 品控体系</a>
+          <a class="nav-dropdown-item" href="references/versions/v2.36.html">&nbsp;&nbsp;MKS 2.36 · 创意模式库</a>
+        </div>
+      </span>
     </div>
   </div>
 </nav>
@@ -981,52 +1069,6 @@ body {
         <span class="portal-meta">19 专题 · 950+ 篇文章 · 科学思维体系</span>
         <span class="portal-arrow">→</span>
       </a>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       WING C — 工具与方法论
-       ============================================================ -->
-  <section class="teacher-section section-method" id="methodology">
-    <div class="section-head">
-      <div class="section-badge">Wing C · Methodology &amp; Tools</div>
-      <div class="section-ornament" aria-hidden="true"></div>
-      <div class="section-title-group">
-        <h2>🛠️ 工具与方法论</h2>
-        <div class="sub">MKS 创作系统 × 版本演化全景</div>
-      </div>
-    </div>
-
-    <div class="method-grid">
-      <a class="portal-card" href="references/creative-patterns.html">
-        <span class="portal-icon">🎨</span>
-        <h3>创意模式库</h3>
-        <p class="portal-desc">可复用的MKS创作方法论 — 隐喻选择矩阵 / 5大叙事模式 / 13种交互形式 / 视觉系统规范</p>
-        <span class="portal-meta">Creative Patterns Library</span>
-        <span class="portal-arrow">→</span>
-      </a>
-
-      <a class="portal-card" href="references/versions/evolution.html">
-        <span class="portal-icon">📜</span>
-        <h3>技能演化全史</h3>
-        <p class="portal-desc">MKS Builder 从单页工具到知识操作系统的完整演化历程 — 3个月 / 4个主要版本 / 40+次迭代</p>
-        <span class="portal-meta">Skill Evolution History</span>
-        <span class="portal-arrow">→</span>
-      </a>
-
-      <div class="portal-card portal-card-nolink">
-        <span class="portal-icon">🏛️</span>
-        <h3>版本历史库</h3>
-        <p class="portal-desc">v1.0 单页提取 → v2.0 批处理流水线 → v2.20 品控体系 → v2.36 创意模式库 — 每个版本的完整记录</p>
-        <div class="version-links">
-          <a href="references/versions/v1.0.html">MKS 1.0 · 单页提取时代</a>
-          <a href="references/versions/v2.0.html">MKS 2.0 · 批处理流水线</a>
-          <a href="references/versions/v2.20.html">MKS 2.20 · 品控体系</a>
-          <a href="references/versions/v2.36.html">MKS 2.36 · 创意模式库</a>
-        </div>
-        <span class="portal-meta">Version History Library</span>
-        <span class="portal-arrow">→</span>
-      </div>
     </div>
   </section>
 
