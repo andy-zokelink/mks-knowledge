@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title><!-- TITLE --> — 阿森智库</title>
+<style>
+/* ================================================================
+   阿森智库 · 思想实验室 — 文章模板
+   White + Amber (#F59E0B) accent. Dark mode supported.
+   ================================================================ */
+:root {
+  --bg:        #FAFAFA;
+  --bg-card:   #FFFFFF;
+  --bg-elevated:#F9F9F9;
+  --text:      #1A1A2E;
+  --text-secondary: #475569;
+  --text-muted:#94A3B8;
+  --accent:    #F59E0B;
+  --accent-dark:#D97706;
+  --accent-light:#FEF3C7;
+  --accent-ghost:#FFFBEB;
+  --border:    #E5E7EB;
+  --border-light:#F3F4F6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-serif: "Noto Serif SC", "STSong", "Songti SC", "Georgia", serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --max-width: 780px;
+  --transition: 0.2s ease;
+}
+[data-theme="dark"] {
+  --bg:        #0F172A;
+  --bg-card:   #1E293B;
+  --bg-elevated:#273548;
+  --text:      #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted:#64748B;
+  --accent-light:#422006;
+  --accent-ghost:#1A1204;
+  --border:    #334155;
+  --border-light:#1E293B;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ================================================================
+   Reset & Base
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.8;
+  padding:24px 16px;
+  transition:background var(--transition),color var(--transition);
+}
+a{text-decoration:none;color:var(--accent-dark);transition:color var(--transition)}
+a:hover{color:var(--accent)}
+
+/* ================================================================
+   Top Bar
+   ================================================================ */
+.top-bar{
+  max-width:var(--max-width);
+  margin:0 auto 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;
+  font-size:0.82rem;
+  color:var(--text-muted);
+}
+.top-bar a{color:var(--text-muted);display:inline-flex;align-items:center;gap:4px}
+.top-bar a:hover{color:var(--accent-dark)}
+.dark-toggle-article{
+  width:34px;height:34px;border-radius:50%;border:2px solid var(--border);
+  background:var(--bg-card);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;transition:all var(--transition);color:var(--text-secondary);
+}
+.dark-toggle-article:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ================================================================
+   Article Shell
+   ================================================================ */
+article{
+  max-width:var(--max-width);
+  margin:0 auto;
+  background:var(--bg-card);
+  border-radius:var(--radius-lg);
+  padding:44px 52px;
+  box-shadow:var(--shadow-lg);
+  border:1px solid var(--border);
+  transition:all var(--transition);
+}
+
+/* ================================================================
+   Article Header
+   ================================================================ */
+.article-header{margin-bottom:32px}
+.article-header .issue-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--accent-dark);margin-bottom:10px;
+}
+.article-header .issue-label::before{
+  content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;
+  animation:pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+.article-header h1{
+  font-size:1.8rem;font-weight:800;line-height:1.4;
+  color:var(--text);margin-bottom:12px;letter-spacing:-0.01em;
+}
+.article-header .meta-row{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-size:0.80rem;color:var(--text-muted);
+  padding-bottom:16px;border-bottom:1px solid var(--border);
+}
+.article-header .meta-row .tag-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:0.70rem;font-weight:600;
+  padding:3px 10px;border-radius:12px;
+  letter-spacing:0.02em;
+}
+.tag-brief{background:#FEF2F2;color:#B91C1C}
+.tag-weekly{background:#EFF6FF;color:#1D4ED8}
+
+/* ================================================================
+   Question of the Day — 今日之问
+   ================================================================ */
+.question-day{
+  background:var(--accent-ghost);
+  border-left:4px solid var(--accent);
+  padding:18px 22px;
+  border-radius:0 var(--radius-md) var(--radius-md) 0;
+  margin-bottom:28px;
+  font-family:var(--font-serif);
+  font-size:1.05rem;
+  font-style:italic;
+  color:var(--accent-dark);
+  line-height:1.6;
+}
+.question-day strong{color:var(--accent-dark);font-style:normal}
+
+/* ================================================================
+   Content Sections
+   ================================================================ */
+.content h2{
+  font-size:1.25rem;font-weight:700;
+  color:var(--text);
+  margin:32px 0 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.content h2 .section-icon{font-size:1.1rem}
+.content h3{
+  font-size:1.05rem;font-weight:600;
+  color:var(--text-secondary);
+  margin:22px 0 8px;
+}
+.content p{margin-bottom:14px}
+.content ul,.content ol{margin-bottom:16px;padding-left:24px}
+.content li{margin-bottom:8px;line-height:1.7}
+.content strong{color:var(--accent-dark);font-weight:700}
+.content em{color:var(--text-muted)}
+.content hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+/* ================================================================
+   Insight Card — 关键洞察高亮卡片
+   ================================================================ */
+.insight-card{
+  background:linear-gradient(135deg,var(--accent-ghost) 0%,var(--accent-light) 100%);
+  border:1px solid var(--accent);
+  border-radius:var(--radius-md);
+  padding:20px 24px;
+  margin:24px 0;
+  position:relative;
+  box-shadow:var(--shadow-sm);
+}
+.insight-card::before{
+  content:'💡';
+  position:absolute;top:-14px;left:20px;
+  font-size:1.2rem;background:var(--bg-card);
+  padding:0 8px;border-radius:50%;
+}
+.insight-card .insight-label{
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--accent-dark);
+  margin-bottom:8px;
+}
+.insight-card p{
+  font-family:var(--font-serif);
+  font-size:0.95rem;
+  line-height:1.75;
+  color:var(--text);
+  margin-bottom:0;
+}
+.insight-card p strong{color:var(--accent-dark)}
+
+/* ================================================================
+   Framework Collision — 框架碰撞
+   ================================================================ */
+.framework-collision{
+  background:var(--bg-elevated);
+  border-radius:var(--radius-md);
+  padding:22px 26px;
+  margin:24px 0;
+  border:1px solid var(--border);
+}
+.framework-collision .fw-header{
+  display:flex;align-items:center;gap:12px;
+  flex-wrap:wrap;margin-bottom:14px;
+}
+.framework-collision .fw-label{
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--text-muted);
+}
+.framework-collision .fw-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:0.76rem;font-weight:600;
+  padding:5px 14px;border-radius:16px;
+  letter-spacing:0.02em;
+}
+.fw-econ{background:#FEF3C7;color:#B45309}
+.fw-psych{background:#EDE9FE;color:#6D28D9}
+.fw-tech{background:#DBEAFE;color:#1D4ED8}
+.fw-mgmt{background:#D1FAE5;color:#047857}
+.fw-sys{background:#FCE7F3;color:#BE185D}
+.collision-arrow{
+  font-size:1.1rem;color:var(--accent);font-weight:700;
+}
+.framework-collision p{margin-bottom:0;font-size:0.92rem}
+
+/* ================================================================
+   Action Items — 行动建议
+   ================================================================ */
+.action-list{
+  list-style:none;padding:0;margin:0;
+}
+.action-list li{
+  background:var(--bg-elevated);
+  border-radius:var(--radius-sm);
+  padding:14px 18px;
+  margin-bottom:10px;
+  border:1px solid var(--border-light);
+  display:flex;align-items:flex-start;gap:12px;
+  transition:all var(--transition);
+  font-size:0.90rem;line-height:1.7;
+}
+.action-list li:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.action-list li .action-num{
+  flex-shrink:0;
+  width:26px;height:26px;
+  background:var(--accent);color:#fff;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:700;
+}
+
+/* ================================================================
+   Judgment Block — 今日判断
+   ================================================================ */
+.judgment-block{
+  background:var(--bg-card);
+  border:2px solid var(--accent);
+  border-radius:var(--radius-md);
+  padding:20px 24px;
+  margin:28px 0 8px;
+}
+.judgment-block .judgment-label{
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--accent-dark);
+  margin-bottom:6px;
+}
+.judgment-block .judgment-decision{
+  font-size:1.2rem;font-weight:800;
+  color:var(--accent-dark);
+  margin-bottom:8px;
+}
+.judgment-block p{font-size:0.92rem;color:var(--text-secondary);margin-bottom:0}
+
+/* ================================================================
+   Unanswered Question — 未解之问
+   ================================================================ */
+.unanswered{
+  background:var(--bg-elevated);
+  border-radius:var(--radius-md);
+  padding:18px 24px;
+  margin:28px 0;
+  border:1px dashed var(--border);
+}
+.unanswered .un-label{
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--text-muted);margin-bottom:6px;
+}
+.unanswered p{
+  font-family:var(--font-serif);
+  font-size:0.95rem;font-style:italic;
+  color:var(--text-secondary);margin-bottom:0;
+}
+
+/* ================================================================
+   Thought Connections — 思想连线
+   ================================================================ */
+.thought-connect{
+  margin-top:32px;padding-top:20px;
+  border-top:2px solid var(--border);
+}
+.thought-connect h3{
+  font-size:0.88rem;font-weight:700;margin-bottom:14px;
+  color:var(--text);display:flex;align-items:center;gap:8px;
+}
+.thought-connect .conn-row{
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.thought-connect .conn-card{
+  flex:1;min-width:160px;
+  padding:14px 16px;
+  border-radius:var(--radius-sm);
+  background:var(--bg-elevated);
+  border:1px solid var(--border-light);
+  transition:all var(--transition);
+}
+.thought-connect .conn-card:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.thought-connect .conn-label{
+  font-size:0.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--text-muted);margin-bottom:6px;
+}
+.thought-connect .conn-title{font-size:0.82rem;font-weight:600;line-height:1.4}
+.thought-connect .conn-title a{color:var(--text)}
+.thought-connect .conn-title a:hover{color:var(--accent-dark)}
+
+/* ================================================================
+   Article Footer
+   ================================================================ */
+.article-footer{
+  margin-top:36px;padding-top:18px;
+  border-top:1px solid var(--border);
+  font-size:0.80rem;color:var(--text-muted);
+  display:flex;flex-wrap:wrap;gap:16px;
+  justify-content:space-between;
+  align-items:center;
+}
+.article-footer .back-link{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:8px 18px;border-radius:20px;
+  background:var(--accent-light);color:var(--accent-dark);
+  font-weight:600;transition:all var(--transition);
+}
+.article-footer .back-link:hover{
+  background:var(--accent);color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 2px 8px rgba(245,158,11,0.25);
+}
+
+/* ================================================================
+   Framework Tags (bottom)
+   ================================================================ */
+.fw-tags-row{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-top:20px;
+}
+.fw-tags-row .fw-tag-bottom{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:0.72rem;font-weight:600;
+  padding:5px 12px;border-radius:16px;
+  letter-spacing:0.02em;
+  background:var(--accent-light);color:var(--accent-dark);
+}
+
+/* ================================================================
+   Responsive
+   ================================================================ */
+@media(max-width:640px){
+  article{padding:24px 20px;border-radius:var(--radius-md)}
+  .article-header h1{font-size:1.35rem}
+  .question-day{font-size:0.92rem;padding:14px 16px}
+  .insight-card{padding:16px 18px;margin:18px 0}
+  .framework-collision{padding:16px 18px}
+  .action-list li{padding:12px 14px;font-size:0.84rem}
+  .thought-connect .conn-row{flex-direction:column}
+  .article-footer{flex-direction:column;align-items:flex-start}
+}
+
+@media(max-width:400px){
+  body{padding:12px 8px}
+  article{padding:18px 14px}
+  .article-header h1{font-size:1.15rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<div class="top-bar">
+  <a href="../index.html">← 思想实验室</a>
+  <a href="../../index.html">知识主板</a>
+  <button class="dark-toggle-article" id="darkToggleArticle" title="切换暗色模式" aria-label="切换暗色模式">🌓</button>
+</div>
+
+<!-- ================================================================
+     Article
+     ================================================================ -->
+<article>
+
+<!-- Header -->
+<header class="article-header">
+  <div class="issue-label">🔬 思想实验 No.XX</div>
+  <h1><!-- ARTICLE TITLE --></h1>
+  <div class="meta-row">
+    <span><!-- DATE --></span>
+    <span class="tag-badge tag-brief">📋 知识简报</span>
+  </div>
+</header>
+
+<!-- 今日之问 -->
+<div class="question-day">
+  <strong>🤔 今日之问：</strong><!-- PROVOCATIVE QUESTION -->
+</div>
+
+<!-- Content -->
+<div class="content">
+
+<!-- 锚点 -->
+<h2><span class="section-icon">🔍</span> 今日锚点</h2>
+<!-- ANCHOR CONTENT -->
+
+<!-- 框架碰撞 -->
+<div class="framework-collision">
+  <div class="fw-header">
+    <span class="fw-label">⚡ 框架碰撞</span>
+    <!-- FW TAGS -->
+  </div>
+  <!-- COLLISION INSIGHT -->
+</div>
+
+<!-- 关键洞察卡片 -->
+<div class="insight-card">
+  <div class="insight-label">关键洞察</div>
+  <!-- KEY INSIGHT -->
+</div>
+
+<!-- 洞察展开 -->
+<!-- MORE INSIGHT CONTENT -->
+
+<!-- 行动建议 -->
+<h2><span class="section-icon">⚡</span> 行动建议</h2>
+<ol class="action-list">
+  <!-- ACTION ITEMS -->
+</ol>
+
+<!-- 今日判断 -->
+<div class="judgment-block">
+  <div class="judgment-label">💎 今日判断</div>
+  <div class="judgment-decision"><!-- 做 / 等 --></div>
+  <!-- JUDGMENT DETAIL -->
+</div>
+
+</div><!-- /.content -->
+
+<!-- 未解之问 -->
+<div class="unanswered">
+  <div class="un-label">❓ 未解之问</div>
+  <!-- UNANSWERED QUESTION -->
+</div>
+
+<!-- 框架标签 -->
+<div class="fw-tags-row">
+  <!-- FW TAG BOTTOM ITEMS -->
+</div>
+
+<!-- 思想连线 -->
+<div class="thought-connect">
+  <h3>🔗 思想连线</h3>
+  <div class="conn-row">
+    <!-- PREV / NEXT CARDS -->
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="article-footer">
+  <span><!-- SOURCE --></span>
+  <a href="../index.html" class="back-link">← 返回思想实验室</a>
+</div>
+
+</article>
+
+<!-- Dark mode toggle script -->
+<script>
+(function(){
+  var saved=localStorage.getItem('arsenal-theme');
+  if(saved==='dark')document.documentElement.setAttribute('data-theme','dark');
+  document.getElementById('darkToggleArticle').addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var next=cur==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('arsenal-theme',next);
+  });
+})();
+</script>
+
+</body>
+</html>
