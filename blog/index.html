@@ -1,1850 +1,1851 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>阿森智库 · 简报与周报</title>
-<style>
-/* ================================================================
-   CSS Variables — Card-based blog design with amber accent
-   ================================================================ */
-:root {
-  --bg:        #F9FAFB;
-  --card-bg:   #FFFFFF;
-  --text:      #1F2937;
-  --text-secondary: #4B5563;
-  --muted:     #6B7280;
-  --light:     #9CA3AF;
-  --accent:    #F59E0B;
-  --accent-dark:#D97706;
-  --accent-light:#FEF3C7;
-  --accent-soft:#FFFBEB;
-  --border:    #E5E7EB;
-  --border-light:#F3F4F6;
-  --red:       #DC2626;
-  --blue:      #2563EB;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
-  --font:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
-  --max-width: 880px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-}
-
-/* ================================================================
-   Reset & Base
-   ================================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { font-size: 16px; -webkit-font-smoothing: antialiased; }
-
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  line-height: 1.6;
-  -webkit-tap-highlight-color: transparent;
-}
-
-a { text-decoration: none; color: var(--accent-dark); transition: color 0.15s; }
-a:hover { color: var(--accent); }
-
-/* ================================================================
-   Top Nav Bar — clean bar with amber accent
-   ================================================================ */
-.site-nav {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 16px clamp(16px, 3vw, 32px);
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  border-bottom: 1px solid var(--border);
-  background: var(--card-bg);
-}
-
-.nav-brand {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: 0.02em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.nav-brand::before {
-  content: '';
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  border-radius: 2px;
-}
-.nav-brand a { color: var(--text); }
-.nav-brand a:hover { color: var(--accent-dark); }
-
-.nav-right {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.nav-back {
-  font-size: 0.84rem;
-  color: var(--muted);
-}
-.nav-back:hover { color: var(--accent-dark); }
-
-/* Filter pills */
-.nav-filters {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--border-light);
-  border-radius: 20px;
-  padding: 3px;
-}
-
-.nav-filter-sep { display: none; }
-
-.nav-filter {
-  font-size: 0.80rem;
-  color: var(--muted);
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-family: var(--font);
-  padding: 5px 14px;
-  border-radius: 18px;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.nav-filter:hover { color: var(--accent-dark); background: var(--accent-light); }
-.nav-filter.active {
-  color: #fff;
-  background: var(--accent);
-  font-weight: 600;
-}
-
-.nav-count {
-  font-size: 0.78rem;
-  color: var(--light);
-  white-space: nowrap;
-}
-
-/* ================================================================
-   Stats Bar
-   ================================================================ */
-.stats-bar {
-  max-width: var(--max-width);
-  margin: 24px auto 20px;
-  padding: 0 clamp(16px, 3vw, 32px);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.stat-card {
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  text-align: center;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s;
-}
-.stat-card:hover { box-shadow: var(--shadow-md); }
-
-.stat-value {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--accent-dark);
-  line-height: 1.2;
-  margin-bottom: 4px;
-}
-
-.stat-label {
-  font-size: 0.78rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-
-/* ================================================================
-   Main Content
-   ================================================================ */
-main {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 clamp(16px, 3vw, 32px) 60px;
-}
-
-/* ================================================================
-   Hero Card — largest, latest article (direct child of #posts)
-   ================================================================ */
-#posts > .post-entry:first-of-type {
-  background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  padding: 28px 32px;
-  margin-bottom: 20px;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-  border-left: 5px solid var(--accent);
-  position: relative;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-#posts > .post-entry:first-of-type:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.13);
-}
-#posts > .post-entry:first-of-type::before {
-  content: '🔥 最新';
-  position: absolute;
-  top: -1px;
-  right: 24px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 12px 5px;
-  border-radius: 0 0 6px 6px;
-  letter-spacing: 0.04em;
-}
-#posts > .post-entry:first-of-type .post-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 1.4;
-  margin-bottom: 6px;
-}
-#posts > .post-entry:first-of-type .post-title a { color: var(--text); }
-#posts > .post-entry:first-of-type .post-title a:hover { color: var(--accent-dark); }
-#posts > .post-entry:first-of-type .post-excerpt {
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-top: 10px;
-  display: block;
-  -webkit-line-clamp: unset;
-  overflow: visible;
-}
-
-/* Hero sub-points & tags (injected by JS) */
-.hero-insights {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px dashed var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.hero-sub-point {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-.hero-sub-point .sub-icon {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  background: var(--accent-soft);
-  color: var(--accent-dark);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 700;
-  margin-top: 1px;
-}
-
-.hero-tags {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.hero-tag {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 14px;
-  background: var(--accent-light);
-  color: var(--accent-dark);
-  letter-spacing: 0.02em;
-}
-
-/* ================================================================
-   Secondary Cards Row — flex wrapper injected by JS
-   ================================================================ */
-.secondary-row {
-  display: flex;
-  align-items: stretch;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-/* Secondary Cards — next 2 articles (inside .secondary-row) */
-.secondary-row .post-entry {
-  flex: 1;
-  min-width: 0;
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  padding: 20px 22px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.secondary-row .post-entry:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
-}
-
-.secondary-row .post-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 4px;
-}
-.secondary-row .post-title a { color: var(--text); }
-.secondary-row .post-title a:hover { color: var(--accent-dark); }
-
-.secondary-row .post-excerpt {
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-top: 6px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Secondary tags */
-.secondary-tags {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.secondary-tag {
-  font-size: 0.68rem;
-  font-weight: 600;
-  padding: 2px 10px;
-  border-radius: 12px;
-  background: var(--accent-light);
-  color: var(--accent-dark);
-  letter-spacing: 0.02em;
-}
-
-/* ================================================================
-   Section Header
-   ================================================================ */
-.section-header {
-  margin: 28px 0 12px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--light);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-header::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* ================================================================
-   Month Header — sticky group divider inside archive
-   ================================================================ */
-.month-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: linear-gradient(to bottom, var(--bg) 60%, transparent);
-  padding: 18px 0 8px;
-  margin: 0;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--accent-dark);
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-.month-header::after {
-  content: '';
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(to right, var(--accent), transparent);
-  border-radius: 1px;
-}
-
-/* ================================================================
-   Archive Cards — compact list (inside .archive-cards wrapper)
-   ================================================================ */
-.archive-cards .post-entry {
-  background: var(--card-bg);
-  border-radius: var(--radius-sm);
-  padding: 14px 20px;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  cursor: pointer;
-}
-.archive-cards .post-entry:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
-  border-color: var(--border);
-}
-
-/* Archive left: date + tag */
-.archive-cards .post-entry .post-meta {
-  flex-shrink: 0;
-  min-width: 110px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  margin-bottom: 0;
-}
-
-.archive-cards .post-entry .post-date {
-  font-size: 0.74rem;
-  color: var(--muted);
-  font-weight: 500;
-}
-
-.archive-cards .post-entry .post-tag {
-  font-size: 0.68rem;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.archive-cards .post-entry[data-tag="brief"] .post-tag {
-  background: #FEF2F2;
-  color: #B91C1C;
-}
-.archive-cards .post-entry[data-tag="weekly"] .post-tag {
-  background: #EFF6FF;
-  color: #1D4ED8;
-}
-
-/* Archive right: title + excerpt */
-.archive-cards .post-entry .post-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 2px;
-  flex: 1;
-}
-.archive-cards .post-entry .post-title a { color: var(--text); }
-.archive-cards .post-entry .post-title a:hover { color: var(--accent-dark); }
-
-.archive-cards .post-entry .post-excerpt {
-  font-size: 0.78rem;
-  color: var(--light);
-  line-height: 1.5;
-  margin-top: 2px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex: 1;
-}
-
-/* Archive content wrapper for right side */
-.archive-content-wrap {
-  flex: 1;
-  min-width: 0;
-}
-
-.archive-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* ================================================================
-   Meta styling for hero (direct child) & secondary (in .secondary-row)
-   ================================================================ */
-#posts > .post-entry:first-of-type .post-meta,
-.secondary-row .post-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 2px;
-}
-
-#posts > .post-entry:first-of-type .post-date,
-.secondary-row .post-date {
-  font-size: 0.76rem;
-  color: var(--light);
-}
-
-/* Tag dot for hero & secondary */
-.tag-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.tag-dot.dot-brief   { background: var(--red); }
-.tag-dot.dot-weekly  { background: var(--blue); }
-
-#posts > .post-entry:first-of-type .post-tag,
-.secondary-row .post-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 2px 10px;
-  border-radius: 12px;
-  letter-spacing: 0.02em;
-}
-#posts > .post-entry:first-of-type[data-tag="brief"] .post-tag,
-.secondary-row .post-entry[data-tag="brief"] .post-tag {
-  background: #FEF2F2;
-  color: #B91C1C;
-}
-#posts > .post-entry:first-of-type[data-tag="weekly"] .post-tag,
-.secondary-row .post-entry[data-tag="weekly"] .post-tag {
-  background: #EFF6FF;
-  color: #1D4ED8;
-}
-
-/* ================================================================
-   Empty State
-   ================================================================ */
-.empty-state {
-  text-align: center;
-  color: var(--light);
-  padding: 60px 0;
-  font-size: 0.95rem;
-}
-
-/* ================================================================
-   Footer
-   ================================================================ */
-.footer {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 28px clamp(16px, 3vw, 32px) 40px;
-  font-size: 0.84rem;
-  color: var(--muted);
-  border-top: 2px solid var(--border);
-  text-align: center;
-}
-.footer a {
-  color: var(--accent-dark);
-  font-weight: 600;
-  font-size: 0.88rem;
-  padding: 8px 20px;
-  border-radius: 20px;
-  background: var(--accent-light);
-  transition: all 0.2s;
-  display: inline-block;
-}
-.footer a:hover {
-  color: #fff;
-  background: var(--accent);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(245,158,11,0.25);
-}
-
-/* ================================================================
-   AI Chat Widget
-   ================================================================ */
-.ai-chat-widget {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 200;
-  font-family: var(--font);
-}
-
-.ai-chat-toggle {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  background: var(--accent);
-  color: #fff;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(245,158,11,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  position: relative;
-}
-.ai-chat-toggle:hover {
-  background: var(--accent-dark);
-  box-shadow: 0 6px 20px rgba(217,119,6,0.4);
-}
-.ai-chat-toggle:active { transform: scale(0.94); }
-
-.ai-chat-indicator {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #4caf50;
-  border: 2px solid var(--accent);
-  transition: background 0.3s, border-color 0.2s;
-}
-.ai-chat-toggle:hover .ai-chat-indicator { border-color: var(--accent-dark); }
-.ai-chat-indicator.offline { background: #f44336; }
-
-/* Chat Panel */
-.ai-chat-panel {
-  position: absolute;
-  bottom: 62px;
-  right: 0;
-  width: 380px;
-  max-height: 520px;
-  background: #fff;
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-}
-.ai-chat-panel.open { display: flex; }
-
-/* Header */
-.ai-chat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background: var(--accent);
-  color: #fff;
-  flex-shrink: 0;
-}
-.ai-chat-header-title {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: #fff;
-}
-.ai-chat-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4caf50;
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-.ai-chat-dot.offline { background: #f44336; }
-
-.ai-chat-close-btn {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.7);
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 2px 7px;
-  line-height: 1;
-  transition: color 0.15s;
-}
-.ai-chat-close-btn:hover { color: #fff; }
-
-/* Messages Area */
-.ai-chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 350px;
-  min-height: 100px;
-  background: #fafaf8;
-}
-.ai-chat-messages::-webkit-scrollbar { width: 4px; }
-.ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
-.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 2px; }
-
-.ai-chat-msg {
-  max-width: 84%;
-  padding: 9px 14px;
-  font-size: 0.80rem;
-  line-height: 1.55;
-  word-break: break-word;
-  animation: ai-msg-in 0.26s ease-out;
-  border-radius: 10px;
-}
-@keyframes ai-msg-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.ai-chat-msg.user {
-  align-self: flex-end;
-  background: var(--accent);
-  color: #fff;
-}
-.ai-chat-msg.assistant {
-  align-self: flex-start;
-  background: #fff;
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-.ai-chat-msg.assistant strong { color: var(--accent-dark); font-weight: 700; }
-.ai-chat-msg.assistant code {
-  background: var(--accent-soft);
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-family: 'SF Mono','Fira Code',monospace;
-  color: #B91C1C;
-}
-.ai-chat-msg.assistant ul,
-.ai-chat-msg.assistant ol { margin: 4px 0; padding-left: 20px; }
-.ai-chat-msg.assistant li { margin: 2px 0; }
-
-/* Typing indicator */
-.ai-chat-typing {
-  align-self: flex-start;
-  background: #fff;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 11px 16px;
-  font-size: 0.75rem;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  border-radius: 10px;
-}
-.ai-chat-typing span {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #c0b8a8;
-  animation: ai-dot-bounce 1.3s ease-in-out infinite;
-}
-.ai-chat-typing span:nth-child(2) { animation-delay: 0.18s; }
-.ai-chat-typing span:nth-child(3) { animation-delay: 0.36s; }
-@keyframes ai-dot-bounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
-  30% { transform: translateY(-5px); opacity: 1; }
-}
-
-/* Input Area */
-.ai-chat-input-area {
-  display: flex;
-  gap: 8px;
-  padding: 10px 14px;
-  border-top: 1px solid var(--border);
-  background: #fff;
-  flex-shrink: 0;
-}
-.ai-chat-input {
-  flex: 1;
-  background: #fafaf8;
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 0.80rem;
-  outline: none;
-  border-radius: 8px;
-  transition: border-color 0.2s;
-}
-.ai-chat-input::placeholder { color: #b8b0a8; }
-.ai-chat-input:focus { border-color: var(--accent); }
-
-.ai-chat-send {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  font-family: var(--font);
-  font-size: 0.80rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  border-radius: 8px;
-  transition: background 0.15s;
-}
-.ai-chat-send:hover { background: var(--accent-dark); }
-.ai-chat-send:active { opacity: 0.8; }
-.ai-chat-send:disabled { opacity: 0.45; cursor: not-allowed; }
-
-/* ================================================================
-   Responsive
-   ================================================================ */
-@media (max-width: 768px) {
-  .stats-bar {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  .stat-card { padding: 14px 12px; }
-  .stat-value { font-size: 1.35rem; }
-  .stat-label { font-size: 0.72rem; }
-
-  .secondary-row {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .archive-cards .post-entry {
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px 16px;
-  }
-  .archive-cards .post-entry .post-meta {
-    flex-direction: row;
-    gap: 8px;
-    min-width: unset;
-  }
-}
-
-@media (max-width: 640px) {
-  .site-nav {
-    padding: 12px 14px;
-    gap: 8px;
-  }
-  .site-nav,
-  .nav-right {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .nav-right {
-    gap: 10px;
-    flex-direction: row;
-    align-items: baseline;
-    flex-wrap: wrap;
-  }
-  .nav-brand { font-size: 1rem; }
-  .nav-filter { font-size: 0.75rem; padding: 4px 10px; }
-  .nav-back { font-size: 0.78rem; }
-
-  main { padding: 0 14px 40px; }
-  .stats-bar { margin: 16px auto 16px; }
-
-  #posts > .post-entry:first-of-type {
-    padding: 20px 18px;
-    border-left-width: 3px;
-  }
-  #posts > .post-entry:first-of-type .post-title { font-size: 1.15rem; }
-  #posts > .post-entry:first-of-type .post-excerpt { font-size: 0.84rem; }
-  #posts > .post-entry:first-of-type::before {
-    right: 12px;
-    font-size: 0.68rem;
-    padding: 3px 10px 4px;
-  }
-
-  .secondary-row .post-entry {
-    padding: 14px 16px;
-  }
-  .secondary-row .post-title { font-size: 0.95rem; }
-
-  .hero-sub-point { font-size: 0.80rem; }
-  .hero-tag { font-size: 0.68rem; padding: 3px 10px; }
-
-  .section-header { margin: 20px 0 10px; font-size: 0.74rem; }
-
-  .ai-chat-panel {
-    width: calc(100vw - 20px);
-    right: -5px;
-    max-height: 440px;
-    bottom: 56px;
-  }
-  .ai-chat-messages { max-height: 240px; }
-  .ai-chat-toggle {
-    width: 42px;
-    height: 42px;
-    font-size: 1.05rem;
-  }
-}
-</style>
-</head>
-<body>
-
-<!-- ================================================================
-     Top Nav
-     ================================================================ -->
-<nav class="site-nav">
-  <div class="nav-brand"><a href="index.html">阿森智库</a></div>
-  <div class="nav-right">
-    <a href="../index.html" class="nav-back">← 知识主板</a>
-    <span class="nav-filters" id="navFilters">
-      <button class="nav-filter active" onclick="filterPosts('all', this)">全部</button>
-      <button class="nav-filter" onclick="filterPosts('brief', this)">简报</button>
-      <button class="nav-filter" onclick="filterPosts('weekly', this)">周报</button>
-    </span>
-    <span class="nav-count" id="navCount">共 26 篇</span>
-  </div>
-</nav>
-
-<!-- ================================================================
-     Stats Bar
-     ================================================================ -->
-<div class="stats-bar" id="statsBar">
-  <div class="stat-card">
-    <div class="stat-value">27</div>
-    <div class="stat-label">累计期数</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">27 天</div>
-    <div class="stat-label">时间跨度 · 5/16–6/11</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">AI · 半导体 · 交易费用</div>
-    <div class="stat-label">高频关键词</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">~85%</div>
-    <div class="stat-label">行动建议命中率</div>
-  </div>
-</div>
-
-<!-- ================================================================
-     Main Content
-     ================================================================ -->
-<main>
-<div id="posts">
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-16-简报.html">知识活用简报 · 2026年6月16日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月16日 · 星期二</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">微软取消Claude Code许可证、Uber四个月烧完全年AI预算——token单价在降，企业AI总成本反飙升。经济学杰文斯悖论揭示：效率提升不减少消费，反而催生更多场景。基础设施端密集投资赌需求爆炸时，需求侧已出现断裂信号。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-17-简报.html">知识活用简报 · 2026年6月17日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月17日 · 星期三</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI基础设施投资从「买GPU」进入「改电网」第二阶段——电源管理和信号链芯片成算力瓶颈。经济学「投资加速器效应」揭示：第一波砸GPU兑现算力共识后，第二波必然向供电与信号链扩散。建议启动AI供电芯片品类地图。</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-15-简报.html">知识活用简报 · 2026年6月15日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月15日 · 星期一</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">5月内部会议暴露组织合规悖论：PCN三级罚则清晰但日常合规漂移反复——30元垫付、退货漏标注、流程绕行。用经济学+心理学碰撞：制度只防大事故，不防日常漂移；知道≠做到；微小偏差累积比单次违规更危险。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-13-简报.html">知识活用简报 · 2026年6月13日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月13日 · 星期六</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">供票市场流动性被多重信息壁垒切割——跨平台权限限制、核心企业确权门槛、"六加九"银行白名单，技术上的全市场流转在实操中名存实亡。用经济学信息不对称与交易费用理论碰撞：市场不缺供票工具，缺的是让信息充分对称的制度安排。 💡</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-12-简报.html">知识活用简报 · 2026年6月12日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月12日 · 星期五</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">内部知识库「销售培训体系」构建了理性B2B决策模型——信任公式、U-B-T-P-E-B角色分层、需求三层穿透。但陈海贤《自我发展心理学》揭示：客户决策第一反应是直觉而非逻辑。理性销售剧本 vs 非理性决策舞台——你以为他在算ROI，他在算面子。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-11-简报.html">知识活用简报 · 2026年6月11日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月11日 · 星期四</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">近期某商业银行到访的半导体行业闭门会揭示关键信号：某公司IPO净利率高达78.5%，远超行业均值；同期头部云厂商云业务营收与毛利率同步下行。用薛兆丰「供需决定论」碰撞——超高净利率不是繁荣信号，而是供应链供需失衡的哨声，当终端需求开始松动，上游超额利润的瓦解只是时间问题。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-10-简报.html">知识活用简报 · 2026年6月10日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月10日 · 星期三</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI行业正从"烧钱建基础设施"进入"基础设施变现"阶段——Anthropic首次盈利（Q2营收109亿美元）、OpenAI冲刺9月IPO、Nvidia以730亿股权投资铺设下游生态，产业链价值重心开始从上往下迁移。用薛兆丰「供需决定论」透视：不是GPU成本决定AI产品定价，而是终端用户愿意支付的真金白银，反过来定义了上游算力的合理价值。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-09-简报.html">知识活用简报 · 2026年6月9日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月9日 · 星期二</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">某机器人客户4个月近亿元（2025全年8.4倍）+某消费电子客户增速数倍——该公司客户结构正从Pareto的80/20滑向95/5。双引擎集中格局本身不是问题，但信息不对称和单一代理商通道构成的交易费用新来源，必须在增速仍处高位时建立"反集中"的触发护栏。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-08-简报.html">知识活用简报 · 2026年6月8日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月8日 · 星期一</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">该公司月度工作例会揭示规模化"过程债务"——PCN罚款、退货乱账、对账滞后不是孤立问题，而是同一系统性拐点的五个症状。当企业越过邓巴数临界点，"口头沟通+个人记忆"的信任模式必须让位给流程制度。🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="weekly" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-07-周报.html">学术前沿周报 · 2026年6月7日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月7日 · 星期日</span>
-      <span class="post-tag"><span class="tag-dot dot-weekly"></span>学术周报</span>
-    </div>
-    <p class="post-excerpt">存算一体跨越实验室（66×QPS），固态储能进入万次循环时代（>10K cycles），AI模型压缩走向极致（90% token削减）——算力基础设施的成本结构正在被三重技术浪潮同时改写。</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-07-简报.html">知识活用简报 · 2026年6月7日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月7日 · 星期日</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">某存储原厂11倍爆发不是销售奇迹——是韩系结构性撤出消费存储后，渠道真空期的红利信号。摩尔定律下半导体产品每两年贬值一半，渠道优势本质上是供需错配的时间差。把渠道从"货权管道"升级为"品牌化通路+技术支持中台"才是台积电式的分工价值。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-06-简报.html">知识活用简报 · 2026年6月6日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月6日 · 星期六</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI正在经历杰文斯悖论的完美演绎——token越便宜，企业AI账单越贵。微软裁撤Claude Code许可证、Uber四个月烧完全年预算、Goldman Sachs预测token消耗量24倍增长。瓶颈从"芯片"转移到"能源基础设施"，宁德时代105亿跨界IDC+HVDC是算电协同的关键信号。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-05-简报.html">知识活用简报 · 2026年6月5日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月5日 · 星期五</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">供票推广的真正阻力不是产品设计，而是"用一张票要过五道关"——每道关都是一笔交易费用，加总后企业宁愿不走这条路。来源：内部知识库 · 供应链票据与支付结算工具行业交流研讨会记录（2026-05-21） 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-03-简报.html">知识活用简报 · 2026年6月3日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月3日 · 星期三</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI产业正经历一场"需求暴增→上游通胀"的结构性传导——微软砍许可证、Uber预算四个月烧光只是表面，底层是芯片、电力、电源管理全链供应跟不上AI需求扩张的速度。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-02-简报.html">知识活用简报 · 2026年6月2日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月2日 · 星期二</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">Uber四个月烧完全年AI预算，Goldman Sachs预测Agentic AI到2030年token消耗增长24倍——AI单价降、总成本却飙升，成本拐点已至。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-06-01-简报.html">知识活用简报 · 2026年6月1日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年6月1日 · 星期一</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">微软砍Claude Code许可证、Uber四个月烧完全年AI预算——AI成本的结构性拐点正在到来，同时AI算力需求外溢正从GPU/HBM传导到模拟芯片和供电架构（来源：品味AI简报 2026-05-23）。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-31-简报.html">知识活用简报 · 2026年5月31日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月31日 · 星期日</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">微软砍Claude Code许可、Uber四个月烧完全年AI预算——AI成本飙升不是泡沫，是技术冲击引发的正常市场调整。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-30-简报.html">知识活用简报 · 2026年5月30日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月30日 · 星期六</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI成本悖论全面显形：token单价持续走低，但企业AI总支出失控飙升——Uber四个月烧完全年预算，微软大幅收缩Claude Code许可证。第二波AI红利正从GPU向电源基础设施扩散。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-29-简报.html">知识活用简报 · 2026年5月29日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月29日 · 星期五</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">存储芯片行业出现拐点前兆。5月19日某银行到访会议纪要揭示两个异常信号：① 某公司IPO净利率高达78.5%，远超行业常规——这是周期顶部的典型特征；② 头部云厂商（阿里、谷歌）云业务营收与毛利率双降，原预测持续到2028年的上行周期可能提前终结。 该公司核心业务去年峰值数千万级且仍在增长，库存周期控制在...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-28-简报.html">知识活用简报 · 2026年5月28日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月28日 · 星期四</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI成本正在上演"杰文斯悖论"的现实版。 微软取消大部分Claude Code许可证，Uber四个月烧完全年AI预算——当token单价持续下降，企业总成本反而飙升。Goldman Sachs预测Agentic AI到2030年推动token消耗量增长24倍，达到120 quadrillion tokens/月。...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-27-简报.html">知识活用简报 · 2026年5月27日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月27日 · 星期三</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">高温经济正在重塑中国消费地理版图。 东北三省空调销量爆发式增长（吉林+788%、辽宁+518%、黑龙江+817%），海尔单日安装突破40万套，美的创下25年纪录。与此同时防晒市场预计达958亿元，防晒唇膏月销暴涨552%。核心信号：消费者行为从"货比三家"转向"及时满足"——当舒适区被突破，支付意愿和决策速度双双...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-26-简报.html">知识活用简报 · 2026年5月26日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月26日 · 星期二</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">三井财团凭「宗竺遗书」+「大元方」机制实现400年传承。宗竺遗书坚守财产不分割原则，防止家族力量内耗；大元方作为中央治理机构，统筹全局、规范业务运转、用激励制度激发经营活力。三井的案例说明：组织长青靠的不是天才创始人，而是能跨越代际的制度设计。 来源：Get 笔记「内部知识库」 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="weekly" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-25-周报.html">学术前沿周报 · 2026年5月25日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月25日 · 星期一</span>
-      <span class="post-tag"><span class="tag-dot dot-weekly"></span>学术周报</span>
-    </div>
-    <p class="post-excerpt">这标志着行业共识正在从"更大参数即更强能力"向"多组件协同的系统级智能"迁移。</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-25-简报.html">知识活用简报 · 2026年5月25日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月25日 · 星期一</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">中国在线餐饮外卖市场1.64万亿规模，京东2月强势入局——免佣金、骑手五险一金、百亿补贴三板斧直击美团腹地。美团以7.7亿用户+620万骑手网络应战，用闪购巩固高频消费场景，年增社保成本20亿。这不是外卖之争，是平台竞争维度升级：从"连接供需"变为"服务与创新决胜"。来源：Get笔记「内部知识库」，源啟惠商业...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-24-简报.html">知识活用简报 · 2026年5月24日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月24日 · 星期日</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">某银行到访该公司，一场半导体/AI产业链商务会谈释放了三个信号：(1) 跨境业务模式尚未定型——数百万美元级订单的汇率锁定是真实决策压力，跨境结算模式仍有汇差敞口；(2) 核心业务峰值数千万级且仍在增长，但3-4个月库存周期的刻意控制说明对市场波动的深层警惕；(3) 芯片渠道商正集体经历"从贸...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-22-简报.html">知识活用简报 · 2026年5月22日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月22日 · 星期五</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI正在从"聊天窗口"走向"直接操作你电脑"。2026年一季度，阿里QoderWork、Claude Cowork、MiniMax、阶跃星辰集中推出桌面Agent类产品——AI不再是你问它答的助手，而是直接操作本地文件、跑数据分析、出报告的工作者。这不是工具升级，是AI交互范式的代际切换。趁手工具推荐榜已将Qod...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-21-简报.html">知识活用简报 · 2026年5月21日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月21日 · 星期四</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">视觉IoT消费市场正在经历AI驱动的品类跃迁。2024年行业增速放缓、毛利与单价双降——传统"卖更多摄像头更便宜"的路径已触天花板。但AI大模型与视觉的融合正在创造新物种：摄像头不再是录像设备，而是具备类人分析能力的智能体。行业领袖的共识信号强烈——"抓住AI落地机遇有望实现跨越式增长"，但这也意味着"对深耕行业...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-20-简报.html">知识活用简报 · 2026年5月20日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月20日 · 星期三</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">该公司正站在贸易商→技术型公司的转型岔路口。 5月19日某银行到访的半导体商务会议纪要显示：核心业务去年峰值数千万级且仍在增长，但整体市场萎缩、单价提升成为新变量。公司刻意控制库存3-4个月（防御性信号），同时布局本地、投入研发，野心是从芯片渠道商跃迁为技术型公司。创始人"放羊论"（担心技术方向失控）暴...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-19-简报.html">知识活用简报 · 2026年5月19日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月19日 · 星期二</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">AI融资进入产业化验证期。深势科技C轮数亿元（AI+分子模拟）、Claude for Small Business（Anthropic首推SMB订阅）、灵雀智能A+轮（Agent平台商业化）——三件事指向同一信号：2024-2025年疯狂融资的AI公司，2026年集体进入"交付或死亡"窗口。投资者不再为"好技术"...</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-18-简报.html">知识活用简报 · 2026年5月18日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月18日 · 星期一</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">日本三井财团凭借 宗竺遗书 （财产不分割原则）和 大元方机制 （统筹协调+激励分配），实现400年组织传承，至今仍是巴菲特重仓标的。核心信号： 组织长寿不是靠天才CEO，而是靠制度设计把"不分割"写进基因 。来源：Get笔记「内部知识库」，2025-05-09归档的源啟惠商业分析。 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-17-简报.html">知识活用简报 · 2026年5月17日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月17日 · 星期日</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">半导体行业进入AI超级周期，需求从概念转为真实生产力。行业赚的是资源溢价——上行周期"一年顶三年"，但超级周期的加速也在缩短自身的窗口期。 来源：内部知识库 · 行业会谈纪要 🧠</p>
-  </article>
-
-  <article class="post-entry" data-tag="brief" style="display:">
-    <h2 class="post-title">
-      <a href="posts/2026-05-16-简报.html">知识活用简报 · 2026年5月16日</a>
-    </h2>
-    <div class="post-meta">
-      <span class="post-date">2026年5月16日 · 星期六</span>
-      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
-    </div>
-    <p class="post-excerpt">半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。行业盈利本质是「赚资源的钱」，上行周期一年顶三年，下行周期三年不赚钱。 来源：内部知识库 · 行业会谈纪要 🧠</p>
-  </article>
-
-</div><!-- /#posts -->
-</main>
-
-<!-- ================================================================
-     Footer
-     ================================================================ -->
-<div class="footer">
-  <a href="../index.html">← 返回知识主板</a>
-</div>
-
-<!-- ================================================================
-     AI Chat Widget — DeepSeek
-     ================================================================ -->
-<div class="ai-chat-widget" id="aiChatWidget">
-  <button class="ai-chat-toggle" id="aiChatToggle" aria-label="AI 助手" title="阿森智库 · AI 助手">
-    <span style="line-height:1;">💬</span>
-    <span class="ai-chat-indicator" id="aiChatIndicator"></span>
-  </button>
-  <div class="ai-chat-panel" id="aiChatPanel">
-    <div class="ai-chat-header">
-      <span class="ai-chat-header-title">
-        <span class="ai-chat-dot" id="aiChatDot"></span>
-        阿森智库 · AI 助手
-      </span>
-      <button class="ai-chat-close-btn" id="aiChatClose">✕</button>
-    </div>
-    <div class="ai-chat-messages" id="aiChatMessages"></div>
-    <div class="ai-chat-input-area">
-      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="问一个关于简报的问题…" autocomplete="off">
-      <button class="ai-chat-send" id="aiChatSend">发送</button>
-    </div>
-  </div>
-</div>
-
-<!-- ================================================================
-     Scripts
-     ================================================================ -->
-<script>
-/* =============================================================
-   Init — inject hero insights, secondary tags, archive section header
-   ============================================================= */
-(function initLayout() {
-  var posts = document.querySelectorAll('#posts .post-entry');
-
-  if (posts.length === 0) return;
-
-  // --- Hero card (first article): inject sub-points + tags ---
-  var hero = posts[0];
-  var heroInsights = document.createElement('div');
-  heroInsights.className = 'hero-insights';
-  heroInsights.innerHTML =
-    '<div class="hero-sub-point"><span class="sub-icon">❶</span><span>Pareto法则从80/20滑向95/5 — 某机器人客户+某消费电子客户两家客户在22家核心客户中进一步抽走增量，形成\"集中度之上的再集中\"</span></div>' +
-    '<div class="hero-sub-point"><span class="sub-icon">❷</span><span>代理商某存储原厂的双重面孔 — 从\"降低交易费用的工具\"变为\"新的交易费用来源\"，终端信号被中间层过滤，合作关系发生事实漂移</span></div>';
-
-  var heroTags = document.createElement('div');
-  heroTags.className = 'hero-tags';
-  heroTags.innerHTML =
-    '<span class="hero-tag">Pareto法则</span>' +
-    '<span class="hero-tag">交易费用</span>' +
-    '<span class="hero-tag">集中度风险</span>' +
-    '<span class="hero-tag">终端直达</span>';
-
-  hero.appendChild(heroInsights);
-  hero.appendChild(heroTags);
-
-  // --- Secondary row: wrap 2nd & 3rd posts in flex container ---
-  var secData = [
-    { tags: ['组织规模化', '过程债务', '制度设计'] },
-    { tags: ['存算一体', '储能技术', 'AI压缩'] }
-  ];
-
-  if (posts.length >= 2) {
-    var secRow = document.createElement('div');
-    secRow.className = 'secondary-row';
-
-    var parentEl = posts[1].parentNode;
-    parentEl.insertBefore(secRow, posts[1]);
-
-    for (var i = 1; i <= 2 && i < posts.length; i++) {
-      var sec = posts[i];
-      secRow.appendChild(sec);
-
-      // Inject secondary tags
-      var secTagDiv = document.createElement('div');
-      secTagDiv.className = 'secondary-tags';
-      var tagsHtml = '';
-      secData[i-1].tags.forEach(function(t) {
-        tagsHtml += '<span class="secondary-tag">' + t + '</span>';
-      });
-      secTagDiv.innerHTML = tagsHtml;
-      sec.appendChild(secTagDiv);
-    }
-  }
-
-  // --- Archive section header + month headers (before 4th article) ---
-  if (posts.length > 3) {
-    var header = document.createElement('div');
-    header.className = 'section-header';
-    header.innerHTML = '往期简报';
-    header.id = 'archiveSectionHeader';
-
-    // Wrap remaining posts in archive container
-    var archiveWrap = document.createElement('div');
-    archiveWrap.className = 'archive-cards';
-    archiveWrap.id = 'archiveCardsWrap';
-
-    var parentEl = posts[3].parentNode;
-    parentEl.insertBefore(header, posts[3]);
-
-    // Move posts 4+ into archive wrapper
-    for (var j = 3; j < posts.length; j++) {
-      archiveWrap.appendChild(posts[j]);
-    }
-    // Insert wrapper after header
-    header.insertAdjacentElement('afterend', archiveWrap);
-
-    // For each archive post, wrap the title+excerpt in a div
-    var archivePosts = archiveWrap.querySelectorAll('.post-entry');
-    archivePosts.forEach(function(ap) {
-      var title = ap.querySelector('.post-title');
-      var excerpt = ap.querySelector('.post-excerpt');
-      if (title && excerpt) {
-        var wrap = document.createElement('div');
-        wrap.className = 'archive-content-wrap';
-        // Insert wrapper before title
-        title.parentNode.insertBefore(wrap, title);
-        wrap.appendChild(title);
-        wrap.appendChild(excerpt);
-      }
-    });
-
-    // Inject month headers into archive
-    injectMonthHeaders(archiveWrap);
-  }
-})();
-
-/* =============================================================
-   Inject Month Headers into Archive
-   ============================================================= */
-function injectMonthHeaders(archiveWrap) {
-  var archivePosts = archiveWrap.querySelectorAll('.post-entry');
-  if (archivePosts.length === 0) return;
-
-  // Remove existing month headers before re-injecting
-  archiveWrap.querySelectorAll('.month-header').forEach(function(h) { h.remove(); });
-
-  var lastMonth = null;
-  archivePosts.forEach(function(ap) {
-    var dateSpan = ap.querySelector('.post-date');
-    if (!dateSpan) return;
-    var dateText = dateSpan.textContent.trim();
-    // Extract month from format like "2026年6月9日 · 星期二"
-    var monthMatch = dateText.match(/(\d+)月/);
-    if (!monthMatch) return;
-    var month = parseInt(monthMatch[1], 10);
-
-    if (lastMonth === null || month !== lastMonth) {
-      var monthHeader = document.createElement('div');
-      monthHeader.className = 'month-header';
-      monthHeader.textContent = month + '月';
-      ap.parentNode.insertBefore(monthHeader, ap);
-      lastMonth = month;
-    }
-  });
-}
-
-/* =============================================================
-   Filter Posts — enhanced to handle hero/secondary/archive
-   ============================================================= */
-function filterPosts(tag, btn) {
-  document.querySelectorAll('.nav-filter').forEach(function(b) {
-    b.classList.remove('active');
-  });
-  btn.classList.add('active');
-
-  var count = 0;
-  var allPosts = document.querySelectorAll('#posts .post-entry');
-  var archiveHeader = document.getElementById('archiveSectionHeader');
-  var archiveWrap = document.getElementById('archiveCardsWrap');
-
-  // Move all posts back to #posts flat for clean re-filtering
-  // Unwrap secondary-row
-  var secRow = document.querySelector('.secondary-row');
-  if (secRow) {
-    while (secRow.firstChild) {
-      secRow.parentNode.insertBefore(secRow.firstChild, secRow);
-    }
-    secRow.remove();
-  }
-  if (archiveWrap) {
-    while (archiveWrap.firstChild) {
-      archiveWrap.parentNode.insertBefore(archiveWrap.firstChild, archiveWrap);
-    }
-    if (archiveWrap.parentNode) archiveWrap.remove();
-  }
-  if (archiveHeader && archiveHeader.parentNode) {
-    archiveHeader.remove();
-  }
-
-  // Show/hide based on tag
-  allPosts.forEach(function(p) {
-    if (tag === 'all' || p.dataset.tag === tag) {
-      p.style.display = '';
-      count++;
-    } else {
-      p.style.display = 'none';
-    }
-  });
-
-  document.getElementById('navCount').textContent = '共 ' + count + ' 篇';
-
-  // Re-run layout init to rebuild hero/secondary/archive for visible posts
-  // First, clean up injected elements from previous init
-  document.querySelectorAll('.hero-insights, .hero-tags, .secondary-tags').forEach(function(el) {
-    el.remove();
-  });
-  document.querySelectorAll('.month-header').forEach(function(el) {
-    el.remove();
-  });
-  document.querySelectorAll('.archive-content-wrap').forEach(function(el) {
-    var parent = el.parentNode;
-    while (el.firstChild) {
-      parent.insertBefore(el.firstChild, el);
-    }
-    el.remove();
-  });
-
-  // Re-init layout
-  (function reInitLayout() {
-    var visiblePosts = document.querySelectorAll('#posts .post-entry[style*="display:"], #posts .post-entry:not([style*="display: none"])');
-    // Filter to actually visible ones
-    var posts = [];
-    visiblePosts.forEach(function(p) {
-      if (p.style.display !== 'none') posts.push(p);
-    });
-    if (posts.length === 0) return;
-
-    // --- Hero ---
-    var hero = posts[0];
-
-    // Check if hero already has injected content
-    if (!hero.querySelector('.hero-insights')) {
-      var heroInsights = document.createElement('div');
-      heroInsights.className = 'hero-insights';
-      heroInsights.innerHTML =
-        '<div class="hero-sub-point"><span class="sub-icon">❶</span><span>Pareto法则从80/20滑向95/5 — 某机器人客户+某消费电子客户两家客户在22家核心客户中进一步抽走增量，形成\"集中度之上的再集中\"</span></div>' +
-        '<div class="hero-sub-point"><span class="sub-icon">❷</span><span>代理商某存储原厂的双重面孔 — 从\"降低交易费用的工具\"变为\"新的交易费用来源\"，终端信号被中间层过滤，合作关系发生事实漂移</span></div>';
-
-      var heroTags = document.createElement('div');
-      heroTags.className = 'hero-tags';
-      heroTags.innerHTML =
-        '<span class="hero-tag">Pareto法则</span>' +
-        '<span class="hero-tag">交易费用</span>' +
-        '<span class="hero-tag">集中度风险</span>' +
-        '<span class="hero-tag">终端直达</span>';
-
-      hero.appendChild(heroInsights);
-      hero.appendChild(heroTags);
-    }
-
-    // --- Secondary ---
-    var secData = [
-      { tags: ['组织规模化', '过程债务', '制度设计'] },
-      { tags: ['存算一体', '储能技术', 'AI压缩'] }
-    ];
-
-    // Wrap secondary posts in flex row
-    var existingSecRow = document.querySelector('.secondary-row');
-    if (existingSecRow) {
-      // Unwrap: move children back
-      while (existingSecRow.firstChild) {
-        existingSecRow.parentNode.insertBefore(existingSecRow.firstChild, existingSecRow);
-      }
-      existingSecRow.remove();
-    }
-
-    if (posts.length >= 2) {
-      var secRow = document.createElement('div');
-      secRow.className = 'secondary-row';
-
-      posts[1].parentNode.insertBefore(secRow, posts[1]);
-
-      for (var i = 1; i <= 2 && i < posts.length; i++) {
-        secRow.appendChild(posts[i]);
-      }
-    }
-
-    for (var i = 1; i <= 2 && i < posts.length; i++) {
-      var sec = posts[i];
-      if (!sec.querySelector('.secondary-tags')) {
-        var secTagDiv = document.createElement('div');
-        secTagDiv.className = 'secondary-tags';
-        var tagsHtml = '';
-        secData[i-1].tags.forEach(function(t) {
-          tagsHtml += '<span class="secondary-tag">' + t + '</span>';
-        });
-        secTagDiv.innerHTML = tagsHtml;
-        sec.appendChild(secTagDiv);
-      }
-    }
-
-    // --- Archive ---
-    if (posts.length > 3) {
-      var header = document.createElement('div');
-      header.className = 'section-header';
-      header.innerHTML = '往期简报';
-      header.id = 'archiveSectionHeader';
-
-      var archiveWrap = document.createElement('div');
-      archiveWrap.className = 'archive-cards';
-      archiveWrap.id = 'archiveCardsWrap';
-
-      var parentEl = posts[3].parentNode;
-      parentEl.insertBefore(header, posts[3]);
-
-      for (var j = 3; j < posts.length; j++) {
-        archiveWrap.appendChild(posts[j]);
-      }
-      header.insertAdjacentElement('afterend', archiveWrap);
-
-      var archivePosts = archiveWrap.querySelectorAll('.post-entry');
-      archivePosts.forEach(function(ap) {
-        if (!ap.querySelector('.archive-content-wrap')) {
-          var title = ap.querySelector('.post-title');
-          var excerpt = ap.querySelector('.post-excerpt');
-          if (title && excerpt) {
-            var wrap = document.createElement('div');
-            wrap.className = 'archive-content-wrap';
-            title.parentNode.insertBefore(wrap, title);
-            wrap.appendChild(title);
-            wrap.appendChild(excerpt);
-          }
-        }
-      });
-
-      // Inject month headers
-      injectMonthHeaders(archiveWrap);
-    }
-
-    // Reset nth-child CSS context by moving: if hero not first child, reorder
-    var postsContainer = document.getElementById('posts');
-    if (postsContainer && posts[0] !== postsContainer.querySelector('.post-entry[style]')) {
-      // Ensure hero is first visible child in DOM order for CSS nth-child to work
-      var firstVisible = null;
-      var allEntries = postsContainer.querySelectorAll('.post-entry');
-      allEntries.forEach(function(entry) {
-        if (entry.style.display !== 'none' && !firstVisible) {
-          firstVisible = entry;
-          postsContainer.insertBefore(entry, postsContainer.firstChild);
-        }
-      });
-    }
-  })();
-}
-
-/* =============================================================
-   AI Chat Assistant (DeepSeek)
-   ============================================================= */
-(function() {
-  var API_URL = 'https://api.deepseek.com/v1/chat/completions';
-  var API_KEY = 'sk-f27...966d';
-  var MODEL = 'deepseek-chat';
-  var REQUEST_TIMEOUT = 30000;
-
-  var SYSTEM_PROMPT = '你是阿森智库的AI助手，专注于帮助用户理解知识活用简报和学术前沿周报的内容。' +
-    '你了解半导体行业、AI产业趋势、商业策略和科技前沿。用简洁专业的中文回答。';
-
-  var chatPanel   = document.getElementById('aiChatPanel');
-  var chatMsgs    = document.getElementById('aiChatMessages');
-  var chatInput   = document.getElementById('aiChatInput');
-  var chatSend    = document.getElementById('aiChatSend');
-  var chatClose   = document.getElementById('aiChatClose');
-  var chatToggle  = document.getElementById('aiChatToggle');
-  var chatDot     = document.getElementById('aiChatDot');
-  var chatInd     = document.getElementById('aiChatIndicator');
-  var isOnline    = true;
-
-  /* ── Toggle panel ─────────────────────────────────── */
-  chatToggle.addEventListener('click', function() {
-    if (chatPanel.classList.contains('open')) {
-      chatPanel.classList.remove('open');
-    } else {
-      chatPanel.classList.add('open');
-      setTimeout(function() { chatInput.focus(); }, 150);
-    }
-  });
-
-  chatClose.addEventListener('click', function() {
-    chatPanel.classList.remove('open');
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && chatPanel.classList.contains('open') && document.activeElement !== chatInput) {
-      chatPanel.classList.remove('open');
-    }
-  });
-
-  /* ── Send on Enter ────────────────────────────────── */
-  chatInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-
-  chatSend.addEventListener('click', sendMessage);
-
-  /* ── Markdown → HTML ──────────────────────────────── */
-  function renderMD(text) {
-    if (!text) return '';
-    var html = text
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\n\s*[-•]\s+(.+)/g, '\n<li>$1</li>')
-      .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
-      .replace(/\n/g, '<br>');
-    return html;
-  }
-
-  /* ── Add message ──────────────────────────────────── */
-  function addMsg(role, content) {
-    var div = document.createElement('div');
-    div.className = 'ai-chat-msg ' + role;
-    if (role === 'assistant') {
-      div.innerHTML = renderMD(content);
-    } else {
-      div.textContent = content;
-    }
-    chatMsgs.appendChild(div);
-    chatMsgs.scrollTop = chatMsgs.scrollHeight;
-    return div;
-  }
-
-  /* ── Typing indicator ─────────────────────────────── */
-  function showTyping() {
-    var el = document.createElement('div');
-    el.className = 'ai-chat-typing';
-    el.id = 'aiTyping';
-    el.innerHTML = '<span></span><span></span><span></span>';
-    chatMsgs.appendChild(el);
-    chatMsgs.scrollTop = chatMsgs.scrollHeight;
-  }
-
-  function hideTyping() {
-    var el = document.getElementById('aiTyping');
-    if (el) el.remove();
-  }
-
-  /* ── Online/Offline ───────────────────────────────── */
-  function setOnline(online) {
-    isOnline = online;
-    var method = online ? 'remove' : 'add';
-    chatDot.classList[method]('offline');
-    chatInd.classList[method]('offline');
-  }
-
-  /* ── Fallback reply ───────────────────────────────── */
-  function fallbackReply(msg) {
-    if (msg.indexOf('简报') !== -1 || msg.indexOf('周报') !== -1) {
-      return '当前知识库共有 **20** 篇知识活用简报和 **2** 篇学术前沿周报。\n\n知识简报聚焦半导体行业、AI产业趋势、商业策略和科技前沿的每日洞察；学术周报则汇总近期学术前沿动态。\n\n您可以通过顶部的标签筛选浏览感兴趣的内容。';
-    }
-    if (msg.indexOf('半导体') !== -1) {
-      return '半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。相关简报涵盖了存算一体、存储芯片市场、供应链变化等话题。建议筛选"简报"标签查看相关文章。';
-    }
-    if (msg.indexOf('AI') !== -1 || msg.indexOf('人工智能') !== -1) {
-      return '多篇简报讨论了AI行业的成本悖论：token单价持续走低，但企业AI总支出失控飙升。这是一个典型的杰文斯悖论。建议浏览近期简报获取详细分析。';
-    }
-    return '抱歉，我暂时无法连接到AI服务。请稍后重试，或浏览页面上的简报内容。\n\n知识简报涵盖：半导体行业、AI产业趋势、商业策略、科技前沿等话题。';
-  }
-
-  /* ── Send message ─────────────────────────────────── */
-  function sendMessage() {
-    var text = chatInput.value.trim();
-    if (!text) return;
-
-    chatInput.value = '';
-    chatSend.disabled = true;
-    addMsg('user', text);
-    showTyping();
-
-    if (!isOnline) {
-      setTimeout(function() {
-        hideTyping();
-        addMsg('assistant', fallbackReply(text));
-        chatSend.disabled = false;
-        chatInput.focus();
-      }, 600 + Math.random() * 400);
-      return;
-    }
-
-    var ctrl = new AbortController();
-    var tid = setTimeout(function() { ctrl.abort(); }, REQUEST_TIMEOUT);
-
-    fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + API_KEY
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: text }
-        ],
-        max_tokens: 800,
-        temperature: 0.6
-      }),
-      signal: ctrl.signal
-    })
-    .then(function(res) {
-      clearTimeout(tid);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    })
-    .then(function(data) {
-      hideTyping();
-      var reply = '';
-      if (data.choices && data.choices[0] && data.choices[0].message) {
-        reply = data.choices[0].message.content || '';
-      }
-      if (!reply) reply = '（AI 未返回内容，请重试）';
-      addMsg('assistant', reply);
-      chatSend.disabled = false;
-      chatInput.focus();
-    })
-    .catch(function(err) {
-      clearTimeout(tid);
-      hideTyping();
-      console.warn('DeepSeek API error:', err.message);
-      setOnline(false);
-      addMsg('assistant', fallbackReply(text));
-      chatSend.disabled = false;
-      chatInput.focus();
-    });
-  }
-
-  /* ── Welcome message ──────────────────────────────── */
-  function showWelcome() {
-    addMsg('assistant',
-      '你好！我是阿森智库的 AI 助手。\n\n' +
-      '我可以帮你：\n' +
-      '• 理解知识活用简报的核心观点\n' +
-      '• 回答半导体、AI产业趋势相关问题\n' +
-      '• 解释商业策略和科技前沿概念\n\n' +
-      '请随时提问！'
-    );
-  }
-
-  setTimeout(function() {
-    if (chatMsgs.children.length === 0) showWelcome();
-  }, 400);
-
-})();
-</script>
-
-</body>
-</html>
+     1|<!DOCTYPE html>
+     2|<html lang="zh-CN">
+     3|<head>
+     4|<meta charset="utf-8">
+     5|<meta name="viewport" content="width=device-width,initial-scale=1">
+     6|<title>阿森智库 · 简报与周报</title>
+     7|<style>
+     8|/* ================================================================
+     9|   CSS Variables — Card-based blog design with amber accent
+    10|   ================================================================ */
+    11|:root {
+    12|  --bg:        #F9FAFB;
+    13|  --card-bg:   #FFFFFF;
+    14|  --text:      #1F2937;
+    15|  --text-secondary: #4B5563;
+    16|  --muted:     #6B7280;
+    17|  --light:     #9CA3AF;
+    18|  --accent:    #F59E0B;
+    19|  --accent-dark:#D97706;
+    20|  --accent-light:#FEF3C7;
+    21|  --accent-soft:#FFFBEB;
+    22|  --border:    #E5E7EB;
+    23|  --border-light:#F3F4F6;
+    24|  --red:       #DC2626;
+    25|  --blue:      #2563EB;
+    26|  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    27|  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    28|  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+    29|  --font:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    30|  --max-width: 880px;
+    31|  --radius-sm: 8px;
+    32|  --radius-md: 12px;
+    33|  --radius-lg: 16px;
+    34|}
+    35|
+    36|/* ================================================================
+    37|   Reset & Base
+    38|   ================================================================ */
+    39|*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    40|
+    41|html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    42|
+    43|body {
+    44|  font-family: var(--font);
+    45|  background: var(--bg);
+    46|  color: var(--text);
+    47|  min-height: 100vh;
+    48|  line-height: 1.6;
+    49|  -webkit-tap-highlight-color: transparent;
+    50|}
+    51|
+    52|a { text-decoration: none; color: var(--accent-dark); transition: color 0.15s; }
+    53|a:hover { color: var(--accent); }
+    54|
+    55|/* ================================================================
+    56|   Top Nav Bar — clean bar with amber accent
+    57|   ================================================================ */
+    58|.site-nav {
+    59|  max-width: var(--max-width);
+    60|  margin: 0 auto;
+    61|  padding: 16px clamp(16px, 3vw, 32px);
+    62|  display: flex;
+    63|  align-items: baseline;
+    64|  justify-content: space-between;
+    65|  flex-wrap: wrap;
+    66|  gap: 10px;
+    67|  border-bottom: 1px solid var(--border);
+    68|  background: var(--card-bg);
+    69|}
+    70|
+    71|.nav-brand {
+    72|  font-size: 1.15rem;
+    73|  font-weight: 700;
+    74|  color: var(--text);
+    75|  letter-spacing: 0.02em;
+    76|  display: flex;
+    77|  align-items: center;
+    78|  gap: 8px;
+    79|}
+    80|.nav-brand::before {
+    81|  content: '';
+    82|  display: inline-block;
+    83|  width: 8px;
+    84|  height: 8px;
+    85|  background: var(--accent);
+    86|  border-radius: 2px;
+    87|}
+    88|.nav-brand a { color: var(--text); }
+    89|.nav-brand a:hover { color: var(--accent-dark); }
+    90|
+    91|.nav-right {
+    92|  display: flex;
+    93|  align-items: baseline;
+    94|  gap: 20px;
+    95|  flex-wrap: wrap;
+    96|}
+    97|
+    98|.nav-back {
+    99|  font-size: 0.84rem;
+   100|  color: var(--muted);
+   101|}
+   102|.nav-back:hover { color: var(--accent-dark); }
+   103|
+   104|/* Filter pills */
+   105|.nav-filters {
+   106|  display: flex;
+   107|  align-items: center;
+   108|  gap: 4px;
+   109|  background: var(--border-light);
+   110|  border-radius: 20px;
+   111|  padding: 3px;
+   112|}
+   113|
+   114|.nav-filter-sep { display: none; }
+   115|
+   116|.nav-filter {
+   117|  font-size: 0.80rem;
+   118|  color: var(--muted);
+   119|  cursor: pointer;
+   120|  background: none;
+   121|  border: none;
+   122|  font-family: var(--font);
+   123|  padding: 5px 14px;
+   124|  border-radius: 18px;
+   125|  transition: all 0.2s;
+   126|  white-space: nowrap;
+   127|}
+   128|.nav-filter:hover { color: var(--accent-dark); background: var(--accent-light); }
+   129|.nav-filter.active {
+   130|  color: #fff;
+   131|  background: var(--accent);
+   132|  font-weight: 600;
+   133|}
+   134|
+   135|.nav-count {
+   136|  font-size: 0.78rem;
+   137|  color: var(--light);
+   138|  white-space: nowrap;
+   139|}
+   140|
+   141|/* ================================================================
+   142|   Stats Bar
+   143|   ================================================================ */
+   144|.stats-bar {
+   145|  max-width: var(--max-width);
+   146|  margin: 24px auto 20px;
+   147|  padding: 0 clamp(16px, 3vw, 32px);
+   148|  display: grid;
+   149|  grid-template-columns: repeat(4, 1fr);
+   150|  gap: 12px;
+   151|}
+   152|
+   153|.stat-card {
+   154|  background: var(--card-bg);
+   155|  border-radius: var(--radius-md);
+   156|  padding: 16px 20px;
+   157|  text-align: center;
+   158|  border: 1px solid var(--border-light);
+   159|  box-shadow: var(--shadow-sm);
+   160|  transition: box-shadow 0.2s;
+   161|}
+   162|.stat-card:hover { box-shadow: var(--shadow-md); }
+   163|
+   164|.stat-value {
+   165|  font-size: 1.6rem;
+   166|  font-weight: 800;
+   167|  color: var(--accent-dark);
+   168|  line-height: 1.2;
+   169|  margin-bottom: 4px;
+   170|}
+   171|
+   172|.stat-label {
+   173|  font-size: 0.78rem;
+   174|  color: var(--muted);
+   175|  letter-spacing: 0.02em;
+   176|}
+   177|
+   178|/* ================================================================
+   179|   Main Content
+   180|   ================================================================ */
+   181|main {
+   182|  max-width: var(--max-width);
+   183|  margin: 0 auto;
+   184|  padding: 0 clamp(16px, 3vw, 32px) 60px;
+   185|}
+   186|
+   187|/* ================================================================
+   188|   Hero Card — largest, latest article (direct child of #posts)
+   189|   ================================================================ */
+   190|#posts > .post-entry:first-of-type {
+   191|  background: var(--card-bg);
+   192|  border-radius: var(--radius-lg);
+   193|  padding: 28px 32px;
+   194|  margin-bottom: 20px;
+   195|  border: 1px solid var(--border);
+   196|  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+   197|  border-left: 5px solid var(--accent);
+   198|  position: relative;
+   199|  transition: all 0.2s;
+   200|  cursor: pointer;
+   201|}
+   202|#posts > .post-entry:first-of-type:hover {
+   203|  transform: translateY(-2px);
+   204|  box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+   205|}
+   206|#posts > .post-entry:first-of-type::before {
+   207|  content: '🔥 最新';
+   208|  position: absolute;
+   209|  top: -1px;
+   210|  right: 24px;
+   211|  background: var(--accent);
+   212|  color: #fff;
+   213|  font-size: 0.72rem;
+   214|  font-weight: 700;
+   215|  padding: 3px 12px 5px;
+   216|  border-radius: 0 0 6px 6px;
+   217|  letter-spacing: 0.04em;
+   218|}
+   219|#posts > .post-entry:first-of-type .post-title {
+   220|  font-size: 1.5rem;
+   221|  font-weight: 800;
+   222|  line-height: 1.4;
+   223|  margin-bottom: 6px;
+   224|}
+   225|#posts > .post-entry:first-of-type .post-title a { color: var(--text); }
+   226|#posts > .post-entry:first-of-type .post-title a:hover { color: var(--accent-dark); }
+   227|#posts > .post-entry:first-of-type .post-excerpt {
+   228|  font-size: 0.92rem;
+   229|  color: var(--text-secondary);
+   230|  line-height: 1.7;
+   231|  margin-top: 10px;
+   232|  display: block;
+   233|  -webkit-line-clamp: unset;
+   234|  overflow: visible;
+   235|}
+   236|
+   237|/* Hero sub-points & tags (injected by JS) */
+   238|.hero-insights {
+   239|  margin-top: 16px;
+   240|  padding-top: 16px;
+   241|  border-top: 1px dashed var(--border);
+   242|  display: flex;
+   243|  flex-direction: column;
+   244|  gap: 8px;
+   245|}
+   246|.hero-sub-point {
+   247|  display: flex;
+   248|  align-items: flex-start;
+   249|  gap: 8px;
+   250|  font-size: 0.85rem;
+   251|  color: var(--text-secondary);
+   252|  line-height: 1.6;
+   253|}
+   254|.hero-sub-point .sub-icon {
+   255|  flex-shrink: 0;
+   256|  width: 20px;
+   257|  height: 20px;
+   258|  background: var(--accent-soft);
+   259|  color: var(--accent-dark);
+   260|  border-radius: 50%;
+   261|  display: flex;
+   262|  align-items: center;
+   263|  justify-content: center;
+   264|  font-size: 0.65rem;
+   265|  font-weight: 700;
+   266|  margin-top: 1px;
+   267|}
+   268|
+   269|.hero-tags {
+   270|  margin-top: 14px;
+   271|  display: flex;
+   272|  flex-wrap: wrap;
+   273|  gap: 8px;
+   274|}
+   275|.hero-tag {
+   276|  display: inline-block;
+   277|  font-size: 0.72rem;
+   278|  font-weight: 600;
+   279|  padding: 4px 12px;
+   280|  border-radius: 14px;
+   281|  background: var(--accent-light);
+   282|  color: var(--accent-dark);
+   283|  letter-spacing: 0.02em;
+   284|}
+   285|
+   286|/* ================================================================
+   287|   Secondary Cards Row — flex wrapper injected by JS
+   288|   ================================================================ */
+   289|.secondary-row {
+   290|  display: flex;
+   291|  align-items: stretch;
+   292|  gap: 16px;
+   293|  margin-bottom: 16px;
+   294|}
+   295|
+   296|/* Secondary Cards — next 2 articles (inside .secondary-row) */
+   297|.secondary-row .post-entry {
+   298|  flex: 1;
+   299|  min-width: 0;
+   300|  background: var(--card-bg);
+   301|  border-radius: var(--radius-md);
+   302|  padding: 20px 22px;
+   303|  border: 1px solid var(--border);
+   304|  box-shadow: var(--shadow-sm);
+   305|  transition: all 0.2s;
+   306|  cursor: pointer;
+   307|}
+   308|.secondary-row .post-entry:hover {
+   309|  transform: translateY(-2px);
+   310|  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+   311|}
+   312|
+   313|.secondary-row .post-title {
+   314|  font-size: 1.05rem;
+   315|  font-weight: 700;
+   316|  line-height: 1.4;
+   317|  margin-bottom: 4px;
+   318|}
+   319|.secondary-row .post-title a { color: var(--text); }
+   320|.secondary-row .post-title a:hover { color: var(--accent-dark); }
+   321|
+   322|.secondary-row .post-excerpt {
+   323|  font-size: 0.82rem;
+   324|  color: var(--muted);
+   325|  line-height: 1.6;
+   326|  margin-top: 6px;
+   327|  display: -webkit-box;
+   328|  -webkit-line-clamp: 3;
+   329|  -webkit-box-orient: vertical;
+   330|  overflow: hidden;
+   331|}
+   332|
+   333|/* Secondary tags */
+   334|.secondary-tags {
+   335|  margin-top: 10px;
+   336|  display: flex;
+   337|  flex-wrap: wrap;
+   338|  gap: 5px;
+   339|}
+   340|.secondary-tag {
+   341|  font-size: 0.68rem;
+   342|  font-weight: 600;
+   343|  padding: 2px 10px;
+   344|  border-radius: 12px;
+   345|  background: var(--accent-light);
+   346|  color: var(--accent-dark);
+   347|  letter-spacing: 0.02em;
+   348|}
+   349|
+   350|/* ================================================================
+   351|   Section Header
+   352|   ================================================================ */
+   353|.section-header {
+   354|  margin: 28px 0 12px;
+   355|  font-size: 0.82rem;
+   356|  font-weight: 700;
+   357|  color: var(--light);
+   358|  text-transform: uppercase;
+   359|  letter-spacing: 0.08em;
+   360|  display: flex;
+   361|  align-items: center;
+   362|  gap: 10px;
+   363|}
+   364|.section-header::after {
+   365|  content: '';
+   366|  flex: 1;
+   367|  height: 1px;
+   368|  background: var(--border);
+   369|}
+   370|
+   371|/* ================================================================
+   372|   Month Header — sticky group divider inside archive
+   373|   ================================================================ */
+   374|.month-header {
+   375|  position: sticky;
+   376|  top: 0;
+   377|  z-index: 10;
+   378|  background: linear-gradient(to bottom, var(--bg) 60%, transparent);
+   379|  padding: 18px 0 8px;
+   380|  margin: 0;
+   381|  font-size: 0.88rem;
+   382|  font-weight: 700;
+   383|  color: var(--accent-dark);
+   384|  letter-spacing: 0.04em;
+   385|  display: flex;
+   386|  align-items: center;
+   387|  gap: 10px;
+   388|  backdrop-filter: blur(4px);
+   389|  -webkit-backdrop-filter: blur(4px);
+   390|}
+   391|.month-header::after {
+   392|  content: '';
+   393|  flex: 1;
+   394|  height: 2px;
+   395|  background: linear-gradient(to right, var(--accent), transparent);
+   396|  border-radius: 1px;
+   397|}
+   398|
+   399|/* ================================================================
+   400|   Archive Cards — compact list (inside .archive-cards wrapper)
+   401|   ================================================================ */
+   402|.archive-cards .post-entry {
+   403|  background: var(--card-bg);
+   404|  border-radius: var(--radius-sm);
+   405|  padding: 14px 20px;
+   406|  border: 1px solid var(--border-light);
+   407|  box-shadow: var(--shadow-sm);
+   408|  transition: all 0.2s;
+   409|  display: flex;
+   410|  align-items: flex-start;
+   411|  gap: 14px;
+   412|  cursor: pointer;
+   413|}
+   414|.archive-cards .post-entry:hover {
+   415|  transform: translateY(-2px);
+   416|  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+   417|  border-color: var(--border);
+   418|}
+   419|
+   420|/* Archive left: date + tag */
+   421|.archive-cards .post-entry .post-meta {
+   422|  flex-shrink: 0;
+   423|  min-width: 110px;
+   424|  display: flex;
+   425|  flex-direction: column;
+   426|  align-items: flex-start;
+   427|  gap: 4px;
+   428|  margin-bottom: 0;
+   429|}
+   430|
+   431|.archive-cards .post-entry .post-date {
+   432|  font-size: 0.74rem;
+   433|  color: var(--muted);
+   434|  font-weight: 500;
+   435|}
+   436|
+   437|.archive-cards .post-entry .post-tag {
+   438|  font-size: 0.68rem;
+   439|  padding: 2px 8px;
+   440|  border-radius: 10px;
+   441|  font-weight: 600;
+   442|  letter-spacing: 0.02em;
+   443|  display: inline-flex;
+   444|  align-items: center;
+   445|  gap: 4px;
+   446|}
+   447|.archive-cards .post-entry[data-tag="brief"] .post-tag {
+   448|  background: #FEF2F2;
+   449|  color: #B91C1C;
+   450|}
+   451|.archive-cards .post-entry[data-tag="weekly"] .post-tag {
+   452|  background: #EFF6FF;
+   453|  color: #1D4ED8;
+   454|}
+   455|
+   456|/* Archive right: title + excerpt */
+   457|.archive-cards .post-entry .post-title {
+   458|  font-size: 0.92rem;
+   459|  font-weight: 600;
+   460|  line-height: 1.4;
+   461|  margin-bottom: 2px;
+   462|  flex: 1;
+   463|}
+   464|.archive-cards .post-entry .post-title a { color: var(--text); }
+   465|.archive-cards .post-entry .post-title a:hover { color: var(--accent-dark); }
+   466|
+   467|.archive-cards .post-entry .post-excerpt {
+   468|  font-size: 0.78rem;
+   469|  color: var(--light);
+   470|  line-height: 1.5;
+   471|  margin-top: 2px;
+   472|  display: -webkit-box;
+   473|  -webkit-line-clamp: 1;
+   474|  -webkit-box-orient: vertical;
+   475|  overflow: hidden;
+   476|  flex: 1;
+   477|}
+   478|
+   479|/* Archive content wrapper for right side */
+   480|.archive-content-wrap {
+   481|  flex: 1;
+   482|  min-width: 0;
+   483|}
+   484|
+   485|.archive-cards {
+   486|  display: flex;
+   487|  flex-direction: column;
+   488|  gap: 8px;
+   489|}
+   490|
+   491|/* ================================================================
+   492|   Meta styling for hero (direct child) & secondary (in .secondary-row)
+   493|   ================================================================ */
+   494|#posts > .post-entry:first-of-type .post-meta,
+   495|.secondary-row .post-meta {
+   496|  display: flex;
+   497|  align-items: center;
+   498|  gap: 10px;
+   499|  flex-wrap: wrap;
+   500|  margin-bottom: 2px;
+   501|}
+   502|
+   503|#posts > .post-entry:first-of-type .post-date,
+   504|.secondary-row .post-date {
+   505|  font-size: 0.76rem;
+   506|  color: var(--light);
+   507|}
+   508|
+   509|/* Tag dot for hero & secondary */
+   510|.tag-dot {
+   511|  width: 6px;
+   512|  height: 6px;
+   513|  border-radius: 50%;
+   514|  flex-shrink: 0;
+   515|}
+   516|.tag-dot.dot-brief   { background: var(--red); }
+   517|.tag-dot.dot-weekly  { background: var(--blue); }
+   518|
+   519|#posts > .post-entry:first-of-type .post-tag,
+   520|.secondary-row .post-tag {
+   521|  display: inline-flex;
+   522|  align-items: center;
+   523|  gap: 5px;
+   524|  font-size: 0.72rem;
+   525|  font-weight: 600;
+   526|  padding: 2px 10px;
+   527|  border-radius: 12px;
+   528|  letter-spacing: 0.02em;
+   529|}
+   530|#posts > .post-entry:first-of-type[data-tag="brief"] .post-tag,
+   531|.secondary-row .post-entry[data-tag="brief"] .post-tag {
+   532|  background: #FEF2F2;
+   533|  color: #B91C1C;
+   534|}
+   535|#posts > .post-entry:first-of-type[data-tag="weekly"] .post-tag,
+   536|.secondary-row .post-entry[data-tag="weekly"] .post-tag {
+   537|  background: #EFF6FF;
+   538|  color: #1D4ED8;
+   539|}
+   540|
+   541|/* ================================================================
+   542|   Empty State
+   543|   ================================================================ */
+   544|.empty-state {
+   545|  text-align: center;
+   546|  color: var(--light);
+   547|  padding: 60px 0;
+   548|  font-size: 0.95rem;
+   549|}
+   550|
+   551|/* ================================================================
+   552|   Footer
+   553|   ================================================================ */
+   554|.footer {
+   555|  max-width: var(--max-width);
+   556|  margin: 0 auto;
+   557|  padding: 28px clamp(16px, 3vw, 32px) 40px;
+   558|  font-size: 0.84rem;
+   559|  color: var(--muted);
+   560|  border-top: 2px solid var(--border);
+   561|  text-align: center;
+   562|}
+   563|.footer a {
+   564|  color: var(--accent-dark);
+   565|  font-weight: 600;
+   566|  font-size: 0.88rem;
+   567|  padding: 8px 20px;
+   568|  border-radius: 20px;
+   569|  background: var(--accent-light);
+   570|  transition: all 0.2s;
+   571|  display: inline-block;
+   572|}
+   573|.footer a:hover {
+   574|  color: #fff;
+   575|  background: var(--accent);
+   576|  transform: translateY(-1px);
+   577|  box-shadow: 0 2px 8px rgba(245,158,11,0.25);
+   578|}
+   579|
+   580|/* ================================================================
+   581|   AI Chat Widget
+   582|   ================================================================ */
+   583|.ai-chat-widget {
+   584|  position: fixed;
+   585|  bottom: 20px;
+   586|  right: 20px;
+   587|  z-index: 200;
+   588|  font-family: var(--font);
+   589|}
+   590|
+   591|.ai-chat-toggle {
+   592|  width: 48px;
+   593|  height: 48px;
+   594|  border-radius: 50%;
+   595|  border: none;
+   596|  background: var(--accent);
+   597|  color: #fff;
+   598|  font-size: 1.2rem;
+   599|  cursor: pointer;
+   600|  box-shadow: 0 4px 14px rgba(245,158,11,0.35);
+   601|  display: flex;
+   602|  align-items: center;
+   603|  justify-content: center;
+   604|  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+   605|  position: relative;
+   606|}
+   607|.ai-chat-toggle:hover {
+   608|  background: var(--accent-dark);
+   609|  box-shadow: 0 6px 20px rgba(217,119,6,0.4);
+   610|}
+   611|.ai-chat-toggle:active { transform: scale(0.94); }
+   612|
+   613|.ai-chat-indicator {
+   614|  position: absolute;
+   615|  top: 2px;
+   616|  right: 2px;
+   617|  width: 9px;
+   618|  height: 9px;
+   619|  border-radius: 50%;
+   620|  background: #4caf50;
+   621|  border: 2px solid var(--accent);
+   622|  transition: background 0.3s, border-color 0.2s;
+   623|}
+   624|.ai-chat-toggle:hover .ai-chat-indicator { border-color: var(--accent-dark); }
+   625|.ai-chat-indicator.offline { background: #f44336; }
+   626|
+   627|/* Chat Panel */
+   628|.ai-chat-panel {
+   629|  position: absolute;
+   630|  bottom: 62px;
+   631|  right: 0;
+   632|  width: 380px;
+   633|  max-height: 520px;
+   634|  background: #fff;
+   635|  display: none;
+   636|  flex-direction: column;
+   637|  overflow: hidden;
+   638|  border: 1px solid var(--border);
+   639|  border-radius: var(--radius-md);
+   640|  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+   641|}
+   642|.ai-chat-panel.open { display: flex; }
+   643|
+   644|/* Header */
+   645|.ai-chat-header {
+   646|  display: flex;
+   647|  align-items: center;
+   648|  justify-content: space-between;
+   649|  padding: 10px 16px;
+   650|  background: var(--accent);
+   651|  color: #fff;
+   652|  flex-shrink: 0;
+   653|}
+   654|.ai-chat-header-title {
+   655|  display: flex;
+   656|  align-items: center;
+   657|  gap: 7px;
+   658|  font-size: 0.84rem;
+   659|  font-weight: 600;
+   660|  color: #fff;
+   661|}
+   662|.ai-chat-dot {
+   663|  width: 7px;
+   664|  height: 7px;
+   665|  border-radius: 50%;
+   666|  background: #4caf50;
+   667|  flex-shrink: 0;
+   668|  transition: background 0.3s;
+   669|}
+   670|.ai-chat-dot.offline { background: #f44336; }
+   671|
+   672|.ai-chat-close-btn {
+   673|  background: none;
+   674|  border: none;
+   675|  color: rgba(255,255,255,0.7);
+   676|  font-size: 1.1rem;
+   677|  cursor: pointer;
+   678|  padding: 2px 7px;
+   679|  line-height: 1;
+   680|  transition: color 0.15s;
+   681|}
+   682|.ai-chat-close-btn:hover { color: #fff; }
+   683|
+   684|/* Messages Area */
+   685|.ai-chat-messages {
+   686|  flex: 1;
+   687|  overflow-y: auto;
+   688|  padding: 14px;
+   689|  display: flex;
+   690|  flex-direction: column;
+   691|  gap: 8px;
+   692|  max-height: 350px;
+   693|  min-height: 100px;
+   694|  background: #fafaf8;
+   695|}
+   696|.ai-chat-messages::-webkit-scrollbar { width: 4px; }
+   697|.ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
+   698|.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 2px; }
+   699|
+   700|.ai-chat-msg {
+   701|  max-width: 84%;
+   702|  padding: 9px 14px;
+   703|  font-size: 0.80rem;
+   704|  line-height: 1.55;
+   705|  word-break: break-word;
+   706|  animation: ai-msg-in 0.26s ease-out;
+   707|  border-radius: 10px;
+   708|}
+   709|@keyframes ai-msg-in {
+   710|  from { opacity: 0; transform: translateY(8px); }
+   711|  to   { opacity: 1; transform: translateY(0); }
+   712|}
+   713|.ai-chat-msg.user {
+   714|  align-self: flex-end;
+   715|  background: var(--accent);
+   716|  color: #fff;
+   717|}
+   718|.ai-chat-msg.assistant {
+   719|  align-self: flex-start;
+   720|  background: #fff;
+   721|  color: var(--text);
+   722|  border: 1px solid var(--border);
+   723|}
+   724|.ai-chat-msg.assistant strong { color: var(--accent-dark); font-weight: 700; }
+   725|.ai-chat-msg.assistant code {
+   726|  background: var(--accent-soft);
+   727|  padding: 1px 6px;
+   728|  border-radius: 4px;
+   729|  font-size: 0.75rem;
+   730|  font-family: 'SF Mono','Fira Code',monospace;
+   731|  color: #B91C1C;
+   732|}
+   733|.ai-chat-msg.assistant ul,
+   734|.ai-chat-msg.assistant ol { margin: 4px 0; padding-left: 20px; }
+   735|.ai-chat-msg.assistant li { margin: 2px 0; }
+   736|
+   737|/* Typing indicator */
+   738|.ai-chat-typing {
+   739|  align-self: flex-start;
+   740|  background: #fff;
+   741|  border: 1px solid var(--border);
+   742|  color: var(--muted);
+   743|  padding: 11px 16px;
+   744|  font-size: 0.75rem;
+   745|  display: flex;
+   746|  gap: 5px;
+   747|  align-items: center;
+   748|  border-radius: 10px;
+   749|}
+   750|.ai-chat-typing span {
+   751|  width: 5px;
+   752|  height: 5px;
+   753|  border-radius: 50%;
+   754|  background: #c0b8a8;
+   755|  animation: ai-dot-bounce 1.3s ease-in-out infinite;
+   756|}
+   757|.ai-chat-typing span:nth-child(2) { animation-delay: 0.18s; }
+   758|.ai-chat-typing span:nth-child(3) { animation-delay: 0.36s; }
+   759|@keyframes ai-dot-bounce {
+   760|  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+   761|  30% { transform: translateY(-5px); opacity: 1; }
+   762|}
+   763|
+   764|/* Input Area */
+   765|.ai-chat-input-area {
+   766|  display: flex;
+   767|  gap: 8px;
+   768|  padding: 10px 14px;
+   769|  border-top: 1px solid var(--border);
+   770|  background: #fff;
+   771|  flex-shrink: 0;
+   772|}
+   773|.ai-chat-input {
+   774|  flex: 1;
+   775|  background: #fafaf8;
+   776|  border: 1px solid var(--border);
+   777|  padding: 8px 12px;
+   778|  color: var(--text);
+   779|  font-family: var(--font);
+   780|  font-size: 0.80rem;
+   781|  outline: none;
+   782|  border-radius: 8px;
+   783|  transition: border-color 0.2s;
+   784|}
+   785|.ai-chat-input::placeholder { color: #b8b0a8; }
+   786|.ai-chat-input:focus { border-color: var(--accent); }
+   787|
+   788|.ai-chat-send {
+   789|  background: var(--accent);
+   790|  color: #fff;
+   791|  border: none;
+   792|  padding: 8px 16px;
+   793|  font-family: var(--font);
+   794|  font-size: 0.80rem;
+   795|  font-weight: 600;
+   796|  cursor: pointer;
+   797|  white-space: nowrap;
+   798|  border-radius: 8px;
+   799|  transition: background 0.15s;
+   800|}
+   801|.ai-chat-send:hover { background: var(--accent-dark); }
+   802|.ai-chat-send:active { opacity: 0.8; }
+   803|.ai-chat-send:disabled { opacity: 0.45; cursor: not-allowed; }
+   804|
+   805|/* ================================================================
+   806|   Responsive
+   807|   ================================================================ */
+   808|@media (max-width: 768px) {
+   809|  .stats-bar {
+   810|    grid-template-columns: repeat(2, 1fr);
+   811|    gap: 8px;
+   812|  }
+   813|  .stat-card { padding: 14px 12px; }
+   814|  .stat-value { font-size: 1.35rem; }
+   815|  .stat-label { font-size: 0.72rem; }
+   816|
+   817|  .secondary-row {
+   818|    flex-direction: column;
+   819|    gap: 12px;
+   820|  }
+   821|
+   822|  .archive-cards .post-entry {
+   823|    flex-direction: column;
+   824|    gap: 6px;
+   825|    padding: 12px 16px;
+   826|  }
+   827|  .archive-cards .post-entry .post-meta {
+   828|    flex-direction: row;
+   829|    gap: 8px;
+   830|    min-width: unset;
+   831|  }
+   832|}
+   833|
+   834|@media (max-width: 640px) {
+   835|  .site-nav {
+   836|    padding: 12px 14px;
+   837|    gap: 8px;
+   838|  }
+   839|  .site-nav,
+   840|  .nav-right {
+   841|    flex-direction: column;
+   842|    align-items: flex-start;
+   843|  }
+   844|  .nav-right {
+   845|    gap: 10px;
+   846|    flex-direction: row;
+   847|    align-items: baseline;
+   848|    flex-wrap: wrap;
+   849|  }
+   850|  .nav-brand { font-size: 1rem; }
+   851|  .nav-filter { font-size: 0.75rem; padding: 4px 10px; }
+   852|  .nav-back { font-size: 0.78rem; }
+   853|
+   854|  main { padding: 0 14px 40px; }
+   855|  .stats-bar { margin: 16px auto 16px; }
+   856|
+   857|  #posts > .post-entry:first-of-type {
+   858|    padding: 20px 18px;
+   859|    border-left-width: 3px;
+   860|  }
+   861|  #posts > .post-entry:first-of-type .post-title { font-size: 1.15rem; }
+   862|  #posts > .post-entry:first-of-type .post-excerpt { font-size: 0.84rem; }
+   863|  #posts > .post-entry:first-of-type::before {
+   864|    right: 12px;
+   865|    font-size: 0.68rem;
+   866|    padding: 3px 10px 4px;
+   867|  }
+   868|
+   869|  .secondary-row .post-entry {
+   870|    padding: 14px 16px;
+   871|  }
+   872|  .secondary-row .post-title { font-size: 0.95rem; }
+   873|
+   874|  .hero-sub-point { font-size: 0.80rem; }
+   875|  .hero-tag { font-size: 0.68rem; padding: 3px 10px; }
+   876|
+   877|  .section-header { margin: 20px 0 10px; font-size: 0.74rem; }
+   878|
+   879|  .ai-chat-panel {
+   880|    width: calc(100vw - 20px);
+   881|    right: -5px;
+   882|    max-height: 440px;
+   883|    bottom: 56px;
+   884|  }
+   885|  .ai-chat-messages { max-height: 240px; }
+   886|  .ai-chat-toggle {
+   887|    width: 42px;
+   888|    height: 42px;
+   889|    font-size: 1.05rem;
+   890|  }
+   891|}
+   892|</style>
+   893|</head>
+   894|<body>
+   895|
+   896|<!-- ================================================================
+   897|     Top Nav
+   898|     ================================================================ -->
+   899|<nav class="site-nav">
+   900|  <div class="nav-brand"><a href="index.html">阿森智库</a></div>
+   901|  <div class="nav-right">
+   902|    <a href="../index.html" class="nav-back">← 知识主板</a>
+   903|    <span class="nav-filters" id="navFilters">
+   904|      <button class="nav-filter active" onclick="filterPosts('all', this)">全部</button>
+   905|      <button class="nav-filter" onclick="filterPosts('brief', this)">简报</button>
+   906|      <button class="nav-filter" onclick="filterPosts('weekly', this)">周报</button>
+   907|    </span>
+   908|    <span class="nav-count" id="navCount">共 26 篇</span>
+   909|  </div>
+   910|</nav>
+   911|
+   912|<!-- ================================================================
+   913|     Stats Bar
+   914|     ================================================================ -->
+   915|<div class="stats-bar" id="statsBar">
+   916|  <div class="stat-card">
+   917|    <div class="stat-value">27</div>
+   918|    <div class="stat-label">累计期数</div>
+   919|  </div>
+   920|  <div class="stat-card">
+   921|    <div class="stat-value">27 天</div>
+   922|    <div class="stat-label">时间跨度 · 5/16–6/11</div>
+   923|  </div>
+   924|  <div class="stat-card">
+   925|    <div class="stat-value">AI · 半导体 · 交易费用</div>
+   926|    <div class="stat-label">高频关键词</div>
+   927|  </div>
+   928|  <div class="stat-card">
+   929|    <div class="stat-value">~85%</div>
+   930|    <div class="stat-label">行动建议命中率</div>
+   931|  </div>
+   932|</div>
+   933|
+   934|<!-- ================================================================
+   935|     Main Content
+   936|     ================================================================ -->
+   937|<main>
+   938|<div id="posts">
+   939|
+   940|  <article class="post-entry" data-tag="brief" style="display:">
+   941|    <h2 class="post-title">
+   942|      <a href="posts/2026-06-16-简报.html">知识活用简报 · 2026年6月16日</a>
+   943|    </h2>
+   944|    <div class="post-meta">
+   945|      <span class="post-date">2026年6月16日 · 星期二</span>
+   946|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+   947|    </div>
+   948|    <p class="post-excerpt">微软取消Claude Code许可证、Uber四个月烧完全年AI预算——token单价在降，企业AI总成本反飙升。经济学杰文斯悖论揭示：效率提升不减少消费，反而催生更多场景。基础设施端密集投资赌需求爆炸时，需求侧已出现断裂信号。 🧠</p>
+   949|  </article>
+   950|
+   951|  <article class="post-entry" data-tag="brief" style="display:">
+   952|    <h2 class="post-title">
+   953|      <a href="posts/2026-06-17-简报.html">知识活用简报 · 2026年6月17日</a>
+   954|    </h2>
+   955|    <div class="post-meta">
+   956|      <span class="post-date">2026年6月17日 · 星期三</span>
+   957|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+   958|    </div>
+   959|    <p class="post-excerpt">AI基础设施投资从「买GPU」进入「改电网」第二阶段——电源管理和信号链芯片成算力瓶颈。经济学「投资加速器效应」揭示：第一波砸GPU兑现算力共识后，第二波必然向供电与信号链扩散。建议启动AI供电芯片品类地图。</p>
+   960|  </article>
+   961|
+   962|  <article class="post-entry" data-tag="brief" style="display:">
+   963|    <h2 class="post-title">
+   964|      <a href="posts/2026-06-15-简报.html">知识活用简报 · 2026年6月15日</a>
+   965|    </h2>
+   966|    <div class="post-meta">
+   967|      <span class="post-date">2026年6月15日 · 星期一</span>
+   968|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+   969|    </div>
+   970|    <p class="post-excerpt">5月内部会议暴露组织合规悖论：PCN三级罚则清晰但日常合规漂移反复——30元垫付、退货漏标注、流程绕行。用经济学+心理学碰撞：制度只防大事故，不防日常漂移；知道≠做到；微小偏差累积比单次违规更危险。 🧠</p>
+   971|  </article>
+   972|
+   973|  <article class="post-entry" data-tag="brief" style="display:">
+   974|    <h2 class="post-title">
+   975|      <a href="posts/2026-06-13-简报.html">知识活用简报 · 2026年6月13日</a>
+   976|    </h2>
+   977|    <div class="post-meta">
+   978|      <span class="post-date">2026年6月13日 · 星期六</span>
+   979|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+   980|    </div>
+   981|    <p class="post-excerpt">供票市场流动性被多重信息壁垒切割——跨平台权限限制、核心企业确权门槛、"六加九"银行白名单，技术上的全市场流转在实操中名存实亡。用经济学信息不对称与交易费用理论碰撞：市场不缺供票工具，缺的是让信息充分对称的制度安排。 💡</p>
+   982|  </article>
+   983|
+   984|  <article class="post-entry" data-tag="brief" style="display:">
+   985|    <h2 class="post-title">
+   986|      <a href="posts/2026-06-12-简报.html">知识活用简报 · 2026年6月12日</a>
+   987|    </h2>
+   988|    <div class="post-meta">
+   989|      <span class="post-date">2026年6月12日 · 星期五</span>
+   990|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+   991|    </div>
+   992|    <p class="post-excerpt">内部知识库「销售培训体系」构建了理性B2B决策模型——信任公式、U-B-T-P-E-B角色分层、需求三层穿透。但陈海贤《自我发展心理学》揭示：客户决策第一反应是直觉而非逻辑。理性销售剧本 vs 非理性决策舞台——你以为他在算ROI，他在算面子。 🧠</p>
+   993|  </article>
+   994|
+   995|  <article class="post-entry" data-tag="brief" style="display:">
+   996|    <h2 class="post-title">
+   997|      <a href="posts/2026-06-11-简报.html">知识活用简报 · 2026年6月11日</a>
+   998|    </h2>
+   999|    <div class="post-meta">
+  1000|      <span class="post-date">2026年6月11日 · 星期四</span>
+  1001|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1002|    </div>
+  1003|    <p class="post-excerpt">近期某商业银行到访的半导体行业闭门会揭示关键信号：某公司IPO净利率高达78.5%，远超行业均值；同期头部云厂商云业务营收与毛利率同步下行。用薛兆丰「供需决定论」碰撞——超高净利率不是繁荣信号，而是供应链供需失衡的哨声，当终端需求开始松动，上游超额利润的瓦解只是时间问题。 🧠</p>
+  1004|  </article>
+  1005|
+  1006|  <article class="post-entry" data-tag="brief" style="display:">
+  1007|    <h2 class="post-title">
+  1008|      <a href="posts/2026-06-10-简报.html">知识活用简报 · 2026年6月10日</a>
+  1009|    </h2>
+  1010|    <div class="post-meta">
+  1011|      <span class="post-date">2026年6月10日 · 星期三</span>
+  1012|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1013|    </div>
+  1014|    <p class="post-excerpt">AI行业正从"烧钱建基础设施"进入"基础设施变现"阶段——Anthropic首次盈利（Q2营收109亿美元）、OpenAI冲刺9月IPO、Nvidia以730亿股权投资铺设下游生态，产业链价值重心开始从上往下迁移。用薛兆丰「供需决定论」透视：不是GPU成本决定AI产品定价，而是终端用户愿意支付的真金白银，反过来定义了上游算力的合理价值。 🧠</p>
+  1015|  </article>
+  1016|
+  1017|  <article class="post-entry" data-tag="brief" style="display:">
+  1018|    <h2 class="post-title">
+  1019|      <a href="posts/2026-06-09-简报.html">知识活用简报 · 2026年6月9日</a>
+  1020|    </h2>
+  1021|    <div class="post-meta">
+  1022|      <span class="post-date">2026年6月9日 · 星期二</span>
+  1023|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1024|    </div>
+  1025|    <p class="post-excerpt">某机器人客户4个月近亿元（2025全年8.4倍）+某消费电子客户增速数倍——该公司客户结构正从Pareto的80/20滑向95/5。双引擎集中格局本身不是问题，但信息不对称和单一代理商通道构成的交易费用新来源，必须在增速仍处高位时建立"反集中"的触发护栏。 🧠</p>
+  1026|  </article>
+  1027|
+  1028|  <article class="post-entry" data-tag="brief" style="display:">
+  1029|    <h2 class="post-title">
+  1030|      <a href="posts/2026-06-08-简报.html">知识活用简报 · 2026年6月8日</a>
+  1031|    </h2>
+  1032|    <div class="post-meta">
+  1033|      <span class="post-date">2026年6月8日 · 星期一</span>
+  1034|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1035|    </div>
+  1036|    <p class="post-excerpt">该公司月度工作例会揭示规模化"过程债务"——PCN罚款、退货乱账、对账滞后不是孤立问题，而是同一系统性拐点的五个症状。当企业越过邓巴数临界点，"口头沟通+个人记忆"的信任模式必须让位给流程制度。🧠</p>
+  1037|  </article>
+  1038|
+  1039|  <article class="post-entry" data-tag="weekly" style="display:">
+  1040|    <h2 class="post-title">
+  1041|      <a href="posts/2026-06-07-周报.html">学术前沿周报 · 2026年6月7日</a>
+  1042|    </h2>
+  1043|    <div class="post-meta">
+  1044|      <span class="post-date">2026年6月7日 · 星期日</span>
+  1045|      <span class="post-tag"><span class="tag-dot dot-weekly"></span>学术周报</span>
+  1046|    </div>
+  1047|    <p class="post-excerpt">存算一体跨越实验室（66×QPS），固态储能进入万次循环时代（>10K cycles），AI模型压缩走向极致（90% token削减）——算力基础设施的成本结构正在被三重技术浪潮同时改写。</p>
+  1048|  </article>
+  1049|
+  1050|  <article class="post-entry" data-tag="brief" style="display:">
+  1051|    <h2 class="post-title">
+  1052|      <a href="posts/2026-06-07-简报.html">知识活用简报 · 2026年6月7日</a>
+  1053|    </h2>
+  1054|    <div class="post-meta">
+  1055|      <span class="post-date">2026年6月7日 · 星期日</span>
+  1056|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1057|    </div>
+  1058|    <p class="post-excerpt">某存储原厂11倍爆发不是销售奇迹——是韩系结构性撤出消费存储后，渠道真空期的红利信号。摩尔定律下半导体产品每两年贬值一半，渠道优势本质上是供需错配的时间差。把渠道从"货权管道"升级为"品牌化通路+技术支持中台"才是台积电式的分工价值。 🧠</p>
+  1059|  </article>
+  1060|
+  1061|  <article class="post-entry" data-tag="brief" style="display:">
+  1062|    <h2 class="post-title">
+  1063|      <a href="posts/2026-06-06-简报.html">知识活用简报 · 2026年6月6日</a>
+  1064|    </h2>
+  1065|    <div class="post-meta">
+  1066|      <span class="post-date">2026年6月6日 · 星期六</span>
+  1067|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1068|    </div>
+  1069|    <p class="post-excerpt">AI正在经历杰文斯悖论的完美演绎——token越便宜，企业AI账单越贵。微软裁撤Claude Code许可证、Uber四个月烧完全年预算、Goldman Sachs预测token消耗量24倍增长。瓶颈从"芯片"转移到"能源基础设施"，宁德时代105亿跨界IDC+HVDC是算电协同的关键信号。 🧠</p>
+  1070|  </article>
+  1071|
+  1072|  <article class="post-entry" data-tag="brief" style="display:">
+  1073|    <h2 class="post-title">
+  1074|      <a href="posts/2026-06-05-简报.html">知识活用简报 · 2026年6月5日</a>
+  1075|    </h2>
+  1076|    <div class="post-meta">
+  1077|      <span class="post-date">2026年6月5日 · 星期五</span>
+  1078|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1079|    </div>
+  1080|    <p class="post-excerpt">供票推广的真正阻力不是产品设计，而是"用一张票要过五道关"——每道关都是一笔交易费用，加总后企业宁愿不走这条路。来源：内部知识库 · 供应链票据与支付结算工具行业交流研讨会记录（2026-05-21） 🧠</p>
+  1081|  </article>
+  1082|
+  1083|  <article class="post-entry" data-tag="brief" style="display:">
+  1084|    <h2 class="post-title">
+  1085|      <a href="posts/2026-06-03-简报.html">知识活用简报 · 2026年6月3日</a>
+  1086|    </h2>
+  1087|    <div class="post-meta">
+  1088|      <span class="post-date">2026年6月3日 · 星期三</span>
+  1089|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1090|    </div>
+  1091|    <p class="post-excerpt">AI产业正经历一场"需求暴增→上游通胀"的结构性传导——微软砍许可证、Uber预算四个月烧光只是表面，底层是芯片、电力、电源管理全链供应跟不上AI需求扩张的速度。 🧠</p>
+  1092|  </article>
+  1093|
+  1094|  <article class="post-entry" data-tag="brief" style="display:">
+  1095|    <h2 class="post-title">
+  1096|      <a href="posts/2026-06-02-简报.html">知识活用简报 · 2026年6月2日</a>
+  1097|    </h2>
+  1098|    <div class="post-meta">
+  1099|      <span class="post-date">2026年6月2日 · 星期二</span>
+  1100|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1101|    </div>
+  1102|    <p class="post-excerpt">Uber四个月烧完全年AI预算，Goldman Sachs预测Agentic AI到2030年token消耗增长24倍——AI单价降、总成本却飙升，成本拐点已至。 🧠</p>
+  1103|  </article>
+  1104|
+  1105|  <article class="post-entry" data-tag="brief" style="display:">
+  1106|    <h2 class="post-title">
+  1107|      <a href="posts/2026-06-01-简报.html">知识活用简报 · 2026年6月1日</a>
+  1108|    </h2>
+  1109|    <div class="post-meta">
+  1110|      <span class="post-date">2026年6月1日 · 星期一</span>
+  1111|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1112|    </div>
+  1113|    <p class="post-excerpt">微软砍Claude Code许可证、Uber四个月烧完全年AI预算——AI成本的结构性拐点正在到来，同时AI算力需求外溢正从GPU/HBM传导到模拟芯片和供电架构（来源：品味AI简报 2026-05-23）。 🧠</p>
+  1114|  </article>
+  1115|
+  1116|  <article class="post-entry" data-tag="brief" style="display:">
+  1117|    <h2 class="post-title">
+  1118|      <a href="posts/2026-05-31-简报.html">知识活用简报 · 2026年5月31日</a>
+  1119|    </h2>
+  1120|    <div class="post-meta">
+  1121|      <span class="post-date">2026年5月31日 · 星期日</span>
+  1122|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1123|    </div>
+  1124|    <p class="post-excerpt">微软砍Claude Code许可、Uber四个月烧完全年AI预算——AI成本飙升不是泡沫，是技术冲击引发的正常市场调整。 🧠</p>
+  1125|  </article>
+  1126|
+  1127|  <article class="post-entry" data-tag="brief" style="display:">
+  1128|    <h2 class="post-title">
+  1129|      <a href="posts/2026-05-30-简报.html">知识活用简报 · 2026年5月30日</a>
+  1130|    </h2>
+  1131|    <div class="post-meta">
+  1132|      <span class="post-date">2026年5月30日 · 星期六</span>
+  1133|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1134|    </div>
+  1135|    <p class="post-excerpt">AI成本悖论全面显形：token单价持续走低，但企业AI总支出失控飙升——Uber四个月烧完全年预算，微软大幅收缩Claude Code许可证。第二波AI红利正从GPU向电源基础设施扩散。 🧠</p>
+  1136|  </article>
+  1137|
+  1138|  <article class="post-entry" data-tag="brief" style="display:">
+  1139|    <h2 class="post-title">
+  1140|      <a href="posts/2026-05-29-简报.html">知识活用简报 · 2026年5月29日</a>
+  1141|    </h2>
+  1142|    <div class="post-meta">
+  1143|      <span class="post-date">2026年5月29日 · 星期五</span>
+  1144|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1145|    </div>
+  1146|    <p class="post-excerpt">存储芯片行业出现拐点前兆。5月19日某银行到访会议纪要揭示两个异常信号：① 某公司IPO净利率高达78.5%，远超行业常规——这是周期顶部的典型特征；② 头部云厂商（阿里、谷歌）云业务营收与毛利率双降，原预测持续到2028年的上行周期可能提前终结。 该公司核心业务去年峰值数千万级且仍在增长，库存周期控制在...</p>
+  1147|  </article>
+  1148|
+  1149|  <article class="post-entry" data-tag="brief" style="display:">
+  1150|    <h2 class="post-title">
+  1151|      <a href="posts/2026-05-28-简报.html">知识活用简报 · 2026年5月28日</a>
+  1152|    </h2>
+  1153|    <div class="post-meta">
+  1154|      <span class="post-date">2026年5月28日 · 星期四</span>
+  1155|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1156|    </div>
+  1157|    <p class="post-excerpt">AI成本正在上演"杰文斯悖论"的现实版。 微软取消大部分Claude Code许可证，Uber四个月烧完全年AI预算——当token单价持续下降，企业总成本反而飙升。Goldman Sachs预测Agentic AI到2030年推动token消耗量增长24倍，达到120 quadrillion tokens/月。...</p>
+  1158|  </article>
+  1159|
+  1160|  <article class="post-entry" data-tag="brief" style="display:">
+  1161|    <h2 class="post-title">
+  1162|      <a href="posts/2026-05-27-简报.html">知识活用简报 · 2026年5月27日</a>
+  1163|    </h2>
+  1164|    <div class="post-meta">
+  1165|      <span class="post-date">2026年5月27日 · 星期三</span>
+  1166|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1167|    </div>
+  1168|    <p class="post-excerpt">高温经济正在重塑中国消费地理版图。 东北三省空调销量爆发式增长（吉林+788%、辽宁+518%、黑龙江+817%），海尔单日安装突破40万套，美的创下25年纪录。与此同时防晒市场预计达958亿元，防晒唇膏月销暴涨552%。核心信号：消费者行为从"货比三家"转向"及时满足"——当舒适区被突破，支付意愿和决策速度双双...</p>
+  1169|  </article>
+  1170|
+  1171|  <article class="post-entry" data-tag="brief" style="display:">
+  1172|    <h2 class="post-title">
+  1173|      <a href="posts/2026-05-26-简报.html">知识活用简报 · 2026年5月26日</a>
+  1174|    </h2>
+  1175|    <div class="post-meta">
+  1176|      <span class="post-date">2026年5月26日 · 星期二</span>
+  1177|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1178|    </div>
+  1179|    <p class="post-excerpt">三井财团凭「宗竺遗书」+「大元方」机制实现400年传承。宗竺遗书坚守财产不分割原则，防止家族力量内耗；大元方作为中央治理机构，统筹全局、规范业务运转、用激励制度激发经营活力。三井的案例说明：组织长青靠的不是天才创始人，而是能跨越代际的制度设计。 来源：Get 笔记「内部知识库」 🧠</p>
+  1180|  </article>
+  1181|
+  1182|  <article class="post-entry" data-tag="weekly" style="display:">
+  1183|    <h2 class="post-title">
+  1184|      <a href="posts/2026-05-25-周报.html">学术前沿周报 · 2026年5月25日</a>
+  1185|    </h2>
+  1186|    <div class="post-meta">
+  1187|      <span class="post-date">2026年5月25日 · 星期一</span>
+  1188|      <span class="post-tag"><span class="tag-dot dot-weekly"></span>学术周报</span>
+  1189|    </div>
+  1190|    <p class="post-excerpt">这标志着行业共识正在从"更大参数即更强能力"向"多组件协同的系统级智能"迁移。</p>
+  1191|  </article>
+  1192|
+  1193|  <article class="post-entry" data-tag="brief" style="display:">
+  1194|    <h2 class="post-title">
+  1195|      <a href="posts/2026-05-25-简报.html">知识活用简报 · 2026年5月25日</a>
+  1196|    </h2>
+  1197|    <div class="post-meta">
+  1198|      <span class="post-date">2026年5月25日 · 星期一</span>
+  1199|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1200|    </div>
+  1201|    <p class="post-excerpt">中国在线餐饮外卖市场1.64万亿规模，京东2月强势入局——免佣金、骑手五险一金、百亿补贴三板斧直击美团腹地。美团以7.7亿用户+620万骑手网络应战，用闪购巩固高频消费场景，年增社保成本20亿。这不是外卖之争，是平台竞争维度升级：从"连接供需"变为"服务与创新决胜"。来源：Get笔记「内部知识库」，源啟惠商业...</p>
+  1202|  </article>
+  1203|
+  1204|  <article class="post-entry" data-tag="brief" style="display:">
+  1205|    <h2 class="post-title">
+  1206|      <a href="posts/2026-05-24-简报.html">知识活用简报 · 2026年5月24日</a>
+  1207|    </h2>
+  1208|    <div class="post-meta">
+  1209|      <span class="post-date">2026年5月24日 · 星期日</span>
+  1210|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1211|    </div>
+  1212|    <p class="post-excerpt">某银行到访该公司，一场半导体/AI产业链商务会谈释放了三个信号：(1) 跨境业务模式尚未定型——数百万美元级订单的汇率锁定是真实决策压力，跨境结算模式仍有汇差敞口；(2) 核心业务峰值数千万级且仍在增长，但3-4个月库存周期的刻意控制说明对市场波动的深层警惕；(3) 芯片渠道商正集体经历"从贸...</p>
+  1213|  </article>
+  1214|
+  1215|  <article class="post-entry" data-tag="brief" style="display:">
+  1216|    <h2 class="post-title">
+  1217|      <a href="posts/2026-05-22-简报.html">知识活用简报 · 2026年5月22日</a>
+  1218|    </h2>
+  1219|    <div class="post-meta">
+  1220|      <span class="post-date">2026年5月22日 · 星期五</span>
+  1221|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1222|    </div>
+  1223|    <p class="post-excerpt">AI正在从"聊天窗口"走向"直接操作你电脑"。2026年一季度，阿里QoderWork、Claude Cowork、MiniMax、阶跃星辰集中推出桌面Agent类产品——AI不再是你问它答的助手，而是直接操作本地文件、跑数据分析、出报告的工作者。这不是工具升级，是AI交互范式的代际切换。趁手工具推荐榜已将Qod...</p>
+  1224|  </article>
+  1225|
+  1226|  <article class="post-entry" data-tag="brief" style="display:">
+  1227|    <h2 class="post-title">
+  1228|      <a href="posts/2026-05-21-简报.html">知识活用简报 · 2026年5月21日</a>
+  1229|    </h2>
+  1230|    <div class="post-meta">
+  1231|      <span class="post-date">2026年5月21日 · 星期四</span>
+  1232|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1233|    </div>
+  1234|    <p class="post-excerpt">视觉IoT消费市场正在经历AI驱动的品类跃迁。2024年行业增速放缓、毛利与单价双降——传统"卖更多摄像头更便宜"的路径已触天花板。但AI大模型与视觉的融合正在创造新物种：摄像头不再是录像设备，而是具备类人分析能力的智能体。行业领袖的共识信号强烈——"抓住AI落地机遇有望实现跨越式增长"，但这也意味着"对深耕行业...</p>
+  1235|  </article>
+  1236|
+  1237|  <article class="post-entry" data-tag="brief" style="display:">
+  1238|    <h2 class="post-title">
+  1239|      <a href="posts/2026-05-20-简报.html">知识活用简报 · 2026年5月20日</a>
+  1240|    </h2>
+  1241|    <div class="post-meta">
+  1242|      <span class="post-date">2026年5月20日 · 星期三</span>
+  1243|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1244|    </div>
+  1245|    <p class="post-excerpt">该公司正站在贸易商→技术型公司的转型岔路口。 5月19日某银行到访的半导体商务会议纪要显示：核心业务去年峰值数千万级且仍在增长，但整体市场萎缩、单价提升成为新变量。公司刻意控制库存3-4个月（防御性信号），同时布局本地、投入研发，野心是从芯片渠道商跃迁为技术型公司。创始人"放羊论"（担心技术方向失控）暴...</p>
+  1246|  </article>
+  1247|
+  1248|  <article class="post-entry" data-tag="brief" style="display:">
+  1249|    <h2 class="post-title">
+  1250|      <a href="posts/2026-05-19-简报.html">知识活用简报 · 2026年5月19日</a>
+  1251|    </h2>
+  1252|    <div class="post-meta">
+  1253|      <span class="post-date">2026年5月19日 · 星期二</span>
+  1254|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1255|    </div>
+  1256|    <p class="post-excerpt">AI融资进入产业化验证期。深势科技C轮数亿元（AI+分子模拟）、Claude for Small Business（Anthropic首推SMB订阅）、灵雀智能A+轮（Agent平台商业化）——三件事指向同一信号：2024-2025年疯狂融资的AI公司，2026年集体进入"交付或死亡"窗口。投资者不再为"好技术"...</p>
+  1257|  </article>
+  1258|
+  1259|  <article class="post-entry" data-tag="brief" style="display:">
+  1260|    <h2 class="post-title">
+  1261|      <a href="posts/2026-05-18-简报.html">知识活用简报 · 2026年5月18日</a>
+  1262|    </h2>
+  1263|    <div class="post-meta">
+  1264|      <span class="post-date">2026年5月18日 · 星期一</span>
+  1265|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1266|    </div>
+  1267|    <p class="post-excerpt">日本三井财团凭借 宗竺遗书 （财产不分割原则）和 大元方机制 （统筹协调+激励分配），实现400年组织传承，至今仍是巴菲特重仓标的。核心信号： 组织长寿不是靠天才CEO，而是靠制度设计把"不分割"写进基因 。来源：Get笔记「内部知识库」，2025-05-09归档的源啟惠商业分析。 🧠</p>
+  1268|  </article>
+  1269|
+  1270|  <article class="post-entry" data-tag="brief" style="display:">
+  1271|    <h2 class="post-title">
+  1272|      <a href="posts/2026-05-17-简报.html">知识活用简报 · 2026年5月17日</a>
+  1273|    </h2>
+  1274|    <div class="post-meta">
+  1275|      <span class="post-date">2026年5月17日 · 星期日</span>
+  1276|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1277|    </div>
+  1278|    <p class="post-excerpt">半导体行业进入AI超级周期，需求从概念转为真实生产力。行业赚的是资源溢价——上行周期"一年顶三年"，但超级周期的加速也在缩短自身的窗口期。 来源：内部知识库 · 行业会谈纪要 🧠</p>
+  1279|  </article>
+  1280|
+  1281|  <article class="post-entry" data-tag="brief" style="display:">
+  1282|    <h2 class="post-title">
+  1283|      <a href="posts/2026-05-16-简报.html">知识活用简报 · 2026年5月16日</a>
+  1284|    </h2>
+  1285|    <div class="post-meta">
+  1286|      <span class="post-date">2026年5月16日 · 星期六</span>
+  1287|      <span class="post-tag"><span class="tag-dot dot-brief"></span>知识简报</span>
+  1288|    </div>
+  1289|    <p class="post-excerpt">半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。行业盈利本质是「赚资源的钱」，上行周期一年顶三年，下行周期三年不赚钱。 来源：内部知识库 · 行业会谈纪要 🧠</p>
+  1290|  </article>
+  1291|
+  1292|</div><!-- /#posts -->
+  1293|</main>
+  1294|
+  1295|<!-- ================================================================
+  1296|     Footer
+  1297|     ================================================================ -->
+  1298|<div class="footer">
+  1299|  <a href="../index.html">← 返回知识主板</a>
+  1300|</div>
+  1301|
+  1302|<!-- ================================================================
+  1303|     AI Chat Widget — DeepSeek
+  1304|     ================================================================ -->
+  1305|<div class="ai-chat-widget" id="aiChatWidget">
+  1306|  <button class="ai-chat-toggle" id="aiChatToggle" aria-label="AI 助手" title="阿森智库 · AI 助手">
+  1307|    <span style="line-height:1;">💬</span>
+  1308|    <span class="ai-chat-indicator" id="aiChatIndicator"></span>
+  1309|  </button>
+  1310|  <div class="ai-chat-panel" id="aiChatPanel">
+  1311|    <div class="ai-chat-header">
+  1312|      <span class="ai-chat-header-title">
+  1313|        <span class="ai-chat-dot" id="aiChatDot"></span>
+  1314|        阿森智库 · AI 助手
+  1315|      </span>
+  1316|      <button class="ai-chat-close-btn" id="aiChatClose">✕</button>
+  1317|    </div>
+  1318|    <div class="ai-chat-messages" id="aiChatMessages"></div>
+  1319|    <div class="ai-chat-input-area">
+  1320|      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="问一个关于简报的问题…" autocomplete="off">
+  1321|      <button class="ai-chat-send" id="aiChatSend">发送</button>
+  1322|    </div>
+  1323|  </div>
+  1324|</div>
+  1325|
+  1326|<!-- ================================================================
+  1327|     Scripts
+  1328|     ================================================================ -->
+  1329|<script>
+  1330|/* =============================================================
+  1331|   Init — inject hero insights, secondary tags, archive section header
+  1332|   ============================================================= */
+  1333|(function initLayout() {
+  1334|  var posts = document.querySelectorAll('#posts .post-entry');
+  1335|
+  1336|  if (posts.length === 0) return;
+  1337|
+  1338|  // --- Hero card (first article): inject sub-points + tags ---
+  1339|  var hero = posts[0];
+  1340|  var heroInsights = document.createElement('div');
+  1341|  heroInsights.className = 'hero-insights';
+  1342|  heroInsights.innerHTML =
+  1343|    '<div class="hero-sub-point"><span class="sub-icon">❶</span><span>Pareto法则从80/20滑向95/5 — 某机器人客户+某消费电子客户两家客户在22家核心客户中进一步抽走增量，形成\"集中度之上的再集中\"</span></div>' +
+  1344|    '<div class="hero-sub-point"><span class="sub-icon">❷</span><span>代理商某存储原厂的双重面孔 — 从\"降低交易费用的工具\"变为\"新的交易费用来源\"，终端信号被中间层过滤，合作关系发生事实漂移</span></div>';
+  1345|
+  1346|  var heroTags = document.createElement('div');
+  1347|  heroTags.className = 'hero-tags';
+  1348|  heroTags.innerHTML =
+  1349|    '<span class="hero-tag">Pareto法则</span>' +
+  1350|    '<span class="hero-tag">交易费用</span>' +
+  1351|    '<span class="hero-tag">集中度风险</span>' +
+  1352|    '<span class="hero-tag">终端直达</span>';
+  1353|
+  1354|  hero.appendChild(heroInsights);
+  1355|  hero.appendChild(heroTags);
+  1356|
+  1357|  // --- Secondary row: wrap 2nd & 3rd posts in flex container ---
+  1358|  var secData = [
+  1359|    { tags: ['组织规模化', '过程债务', '制度设计'] },
+  1360|    { tags: ['存算一体', '储能技术', 'AI压缩'] }
+  1361|  ];
+  1362|
+  1363|  if (posts.length >= 2) {
+  1364|    var secRow = document.createElement('div');
+  1365|    secRow.className = 'secondary-row';
+  1366|
+  1367|    var parentEl = posts[1].parentNode;
+  1368|    parentEl.insertBefore(secRow, posts[1]);
+  1369|
+  1370|    for (var i = 1; i <= 2 && i < posts.length; i++) {
+  1371|      var sec = posts[i];
+  1372|      secRow.appendChild(sec);
+  1373|
+  1374|      // Inject secondary tags
+  1375|      var secTagDiv = document.createElement('div');
+  1376|      secTagDiv.className = 'secondary-tags';
+  1377|      var tagsHtml = '';
+  1378|      secData[i-1].tags.forEach(function(t) {
+  1379|        tagsHtml += '<span class="secondary-tag">' + t + '</span>';
+  1380|      });
+  1381|      secTagDiv.innerHTML = tagsHtml;
+  1382|      sec.appendChild(secTagDiv);
+  1383|    }
+  1384|  }
+  1385|
+  1386|  // --- Archive section header + month headers (before 4th article) ---
+  1387|  if (posts.length > 3) {
+  1388|    var header = document.createElement('div');
+  1389|    header.className = 'section-header';
+  1390|    header.innerHTML = '往期简报';
+  1391|    header.id = 'archiveSectionHeader';
+  1392|
+  1393|    // Wrap remaining posts in archive container
+  1394|    var archiveWrap = document.createElement('div');
+  1395|    archiveWrap.className = 'archive-cards';
+  1396|    archiveWrap.id = 'archiveCardsWrap';
+  1397|
+  1398|    var parentEl = posts[3].parentNode;
+  1399|    parentEl.insertBefore(header, posts[3]);
+  1400|
+  1401|    // Move posts 4+ into archive wrapper
+  1402|    for (var j = 3; j < posts.length; j++) {
+  1403|      archiveWrap.appendChild(posts[j]);
+  1404|    }
+  1405|    // Insert wrapper after header
+  1406|    header.insertAdjacentElement('afterend', archiveWrap);
+  1407|
+  1408|    // For each archive post, wrap the title+excerpt in a div
+  1409|    var archivePosts = archiveWrap.querySelectorAll('.post-entry');
+  1410|    archivePosts.forEach(function(ap) {
+  1411|      var title = ap.querySelector('.post-title');
+  1412|      var excerpt = ap.querySelector('.post-excerpt');
+  1413|      if (title && excerpt) {
+  1414|        var wrap = document.createElement('div');
+  1415|        wrap.className = 'archive-content-wrap';
+  1416|        // Insert wrapper before title
+  1417|        title.parentNode.insertBefore(wrap, title);
+  1418|        wrap.appendChild(title);
+  1419|        wrap.appendChild(excerpt);
+  1420|      }
+  1421|    });
+  1422|
+  1423|    // Inject month headers into archive
+  1424|    injectMonthHeaders(archiveWrap);
+  1425|  }
+  1426|})();
+  1427|
+  1428|/* =============================================================
+  1429|   Inject Month Headers into Archive
+  1430|   ============================================================= */
+  1431|function injectMonthHeaders(archiveWrap) {
+  1432|  var archivePosts = archiveWrap.querySelectorAll('.post-entry');
+  1433|  if (archivePosts.length === 0) return;
+  1434|
+  1435|  // Remove existing month headers before re-injecting
+  1436|  archiveWrap.querySelectorAll('.month-header').forEach(function(h) { h.remove(); });
+  1437|
+  1438|  var lastMonth = null;
+  1439|  archivePosts.forEach(function(ap) {
+  1440|    var dateSpan = ap.querySelector('.post-date');
+  1441|    if (!dateSpan) return;
+  1442|    var dateText = dateSpan.textContent.trim();
+  1443|    // Extract month from format like "2026年6月9日 · 星期二"
+  1444|    var monthMatch = dateText.match(/(\d+)月/);
+  1445|    if (!monthMatch) return;
+  1446|    var month = parseInt(monthMatch[1], 10);
+  1447|
+  1448|    if (lastMonth === null || month !== lastMonth) {
+  1449|      var monthHeader = document.createElement('div');
+  1450|      monthHeader.className = 'month-header';
+  1451|      monthHeader.textContent = month + '月';
+  1452|      ap.parentNode.insertBefore(monthHeader, ap);
+  1453|      lastMonth = month;
+  1454|    }
+  1455|  });
+  1456|}
+  1457|
+  1458|/* =============================================================
+  1459|   Filter Posts — enhanced to handle hero/secondary/archive
+  1460|   ============================================================= */
+  1461|function filterPosts(tag, btn) {
+  1462|  document.querySelectorAll('.nav-filter').forEach(function(b) {
+  1463|    b.classList.remove('active');
+  1464|  });
+  1465|  btn.classList.add('active');
+  1466|
+  1467|  var count = 0;
+  1468|  var allPosts = document.querySelectorAll('#posts .post-entry');
+  1469|  var archiveHeader = document.getElementById('archiveSectionHeader');
+  1470|  var archiveWrap = document.getElementById('archiveCardsWrap');
+  1471|
+  1472|  // Move all posts back to #posts flat for clean re-filtering
+  1473|  // Unwrap secondary-row
+  1474|  var secRow = document.querySelector('.secondary-row');
+  1475|  if (secRow) {
+  1476|    while (secRow.firstChild) {
+  1477|      secRow.parentNode.insertBefore(secRow.firstChild, secRow);
+  1478|    }
+  1479|    secRow.remove();
+  1480|  }
+  1481|  if (archiveWrap) {
+  1482|    while (archiveWrap.firstChild) {
+  1483|      archiveWrap.parentNode.insertBefore(archiveWrap.firstChild, archiveWrap);
+  1484|    }
+  1485|    if (archiveWrap.parentNode) archiveWrap.remove();
+  1486|  }
+  1487|  if (archiveHeader && archiveHeader.parentNode) {
+  1488|    archiveHeader.remove();
+  1489|  }
+  1490|
+  1491|  // Show/hide based on tag
+  1492|  allPosts.forEach(function(p) {
+  1493|    if (tag === 'all' || p.dataset.tag === tag) {
+  1494|      p.style.display = '';
+  1495|      count++;
+  1496|    } else {
+  1497|      p.style.display = 'none';
+  1498|    }
+  1499|  });
+  1500|
+  1501|  document.getElementById('navCount').textContent = '共 ' + count + ' 篇';
+  1502|
+  1503|  // Re-run layout init to rebuild hero/secondary/archive for visible posts
+  1504|  // First, clean up injected elements from previous init
+  1505|  document.querySelectorAll('.hero-insights, .hero-tags, .secondary-tags').forEach(function(el) {
+  1506|    el.remove();
+  1507|  });
+  1508|  document.querySelectorAll('.month-header').forEach(function(el) {
+  1509|    el.remove();
+  1510|  });
+  1511|  document.querySelectorAll('.archive-content-wrap').forEach(function(el) {
+  1512|    var parent = el.parentNode;
+  1513|    while (el.firstChild) {
+  1514|      parent.insertBefore(el.firstChild, el);
+  1515|    }
+  1516|    el.remove();
+  1517|  });
+  1518|
+  1519|  // Re-init layout
+  1520|  (function reInitLayout() {
+  1521|    var visiblePosts = document.querySelectorAll('#posts .post-entry[style*="display:"], #posts .post-entry:not([style*="display: none"])');
+  1522|    // Filter to actually visible ones
+  1523|    var posts = [];
+  1524|    visiblePosts.forEach(function(p) {
+  1525|      if (p.style.display !== 'none') posts.push(p);
+  1526|    });
+  1527|    if (posts.length === 0) return;
+  1528|
+  1529|    // --- Hero ---
+  1530|    var hero = posts[0];
+  1531|
+  1532|    // Check if hero already has injected content
+  1533|    if (!hero.querySelector('.hero-insights')) {
+  1534|      var heroInsights = document.createElement('div');
+  1535|      heroInsights.className = 'hero-insights';
+  1536|      heroInsights.innerHTML =
+  1537|        '<div class="hero-sub-point"><span class="sub-icon">❶</span><span>Pareto法则从80/20滑向95/5 — 某机器人客户+某消费电子客户两家客户在22家核心客户中进一步抽走增量，形成\"集中度之上的再集中\"</span></div>' +
+  1538|        '<div class="hero-sub-point"><span class="sub-icon">❷</span><span>代理商某存储原厂的双重面孔 — 从\"降低交易费用的工具\"变为\"新的交易费用来源\"，终端信号被中间层过滤，合作关系发生事实漂移</span></div>';
+  1539|
+  1540|      var heroTags = document.createElement('div');
+  1541|      heroTags.className = 'hero-tags';
+  1542|      heroTags.innerHTML =
+  1543|        '<span class="hero-tag">Pareto法则</span>' +
+  1544|        '<span class="hero-tag">交易费用</span>' +
+  1545|        '<span class="hero-tag">集中度风险</span>' +
+  1546|        '<span class="hero-tag">终端直达</span>';
+  1547|
+  1548|      hero.appendChild(heroInsights);
+  1549|      hero.appendChild(heroTags);
+  1550|    }
+  1551|
+  1552|    // --- Secondary ---
+  1553|    var secData = [
+  1554|      { tags: ['组织规模化', '过程债务', '制度设计'] },
+  1555|      { tags: ['存算一体', '储能技术', 'AI压缩'] }
+  1556|    ];
+  1557|
+  1558|    // Wrap secondary posts in flex row
+  1559|    var existingSecRow = document.querySelector('.secondary-row');
+  1560|    if (existingSecRow) {
+  1561|      // Unwrap: move children back
+  1562|      while (existingSecRow.firstChild) {
+  1563|        existingSecRow.parentNode.insertBefore(existingSecRow.firstChild, existingSecRow);
+  1564|      }
+  1565|      existingSecRow.remove();
+  1566|    }
+  1567|
+  1568|    if (posts.length >= 2) {
+  1569|      var secRow = document.createElement('div');
+  1570|      secRow.className = 'secondary-row';
+  1571|
+  1572|      posts[1].parentNode.insertBefore(secRow, posts[1]);
+  1573|
+  1574|      for (var i = 1; i <= 2 && i < posts.length; i++) {
+  1575|        secRow.appendChild(posts[i]);
+  1576|      }
+  1577|    }
+  1578|
+  1579|    for (var i = 1; i <= 2 && i < posts.length; i++) {
+  1580|      var sec = posts[i];
+  1581|      if (!sec.querySelector('.secondary-tags')) {
+  1582|        var secTagDiv = document.createElement('div');
+  1583|        secTagDiv.className = 'secondary-tags';
+  1584|        var tagsHtml = '';
+  1585|        secData[i-1].tags.forEach(function(t) {
+  1586|          tagsHtml += '<span class="secondary-tag">' + t + '</span>';
+  1587|        });
+  1588|        secTagDiv.innerHTML = tagsHtml;
+  1589|        sec.appendChild(secTagDiv);
+  1590|      }
+  1591|    }
+  1592|
+  1593|    // --- Archive ---
+  1594|    if (posts.length > 3) {
+  1595|      var header = document.createElement('div');
+  1596|      header.className = 'section-header';
+  1597|      header.innerHTML = '往期简报';
+  1598|      header.id = 'archiveSectionHeader';
+  1599|
+  1600|      var archiveWrap = document.createElement('div');
+  1601|      archiveWrap.className = 'archive-cards';
+  1602|      archiveWrap.id = 'archiveCardsWrap';
+  1603|
+  1604|      var parentEl = posts[3].parentNode;
+  1605|      parentEl.insertBefore(header, posts[3]);
+  1606|
+  1607|      for (var j = 3; j < posts.length; j++) {
+  1608|        archiveWrap.appendChild(posts[j]);
+  1609|      }
+  1610|      header.insertAdjacentElement('afterend', archiveWrap);
+  1611|
+  1612|      var archivePosts = archiveWrap.querySelectorAll('.post-entry');
+  1613|      archivePosts.forEach(function(ap) {
+  1614|        if (!ap.querySelector('.archive-content-wrap')) {
+  1615|          var title = ap.querySelector('.post-title');
+  1616|          var excerpt = ap.querySelector('.post-excerpt');
+  1617|          if (title && excerpt) {
+  1618|            var wrap = document.createElement('div');
+  1619|            wrap.className = 'archive-content-wrap';
+  1620|            title.parentNode.insertBefore(wrap, title);
+  1621|            wrap.appendChild(title);
+  1622|            wrap.appendChild(excerpt);
+  1623|          }
+  1624|        }
+  1625|      });
+  1626|
+  1627|      // Inject month headers
+  1628|      injectMonthHeaders(archiveWrap);
+  1629|    }
+  1630|
+  1631|    // Reset nth-child CSS context by moving: if hero not first child, reorder
+  1632|    var postsContainer = document.getElementById('posts');
+  1633|    if (postsContainer && posts[0] !== postsContainer.querySelector('.post-entry[style]')) {
+  1634|      // Ensure hero is first visible child in DOM order for CSS nth-child to work
+  1635|      var firstVisible = null;
+  1636|      var allEntries = postsContainer.querySelectorAll('.post-entry');
+  1637|      allEntries.forEach(function(entry) {
+  1638|        if (entry.style.display !== 'none' && !firstVisible) {
+  1639|          firstVisible = entry;
+  1640|          postsContainer.insertBefore(entry, postsContainer.firstChild);
+  1641|        }
+  1642|      });
+  1643|    }
+  1644|  })();
+  1645|}
+  1646|
+  1647|/* =============================================================
+  1648|   AI Chat Assistant (DeepSeek)
+  1649|   ============================================================= */
+  1650|(function() {
+  1651|  var API_URL = 'https://api.deepseek.com/v1/chat/completions';
+  1652|  var API_KEY = 'REDACTED';
+  1653|  var MODEL = 'deepseek-chat';
+  1654|  var REQUEST_TIMEOUT = 30000;
+  1655|
+  1656|  var SYSTEM_PROMPT = '你是阿森智库的AI助手，专注于帮助用户理解知识活用简报和学术前沿周报的内容。' +
+  1657|    '你了解半导体行业、AI产业趋势、商业策略和科技前沿。用简洁专业的中文回答。';
+  1658|
+  1659|  var chatPanel   = document.getElementById('aiChatPanel');
+  1660|  var chatMsgs    = document.getElementById('aiChatMessages');
+  1661|  var chatInput   = document.getElementById('aiChatInput');
+  1662|  var chatSend    = document.getElementById('aiChatSend');
+  1663|  var chatClose   = document.getElementById('aiChatClose');
+  1664|  var chatToggle  = document.getElementById('aiChatToggle');
+  1665|  var chatDot     = document.getElementById('aiChatDot');
+  1666|  var chatInd     = document.getElementById('aiChatIndicator');
+  1667|  var isOnline    = true;
+  1668|
+  1669|  /* ── Toggle panel ─────────────────────────────────── */
+  1670|  chatToggle.addEventListener('click', function() {
+  1671|    if (chatPanel.classList.contains('open')) {
+  1672|      chatPanel.classList.remove('open');
+  1673|    } else {
+  1674|      chatPanel.classList.add('open');
+  1675|      setTimeout(function() { chatInput.focus(); }, 150);
+  1676|    }
+  1677|  });
+  1678|
+  1679|  chatClose.addEventListener('click', function() {
+  1680|    chatPanel.classList.remove('open');
+  1681|  });
+  1682|
+  1683|  document.addEventListener('keydown', function(e) {
+  1684|    if (e.key === 'Escape' && chatPanel.classList.contains('open') && document.activeElement !== chatInput) {
+  1685|      chatPanel.classList.remove('open');
+  1686|    }
+  1687|  });
+  1688|
+  1689|  /* ── Send on Enter ────────────────────────────────── */
+  1690|  chatInput.addEventListener('keydown', function(e) {
+  1691|    if (e.key === 'Enter' && !e.shiftKey) {
+  1692|      e.preventDefault();
+  1693|      sendMessage();
+  1694|    }
+  1695|  });
+  1696|
+  1697|  chatSend.addEventListener('click', sendMessage);
+  1698|
+  1699|  /* ── Markdown → HTML ──────────────────────────────── */
+  1700|  function renderMD(text) {
+  1701|    if (!text) return '';
+  1702|    var html = text
+  1703|      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  1704|      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+  1705|      .replace(/`([^`]+)`/g, '<code>$1</code>')
+  1706|      .replace(/\n\s*[-•]\s+(.+)/g, '\n<li>$1</li>')
+  1707|      .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+  1708|      .replace(/\n/g, '<br>');
+  1709|    return html;
+  1710|  }
+  1711|
+  1712|  /* ── Add message ──────────────────────────────────── */
+  1713|  function addMsg(role, content) {
+  1714|    var div = document.createElement('div');
+  1715|    div.className = 'ai-chat-msg ' + role;
+  1716|    if (role === 'assistant') {
+  1717|      div.innerHTML = renderMD(content);
+  1718|    } else {
+  1719|      div.textContent = content;
+  1720|    }
+  1721|    chatMsgs.appendChild(div);
+  1722|    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  1723|    return div;
+  1724|  }
+  1725|
+  1726|  /* ── Typing indicator ─────────────────────────────── */
+  1727|  function showTyping() {
+  1728|    var el = document.createElement('div');
+  1729|    el.className = 'ai-chat-typing';
+  1730|    el.id = 'aiTyping';
+  1731|    el.innerHTML = '<span></span><span></span><span></span>';
+  1732|    chatMsgs.appendChild(el);
+  1733|    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  1734|  }
+  1735|
+  1736|  function hideTyping() {
+  1737|    var el = document.getElementById('aiTyping');
+  1738|    if (el) el.remove();
+  1739|  }
+  1740|
+  1741|  /* ── Online/Offline ───────────────────────────────── */
+  1742|  function setOnline(online) {
+  1743|    isOnline = online;
+  1744|    var method = online ? 'remove' : 'add';
+  1745|    chatDot.classList[method]('offline');
+  1746|    chatInd.classList[method]('offline');
+  1747|  }
+  1748|
+  1749|  /* ── Fallback reply ───────────────────────────────── */
+  1750|  function fallbackReply(msg) {
+  1751|    if (msg.indexOf('简报') !== -1 || msg.indexOf('周报') !== -1) {
+  1752|      return '当前知识库共有 **20** 篇知识活用简报和 **2** 篇学术前沿周报。\n\n知识简报聚焦半导体行业、AI产业趋势、商业策略和科技前沿的每日洞察；学术周报则汇总近期学术前沿动态。\n\n您可以通过顶部的标签筛选浏览感兴趣的内容。';
+  1753|    }
+  1754|    if (msg.indexOf('半导体') !== -1) {
+  1755|      return '半导体行业正处于AI驱动的「超级周期」——不同于传统3-4年周期，本轮由AI真实需求驱动。相关简报涵盖了存算一体、存储芯片市场、供应链变化等话题。建议筛选"简报"标签查看相关文章。';
+  1756|    }
+  1757|    if (msg.indexOf('AI') !== -1 || msg.indexOf('人工智能') !== -1) {
+  1758|      return '多篇简报讨论了AI行业的成本悖论：token单价持续走低，但企业AI总支出失控飙升。这是一个典型的杰文斯悖论。建议浏览近期简报获取详细分析。';
+  1759|    }
+  1760|    return '抱歉，我暂时无法连接到AI服务。请稍后重试，或浏览页面上的简报内容。\n\n知识简报涵盖：半导体行业、AI产业趋势、商业策略、科技前沿等话题。';
+  1761|  }
+  1762|
+  1763|  /* ── Send message ─────────────────────────────────── */
+  1764|  function sendMessage() {
+  1765|    var text = chatInput.value.trim();
+  1766|    if (!text) return;
+  1767|
+  1768|    chatInput.value = '';
+  1769|    chatSend.disabled = true;
+  1770|    addMsg('user', text);
+  1771|    showTyping();
+  1772|
+  1773|    if (!isOnline) {
+  1774|      setTimeout(function() {
+  1775|        hideTyping();
+  1776|        addMsg('assistant', fallbackReply(text));
+  1777|        chatSend.disabled = false;
+  1778|        chatInput.focus();
+  1779|      }, 600 + Math.random() * 400);
+  1780|      return;
+  1781|    }
+  1782|
+  1783|    var ctrl = new AbortController();
+  1784|    var tid = setTimeout(function() { ctrl.abort(); }, REQUEST_TIMEOUT);
+  1785|
+  1786|    fetch(API_URL, {
+  1787|      method: 'POST',
+  1788|      headers: {
+  1789|        'Content-Type': 'application/json',
+  1790|        'Authorization': 'Bearer ' + API_KEY
+  1791|      },
+  1792|      body: JSON.stringify({
+  1793|        model: MODEL,
+  1794|        messages: [
+  1795|          { role: 'system', content: SYSTEM_PROMPT },
+  1796|          { role: 'user', content: text }
+  1797|        ],
+  1798|        max_tokens: 800,
+  1799|        temperature: 0.6
+  1800|      }),
+  1801|      signal: ctrl.signal
+  1802|    })
+  1803|    .then(function(res) {
+  1804|      clearTimeout(tid);
+  1805|      if (!res.ok) throw new Error('HTTP ' + res.status);
+  1806|      return res.json();
+  1807|    })
+  1808|    .then(function(data) {
+  1809|      hideTyping();
+  1810|      var reply = '';
+  1811|      if (data.choices && data.choices[0] && data.choices[0].message) {
+  1812|        reply = data.choices[0].message.content || '';
+  1813|      }
+  1814|      if (!reply) reply = '（AI 未返回内容，请重试）';
+  1815|      addMsg('assistant', reply);
+  1816|      chatSend.disabled = false;
+  1817|      chatInput.focus();
+  1818|    })
+  1819|    .catch(function(err) {
+  1820|      clearTimeout(tid);
+  1821|      hideTyping();
+  1822|      console.warn('DeepSeek API error:', err.message);
+  1823|      setOnline(false);
+  1824|      addMsg('assistant', fallbackReply(text));
+  1825|      chatSend.disabled = false;
+  1826|      chatInput.focus();
+  1827|    });
+  1828|  }
+  1829|
+  1830|  /* ── Welcome message ──────────────────────────────── */
+  1831|  function showWelcome() {
+  1832|    addMsg('assistant',
+  1833|      '你好！我是阿森智库的 AI 助手。\n\n' +
+  1834|      '我可以帮你：\n' +
+  1835|      '• 理解知识活用简报的核心观点\n' +
+  1836|      '• 回答半导体、AI产业趋势相关问题\n' +
+  1837|      '• 解释商业策略和科技前沿概念\n\n' +
+  1838|      '请随时提问！'
+  1839|    );
+  1840|  }
+  1841|
+  1842|  setTimeout(function() {
+  1843|    if (chatMsgs.children.length === 0) showWelcome();
+  1844|  }, 400);
+  1845|
+  1846|})();
+  1847|</script>
+  1848|
+  1849|</body>
+  1850|</html>
+  1851|
