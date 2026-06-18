@@ -896,10 +896,11 @@ main {
 </div>
 
 <!-- ================================================================
-     Data Layer — All 32 articles' metadata
+     Data Layer — All 33 articles' metadata
      ================================================================ -->
 <script>
 const ARTICLES = [
+  {date:'2026-06-18',tag:'brief',title:'单点脆弱的增长：客户增速800%依赖同一原厂',excerpt:'5家高增长客户全部绑定单一供应线。吴军产业公式的盲区：帮客户完成进化，自己停在搬运工层面。',theme:'semicon',frameworks:['吴军·产业公式','供应链集中度风险','合作模式升级'],slug:'2026-06-18-简报'},
   {date:'2026-06-17',tag:'brief',title:'AI基础设施：从「买GPU」到「改电网」',excerpt:'AI算力瓶颈从芯片转移到供电基础设施。投资加速器效应第二阶段启动：电源管理芯片和高速信号链从「配套」升级为「主战场」。',theme:'ai-infra',frameworks:['投资加速器效应','AI基础设施','供需时序错配'],slug:'2026-06-17-简报'},
   {date:'2026-06-16',tag:'brief',title:'AI成本悖论：供需剪刀差',excerpt:'token单价降但企业AI总成本飙升。基础设施端重注赌需求爆炸，需求侧却现断裂信号。杰文斯悖论的完美演绎。',theme:'ai-econ',frameworks:['杰文斯悖论','供需时序错配'],slug:'2026-06-16-简报'},
   {date:'2026-06-15',tag:'brief',title:'合规的慢性炎症：微小偏差的累积效应',excerpt:'PCN三级罚则清晰但日常合规漂移反复。制度只防大事故不防日常漂移。经济学激励错配×心理学知道≠做到。',theme:'org-mgmt',frameworks:['制度激励理论','知道→做到模型','行为经济学'],slug:'2026-06-15-简报'},
@@ -1270,7 +1271,7 @@ document.getElementById('mapLegend').addEventListener('click', function(e) {
 
   var SYSTEM_PROMPT = '你是阿森智库的AI助手，专注于帮助用户理解知识活用简报和学术前沿周报的内容。' +
     '你了解半导体行业、AI产业趋势、商业策略和科技前沿。用简洁专业的中文回答。' +
-    '当前知识库有32篇文章，覆盖AI经济学、半导体供应链、组织管理、销售心理学、供应链金融、消费经济学、学术前沿等主题。';
+    '当前知识库有33篇文章，覆盖AI经济学、半导体供应链、组织管理、销售心理学、供应链金融、消费经济学、学术前沿等主题。';
 
   // Get API key from localStorage
   var API_KEY = localStorage.getItem('arsenal-deepseek-key') || '';
@@ -1405,7 +1406,7 @@ document.getElementById('mapLegend').addEventListener('click', function(e) {
 
   function fallbackReply(msg) {
     if (msg.indexOf('简报') !== -1 || msg.indexOf('文章') !== -1 || msg.indexOf('几篇') !== -1) {
-      return '当前知识库共有 **32** 篇知识活用简报和学术前沿周报。\n\n覆盖主题：AI经济学、AI基础设施、半导体供应链、组织管理、销售心理学、供应链金融、消费经济学、学术前沿。\n\n您可以通过顶部的标签筛选或主题聚类卡片浏览感兴趣的内容。';
+      return '当前知识库共有 **33** 篇知识活用简报和学术前沿周报。\n\n覆盖主题：AI经济学、AI基础设施、半导体供应链、组织管理、销售心理学、供应链金融、消费经济学、学术前沿。\n\n您可以通过顶部的标签筛选或主题聚类卡片浏览感兴趣的内容。';
     }
     if (msg.indexOf('半导体') !== -1) {
       return '半导体行业相关文章涵盖：AI超级周期、存储芯片拐点预警、渠道战略（张忠谋窄瓶颈模型）、电源管理芯片机会、信号链芯片布局。建议浏览「半导体供应链」主题聚类。';
@@ -1514,7 +1515,7 @@ document.getElementById('mapLegend').addEventListener('click', function(e) {
   setTimeout(function() {
     if (chatMsgs.children.length === 0) {
       if (API_KEY) {
-        addMsg('assistant', '你好！我是阿森智库的 AI 助手。\n\n我可以帮你：\n• 理解32篇思想实验的核心观点\n• 回答半导体、AI产业趋势相关问题\n• 解释经济学和心理学框架的应用\n• 推荐相关主题的阅读路径\n\n请随时提问！');
+        addMsg('assistant', '你好！我是阿森智库的 AI 助手。\n\n我可以帮你：\n• 理解33篇思想实验的核心观点\n• 回答半导体、AI产业趋势相关问题\n• 解释经济学和心理学框架的应用\n• 推荐相关主题的阅读路径\n\n请随时提问！');
       } else {
         addMsg('assistant', '你好！我是阿森智库 AI 助手。\n\n⚠️ 首次使用请配置 DeepSeek API Key（仅存储在浏览器本地）。\n\n输入 `/key` 配置，或点击右下角的 ⚙️ 按钮。\n\n配置后可获得完整的AI对话体验。离线模式下我也会尽力回答基础问题。');
       }
