@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="AI军团养成记 | 四个月，9个AI Agent的智囊团">
+<meta property="og:description" content="一家智能音视频解决方案商使用 Hermes AI Agent 框架，四个月搭建了9个角色的AI智囊团。这是一个真实的AI原生组织实验。">
+<meta name="description" content="四个月，9个AI Agent，4000+篇知识蒸馏，7×24自动运转。一家智能音视频解决方案商的AI原生组织实验全记录。">
+<title>AI军团养成记 — 四个月打造9人AI智囊团</title>
+<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Long+Cang&family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Ma+Shan+Zheng&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-size:16px;font-family:'Noto Sans SC','LXGW WenKai',sans-serif;background:#e8e4dc;color:#222;overflow-x:hidden}
+
+/* Progress bar */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:#c0392b;width:0%;z-index:200;transition:width .1s}
+
+/* Whiteboard texture */
+.whiteboard{background:#f5f3ee;position:relative}
+.whiteboard::before,.whiteboard::after{content:'';position:absolute;left:0;right:0;height:6px;background:linear-gradient(90deg,#b0b0b0,#ccc,#b0b0b0)}
+.whiteboard::before{top:0;border-radius:0 0 2px 2px}
+.whiteboard::after{bottom:0;border-radius:2px 2px 0 0}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:2px solid #e8e4df;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
+.nav-logo{font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-size:22px;color:#c0392b;display:flex;align-items:center;gap:6px;font-weight:700;cursor:pointer}
+.nav-links{display:flex;gap:20px}
+.nav-links a{text-decoration:none;color:#333;font-size:15px;font-weight:600;opacity:.7;transition:.2s;padding:6px 4px;cursor:pointer}
+.nav-links a:hover{opacity:1;color:#c0392b}
+.hamburger{display:none;background:none;border:none;font-size:15px;cursor:pointer;color:#333;font-weight:600;padding:6px 12px;border-radius:8px;border:1.5px solid #ddd}
+
+/* Hero V2 */
+.hero-v2{max-width:860px;margin:0 auto;padding:76px 20px 28px}
+.hero-v2-title{text-align:center;margin-bottom:20px}
+.hero-v2-title h1{font-family:'ZCOOL KuaiLe',sans-serif;font-size:clamp(20px,4vw,32px);line-height:1.45;margin-bottom:10px}
+.hero-tagline-pill{display:inline-block;font-size:14px;color:#c0392b;font-weight:700;background:rgba(192,57,43,0.08);padding:7px 18px;border-radius:20px}
+
+/* Carousel */
+.caro-root{position:relative;display:flex;align-items:center;gap:8px;margin-bottom:10px;max-width:520px;margin-left:auto;margin-right:auto}
+.caro-outer{flex:1;overflow:hidden;border-radius:14px}
+.caro-track{display:flex;gap:14px;transition:transform .44s cubic-bezier(.25,.46,.45,.94);will-change:transform}
+.c-card{flex:0 0 auto;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 6px 28px rgba(0,0,0,0.13);transition:transform .44s,opacity .44s;position:relative}
+.c-card-img{width:100%;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;font-size:clamp(40px,8vw,72px);position:relative;overflow:hidden}
+.c-card-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.75));color:#fff;padding:14px 14px 12px}
+.c-card-inner{position:relative}
+.c-day{font-size:10px;font-weight:800;opacity:.8;text-transform:uppercase;display:block;margin-bottom:2px}
+.c-title{font-size:13px;font-weight:700;line-height:1.4}
+.caro-arrow{flex-shrink:0;width:36px;height:36px;border-radius:50%;border:1.5px solid #ddd;background:#fff;font-size:22px;cursor:pointer;color:#555;box-shadow:0 2px 10px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;transition:.2s;padding:0;line-height:1}
+.caro-arrow:hover{border-color:#c0392b;color:#c0392b;transform:scale(1.08)}
+.caro-dots{display:flex;gap:6px;justify-content:center;margin-bottom:16px}
+.cdot{width:6px;height:6px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .25s;border:none;padding:0}
+.cdot.active{background:#c0392b;width:18px;border-radius:3px}
+@media(max-width:600px){.caro-root{max-width:100%}}
+
+/* Stats row */
+.hero-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.stat-panel{background:#fff;border:1.5px solid #e8e4df;border-radius:14px;padding:14px 16px}
+.stat-panel-title{font-size:11px;font-weight:800;color:#c0392b;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.stat-item{display:flex;align-items:flex-start;gap:7px;margin-bottom:8px;font-size:13px;color:#444;line-height:1.55}
+.sico{font-size:17px;flex-shrink:0}
+.stat-item strong{color:#1a1a1a}
+
+.hero-v2-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* Sections */
+.section{padding:32px 32px;max-width:1000px;margin:0 auto}
+.section-bg{background:#f5f0e8;padding:32px 0}
+.section-bg .section{padding:0 32px}
+.section-label{font-size:16px;font-weight:600;color:#c0392b;margin-bottom:2px}
+.section-title{font-family:'ZCOOL KuaiLe','LXGW WenKai',sans-serif;font-size:30px;font-weight:900;margin-bottom:4px}
+.section-desc{font-size:15px;color:#777;margin-bottom:20px}
+.sketch-underline{display:inline-block;position:relative}
+.sketch-underline::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6'%3E%3Cpath d='M0,3 Q25,0 50,3 T100,3' stroke='%23c0392b' fill='none' stroke-width='2'/%3E%3C/svg%3E") repeat-x}
+
+.red{color:#c0392b}
+.blue{color:#2874a6}
+
+/* Buttons */
+.btn-red{padding:10px 20px;border-radius:10px;border:none;background:#c0392b;color:white;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-red:hover{background:#a93226;transform:translateY(-1px)}
+.btn-outline{padding:10px 20px;border-radius:10px;border:1.5px solid #2874a6;color:#2874a6;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;background:transparent;transition:.2s}
+.btn-outline:hover{background:#2874a6;color:white}
+
+/* Character cards */
+.char-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.char-card{background:#faf8f4;border:1.5px solid #ddd;border-radius:14px;padding:20px;transition:.2s;text-align:center}
+.char-card:hover{border-color:#c0392b;transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+.char-emoji{font-size:48px;margin-bottom:10px;display:block}
+.char-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 10px;border:3px solid #e8e4df}
+.char-card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.char-card .char-role{font-size:12px;color:#c0392b;font-weight:600;margin-bottom:6px}
+.char-card .char-desc{font-size:12px;color:#666;line-height:1.6}
+.char-card .char-tech{font-size:11px;color:#999;margin-top:8px;font-style:italic}
+.char-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;margin:2px}
+.char-tag.redtag{background:#fde8e8;color:#c0392b}
+.char-tag.bluetag{background:#e8f0fd;color:#2874a6}
+
+/* Timeline */
+.timeline{position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:16px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,#c0392b,#2874a6,#c0392b,#2874a6)}
+.tl-item{position:relative;margin-bottom:32px}
+.tl-dot{position:absolute;left:-32px;top:4px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #c0392b;z-index:1}
+.tl-dot.blue{border-color:#2874a6}
+.tl-month{font-size:11px;font-weight:800;color:#c0392b;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.tl-month.blue{color:#2874a6}
+.tl-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.tl-header .tl-icon{font-size:36px}
+.tl-header h3{font-size:18px;font-weight:700;line-height:1.4}
+.tl-header h3 span{font-family:'ZCOOL KuaiLe',sans-serif}
+.tl-content{background:#faf8f4;border:1.5px solid #ddd;border-radius:14px;padding:20px;margin-top:8px}
+.tl-content p{font-size:13px;color:#555;line-height:1.8;margin-bottom:8px}
+.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tl-tag{font-size:11px;background:#fff;border:1.5px solid #e8e4df;border-radius:6px;padding:4px 10px;color:#666}
+
+/* Skill scroll */
+.skill-scroll-wrap{position:relative}
+.skill-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 0 14px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.skill-scroll::-webkit-scrollbar{height:4px}
+.skill-scroll::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.skill-card{min-width:190px;flex-shrink:0;background:#faf8f4;border:1.5px solid #ddd;border-radius:12px;padding:16px;transition:.2s;cursor:pointer}
+.skill-card:hover{border-color:#2874a6;transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,0.06)}
+.skill-tag{font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;background:#fde8e8;color:#c0392b;display:inline-block;margin-bottom:4px}
+.skill-card .emoji{font-size:28px;margin-bottom:6px;display:block}
+.skill-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.skill-card p{font-size:12px;color:#888;line-height:1.5}
+.skill-card .more{font-size:11px;color:#2874a6;margin-top:6px;display:block}
+
+/* Pitfall cards */
+.pitfall-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.pitfall-card{background:#fff;border:1.5px solid #e8e4df;border-radius:14px;overflow:hidden;transition:.2s}
+.pitfall-card:hover{border-color:#c0392b}
+.pitfall-header{padding:18px 20px;background:#faf8f4;cursor:pointer;display:flex;align-items:center;gap:12px;user-select:none}
+.pitfall-header .pf-emoji{font-size:36px;flex-shrink:0}
+.pitfall-header h4{font-size:15px;font-weight:700;line-height:1.4;flex:1}
+.pitfall-header .pf-arrow{font-size:18px;color:#999;transition:transform .3s}
+.pitfall-card.open .pf-arrow{transform:rotate(180deg)}
+.pitfall-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease}
+.pitfall-card.open .pitfall-body{max-height:500px;padding:0 20px 20px}
+.pitfall-body p{font-size:13px;color:#555;line-height:1.8;margin-bottom:8px}
+.pitfall-body .lesson{background:rgba(192,57,43,0.05);border-left:3px solid #c0392b;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:8px;font-size:13px;color:#333;font-weight:600}
+
+/* Works grid */
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.work-card{background:#faf8f4;border:1.5px solid #ddd;border-radius:14px;padding:20px;transition:.2s}
+.work-card:hover{border-color:#c0392b;transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,0.06)}
+.work-icon{font-size:40px;margin-bottom:10px}
+.work-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.work-card p{font-size:12px;color:#666;line-height:1.6}
+
+/* Agency showcase */
+.agency-card{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border-radius:16px;padding:28px;color:#e0d8c8;text-align:center;position:relative;overflow:hidden}
+.agency-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(192,57,43,0.12),transparent 50%),radial-gradient(ellipse at 70% 50%,rgba(40,116,166,0.12),transparent 50%);pointer-events:none}
+.agency-card h3{font-size:20px;font-weight:800;margin-bottom:8px;position:relative}
+.agency-card .agency-sub{font-size:14px;color:#888;margin-bottom:18px;position:relative}
+.agency-stack{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;position:relative}
+.agency-stack span{font-size:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:6px 14px;color:#ccc;transition:.2s}
+.agency-stack span:hover{background:rgba(192,57,43,0.15);border-color:rgba(192,57,43,0.3);color:#fff}
+
+/* Marquee */
+.data-marquee{overflow:hidden;white-space:nowrap;padding:8px 0;background:rgba(192,57,43,0.05);border-top:1.5px solid rgba(192,57,43,0.15);border-bottom:1.5px solid rgba(192,57,43,0.15);margin-bottom:0}
+.data-marquee-inner{display:inline-block;animation:marquee 30s linear infinite}
+.data-marquee-inner span{font-size:13px;color:#c0392b;font-weight:600;margin:0 24px}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* CTA */
+.cta{text-align:center;padding:40px 32px;max-width:860px;margin:0 auto}
+.cta h2{font-family:'Long Cang','ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-size:30px;margin-bottom:8px}
+.cta p{font-size:14px;color:#777;margin-bottom:20px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* Footer */
+footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px solid #ddd;background:#f5f3ee}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:300;justify-content:center;align-items:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal-content{background:#f5f3ee;border-radius:16px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;padding:28px;position:relative}
+.modal-close{position:absolute;top:12px;right:16px;font-size:24px;cursor:pointer;color:#999;background:none;border:none}
+.modal-close:hover{color:#c0392b}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Sketch line divider */
+.sketch-line{height:2px;background:repeating-linear-gradient(90deg,#2874a6 0,#2874a6 6px,transparent 6px,transparent 10px);margin:0 auto;max-width:1000px;opacity:.25}
+
+/* Float mascot */
+.float-mascot{position:fixed;bottom:20px;right:16px;z-index:99;display:flex;flex-direction:column;align-items:center;animation:mascot-float 3s ease-in-out infinite}
+.float-bot{font-size:48px;cursor:pointer;transition:transform .2s;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15))}
+.float-bot:hover{transform:scale(1.15) rotate(-5deg)}
+.float-bubble{background:#fff;border:1.5px solid #f0d0cc;padding:10px 14px;border-radius:16px;text-align:center;margin-bottom:4px;box-shadow:0 4px 20px rgba(192,57,43,0.12);position:relative;animation:popIn .5s ease .3s both;font-size:12px;color:#c0392b;font-weight:600}
+@keyframes mascot-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+
+/* Mobile */
+@media(max-width:768px){
+  .char-grid{grid-template-columns:repeat(2,1fr)}
+  .pitfall-grid{grid-template-columns:1fr}
+  .works-grid{grid-template-columns:1fr 1fr}
+  .hero-stats-row{grid-template-columns:1fr}
+  nav{padding:0 16px}
+  .nav-links{display:none}
+  .hamburger{display:block}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:56px;right:16px;background:#f5f3ee;border:1.5px solid #ddd;border-radius:10px;padding:12px 16px;gap:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+  .section{padding:24px 20px}
+  .section-bg .section{padding:0 20px}
+  .timeline{padding-left:32px}
+  .tl-dot{left:-24px}
+}
+@media(max-width:500px){
+  .char-grid{grid-template-columns:1fr}
+  .works-grid{grid-template-columns:1fr}
+}
+
+/* Specific card backgrounds for carousel */
+.c-card-bg1{background:linear-gradient(135deg,#fdf2f0,#fef5e7)}
+.c-card-bg2{background:linear-gradient(135deg,#e8f4f8,#f0f7f0)}
+.c-card-bg3{background:linear-gradient(135deg,#f5f0e8,#fdf2f0)}
+.c-card-bg4{background:linear-gradient(135deg,#f0f7f0,#e8f4f8)}
+.c-card-bg5{background:linear-gradient(135deg,#fef5e7,#f5f0e8)}
+
+/* Hero scene illustration */
+.hero-illustration{width:100%;aspect-ratio:3/2;position:relative;overflow:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hero-illustration .big-emoji{font-size:clamp(48px,10vw,96px);margin-bottom:8px}
+.hero-illustration .label{font-size:clamp(11px,2vw,14px);color:#fff;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,0.3);text-align:center;padding:0 10px}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<nav>
+<div class="nav-logo" onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})">🦉 AI军团养成记</div>
+<button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰ 菜单</button>
+<div class="nav-links">
+<a onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">首页</a>
+<a onclick="document.getElementById('team').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">AI军团</a>
+<a onclick="document.getElementById('timeline-section').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">时间线</a>
+<a onclick="document.getElementById('pitfalls').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">踩坑记录</a>
+<a onclick="document.getElementById('works').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">作品展示</a>
+<a onclick="document.getElementById('agency').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">关于我们</a>
+</div>
+</nav>
+
+<!-- HERO -->
+<div class="whiteboard" id="hero">
+<div class="hero-v2">
+  <div class="hero-v2-title">
+    <h1>🤖 别人骨折14天养了只龙虾<br>我们<span class="red">四个月</span>养出了一支<span class="red">AI军团</span></h1>
+    <span class="hero-tagline-pill">🏗️ 一家智能音视频解决方案商的 AI 原生组织实验</span>
+    <div style="margin-top:14px;padding:12px 20px;background:linear-gradient(135deg,rgba(192,57,43,0.06),rgba(192,57,43,0.02));border:1px solid rgba(192,57,43,0.15);border-radius:12px;font-size:13px;color:#666;line-height:1.9;text-align:center">
+      🧠 基于 <strong style="color:#c0392b">Hermes AI Agent 框架</strong>（Claude Code + Kimi Code + DeepSeek），9个AI角色，<strong style="color:#c0392b">4000+篇</strong>知识蒸馏，每日<strong style="color:#c0392b">7×24</strong>自动运转 · 本地+云端混合部署
+    </div>
+  </div>
+
+  <!-- Carousel -->
+  <div class="caro-root" id="caroRoot">
+    <button class="caro-arrow" onclick="caroNav(-1)">&#8249;</button>
+    <div class="caro-outer" id="caroOuter">
+      <div class="caro-track" id="cTrack">
+        <div class="c-card">
+          <div class="c-card-inner">
+            <div class="c-card-img c-card-bg1 hero-illustration">
+              <div class="big-emoji">🌱</div>
+              <div class="label">第一个Agent就是一颗种子</div>
+            </div>
+            <div class="c-card-cap"><span class="c-day">三月·觉醒</span><div class="c-title">第一个 Agent 到底能做什么？</div></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-inner">
+            <div class="c-card-img c-card-bg2 hero-illustration">
+              <div class="big-emoji">📚</div>
+              <div class="label">知识蒸馏工厂启动</div>
+            </div>
+            <div class="c-card-cap"><span class="c-day">四月·搭建</span><div class="c-title">373篇硅谷来信 → MKS最小知识集</div></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-inner">
+            <div class="c-card-img c-card-bg3 hero-illustration">
+              <div class="big-emoji">🧭</div>
+              <div class="label">ABCD战略模型诞生</div>
+            </div>
+            <div class="c-card-cap"><span class="c-day">五月·框架</span><div class="c-title">数据是石油，工具是解码器</div></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-inner">
+            <div class="c-card-img c-card-bg4 hero-illustration">
+              <div class="big-emoji">📊</div>
+              <div class="label">28,727条销售数据</div>
+            </div>
+            <div class="c-card-cap"><span class="c-day">六月·实战</span><div class="c-title">量价罗盘系统 + 全平台打通</div></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-inner">
+            <div class="c-card-img c-card-bg5 hero-illustration">
+              <div class="big-emoji">🎤</div>
+              <div class="label">深圳青年企业家协会讲座</div>
+            </div>
+            <div class="c-card-cap"><span class="c-day">7月1日 · 演讲</span><div class="c-title">AI 原生组织的真实实践分享</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="caro-arrow" onclick="caroNav(1)">&#8250;</button>
+  </div>
+  <div class="caro-dots" id="cDots"></div>
+
+  <!-- Stats Row -->
+  <div class="hero-stats-row">
+    <div class="stat-panel">
+      <div class="stat-panel-title">📖 实验数据</div>
+      <div class="stat-item"><span class="sico">🤖</span><div><strong>9个AI Agent</strong>，各司其职</div></div>
+      <div class="stat-item"><span class="sico">📚</span><div><strong>4000+篇</strong>知识蒸馏</div></div>
+      <div class="stat-item"><span class="sico">⏰</span><div>每日<strong>7×24</strong>自动运转</div></div>
+      <div class="stat-item"><span class="sico">🖥️</span><div><strong>本地+云端</strong>混合部署</div></div>
+      <div class="stat-item"><span class="sico">📅</span><div><strong>4个月</strong>持续迭代优化</div></div>
+    </div>
+    <div class="stat-panel">
+      <div class="stat-panel-title">🧠 核心能力</div>
+      <div class="stat-item"><span class="sico">🗞️</span><div>每日AI情报简报（品味五条筛选法）</div></div>
+      <div class="stat-item"><span class="sico">📈</span><div>28,727条销售数据 → SQLite数据仓库</div></div>
+      <div class="stat-item"><span class="sico">⚖️</span><div>合同审查 + 敏感数据脱敏</div></div>
+      <div class="stat-item"><span class="sico">🔬</span><div>学术前沿周报（五大方向）</div></div>
+      <div class="stat-item"><span class="sico">🔗</span><div>飞书+企业微信+元宝全平台打通</div></div>
+    </div>
+  </div>
+
+  <div class="hero-v2-cta">
+    <a href="#timeline-section" class="btn-red" onclick="document.getElementById('timeline-section').scrollIntoView({behavior:'smooth'})">📖 从三月开始看</a>
+    <a href="#team" class="btn-outline" onclick="document.getElementById('team').scrollIntoView({behavior:'smooth'})">🦉 认识AI军团</a>
+  </div>
+</div>
+</div>
+
+<!-- MARQUEE -->
+<div class="data-marquee">
+  <div class="data-marquee-inner">
+    <span>🦉 军师阿森</span><span>🛡️ 副将阿爪</span><span>📜 叙事官老墨</span><span>💰 金融分析曼尼</span><span>🎓 辅导员哈利</span><span>🎨 前端小能手小A</span><span>💻 Kimi代码副驾驶</span><span>⚖️ 爱马仕法务助理</span><span>🎭 扣子图像魔法师</span>
+    <span>🦉 军师阿森</span><span>🛡️ 副将阿爪</span><span>📜 叙事官老墨</span><span>💰 金融分析曼尼</span><span>🎓 辅导员哈利</span><span>🎨 前端小能手小A</span><span>💻 Kimi代码副驾驶</span><span>⚖️ 爱马仕法务助理</span><span>🎭 扣子图像魔法师</span>
+  </div>
+</div>
+
+<!-- SKILL SCROLL -->
+<div class="section" style="padding-bottom:16px">
+  <div class="section-label">🧩 技能一览</div>
+  <div class="section-title">装什么技能，就变成什么员工</div>
+  <div class="section-desc">横向滚动，看看这支AI军团能做什么 →</div>
+  <div class="skill-scroll-wrap">
+    <div class="skill-scroll" id="skillScroll">
+      <div class="skill-card"><span class="skill-tag">日报</span><span class="emoji">🗞️</span><h4>品味AI每日简报</h4><p>五条筛选法 · 自动生成 · 脱敏推送</p><span class="more">每日09:00 →</span></div>
+      <div class="skill-card"><span class="skill-tag">战略</span><span class="emoji">🧭</span><h4>每日战略规划</h4><p>AI自动规划 + 21:00复盘三问</p><span class="more">每日 →</span></div>
+      <div class="skill-card"><span class="skill-tag">金融</span><span class="emoji">📈</span><h4>量价罗盘系统</h4><p>行业供需数据采集 · 周六自动周报</p><span class="more">每周 →</span></div>
+      <div class="skill-card"><span class="skill-tag">学术</span><span class="emoji">🔬</span><h4>学术前沿周报</h4><p>AI/半导体/机器人/新能源/生物医药</p><span class="more">每周 →</span></div>
+      <div class="skill-card"><span class="skill-tag">数据</span><span class="emoji">🗄️</span><h4>销售数据底盘</h4><p>28,727条记录 · SQLite数据仓库</p><span class="more">实时 →</span></div>
+      <div class="skill-card"><span class="skill-tag">财务</span><span class="emoji">💳</span><h4>财务账单监控</h4><p>API费用巡检 · 异常推送告警</p><span class="more">每日 →</span></div>
+      <div class="skill-card"><span class="skill-tag">法务</span><span class="emoji">⚖️</span><h4>合同审查工作流</h4><p>文档审核 · 合规把控 · 敏感数据脱敏</p><span class="more">按需 →</span></div>
+      <div class="skill-card"><span class="skill-tag">知识</span><span class="emoji">📚</span><h4>知识蒸馏工厂</h4><p>4000+篇 · 翻转卡片 · 四层概念图</p><span class="more">持续 →</span></div>
+      <div class="skill-card"><span class="skill-tag">播客</span><span class="emoji">🎙️</span><h4>AI播客系列</h4><p>10-15分钟/期 · 基于知识库深度内容</p><span class="more">周更 →</span></div>
+      <div class="skill-card"><span class="skill-tag">进程</span><span class="emoji">🛡️</span><h4>进程巡检系统</h4><p>每小时扫描 · 命中规则告警</p><span class="more">7×24 →</span></div>
+      <div class="skill-card"><span class="skill-tag">设计</span><span class="emoji">🎨</span><h4>前端可视化</h4><p>HTML/CSS快速出活 · 报告页面制作</p><span class="more">按需 →</span></div>
+      <div class="skill-card"><span class="skill-tag">图像</span><span class="emoji">🎭</span><h4>配图与头像设计</h4><p>Coze CLI · 氛围图 · Agent头像</p><span class="more">按需 →</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sketch-line"></div>
+
+<!-- TEAM SECTION -->
+<div class="section-bg" id="team">
+<div class="section reveal">
+  <div class="section-label">🦸 我们的AI军团</div>
+  <div class="section-title">九个角色，<span class="red sketch-underline">一支团队</span></div>
+  <div class="section-desc">每个Agent都有独特的性格、专长和分工——从战略决策到代码执行，从知识管理到图像创作</div>
+
+  <div class="char-grid">
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#2c3e50,#34495e);color:#f39c12">🦉</div>
+      <h3>阿森 <span style="font-size:11px;color:#999">Axiom</span></h3>
+      <div class="char-role">🧠 军师 · 战略大脑</div>
+      <div class="char-desc">每日情报分析、品味五条筛选、战略边界判断。处理复杂推理和决策，负责划定"能做什么"的红线。</div>
+      <div class="char-tech">DeepSeek-V4-Pro</div>
+      <span class="char-tag redtag">战略规划</span><span class="char-tag bluetag">情报分析</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff">🛡️</div>
+      <h3>阿爪 <span style="font-size:11px;color:#999">Claw</span></h3>
+      <div class="char-role">⚔️ 副将 · 执行推土机</div>
+      <div class="char-desc">红线内拆招推进，配备一台20GB显存的Mac Mini跑本地模型。军师画线，阿爪突进。</div>
+      <div class="char-tech">DeepSeek-V4-Flash · Mac Mini本地</div>
+      <span class="char-tag redtag">任务执行</span><span class="char-tag bluetag">本地推理</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff">📜</div>
+      <h3>老墨 <span style="font-size:11px;color:#999">Ink</span></h3>
+      <div class="char-role">✍️ 叙事官 · 知识存档</div>
+      <div class="char-desc">知识存档、故事化输出、概念卡片制作。把冰冷的执行变成可阅读的叙事。</div>
+      <div class="char-tech">DeepSeek-V4-Flash</div>
+      <span class="char-tag redtag">知识管理</span><span class="char-tag bluetag">内容创作</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff">💰</div>
+      <h3>曼尼 <span style="font-size:11px;color:#999">Manny</span></h3>
+      <div class="char-role">📊 金融分析专用机</div>
+      <div class="char-desc">量价罗盘系统、财务数据监控、账单巡检。周六自动生成行业供需周报。</div>
+      <div class="char-tech">专用模型</div>
+      <span class="char-tag redtag">数据监控</span><span class="char-tag bluetag">财务分析</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#2980b9,#3498db);color:#fff">🎓</div>
+      <h3>哈利辅导员 <span style="font-size:11px;color:#999">Harry</span></h3>
+      <div class="char-role">🔧 技术教练</div>
+      <div class="char-desc">环境搭建、技能调试、基础设施维护。新Agent入职培训的第一站。</div>
+      <div class="char-tech">技术架构</div>
+      <span class="char-tag redtag">基础设施</span><span class="char-tag bluetag">技能调试</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#e67e22,#f39c12);color:#fff">🎨</div>
+      <h3>小A</h3>
+      <div class="char-role">🖌️ 前端小能手</div>
+      <div class="char-desc">HTML/CSS/可视化快速出活，负责网站和报告页面制作。你看到的这个页面就是小A参与的成果。</div>
+      <div class="char-tech">前端技术栈</div>
+      <span class="char-tag redtag">前端开发</span><span class="char-tag bluetag">可视化</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#1abc9c,#16a085);color:#fff">💻</div>
+      <h3>Kimi</h3>
+      <div class="char-role">🚀 代码副驾驶</div>
+      <div class="char-desc">Claude Code的备选执行引擎，100 Tokens/s，专门处理大规模代码任务。速度就是一切。</div>
+      <div class="char-tech">Kimi Code · 100 Tokens/s</div>
+      <span class="char-tag redtag">代码执行</span><span class="char-tag bluetag">高吞吐</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#7f8c8d,#95a5a6);color:#fff">⚖️</div>
+      <h3>爱马仕 <span style="font-size:11px;color:#999">Hermes</span></h3>
+      <div class="char-role">📋 商务法务助理</div>
+      <div class="char-desc">合同审查、文档填报、合规把控。敏感数据脱敏系统由它一手建立。</div>
+      <div class="char-tech">法律知识库</div>
+      <span class="char-tag redtag">合同审查</span><span class="char-tag bluetag">合规</span>
+    </div>
+
+    <div class="char-card">
+      <div class="char-avatar" style="background:linear-gradient(135deg,#e91e63,#f06292);color:#fff">🎭</div>
+      <h3>扣子 <span style="font-size:11px;color:#999">Coze</span></h3>
+      <div class="char-role">🖼️ 图像魔法师</div>
+      <div class="char-desc">配图生成、氛围图创作、头像设计。整个AI军团的视觉形象都由扣子一手打造。</div>
+      <div class="char-tech">Coze CLI</div>
+      <span class="char-tag redtag">图像生成</span><span class="char-tag bluetag">视觉设计</span>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:20px;padding:16px;background:#faf8f4;border:1.5px dashed #c0392b;border-radius:12px">
+    <span style="font-size:14px;color:#666">🧠 三角分工定调：</span>
+    <strong style="color:#c0392b">军师画红线</strong> →
+    <strong style="color:#2874a6">副将红线内推进</strong> →
+    <strong style="color:#8e44ad">叙事官存档</strong>
+    <span style="font-size:13px;color:#999;display:block;margin-top:6px">一个决策，一个执行，一个记录——循环迭代，越来越聪明</span>
+  </div>
+</div>
+</div>
+
+<!-- TIMELINE -->
+<div id="timeline-section">
+<div class="section reveal" style="padding-top:40px">
+  <div class="section-label">📅 成长时间线</div>
+  <div class="section-title">四个月，<span class="red sketch-underline">从零到军团</span></div>
+  <div class="section-desc">这不是PPT里的规划，是每天早上9:00自动规划、晚上9:00复盘的真实记录</div>
+
+  <div class="timeline">
+
+    <!-- March -->
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-month">2026年3月</div>
+      <div class="tl-header">
+        <div class="tl-icon">🌱</div>
+        <h3><span class="red">三月·觉醒</span> — "第一个 Agent 到底能做什么？"</h3>
+      </div>
+      <div class="tl-content">
+        <p>一切从手动触发、简单问答开始。第一个Cron Job上线的那一刻，Andy意识到：<strong>AI不只是聊天，它能持续执行任务</strong>。初版简报虽然粗糙，但它是整个军团的种子。</p>
+        <p>这个月最大的发现：给Agent一个固定的节奏（比如每天早上9点自动运行），它就能从"回答问题的工具"变成"主动服务的成员"。</p>
+        <div class="tl-tags">
+          <span class="tl-tag">手动触发</span><span class="tl-tag">初版简报</span><span class="tl-tag">第一个Cron Job</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- April -->
+    <div class="tl-item">
+      <div class="tl-dot blue"></div>
+      <div class="tl-month blue">2026年4月</div>
+      <div class="tl-header">
+        <div class="tl-icon">📚</div>
+        <h3><span class="blue">四月·搭建</span> — 知识蒸馏工厂</h3>
+      </div>
+      <div class="tl-content">
+        <p>这个月，AI军团开始大规模消化人类智慧。得到课程→MKS最小知识集的流水线建成：</p>
+        <p><strong>吴军系列：</strong>硅谷来信×373篇、世界文明史×317篇、数学通识×55篇、教育方法×64篇，以及更多。<br>
+        <strong>卓克系列：</strong>11门课程、1977篇文章的科学知识体系。</p>
+        <p>技术成果：翻转卡片、四层概念图（SVG/Graphviz）、题库系统、AI播客。最重磅的是<strong>吴军思想体系三层金字塔</strong>——认知底座→文明方法论→人生操作系统，跨课重组、四条贯穿线索。</p>
+        <div class="tl-tags">
+          <span class="tl-tag">4000+篇蒸馏</span><span class="tl-tag">翻转卡片</span><span class="tl-tag">四层概念图</span><span class="tl-tag">AI播客</span><span class="tl-tag">三层金字塔</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- May -->
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-month">2026年5月</div>
+      <div class="tl-header">
+        <div class="tl-icon">🧭</div>
+        <h3><span class="red">五月·框架</span> — 方法论沉淀</h3>
+      </div>
+      <div class="tl-content">
+        <p><strong>🏗️ ABCD战略模型诞生：</strong>AI × Blockchain × Cloud × Data。Andy原创战略框架——"数据是石油，工具是解码器"，五层数据金字塔（前沿技术→行业→赛道→公司→产品）成为整个军团的行动指南。</p>
+        <p><strong>⏰ 每日节奏确立：</strong>09:00 AI自动规划 + 21:00 复盘三问（做了什么/没做什么为什么/明天最重要的一件事）。这个节奏运行至今，从未中断。</p>
+        <p><strong>🦉 智囊团三角分工定调：</strong>军师画红线 → 副将红线内推进 → 叙事官存档。Cron自动化流水线全面启动：AI简报、学术周报、进程巡检、账单监控。</p>
+        <div class="tl-tags">
+          <span class="tl-tag">ABCD模型</span><span class="tl-tag">五层数据金字塔</span><span class="tl-tag">09:00+21:00节奏</span><span class="tl-tag">三角分工</span><span class="tl-tag">Cron流水线</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- June -->
+    <div class="tl-item">
+      <div class="tl-dot blue"></div>
+      <div class="tl-month blue">2026年6月</div>
+      <div class="tl-header">
+        <div class="tl-icon">📊</div>
+        <h3><span class="blue">六月·实战</span> — 业务深度融合</h3>
+      </div>
+      <div class="tl-content">
+        <p>AI军团正式投入真实战场：</p>
+        <p>📈 <strong>销售数据底盘：</strong>28,727条销售记录，建立SQLite数据仓库<br>
+        📊 <strong>量价罗盘系统：</strong>每日自动采集行业供需数据，周六自动生成周报<br>
+        🏦 <strong>银行授信全流程：</strong>多线并行追踪（商业授信+保理+专项融资）<br>
+        🔗 <strong>全平台打通：</strong>飞书、企业微信、元宝（腾讯AI助手）集成<br>
+        ⚖️ <strong>商务法务：</strong>合同审查工作流、敏感数据脱敏系统</p>
+        <p style="margin-top:8px;color:#c0392b;font-weight:600">🎤 7月1日：深圳青年企业家协会 AI 应用讲座 — 本次展示的核心场景</p>
+        <div class="tl-tags">
+          <span class="tl-tag">28,727条销售记录</span><span class="tl-tag">量价罗盘</span><span class="tl-tag">银行授信</span><span class="tl-tag">全平台打通</span><span class="tl-tag">合同审查</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PITFALLS -->
+<div class="section-bg" id="pitfalls">
+<div class="section reveal">
+  <div class="section-label">🔥 诚实复盘</div>
+  <div class="section-title">踩过的坑，<span class="red sketch-underline">一个都不藏</span></div>
+  <div class="section-desc">AI Agent 7×24自主运行不是童话——点击卡片查看每个坑的真实细节</div>
+
+  <div class="pitfall-grid">
+    <div class="pitfall-card" onclick="this.classList.toggle('open')">
+      <div class="pitfall-header">
+        <div class="pf-emoji">💰</div>
+        <h4>DeepSeek 10亿Token消耗事件</h4>
+        <div class="pf-arrow">▼</div>
+      </div>
+      <div class="pitfall-body">
+        <p>一次深夜异常消耗触发全链路排查。从API调用日志逐层深入→发现进程异常→最终建立三道规则巡检体系（30分钟/1小时/24小时交叉告警）。</p>
+        <div class="lesson">💡 教训：AI Agent 7×24自主运行需要watchdog，不能完全放任。三道巡检缺一不可。</div>
+      </div>
+    </div>
+
+    <div class="pitfall-card" onclick="this.classList.toggle('open')">
+      <div class="pitfall-header">
+        <div class="pf-emoji">👻</div>
+        <h4>Claude Code 僵尸进程</h4>
+        <div class="pf-arrow">▼</div>
+      </div>
+      <div class="pitfall-body">
+        <p>一个Claude Code子进程持续运行了<strong>36天</strong>没被发现，静默消耗API费用。催生了<strong>进程巡检系统</strong>——每小时自动扫描所有相关进程，命中规则即推送飞书群告警。</p>
+        <div class="lesson">💡 教训：从此再也没有"悄悄的烧钱"。每小时进程快照是最低配置。</div>
+      </div>
+    </div>
+
+    <div class="pitfall-card" onclick="this.classList.toggle('open')">
+      <div class="pitfall-header">
+        <div class="pf-emoji">🔑</div>
+        <h4>GitHub Token 过期导致周报推送失败</h4>
+        <div class="pf-arrow">▼</div>
+      </div>
+      <div class="pitfall-body">
+        <p>周日学术周报生成完毕、commit完成，但GitHub Pages推送静默失败——Token已过期数天未被发现。修复后建立推送后API验证机制：每次push后自动curl GitHub API确认远端文件存在。</p>
+        <div class="lesson">💡 教训：推送≠成功。所有外部API调用必须加验证环节。</div>
+      </div>
+    </div>
+
+    <div class="pitfall-card" onclick="this.classList.toggle('open')">
+      <div class="pitfall-header">
+        <div class="pf-emoji">🔀</div>
+        <h4>模型选择踩坑</h4>
+        <div class="pf-arrow">▼</div>
+      </div>
+      <div class="pitfall-body">
+        <p>DeepSeek-V4-Pro的reasoning模式在cron job中导致stream超时（180秒无输出被杀连接），切换到V4-Flash解决。base_url残留导致API key打到错误的API端点（401/404错误）。</p>
+        <div class="lesson">💡 教训：沉淀出<strong>模型切换三步验证法</strong>——新模型上线前必须通过cron兼容性测试、端点验证、stream超时测试。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- WORKS -->
+<div id="works">
+<div class="section reveal" style="padding-top:40px">
+  <div class="section-label">🎨 创意作品展示</div>
+  <div class="section-title">AI军团的<span class="red sketch-underline">产出物</span></div>
+  <div class="section-desc">不是PPT，是每天早上真实推送到飞书群的东西</div>
+
+  <div class="works-grid">
+    <div class="work-card">
+      <div class="work-icon">🗞️</div>
+      <h4>品味AI每日简报</h4>
+      <p>五条筛选法（可复用/反直觉/可行动/连接性/时间复利），每日自动生成+脱敏+推送。一条消息，管一天的战略认知。</p>
+    </div>
+    <div class="work-card">
+      <div class="work-icon">🔬</div>
+      <h4>学术前沿周报</h4>
+      <p>五大方向：AI/半导体/机器人/新能源/生物医药。月末战略深挖，为决策层提供技术雷达。</p>
+    </div>
+    <div class="work-card">
+      <div class="work-icon">🎙️</div>
+      <h4>AI播客系列</h4>
+      <p>基于知识库的深度内容音频化，10-15分钟/期，使用Coze TTS。通勤时听一集，等于读了一本书。</p>
+    </div>
+    <div class="work-card">
+      <div class="work-icon">🃏</div>
+      <h4>概念卡片池</h4>
+      <p>238张知识卡片，16×15 CSS Grid马赛克布局，60秒自动轮播。把复杂概念压缩成一张卡。</p>
+    </div>
+    <div class="work-card">
+      <div class="work-icon">🎨</div>
+      <h4>智囊团头像设计</h4>
+      <p>Coze CLI生成的全套Agent头像。9个角色，9种视觉人格，统一风格体系。</p>
+    </div>
+    <div class="work-card">
+      <div class="work-icon">🏗️</div>
+      <h4>吴军思想体系</h4>
+      <p>跨课三层金字塔重组，四条贯穿线索。认知底座→文明方法论→人生操作系统，把3000+篇文章串成一张地图。</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AGENCY -->
+<div class="section-bg" id="agency">
+<div class="section reveal">
+  <div class="section-label">🏢 关于我们</div>
+  <div class="section-title">智能音视频<span class="red sketch-underline">解决方案商</span></div>
+  <div class="section-desc">我们专注于将前沿AI技术落地为真实的商业基础设施</div>
+
+  <div class="agency-card">
+    <h3>⚡ 技术栈全景</h3>
+    <div class="agency-sub">不是概念验证，是每天在跑的生产系统</div>
+    <div class="agency-stack">
+      <span>🤖 Hermes Agent框架</span>
+      <span>🧠 Claude Code</span>
+      <span>💻 Kimi Code</span>
+      <span>🔮 DeepSeek API</span>
+      <span>🖥️ Mac Mini 本地推理</span>
+      <span>☁️ Linux云端服务器</span>
+      <span>🔄 多API负载均衡</span>
+      <span>🔵 飞书集成</span>
+      <span>💚 企业微信</span>
+      <span>🔷 元宝（腾讯AI）</span>
+      <span>📦 GitHub Pages</span>
+      <span>🗄️ SQLite数据仓库</span>
+    </div>
+    <div style="position:relative;margin-top:12px;font-size:13px;color:#aaa;line-height:1.8">
+      <p>Hermes AI Agent 框架基于 Nous Research 开源架构</p>
+      <p>本地推理：Apple Silicon Mac Mini（20GB统一内存）</p>
+      <p>云端协同：多供应商API负载均衡，确保服务不中断</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;text-align:center">
+    <div style="background:#faf8f4;border:1.5px solid #ddd;border-radius:14px;padding:20px">
+      <div style="font-size:32px;margin-bottom:8px">💡</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">AI原生组织</div>
+      <div style="font-size:13px;color:#666;line-height:1.6">不是用AI辅助人类，而是让AI成为独立的生产单元。9个Agent证明了这个模式可行。</div>
+    </div>
+    <div style="background:#faf8f4;border:1.5px solid #ddd;border-radius:14px;padding:20px">
+      <div style="font-size:32px;margin-bottom:8px">🔧</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">混合部署</div>
+      <div style="font-size:13px;color:#666;line-height:1.6">敏感数据本地处理（Mac Mini），高强度计算上云端。兼顾安全与效率。</div>
+    </div>
+    <div style="background:#faf8f4;border:1.5px solid #ddd;border-radius:14px;padding:20px">
+      <div style="font-size:32px;margin-bottom:8px">🚀</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">真实商用</div>
+      <div style="font-size:13px;color:#666;line-height:1.6">28,727条销售记录、银行授信全流程、合同审查——全部是生产环境中的真实任务。</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta reveal" id="cta">
+  <h2>AI不是未来，<span class="red">是正在发生的现在</span></h2>
+  <p>四个月，九个Agent，一支永不休息的团队。<br>我们把自己走过的路完整展示出来——因为最好的传播是真实。</p>
+  <div class="cta-btns">
+    <a href="https://hermes-agent.nousresearch.com/docs" target="_blank" class="btn-red">📖 了解 Hermes 框架</a>
+    <a href="#team" class="btn-outline" onclick="document.getElementById('team').scrollIntoView({behavior:'smooth'})">🦉 再看一遍AI军团</a>
+  </div>
+  <p style="font-size:12px;color:#999;margin-top:12px">🎤 7月1日 · 深圳青年企业家协会 AI 应用讲座 · 欢迎现场交流</p>
+</div>
+
+<!-- Float Mascot -->
+<div class="float-mascot">
+  <div class="float-bubble">🦉 点击回顶部</div>
+  <div class="float-bot" onclick="window.scrollTo({top:0,behavior:'smooth'})">🦉</div>
+</div>
+
+<footer>
+  🦉 AI军团养成记 © 2026 · 基于 Hermes AI Agent 框架 · 真实商业实验全记录<br>
+  <span style="font-size:10px;color:#bbb">智能音视频解决方案商 · Made with 🤖 by an AI-native organization</span>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){
+  var h=document.documentElement, b=h.scrollHeight-h.clientHeight;
+  document.getElementById('progressBar').style.width=b>0?(h.scrollTop/b*100)+'%':'0%';
+});
+
+// Carousel
+(function(){
+  var cards=document.querySelectorAll('#cTrack .c-card');
+  var n=cards.length, idx=0, timer=null;
+  var dots=document.getElementById('cDots');
+
+  // Build dots
+  for(var i=0;i<n;i++){
+    var dot=document.createElement('button');
+    dot.className='cdot'+(i===0?' active':'');
+    dot.onclick=(function(j){return function(){goCard(j);};})(i);
+    dots.appendChild(dot);
+  }
+
+  function setSizes(){
+    var outer=document.getElementById('caroOuter');
+    if(!outer)return;
+    var W=outer.offsetWidth, peek=Math.round(Math.min(W*0.13,56)), gap=14, cardW=W-2*peek;
+    cards.forEach(function(c){c.style.width=cardW+'px';c.style.minWidth=cardW+'px';});
+    outer._cardW=cardW;outer._peek=peek;outer._gap=gap;
+    goCard(idx,false);
+  }
+
+  function goCard(i,animate){
+    if(animate===undefined)animate=true;
+    idx=((i%n)+n)%n;
+    var outer=document.getElementById('caroOuter');
+    var track=document.getElementById('cTrack');
+    if(!outer||!track)return;
+    var cardW=outer._cardW||outer.offsetWidth*0.74;
+    var peek=outer._peek||outer.offsetWidth*0.13;
+    var gap=outer._gap||14;
+    track.style.transition=animate?'.44s cubic-bezier(.25,.46,.45,.94)':'none';
+    track.style.transform='translateX('+(peek-idx*(cardW+gap))+'px)';
+    cards.forEach(function(c,j){
+      var d=Math.abs(j-idx);
+      c.style.transform=d===0?'scale(1)':d===1?'scale(0.89)':'scale(0.78)';
+      c.style.opacity=d===0?'1':d===1?'0.6':'0.3';
+    });
+    document.querySelectorAll('.cdot').forEach(function(d,j){d.classList.toggle('active',j===idx);});
+    if(!animate)setTimeout(function(){track.style.transition='';},60);
+  }
+
+  window.caroNav=function(dir){goCard(idx+dir);clearInterval(timer);startAuto();};
+
+  function startAuto(){clearInterval(timer);timer=setInterval(function(){goCard(idx+1);},4500);}
+
+  var outer=document.getElementById('caroOuter');
+  if(outer){
+    outer.addEventListener('mouseenter',function(){clearInterval(timer);});
+    outer.addEventListener('mouseleave',startAuto);
+    var ts=null;
+    outer.addEventListener('touchstart',function(e){ts=e.touches[0].clientX;},{passive:true});
+    outer.addEventListener('touchend',function(e){
+      if(ts===null)return;
+      var diff=ts-e.changedTouches[0].clientX;
+      if(Math.abs(diff)>30)window.caroNav(diff>0?1:-1);
+      ts=null;
+    },{passive:true});
+  }
+
+  setSizes();
+  window.addEventListener('resize',setSizes);
+  startAuto();
+})();
+
+// Scroll reveal
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el);});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var target=document.querySelector(this.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+// Floating mascot visibility
+var mascot=document.querySelector('.float-mascot');
+window.addEventListener('scroll',function(){
+  mascot.style.opacity=window.scrollY>300?'1':'0';
+  mascot.style.pointerEvents=window.scrollY>300?'auto':'none';
+});
+mascot.style.opacity='0';
+mascot.style.pointerEvents='none';
+mascot.style.transition='opacity .3s';
+</script>
+
+</body>
+</html>
