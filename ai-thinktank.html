@@ -424,6 +424,105 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   .comic-ep-info{padding:10px 12px}
   .comic-ep-title{font-size:13px}
 }
+/* ===== SURVEY MODAL STYLES ===== */
+.survey-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.65);z-index:500;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.survey-overlay.active{display:flex}
+.survey-card{background:#fff;border-radius:18px;max-width:620px;width:100%;margin:20px auto;padding:32px 28px 24px;position:relative;box-shadow:0 12px 48px rgba(0,0,0,0.2);color:#1a1a1a}
+.survey-close{position:absolute;top:12px;right:18px;font-size:26px;cursor:pointer;color:#999;background:none;border:none;line-height:1;padding:4px 8px;transition:.2s}
+.survey-close:hover{color:#c0392b}
+.survey-card h2{font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif;font-size:26px;margin-bottom:4px;color:#1a1a1a;text-align:center}
+.survey-card .survey-sub{font-size:13px;color:#888;text-align:center;margin-bottom:24px}
+.survey-q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #f0f0f0}
+.survey-q:last-of-type{border-bottom:none}
+.survey-q-label{font-size:15px;font-weight:700;color:#333;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.survey-q-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#c0392b;color:#fff;font-size:12px;font-weight:800;flex-shrink:0}
+
+/* Star rating */
+.survey-stars{display:flex;gap:6px}
+.survey-star{font-size:32px;cursor:pointer;transition:transform .15s;line-height:1;user-select:none;color:#ddd}
+.survey-star.hover{transform:scale(1.18)}
+.survey-star.active{color:#f39c12}
+.survey-star-label{font-size:12px;color:#999;margin-top:4px;display:block;min-height:18px}
+
+/* Radio options */
+.survey-radio-group{display:flex;flex-direction:column;gap:8px}
+.survey-radio-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid #e8e4df;border-radius:10px;cursor:pointer;transition:.2s;font-size:14px;color:#444}
+.survey-radio-item:hover{border-color:#c0392b;background:rgba(192,57,43,0.03)}
+.survey-radio-item.selected{border-color:#c0392b;background:rgba(192,57,43,0.06);color:#c0392b;font-weight:600}
+.survey-radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s}
+.survey-radio-item.selected .survey-radio-dot{border-color:#c0392b;background:#c0392b}
+.survey-radio-item.selected .survey-radio-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+
+/* Checkbox options */
+.survey-check-group{display:flex;flex-wrap:wrap;gap:8px}
+.survey-check-item{padding:10px 14px;border:1.5px solid #e8e4df;border-radius:10px;cursor:pointer;transition:.2s;font-size:14px;color:#444;display:flex;align-items:center;gap:8px;user-select:none}
+.survey-check-item:hover{border-color:#c0392b;background:rgba(192,57,43,0.03)}
+.survey-check-item.checked{border-color:#c0392b;background:rgba(192,57,43,0.06);color:#c0392b;font-weight:600}
+.survey-check-box{width:18px;height:18px;border-radius:4px;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s;font-size:12px}
+.survey-check-item.checked .survey-check-box{border-color:#c0392b;background:#c0392b;color:#fff}
+
+/* NPS slider */
+.survey-nps-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.survey-nps-btns{display:flex;gap:4px;flex-wrap:wrap}
+.survey-nps-btn{width:38px;height:38px;border-radius:10px;border:1.5px solid #e8e4df;background:#fff;cursor:pointer;font-size:14px;font-weight:700;color:#555;transition:.2s;display:flex;align-items:center;justify-content:center}
+.survey-nps-btn:hover{border-color:#c0392b;color:#c0392b;background:rgba(192,57,43,0.04)}
+.survey-nps-btn.selected{border-color:#c0392b;background:#c0392b;color:#fff}
+.survey-nps-labels{display:flex;justify-content:space-between;width:100%;font-size:11px;color:#999;padding:0 2px;margin-top:2px}
+.survey-nps-labels span:last-child{text-align:right}
+
+/* Text input */
+.survey-textarea{width:100%;min-height:80px;border:1.5px solid #e8e4df;border-radius:10px;padding:12px 14px;font-size:14px;color:#444;resize:vertical;font-family:'Noto Sans SC',sans-serif;transition:.2s;outline:none}
+.survey-textarea:focus{border-color:#c0392b;box-shadow:0 0 0 3px rgba(192,57,43,0.08)}
+
+/* Submit */
+.survey-submit-wrap{text-align:center;margin-top:8px}
+.survey-submit-btn{padding:12px 48px;border-radius:12px;border:none;background:#c0392b;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.survey-submit-btn:hover{background:#a93226;transform:translateY(-1px);box-shadow:0 4px 15px rgba(192,57,43,0.3)}
+.survey-submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+.survey-submit-btn.success{background:#27ae60}
+
+/* Thank you */
+.survey-thanks{display:none;text-align:center;padding:40px 20px}
+.survey-thanks.active{display:block}
+.survey-thanks .thanks-emoji{font-size:64px;margin-bottom:16px;animation:mascot-float 1.5s ease-in-out infinite}
+.survey-thanks h3{font-size:24px;color:#27ae60;margin-bottom:8px;font-family:'ZCOOL KuaiLe',sans-serif}
+.survey-thanks p{font-size:14px;color:#888}
+
+/* Stats link */
+.survey-stats-link{text-align:center;margin-top:16px;font-size:13px}
+.survey-stats-link a{color:#2874a6;cursor:pointer;text-decoration:none;font-weight:600;transition:.2s}
+.survey-stats-link a:hover{color:#c0392b;text-decoration:underline}
+
+/* Stats modal */
+.survey-stats-section{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #f0f0f0}
+.survey-stats-section:last-child{border-bottom:none}
+.survey-stats-section h4{font-size:15px;font-weight:700;color:#333;margin-bottom:10px}
+.survey-stat-big{font-size:36px;font-weight:900;color:#c0392b;text-align:center;line-height:1}
+.survey-stat-big-label{font-size:13px;color:#888;text-align:center;margin-top:4px}
+.survey-stat-row{display:flex;gap:16px;margin-bottom:12px}
+.survey-stat-box{flex:1;background:#faf8f4;border-radius:10px;padding:14px;text-align:center}
+.survey-stat-box .ssb-val{font-size:28px;font-weight:800;color:#c0392b;line-height:1}
+.survey-stat-box .ssb-label{font-size:12px;color:#888;margin-top:4px}
+.survey-bar-wrap{margin-bottom:8px}
+.survey-bar-label{font-size:13px;color:#555;margin-bottom:4px;display:flex;justify-content:space-between}
+.survey-bar-outer{height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.survey-bar-inner{height:100%;background:#c0392b;border-radius:4px;transition:width .6s ease}
+.survey-nps-score{text-align:center;padding:16px}
+.survey-nps-score .nps-big{font-size:48px;font-weight:900;line-height:1}
+.survey-nps-score .nps-label{font-size:13px;color:#888;margin-top:4px}
+.survey-nps-score .nps-note{font-size:12px;color:#aaa;margin-top:4px}
+.nps-green{color:#27ae60}
+.nps-yellow{color:#f39c12}
+.nps-red{color:#c0392b}
+
+/* Mobile */
+@media(max-width:600px){
+  .survey-overlay{padding:0;align-items:flex-start}
+  .survey-card{border-radius:0;margin:0;min-height:100vh;padding:24px 20px 32px}
+  .survey-star{font-size:28px}
+  .survey-nps-btn{width:32px;height:32px;font-size:12px}
+  .survey-stat-row{flex-direction:column;gap:8px}
+}
 </style>
 </head>
 <body>
@@ -437,6 +536,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 <span class="nav-tab active" id="tab-army" onclick="switchPanel('army');document.querySelector('.nav-links').classList.remove('open')">🦉 AI军团</span>
 <span class="nav-tab" id="tab-lecture" onclick="switchPanel('lecture');document.querySelector('.nav-links').classList.remove('open')">📖 AI讲义</span>
 <span class="nav-tab" id="tab-comic" onclick="switchPanel('comic');document.querySelector('.nav-links').classList.remove('open')">🎨 漫画</span>
+<span class="nav-tab" id="tab-survey" onclick="openSurvey();document.querySelector('.nav-links').classList.remove('open')" style="background:rgba(192,57,43,0.08);color:#c0392b;font-weight:700">📋 课程反馈</span>
 <a href="https://andy-zokelink.github.io/mks-knowledge/blog/" target="_blank" style="color:#2874a6;font-weight:600;padding:6px 4px;text-decoration:none;font-size:15px" onclick="document.querySelector('.nav-links').classList.remove('open')">📋 阿森智库</a>
 <a href="https://andy-zokelink.github.io/mks-knowledge/" target="_blank" style="color:#2874a6;font-weight:600;padding:6px 4px;text-decoration:none;font-size:15px" onclick="document.querySelector('.nav-links').classList.remove('open')">📚 知识库</a>
 </div>
@@ -1368,6 +1468,158 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   <span style="font-size:10px;color:#bbb">智能音视频解决方案商 · Made with 🤖 by an AI-native organization</span>
 </footer>
 
+<!-- ===== SURVEY MODAL ===== -->
+<div class="survey-overlay" id="surveyOverlay" onclick="if(event.target===this)closeSurvey()">
+<div class="survey-card" id="surveyCard">
+  <button class="survey-close" onclick="closeSurvey()">✕</button>
+
+  <!-- Survey Form -->
+  <div id="surveyForm">
+    <h2>📋 课程反馈问卷</h2>
+    <p class="survey-sub">AI入门讲座 — 大模型与智能体 · 2026年7月1日 · 深圳青年企业家协会</p>
+
+    <!-- Q1: 整体评价 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">1</span> 本次AI讲座的整体满意度？</div>
+      <div class="survey-stars" id="q1-stars">
+        <span class="survey-star" data-val="1" onclick="setStar('q1',1)">⭐</span>
+        <span class="survey-star" data-val="2" onclick="setStar('q1',2)">⭐</span>
+        <span class="survey-star" data-val="3" onclick="setStar('q1',3)">⭐</span>
+        <span class="survey-star" data-val="4" onclick="setStar('q1',4)">⭐</span>
+        <span class="survey-star" data-val="5" onclick="setStar('q1',5)">⭐</span>
+      </div>
+      <span class="survey-star-label" id="q1-label"></span>
+    </div>
+
+    <!-- Q2: 内容理解 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">2</span> 讲座内容是否容易理解？</div>
+      <div class="survey-radio-group" id="q2-group">
+        <div class="survey-radio-item" onclick="setRadio('q2',this)"><span class="survey-radio-dot"></span>非常容易</div>
+        <div class="survey-radio-item" onclick="setRadio('q2',this)"><span class="survey-radio-dot"></span>比较容易</div>
+        <div class="survey-radio-item" onclick="setRadio('q2',this)"><span class="survey-radio-dot"></span>一般</div>
+        <div class="survey-radio-item" onclick="setRadio('q2',this)"><span class="survey-radio-dot"></span>比较困难</div>
+        <div class="survey-radio-item" onclick="setRadio('q2',this)"><span class="survey-radio-dot"></span>非常困难</div>
+      </div>
+    </div>
+
+    <!-- Q3: 讲解质量 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">3</span> 讲师的表达和节奏如何？</div>
+      <div class="survey-stars" id="q3-stars">
+        <span class="survey-star" data-val="1" onclick="setStar('q3',1)">⭐</span>
+        <span class="survey-star" data-val="2" onclick="setStar('q3',2)">⭐</span>
+        <span class="survey-star" data-val="3" onclick="setStar('q3',3)">⭐</span>
+        <span class="survey-star" data-val="4" onclick="setStar('q3',4)">⭐</span>
+        <span class="survey-star" data-val="5" onclick="setStar('q3',5)">⭐</span>
+      </div>
+      <span class="survey-star-label" id="q3-label"></span>
+    </div>
+
+    <!-- Q4: 实用性 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">4</span> 今天学到的内容对您的工作有帮助吗？</div>
+      <div class="survey-radio-group" id="q4-group">
+        <div class="survey-radio-item" onclick="setRadio('q4',this)"><span class="survey-radio-dot"></span>非常有帮助</div>
+        <div class="survey-radio-item" onclick="setRadio('q4',this)"><span class="survey-radio-dot"></span>比较有帮助</div>
+        <div class="survey-radio-item" onclick="setRadio('q4',this)"><span class="survey-radio-dot"></span>一般</div>
+        <div class="survey-radio-item" onclick="setRadio('q4',this)"><span class="survey-radio-dot"></span>帮助不大</div>
+        <div class="survey-radio-item" onclick="setRadio('q4',this)"><span class="survey-radio-dot"></span>完全没帮助</div>
+      </div>
+    </div>
+
+    <!-- Q5: 最大收获 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">5</span> 您今天最大的收获是什么？（可多选）</div>
+      <div class="survey-check-group" id="q5-group">
+        <div class="survey-check-item" onclick="toggleCheck('q5',this)"><span class="survey-check-box"></span>理解了大模型本质</div>
+        <div class="survey-check-item" onclick="toggleCheck('q5',this)"><span class="survey-check-box"></span>知道了Agent能做什么</div>
+        <div class="survey-check-item" onclick="toggleCheck('q5',this)"><span class="survey-check-box"></span>看到了真实案例</div>
+        <div class="survey-check-item" onclick="toggleCheck('q5',this)"><span class="survey-check-box"></span>学会了搭建第一个Agent</div>
+        <div class="survey-check-item" onclick="toggleCheck('q5',this)"><span class="survey-check-box"></span>认识了AI硬件产业链</div>
+        <div class="survey-check-item" onclick="toggleCheck('q5',this)"><span class="survey-check-box"></span>其他</div>
+      </div>
+    </div>
+
+    <!-- Q6: 认知变化 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">6</span> 听完后，您对"AI Agent"的理解有变化吗？</div>
+      <div class="survey-radio-group" id="q6-group">
+        <div class="survey-radio-item" onclick="setRadio('q6',this)"><span class="survey-radio-dot"></span>颠覆了认知</div>
+        <div class="survey-radio-item" onclick="setRadio('q6',this)"><span class="survey-radio-dot"></span>加深了理解</div>
+        <div class="survey-radio-item" onclick="setRadio('q6',this)"><span class="survey-radio-dot"></span>没什么变化</div>
+      </div>
+    </div>
+
+    <!-- Q7: 动手实验 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">7</span> 动手搭建Agent的环节体验如何？</div>
+      <div class="survey-stars" id="q7-stars">
+        <span class="survey-star" data-val="1" onclick="setStar('q7',1)">⭐</span>
+        <span class="survey-star" data-val="2" onclick="setStar('q7',2)">⭐</span>
+        <span class="survey-star" data-val="3" onclick="setStar('q7',3)">⭐</span>
+        <span class="survey-star" data-val="4" onclick="setStar('q7',4)">⭐</span>
+        <span class="survey-star" data-val="5" onclick="setStar('q7',5)">⭐</span>
+      </div>
+      <span class="survey-star-label" id="q7-label"></span>
+    </div>
+
+    <!-- Q8: 推荐意愿 NPS -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">8</span> 您会向朋友或同事推荐这类课程吗？（0-10分）</div>
+      <div class="survey-nps-wrap" id="q8-nps">
+        <div class="survey-nps-btns">
+          <span class="survey-nps-btn" data-val="0" onclick="setNPS('q8',0)">0</span><span class="survey-nps-btn" data-val="1" onclick="setNPS('q8',1)">1</span><span class="survey-nps-btn" data-val="2" onclick="setNPS('q8',2)">2</span><span class="survey-nps-btn" data-val="3" onclick="setNPS('q8',3)">3</span><span class="survey-nps-btn" data-val="4" onclick="setNPS('q8',4)">4</span><span class="survey-nps-btn" data-val="5" onclick="setNPS('q8',5)">5</span><span class="survey-nps-btn" data-val="6" onclick="setNPS('q8',6)">6</span><span class="survey-nps-btn" data-val="7" onclick="setNPS('q8',7)">7</span><span class="survey-nps-btn" data-val="8" onclick="setNPS('q8',8)">8</span><span class="survey-nps-btn" data-val="9" onclick="setNPS('q8',9)">9</span><span class="survey-nps-btn" data-val="10" onclick="setNPS('q8',10)">10</span>
+        </div>
+        <div class="survey-nps-labels"><span>完全不推荐 0</span><span>非常推荐 10</span></div>
+      </div>
+    </div>
+
+    <!-- Q9: 改进建议 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">9</span> 您觉得哪些地方可以改进？（可多选）</div>
+      <div class="survey-check-group" id="q9-group">
+        <div class="survey-check-item" onclick="toggleCheck('q9',this)"><span class="survey-check-box"></span>内容太深</div>
+        <div class="survey-check-item" onclick="toggleCheck('q9',this)"><span class="survey-check-box"></span>内容太浅</div>
+        <div class="survey-check-item" onclick="toggleCheck('q9',this)"><span class="survey-check-box"></span>时间太紧</div>
+        <div class="survey-check-item" onclick="toggleCheck('q9',this)"><span class="survey-check-box"></span>案例不够</div>
+        <div class="survey-check-item" onclick="toggleCheck('q9',this)"><span class="survey-check-box"></span>互动太少</div>
+        <div class="survey-check-item" onclick="toggleCheck('q9',this)"><span class="survey-check-box"></span>讲得很好不需要改进</div>
+      </div>
+    </div>
+
+    <!-- Q10: 还想了解 -->
+    <div class="survey-q">
+      <div class="survey-q-label"><span class="survey-q-num">10</span> 您还想深入了解哪些AI话题？</div>
+      <textarea class="survey-textarea" id="q10-input" placeholder="请输入您感兴趣的话题，例如：AI在企业中的实际部署、多Agent协作、AI安全与隐私..."></textarea>
+    </div>
+
+    <div class="survey-submit-wrap">
+      <button class="survey-submit-btn" id="surveySubmitBtn" onclick="submitSurvey()">✅ 提交反馈</button>
+    </div>
+
+    <div class="survey-stats-link"><a onclick="showStats()">📊 查看统计</a></div>
+  </div>
+
+  <!-- Thank You -->
+  <div class="survey-thanks" id="surveyThanks">
+    <div class="thanks-emoji">🎉</div>
+    <h3>感谢反馈！</h3>
+    <p>您的意见对我们非常重要</p>
+    <div class="survey-stats-link" style="margin-top:20px"><a onclick="showStats()">📊 查看统计</a></div>
+  </div>
+
+  <!-- Stats View -->
+  <div id="surveyStats" style="display:none">
+    <h2 style="margin-bottom:20px">📊 反馈统计</h2>
+    <div id="statsContent"><p style="text-align:center;color:#999;padding:40px">暂无反馈数据，请先提交问卷。</p></div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn-red" onclick="backToSurvey()">← 返回问卷</button>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- SCRIPTS -->
 <script>
 // Panel switching (Tab nav)
@@ -1776,6 +2028,319 @@ document.addEventListener('keydown', function(e) {
 
 // Build episode list on load
 comicBuildEpList();
+
+// ===== SURVEY SYSTEM =====
+var surveyData = {}; // { q1: 3, q2: '比较容易', q3: 4, ... }
+
+// Star rating
+var starLabels = {1:'很差',2:'较差',3:'一般',4:'较好',5:'非常好'};
+function setStar(q, val) {
+  surveyData[q] = val;
+  var container = document.getElementById(q+'-stars');
+  var stars = container.querySelectorAll('.survey-star');
+  for (var i = 0; i < stars.length; i++) {
+    stars[i].classList.toggle('active', i < val);
+  }
+  var label = document.getElementById(q+'-label');
+  if (label) label.textContent = starLabels[val] || '';
+}
+
+// Hover effect for stars
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.survey-stars').forEach(function(group) {
+    group.addEventListener('mouseover', function(e) {
+      var star = e.target.closest('.survey-star');
+      if (!star) return;
+      var val = parseInt(star.getAttribute('data-val'));
+      var stars = group.querySelectorAll('.survey-star');
+      for (var i = 0; i < stars.length; i++) {
+        stars[i].classList.toggle('hover', i < val);
+      }
+    });
+    group.addEventListener('mouseleave', function() {
+      group.querySelectorAll('.survey-star').forEach(function(s) { s.classList.remove('hover'); });
+    });
+  });
+});
+
+// Radio
+function setRadio(q, el) {
+  var group = el.parentElement;
+  var items = group.querySelectorAll('.survey-radio-item');
+  var val = null;
+  for (var i = 0; i < items.length; i++) {
+    items[i].classList.remove('selected');
+    if (items[i] === el) { items[i].classList.add('selected'); val = el.textContent.trim(); }
+  }
+  surveyData[q] = val;
+}
+
+// Checkbox
+function toggleCheck(q, el) {
+  el.classList.toggle('checked');
+  var group = el.parentElement;
+  var checked = [];
+  group.querySelectorAll('.survey-check-item.checked').forEach(function(item) {
+    checked.push(item.textContent.trim());
+  });
+  surveyData[q] = checked;
+}
+
+// NPS
+function setNPS(q, val) {
+  surveyData[q] = val;
+  var wrap = document.getElementById(q+'-nps');
+  var btns = wrap.querySelectorAll('.survey-nps-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('selected', parseInt(btns[i].getAttribute('data-val')) === val);
+  }
+}
+
+// Open/Close survey
+function openSurvey() {
+  document.getElementById('surveyOverlay').classList.add('active');
+  document.getElementById('surveyForm').style.display = 'block';
+  document.getElementById('surveyThanks').classList.remove('active');
+  document.getElementById('surveyStats').style.display = 'none';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSurvey() {
+  document.getElementById('surveyOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Submit
+function submitSurvey() {
+  // Validate required fields
+  var required = ['q1','q2','q3','q4','q5','q6','q7','q8'];
+  for (var i = 0; i < required.length; i++) {
+    var q = required[i];
+    if (surveyData[q] === undefined || surveyData[q] === null || (Array.isArray(surveyData[q]) && surveyData[q].length === 0)) {
+      alert('请完成第 ' + (i+1) + ' 题后再提交！');
+      return;
+    }
+  }
+
+  // Get Q10 text
+  var q10val = document.getElementById('q10-input').value.trim();
+  surveyData['q10'] = q10val;
+
+  // Build record
+  var record = {
+    timestamp: new Date().toISOString(),
+    q1: surveyData.q1,
+    q2: surveyData.q2,
+    q3: surveyData.q3,
+    q4: surveyData.q4,
+    q5: surveyData.q5,
+    q6: surveyData.q6,
+    q7: surveyData.q7,
+    q8: surveyData.q8,
+    q9: surveyData.q9 || [],
+    q10: surveyData.q10
+  };
+
+  // Save to localStorage
+  var storageKey = 'ai-lecture-survey-responses';
+  var responses = [];
+  try {
+    var existing = localStorage.getItem(storageKey);
+    if (existing) responses = JSON.parse(existing);
+    responses.push(record);
+    localStorage.setItem(storageKey, JSON.stringify(responses));
+  } catch(e) {
+    console.error('Failed to save survey:', e);
+    alert('保存失败，请重试。');
+    return;
+  }
+
+  // Show thanks
+  document.getElementById('surveyForm').style.display = 'none';
+  document.getElementById('surveyThanks').classList.add('active');
+  document.getElementById('surveySubmitBtn').disabled = true;
+
+  // Auto close after 2.5s
+  setTimeout(function() {
+    closeSurvey();
+    // Reset form
+    resetSurveyForm();
+  }, 2500);
+}
+
+function resetSurveyForm() {
+  surveyData = {};
+  document.getElementById('surveyForm').style.display = 'block';
+  document.getElementById('surveyThanks').classList.remove('active');
+  document.getElementById('surveyStats').style.display = 'none';
+  document.getElementById('surveySubmitBtn').disabled = false;
+  document.getElementById('q10-input').value = '';
+
+  // Reset stars
+  document.querySelectorAll('.survey-stars').forEach(function(g) {
+    g.querySelectorAll('.survey-star').forEach(function(s) { s.classList.remove('active'); });
+  });
+  document.querySelectorAll('.survey-star-label').forEach(function(l) { l.textContent = ''; });
+
+  // Reset radios
+  document.querySelectorAll('.survey-radio-item.selected').forEach(function(r) { r.classList.remove('selected'); });
+
+  // Reset checkboxes
+  document.querySelectorAll('.survey-check-item.checked').forEach(function(c) { c.classList.remove('checked'); });
+
+  // Reset NPS
+  document.querySelectorAll('.survey-nps-btn.selected').forEach(function(b) { b.classList.remove('selected'); });
+}
+
+// Stats
+function showStats() {
+  var storageKey = 'ai-lecture-survey-responses';
+  var responses = [];
+  try {
+    var existing = localStorage.getItem(storageKey);
+    if (existing) responses = JSON.parse(existing);
+  } catch(e) {}
+
+  document.getElementById('surveyForm').style.display = 'none';
+  document.getElementById('surveyThanks').classList.remove('active');
+  document.getElementById('surveyStats').style.display = 'block';
+
+  var container = document.getElementById('statsContent');
+  if (responses.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#999;padding:40px">暂无反馈数据，请先提交问卷。</p>';
+    return;
+  }
+
+  var n = responses.length;
+
+  // Helper: average
+  function avg(arr) { var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return (s/arr.length).toFixed(1); }
+
+  // Helper: distribution bars
+  function distBars(data, labels) {
+    var counts = {};
+    for (var i=0;i<labels.length;i++) counts[labels[i]] = 0;
+    for (var i=0;i<data.length;i++) {
+      var v = data[i];
+      if (counts.hasOwnProperty(v)) counts[v]++;
+    }
+    var html = '';
+    for (var i=0;i<labels.length;i++) {
+      var lbl = labels[i];
+      var cnt = counts[lbl] || 0;
+      var pct = n > 0 ? (cnt/n*100).toFixed(1) : 0;
+      html += '<div class="survey-bar-wrap"><div class="survey-bar-label"><span>'+lbl+'</span><span>'+cnt+'人 ('+pct+'%)</span></div><div class="survey-bar-outer"><div class="survey-bar-inner" style="width:'+pct+'%"></div></div></div>';
+    }
+    return html;
+  }
+
+  // Helper: multiselect distribution
+  function multiDist(data, labels) {
+    var counts = {};
+    for (var i=0;i<labels.length;i++) counts[labels[i]] = 0;
+    for (var i=0;i<data.length;i++) {
+      var arr = data[i] || [];
+      for (var j=0;j<arr.length;j++) {
+        if (counts.hasOwnProperty(arr[j])) counts[arr[j]]++;
+        else counts[arr[j]] = 1;
+      }
+    }
+    var html = '';
+    var allLabels = Object.keys(counts).sort(function(a,b){return counts[b]-counts[a];});
+    for (var i=0;i<allLabels.length;i++) {
+      var lbl = allLabels[i];
+      var cnt = counts[lbl];
+      var pct = n > 0 ? (cnt/n*100).toFixed(1) : 0;
+      html += '<div class="survey-bar-wrap"><div class="survey-bar-label"><span>'+lbl+'</span><span>'+cnt+'人 ('+pct+'%)</span></div><div class="survey-bar-outer"><div class="survey-bar-inner" style="width:'+pct+'%"></div></div></div>';
+    }
+    return html;
+  }
+
+  // Q1, Q3, Q7: star ratings
+  var q1avg = avg(responses.map(function(r){return r.q1;}));
+  var q3avg = avg(responses.map(function(r){return r.q3;}));
+  var q7avg = avg(responses.map(function(r){return r.q7;}));
+
+  // Q8: NPS
+  var npsVals = responses.map(function(r){return r.q8;});
+  var npsAvg = avg(npsVals);
+  var promoters = npsVals.filter(function(v){return v>=9;}).length;
+  var detractors = npsVals.filter(function(v){return v<=6;}).length;
+  var npsScore = ((promoters - detractors) / n * 100).toFixed(0);
+
+  // Q2 distribution
+  var q2Labels = ['非常容易','比较容易','一般','比较困难','非常困难'];
+  var q4Labels = ['非常有帮助','比较有帮助','一般','帮助不大','完全没帮助'];
+  var q6Labels = ['颠覆了认知','加深了理解','没什么变化'];
+
+  var html = '';
+  html += '<div class="survey-stat-row">';
+  html += '<div class="survey-stat-box"><div class="ssb-val">'+n+'</div><div class="ssb-label">总反馈数</div></div>';
+  html += '<div class="survey-stat-box"><div class="ssb-val">'+q1avg+'</div><div class="ssb-label">整体满意度（均分）</div></div>';
+  html += '<div class="survey-stat-box"><div class="ssb-val">'+q3avg+'</div><div class="ssb-label">讲解质量（均分）</div></div>';
+  html += '</div>';
+
+  // NPS
+  var npsColor = npsScore >= 50 ? 'nps-green' : npsScore >= 0 ? 'nps-yellow' : 'nps-red';
+  html += '<div class="survey-nps-score"><div class="nps-big '+npsColor+'">'+npsScore+'</div><div class="nps-label">NPS 净推荐值</div><div class="nps-note">推荐者('+promoters+') · 被动者('+(n-promoters-detractors)+') · 贬损者('+detractors+')</div></div>';
+
+  // Q1 distribution
+  var q1Labels = ['1星','2星','3星','4星','5星'];
+  html += '<div class="survey-stats-section"><h4>⭐ 整体满意度分布</h4>';
+  var q1dist = {};
+  for (var i=0;i<responses.length;i++) { var k=''+responses[i].q1+'星'; q1dist[k]=(q1dist[k]||0)+1; }
+  for (var i=0;i<q1Labels.length;i++) {
+    var l=q1Labels[i]; var c=q1dist[l]||0; var p=n>0?(c/n*100).toFixed(1):0;
+    html += '<div class="survey-bar-wrap"><div class="survey-bar-label"><span>'+l+'</span><span>'+c+'人 ('+p+'%)</span></div><div class="survey-bar-outer"><div class="survey-bar-inner" style="width:'+p+'%"></div></div></div>';
+  }
+  html += '</div>';
+
+  // Q2
+  html += '<div class="survey-stats-section"><h4>📖 内容理解</h4>'+distBars(responses.map(function(r){return r.q2;}),q2Labels)+'</div>';
+
+  // Q3 distribution
+  html += '<div class="survey-stats-section"><h4>🎤 讲解质量分布</h4>';
+  var q3dist = {};
+  for (var i=0;i<responses.length;i++) { var k=''+responses[i].q3+'星'; q3dist[k]=(q3dist[k]||0)+1; }
+  for (var i=0;i<q1Labels.length;i++) {
+    var l=q1Labels[i]; var c=q3dist[l]||0; var p=n>0?(c/n*100).toFixed(1):0;
+    html += '<div class="survey-bar-wrap"><div class="survey-bar-label"><span>'+l+'</span><span>'+c+'人 ('+p+'%)</span></div><div class="survey-bar-outer"><div class="survey-bar-inner" style="width:'+p+'%"></div></div></div>';
+  }
+  html += '</div>';
+
+  // Q4
+  html += '<div class="survey-stats-section"><h4>💼 实用性评价</h4>'+distBars(responses.map(function(r){return r.q4;}),q4Labels)+'</div>';
+
+  // Q5 multiselect
+  html += '<div class="survey-stats-section"><h4>🎯 最大收获（多选）</h4>'+multiDist(responses.map(function(r){return r.q5;}),['理解了大模型本质','知道了Agent能做什么','看到了真实案例','学会了搭建第一个Agent','认识了AI硬件产业链','其他'])+'</div>';
+
+  // Q6
+  html += '<div class="survey-stats-section"><h4>💡 认知变化</h4>'+distBars(responses.map(function(r){return r.q6;}),q6Labels)+'</div>';
+
+  // Q7
+  html += '<div class="survey-stats-section"><h4>🛠️ 动手实验体验</h4><div class="survey-stat-box"><div class="ssb-val">'+q7avg+'</div><div class="ssb-label">均分 / 5</div></div></div>';
+
+  // Q9 multiselect
+  html += '<div class="survey-stats-section"><h4>🔧 改进建议（多选）</h4>'+multiDist(responses.map(function(r){return r.q9;}),['内容太深','内容太浅','时间太紧','案例不够','互动太少','讲得很好不需要改进'])+'</div>';
+
+  // Q10 raw responses
+  var q10List = responses.map(function(r){return r.q10;}).filter(function(v){return v && v.trim();});
+  if (q10List.length > 0) {
+    html += '<div class="survey-stats-section"><h4>💬 还想了解的话题</h4>';
+    for (var i=0;i<q10List.length;i++) {
+      html += '<div style="background:#faf8f4;border-radius:8px;padding:10px 14px;margin-bottom:6px;font-size:14px;color:#444">'+q10List[i]+'</div>';
+    }
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+}
+
+function backToSurvey() {
+  document.getElementById('surveyStats').style.display = 'none';
+  document.getElementById('surveyThanks').classList.remove('active');
+  document.getElementById('surveyForm').style.display = 'block';
+}
 </script>
 
 </body>
