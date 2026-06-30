@@ -368,8 +368,22 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 
 /* Image stage */
 .comic-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:200px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.comic-stage-img{width:100%;max-height:75vh;object-fit:contain;display:block;border-radius:8px;transition:opacity .2s;background:rgba(255,255,255,0.02)}
-.comic-stage-img.loading{opacity:0.4}
+.comic-img-container{position:relative;display:grid;width:100%;border-radius:8px;overflow:hidden}
+.comic-img-container>*{grid-area:1/1}
+.comic-stage-img{width:100%;max-height:75vh;object-fit:contain;display:block;border-radius:8px;background:rgba(255,255,255,0.02);transition:opacity .25s ease}
+.comic-img-front{opacity:1;z-index:2}
+.comic-img-back{opacity:0;z-index:1}
+/* Placeholder blur for loading state */
+.comic-stage-img.comic-img-placeholder{filter:blur(20px);transform:scale(1.05)}
+/* Spinner — pure CSS, no external resources */
+.comic-spinner{position:absolute;top:50%;left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;z-index:10;pointer-events:none;display:none}
+.comic-spinner::before{content:'';display:block;width:36px;height:36px;border:3px solid rgba(255,255,255,0.1);border-top-color:#c0392b;border-radius:50%;animation:comic-spin .7s linear infinite}
+@keyframes comic-spin{to{transform:rotate(360deg)}}
+/* Slow-connection hint */
+.comic-slow-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#ccc;padding:7px 18px;border-radius:20px;font-size:13px;z-index:12;display:none;white-space:nowrap;pointer-events:none}
+/* Retry button */
+.comic-retry-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:15;display:none;padding:10px 22px;border-radius:20px;border:1.5px solid rgba(192,57,43,0.5);background:rgba(192,57,43,0.15);color:#e74c3c;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}
+.comic-retry-btn:hover{background:rgba(192,57,43,0.3);border-color:#c0392b;color:#fff}
 
 /* Nav arrows */
 .comic-nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);color:#eee;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;z-index:5;padding:0;line-height:1;backdrop-filter:blur(4px)}
@@ -1309,7 +1323,13 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   <!-- Image stage -->
   <div class="comic-stage" id="comic-stage">
     <button class="comic-nav-arrow comic-nav-prev" id="comic-prev" onclick="comicNav(-1)" disabled>‹</button>
-    <img class="comic-stage-img" id="comic-img" src="" alt="漫画">
+    <div class="comic-img-container" id="comic-img-container">
+      <img class="comic-stage-img comic-img-front" id="comic-img-front" src="" alt="漫画">
+      <img class="comic-stage-img comic-img-back" id="comic-img-back" src="" alt="漫画">
+      <div class="comic-spinner" id="comic-spinner"></div>
+      <div class="comic-slow-hint" id="comic-slow-hint">加载较慢，请稍候…</div>
+      <button class="comic-retry-btn" id="comic-retry-btn" onclick="comicRetry()">🔄 重新加载</button>
+    </div>
     <button class="comic-nav-arrow comic-nav-next" id="comic-next" onclick="comicNav(1)">›</button>
   </div>
 
@@ -1457,7 +1477,7 @@ mascot.style.opacity='0';
 mascot.style.pointerEvents='none';
 mascot.style.transition='opacity .3s';
 
-// ===== COMIC READER =====
+// ===== COMIC READER (OPTIMIZED) =====
 var COMIC_EPS = [
   {n:1, title:"凌晨三点的账单", sub:"DeepSeek 账单跳涨40倍 · 谁在烧我的钱？"},
   {n:2, title:"它有名字", sub:"僵尸进程跑了36天 · 没人告诉它停下来"},
@@ -1471,7 +1491,10 @@ var COMIC_EPS = [
 var COMIC_PANELS_PER_EP = 12;
 var comicCurrentEp = 0;
 var comicCurrentPage = 0;
-var comicPreloadImg = null;
+var comicPreloadQueue = [];    // array of {epIdx, page, img}
+var comicActiveSlot = 'front'; // 'front' or 'back' — which img is currently visible
+var comicLoadTimer = null;     // timeout for slow-connection warning
+var comicCurrentSrc = '';      // track what we're currently loading to avoid double-loads
 
 function comicBuildEpList() {
   var grid = document.getElementById('comic-ep-grid');
@@ -1497,13 +1520,32 @@ function comicBuildEpList() {
 function comicOpenEp(n) {
   comicCurrentEp = n - 1;
   comicCurrentPage = 0;
+  comicActiveSlot = 'front';
+  comicCurrentSrc = '';
   var ep = COMIC_EPS[comicCurrentEp];
   document.getElementById('comic-ep-list').style.display = 'none';
   document.getElementById('comic-reader').style.display = 'block';
   document.getElementById('cr-ep-label').textContent = '第' + ep.n + '集';
   document.getElementById('cr-title').textContent = ep.title;
   document.getElementById('cr-sub').textContent = ep.sub;
+
+  // Reset both images
+  var front = document.getElementById('comic-img-front');
+  var back = document.getElementById('comic-img-back');
+  front.src = '';
+  back.src = '';
+  front.classList.remove('comic-img-placeholder');
+  back.classList.remove('comic-img-placeholder');
+  front.style.opacity = '1';
+  back.style.opacity = '0';
+  front.classList.add('comic-img-front');
+  front.classList.remove('comic-img-back');
+  back.classList.add('comic-img-back');
+  back.classList.remove('comic-img-front');
+
   comicBuildDots();
+  // Preload first 3 pages before showing page 0
+  comicPreloadEp();
   comicGoToPage(0);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -1524,43 +1566,110 @@ function comicGetSrc(epIdx, page) {
 }
 
 function comicGoToPage(page) {
-  var ep = COMIC_EPS[comicCurrentEp];
-  comicCurrentPage = Math.max(0, Math.min(page, COMIC_PANELS_PER_EP - 1));
+  var total = COMIC_PANELS_PER_EP;
+  comicCurrentPage = Math.max(0, Math.min(page, total - 1));
   var src = comicGetSrc(comicCurrentEp, comicCurrentPage);
-  var img = document.getElementById('comic-img');
-  
-  // Show loading state
-  img.classList.add('loading');
-  img.src = src;
-  img.onload = function() {
-    img.classList.remove('loading');
+
+  // Already showing this page?
+  if (src === comicCurrentSrc) return;
+  comicCurrentSrc = src;
+
+  // Determine which slot to load into (the hidden one)
+  var loadSlot = comicActiveSlot === 'front' ? 'back' : 'front';
+  var loadImg = document.getElementById('comic-img-' + loadSlot);
+  var activeImg = document.getElementById('comic-img-' + comicActiveSlot);
+
+  // Cancel any pending slow-connection timer
+  comicClearLoadTimer();
+  // Hide retry button
+  document.getElementById('comic-retry-btn').style.display = 'none';
+
+  // Show spinner
+  document.getElementById('comic-spinner').style.display = 'block';
+
+  // Set placeholder blur on the loading image (so old image stays clear)
+  loadImg.classList.add('comic-img-placeholder');
+
+  // Start 5-second slow-connection timer
+  comicLoadTimer = setTimeout(function() {
+    document.getElementById('comic-slow-hint').style.display = 'block';
+  }, 5000);
+
+  // Set up onload handler BEFORE setting src (some browsers fire onload from cache)
+  var handled = false;
+  loadImg.onload = function() {
+    if (handled) return;
+    handled = true;
+    comicClearLoadTimer();
+    document.getElementById('comic-slow-hint').style.display = 'none';
+    loadImg.classList.remove('comic-img-placeholder');
+
+    // Fade-out old, fade-in new simultaneously
+    activeImg.style.opacity = '0';
+    loadImg.style.opacity = '1';
+
+    // After transition completes, hide spinner and swap slots
+    setTimeout(function() {
+      document.getElementById('comic-spinner').style.display = 'none';
+      // Swap which slot is "front"
+      comicActiveSlot = loadSlot;
+      activeImg.classList.remove('comic-img-front');
+      activeImg.classList.add('comic-img-back');
+      loadImg.classList.remove('comic-img-back');
+      loadImg.classList.add('comic-img-front');
+    }, 260); // slightly longer than CSS transition (0.25s)
   };
-  img.onerror = function() {
-    img.classList.remove('loading');
+
+  loadImg.onerror = function() {
+    if (handled) return;
+    handled = true;
+    comicClearLoadTimer();
+    document.getElementById('comic-slow-hint').style.display = 'none';
+    document.getElementById('comic-spinner').style.display = 'none';
+    loadImg.classList.remove('comic-img-placeholder');
+    // Show retry button
+    document.getElementById('comic-retry-btn').style.display = 'block';
+    comicCurrentSrc = ''; // allow retry
   };
-  
+
+  loadImg.src = src;
   comicUpdateUI();
-  comicPreloadNext();
+  comicPreloadAhead();
+}
+
+function comicRetry() {
+  // Retry loading the current page
+  document.getElementById('comic-retry-btn').style.display = 'none';
+  var cur = comicCurrentSrc;
+  comicCurrentSrc = '';
+  comicGoToPage(comicCurrentPage);
+}
+
+function comicClearLoadTimer() {
+  if (comicLoadTimer) {
+    clearTimeout(comicLoadTimer);
+    comicLoadTimer = null;
+  }
 }
 
 function comicUpdateUI() {
   var page = comicCurrentPage;
   var total = COMIC_PANELS_PER_EP;
-  
+
   // Progress bar
   var pct = ((page + 1) / total * 100).toFixed(1);
   document.getElementById('comic-progress-fill').style.width = pct + '%';
   document.getElementById('comic-progress-text').textContent = (page + 1) + '/' + total;
-  
+
   // Arrow buttons
   document.getElementById('comic-prev').disabled = page === 0;
   document.getElementById('comic-next').disabled = page === total - 1;
-  
+
   // Bottom nav
   document.getElementById('comic-bottom-prev').disabled = page === 0;
   document.getElementById('comic-bottom-next').disabled = page === total - 1;
   document.getElementById('comic-bottom-info').textContent = '第 ' + (page + 1) + ' / ' + total + ' 页';
-  
+
   // Dots
   var dots = document.querySelectorAll('#comic-dots .comic-dot');
   for (var i = 0; i < dots.length; i++) {
@@ -1584,20 +1693,57 @@ function comicNav(dir) {
   }
 }
 
-function comicPreloadNext() {
+// --- Preload: queue of up to 3 images ---
+function comicPreloadEp() {
   comicCancelPreload();
-  var nextPage = comicCurrentPage + 1;
-  if (nextPage < COMIC_PANELS_PER_EP) {
-    comicPreloadImg = new Image();
-    comicPreloadImg.src = comicGetSrc(comicCurrentEp, nextPage);
+  // Preload pages 0, 1, 2 on episode open
+  for (var p = 0; p < 3 && p < COMIC_PANELS_PER_EP; p++) {
+    comicQueuePreload(comicCurrentEp, p);
   }
 }
 
-function comicCancelPreload() {
-  if (comicPreloadImg) {
-    comicPreloadImg.src = '';
-    comicPreloadImg = null;
+function comicPreloadAhead() {
+  // Remove items already passed or current
+  comicPreloadQueue = comicPreloadQueue.filter(function(item) {
+    return item.page > comicCurrentPage && item.epIdx === comicCurrentEp;
+  });
+
+  // Fill queue with next 2 pages (current+1 and current+2)
+  var needed = 2;
+  var next = comicCurrentPage + 1;
+  while (comicPreloadQueue.length < needed && next < COMIC_PANELS_PER_EP) {
+    // Avoid duplicates
+    var exists = comicPreloadQueue.some(function(item) { return item.page === next; });
+    if (!exists) {
+      comicQueuePreload(comicCurrentEp, next);
+    }
+    next++;
   }
+
+  // Trim excess
+  while (comicPreloadQueue.length > needed) {
+    var removed = comicPreloadQueue.pop();
+    if (removed && removed.img) removed.img.src = '';
+  }
+}
+
+function comicQueuePreload(epIdx, page) {
+  var img = new Image();
+  img.src = comicGetSrc(epIdx, page);
+  comicPreloadQueue.push({epIdx: epIdx, page: page, img: img});
+}
+
+function comicCancelPreload() {
+  for (var i = 0; i < comicPreloadQueue.length; i++) {
+    if (comicPreloadQueue[i].img) {
+      comicPreloadQueue[i].img.src = '';
+    }
+  }
+  comicPreloadQueue = [];
+  comicClearLoadTimer();
+  document.getElementById('comic-spinner').style.display = 'none';
+  document.getElementById('comic-slow-hint').style.display = 'none';
+  document.getElementById('comic-retry-btn').style.display = 'none';
 }
 
 // Keyboard navigation
