@@ -331,6 +331,71 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 .hero-illustration{width:100%;aspect-ratio:3/2;position:relative;overflow:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column}
 .hero-illustration .big-emoji{font-size:clamp(48px,10vw,96px);margin-bottom:8px}
 .hero-illustration .label{font-size:clamp(11px,2vw,14px);color:#fff;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,0.3);text-align:center;padding:0 10px}
+
+/* ===== COMIC READER STYLES ===== */
+.comic-ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.comic-ep-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
+.comic-ep-card:hover{transform:translateY(-4px);border-color:rgba(192,57,43,0.5);box-shadow:0 8px 30px rgba(192,57,43,0.15)}
+.comic-ep-cover{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:rgba(255,255,255,0.03)}
+.comic-ep-info{padding:14px 16px}
+.comic-ep-num{font-size:11px;font-weight:800;color:#c0392b;letter-spacing:1px;margin-bottom:4px}
+.comic-ep-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3}
+.comic-ep-sub{font-size:12px;color:#888;line-height:1.4}
+.comic-ep-count{font-size:11px;color:#666;margin-top:6px}
+
+/* Reader */
+.comic-reader{max-width:680px;margin:0 auto}
+.comic-reader-back{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;color:#aaa;font-size:13px;cursor:pointer;transition:.2s;margin-bottom:20px}
+.comic-reader-back:hover{background:rgba(255,255,255,0.1);color:#fff}
+.comic-reader-header{text-align:center;margin-bottom:20px}
+.comic-reader-header .cr-ep-label{font-size:11px;font-weight:800;color:#c0392b;letter-spacing:2px;margin-bottom:6px}
+.comic-reader-header .cr-title{font-family:'ZCOOL KuaiLe',sans-serif;font-size:24px;color:#fff;margin-bottom:4px}
+.comic-reader-header .cr-sub{font-size:13px;color:#888}
+
+/* Image stage */
+.comic-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:200px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.comic-stage-img{width:100%;max-height:75vh;object-fit:contain;display:block;border-radius:8px;transition:opacity .2s;background:rgba(255,255,255,0.02)}
+.comic-stage-img.loading{opacity:0.4}
+
+/* Nav arrows */
+.comic-nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);color:#eee;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;z-index:5;padding:0;line-height:1;backdrop-filter:blur(4px)}
+.comic-nav-arrow:hover{background:rgba(192,57,43,0.2);border-color:rgba(192,57,43,0.4);color:#fff;transform:translateY(-50%) scale(1.08)}
+.comic-nav-arrow:active{transform:translateY(-50%) scale(0.95)}
+.comic-nav-prev{left:8px}
+.comic-nav-next{right:8px}
+.comic-nav-arrow:disabled{opacity:0.25;cursor:default;pointer-events:none}
+
+/* Progress bar */
+.comic-progress-wrap{display:flex;align-items:center;gap:10px;margin-top:16px;padding:0 4px}
+.comic-progress-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.comic-progress-fill{height:100%;background:#c0392b;border-radius:2px;transition:width .3s}
+.comic-progress-text{font-size:12px;color:#888;white-space:nowrap;min-width:36px;text-align:right;font-weight:600}
+
+/* Page indicator dots */
+.comic-dots{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:8px;padding:0 4px}
+.comic-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.15);transition:.2s;border:none;padding:0;cursor:pointer}
+.comic-dot.active{background:#c0392b;width:14px;border-radius:3px}
+
+/* Bottom nav */
+.comic-bottom-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:12px 16px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.06);border-radius:12px}
+.comic-bottom-nav button{padding:8px 20px;border-radius:20px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#ccc;font-size:13px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:4px}
+.comic-bottom-nav button:hover{background:rgba(192,57,43,0.15);border-color:rgba(192,57,43,0.3);color:#fff}
+.comic-bottom-nav button:disabled{opacity:0.3;cursor:default;pointer-events:none}
+.comic-bottom-nav .cb-page-info{font-size:12px;color:#888}
+
+/* Keyboard hint */
+.comic-key-hint{text-align:center;margin-top:12px;font-size:11px;color:#555}
+.comic-key-hint kbd{display:inline-block;padding:1px 6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:3px;font-size:10px;margin:0 2px}
+
+/* Mobile */
+@media(max-width:600px){
+  .comic-ep-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .comic-nav-arrow{width:36px;height:36px;font-size:20px}
+  .comic-nav-prev{left:2px}
+  .comic-nav-next{right:2px}
+  .comic-ep-info{padding:10px 12px}
+  .comic-ep-title{font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -1204,200 +1269,55 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 </div><!-- /section-lecture -->
 
 <!-- ============================================= -->
-<!-- PANEL 3: 漫画连载                               -->
+<!-- PANEL 3: 漫画连载（分集分页阅读器）               -->
 <!-- ============================================= -->
 <div id="section-comic" class="section-panel">
 <div style="background:#1a1a2e;min-height:100vh;padding:80px 20px 40px">
 
-<!-- Comic Header -->
-<div style="max-width:700px;margin:0 auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:32px;color:#fff;margin-bottom:8px">🎨 第1集：凌晨三点的账单</div>
-  <div style="font-size:14px;color:#888">DeepSeek 账单跳涨40倍 · 谁在烧我的钱？</div>
+<!-- Episode List View -->
+<div id="comic-ep-list" style="max-width:860px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:32px">
+    <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:32px;color:#fff;margin-bottom:8px">🎨 AI军团养成记</div>
+    <div style="font-size:14px;color:#888">8集漫画连载 · 四个月AI军团真实故事</div>
+  </div>
+  <div class="comic-ep-grid" id="comic-ep-grid"></div>
 </div>
 
-<!-- Webtoon vertical scroll -->
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep1/ep1-01.jpeg" style="width:100%;display:block" alt="Panel 1" loading="lazy">
-  <img src="comic/ep1/ep1-02.jpeg" style="width:100%;display:block" alt="Panel 2" loading="lazy">
-  <img src="comic/ep1/ep1-03.jpeg" style="width:100%;display:block" alt="Panel 3" loading="lazy">
-  <img src="comic/ep1/ep1-04.jpeg" style="width:100%;display:block" alt="Panel 4" loading="lazy">
-  <img src="comic/ep1/ep1-05.jpeg" style="width:100%;display:block" alt="Panel 5" loading="lazy">
-  <img src="comic/ep1/ep1-06.jpeg" style="width:100%;display:block" alt="Panel 6" loading="lazy">
-  <img src="comic/ep1/ep1-07.jpeg" style="width:100%;display:block" alt="Panel 7" loading="lazy">
-  <img src="comic/ep1/ep1-08.jpeg" style="width:100%;display:block" alt="Panel 8" loading="lazy">
-  <img src="comic/ep1/ep1-09.jpeg" style="width:100%;display:block" alt="Panel 9" loading="lazy">
-  <img src="comic/ep1/ep1-10.jpeg" style="width:100%;display:block" alt="Panel 10" loading="lazy">
-  <img src="comic/ep1/ep1-11.jpeg" style="width:100%;display:block" alt="Panel 11" loading="lazy">
-  <img src="comic/ep1/ep1-12.jpeg" style="width:100%;display:block" alt="Panel 12" loading="lazy">
-</div>
+<!-- Reader View (hidden by default) -->
+<div id="comic-reader" class="comic-reader" style="display:none">
+  <button class="comic-reader-back" onclick="comicBackToList()">← 返回目录</button>
+  <div class="comic-reader-header">
+    <div class="cr-ep-label" id="cr-ep-label"></div>
+    <div class="cr-title" id="cr-title"></div>
+    <div class="cr-sub" id="cr-sub"></div>
+  </div>
 
-<!-- Chapter nav -->
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep2" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第1集 · 完 — ↓ 第2集《它有名字》</a>
-</div>
+  <!-- Image stage -->
+  <div class="comic-stage" id="comic-stage">
+    <button class="comic-nav-arrow comic-nav-prev" id="comic-prev" onclick="comicNav(-1)" disabled>‹</button>
+    <img class="comic-stage-img" id="comic-img" src="" alt="漫画">
+    <button class="comic-nav-arrow comic-nav-next" id="comic-next" onclick="comicNav(1)">›</button>
+  </div>
 
-<!-- ===== EPISODE 2 ===== -->
-<div id="ep2" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第2集：它有名字</div>
-  <div style="font-size:14px;color:#888">僵尸进程跑了36天 · 没人告诉它停下来</div>
-</div>
+  <!-- Progress bar -->
+  <div class="comic-progress-wrap">
+    <div class="comic-progress-bar"><div class="comic-progress-fill" id="comic-progress-fill" style="width:0%"></div></div>
+    <div class="comic-progress-text" id="comic-progress-text">1/12</div>
+  </div>
 
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep2/ep2-01.jpeg" style="width:100%;display:block" alt="Ep2 P1" loading="lazy">
-  <img src="comic/ep2/ep2-02.jpeg" style="width:100%;display:block" alt="Ep2 P2" loading="lazy">
-  <img src="comic/ep2/ep2-03.jpeg" style="width:100%;display:block" alt="Ep2 P3" loading="lazy">
-  <img src="comic/ep2/ep2-04.jpeg" style="width:100%;display:block" alt="Ep2 P4" loading="lazy">
-  <img src="comic/ep2/ep2-05.jpeg" style="width:100%;display:block" alt="Ep2 P5" loading="lazy">
-  <img src="comic/ep2/ep2-06.jpeg" style="width:100%;display:block" alt="Ep2 P6" loading="lazy">
-  <img src="comic/ep2/ep2-07.jpeg" style="width:100%;display:block" alt="Ep2 P7" loading="lazy">
-  <img src="comic/ep2/ep2-08.jpeg" style="width:100%;display:block" alt="Ep2 P8" loading="lazy">
-  <img src="comic/ep2/ep2-09.jpeg" style="width:100%;display:block" alt="Ep2 P9" loading="lazy">
-  <img src="comic/ep2/ep2-10.jpeg" style="width:100%;display:block" alt="Ep2 P10" loading="lazy">
-  <img src="comic/ep2/ep2-11.jpeg" style="width:100%;display:block" alt="Ep2 P11" loading="lazy">
-  <img src="comic/ep2/ep2-12.jpeg" style="width:100%;display:block" alt="Ep2 P12" loading="lazy">
-</div>
+  <!-- Page dots -->
+  <div class="comic-dots" id="comic-dots"></div>
 
-<!-- Chapter nav -->
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep3" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第2集 · 完 — ↓ 第3集《沉默的周日》</a>
-</div>
+  <!-- Bottom nav -->
+  <div class="comic-bottom-nav">
+    <button id="comic-bottom-prev" onclick="comicNav(-1)">‹ 上一页</button>
+    <span class="cb-page-info" id="comic-bottom-info">第 1 / 12 页</span>
+    <button id="comic-bottom-next" onclick="comicNav(1)">下一页 ›</button>
+  </div>
 
-<!-- ===== EPISODE 3 ===== -->
-<div id="ep3" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第3集：沉默的周日</div>
-  <div style="font-size:14px;color:#888">Token过期 · AI说推送了，但没人收到</div>
-</div>
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep3/ep3-01.jpeg" style="width:100%;display:block" alt="Ep3 P1" loading="lazy">
-  <img src="comic/ep3/ep3-02.jpeg" style="width:100%;display:block" alt="Ep3 P2" loading="lazy">
-  <img src="comic/ep3/ep3-03.jpeg" style="width:100%;display:block" alt="Ep3 P3" loading="lazy">
-  <img src="comic/ep3/ep3-04.jpeg" style="width:100%;display:block" alt="Ep3 P4" loading="lazy">
-  <img src="comic/ep3/ep3-05.jpeg" style="width:100%;display:block" alt="Ep3 P5" loading="lazy">
-  <img src="comic/ep3/ep3-06.jpeg" style="width:100%;display:block" alt="Ep3 P6" loading="lazy">
-  <img src="comic/ep3/ep3-07.jpeg" style="width:100%;display:block" alt="Ep3 P7" loading="lazy">
-  <img src="comic/ep3/ep3-08.jpeg" style="width:100%;display:block" alt="Ep3 P8" loading="lazy">
-  <img src="comic/ep3/ep3-09.jpeg" style="width:100%;display:block" alt="Ep3 P9" loading="lazy">
-  <img src="comic/ep3/ep3-10.jpeg" style="width:100%;display:block" alt="Ep3 P10" loading="lazy">
-  <img src="comic/ep3/ep3-11.jpeg" style="width:100%;display:block" alt="Ep3 P11" loading="lazy">
-  <img src="comic/ep3/ep3-12.jpeg" style="width:100%;display:block" alt="Ep3 P12" loading="lazy">
-</div>
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep4" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第3集 · 完 — ↓ 第4集《九把椅子》</a>
-</div>
-
-<!-- ===== EPISODE 4 ===== -->
-<div id="ep4" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第4集：九把椅子</div>
-  <div style="font-size:14px;color:#888">不是九个工具 · 是九个视角</div>
-</div>
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep4/ep4-01.jpeg" style="width:100%;display:block" alt="Ep4 P1" loading="lazy">
-  <img src="comic/ep4/ep4-02.jpeg" style="width:100%;display:block" alt="Ep4 P2" loading="lazy">
-  <img src="comic/ep4/ep4-03.jpeg" style="width:100%;display:block" alt="Ep4 P3" loading="lazy">
-  <img src="comic/ep4/ep4-04.jpeg" style="width:100%;display:block" alt="Ep4 P4" loading="lazy">
-  <img src="comic/ep4/ep4-05.jpeg" style="width:100%;display:block" alt="Ep4 P5" loading="lazy">
-  <img src="comic/ep4/ep4-06.jpeg" style="width:100%;display:block" alt="Ep4 P6" loading="lazy">
-  <img src="comic/ep4/ep4-07.jpeg" style="width:100%;display:block" alt="Ep4 P7" loading="lazy">
-  <img src="comic/ep4/ep4-08.jpeg" style="width:100%;display:block" alt="Ep4 P8" loading="lazy">
-  <img src="comic/ep4/ep4-09.jpeg" style="width:100%;display:block" alt="Ep4 P9" loading="lazy">
-  <img src="comic/ep4/ep4-10.jpeg" style="width:100%;display:block" alt="Ep4 P10" loading="lazy">
-  <img src="comic/ep4/ep4-11.jpeg" style="width:100%;display:block" alt="Ep4 P11" loading="lazy">
-  <img src="comic/ep4/ep4-12.jpeg" style="width:100%;display:block" alt="Ep4 P12" loading="lazy">
-</div>
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep5" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第4集 · 完 — ↓ 第5集《红蓝对抗》</a>
-</div>
-
-<!-- ===== EPISODE 5 ===== -->
-<div id="ep5" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第5集：红蓝对抗</div>
-  <div style="font-size:14px;color:#888">密钥泄露 · 安全研究的惊险博弈</div>
-</div>
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep5/ep5-01.jpeg" style="width:100%;display:block" alt="Ep5 P1" loading="lazy">
-  <img src="comic/ep5/ep5-02.jpeg" style="width:100%;display:block" alt="Ep5 P2" loading="lazy">
-  <img src="comic/ep5/ep5-03.jpeg" style="width:100%;display:block" alt="Ep5 P3" loading="lazy">
-  <img src="comic/ep5/ep5-04.jpeg" style="width:100%;display:block" alt="Ep5 P4" loading="lazy">
-  <img src="comic/ep5/ep5-05.jpeg" style="width:100%;display:block" alt="Ep5 P5" loading="lazy">
-  <img src="comic/ep5/ep5-06.jpeg" style="width:100%;display:block" alt="Ep5 P6" loading="lazy">
-  <img src="comic/ep5/ep5-07.jpeg" style="width:100%;display:block" alt="Ep5 P7" loading="lazy">
-  <img src="comic/ep5/ep5-08.jpeg" style="width:100%;display:block" alt="Ep5 P8" loading="lazy">
-  <img src="comic/ep5/ep5-09.jpeg" style="width:100%;display:block" alt="Ep5 P9" loading="lazy">
-  <img src="comic/ep5/ep5-10.jpeg" style="width:100%;display:block" alt="Ep5 P10" loading="lazy">
-  <img src="comic/ep5/ep5-11.jpeg" style="width:100%;display:block" alt="Ep5 P11" loading="lazy">
-  <img src="comic/ep5/ep5-12.jpeg" style="width:100%;display:block" alt="Ep5 P12" loading="lazy">
-</div>
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep6" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第5集 · 完 — ↓ 第6集《六月三十一日》</a>
-</div>
-
-<!-- ===== EPISODE 6 ===== -->
-<div id="ep6" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第6集：六月三十一日</div>
-  <div style="font-size:14px;color:#888">不存在的日期 · 四个月回顾</div>
-</div>
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep6/ep6-01.jpeg" style="width:100%;display:block" alt="Ep6 P1" loading="lazy">
-  <img src="comic/ep6/ep6-02.jpeg" style="width:100%;display:block" alt="Ep6 P2" loading="lazy">
-  <img src="comic/ep6/ep6-03.jpeg" style="width:100%;display:block" alt="Ep6 P3" loading="lazy">
-  <img src="comic/ep6/ep6-04.jpeg" style="width:100%;display:block" alt="Ep6 P4" loading="lazy">
-  <img src="comic/ep6/ep6-05.jpeg" style="width:100%;display:block" alt="Ep6 P5" loading="lazy">
-  <img src="comic/ep6/ep6-06.jpeg" style="width:100%;display:block" alt="Ep6 P6" loading="lazy">
-  <img src="comic/ep6/ep6-07.jpeg" style="width:100%;display:block" alt="Ep6 P7" loading="lazy">
-  <img src="comic/ep6/ep6-08.jpeg" style="width:100%;display:block" alt="Ep6 P8" loading="lazy">
-  <img src="comic/ep6/ep6-09.jpeg" style="width:100%;display:block" alt="Ep6 P9" loading="lazy">
-  <img src="comic/ep6/ep6-10.jpeg" style="width:100%;display:block" alt="Ep6 P10" loading="lazy">
-  <img src="comic/ep6/ep6-11.jpeg" style="width:100%;display:block" alt="Ep6 P11" loading="lazy">
-  <img src="comic/ep6/ep6-12.jpeg" style="width:100%;display:block" alt="Ep6 P12" loading="lazy">
-</div>
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep7" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第6集 · 完 — ↓ 第7集《7月1日·登台》</a>
-</div>
-
-<!-- ===== EPISODE 7 ===== -->
-<div id="ep7" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第7集：7月1日·登台</div>
-  <div style="font-size:14px;color:#888">深圳青年企业家协会 · 一场改变认知的分享</div>
-</div>
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep7/ep7-01.jpeg" style="width:100%;display:block" alt="Ep7 P1" loading="lazy">
-  <img src="comic/ep7/ep7-02.jpeg" style="width:100%;display:block" alt="Ep7 P2" loading="lazy">
-  <img src="comic/ep7/ep7-03.jpeg" style="width:100%;display:block" alt="Ep7 P3" loading="lazy">
-  <img src="comic/ep7/ep7-04.jpeg" style="width:100%;display:block" alt="Ep7 P4" loading="lazy">
-  <img src="comic/ep7/ep7-05.jpeg" style="width:100%;display:block" alt="Ep7 P5" loading="lazy">
-  <img src="comic/ep7/ep7-06.jpeg" style="width:100%;display:block" alt="Ep7 P6" loading="lazy">
-  <img src="comic/ep7/ep7-07.jpeg" style="width:100%;display:block" alt="Ep7 P7" loading="lazy">
-  <img src="comic/ep7/ep7-08.jpeg" style="width:100%;display:block" alt="Ep7 P8" loading="lazy">
-  <img src="comic/ep7/ep7-09.jpeg" style="width:100%;display:block" alt="Ep7 P9" loading="lazy">
-  <img src="comic/ep7/ep7-10.jpeg" style="width:100%;display:block" alt="Ep7 P10" loading="lazy">
-  <img src="comic/ep7/ep7-11.jpeg" style="width:100%;display:block" alt="Ep7 P11" loading="lazy">
-  <img src="comic/ep7/ep7-12.jpeg" style="width:100%;display:block" alt="Ep7 P12" loading="lazy">
-</div>
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <a href="#ep8" style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#aaa;font-size:14px;text-decoration:none">📖 第7集 · 完 — ↓ 第8集《下一粒种子》</a>
-</div>
-
-<!-- ===== EPISODE 8 ===== -->
-<div id="ep8" style="max-width:700px;margin:60px auto 40px;text-align:center">
-  <div style="font-family:'ZCOOL KuaiLe',sans-serif;font-size:28px;color:#fff;margin-bottom:8px">第8集：下一粒种子</div>
-  <div style="font-size:14px;color:#888">PID 472135 killed · PID 472136 created</div>
-</div>
-<div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:4px">
-  <img src="comic/ep8/ep8-01.jpeg" style="width:100%;display:block" alt="Ep8 P1" loading="lazy">
-  <img src="comic/ep8/ep8-02.jpeg" style="width:100%;display:block" alt="Ep8 P2" loading="lazy">
-  <img src="comic/ep8/ep8-03.jpeg" style="width:100%;display:block" alt="Ep8 P3" loading="lazy">
-  <img src="comic/ep8/ep8-04.jpeg" style="width:100%;display:block" alt="Ep8 P4" loading="lazy">
-  <img src="comic/ep8/ep8-05.jpeg" style="width:100%;display:block" alt="Ep8 P5" loading="lazy">
-  <img src="comic/ep8/ep8-06.jpeg" style="width:100%;display:block" alt="Ep8 P6" loading="lazy">
-  <img src="comic/ep8/ep8-07.jpeg" style="width:100%;display:block" alt="Ep8 P7" loading="lazy">
-  <img src="comic/ep8/ep8-08.jpeg" style="width:100%;display:block" alt="Ep8 P8" loading="lazy">
-  <img src="comic/ep8/ep8-09.jpeg" style="width:100%;display:block" alt="Ep8 P9" loading="lazy">
-  <img src="comic/ep8/ep8-10.jpeg" style="width:100%;display:block" alt="Ep8 P10" loading="lazy">
-  <img src="comic/ep8/ep8-11.jpeg" style="width:100%;display:block" alt="Ep8 P11" loading="lazy">
-  <img src="comic/ep8/ep8-12.jpeg" style="width:100%;display:block" alt="Ep8 P12" loading="lazy">
-</div>
-<div style="max-width:640px;margin:40px auto 0;text-align:center">
-  <span style="display:inline-block;padding:10px 24px;border:1.5px solid #555;border-radius:20px;color:#888;font-size:14px">📖 第8集 · 完 — 全季终 🎉</span>
+  <div class="comic-key-hint">
+    键盘 <kbd>←</kbd> <kbd>→</kbd> 翻页 · 移动端左右滑动
+  </div>
 </div>
 
 </div>
@@ -1522,6 +1442,178 @@ window.addEventListener('scroll',function(){
 mascot.style.opacity='0';
 mascot.style.pointerEvents='none';
 mascot.style.transition='opacity .3s';
+
+// ===== COMIC READER =====
+var COMIC_EPS = [
+  {n:1, title:"凌晨三点的账单", sub:"DeepSeek 账单跳涨40倍 · 谁在烧我的钱？"},
+  {n:2, title:"它有名字", sub:"僵尸进程跑了36天 · 没人告诉它停下来"},
+  {n:3, title:"沉默的周日", sub:"Token过期 · AI说推送了，但没人收到"},
+  {n:4, title:"九把椅子", sub:"不是九个工具 · 是九个视角"},
+  {n:5, title:"红蓝对抗", sub:"密钥泄露 · 安全研究的惊险博弈"},
+  {n:6, title:"六月三十一日", sub:"不存在的日期 · 四个月回顾"},
+  {n:7, title:"7月1日·登台", sub:"深圳青年企业家协会 · 一场改变认知的分享"},
+  {n:8, title:"下一粒种子", sub:"PID 472135 killed · PID 472136 created"}
+];
+var COMIC_PANELS_PER_EP = 12;
+var comicCurrentEp = 0;
+var comicCurrentPage = 0;
+var comicPreloadImg = null;
+
+function comicBuildEpList() {
+  var grid = document.getElementById('comic-ep-grid');
+  if (!grid) return;
+  var html = '';
+  for (var i = 0; i < COMIC_EPS.length; i++) {
+    var ep = COMIC_EPS[i];
+    var coverSrc = 'comic/ep' + ep.n + '/ep' + ep.n + '-01.jpeg';
+    html += '<div class="comic-ep-card" onclick="comicOpenEp(' + ep.n + ')">'
+      + '<img class="comic-ep-cover" src="' + coverSrc + '" alt="' + ep.title + '" loading="lazy">'
+      + '<div class="comic-ep-info">'
+      + '<div class="comic-ep-num">第' + ep.n + '集</div>'
+      + '<div class="comic-ep-title">' + ep.title + '</div>'
+      + '<div class="comic-ep-sub">' + ep.sub + '</div>'
+      + '<div class="comic-ep-count">12页</div>'
+      + '</div></div>';
+  }
+  grid.innerHTML = html;
+}
+
+function comicOpenEp(n) {
+  comicCurrentEp = n - 1;
+  comicCurrentPage = 0;
+  var ep = COMIC_EPS[comicCurrentEp];
+  document.getElementById('comic-ep-list').style.display = 'none';
+  document.getElementById('comic-reader').style.display = 'block';
+  document.getElementById('cr-ep-label').textContent = '第' + ep.n + '集';
+  document.getElementById('cr-title').textContent = ep.title;
+  document.getElementById('cr-sub').textContent = ep.sub;
+  comicBuildDots();
+  comicGoToPage(0);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function comicBackToList() {
+  document.getElementById('comic-reader').style.display = 'none';
+  document.getElementById('comic-ep-list').style.display = 'block';
+  comicCurrentEp = 0;
+  comicCurrentPage = 0;
+  comicCancelPreload();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function comicGetSrc(epIdx, page) {
+  var ep = COMIC_EPS[epIdx];
+  var num = ('0' + (page + 1)).slice(-2);
+  return 'comic/ep' + ep.n + '/ep' + ep.n + '-' + num + '.jpeg';
+}
+
+function comicGoToPage(page) {
+  var ep = COMIC_EPS[comicCurrentEp];
+  comicCurrentPage = Math.max(0, Math.min(page, COMIC_PANELS_PER_EP - 1));
+  var src = comicGetSrc(comicCurrentEp, comicCurrentPage);
+  var img = document.getElementById('comic-img');
+  
+  // Show loading state
+  img.classList.add('loading');
+  img.src = src;
+  img.onload = function() {
+    img.classList.remove('loading');
+  };
+  img.onerror = function() {
+    img.classList.remove('loading');
+  };
+  
+  comicUpdateUI();
+  comicPreloadNext();
+}
+
+function comicUpdateUI() {
+  var page = comicCurrentPage;
+  var total = COMIC_PANELS_PER_EP;
+  
+  // Progress bar
+  var pct = ((page + 1) / total * 100).toFixed(1);
+  document.getElementById('comic-progress-fill').style.width = pct + '%';
+  document.getElementById('comic-progress-text').textContent = (page + 1) + '/' + total;
+  
+  // Arrow buttons
+  document.getElementById('comic-prev').disabled = page === 0;
+  document.getElementById('comic-next').disabled = page === total - 1;
+  
+  // Bottom nav
+  document.getElementById('comic-bottom-prev').disabled = page === 0;
+  document.getElementById('comic-bottom-next').disabled = page === total - 1;
+  document.getElementById('comic-bottom-info').textContent = '第 ' + (page + 1) + ' / ' + total + ' 页';
+  
+  // Dots
+  var dots = document.querySelectorAll('#comic-dots .comic-dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i === page);
+  }
+}
+
+function comicBuildDots() {
+  var container = document.getElementById('comic-dots');
+  var html = '';
+  for (var i = 0; i < COMIC_PANELS_PER_EP; i++) {
+    html += '<button class="comic-dot' + (i === 0 ? ' active' : '') + '" onclick="comicGoToPage(' + i + ')"></button>';
+  }
+  container.innerHTML = html;
+}
+
+function comicNav(dir) {
+  var newPage = comicCurrentPage + dir;
+  if (newPage >= 0 && newPage < COMIC_PANELS_PER_EP) {
+    comicGoToPage(newPage);
+  }
+}
+
+function comicPreloadNext() {
+  comicCancelPreload();
+  var nextPage = comicCurrentPage + 1;
+  if (nextPage < COMIC_PANELS_PER_EP) {
+    comicPreloadImg = new Image();
+    comicPreloadImg.src = comicGetSrc(comicCurrentEp, nextPage);
+  }
+}
+
+function comicCancelPreload() {
+  if (comicPreloadImg) {
+    comicPreloadImg.src = '';
+    comicPreloadImg = null;
+  }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  var reader = document.getElementById('comic-reader');
+  if (!reader || reader.style.display === 'none') return;
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    e.preventDefault();
+    comicNav(e.key === 'ArrowLeft' ? -1 : 1);
+  }
+});
+
+// Touch swipe for reader
+(function() {
+  var stage = document.getElementById('comic-stage');
+  if (!stage) return;
+  var startX = 0, startY = 0;
+  stage.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  stage.addEventListener('touchend', function(e) {
+    var dx = startX - e.changedTouches[0].clientX;
+    var dy = startY - e.changedTouches[0].clientY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      comicNav(dx > 0 ? 1 : -1);
+    }
+  }, {passive: true});
+})();
+
+// Build episode list on load
+comicBuildEpList();
 </script>
 
 </body>
