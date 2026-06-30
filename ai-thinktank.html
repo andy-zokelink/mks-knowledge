@@ -333,23 +333,24 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 .hero-illustration .label{font-size:clamp(11px,2vw,14px);color:#fff;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,0.3);text-align:center;padding:0 10px}
 
 /* ===== COMIC READER STYLES ===== */
-/* Skeleton pulse animation for cover thumbnails */
-@keyframes comic-skeleton-pulse{0%,100%{background-color:rgba(255,255,255,0.04)}50%{background-color:rgba(255,255,255,0.12)}}
 .comic-ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 .comic-ep-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
 .comic-ep-card:hover{transform:translateY(-4px);border-color:rgba(192,57,43,0.5);box-shadow:0 8px 30px rgba(192,57,43,0.15)}
-/* Cover wrapper: fixed 3/4 aspect ratio + skeleton placeholder */
-.comic-ep-cover-wrap{position:relative;width:100%;aspect-ratio:3/4;background:rgba(255,255,255,0.03);overflow:hidden;animation:comic-skeleton-pulse 1.8s ease-in-out infinite}
-.comic-ep-cover-wrap.loaded{animation:none;background:transparent}
-.comic-ep-cover-wrap.error{animation:none;background:rgba(255,255,255,0.03)}
-.comic-ep-cover-img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto;opacity:0;transition:opacity .3s}
-.comic-ep-cover-img.loaded{opacity:1}
-.comic-ep-cover-wrap.error .comic-ep-cover-img{display:none}
-/* Fallback text when image fails to load */
-.comic-ep-cover-fallback{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;color:#888;font-size:12px;line-height:1.5}
-.comic-ep-cover-wrap.error .comic-ep-cover-fallback{display:flex}
-.comic-ep-cover-fallback .fb-num{font-weight:700;font-size:26px;color:#c0392b;margin-bottom:4px}
-.comic-ep-cover-fallback .fb-title{font-size:13px;font-weight:600;color:#ccc}
+/* Cover wrapper: pure CSS gradient, no images — 3:4 aspect ratio with big ep number + title */
+.comic-ep-cover-wrap{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px}
+/* 8 gradient colors — one per episode */
+.comic-ep-cover-g1{background:linear-gradient(135deg,#0a1628,#1a3a5c)}
+.comic-ep-cover-g2{background:linear-gradient(135deg,#2d0a2d,#6b1a3d)}
+.comic-ep-cover-g3{background:linear-gradient(135deg,#0a1a0a,#1a4a2a)}
+.comic-ep-cover-g4{background:linear-gradient(135deg,#1a0f05,#5c3a10)}
+.comic-ep-cover-g5{background:linear-gradient(135deg,#1a0505,#6b1515)}
+.comic-ep-cover-g6{background:linear-gradient(135deg,#0a1028,#1a2a6b)}
+.comic-ep-cover-g7{background:linear-gradient(135deg,#1a1505,#5c4a10)}
+.comic-ep-cover-g8{background:linear-gradient(135deg,#051a10,#0d3d22)}
+/* Big episode number inside gradient cover */
+.comic-ep-cover-num{font-size:clamp(36px,5vw,56px);font-weight:900;color:rgba(255,255,255,0.85);line-height:1;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+/* Episode title inside gradient cover */
+.comic-ep-cover-label{font-size:clamp(13px,2vw,16px);font-weight:700;color:rgba(255,255,255,0.7);line-height:1.3;text-shadow:0 1px 4px rgba(0,0,0,0.3)}
 .comic-ep-info{padding:14px 16px}
 .comic-ep-num{font-size:11px;font-weight:800;color:#c0392b;letter-spacing:1px;margin-bottom:4px}
 .comic-ep-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3}
@@ -1478,13 +1479,10 @@ function comicBuildEpList() {
   var html = '';
   for (var i = 0; i < COMIC_EPS.length; i++) {
     var ep = COMIC_EPS[i];
-    var coverSrc = 'comic/ep' + ep.n + '/ep' + ep.n + '-01.jpeg';
     html += '<div class="comic-ep-card" onclick="comicOpenEp(' + ep.n + ')">'
-      + '<div class="comic-ep-cover-wrap">'
-      + '<img class="comic-ep-cover-img" src="' + coverSrc + '" alt="' + ep.title + '" decoding="async" loading="lazy"'
-      + ' onload="this.classList.add(\'loaded\');this.parentElement.classList.add(\'loaded\')"'
-      + ' onerror="this.parentElement.classList.add(\'error\')">'
-      + '<div class="comic-ep-cover-fallback"><div class="fb-num">第' + ep.n + '集</div><div class="fb-title">' + ep.title + '</div></div>'
+      + '<div class="comic-ep-cover-wrap comic-ep-cover-g' + ep.n + '">'
+      + '<div class="comic-ep-cover-num">' + ep.n + '</div>'
+      + '<div class="comic-ep-cover-label">' + ep.title + '</div>'
       + '</div>'
       + '<div class="comic-ep-info">'
       + '<div class="comic-ep-num">第' + ep.n + '集</div>'
