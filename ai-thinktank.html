@@ -333,10 +333,23 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 .hero-illustration .label{font-size:clamp(11px,2vw,14px);color:#fff;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,0.3);text-align:center;padding:0 10px}
 
 /* ===== COMIC READER STYLES ===== */
+/* Skeleton pulse animation for cover thumbnails */
+@keyframes comic-skeleton-pulse{0%,100%{background-color:rgba(255,255,255,0.04)}50%{background-color:rgba(255,255,255,0.12)}}
 .comic-ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 .comic-ep-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
 .comic-ep-card:hover{transform:translateY(-4px);border-color:rgba(192,57,43,0.5);box-shadow:0 8px 30px rgba(192,57,43,0.15)}
-.comic-ep-cover{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:rgba(255,255,255,0.03)}
+/* Cover wrapper: fixed 3/4 aspect ratio + skeleton placeholder */
+.comic-ep-cover-wrap{position:relative;width:100%;aspect-ratio:3/4;background:rgba(255,255,255,0.03);overflow:hidden;animation:comic-skeleton-pulse 1.8s ease-in-out infinite}
+.comic-ep-cover-wrap.loaded{animation:none;background:transparent}
+.comic-ep-cover-wrap.error{animation:none;background:rgba(255,255,255,0.03)}
+.comic-ep-cover-img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto;opacity:0;transition:opacity .3s}
+.comic-ep-cover-img.loaded{opacity:1}
+.comic-ep-cover-wrap.error .comic-ep-cover-img{display:none}
+/* Fallback text when image fails to load */
+.comic-ep-cover-fallback{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;color:#888;font-size:12px;line-height:1.5}
+.comic-ep-cover-wrap.error .comic-ep-cover-fallback{display:flex}
+.comic-ep-cover-fallback .fb-num{font-weight:700;font-size:26px;color:#c0392b;margin-bottom:4px}
+.comic-ep-cover-fallback .fb-title{font-size:13px;font-weight:600;color:#ccc}
 .comic-ep-info{padding:14px 16px}
 .comic-ep-num{font-size:11px;font-weight:800;color:#c0392b;letter-spacing:1px;margin-bottom:4px}
 .comic-ep-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3}
@@ -1467,7 +1480,12 @@ function comicBuildEpList() {
     var ep = COMIC_EPS[i];
     var coverSrc = 'comic/ep' + ep.n + '/ep' + ep.n + '-01.jpeg';
     html += '<div class="comic-ep-card" onclick="comicOpenEp(' + ep.n + ')">'
-      + '<img class="comic-ep-cover" src="' + coverSrc + '" alt="' + ep.title + '" loading="lazy">'
+      + '<div class="comic-ep-cover-wrap">'
+      + '<img class="comic-ep-cover-img" src="' + coverSrc + '" alt="' + ep.title + '" decoding="async" loading="lazy"'
+      + ' onload="this.classList.add(\'loaded\');this.parentElement.classList.add(\'loaded\')"'
+      + ' onerror="this.parentElement.classList.add(\'error\')">'
+      + '<div class="comic-ep-cover-fallback"><div class="fb-num">第' + ep.n + '集</div><div class="fb-title">' + ep.title + '</div></div>'
+      + '</div>'
       + '<div class="comic-ep-info">'
       + '<div class="comic-ep-num">第' + ep.n + '集</div>'
       + '<div class="comic-ep-title">' + ep.title + '</div>'
