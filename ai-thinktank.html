@@ -20,6 +20,12 @@ body{font-size:16px;font-family:'Noto Sans SC','LXGW WenKai',sans-serif;backgrou
 /* Whiteboard texture */
 .whiteboard{background:#f5f3ee;position:relative}
 .whiteboard::before,.whiteboard::after{content:'';position:absolute;left:0;right:0;height:6px;background:linear-gradient(90deg,#b0b0b0,#ccc,#b0b0b0)}
+.section-panel{display:none}
+.section-panel.active{display:block}
+.nav-tab{padding:6px 14px;border-radius:20px;cursor:pointer;transition:.2s;font-weight:700;font-size:15px}
+.nav-tab.active{background:rgba(192,57,43,0.1);color:#c0392b}
+.nav-tab:not(.active){color:#333;opacity:.7}
+.nav-tab:not(.active):hover{opacity:1;color:#c0392b}
 .whiteboard::before{top:0;border-radius:0 0 2px 2px}
 .whiteboard::after{bottom:0;border-radius:2px 2px 0 0}
 
@@ -332,22 +338,22 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 <div class="progress-bar" id="progressBar"></div>
 
 <nav>
-<div class="nav-logo" onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})">🦉 AI军团养成记</div>
+<div class="nav-logo" onclick="switchPanel('army')">🦉 AI军团养成记</div>
 <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰ 菜单</button>
 <div class="nav-links">
-<a onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">首页</a>
-<a onclick="document.getElementById('team').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">AI军团</a>
-<a onclick="document.getElementById('timeline-section').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">时间线</a>
-<a onclick="document.getElementById('pitfalls').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">踩坑记录</a>
-<a onclick="document.getElementById('works').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">作品展示</a>
-<a onclick="document.getElementById('agency').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')">关于我们</a>
-<a onclick="document.getElementById('lecture').scrollIntoView({behavior:'smooth'});document.querySelector('.nav-links').classList.remove('open')" style="color:#c0392b">📖 AI讲义</a>
-<a href="https://andy-zokelink.github.io/mks-knowledge/blog/" target="_blank" style="color:#2874a6" onclick="document.querySelector('.nav-links').classList.remove('open')">📋 阿森智库</a>
-<a href="https://andy-zokelink.github.io/mks-knowledge/" target="_blank" style="color:#2874a6" onclick="document.querySelector('.nav-links').classList.remove('open')">📚 知识库</a>
+<span class="nav-tab active" id="tab-army" onclick="switchPanel('army');document.querySelector('.nav-links').classList.remove('open')">🦉 AI军团</span>
+<span class="nav-tab" id="tab-lecture" onclick="switchPanel('lecture');document.querySelector('.nav-links').classList.remove('open')">📖 AI讲义</span>
+<a href="https://andy-zokelink.github.io/mks-knowledge/blog/" target="_blank" style="color:#2874a6;font-weight:600;padding:6px 4px;text-decoration:none;font-size:15px" onclick="document.querySelector('.nav-links').classList.remove('open')">📋 阿森智库</a>
+<a href="https://andy-zokelink.github.io/mks-knowledge/" target="_blank" style="color:#2874a6;font-weight:600;padding:6px 4px;text-decoration:none;font-size:15px" onclick="document.querySelector('.nav-links').classList.remove('open')">📚 知识库</a>
 </div>
 </nav>
 
 <!-- HERO -->
+<!-- ============================================= -->
+<!-- PANEL 1: AI军团养成记                           -->
+<!-- ============================================= -->
+<div id="section-army" class="section-panel active">
+
 <div class="whiteboard" id="hero">
 <div class="hero-v2">
   <div class="hero-v2-title">
@@ -813,10 +819,12 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   </div>
 </div>
 </div>
+</div><!-- /section-army -->
 
 <!-- ============================================= -->
-<!-- LECTURE: AI入门讲座                             -->
+<!-- PANEL 2: AI入门讲座                             -->
 <!-- ============================================= -->
+<div id="section-lecture" class="section-panel">
 <div id="lecture">
 <div class="section-bg" style="background:#faf7f0">
 <div class="lecture-wrap reveal">
@@ -1192,6 +1200,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   </div>
   <p style="font-size:12px;color:#999;margin-top:12px">🎤 7月1日 · 深圳青年企业家协会 AI 应用讲座 · 欢迎现场交流</p>
 </div>
+</div><!-- /section-lecture -->
 
 <!-- Float Mascot -->
 <div class="float-mascot">
@@ -1206,6 +1215,15 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 
 <!-- SCRIPTS -->
 <script>
+// Panel switching (Tab nav)
+function switchPanel(name) {
+  document.getElementById('section-army').classList.toggle('active', name==='army');
+  document.getElementById('section-lecture').classList.toggle('active', name==='lecture');
+  document.getElementById('tab-army').classList.toggle('active', name==='army');
+  document.getElementById('tab-lecture').classList.toggle('active', name==='lecture');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 // Progress bar
 window.addEventListener('scroll',function(){
   var h=document.documentElement, b=h.scrollHeight-h.clientHeight;
