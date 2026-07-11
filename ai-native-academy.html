@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Native 企业转型 | Vibe Coding & AI Agent 实战指南</title>
+<meta name="description" content="从零掌握Vibe Coding和AI Agent，让每一位员工成为AI时代的超级个体。企业AI Native转型实战平台。">
+<style>
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --accent: #f59e0b;
+  --bg: #f8fafc;
+  --card: #fff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --success: #10b981;
+  --danger: #ef4444;
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  scroll-behavior: smooth;
+}
+
+/* ====== NAV ====== */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-size: 20px; font-weight: 800; color: var(--primary);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a {
+  text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-cta {
+  background: var(--primary); color: #fff; border: none;
+  padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: .2s;
+}
+.nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ====== HERO ====== */
+.hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 40%, #1d4ed8 100%);
+  color: #fff; padding: 120px 24px 80px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(245,158,11,0.12), transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(37,99,235,0.15), transparent 50%);
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px); font-weight: 900;
+  line-height: 1.3; position: relative; z-index: 1; max-width: 800px; margin: 0 auto;
+}
+.hero h1 .hl { color: var(--accent); }
+.hero .sub {
+  font-size: 18px; opacity: .8; margin: 16px 0 0; position: relative; z-index: 1;
+}
+.hero-actions {
+  display: flex; gap: 12px; justify-content: center; margin-top: 28px;
+  position: relative; z-index: 1; flex-wrap: wrap;
+}
+.btn-primary, .btn-outline {
+  padding: 12px 28px; border-radius: 24px; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: .2s; text-decoration: none; display: inline-block;
+}
+.btn-primary { background: var(--accent); color: #1e293b; border: none; }
+.btn-primary:hover { background: #e08f00; transform: translateY(-2px); }
+.btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.3); }
+.btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+/* ====== CONTAINER ====== */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* ====== SECTION ====== */
+.section { padding: 64px 0; }
+.section-header { text-align: center; margin-bottom: 40px; }
+.section-header .badge {
+  display: inline-block; background: #e0e7ff; color: var(--primary);
+  font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 20px;
+  margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;
+}
+.section-header h2 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+.section-header p { color: var(--muted); font-size: 16px; max-width: 600px; margin: 0 auto; }
+
+/* ====== GRIDS ====== */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  transition: box-shadow .2s, transform .2s;
+}
+.card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+.card .icon { font-size: 36px; margin-bottom: 12px; display: block; }
+.card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.card .tag {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 6px; margin-top: 12px;
+}
+.tag-blue { background: #e0e7ff; color: #3730a3; }
+.tag-green { background: #d1fae5; color: #065f46; }
+.tag-amber { background: #fef3c7; color: #92400e; }
+
+/* ====== COMPARE ====== */
+.compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.compare-card {
+  border-radius: var(--radius); padding: 28px;
+}
+.compare-card.old { background: #fef2f2; border: 1.5px solid #fecaca; }
+.compare-card.new { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+.compare-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.compare-card.old h3 { color: #dc2626; }
+.compare-card.new h3 { color: #16a34a; }
+.compare-card ul { list-style: none; font-size: 14px; line-height: 2; color: var(--text); }
+.compare-card ul li::before { margin-right: 8px; }
+.compare-card.old ul li::before { content: '✗'; color: #dc2626; }
+.compare-card.new ul li::before { content: '✓'; color: #16a34a; }
+
+/* ====== STEPS ====== */
+.steps { display: flex; gap: 0; counter-reset: step; position: relative; }
+.steps::before {
+  content: ''; position: absolute; top: 28px; left: 40px; right: 40px;
+  height: 2px; background: var(--border); z-index: 0;
+}
+.step {
+  flex: 1; text-align: center; position: relative; z-index: 1;
+  padding: 0 8px;
+}
+.step .num {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--card); border: 3px solid var(--primary);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 800; color: var(--primary);
+  margin-bottom: 12px;
+}
+.step h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.step p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* ====== CODE DEMO ====== */
+.code-demo {
+  background: #1e293b; border-radius: var(--radius);
+  padding: 24px; overflow-x: auto; position: relative;
+}
+.code-demo .lang-tag {
+  position: absolute; top: 12px; left: 20px;
+  font-size: 11px; color: #94a3b8; font-weight: 600;
+}
+.code-demo pre {
+  color: #e2e8f0; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px; line-height: 1.8; margin-top: 8px;
+}
+.code-demo .comment { color: #64748b; }
+.code-demo .prompt { color: var(--accent); }
+.code-demo .result { color: #34d399; }
+
+/* ====== TOOL GRID ====== */
+.tool-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; display: flex; gap: 16px;
+  align-items: flex-start; transition: .2s;
+}
+.tool-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+.tool-card .tool-logo {
+  width: 48px; height: 48px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.tool-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.tool-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ====== INTERACTIVE ====== */
+.interactive-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+}
+.interactive-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.prompt-demo {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.prompt-demo input {
+  flex: 1; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 14px; outline: none;
+  transition: border-color .2s;
+}
+.prompt-demo input:focus { border-color: var(--primary); }
+.prompt-demo button {
+  padding: 10px 20px; background: var(--primary); color: #fff;
+  border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: .2s;
+}
+.prompt-demo button:hover { background: var(--primary-dark); }
+.result-box {
+  background: #f1f5f9; border-radius: 8px; padding: 16px; min-height: 60px;
+  font-size: 14px; color: var(--text); white-space: pre-wrap; line-height: 1.6;
+  transition: all .3s;
+}
+.result-box.loading { color: var(--muted); font-style: italic; }
+
+/* ====== FAQ / Accordion ====== */
+.faq-item {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 10px; overflow: hidden;
+}
+.faq-q {
+  padding: 16px 20px; font-weight: 600; font-size: 15px;
+  cursor: pointer; display: flex; justify-content: space-between;
+  align-items: center; background: var(--card); user-select: none;
+}
+.faq-q:hover { background: #f8fafc; }
+.faq-q .arrow { transition: transform .3s; font-size: 12px; color: var(--muted); }
+.faq-item.open .faq-q .arrow { transform: rotate(180deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease;
+  font-size: 14px; color: var(--muted); line-height: 1.8;
+}
+.faq-item.open .faq-a { max-height: 300px; padding: 0 20px 16px; }
+
+/* ====== BANNER ====== */
+.cta-banner {
+  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  color: #fff; border-radius: var(--radius); padding: 48px;
+  text-align: center; margin-top: 24px;
+}
+.cta-banner h2 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.cta-banner p { opacity: .85; margin-bottom: 20px; }
+.cta-banner .btn-primary { background: #fff; color: var(--primary); }
+
+/* ====== FOOTER ====== */
+footer {
+  text-align: center; padding: 32px; color: var(--muted);
+  font-size: 13px; border-top: 1px solid var(--border);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .compare-row { grid-template-columns: 1fr; }
+  .steps { flex-direction: column; gap: 16px; }
+  .steps::before { display: none; }
+  .hero h1 { font-size: 26px; }
+}
+
+/* Mobile hamburger */
+.hamburger { display: none; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text); }
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0;
+    background: #fff; flex-direction: column; padding: 16px 24px;
+    border-bottom: 1px solid var(--border); gap: 12px; }
+  .nav-links.open { display: flex; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== NAV ====== -->
+<nav>
+  <div class="nav-brand"><span class="dot"></span> AI Native 实战学院</div>
+  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <div class="nav-links">
+    <a href="#vibe">Vibe Coding</a>
+    <a href="#agent">AI Agent</a>
+    <a href="#tools">工具矩阵</a>
+    <a href="#faq">常见问题</a>
+    <a href="#start" class="nav-cta">开始学习</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <h1>每个员工都能成为<span class="hl"> AI 时代的超级个体</span></h1>
+  <p class="sub">掌握 Vibe Coding 和 AI Agent，用一句话代替一整天的重复工作</p>
+  <div class="hero-actions">
+    <a href="#vibe" class="btn-primary">🚀 开始学习 Vibe Coding</a>
+    <a href="#agent" class="btn-outline">🤖 了解 AI Agent</a>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- ====== INTRO: 两种方式 ====== -->
+  <div class="section" id="intro">
+    <div class="section-header">
+      <div class="badge">核心技能</div>
+      <h2>AI Native 员工的两大核心能力</h2>
+      <p>不是学会使用一个工具，而是掌握一种全新的工作方式</p>
+    </div>
+    <div class="compare-row">
+      <div class="compare-card old">
+        <h3>❌ 传统工作方式</h3>
+        <ul>
+          <li>重复性手工操作，耗时低效</li>
+          <li>技能依赖个人经验积累</li>
+          <li>跨部门协作靠层层传递</li>
+          <li>遇到问题需要找对应的人</li>
+          <li>工作产出受限于个人时间</li>
+          <li>学习新工具成本高、周期长</li>
+        </ul>
+      </div>
+      <div class="compare-card new">
+        <h3>✅ AI Native 工作方式</h3>
+        <ul>
+          <li>用自然语言描述需求，AI 自动完成</li>
+          <li>人人可用 AI 辅助决策和创作</li>
+          <li>Agent 之间网状协同，信息直达</li>
+          <li>先问 AI，人类只做价值判断</li>
+          <li>一个人带多个 Agent 完成业务闭环</li>
+          <li>Vibe Coding：零基础也能做开发</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== VIBE CODING ====== -->
+  <div class="section" id="vibe">
+    <div class="section-header">
+      <div class="badge">核心技能 ①</div>
+      <h2>什么是 Vibe Coding？</h2>
+      <p>用自然语言描述你想要的东西，AI 帮你写代码。不学语法，不记 API，只描述结果。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <span class="icon">💬</span>
+        <h3>一句话定义</h3>
+        <p>Vibe Coding = 用自然语言编程。你不需要了解编程语言、框架、算法——只需要清楚描述"我想要什么"，AI 会生成、测试、调试代码，你负责看结果、给反馈、做判断。</p>
+        <span class="tag tag-blue">零基础可学</span>
+      </div>
+      <div class="card">
+        <span class="icon">🎯</span>
+        <h3>为什么叫 "Vibe"？</h3>
+        <p>Vibe = 感觉、氛围。你不需要精确指定每一步怎么做，而是传达"感觉对了"的方向。就像对设计师说"我想要温暖、简约的感觉"，剩下的 AI 来完成。你只管品味和判断。</p>
+        <span class="tag tag-amber">品味驱动</span>
+      </div>
+    </div>
+
+    <!-- Demo -->
+    <div class="section-header" style="margin-top:40px;">
+      <h2 style="font-size:22px;">亲眼看看：一行代码都不用写</h2>
+    </div>
+    <div class="grid-2">
+      <div class="code-demo">
+        <span class="lang-tag">你的自然语言输入</span>
+        <pre><span class="prompt">👤 你：</span>帮我做一个公司内部培训报名页面，要有：
+- 课程名称、时间、地点展示
+- 报名表单（姓名、部门、手机号）
+- 报名成功弹窗提示
+- 移动端适配
+- 简约商务风格</pre>
+      </div>
+      <div class="code-demo">
+        <span class="lang-tag">AI 的回应</span>
+        <pre><span class="result">✅ AI：</span>好的，我会帮你创建一个完整的
+报名页面。包含以下内容：
+
+1. 课程信息展示卡片（课程名称、
+   时间、地点、讲师）
+2. 报名表单（姓名、部门、
+   手机号、备注）
+3. 提交成功弹窗 + 动画效果
+4. 响应式布局（移动端友好）
+5. 商务蓝白配色方案
+
+<span class="comment">// 已生成完整 HTML/CSS/JS 代码
+// 包含表单验证、弹窗动画、
+// 移动端适配等</span>
+
+<span class="prompt">👤 你：</span>把按钮颜色改成橙色，
+报名表单加一个"参加人数"字段
+
+<span class="result">✅ AI：</span>已更新，新增参加人数
+字段，按钮改为橙色渐变。</pre>
+      </div>
+    </div>
+
+    <!-- Interactive demo -->
+    <div class="interactive-box" style="margin-top:20px;">
+      <h3>🖐️ 试试看：描述你想要什么</h3>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:12px;">在下面输入你想让 AI 帮你做什么（任何事都可以）</p>
+      <div class="prompt-demo">
+        <input type="text" id="promptInput" placeholder="例如：帮我写一份周报总结模板，包含本周完成事项、下周计划、需要协调的资源" onkeydown="if(event.key==='Enter')runDemo()">
+        <button onclick="runDemo()">发送 →</button>
+      </div>
+      <div class="result-box" id="demoResult">
+        <span style="color:var(--muted)">💡 AI 会在这里展示它能帮你做什么……</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== AI AGENT ====== -->
+  <div class="section" id="agent">
+    <div class="section-header">
+      <div class="badge">核心技能 ②</div>
+      <h2>什么是 AI Agent？</h2>
+      <p>Agent 不是聊天机器人，是能自己动手干活的数字员工。它能读文件、写代码、查数据、发邮件、操作各种工具。</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <span class="icon">🧠</span>
+        <h3>大模型 = 大脑</h3>
+        <p>大模型（如 GPT、Claude、DeepSeek）负责理解、思考、生成。你跟它说"帮我查天气"，它会告诉你怎么查。</p>
+        <span class="tag tag-blue">理解与生成</span>
+      </div>
+      <div class="card">
+        <span class="icon">🤖</span>
+        <h3>Agent = 数字员工</h3>
+        <p>Agent 有手有脚还能用工具。你跟它说"帮我查天气"，它会自己打开网站、抓数据、整理好发给你。</p>
+        <span class="tag tag-green">执行与交付</span>
+      </div>
+      <div class="card">
+        <span class="icon">🔗</span>
+        <h3>Agent 团队 = 网状协同</h3>
+        <p>多个 Agent 各司其职——一个管日程、一个管文档、一个管数据——彼此通信协作，形成业务闭环。</p>
+        <span class="tag tag-amber">协同与闭环</span>
+      </div>
+    </div>
+
+    <!-- Agent workflow -->
+    <div class="section-header" style="margin-top:40px;">
+      <h2 style="font-size:22px;">Agent 如何帮你工作？</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h4>你下达任务</h4>
+        <p>用自然语言告诉 Agent 你要什么结果</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h4>Agent 拆解执行</h4>
+        <p>自动分步骤：查资料→调工具→写方案</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h4>Agent 协同</h4>
+        <p>多个 Agent 分工合作，并行处理</p>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <h4>你验收判断</h4>
+        <p>只看结果、做决策、给方向</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;text-align:center;">
+      <h3>🎯 核心公式</h3>
+      <p style="font-size:18px;font-weight:700;color:var(--primary);">OPC = 一个人（One Person） + 多个 Agent 组成的公司（Company）</p>
+      <p style="font-size:14px;color:var(--muted);">你是管理者，Agent 是你的员工。你定目标、做判断，Agent 干活、交结果。</p>
+    </div>
+  </div>
+
+  <!-- ====== TOOLS ====== -->
+  <div class="section" id="tools">
+    <div class="section-header">
+      <div class="badge">工具箱</div>
+      <h2>AI Native 员工工具矩阵</h2>
+      <p>不同场景用不同工具，事半功倍</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="tool-card">
+        <div class="tool-logo" style="background:#e0e7ff;">💬</div>
+        <div>
+          <h4>AI 对话助手</h4>
+          <p><strong>做什么：</strong>头脑风暴、方案草拟、信息查询、翻译、总结<br>
+          <strong>代表工具：</strong>Claude Chat、ChatGPT、豆包、元宝<br>
+          <strong>适用人群：</strong>全员</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-logo" style="background:#d1fae5;">⚡</div>
+        <div>
+          <h4>Vibe Coding 工具</h4>
+          <p><strong>做什么：</strong>用自然语言生成网页、工具、自动化脚本<br>
+          <strong>代表工具：</strong>Claude Code、Cursor、Windsurf、Bolt<br>
+          <strong>适用人群：</strong>愿意动手造东西的人（零基础可入门）</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-logo" style="background:#fef3c7;">🤖</div>
+        <div>
+          <h4>Agent 智能体平台</h4>
+          <p><strong>做什么：</strong>搭建能自动执行任务的数字员工<br>
+          <strong>代表工具：</strong>Claude Cowork、Coze、Dify、龙虾智能体<br>
+          <strong>适用人群：</strong>有明确业务流程需要自动化的人</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-logo" style="background:#ede9fe;">🔗</div>
+        <div>
+          <h4>工作流自动化</h4>
+          <p><strong>做什么：</strong>把 AI 接入日常工作流（邮件、文档、表格）<br>
+          <strong>代表工具：</strong>飞书 × AI 集成、钉钉 AI、企微机器人<br>
+          <strong>适用人群：</strong>日常办公依赖协作工具的人</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== HOW TO START ====== -->
+  <div class="section" id="start">
+    <div class="section-header">
+      <div class="badge">行动指南</div>
+      <h2>从现在开始，三步上手</h2>
+      <p>不需要等培训、不需要审批、不需要预算——今天就可以开始</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="num" style="border-color:var(--success);color:var(--success);">🎯</div>
+        <h4>第 1 天：找一个小痛点</h4>
+        <p>挑一件你每周都在重复做的烦心小事——填表、做周报、整理数据、回复常见问题</p>
+      </div>
+      <div class="step">
+        <div class="num">🤖</div>
+        <h4>第 2 天：丢给 AI 试试</h4>
+        <p>打开 Claude Chat 或 ChatGPT，用自然语言描述你的问题，看 AI 能帮你做到什么程度</p>
+      </div>
+      <div class="step">
+        <div class="num" style="border-color:var(--accent);color:var(--accent);">🚀</div>
+        <h4>第 7 天：交出一个东西</h4>
+        <p>用 Vibe Coding 做出第一个能用的工具——哪怕只是一个自动填表的脚本或一个信息查询页面</p>
+      </div>
+    </div>
+
+    <div class="cta-banner" style="margin-top:32px;">
+      <h2>替代你的不是 AI，是会用 AI 的同事</h2>
+      <p>今天就开始。不需要完美，先做出来再迭代。</p>
+      <a href="#vibe" class="btn-primary">从 Vibe Coding 开始 →</a>
+    </div>
+  </div>
+
+  <!-- ====== FAQ ====== -->
+  <div class="section" id="faq">
+    <div class="section-header">
+      <div class="badge">FAQ</div>
+      <h2>常见问题</h2>
+    </div>
+
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">我不会写代码，能用 Vibe Coding 吗？ <span class="arrow">▼</span></div>
+      <div class="faq-a">完全可以。Vibe Coding 的核心就是用自然语言编程——你不需要了解任何编程语言。只要能清晰地描述你想要什么，AI 就会帮你写代码。很多非技术背景的员工（行政、市场、销售）已经在用 Vibe Coding 做自己的工具了。</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">AI 生成的代码可靠吗？会不会有安全问题？ <span class="arrow">▼</span></div>
+      <div class="faq-a">AI 生成的代码能跑通，但不一定安全。建议：①不要直接把 AI 代码接入敏感数据系统；②发布前请技术人员做安全审查；③企业应在 IT 部门指导下建立 AI 使用规范。对于个人工具和内部小应用，AI 生成的代码通常是够用的。</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Agent 和聊天机器人有什么区别？ <span class="arrow">▼</span></div>
+      <div class="faq-a">聊天机器人只能对话，Agent 能动手。比如你问聊天机器人"今天有什么会议"，它会告诉你；你问 Agent 同样的问题，它会自己去查日历、整理成表格、发给需要参会的人、并在会前 10 分钟提醒你——全程无需你参与。</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">公司数据安全怎么保障？ <span class="arrow">▼</span></div>
+      <div class="faq-a">核心原则：敏感信息脱敏后再输入 AI；企业可本地部署开源模型处理内部数据；建立统一的 Token 入口和权限管控（推荐 Easy Safe + Easy Router 方案）；为 Agent 分配独立的 OA 账号权限，像管理员工一样管理 Agent 的数据访问范围。</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>AI Native 实战学院 · 让每一位员工成为 AI 时代的超级个体</p>
+  <p style="margin-top:4px">「替代你的不是 AI，是会用 AI 的同事」</p>
+</footer>
+
+<script>
+function runDemo() {
+  const input = document.getElementById('promptInput');
+  const result = document.getElementById('demoResult');
+  const text = input.value.trim();
+
+  if (!text) {
+    result.innerHTML = '<span style="color:#ef4444">⚠️ 请先输入你想让 AI 帮你做什么</span>';
+    return;
+  }
+
+  result.innerHTML = '<span style="color:var(--muted)">🤔 AI 正在处理……</span>';
+
+  // Simulate AI response based on keywords
+  setTimeout(() => {
+    let response = '';
+
+    if (text.includes('周报') || text.includes('总结') || text.includes('报告')) {
+      response = '✅ <strong>已为你生成模板：</strong><br><br>'
+        + '📋 <strong>本周工作周报</strong><br>'
+        + '一、本周完成事项<br>'
+        + '&nbsp;&nbsp;1. [填写完成事项1]<br>'
+        + '&nbsp;&nbsp;2. [填写完成事项2]<br>'
+        + '二、下周工作计划<br>'
+        + '&nbsp;&nbsp;1. [填写计划1]<br>'
+        + '&nbsp;&nbsp;2. [填写计划2]<br>'
+        + '三、需要协调的资源<br>'
+        + '&nbsp;&nbsp;[填写需求]<br><br>'
+        + '<em style="color:var(--muted)">💡 你可以继续让我调整格式、增加字段、或导出为特定格式。</em>';
+    } else if (text.includes('报名') || text.includes('表单') || text.includes('页面')) {
+      response = '✅ <strong>我可以帮你做一个完整的报名页面！</strong><br><br>'
+        + '包含：课程信息卡片、报名表单（姓名/部门/手机）、提交成功弹窗、移动端适配。<br><br>'
+        + '<em style="color:var(--muted)">💡 实际使用时，AI 会直接生成完整的 HTML/CSS/JS 代码，你复制粘贴就能用。</em>';
+    } else if (text.includes('数据') || text.includes('表格') || text.includes('整理')) {
+      response = '✅ <strong>数据分析方案：</strong><br><br>'
+        + '1. 你可以把原始数据粘贴给我<br>'
+        + '2. 告诉我你想要的输出格式（表格/图表/摘要）<br>'
+        + '3. 我会自动清洗、分类、汇总<br><br>'
+        + '<em style="color:var(--muted)">💡 配合 Agent 使用，可以每天自动从云端下载数据、处理、发送报告。</em>';
+    } else if (text.includes('邮件') || text.includes('通知') || text.includes('回复')) {
+      response = '✅ <strong>邮件草稿已生成：</strong><br><br>'
+        + '主题：[根据上下文自动生成]<br>'
+        + '收件人：[可指定]<br>'
+        + '正文：已根据你的需求撰写专业邮件内容<br><br>'
+        + '<em style="color:var(--muted)">💡 Agent 可以自动读取收件人信息、个性化每封邮件、定时发送。</em>';
+    } else {
+      response = '✅ <strong>收到！</strong> 你描述的这件事，AI 可以帮你：<br><br>'
+        + '📝 <strong>第一步：</strong>梳理需求，拆解成可执行的步骤<br>'
+        + '🔧 <strong>第二步：</strong>逐步骤生成代码/文案/方案<br>'
+        + '✅ <strong>第三步：</strong>你审核结果，提出修改意见<br>'
+        + '🔄 <strong>第四步：</strong>迭代优化，直到满意<br><br>'
+        + '<em style="color:var(--muted)">💡 这是 Vibe Coding 的标准流程。越具体的描述，AI 产出越精准。</em>';
+    }
+
+    result.innerHTML = response;
+  }, 600);
+}
+</script>
+
+</body>
+</html>
