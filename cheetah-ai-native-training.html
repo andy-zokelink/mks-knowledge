@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>猎豹AI实战派 · AI Native组织变革 | 培训讲义</title>
+<meta name="description" content="猎豹移动AI Native组织变革实战分享 — 从AI思维到AI生产力，四阶段转型路径全记录。含金句、案例、模板，可作为企业内部AI培训教材。">
+<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Long+Cang&family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Ma+Shan+Zheng&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC','LXGW WenKai',sans-serif;background:#f5f3ee;color:#222;line-height:1.8;overflow-x:hidden}
+:root{--red:#c0392b;--blue:#2874a6;--gold:#b8860b;--green:#2d7a4a}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:2px solid #e8e4df;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
+.nav-logo{font-family:'ZCOOL KuaiLe',sans-serif;font-size:20px;color:var(--red);font-weight:700}
+.nav-links{display:flex;gap:16px}
+.nav-links a{text-decoration:none;color:#333;font-size:14px;font-weight:600;opacity:.7;transition:.2s}
+.nav-links a:hover{opacity:1;color:var(--red)}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);color:#fff;padding:80px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(192,57,43,0.2),transparent 50%),radial-gradient(ellipse at 70% 30%,rgba(40,116,166,0.15),transparent 50%)}
+.hero h1{font-family:'ZCOOL KuaiLe',sans-serif;font-size:clamp(22px,5vw,38px);position:relative;z-index:1;line-height:1.5}
+.hero .sub{font-size:16px;opacity:.8;margin-top:10px;position:relative;z-index:1}
+.hero .meta{font-size:13px;opacity:.5;margin-top:12px;position:relative;z-index:1}
+
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:-32px auto 32px;position:relative;z-index:2}
+.stat-card{background:#fff;border:1.5px solid #e8e4df;border-radius:12px;padding:16px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,0.05)}
+.stat-card .num{font-size:1.8em;font-weight:900;color:var(--red);line-height:1.2}
+.stat-card .label{font-size:11px;color:#888;margin-top:2px}
+
+/* Sections */
+.section{margin:40px 0}
+.section-title{font-size:1.5em;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.section-title .emoji{font-size:1.2em}
+.section-desc{font-size:14px;color:#888;margin-bottom:20px}
+
+/* Big quote */
+.big-quote{background:rgba(192,57,43,0.06);border-left:4px solid var(--red);padding:20px 24px;border-radius:0 10px 10px 0;margin:20px 0;font-size:1.1em;font-weight:600;color:#8b1a1a;line-height:1.6}
+
+/* Card grid */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:16px 0}
+.card{background:#fff;border:1.5px solid #e8e4df;border-radius:12px;padding:20px;transition:.2s}
+.card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+.card .card-emoji{font-size:2em;margin-bottom:8px}
+.card h3{font-size:1em;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:#666;line-height:1.7}
+
+/* Stage timeline */
+.stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.stage-card{background:#fff;border:1.5px solid #e8e4df;border-radius:12px;padding:18px;text-align:center;position:relative;overflow:hidden}
+.stage-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.stage-card.s1::before{background:var(--red)}
+.stage-card.s2::before{background:var(--blue)}
+.stage-card.s3::before{background:var(--green)}
+.stage-card .stage-num{display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;color:#fff;font-weight:800;font-size:13px;margin-bottom:8px}
+.stage-card.s1 .stage-num{background:var(--red)}
+.stage-card.s2 .stage-num{background:var(--blue)}
+.stage-card.s3 .stage-num{background:var(--green)}
+.stage-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.stage-card .stage-time{font-size:11px;color:#999;margin-bottom:8px}
+.stage-card p{font-size:12px;color:#666;line-height:1.6;text-align:left}
+
+/* Compare grid */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.compare-box{border-radius:12px;padding:20px}
+.compare-box.bad{background:#fff5f5;border:1.5px solid #fecaca}
+.compare-box.good{background:#f0fdf4;border:1.5px solid #bbf7d0}
+.compare-box h4{font-size:14px;font-weight:700;margin-bottom:8px}
+.compare-box.bad h4{color:#dc2626}
+.compare-box.good h4{color:#16a34a}
+.compare-box p{font-size:13px;color:#555;line-height:1.7}
+
+/* Golden quotes */
+.golden-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:20px 0}
+.golden-card{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:12px;padding:18px;position:relative}
+.golden-card::before{content:'"';position:absolute;top:4px;left:10px;font-size:40px;color:#f59e0b;font-family:Georgia,serif;opacity:.3}
+.golden-card .qt{font-size:14px;font-weight:600;color:#92400e;line-height:1.6;padding-left:12px}
+.golden-card .tag{font-size:10px;color:#b45309;margin-top:8px;display:block}
+
+/* Flow steps */
+.flow-row{display:flex;gap:12px;margin:20px 0;align-items:flex-start;flex-wrap:wrap}
+.flow-step{flex:1;min-width:180px;background:#fff;border:1.5px solid #e8e4df;border-radius:12px;padding:16px;text-align:center;position:relative}
+.flow-step .step-num{font-size:11px;font-weight:800;color:var(--red);margin-bottom:4px}
+.flow-step h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.flow-step p{font-size:12px;color:#666;line-height:1.5}
+.flow-arrow{font-size:24px;color:#ccc;align-self:center;flex-shrink:0}
+
+/* Case box */
+.case-box{background:#faf8f4;border:1.5px solid #e8e4df;border-radius:12px;padding:18px;margin:14px 0}
+.case-box h4{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--blue)}
+.case-box p{font-size:13px;color:#555;line-height:1.7}
+.case-box .author{font-size:11px;color:#999;margin-top:6px}
+
+/* Danger list */
+.danger-list{list-style:none;margin:16px 0}
+.danger-list li{padding:12px 16px;margin:8px 0;background:#fff5f5;border-left:3px solid #dc2626;border-radius:0 8px 8px 0;font-size:13px;line-height:1.7}
+.danger-list li strong{color:#dc2626}
+
+/* CTA */
+.cta{text-align:center;padding:48px 24px;max-width:700px;margin:0 auto}
+.cta h2{font-family:'Long Cang','ZCOOL KuaiLe',sans-serif;font-size:32px;margin-bottom:10px;color:var(--red)}
+.cta p{font-size:15px;color:#666;margin-bottom:20px}
+
+/* Footer */
+.footer{text-align:center;padding:32px;color:#999;font-size:12px;border-top:1.5px solid #e8e4df;margin-top:40px}
+
+/* AMO triangle */
+.amo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.amo-card{border-radius:12px;padding:18px;text-align:center}
+.amo-card.a{background:#fef2f2;border:1.5px solid #fecaca}
+.amo-card.m{background:#fffbeb;border:1.5px solid #fcd34d}
+.amo-card.o{background:#eff6ff;border:1.5px solid #bfdbfe}
+.amo-card h4{font-size:1.1em;font-weight:700;margin-bottom:4px}
+.amo-card.a h4{color:#dc2626}
+.amo-card.m h4{color:#b45309}
+.amo-card.o h4{color:#1d4ed8}
+.amo-card p{font-size:12px;color:#666;line-height:1.5}
+
+/* Andy highlight */
+.andy-highlight{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1.5px solid #7dd3fc;border-radius:12px;padding:18px;margin:14px 0;position:relative}
+.andy-highlight::before{content:'💬 现场发言';position:absolute;top:-10px;left:16px;background:#0ea5e9;color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:10px}
+
+/* Responsive */
+@media(max-width:768px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .stage-grid{grid-template-columns:1fr}
+  .compare-grid{grid-template-columns:1fr}
+  .flow-row{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg)}
+  .amo-grid{grid-template-columns:1fr}
+  .card-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="ai-thinktank.html">🦉 AI军团养成记</a>
+  <div class="nav-links">
+    <a href="ai-thinktank.html">← 返回AI军团</a>
+    <a href="#framework">转型框架</a>
+    <a href="#path">落地路径</a>
+    <a href="#cases">实践案例</a>
+    <a href="#quotes">金句墙</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>🦁 猎豹AI实战派<br>AI Native 组织变革 · 培训讲义</h1>
+  <div class="sub">一场 4 小时的沉浸式分享，一家从 PC 时代走来的公司<br>如何用三年时间完成 AI 原生组织转型</div>
+  <div class="meta">深圳站 · 2026年7月11日 ｜ 猎豹移动傅盛、彭泽主讲 ｜ 整理：AI军团</div>
+</div>
+
+<div class="container">
+  <div class="stats-row">
+    <div class="stat-card"><div class="num">4h</div><div class="label">沉浸式分享</div></div>
+    <div class="stat-card"><div class="num">3步</div><div class="label">转型进化论</div></div>
+    <div class="stat-card"><div class="num">4阶段</div><div class="label">落地路径</div></div>
+    <div class="stat-card"><div class="num">7句</div><div class="label">金句提炼</div></div>
+  </div>
+
+  <!-- ====== 第一章：为什么 ====== -->
+  <div class="section" id="why">
+    <div class="section-title"><span class="emoji">🧬</span>第一章 ｜ 为什么要做 AI Native 组织？</div>
+    <div class="section-desc">不是工具升级，是物种进化。AI 正在重写企业未来 10 年的底层逻辑。</div>
+
+    <div class="big-quote">AI 不只是工具升级，而是在重塑人才、组织与企业未来。<br>这轮 AI 真正会重写的，是企业未来 10 年的组织和价值。</div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-emoji">🧪</div>
+        <h3>AI 已经超过大多数人类</h3>
+        <p>律师资格考试：AI 得分超 90% 人类考生<br>数学奥赛 USAMO 2026：AI 得分 95%<br>博士级科学推理 GPQA：PhD 专家 65% vs AI 87%<br>非专业博士上网查30分钟只有34%</p>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🧑‍🔬</div>
+        <h3>顶尖人才正在流向 AI Native 阵营</h3>
+        <p>John Jumper（AlphaFold）- DeepMind → Anthropic<br>Noam Shazeer（Transformer作者）- Google → OpenAI<br>Andrej Karpathy — OpenAI创始成员 → Anthropic<br>Google → Anthropic / OpenAI 已成趋势</p>
+      </div>
+      <div class="card">
+        <div class="card-emoji">⚡</div>
+        <h3>组织形态在换代</h3>
+        <p>传统公司：人多 ✗ 流程重 ✗ 人效低 ✗<br>↓ 组织形态换代 ↓<br>AI Native：小团队 ✓ AI放大 ✓ 高人效 ✓<br>3000人冲向万亿美金</p>
+      </div>
+    </div>
+
+    <div class="big-quote" style="border-left-color:#dc2626;text-align:center;font-size:1.3em">
+      再不转型，连人都找不到了
+    </div>
+  </div>
+
+  <!-- ====== 第二章：工作被重定义 ====== -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">🔄</span>第二章 ｜ 工作正在被重新定义</div>
+    <div class="section-desc">岗位变了 · 流程变了 · 节奏变了。慢=死。</div>
+
+    <div class="stage-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stage-card s1">
+        <h3>🔧 岗位在变</h3>
+        <p><strong>以前：</strong>岗位 = 固定职责 + 固定流程 + 固定产出</p>
+        <p><strong>现在：</strong>岗位 = 你能用 AI 解决什么问题</p>
+        <p style="margin-top:8px;font-size:11px;color:#888">一个会用 Agent 的市场人员，一天产 10 条视频 + 50 篇文章</p>
+      </div>
+      <div class="stage-card s2">
+        <h3>📋 流程在变</h3>
+        <p><strong>以前：</strong>调研→方案→评审→开发→测试→上线（几周/月）</p>
+        <p><strong>现在：</strong>想法 → 直接出 Demo → 直接看效果（几小时/天）</p>
+        <p style="margin-top:8px;font-size:11px;color:#888">中间的传达、等待、对齐——全被砍掉了</p>
+      </div>
+      <div class="stage-card s3">
+        <h3>⚡ 节奏在变</h3>
+        <p>Anthropic 几乎每周发新功能</p>
+        <p><strong>你的对手不一定是同行，而是那些被 AI 加速迭代的"新物种"</strong></p>
+        <p style="margin-top:8px;font-size:11px;color:#888">金句：慢=死。只有变成新物种，才能在这个速度里活下来</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>🎯 猎豹傅盛四年观点演变（2023-2026）</h3>
+      <div class="flow-row" style="margin-top:10px">
+        <div class="flow-step"><div class="step-num">2023</div><h4>AI Native 人才</h4><p>企业只要一种人——能超级大量用 AI，具备 AI Native 思维的人</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="step-num">2024</div><h4>数字员工 / 辅助决策</h4><p>企业应用 AI 三段位：青铜、黄金、王者。更大价值在于工具辅助决策</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="step-num">2025</div><h4>组织架构 / 文化基因</h4><p>AI Native 是核心竞争优势。关键在组织架构和文化基因</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="step-num">2026</div><h4>未来10年 / 组织 / 价值</h4><p>这轮 AI 真正会重写的，是企业未来 10 年的组织和价值</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第三章：转型三段进化 ====== -->
+  <div class="section" id="framework">
+    <div class="section-title"><span class="emoji">🧭</span>第三章 ｜ 猎豹转型三段进化论</div>
+    <div class="section-desc">不是空降的方法论，而是猎豹自己走过的真实路径——每一段都有具体的人，具体的产出，具体的失败和迭代。</div>
+
+    <div class="stage-grid">
+      <div class="stage-card s1">
+        <div class="stage-num">1</div>
+        <h3>AI 思维</h3>
+        <div class="stage-time">2023-2024</div>
+        <p>先让组织"相信"AI 能改变工作方式——从总部试点到全集团考试，把意识打通。<br><br>
+        <strong>全员 AI 自我革命：</strong>课程组搭成员探索→正规军，寻找内部 AI 先锋<br>
+        <strong>AI 能力上岗考试：</strong>人人都是 Prompt 工程师 / 人人都是 AI 小秘巡查官</p>
+      </div>
+      <div class="stage-card s2">
+        <div class="stage-num">2</div>
+        <h3>AI 行动</h3>
+        <div class="stage-time">2025</div>
+        <p>AI 从"工作的补充"变成"工作的基础"——中层下场写代码，反向辐射一线团队。<br><br>
+        <strong>中高层先行：</strong>面向中高层开班，通过中层牵引把思维落地为行动<br>
+        <strong>全员 AI Coding：</strong>把 AI 技能工具落实为生产力模式</p>
+      </div>
+      <div class="stage-card s3">
+        <div class="stage-num">3</div>
+        <h3>AI Native 生产力</h3>
+        <div class="stage-time">2025-2026</div>
+        <p>从"行动"沉淀为"组织能力"——产研与平台各自跑出 AI 特种兵建制。<br><br>
+        <strong>领航班（产研）：</strong>AI 特种兵速成培养 + 实战训练营<br>
+        <strong>启航班（平台）：</strong>一号位编排整个部门 + 应用 AI 提效工具</p>
+      </div>
+    </div>
+
+    <!-- 三条变革线 -->
+    <div class="card-grid" style="margin-top:20px">
+      <div class="card">
+        <div class="card-emoji">🧠</div>
+        <h3>思维变革</h3>
+        <p>打破"AI 是工具部门的事"——让每个管理者亲手用 AI 解决一次自己的工作痛点。<br><br>
+        <strong>案例支点：</strong>CEO 周例会直接提要求，中层以身作则练 AI 手感。</p>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🏛️</div>
+        <h3>组织变革</h3>
+        <p>把 AI 能力写进绩效、写进晋升通道、写进部门预算——让转型变成组织自己的事，而不是某个人的 KPI。<br><br>
+        <strong>案例支点：</strong>AI 实践纳入中高层绩效考核维度，具备一票否决权。</p>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🚀</div>
+        <h3>产品变革</h3>
+        <p>每一次培训都必须留下一个真正在跑的系统——而不是一份 PPT 或一次"听懂了"。<br><br>
+        <strong>案例支点：</strong>EasyCode + 飞书打通，当场产出可用的内部工具。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第四章：四阶段路径 ====== -->
+  <div class="section" id="path">
+    <div class="section-title"><span class="emoji">🗺️</span>第四章 ｜ 企业 AI 转型四阶段落地路径</div>
+    <div class="section-desc">猎豹走了三年弯路，总结出三个月就能落地的路径。</div>
+
+    <div class="flow-row">
+      <div class="flow-step">
+        <div class="step-num">第一阶段</div>
+        <h4>💡 思想变革</h4>
+        <p>周一早上周例会只讲 AI，每次两个半小时，坚持三年<br>高层带头做 AI 项目，在例会分享心得<br>分领航班（研发工程化）和启航班（把 AI 当 Excel 用）</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">第二阶段</div>
+        <h4>🌟 涌现先行者</h4>
+        <p>晚间兴趣小组筛选先行者<br>设立星期五董事长午餐会<br>成立 AI 生产力部，提供全公司培训和支持</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">第三阶段</div>
+        <h4>⚔️ 特种兵团队</h4>
+        <p>成立独立 AI 特种兵团队（如西安特区）<br>远离总部，给年轻人空间<br>重构业务流程，推动全公司 AI 变革</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">第四阶段</div>
+        <h4>🏗️ 基础设施</h4>
+        <p>智能体安全底座（权限管控、数据脱敏）<br>知识库建设（按岗位场景整理）<br>配套完善，支撑规模化落地</p>
+      </div>
+    </div>
+
+    <!-- 关键原则 -->
+    <div class="card-grid" style="margin-top:20px">
+      <div class="card">
+        <h3>🔑 一把手必须亲自动手</h3>
+        <p>傅盛 2023 年自己用 AI 做了贪吃蛇，去年一晚上做了网页版红色警报，上线就有一万多用户。一把手亲自试才能获得体感——就像开车，自己不开永远体会不到。</p>
+      </div>
+      <div class="card">
+        <h3>🏝️ 建立 AI 特区</h3>
+        <p>就像改革开放，创造实验环境让新组织生长。洋务运动失败是因为不变革组织只买设备，明治维新成功是因为全面变革。做了才会懂，不是懂了才做。</p>
+      </div>
+      <div class="card">
+        <h3>👶 筛选看热情，不看资历</h3>
+        <p>面试优先看对 AI 的热情——只问最近用过什么 AI 工具、做了什么。两周试用期判断能不能用，不行就淘汰。老师傅带年轻人，老师傅自己也干活。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第五章：激励机制 ====== -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">🏆</span>第五章 ｜ AI 先锋奖与部门 AI 奖励基金</div>
+    <div class="section-desc">基于 AMO 模型：能力 × 动机 × 机会 = 持续 AI 产出</div>
+
+    <div class="amo-grid">
+      <div class="amo-card a"><h4>A 能力 Ability</h4><p>AI 工具与学习资源采购<br>外部学习/工作坊报名费用</p></div>
+      <div class="amo-card m"><h4>M 动机 Motivation</h4><p>精神激励：奖杯、奖状<br>物质激励：部门 AI 奖励基金<br>按年拨付专项基金，支持团队 AI 持续探索</p></div>
+      <div class="amo-card o"><h4>O 机会 Opportunity</h4><p>部门 AI 提效项目奖励<br>（需提交可量化成果数据）<br>部门内部学习会（零食、物料）</p></div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>📋 申请流程</h3>
+      <p>AI 先锋发起申请（说明资金用途）→ 直属上级审批 → HR 部门审核（秒速对点 HRBP）→ 项目负责人最终确认</p>
+      <p style="font-size:12px;color:#888;margin-top:8px">2025 年获奖部门：信息技术管理部、安兔兔事业部、移动工具业务部、约趣用户增长部、机器人售后服务部、用户体验部、机器人质量管理部、机器人售前服务部</p>
+    </div>
+  </div>
+
+  <!-- ====== 第六章：实践案例 ====== -->
+  <div class="section" id="cases">
+    <div class="section-title"><span class="emoji">📦</span>第六章 ｜ 实战案例集</div>
+    <div class="section-desc">以下案例来自猎豹团队分享和现场参会者（含芯片供应链企业）的真实实践。</div>
+
+    <!-- 猎豹案例 -->
+    <h3 style="font-size:16px;font-weight:700;margin:16px 0 8px;color:var(--red)">🦁 猎豹移动案例</h3>
+    <div class="card-grid">
+      <div class="case-box">
+        <h4>💬 销售日报 AI 助理</h4>
+        <p>CFO 秘书佩奇，非技术背景，自己用 AI 做了销售日报助理。销售口述拜访内容，AI 自动拆解填入 CRM，给老板生成综合日报。识别率不高？她自己调提示词解决了——研发后来才认可她的方案。</p>
+        <div class="author">作者：CFO秘书（非技术岗）</div>
+      </div>
+      <div class="case-box">
+        <h4>🏗️ 销售自建 CRM</h4>
+        <p>销售管理岗的小姑娘，自己用 AI 重构了公司 CRM 系统。原来需要跟研发反复沟通，信息传递有偏差，业务变化快研发跟不上。现在自己直接用智能体做，速度快还贴合需求。</p>
+        <div class="author">作者：销售管理岗（非技术岗）</div>
+      </div>
+      <div class="case-box">
+        <h4>🧑‍💻 14 岁初中生 AI 编程</h4>
+        <p>AI 编程比赛中，14 岁初中生给每道题开一个独立智能体并发处理，自己只做少量工作，比很多资深工程师做得还快还好。新一代年轻人对 AI 的使用思路——习惯让 AI 干，不是自己干。</p>
+        <div class="author">来源：AI 编程比赛</div>
+      </div>
+      <div class="case-box">
+        <h4>🔧 EasyCode + 飞书</h4>
+        <p>员工自主玩出来的项目，内部允许员工自主尝试 AI 项目，只要合规就不阻拦上线。EasyCode 打通飞书，当场产出可用的内部工具，有望成长为下一个字节量级的公司。</p>
+      </div>
+    </div>
+
+    <!-- Andy 案例 -->
+    <h3 style="font-size:16px;font-weight:700;margin:24px 0 8px;color:var(--blue)">🔷 芯片供应链企业实践（现场参会者·中科领创 Andy）</h3>
+
+    <div class="andy-highlight" style="margin-bottom:14px">
+      <p style="font-size:14px;font-weight:600;color:#0369a1;margin-top:8px">"AI 应用核心是数据。没有对应业务数据，哪怕用顶级工具也做不出有用的成果。"</p>
+      <p style="font-size:12px;color:#666;margin-top:4px">—— 现场金句，来自 4 小时录音转写</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="case-box">
+        <h4>📄 环保报告 AI 助手</h4>
+        <p>给商务团队做了 AI 小助手，自动拆解小几百页的英文环保报告，提取均质、等级等核心信息填入客户表格，还会自动提醒报告到期更新，减少了大量人工工作。</p>
+        <div class="author">作者：Andy（中后台，非研发岗）</div>
+      </div>
+      <div class="case-box">
+        <h4>📦 出库照片检索助手（开发中）</h4>
+        <p>计划开发 AI 助手自动给微盘中的出库照片建档，按日期、批号、收件人建立索引，解决人工检索慢、容易漏的问题。目前因微盘未给机器人开放权限暂未跑通，计划迁移到飞书解决。</p>
+        <div class="author">作者：Andy</div>
+      </div>
+      <div class="case-box">
+        <h4>🦞 九个龙虾智能体</h4>
+        <p>三四月份 Agent 技术出来后，每天玩到半夜三四点，做了九个龙虾智能体，仿制三万网页做公司内部培训，做了爱马仕商务页面，昨天刚做了仓库出库检索智能体。</p>
+        <div class="author">作者：Andy</div>
+      </div>
+      <div class="case-box">
+        <h4>🎓 公司内部 AI 培训</h4>
+        <p>在企业内部做 AI 培训，采取谨慎推进策略——让员工自行摸索使用，观察使用效果后再做后续开发。观察到中后台人员 AI 落地走在研发前面，研发初期反而对 AI 比较排斥。</p>
+        <div class="author">来源：Andy 分享</div>
+      </div>
+    </div>
+
+    <!-- 其他案例 -->
+    <h3 style="font-size:16px;font-weight:700;margin:24px 0 8px;color:var(--green)">🌐 其他行业案例</h3>
+    <div class="card-grid">
+      <div class="case-box">
+        <h4>🔬 半导体工艺优化</h4>
+        <p>河北一家即将上市的半导体设备公司，用 AI 优化半导体工艺 recipe，效果比人类做得更好。</p>
+      </div>
+      <div class="case-box">
+        <h4>💻 芯片设计提效</h4>
+        <p>清华毕业生用 AI 做高速芯片设计，人类做一个礼拜的工作，AI 25分钟完成，指标符合要求，还能减少流片失败的风险。</p>
+      </div>
+      <div class="case-box">
+        <h4>🇨🇳 贵州政务知识图谱</h4>
+        <p>做了几百种基层表格的业务梳理，画出类似清明上河图的业务知识图谱，高度重视业务逻辑沉淀，满足政务业务不能出错的要求。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第七章：金句墙 ====== -->
+  <div class="section" id="quotes">
+    <div class="section-title"><span class="emoji">💎</span>第七章 ｜ 金句墙</div>
+
+    <div class="golden-grid">
+      <div class="golden-card"><div class="qt">替代你的不是 AI，是会用 AI 的同事。</div><span class="tag">执行策略</span></div>
+      <div class="golden-card"><div class="qt">AI 是生产力革命，每个行业都值得被重做一次。</div><span class="tag">战略洞见</span></div>
+      <div class="golden-card"><div class="qt">不是懂了才做，是做了才会懂。</div><span class="tag">执行策略</span></div>
+      <div class="golden-card"><div class="qt">一把手必须亲自体验 AI——你自己不开车，永远不知道开车和坐车的区别。</div><span class="tag">战略洞见</span></div>
+      <div class="golden-card"><div class="qt">未来 HR 会变成 IR（Intelligence Resource），公司核心竞争力是整体智能水平。</div><span class="tag">战略洞见</span></div>
+      <div class="golden-card"><div class="qt">智能体就像养植物，你要给它阳光雨露，它才能自己长大。</div><span class="tag">方法技巧</span></div>
+      <div class="golden-card"><div class="qt">AI 带来的变革，比互联网带来的变革还要深刻。</div><span class="tag">战略洞见</span></div>
+      <div class="golden-card"><div class="qt">慢 = 死。只有变成新物种，才能在这个速度里活下来。</div><span class="tag">警示</span></div>
+      <div class="golden-card"><div class="qt">AI 应用核心是数据。没有对应业务数据，顶级工具也做不出有用的成果。</div><span class="tag">现场金句 · Andy</span></div>
+      <div class="golden-card"><div class="qt">先组织 AI Native，产品 AI 化水到渠成。</div><span class="tag">核心结论</span></div>
+    </div>
+  </div>
+
+  <!-- ====== 第八章：常见陷阱 ====== -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">⚠️</span>第八章 ｜ 转型中要避开的坑</div>
+    <ul class="danger-list">
+      <li><strong>只买设备不变革组织</strong>——洋务运动的教训。买 AI 工具不等于 AI 转型，组织架构和流程必须同步变革。</li>
+      <li><strong>一把手不亲自下场</strong>——上面喊口号，下面等指令。一把手不亲自用 AI，整个组织不会有真正的 AI 体感。</li>
+      <li><strong>用老流程套 AI</strong>——研发都在用 AI 写代码，但流程还是 code review、测试、审批。一个人快没用，整体流程不变快不起来。</li>
+      <li><strong>数据安全重视不够</strong>——有客户 Key 泄露，一晚上被消耗十万美金。智能体需要像人一样分配 OA 权限，敏感信息必须脱敏或本地部署。</li>
+      <li><strong>知识库没跟上</strong>——智能体需要业务逻辑、工具权限、知识库。这些都没有，智能体就没法正常工作。</li>
+      <li><strong>产品贴 AI 标签但组织没 AI 化</strong>——常见惯性做法。先追求"AI 提效"，只给产品贴标签，但组织没有 AI 化，最终协作低效、能力断层。</li>
+    </ul>
+  </div>
+
+  <!-- ====== 第九章：行动清单 ====== -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">✅</span>第九章 ｜ 你的 90 天行动清单</div>
+    <div class="compare-grid">
+      <div class="compare-box bad"><h4>❌ 不要做</h4><p>买了一堆 AI 工具，全员开账号，然后等奇迹发生<br>只让 IT 部门搞 AI<br>等"看清楚了"再动手<br>追求完美方案，一次到位</p></div>
+      <div class="compare-box good"><h4>✅ 要做</h4><p>第 1-30 天：一把手亲手用 AI 做一个自己的小工具，获得体感<br>第 31-60 天：成立晚间 AI 兴趣小组，筛选 3-5 个先行者<br>第 61-90 天：选一个真实业务场景，用智能体重构流程，产出可量化的成果</p></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>做了才会懂</h2>
+    <p>猎豹走了三年弯路，总结出三个月就能落地的路径。<br>你要做的第一件事：今天就打开 AI 工具，亲手做一个东西。</p>
+    <a href="ai-thinktank.html" style="display:inline-block;padding:12px 28px;background:var(--red);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px">← 返回 AI军团主页</a>
+  </div>
+
+  <div class="footer">
+    <p>基于猎豹移动 2026.07.11 深圳站「AI 实战派 · 组织变革场」4小时录音及课件整理</p>
+    <p>讲师：傅盛（猎豹移动 CEO，视频致辞）、彭泽（猎豹移动集团副总裁，主讲）</p>
+    <p>现场对话参与：Andy（中科领创）等数十位企业家 ｜ 讲义整理：AI军团 · 阿森智囊团</p>
+    <p style="margin-top:8px">AI 军团养成记系列 · <a href="https://andy-zokelink.github.io/mks-knowledge/ai-thinktank.html">返回首页</a></p>
+  </div>
+</div>
+
+</body>
+</html>
