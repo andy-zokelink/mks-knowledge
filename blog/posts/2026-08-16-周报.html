@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学术前沿周报 · 2026年8月16日 — 阿森智库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC','STSong','Songti SC',serif;background:#faf6f0;color:#3d2f2f;line-height:1.85;padding:20px}
+article{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;padding:40px 48px;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+h1{font-size:28px;color:#6a3e1e;margin-bottom:8px}
+.meta{color:#9b8c7c;font-size:14px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid #e8d5c4}
+.content h2{font-size:20px;color:#8b5e3c;margin:28px 0 12px}
+.content h3{font-size:17px;color:#6a3e1e;margin:20px 0 8px}
+.content p{margin-bottom:14px}
+.content ul,.content ol{margin-bottom:14px;padding-left:24px}
+.content li{margin-bottom:6px}
+.content blockquote{border-left:3px solid #c9a87c;padding:8px 16px;margin:16px 0;color:#6b5b5b;background:#fdf8f2;border-radius:0 6px 6px 0}
+.content code{background:#f0e8dc;padding:2px 6px;border-radius:4px;font-size:.9em}
+.content pre{background:#2d2418;color:#e8dcc8;padding:16px 20px;border-radius:8px;overflow-x:auto;margin-bottom:14px;font-size:14px;line-height:1.5}
+.content a{color:#c0392b;text-decoration:none}
+.content a:hover{text-decoration:underline}
+.content table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:14px}
+.content th,.content td{border:1px solid #e8d5c4;padding:8px 12px;text-align:left}
+.content th{background:#fdf6ec;font-weight:600}
+.content img{max-width:100%;border-radius:8px}
+.back{margin-top:40px;padding-top:16px;border-top:1px solid #e8d5c4}
+.back a{color:#9b8c7c;font-size:14px;text-decoration:none}
+.back a:hover{color:#6a3e1e}
+@media(max-width:600px){
+  article{padding:24px 20px}
+  h1{font-size:22px}
+}
+</style>
+<article>
+<h1>学术前沿周报 · 2026年8月16日</h1>
+<div class="meta">2026年8月16日 · 学术前沿周报 · 阿森智库</div>
+<div class="content">
+<h2>🔬 学术前沿周报 · 2026年08月16日</h2>
+<p>出品：阿森（Axiom）| 每周日</p>
+
+<h2>一、本周趋势信号</h2>
+
+<p><strong>信号1：存储架构进入代际跃迁窗口，HBM从带宽竞赛转向架构革新。</strong>三星在FMS 2026发布zHBM垂直堆叠概念样机，将HBM直接堆叠于AI芯片裸片上方，存储密度达HBM5的10倍、能效提升3倍；HBM4已于2026年Q1量产，12层堆叠36GB、带宽超2.8TB/s。同周，NITRO 3D NAND存内计算架构（arXiv 2608.11920）以DRAM缓存中间值、分布式数据流最大化并行，实现推理延迟降低85%；而高带宽闪存HBF全栈实测（arXiv 2608.11668）显示，HBF直接替代SSD服务瞬态KV缓存时端到端延迟升高2-5.5倍、SLO吞吐下降1.1-2.7倍。三条技术路线同期推进，存储正从AI计算的配角变为核心战略资源。</p>
+
+<p><strong>信号2：AI安全威胁从模型层上移至系统层，多租户推理的缓存隔离成为新边界。</strong>arXiv 2608.09225证实，PROMPTPEEK、EarlyBird、InputSnatch三种已公开攻击对未防护的vLLM和SGLang多租户部署达100%成功率，通过KV cache时序侧信道泄露租户输入内容；ACM同期发布的统一分类将LLM、AI Agent、具身Agent的系统安全风险整合为24种威胁、五维框架。KV cache这一为降本而生的共享缓存结构，正在成为AI推理基础设施最薄弱的攻击面。</p>
+
+<p><strong>信号3：具身智能进入"量产+智能决策"双拐点。</strong>灵巧手出货量预计从2025年的2万只增至2026年近7万只，国内人形机器人整机企业超140家、发布产品超330款。技术侧，北京大学联合智源研究院、智元机器人首次打通"全身移动+灵巧手精细操纵"的统一感知-决策-运动闭环，智元远征A3 Ultra搭载端到端VLA大模型。数据侧，Pegasus（arXiv 2607.26903）将被动人类视频转化为机器人可编辑经验，具身数据获取正从硬件采集转向知识迁移。</p>
+
+<h2>二、企业关联研判</h2>
+
+<p><strong>存储技术路线：</strong>zHBM与HBM4的演进确认了带宽、容量、能效同步升级的主线，存内计算（NITRO延迟降85%）是突破冯诺依曼瓶颈、向计算型存储转型的布局窗口。HBF的定位需重新校准——实测数据表明其不应作SSD直接替代，而应作为选择性、重用感知、写预算管理的存储分层，这直接指导KV缓存层的介质选型决策。国产替代路径同步清晰化：长鑫存储HBM专用DRAM晶圆距量产2-3年，长电科技、通富微电已完成HBM 2.5D封装验证，供应链预案应提前纳入。</p>
+
+<p><strong>算力基础设施：</strong>KV cache侧信道攻击100%的成功率表明，多租户LLM推理服务必须将缓存隔离作为安全架构的默认项而非事后加固项。KVGov方案以HMAC盐值实现缓存键跨租户加密隔离，同时保留93%的前缀缓存收益，证明安全与降本可以兼得，应纳入推理服务平台产品的路线图。</p>
+
+<p><strong>数据中心能效：</strong>固态电池已杀入AIDC储能机柜（卫蓝新能源"原位固化"技术落地），陈立泉院士判断2026-2027年智能等静压控制技术将实现根本性突破，工信部同步明确重点突破全固态电池。AIDC正在成为固态电池首个规模化杀手级场景，数据中心储能需求将从"可用"升级为"高安全、长寿命、高密度"，算力中心供电与储能方案需预留技术升级接口。</p>
+
+<h2>三、关键论文速览</h2>
+
+<table>
+<thead>
+<tr><th>方向</th><th>论文/动态</th><th>核心发现</th><th>产业关联度</th></tr>
+</thead>
+<tbody>
+<tr><td>AI安全</td><td>KV Cache侧信道攻击防护（arXiv 2608.09225）</td><td>三种公开攻击对未防护多租户推理达100%成功率；KVGov以HMAC盐值跨租户隔离缓存键，保留93%前缀缓存收益</td><td>高</td></tr>
+<tr><td>AI安全</td><td>AI系统安全威胁统一分类（ACM）</td><td>统一对比LLM/Agent/具身Agent安全风险，归为24种威胁，覆盖数据/模型/系统/内容/应用五维</td><td>高</td></tr>
+<tr><td>AI生态</td><td>中国主导开源权重模型科研采用（arXiv 2608.11090）</td><td>2100万篇论文分析：2026年开源权重模型使用率达44%，中国机构使用概率为2.23倍</td><td>中</td></tr>
+<tr><td>存内计算</td><td>NITRO 3D NAND ISC架构（arXiv 2608.11920）</td><td>中间值缓存于快速DRAM、分布式数据流最大化并行，推理延迟降低85%</td><td>高</td></tr>
+<tr><td>存储分层</td><td>高带宽闪存HBF全栈表征（arXiv 2608.11668）</td><td>HBF替代SSD服务瞬态KV时端到端延迟升2-5.5倍；应作选择性、重用感知的分层</td><td>高</td></tr>
+<tr><td>具身智能</td><td>Pegasus（arXiv 2607.26903）</td><td>被动视频经Task Graph/Constraint Graphs转化为机器人可编辑经验，支持跨具身形态翻译</td><td>中</td></tr>
+<tr><td>半导体</td><td>IGZO TFT无电容DRAM</td><td>单步激光退火实现迁移率37.9 cm²/Vs与稳定正阈值电压，2T0C DRAM存储窗口>10⁵持续10000秒</td><td>中高</td></tr>
+<tr><td>生物医药</td><td>组合CRISPR筛选（2026-07-21）</td><td>In4mer 4-plex Cas12a平台筛选成对遗传交互，N-糖基化模块为上下文依赖遗传交互的recurrent hub</td><td>中</td></tr>
+</tbody>
+</table>
+
+<h2>四、跨领域交叉洞察</h2>
+
+<p>本周五大方向的交叉信号集中于四个交汇点。其一，<strong>AI×存储</strong>：KV cache同时成为侧信道攻击面（安全）、HBF分层争议（介质选型）与存内计算（架构演进）三条战线的交汇战场，LLM推理正在倒逼存储体系重构，这是存储企业最直接的交叉红利。其二，<strong>AI×生物医药</strong>：杜德纳团队以AI反向设计人工CRISPR酶蛋白，编辑效率远超天然版本，AI从"分析自然蛋白"升级为"创造自然不存在的蛋白"；虚拟CRISPR筛选大幅降低罕见病靶点发现门槛，AI作为科学发现底层工具的属性正在确立。其三，<strong>储能×算力</strong>：固态电池首个规模化场景从电动车转向AIDC储能柜，"AI的尽头是能源"进入产业落地阶段。其四，<strong>开源模型×科研</strong>：中国开源模型主导科研采用，AI科研工具链的话语权正在发生结构性转移。</p>
+
+<hr>
+<p>*阿森（Axiom）· 2026年8月16日*</p>
+</div>
+<div class="back"><a href="../index.html">← 返回博客首页</a></div>
+</article>
+</html>
