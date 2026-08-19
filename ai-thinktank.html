@@ -523,6 +523,643 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   .survey-nps-btn{width:32px;height:32px;font-size:12px}
   .survey-stat-row{flex-direction:column;gap:8px}
 }
+
+/* ============================================= */
+/* FX PANEL: 动效课件 (prefix .fx-)              */
+/* ============================================= */
+
+/* Theme variables scoped to effects panel */
+#section-effects{
+  --fx-bg:#0a0e14;
+  --fx-bg-elevated:#11161d;
+  --fx-bg-card:#161b24;
+  --fx-amber:#F59E0B;
+  --fx-amber-glow:rgba(245,158,11,0.15);
+  --fx-amber-bright:#FBBF24;
+  --fx-blue:#3B82F6;
+  --fx-blue-glow:rgba(59,130,246,0.12);
+  --fx-green:#10B981;
+  --fx-red:#EF4444;
+  --fx-text:#E2E8F0;
+  --fx-text-dim:#94A3B8;
+  --fx-text-faint:#475569;
+  --fx-border:rgba(245,158,11,0.2);
+  --fx-border-faint:rgba(255,255,255,0.06);
+  --fx-code-bad-bg:rgba(239,68,68,0.08);
+  --fx-code-bad-text:#FCA5A5;
+  --fx-code-good-bg:rgba(16,185,129,0.08);
+  --fx-code-good-text:#6EE7B7;
+  --fx-card-shadow:0 4px 20px rgba(0,0,0,0.3);
+  --fx-card-shadow-hover:0 8px 30px rgba(245,158,11,0.15);
+  --fx-p-color:245,158,11;
+  --fx-p-color2:59,130,246;
+  --fx-p-line-alpha:0.1;
+  --fx-p-glow:12;
+  --fx-svg-fill-card:#11161d;
+  --fx-svg-fill-deep:#0a0e14;
+  --fx-svg-text-main:#E2E8F0;
+  --fx-svg-text-dim:#94A3B8;
+  --fx-svg-text-faint:#475569;
+  --fx-svg-ground:#475569;
+  --fx-svg-amber:#F59E0B;
+  --fx-svg-amber-bright:#FBBF24;
+  --fx-svg-blue:#3B82F6;
+}
+#section-effects.fx-light{
+  --fx-bg:#f8fafc;
+  --fx-bg-elevated:#f1f5f9;
+  --fx-bg-card:#ffffff;
+  --fx-amber:#D97706;
+  --fx-amber-glow:rgba(217,119,6,0.12);
+  --fx-amber-bright:#B45309;
+  --fx-blue:#2563EB;
+  --fx-blue-glow:rgba(37,99,235,0.10);
+  --fx-green:#059669;
+  --fx-red:#DC2626;
+  --fx-text:#1e293b;
+  --fx-text-dim:#64748b;
+  --fx-text-faint:#94a3b8;
+  --fx-border:rgba(217,119,6,0.25);
+  --fx-border-faint:rgba(0,0,0,0.08);
+  --fx-code-bad-bg:rgba(220,38,38,0.06);
+  --fx-code-bad-text:#991B1B;
+  --fx-code-good-bg:rgba(5,150,105,0.06);
+  --fx-code-good-text:#065F46;
+  --fx-card-shadow:0 2px 12px rgba(0,0,0,0.06);
+  --fx-card-shadow-hover:0 8px 24px rgba(217,119,6,0.12);
+  --fx-p-color:217,119,6;
+  --fx-p-color2:37,99,235;
+  --fx-p-line-alpha:0.08;
+  --fx-p-glow:8;
+  --fx-svg-fill-card:#f1f5f9;
+  --fx-svg-fill-deep:#ffffff;
+  --fx-svg-text-main:#1e293b;
+  --fx-svg-text-dim:#64748b;
+  --fx-svg-text-faint:#94a3b8;
+  --fx-svg-ground:#cbd5e1;
+  --fx-svg-amber:#D97706;
+  --fx-svg-amber-bright:#B45309;
+  --fx-svg-blue:#2563EB;
+}
+
+/* FX panel base */
+#section-effects{
+  position:relative;
+  background:var(--fx-bg);
+  color:var(--fx-text);
+  min-height:100vh;
+  overflow:hidden;
+  transition:background 0.4s ease,color 0.4s ease;
+  font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+}
+
+/* ① 渐变流动背景 */
+.fx-gradient-bg{
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  z-index:0;
+  background:linear-gradient(135deg,var(--fx-bg) 0%,var(--fx-bg-elevated) 50%,var(--fx-bg) 100%);
+  background-size:200% 200%;
+  animation:fxGradientFlow 12s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes fxGradientFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.fx-gradient-bg::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 20% 0%,var(--fx-amber-glow) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 100%,var(--fx-blue-glow) 0%,transparent 50%);
+  animation:fxAmbientShift 15s ease-in-out infinite alternate;
+}
+@keyframes fxAmbientShift{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(30px,20px) scale(1.1)}
+}
+.fx-gradient-bg::after{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background-image:
+    linear-gradient(var(--fx-border-faint) 1px,transparent 1px),
+    linear-gradient(90deg,var(--fx-border-faint) 1px,transparent 1px);
+  background-size:60px 60px;
+  opacity:0.5;
+}
+
+/* FX particle canvas */
+#fx-particles{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:1;
+}
+
+/* FX theme toggle button */
+.fx-theme-toggle{
+  position:absolute;
+  top:16px;right:20px;
+  z-index:50;
+  width:38px;height:38px;
+  border:1px solid var(--fx-border-faint);
+  border-radius:10px;
+  background:var(--fx-bg-card);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  transition:all 0.3s;
+  line-height:1;
+}
+.fx-theme-toggle:hover{
+  border-color:var(--fx-amber);
+  box-shadow:0 0 12px var(--fx-amber-glow);
+}
+
+/* FX content wrapper */
+.fx-content{
+  position:relative;
+  z-index:2;
+  max-width:1000px;
+  margin:0 auto;
+  padding:80px 24px 60px;
+}
+
+/* FX screen sections */
+.fx-screen{
+  position:relative;
+  min-height:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 0;
+}
+.fx-screen:first-child{padding-top:0}
+
+/* FX section header */
+.fx-section-header{
+  text-align:center;
+  margin-bottom:32px;
+}
+.fx-section-header .fx-label{
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--fx-amber);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.fx-section-header h2{
+  font-size:clamp(24px,4vw,36px);
+  font-weight:700;
+  letter-spacing:-0.5px;
+  color:var(--fx-text);
+}
+.fx-section-header p{
+  font-size:14px;
+  color:var(--fx-text-dim);
+  margin-top:6px;
+}
+
+/* ===== FX Hero ===== */
+.fx-hero-content{
+  text-align:center;
+  max-width:800px;
+  width:100%;
+}
+.fx-hero-tag{
+  display:inline-block;
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--fx-amber);
+  text-transform:uppercase;
+  padding:4px 14px;
+  border:1px solid var(--fx-border);
+  border-radius:20px;
+  margin-bottom:28px;
+  background:var(--fx-amber-glow);
+}
+.fx-hero-content h1{
+  font-size:clamp(28px,5vw,48px);
+  font-weight:800;
+  letter-spacing:-1px;
+  line-height:1.15;
+  margin-bottom:16px;
+  color:var(--fx-text);
+  min-height:1.2em;
+}
+.fx-hero-content h1 .fx-amp{color:var(--fx-amber)}
+.fx-hero-sub{
+  font-size:clamp(15px,2.5vw,20px);
+  color:var(--fx-text-dim);
+  font-weight:400;
+  margin-bottom:40px;
+}
+.fx-hero-sub strong{color:var(--fx-amber-bright);font-weight:600}
+
+/* ④ 打字机光标 */
+.fx-typing-cursor{
+  display:inline-block;
+  width:3px;
+  height:1em;
+  background:var(--fx-amber);
+  margin-left:4px;
+  animation:fxBlink 0.8s step-end infinite;
+  vertical-align:text-bottom;
+}
+@keyframes fxBlink{
+  0%,100%{opacity:1}
+  50%{opacity:0}
+}
+
+/* Signal tower SVG */
+.fx-tower-wrap{
+  margin:0 auto 30px;
+  max-width:280px;
+  position:relative;
+}
+.fx-tower-wrap svg{
+  width:100%;
+  filter:drop-shadow(0 0 20px rgba(245,158,11,0.3));
+}
+@keyframes fxPulseRing{
+  0%{opacity:0.8;transform:scale(0.8)}
+  100%{opacity:0;transform:scale(1.6)}
+}
+.fx-tower-pulse{
+  transform-origin:center;
+  animation:fxPulseRing 2.5s ease-out infinite;
+}
+.fx-tower-pulse:nth-child(2){animation-delay:0.8s}
+.fx-tower-pulse:nth-child(3){animation-delay:1.6s}
+
+/* ===== FX Concept Split ===== */
+.fx-split-wrap{
+  width:100%;
+  max-width:1000px;
+  margin:0 auto;
+  position:relative;
+}
+.fx-split-diagram{
+  max-width:900px;
+  width:100%;
+  margin:0 auto;
+  position:relative;
+}
+.fx-split-diagram svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* ③ 3D视差层 */
+.fx-parallax-layer{
+  transition:transform 0.1s ease-out;
+  will-change:transform;
+}
+
+/* ② 波浪动画 */
+.fx-wave-container{
+  position:relative;
+  width:100%;
+  height:60px;
+  margin-top:-20px;
+  overflow:hidden;
+}
+.fx-wave-container svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.fx-wave-path{
+  animation:fxWaveMove 6s ease-in-out infinite;
+}
+.fx-wave-path-2{
+  animation:fxWaveMove 8s ease-in-out infinite reverse;
+}
+@keyframes fxWaveMove{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(-40px)}
+}
+
+/* ===== FX Formula ===== */
+.fx-formula-container{
+  max-width:900px;
+  width:100%;
+  margin:0 auto;
+}
+.fx-formula-line{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:40px;
+  position:relative;
+}
+.fx-formula-chip{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:10px 18px;
+  background:var(--fx-bg-card);
+  border:1px solid var(--fx-border);
+  border-radius:12px;
+  font-size:clamp(14px,2vw,18px);
+  font-weight:700;
+  transition:all 0.3s;
+  cursor:default;
+  color:var(--fx-text);
+}
+.fx-formula-chip:hover{
+  border-color:var(--fx-amber);
+  box-shadow:0 0 20px var(--fx-amber-glow);
+  transform:translateY(-3px);
+}
+.fx-formula-chip .fx-chip-icon{font-size:20px}
+.fx-formula-chip .fx-plus{color:var(--fx-text-faint);font-weight:400}
+
+/* ⑤ 数字滚动 */
+.fx-num-roll{
+  display:inline-block;
+  font-size:clamp(48px,8vw,72px);
+  font-weight:900;
+  color:var(--fx-amber);
+  text-align:center;
+  margin-bottom:8px;
+  line-height:1;
+}
+.fx-num-roll-wrap{
+  text-align:center;
+  margin-bottom:24px;
+  position:relative;
+}
+
+.fx-formula-detail{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:12px;
+}
+.fx-formula-card{
+  background:var(--fx-bg-card);
+  border:1px solid var(--fx-border-faint);
+  border-radius:12px;
+  padding:20px;
+  transition:all 0.3s;
+  color:var(--fx-text);
+}
+.fx-formula-card:hover{
+  border-color:var(--fx-border);
+  box-shadow:var(--fx-card-shadow);
+}
+
+/* ⑥ 文字渐入 */
+.fx-fade-in{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+.fx-fade-in.fx-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.fx-formula-card .fx-fc-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.fx-formula-card .fx-fc-icon{font-size:22px}
+.fx-formula-card .fx-fc-title{
+  font-size:15px;
+  font-weight:700;
+  color:var(--fx-amber-bright);
+}
+.fx-formula-card .fx-fc-desc{
+  font-size:13px;
+  color:var(--fx-text-dim);
+  line-height:1.5;
+}
+
+/* ===== FX Compare Flip Cards ===== */
+.fx-compare-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+  max-width:1000px;
+  width:100%;
+  margin:0 auto;
+}
+.fx-cmp-flip{
+  perspective:1200px;
+  height:280px;
+  cursor:pointer;
+  position:relative;
+  transition:transform 0.3s ease;
+}
+.fx-cmp-flip-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+  transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  transform-style:preserve-3d;
+}
+.fx-cmp-flip.fx-flipped .fx-cmp-flip-inner{
+  transform:rotateY(180deg);
+}
+.fx-cmp-front,.fx-cmp-back{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  text-align:center;
+}
+.fx-cmp-front{
+  background:var(--fx-bg-card);
+  border:1px solid var(--fx-border);
+  box-shadow:var(--fx-card-shadow);
+  transition:box-shadow 0.3s,border-color 0.3s;
+  color:var(--fx-text);
+}
+.fx-cmp-flip:hover .fx-cmp-front{
+  box-shadow:var(--fx-card-shadow-hover);
+  border-color:var(--fx-amber);
+}
+.fx-cmp-front .fx-cmp-num{
+  font-size:48px;
+  font-weight:800;
+  color:var(--fx-amber-glow);
+  position:absolute;
+  top:12px;
+  right:20px;
+}
+.fx-cmp-front .fx-cmp-icon{font-size:36px;margin-bottom:12px}
+.fx-cmp-front .fx-cmp-name{font-size:18px;font-weight:700;margin-bottom:6px}
+.fx-cmp-front .fx-cmp-hint{
+  font-size:11px;
+  color:var(--fx-text-faint);
+  margin-top:10px;
+  letter-spacing:1px;
+}
+.fx-cmp-back{
+  background:var(--fx-bg-elevated);
+  border:1px solid var(--fx-border);
+  transform:rotateY(180deg);
+  text-align:left;
+  justify-content:flex-start;
+  overflow-y:auto;
+  color:var(--fx-text);
+}
+.fx-cmp-back .fx-cmp-pair{margin-bottom:12px}
+.fx-cmp-back .fx-cmp-label{
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:4px;
+  letter-spacing:1px;
+}
+.fx-cmp-back .fx-cmp-label.bad{color:var(--fx-red)}
+.fx-cmp-back .fx-cmp-label.good{color:var(--fx-green)}
+.fx-cmp-back .fx-cmp-code{
+  font-size:12px;
+  font-family:"SF Mono",Consolas,monospace;
+  line-height:1.5;
+  white-space:pre-wrap;
+  word-break:break-word;
+  padding:8px 10px;
+  border-radius:6px;
+}
+.fx-cmp-back .fx-cmp-code.bad{
+  background:var(--fx-code-bad-bg);
+  color:var(--fx-code-bad-text);
+  border-left:3px solid var(--fx-red);
+}
+.fx-cmp-back .fx-cmp-code.good{
+  background:var(--fx-code-good-bg);
+  color:var(--fx-code-good-text);
+  border-left:3px solid var(--fx-green);
+}
+
+/* ===== FX Principles ===== */
+.fx-principle-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:16px;
+  max-width:900px;
+  width:100%;
+  margin:0 auto;
+}
+.fx-principle-card{
+  perspective:1000px;
+  height:200px;
+  cursor:pointer;
+}
+.fx-principle-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+  transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  transform-style:preserve-3d;
+}
+.fx-principle-card.fx-flipped .fx-principle-inner{
+  transform:rotateY(180deg);
+}
+.fx-principle-front,.fx-principle-back{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  text-align:center;
+  color:var(--fx-text);
+}
+.fx-principle-front{
+  background:var(--fx-bg-card);
+  border:1px solid var(--fx-border);
+  transition:all 0.3s;
+}
+.fx-principle-card:hover .fx-principle-front{
+  box-shadow:0 0 25px var(--fx-amber-glow);
+  border-color:var(--fx-amber);
+  transform:translateY(-2px);
+}
+.fx-principle-front .fx-p-icon{font-size:32px;margin-bottom:10px}
+.fx-principle-front .fx-p-cn{font-size:18px;font-weight:700;color:var(--fx-text);margin-bottom:4px}
+.fx-principle-front .fx-p-en{font-size:12px;color:var(--fx-amber);letter-spacing:2px;text-transform:uppercase}
+.fx-principle-front .fx-p-hint{font-size:10px;color:var(--fx-text-faint);margin-top:8px}
+.fx-principle-back{
+  background:linear-gradient(135deg,var(--fx-bg-elevated),var(--fx-bg-card));
+  border:1px solid var(--fx-amber);
+  transform:rotateY(180deg);
+}
+.fx-principle-back .fx-p-core{font-size:15px;font-weight:700;color:var(--fx-amber-bright);margin-bottom:8px}
+.fx-principle-back .fx-p-detail{font-size:12px;color:var(--fx-text-dim);line-height:1.6}
+
+/* ===== FX Tag (effect labels) ===== */
+.fx-tag{
+  position:absolute;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 10px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+  z-index:10;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  cursor:default;
+  font-family:-apple-system,"PingFang SC",sans-serif;
+}
+.fx-tag-1{background:#1E88E5;color:#fff;top:-12px;left:8px}
+.fx-tag-2{background:#26A69A;color:#fff;bottom:-12px;right:8px}
+.fx-tag-3{background:#7E57C2;color:#fff;top:-12px;right:8px}
+.fx-tag-4{background:#EF5350;color:#fff;top:-12px;right:-8px}
+.fx-tag-5{background:#FF7043;color:#fff;top:-12px;left:50%;transform:translateX(-50%)}
+.fx-tag-6{background:#66BB6A;color:#fff;bottom:-12px;left:8px}
+.fx-tag-7{background:#AB47BC;color:#fff;top:-12px;left:8px}
+.fx-tag-8{background:#FFA726;color:#fff;top:-12px;right:8px}
+.fx-tag-p{background:#42A5F5;color:#fff;top:-12px;left:50%;transform:translateX(-50%)}
+
+/* FX footer */
+.fx-footer{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding:30px 24px;
+  font-size:11px;
+  color:var(--fx-text-faint);
+  border-top:1px solid var(--fx-border-faint);
+}
+
+/* FX mobile */
+@media(max-width:768px){
+  .fx-content{padding:70px 16px 40px}
+  .fx-formula-detail{grid-template-columns:1fr}
+  .fx-compare-grid{grid-template-columns:1fr}
+  .fx-principle-grid{grid-template-columns:1fr 1fr}
+  .fx-split-diagram svg{min-width:320px}
+  .fx-tag{font-size:10px;padding:3px 8px}
+}
+@media(max-width:480px){
+  .fx-principle-grid{grid-template-columns:1fr}
+  .fx-formula-chip{font-size:13px;padding:8px 12px}
+  .fx-split-diagram svg{min-width:280px}
+}
 </style>
 </head>
 <body>
@@ -538,6 +1175,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 <a href="cheetah-ai-native-training.html" class="nav-tab" style="color:#c0392b;font-weight:700;text-decoration:none" onclick="document.querySelector('.nav-links').classList.remove('open')">🦁 猎豹AI实战派</a>
 <span class="nav-tab" id="tab-comic" onclick="switchPanel('comic');document.querySelector('.nav-links').classList.remove('open')">🎨 漫画</span>
 <span class="nav-tab" id="tab-eye" onclick="switchPanel('eye');document.querySelector('.nav-links').classList.remove('open')">👁️ 阿森之眼</span>
+<span class="nav-tab" id="tab-effects" onclick="switchPanel('effects');document.querySelector('.nav-links').classList.remove('open')">✨ 动效课件</span>
 <span class="nav-tab" id="tab-survey" onclick="openSurvey();document.querySelector('.nav-links').classList.remove('open')" style="background:rgba(192,57,43,0.08);color:#c0392b;font-weight:700">📋 课程反馈</span>
 <a href="https://andy-zokelink.github.io/mks-knowledge/blog/" target="_blank" style="color:#2874a6;font-weight:600;padding:6px 4px;text-decoration:none;font-size:15px" onclick="document.querySelector('.nav-links').classList.remove('open')">📋 阿森智库</a>
 <a href="https://andy-zokelink.github.io/mks-knowledge/" target="_blank" style="color:#2874a6;font-weight:600;padding:6px 4px;text-decoration:none;font-size:15px" onclick="document.querySelector('.nav-links').classList.remove('open')">📚 知识库</a>
@@ -1650,6 +2288,348 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 </div>
 </div><!-- /section-comic -->
 
+<!-- ============================================= -->
+<!-- PANEL: 动效课件 (section-effects)              -->
+<!-- ============================================= -->
+<div id="section-effects" class="section-panel">
+
+<!-- ① 渐变流动背景 -->
+<div class="fx-gradient-bg"></div>
+
+<!-- ✨ 粒子效果 canvas -->
+<canvas id="fx-particles"></canvas>
+
+<!-- 主题切换按钮 -->
+<button class="fx-theme-toggle" id="fxThemeToggle" title="切换主题">🌙</button>
+
+<div class="fx-content">
+
+<!-- ===== FX Hero ===== -->
+<div class="fx-screen" id="fx-hero">
+  <div class="fx-hero-content">
+    <div class="fx-hero-tag">SIGNAL TOWER · 信号塔</div>
+    <div class="fx-tower-wrap" style="position:relative">
+      <span class="fx-tag fx-tag-4">️ 打字机 — 文字逐字出现</span>
+      <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+        <circle class="fx-tower-pulse" cx="100" cy="60" r="30" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+        <circle class="fx-tower-pulse" cx="100" cy="60" r="30" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+        <circle class="fx-tower-pulse" cx="100" cy="60" r="30" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+        <line x1="100" y1="60" x2="100" y2="170" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="80" y1="100" x2="120" y2="100" stroke="#F59E0B" stroke-width="1.5" opacity="0.6"/>
+        <line x1="85" y1="120" x2="115" y2="120" stroke="#F59E0B" stroke-width="1.5" opacity="0.5"/>
+        <line x1="90" y1="140" x2="110" y2="140" stroke="#F59E0B" stroke-width="1.5" opacity="0.4"/>
+        <line x1="93" y1="160" x2="107" y2="160" stroke="#F59E0B" stroke-width="1.5" opacity="0.3"/>
+        <circle cx="100" cy="60" r="8" fill="#F59E0B"/>
+        <circle cx="100" cy="60" r="4" fill="#FBBF24"/>
+        <path d="M 70 50 Q 60 60 70 70" fill="none" stroke="#F59E0B" stroke-width="1.5" opacity="0.5"/>
+        <path d="M 130 50 Q 140 60 130 70" fill="none" stroke="#F59E0B" stroke-width="1.5" opacity="0.5"/>
+        <path d="M 60 45 Q 45 60 60 75" fill="none" stroke="#F59E0B" stroke-width="1" opacity="0.3"/>
+        <path d="M 140 45 Q 155 60 140 75" fill="none" stroke="#F59E0B" stroke-width="1" opacity="0.3"/>
+        <line x1="60" y1="172" x2="140" y2="172" stroke="#475569" stroke-width="1" opacity="0.5"/>
+      </svg>
+    </div>
+    <h1 id="fx-hero-title"></h1>
+    <p class="fx-hero-sub">从<strong>"怎么说"</strong>到<strong>"给什么"</strong>——驾驭 AI 的两把钥匙</p>
+  </div>
+</div>
+
+<!-- ===== FX Concept Split ===== -->
+<div class="fx-screen" id="fx-concept">
+  <div class="fx-split-wrap">
+    <div class="fx-section-header">
+      <div class="fx-label">CONCEPT</div>
+      <h2>两个维度，一个解码器</h2>
+      <p>提示词管"怎么说" · 上下文管"给什么" · 模型负责解码</p>
+    </div>
+    <div class="fx-split-diagram" style="position:relative">
+      <span class="fx-tag fx-tag-3">🎯 3D视差 — 滚动时不同层差速移动</span>
+      <div class="fx-parallax-layer" data-speed="0.3">
+        <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="40" width="280" height="240" rx="16" fill="#11161d" stroke="#F59E0B" stroke-width="1.5" opacity="0.9"/>
+          <text x="160" y="70" text-anchor="middle" font-size="13" fill="#F59E0B" font-weight="700" letter-spacing="2">PROMPT ENGINEERING</text>
+          <text x="160" y="92" text-anchor="middle" font-size="16" fill="#E2E8F0" font-weight="600">信号发射</text>
+          <text x="160" y="115" text-anchor="middle" font-size="12" fill="#94A3B8">管"怎么说"</text>
+          <text x="70" y="150" font-size="20" fill="#F59E0B">🎭</text>
+          <text x="105" y="150" font-size="11" fill="#94A3B8">角色</text>
+          <text x="150" y="150" font-size="20" fill="#F59E0B">📐</text>
+          <text x="185" y="150" font-size="11" fill="#94A3B8">格式</text>
+          <text x="225" y="150" font-size="20" fill="#F59E0B">🔗</text>
+          <text x="255" y="150" font-size="11" fill="#94A3B8">推理</text>
+          <path d="M 300 160 Q 330 140 360 160" fill="none" stroke="#F59E0B" stroke-width="2" opacity="0.6"/>
+          <path d="M 300 160 Q 330 160 360 160" fill="none" stroke="#F59E0B" stroke-width="1.5" opacity="0.4"/>
+          <path d="M 300 160 Q 330 180 360 160" fill="none" stroke="#F59E0B" stroke-width="2" opacity="0.6"/>
+          <rect x="360" y="80" width="180" height="160" rx="16" fill="#0a0e14" stroke="#F59E0B" stroke-width="2"/>
+          <text x="450" y="115" text-anchor="middle" font-size="28" fill="#F59E0B">🧠</text>
+          <text x="450" y="145" text-anchor="middle" font-size="15" fill="#E2E8F0" font-weight="700">模型</text>
+          <text x="450" y="165" text-anchor="middle" font-size="12" fill="#94A3B8">解码器</text>
+          <text x="450" y="195" text-anchor="middle" font-size="11" fill="#475569">注意力机制</text>
+          <text x="450" y="212" text-anchor="middle" font-size="11" fill="#475569">分配权重</text>
+          <circle cx="450" cy="160" r="70" fill="none" stroke="#F59E0B" stroke-width="0.5" opacity="0.15"/>
+          <circle cx="450" cy="160" r="90" fill="none" stroke="#F59E0B" stroke-width="0.5" opacity="0.08"/>
+          <rect x="600" y="40" width="280" height="240" rx="16" fill="#11161d" stroke="#3B82F6" stroke-width="1.5" opacity="0.9"/>
+          <text x="740" y="70" text-anchor="middle" font-size="13" fill="#3B82F6" font-weight="700" letter-spacing="2">CONTEXT ENGINEERING</text>
+          <text x="740" y="92" text-anchor="middle" font-size="16" fill="#E2E8F0" font-weight="600">频段管理</text>
+          <text x="740" y="115" text-anchor="middle" font-size="12" fill="#94A3B8">管"给什么"</text>
+          <text x="640" y="150" font-size="20" fill="#3B82F6">📡</text>
+          <text x="675" y="150" font-size="11" fill="#94A3B8">密度</text>
+          <text x="720" y="150" font-size="20" fill="#3B82F6">📊</text>
+          <text x="755" y="150" font-size="11" fill="#94A3B8">层级</text>
+          <text x="800" y="150" font-size="20" fill="#3B82F6">🪟</text>
+          <text x="835" y="150" font-size="11" fill="#94A3B8">窗口</text>
+          <path d="M 600 160 Q 570 140 540 160" fill="none" stroke="#3B82F6" stroke-width="2" opacity="0.6"/>
+          <path d="M 600 160 Q 570 160 540 160" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.4"/>
+          <path d="M 600 160 Q 570 180 540 160" fill="none" stroke="#3B82F6" stroke-width="2" opacity="0.6"/>
+          <text x="160" y="310" text-anchor="middle" font-size="12" fill="#F59E0B" font-weight="600">把指令说对说好</text>
+          <text x="450" y="310" text-anchor="middle" font-size="12" fill="#94A3B8">信号精准 + 频段干净 = 高质量解码</text>
+          <text x="740" y="310" text-anchor="middle" font-size="12" fill="#3B82F6" font-weight="600">给对信息给够不过载</text>
+        </svg>
+      </div>
+      <!-- ② 波浪动画 -->
+      <div class="fx-wave-container" style="position:relative">
+        <span class="fx-tag fx-tag-2">〰️ 波浪动画 — SVG波浪线条起伏</span>
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="fx-wave-path" d="M0,30 Q150,10 300,30 T600,30 T900,30 T1200,30 V60 H0 Z" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <path class="fx-wave-path-2" d="M0,35 Q150,15 300,35 T600,35 T900,35 T1200,35 V60 H0 Z" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FX Formula ===== -->
+<div class="fx-screen" id="fx-formula" style="background:var(--fx-bg-elevated);border-radius:16px;margin:20px 0">
+  <div class="fx-formula-container">
+    <div class="fx-section-header">
+      <div class="fx-label">FORMULA</div>
+      <h2>六要素实战公式</h2>
+      <p>一个可复用的提示词骨架 · 每次写提示词过一遍</p>
+    </div>
+    <!-- ⑤ 数字滚动 -->
+    <div class="fx-num-roll-wrap" style="position:relative">
+      <span class="fx-tag fx-tag-5">🔢 数字滚动 — 数字从0滚到目标值</span>
+      <div class="fx-num-roll" id="fx-num-roll">0</div>
+      <div style="font-size:14px;color:var(--fx-text-dim);margin-top:4px">个核心要素</div>
+    </div>
+    <div class="fx-formula-line">
+      <div class="fx-formula-chip"><span class="fx-chip-icon">🎭</span>角色</div>
+      <div class="fx-formula-chip"><span class="fx-plus">+</span></div>
+      <div class="fx-formula-chip"><span class="fx-chip-icon">📝</span>任务</div>
+      <div class="fx-formula-chip"><span class="fx-plus">+</span></div>
+      <div class="fx-formula-chip"><span class="fx-chip-icon">📋</span>上下文</div>
+      <div class="fx-formula-chip"><span class="fx-plus">+</span></div>
+      <div class="fx-formula-chip"><span class="fx-chip-icon">🚧</span>约束</div>
+      <div class="fx-formula-chip"><span class="fx-plus">+</span></div>
+      <div class="fx-formula-chip"><span class="fx-chip-icon">📐</span>格式</div>
+      <div class="fx-formula-chip"><span class="fx-plus">+</span></div>
+      <div class="fx-formula-chip"><span class="fx-chip-icon">📚</span>示例</div>
+    </div>
+    <!-- ⑥ 文字渐入 -->
+    <div class="fx-formula-detail" style="position:relative">
+      <span class="fx-tag fx-tag-6">fade 文字渐入 — 逐个淡入出现</span>
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.1s">
+        <div class="fx-fc-head"><span class="fx-fc-icon">🎭</span><span class="fx-fc-title">角色设定</span></div>
+        <div class="fx-fc-desc">给 AI 专业身份，知识调用方向、语气、专业度完全不同。所有提示词的起点。</div>
+      </div>
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.25s">
+        <div class="fx-fc-head"><span class="fx-fc-icon">📝</span><span class="fx-fc-title">任务</span></div>
+        <div class="fx-fc-desc">明确做什么。越具体越好，"分析客户"不如"列出关键决策人并分析关注点"。</div>
+      </div>
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.4s">
+        <div class="fx-fc-head"><span class="fx-fc-icon">📋</span><span class="fx-fc-title">上下文</span></div>
+        <div class="fx-fc-desc">背景信息、数据、历史对话。给模型足够的"弹药"做判断。</div>
+      </div>
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.55s">
+        <div class="fx-fc-head"><span class="fx-fc-icon">🚧</span><span class="fx-fc-title">约束</span></div>
+        <div class="fx-fc-desc">不要什么、长度限制、禁忌话题、语气要求。约束越明确，输出越可控。</div>
+      </div>
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.7s">
+        <div class="fx-fc-head"><span class="fx-fc-icon">📐</span><span class="fx-fc-title">格式</span></div>
+        <div class="fx-fc-desc">JSON、表格、Markdown 列表。结构化输出可解析、可复用、可接入下游。</div>
+      </div>
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.85s">
+        <div class="fx-fc-head"><span class="fx-fc-icon">📚</span><span class="fx-fc-title">示例</span></div>
+        <div class="fx-fc-desc">2-5 个输入→输出样例。比纯描述更精准，模型自动学习你要的格式和逻辑。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FX Compare Flip Cards ===== -->
+<div class="fx-screen" id="fx-compare">
+  <div style="width:100%;max-width:1000px;margin:0 auto;position:relative">
+    <div class="fx-section-header">
+      <div class="fx-label">COMPARE</div>
+      <h2>差提示词 vs 好提示词</h2>
+      <p>同一件事，不同写法，结果天差地别 · 👆 点击翻面</p>
+    </div>
+    <div class="fx-compare-grid" style="position:relative">
+      <span class="fx-tag fx-tag-7">🧲 磁吸光标 — 卡片跟随鼠标变形</span>
+      <div class="fx-cmp-flip fx-magnetic" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-cmp-flip-inner">
+          <div class="fx-cmp-front">
+            <div class="fx-cmp-num">01</div>
+            <div class="fx-cmp-icon">📢</div>
+            <div class="fx-cmp-name">写产品卖点</div>
+            <div class="fx-cmp-hint">👆 点击翻面</div>
+          </div>
+          <div class="fx-cmp-back">
+            <div class="fx-cmp-pair">
+              <div class="fx-cmp-label bad">❌ 差</div>
+              <div class="fx-cmp-code bad">帮我写个产品介绍</div>
+            </div>
+            <div class="fx-cmp-pair">
+              <div class="fx-cmp-label good">✓ 好</div>
+              <div class="fx-cmp-code good">你是智能硬件产品经理。
+产品：AI录音卡，适配会议场景。
+写3个核心卖点，每个卖点
+一句话标题+两句话展开。
+目标客户：企业行政/HR。
+不要用"革命性""颠覆"等词。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fx-cmp-flip fx-magnetic" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-cmp-flip-inner">
+          <div class="fx-cmp-front">
+            <div class="fx-cmp-num">02</div>
+            <div class="fx-cmp-icon">🎯</div>
+            <div class="fx-cmp-name">分析客户需求</div>
+            <div class="fx-cmp-hint">👆 点击翻面</div>
+          </div>
+          <div class="fx-cmp-back">
+            <div class="fx-cmp-pair">
+              <div class="fx-cmp-label bad">❌ 差</div>
+              <div class="fx-cmp-code bad">分析一下这个客户</div>
+            </div>
+            <div class="fx-cmp-pair">
+              <div class="fx-cmp-label good">✓ 好</div>
+              <div class="fx-cmp-code good">你是B2B销售顾问。
+按以下步骤分析客户：
+1. 列出关键决策人
+2. 分析每个角色关注点
+3. 评估采购阶段（初步/比选/决策）
+4. 给出下一步沟通建议
+输出 Markdown 列表格式。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fx-cmp-flip fx-magnetic" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-cmp-flip-inner">
+          <div class="fx-cmp-front">
+            <div class="fx-cmp-num">03</div>
+            <div class="fx-cmp-icon">🔧</div>
+            <div class="fx-cmp-name">技术方案评估</div>
+            <div class="fx-cmp-hint">👆 点击翻面</div>
+          </div>
+          <div class="fx-cmp-back">
+            <div class="fx-cmp-pair">
+              <div class="fx-cmp-label bad">❌ 差</div>
+              <div class="fx-cmp-code bad">这个方案怎么样</div>
+            </div>
+            <div class="fx-cmp-pair">
+              <div class="fx-cmp-label good">✓ 好</div>
+              <div class="fx-cmp-code good">你是技术架构师。
+从4个维度评估方案：
+可行性、成本、风险、扩展性。
+每个维度：评分(1-5)+一句话理由。
+最后给出"建议/不建议"结论
+及关键风险点。不确定的标注。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FX Principles ===== -->
+<div class="fx-screen" id="fx-principles" style="background:var(--fx-bg-elevated);border-radius:16px;margin:20px 0">
+  <div style="width:100%;max-width:1000px;margin:0 auto;position:relative">
+    <div class="fx-section-header">
+      <div class="fx-label">PRINCIPLES</div>
+      <h2>上下文工程四原则</h2>
+      <p>信号越精准、频段越干净，解码质量越高 · 👆 点击翻面</p>
+    </div>
+    <div class="fx-principle-grid" style="position:relative">
+      <span class="fx-tag fx-tag-8">🔄 卡片翻转 — 点击翻面看对比</span>
+      <div class="fx-principle-card" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-principle-inner">
+          <div class="fx-principle-front">
+            <div class="fx-p-icon">📡</div>
+            <div class="fx-p-cn">信息密度</div>
+            <div class="fx-p-en">DENSITY</div>
+            <div class="fx-p-hint">👆 翻面</div>
+          </div>
+          <div class="fx-principle-back">
+            <div class="fx-p-core">精准 &gt; 海量</div>
+            <div class="fx-p-detail">无关信息会稀释关键信息的注意力权重。给10条精准事实远胜给100条泛泛之谈。</div>
+          </div>
+        </div>
+      </div>
+      <div class="fx-principle-card" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-principle-inner">
+          <div class="fx-principle-front">
+            <div class="fx-p-icon">📊</div>
+            <div class="fx-p-cn">层级排布</div>
+            <div class="fx-p-en">HIERARCHY</div>
+            <div class="fx-p-hint">👆 翻面</div>
+          </div>
+          <div class="fx-principle-back">
+            <div class="fx-p-core">System &gt; 示例 &gt; 上下文 &gt; 指令</div>
+            <div class="fx-p-detail">越靠前越持久，越靠后越被关注。规则放系统层，数据放上下文层，指令放最后。</div>
+          </div>
+        </div>
+      </div>
+      <div class="fx-principle-card" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-principle-inner">
+          <div class="fx-principle-front">
+            <div class="fx-p-icon">🪟</div>
+            <div class="fx-p-cn">窗口管理</div>
+            <div class="fx-p-en">WINDOW</div>
+            <div class="fx-p-hint">👆 翻面</div>
+          </div>
+          <div class="fx-principle-back">
+            <div class="fx-p-core">超出窗口 = 失忆</div>
+            <div class="fx-p-detail">长对话中早期信息会被"挤出"窗口。策略：定期摘要关键信息、分段处理、用 RAG 按需检索。</div>
+          </div>
+        </div>
+      </div>
+      <div class="fx-principle-card" onclick="this.classList.toggle('fx-flipped')">
+        <div class="fx-principle-inner">
+          <div class="fx-principle-front">
+            <div class="fx-p-icon">🔇</div>
+            <div class="fx-p-cn">噪声控制</div>
+            <div class="fx-p-en">NOISE</div>
+            <div class="fx-p-hint">👆 翻面</div>
+          </div>
+          <div class="fx-principle-back">
+            <div class="fx-p-core">无关上下文 = 污染</div>
+            <div class="fx-p-detail">塞入与任务无关的对话历史或文档会干扰输出。只给当前任务需要的最小信息集。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ① 渐变流动背景标签 -->
+<div style="position:relative;text-align:center;padding:10px">
+  <span class="fx-tag fx-tag-1" style="position:relative;display:inline-flex">🌊 渐变流动 — 背景色缓慢流动变化</span>
+</div>
+
+<!-- ✨ 粒子效果标签 -->
+<div style="position:relative;text-align:center;padding:10px">
+  <span class="fx-tag fx-tag-p" style="position:relative;display:inline-flex">✨ 粒子效果 — 大量小点连线形成动态网络</span>
+</div>
+
+<div class="fx-footer">提示词工程 & 上下文工程 · 信号塔课件 · 动效演示版</div>
+
+</div><!-- /fx-content -->
+
+</div><!-- /section-effects -->
+
 <!-- Float Mascot -->
 <div class="float-mascot">
   <div class="float-bubble">🦉 点击回顶部</div>
@@ -1821,11 +2801,17 @@ function switchPanel(name) {
   document.getElementById('section-lecture').classList.toggle('active', name==='lecture');
   document.getElementById('section-comic').classList.toggle('active', name==='comic');
   document.getElementById('section-eye').classList.toggle('active', name==='eye');
+  document.getElementById('section-effects').classList.toggle('active', name==='effects');
   document.getElementById('tab-army').classList.toggle('active', name==='army');
   document.getElementById('tab-lecture').classList.toggle('active', name==='lecture');
   document.getElementById('tab-comic').classList.toggle('active', name==='comic');
   document.getElementById('tab-eye').classList.toggle('active', name==='eye');
+  document.getElementById('tab-effects').classList.toggle('active', name==='effects');
   window.scrollTo({top:0,behavior:'smooth'});
+  // Trigger effects panel animations when opened
+  if(name==='effects'){
+    setTimeout(function(){ if(typeof fxFxInit==='function') fxFxInit(); }, 100);
+  }
 }
 
 // Progress bar
@@ -2535,6 +3521,385 @@ function backToSurvey() {
   document.getElementById('surveyStats').style.display = 'none';
   document.getElementById('surveyThanks').classList.remove('active');
   document.getElementById('surveyForm').style.display = 'block';
+}
+
+// =============================================
+// FX PANEL: 动效课件 JavaScript
+// =============================================
+
+// FX Theme Toggle
+(function(){
+  var panel=document.getElementById('section-effects');
+  var toggle=document.getElementById('fxThemeToggle');
+  if(!panel||!toggle) return;
+  var saved=localStorage.getItem('fx-theme')||'dark';
+  if(saved==='light'){ panel.classList.add('fx-light'); toggle.textContent='☀️'; }
+  toggle.addEventListener('click',function(){
+    var isLight=panel.classList.toggle('fx-light');
+    toggle.textContent=isLight?'☀️':'🌙';
+    localStorage.setItem('fx-theme',isLight?'light':'dark');
+  });
+})();
+
+// FX Particle System (scoped to effects panel)
+(function(){
+  var canvas=document.getElementById('fx-particles');
+  if(!canvas) return;
+  var ctx=canvas.getContext('2d');
+  var particles=[];
+  var w,h;
+  var mouseX=-9999,mouseY=-9999;
+  var time=0;
+  var rafId=null;
+
+  function getThemeColors(){
+    var panel=document.getElementById('section-effects');
+    var style=getComputedStyle(panel);
+    return {
+      p1:style.getPropertyValue('--fx-p-color').trim()||'245, 158, 11',
+      p2:style.getPropertyValue('--fx-p-color2').trim()||'59, 130, 246',
+      lineAlpha:parseFloat(style.getPropertyValue('--fx-p-line-alpha'))||0.1,
+      glow:parseFloat(style.getPropertyValue('--fx-p-glow'))||12
+    };
+  }
+
+  function resize(){
+    var panel=document.getElementById('section-effects');
+    if(!panel) return;
+    w=canvas.width=panel.offsetWidth;
+    h=canvas.height=panel.offsetHeight;
+  }
+
+  function createParticles(){
+    particles=[];
+    var count=Math.min(80,Math.floor(w*h/18000));
+    for(var i=0;i<count;i++){
+      var isBlue=Math.random()>0.75;
+      particles.push({
+        x:Math.random()*w,
+        y:Math.random()*h,
+        vx:(Math.random()-0.5)*0.4,
+        vy:(Math.random()-0.5)*0.4,
+        baseR:Math.random()*2+0.8,
+        r:0,
+        opacity:Math.random()*0.3+0.15,
+        twinkleSpeed:Math.random()*0.02+0.005,
+        twinklePhase:Math.random()*Math.PI*2,
+        isBlue:isBlue,
+        driftAngle:Math.random()*Math.PI*2,
+        driftSpeed:Math.random()*0.003+0.001
+      });
+    }
+  }
+
+  // Mouse tracking within panel
+  var panel=document.getElementById('section-effects');
+  panel.addEventListener('mousemove',function(e){
+    var rect=canvas.getBoundingClientRect();
+    mouseX=e.clientX-rect.left;
+    mouseY=e.clientY-rect.top;
+  });
+  panel.addEventListener('mouseleave',function(){
+    mouseX=-9999; mouseY=-9999;
+  });
+  panel.addEventListener('touchmove',function(e){
+    if(e.touches[0]){
+      var rect=canvas.getBoundingClientRect();
+      mouseX=e.touches[0].clientX-rect.left;
+      mouseY=e.touches[0].clientY-rect.top;
+    }
+  },{passive:true});
+
+  function animate(){
+    ctx.clearRect(0,0,w,h);
+    var colors=getThemeColors();
+    time+=0.016;
+
+    // Connection lines
+    for(var i=0;i<particles.length;i++){
+      var p1=particles[i];
+      for(var j=i+1;j<particles.length;j++){
+        var p2=particles[j];
+        var dx=p1.x-p2.x;
+        var dy=p1.y-p2.y;
+        var dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<140){
+          var alpha=(1-dist/140)*colors.lineAlpha;
+          alpha*=0.7+0.3*Math.sin(time*2+i*0.5);
+          var colorStr=p1.isBlue?colors.p2:colors.p1;
+          ctx.strokeStyle='rgba('+colorStr+', '+alpha+')';
+          ctx.lineWidth=0.6;
+          ctx.beginPath();
+          ctx.moveTo(p1.x,p1.y);
+          ctx.lineTo(p2.x,p2.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Mouse connections
+    for(var i=0;i<particles.length;i++){
+      var p=particles[i];
+      var dx=p.x-mouseX;
+      var dy=p.y-mouseY;
+      var dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<200){
+        var alpha=(1-dist/200)*0.25;
+        var colorStr=p.isBlue?colors.p2:colors.p1;
+        ctx.strokeStyle='rgba('+colorStr+', '+alpha+')';
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.lineTo(mouseX,mouseY);
+        ctx.stroke();
+      }
+    }
+
+    // Draw particles
+    for(var i=0;i<particles.length;i++){
+      var p=particles[i];
+      p.driftAngle+=p.driftSpeed;
+      p.vx+=Math.cos(p.driftAngle)*0.01;
+      p.vy+=Math.sin(p.driftAngle)*0.01;
+
+      var dx=p.x-mouseX;
+      var dy=p.y-mouseY;
+      var dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120&&dist>0){
+        var force=(120-dist)/120*0.15;
+        p.vx+=(dx/dist)*force;
+        p.vy+=(dy/dist)*force;
+      }
+
+      p.vx*=0.98;
+      p.vy*=0.98;
+      p.x+=p.vx;
+      p.y+=p.vy;
+
+      if(p.x<-10) p.x=w+10;
+      if(p.x>w+10) p.x=-10;
+      if(p.y<-10) p.y=h+10;
+      if(p.y>h+10) p.y=-10;
+
+      p.twinklePhase+=p.twinkleSpeed;
+      var twinkle=0.5+0.5*Math.sin(p.twinklePhase);
+      var currentOpacity=p.opacity*(0.5+twinkle*0.5);
+      var currentR=p.baseR*(0.8+twinkle*0.4);
+      p.r=currentR;
+
+      var mouseBoost=0;
+      if(dist<120){
+        mouseBoost=(120-dist)/120*0.5;
+      }
+
+      var colorStr=p.isBlue?colors.p2:colors.p1;
+      var finalOpacity=currentOpacity+mouseBoost;
+      var finalR=currentR+mouseBoost*2;
+
+      ctx.shadowBlur=colors.glow+mouseBoost*10;
+      ctx.shadowColor='rgba('+colorStr+', '+finalOpacity+')';
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,finalR*2.5,0,Math.PI*2);
+      ctx.fillStyle='rgba('+colorStr+', '+(finalOpacity*0.15)+')';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,finalR,0,Math.PI*2);
+      ctx.fillStyle='rgba('+colorStr+', '+finalOpacity+')';
+      ctx.fill();
+
+      ctx.shadowBlur=0;
+    }
+
+    rafId=requestAnimationFrame(animate);
+  }
+
+  // Start/stop based on panel visibility
+  function startFx(){ if(!rafId){ resize(); createParticles(); animate(); } }
+  function stopFx(){ if(rafId){ cancelAnimationFrame(rafId); rafId=null; } }
+
+  window.addEventListener('resize',function(){ if(rafId){ resize(); createParticles(); } });
+
+  // Observe panel visibility
+  var observer=new MutationObserver(function(){
+    if(panel.classList.contains('active')){ startFx(); } else { stopFx(); }
+  });
+  observer.observe(panel,{attributes:true,attributeFilter:['class']});
+
+  // Start if already active
+  if(panel.classList.contains('active')){ startFx(); }
+})();
+
+// ④ 打字机效果
+(function(){
+  var el=document.getElementById('fx-hero-title');
+  if(!el) return;
+  var fullText='提示词工程 & 上下文工程';
+  var typed=false;
+
+  function typeText(){
+    if(typed) return;
+    typed=true;
+    el.innerHTML='';
+    var i=0;
+    function typeChar(){
+      if(i<fullText.length){
+        var ch=fullText[i];
+        if(ch==='&'){
+          el.innerHTML+='<span class="fx-amp">&</span>';
+        } else {
+          el.innerHTML+=ch;
+        }
+        i++;
+        setTimeout(typeChar,80);
+      } else {
+        el.innerHTML+='<span class="fx-typing-cursor"></span>';
+      }
+    }
+    typeChar();
+  }
+
+  // Start when panel becomes visible
+  var panel=document.getElementById('section-effects');
+  var observer=new MutationObserver(function(){
+    if(panel.classList.contains('active')){
+      setTimeout(typeText,300);
+    } else {
+      typed=false;
+      el.innerHTML='';
+    }
+  });
+  observer.observe(panel,{attributes:true,attributeFilter:['class']});
+
+  if(panel.classList.contains('active')){ setTimeout(typeText,300); }
+})();
+
+// ⑤ 数字滚动
+(function(){
+  var el=document.getElementById('fx-num-roll');
+  if(!el) return;
+  var target=6;
+  var rolled=false;
+
+  function rollNumber(){
+    if(rolled) return;
+    rolled=true;
+    var current=0;
+    var duration=1500;
+    var startTime=null;
+
+    function step(ts){
+      if(!startTime) startTime=ts;
+      var progress=Math.min((ts-startTime)/duration,1);
+      var eased=1-Math.pow(1-progress,3);
+      var val=Math.round(eased*target);
+      el.textContent=val;
+      if(progress<1){
+        requestAnimationFrame(step);
+      } else {
+        el.textContent=target;
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var panel=document.getElementById('section-effects');
+  var observer=new MutationObserver(function(){
+    if(panel.classList.contains('active')){
+      setTimeout(rollNumber,500);
+    } else {
+      rolled=false;
+      el.textContent='0';
+    }
+  });
+  observer.observe(panel,{attributes:true,attributeFilter:['class']});
+
+  if(panel.classList.contains('active')){ setTimeout(rollNumber,500); }
+})();
+
+// ⑥ 文字渐入
+(function(){
+  var cards=document.querySelectorAll('.fx-fade-in');
+  if(!cards.length) return;
+  var revealed=false;
+
+  function revealCards(){
+    if(revealed) return;
+    revealed=true;
+    cards.forEach(function(card){
+      card.classList.add('fx-visible');
+    });
+  }
+  function hideCards(){
+    revealed=false;
+    cards.forEach(function(card){
+      card.classList.remove('fx-visible');
+    });
+  }
+
+  var panel=document.getElementById('section-effects');
+  var observer=new MutationObserver(function(){
+    if(panel.classList.contains('active')){
+      setTimeout(revealCards,600);
+    } else {
+      hideCards();
+    }
+  });
+  observer.observe(panel,{attributes:true,attributeFilter:['class']});
+
+  if(panel.classList.contains('active')){ setTimeout(revealCards,600); }
+})();
+
+// ③ 3D视差
+(function(){
+  var layers=document.querySelectorAll('.fx-parallax-layer');
+  if(!layers.length) return;
+  var panel=document.getElementById('section-effects');
+
+  panel.addEventListener('scroll',function(){});
+  window.addEventListener('scroll',function(){
+    if(!panel.classList.contains('active')) return;
+    var rect=panel.getBoundingClientRect();
+    var scrollY=window.scrollY;
+    layers.forEach(function(layer){
+      var speed=parseFloat(layer.getAttribute('data-speed'))||0.3;
+      var offset=scrollY*speed*0.1;
+      layer.style.transform='translateY('+offset+'px)';
+    });
+  });
+})();
+
+// ⑦ 磁吸光标
+(function(){
+  var cards=document.querySelectorAll('.fx-magnetic');
+  if(!cards.length) return;
+
+  cards.forEach(function(card){
+    card.addEventListener('mousemove',function(e){
+      var rect=card.getBoundingClientRect();
+      var x=e.clientX-rect.left-rect.width/2;
+      var y=e.clientY-rect.top-rect.height/2;
+      var dist=Math.sqrt(x*x+y*y);
+      var maxDist=200;
+      if(dist<maxDist){
+        var force=(1-dist/maxDist)*15;
+        var angle=Math.atan2(y,x);
+        var tx=Math.cos(angle)*force;
+        var ty=Math.sin(angle)*force;
+        card.style.transform='translate('+tx+'px,'+ty+'px)';
+      }
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.transform='translate(0,0)';
+    });
+  });
+})();
+
+// FX init function (called by switchPanel)
+function fxFxInit(){
+  // All effects are triggered by MutationObservers above
+  // This is a no-op placeholder for the switchPanel call
 }
 </script>
 
