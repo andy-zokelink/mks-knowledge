@@ -553,8 +553,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   --fx-card-shadow-hover:0 8px 30px rgba(245,158,11,0.15);
   --fx-p-color:245,158,11;
   --fx-p-color2:59,130,246;
-  --fx-p-line-alpha:0.1;
-  --fx-p-glow:12;
+  --fx-p-line-alpha:0.25;
+  --fx-p-glow:20;
   --fx-svg-fill-card:#11161d;
   --fx-svg-fill-deep:#0a0e14;
   --fx-svg-text-main:#E2E8F0;
@@ -589,8 +589,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   --fx-card-shadow-hover:0 8px 24px rgba(217,119,6,0.12);
   --fx-p-color:217,119,6;
   --fx-p-color2:37,99,235;
-  --fx-p-line-alpha:0.08;
-  --fx-p-glow:8;
+  --fx-p-line-alpha:0.2;
+  --fx-p-glow:14;
   --fx-svg-fill-card:#f1f5f9;
   --fx-svg-fill-deep:#ffffff;
   --fx-svg-text-main:#1e293b;
@@ -618,15 +618,25 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   position:absolute;
   top:0;left:0;right:0;bottom:0;
   z-index:0;
-  background:linear-gradient(135deg,var(--fx-bg) 0%,var(--fx-bg-elevated) 50%,var(--fx-bg) 100%);
+  background:linear-gradient(135deg,
+    var(--fx-bg) 0%,
+    var(--fx-amber-glow) 15%,
+    var(--fx-blue-glow) 35%,
+    rgba(126,87,194,0.12) 55%,
+    var(--fx-amber-glow) 75%,
+    var(--fx-bg) 100%);
   background-size:200% 200%;
-  animation:fxGradientFlow 12s ease-in-out infinite;
+  animation:fxGradientFlow 6s ease-in-out infinite,fxHueRotate 8s linear infinite;
   pointer-events:none;
 }
 @keyframes fxGradientFlow{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
+}
+@keyframes fxHueRotate{
+  0%{filter:hue-rotate(0deg)}
+  100%{filter:hue-rotate(360deg)}
 }
 .fx-gradient-bg::before{
   content:'';
@@ -639,7 +649,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 }
 @keyframes fxAmbientShift{
   0%{transform:translate(0,0) scale(1)}
-  100%{transform:translate(30px,20px) scale(1.1)}
+  100%{transform:translate(80px,50px) scale(1.2)}
 }
 .fx-gradient-bg::after{
   content:'';
@@ -764,12 +774,21 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 /* ④ 打字机光标 */
 .fx-typing-cursor{
   display:inline-block;
-  width:3px;
+  width:4px;
   height:1em;
   background:var(--fx-amber);
   margin-left:4px;
   animation:fxBlink 0.8s step-end infinite;
   vertical-align:text-bottom;
+  box-shadow:0 0 8px var(--fx-amber),0 0 16px var(--fx-amber-glow);
+}
+.fx-char-flash{
+  animation:fxCharFlash 0.3s ease-out;
+}
+@keyframes fxCharFlash{
+  0%{opacity:0;color:var(--fx-amber-bright)}
+  50%{opacity:1;color:var(--fx-amber-bright)}
+  100%{opacity:1;color:inherit}
 }
 @keyframes fxBlink{
   0%,100%{opacity:1}
@@ -818,7 +837,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 
 /* ③ 3D视差层 */
 .fx-parallax-layer{
-  transition:transform 0.1s ease-out;
+  transition:transform 0.15s ease-out;
   will-change:transform;
 }
 
@@ -826,7 +845,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 .fx-wave-container{
   position:relative;
   width:100%;
-  height:60px;
+  height:100px;
   margin-top:-20px;
   overflow:hidden;
 }
@@ -841,9 +860,12 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 .fx-wave-path-2{
   animation:fxWaveMove 8s ease-in-out infinite reverse;
 }
+.fx-wave-path-3{
+  animation:fxWaveMove 10s ease-in-out infinite;
+}
 @keyframes fxWaveMove{
   0%,100%{transform:translateX(0)}
-  50%{transform:translateX(-40px)}
+  50%{transform:translateX(-150px)}
 }
 
 /* ===== FX Formula ===== */
@@ -885,12 +907,21 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 /* ⑤ 数字滚动 */
 .fx-num-roll{
   display:inline-block;
-  font-size:clamp(48px,8vw,72px);
+  font-size:clamp(48px,8vw,80px);
   font-weight:900;
   color:var(--fx-amber);
   text-align:center;
   margin-bottom:8px;
   line-height:1;
+  transition:color 0.3s ease;
+}
+.fx-num-roll.fx-bounce{
+  animation:fxNumBounce 0.6s ease-out;
+}
+@keyframes fxNumBounce{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.3)}
+  100%{transform:scale(1)}
 }
 .fx-num-roll-wrap{
   text-align:center;
@@ -919,12 +950,12 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
 /* ⑥ 文字渐入 */
 .fx-fade-in{
   opacity:0;
-  transform:translateY(20px);
-  transition:opacity 0.6s ease,transform 0.6s ease;
+  transform:translateY(60px) scale(0.9);
+  transition:opacity 1s ease,transform 1s ease;
 }
 .fx-fade-in.fx-visible{
   opacity:1;
-  transform:translateY(0);
+  transform:translateY(0) scale(1);
 }
 
 .fx-formula-card .fx-fc-head{
@@ -992,7 +1023,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   color:var(--fx-text);
 }
 .fx-cmp-flip:hover .fx-cmp-front{
-  box-shadow:var(--fx-card-shadow-hover);
+  box-shadow:0 0 30px var(--fx-amber-glow),0 8px 40px rgba(245,158,11,0.25);
   border-color:var(--fx-amber);
 }
 .fx-cmp-front .fx-cmp-num{
@@ -1114,16 +1145,22 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   position:absolute;
   display:inline-flex;
   align-items:center;
-  gap:4px;
-  padding:4px 10px;
-  border-radius:6px;
-  font-size:11px;
+  gap:6px;
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:14px;
   font-weight:700;
   white-space:nowrap;
   z-index:10;
-  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  box-shadow:0 2px 8px rgba(0,0,0,0.15),0 0 12px rgba(255,255,255,0.15);
   cursor:default;
   font-family:-apple-system,"PingFang SC",sans-serif;
+  border:2px solid rgba(255,255,255,0.3);
+  animation:fx-tag-pulse 2s ease-in-out infinite;
+}
+@keyframes fx-tag-pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
 }
 .fx-tag-1{background:#1E88E5;color:#fff;top:-12px;left:8px}
 .fx-tag-2{background:#26A69A;color:#fff;bottom:-12px;right:8px}
@@ -1153,7 +1190,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
   .fx-compare-grid{grid-template-columns:1fr}
   .fx-principle-grid{grid-template-columns:1fr 1fr}
   .fx-split-diagram svg{min-width:320px}
-  .fx-tag{font-size:10px;padding:3px 8px}
+  .fx-tag{font-size:13px;padding:6px 12px}
 }
 @media(max-width:480px){
   .fx-principle-grid{grid-template-columns:1fr}
@@ -2343,7 +2380,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
     </div>
     <div class="fx-split-diagram" style="position:relative">
       <span class="fx-tag fx-tag-3">🎯 3D视差 — 滚动时不同层差速移动</span>
-      <div class="fx-parallax-layer" data-speed="0.3">
+      <div class="fx-parallax-layer" data-speed="0.5">
         <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="40" width="280" height="240" rx="16" fill="#11161d" stroke="#F59E0B" stroke-width="1.5" opacity="0.9"/>
           <text x="160" y="70" text-anchor="middle" font-size="13" fill="#F59E0B" font-weight="700" letter-spacing="2">PROMPT ENGINEERING</text>
@@ -2387,9 +2424,10 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
       <!-- ② 波浪动画 -->
       <div class="fx-wave-container" style="position:relative">
         <span class="fx-tag fx-tag-2">〰️ 波浪动画 — SVG波浪线条起伏</span>
-        <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="fx-wave-path" d="M0,30 Q150,10 300,30 T600,30 T900,30 T1200,30 V60 H0 Z" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
-          <path class="fx-wave-path-2" d="M0,35 Q150,15 300,35 T600,35 T900,35 T1200,35 V60 H0 Z" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="fx-wave-path" d="M0,50 Q150,5 300,50 T600,50 T900,50 T1200,50 V100 H0 Z" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <path class="fx-wave-path-2" d="M0,55 Q150,15 300,55 T600,55 T900,55 T1200,55 V100 H0 Z" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+          <path class="fx-wave-path-3" d="M0,60 Q150,25 300,60 T600,60 T900,60 T1200,60 V100 H0 Z" fill="rgba(126,87,194,0.05)" stroke="rgba(126,87,194,0.18)" stroke-width="1"/>
         </svg>
       </div>
     </div>
@@ -2426,27 +2464,27 @@ footer{text-align:center;padding:16px;font-size:11px;color:#999;border-top:2px s
     <!-- ⑥ 文字渐入 -->
     <div class="fx-formula-detail" style="position:relative">
       <span class="fx-tag fx-tag-6">fade 文字渐入 — 逐个淡入出现</span>
-      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.1s">
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0s">
         <div class="fx-fc-head"><span class="fx-fc-icon">🎭</span><span class="fx-fc-title">角色设定</span></div>
         <div class="fx-fc-desc">给 AI 专业身份，知识调用方向、语气、专业度完全不同。所有提示词的起点。</div>
       </div>
-      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.25s">
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.15s">
         <div class="fx-fc-head"><span class="fx-fc-icon">📝</span><span class="fx-fc-title">任务</span></div>
         <div class="fx-fc-desc">明确做什么。越具体越好，"分析客户"不如"列出关键决策人并分析关注点"。</div>
       </div>
-      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.4s">
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.3s">
         <div class="fx-fc-head"><span class="fx-fc-icon">📋</span><span class="fx-fc-title">上下文</span></div>
         <div class="fx-fc-desc">背景信息、数据、历史对话。给模型足够的"弹药"做判断。</div>
       </div>
-      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.55s">
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.45s">
         <div class="fx-fc-head"><span class="fx-fc-icon">🚧</span><span class="fx-fc-title">约束</span></div>
         <div class="fx-fc-desc">不要什么、长度限制、禁忌话题、语气要求。约束越明确，输出越可控。</div>
       </div>
-      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.7s">
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.6s">
         <div class="fx-fc-head"><span class="fx-fc-icon">📐</span><span class="fx-fc-title">格式</span></div>
         <div class="fx-fc-desc">JSON、表格、Markdown 列表。结构化输出可解析、可复用、可接入下游。</div>
       </div>
-      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.85s">
+      <div class="fx-formula-card fx-fade-in" style="transition-delay:0.75s">
         <div class="fx-fc-head"><span class="fx-fc-icon">📚</span><span class="fx-fc-title">示例</span></div>
         <div class="fx-fc-desc">2-5 个输入→输出样例。比纯描述更精准，模型自动学习你要的格式和逻辑。</div>
       </div>
@@ -3572,7 +3610,7 @@ function backToSurvey() {
 
   function createParticles(){
     particles=[];
-    var count=Math.min(80,Math.floor(w*h/18000));
+    var count=Math.min(120,Math.floor(w*h/18000));
     for(var i=0;i<count;i++){
       var isBlue=Math.random()>0.75;
       particles.push({
@@ -3580,9 +3618,9 @@ function backToSurvey() {
         y:Math.random()*h,
         vx:(Math.random()-0.5)*0.4,
         vy:(Math.random()-0.5)*0.4,
-        baseR:Math.random()*2+0.8,
+        baseR:Math.random()*2.5+1.5,
         r:0,
-        opacity:Math.random()*0.3+0.15,
+        opacity:Math.random()*0.4+0.3,
         twinkleSpeed:Math.random()*0.02+0.005,
         twinklePhase:Math.random()*Math.PI*2,
         isBlue:isBlue,
@@ -3623,12 +3661,12 @@ function backToSurvey() {
         var dx=p1.x-p2.x;
         var dy=p1.y-p2.y;
         var dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<140){
-          var alpha=(1-dist/140)*colors.lineAlpha;
+        if(dist<180){
+          var alpha=(1-dist/180)*colors.lineAlpha;
           alpha*=0.7+0.3*Math.sin(time*2+i*0.5);
           var colorStr=p1.isBlue?colors.p2:colors.p1;
           ctx.strokeStyle='rgba('+colorStr+', '+alpha+')';
-          ctx.lineWidth=0.6;
+          ctx.lineWidth=1.2;
           ctx.beginPath();
           ctx.moveTo(p1.x,p1.y);
           ctx.lineTo(p2.x,p2.y);
@@ -3643,11 +3681,11 @@ function backToSurvey() {
       var dx=p.x-mouseX;
       var dy=p.y-mouseY;
       var dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<200){
-        var alpha=(1-dist/200)*0.25;
+      if(dist<280){
+        var alpha=(1-dist/280)*0.25;
         var colorStr=p.isBlue?colors.p2:colors.p1;
         ctx.strokeStyle='rgba('+colorStr+', '+alpha+')';
-        ctx.lineWidth=1;
+        ctx.lineWidth=2;
         ctx.beginPath();
         ctx.moveTo(p.x,p.y);
         ctx.lineTo(mouseX,mouseY);
@@ -3666,7 +3704,7 @@ function backToSurvey() {
       var dy=p.y-mouseY;
       var dist=Math.sqrt(dx*dx+dy*dy);
       if(dist<120&&dist>0){
-        var force=(120-dist)/120*0.15;
+        var force=(120-dist)/120*0.3;
         p.vx+=(dx/dist)*force;
         p.vy+=(dy/dist)*force;
       }
@@ -3746,13 +3784,17 @@ function backToSurvey() {
     function typeChar(){
       if(i<fullText.length){
         var ch=fullText[i];
+        var span=document.createElement('span');
+        span.className='fx-char-flash';
         if(ch==='&'){
-          el.innerHTML+='<span class="fx-amp">&</span>';
+          span.classList.add('fx-amp');
+          span.textContent='&';
         } else {
-          el.innerHTML+=ch;
+          span.textContent=ch;
         }
+        el.appendChild(span);
         i++;
-        setTimeout(typeChar,80);
+        setTimeout(typeChar,120);
       } else {
         el.innerHTML+='<span class="fx-typing-cursor"></span>';
       }
@@ -3786,7 +3828,7 @@ function backToSurvey() {
     if(rolled) return;
     rolled=true;
     var current=0;
-    var duration=1500;
+    var duration=2500;
     var startTime=null;
 
     function step(ts){
@@ -3795,10 +3837,18 @@ function backToSurvey() {
       var eased=1-Math.pow(1-progress,3);
       var val=Math.round(eased*target);
       el.textContent=val;
+      // Color transitions from gray to amber based on progress
+      var grayVal=Math.round(148-(148-245)*progress);
+      var greenVal=Math.round(163-(163-158)*progress);
+      var blueVal=Math.round(163-(163-11)*progress);
+      el.style.color='rgb('+grayVal+','+greenVal+','+blueVal+')';
       if(progress<1){
         requestAnimationFrame(step);
       } else {
         el.textContent=target;
+        el.style.color='var(--fx-amber)';
+        el.classList.add('fx-bounce');
+        setTimeout(function(){ el.classList.remove('fx-bounce'); },600);
       }
     }
     requestAnimationFrame(step);
@@ -3864,8 +3914,9 @@ function backToSurvey() {
     var scrollY=window.scrollY;
     layers.forEach(function(layer){
       var speed=parseFloat(layer.getAttribute('data-speed'))||0.3;
-      var offset=scrollY*speed*0.1;
-      layer.style.transform='translateY('+offset+'px)';
+      var offset=scrollY*speed*0.4;
+      var rotate=offset*0.05;
+      layer.style.transform='translateY('+offset+'px) rotate('+rotate+'deg)';
     });
   });
 })();
@@ -3876,22 +3927,24 @@ function backToSurvey() {
   if(!cards.length) return;
 
   cards.forEach(function(card){
+    card.style.transition='transform 0.2s cubic-bezier(0.34,1.56,0.64,1)';
     card.addEventListener('mousemove',function(e){
       var rect=card.getBoundingClientRect();
       var x=e.clientX-rect.left-rect.width/2;
       var y=e.clientY-rect.top-rect.height/2;
       var dist=Math.sqrt(x*x+y*y);
-      var maxDist=200;
+      var maxDist=300;
       if(dist<maxDist){
-        var force=(1-dist/maxDist)*15;
+        var force=(1-dist/maxDist)*40;
         var angle=Math.atan2(y,x);
         var tx=Math.cos(angle)*force;
         var ty=Math.sin(angle)*force;
-        card.style.transform='translate('+tx+'px,'+ty+'px)';
+        var rot=angle*180/Math.PI*0.08;
+        card.style.transform='translate('+tx+'px,'+ty+'px) rotate('+rot+'deg)';
       }
     });
     card.addEventListener('mouseleave',function(){
-      card.style.transform='translate(0,0)';
+      card.style.transform='translate(0,0) rotate(0deg)';
     });
   });
 })();
