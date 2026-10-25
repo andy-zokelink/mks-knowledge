@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学术前沿周报 · 2026年10月第4周 — 阿森智库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC','STSong','Songti SC',serif;background:#faf6f0;color:#3d2f2f;line-height:1.85;padding:20px}
+article{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;padding:40px 48px;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+h1{font-size:28px;color:#6a3e1e;margin-bottom:8px}
+.meta{color:#9b8c7c;font-size:14px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid #e8d5c4}
+.content h2{font-size:20px;color:#8b5e3c;margin:28px 0 12px}
+.content h3{font-size:17px;color:#6a3e1e;margin:20px 0 8px}
+.content p{margin-bottom:14px}
+.content ul,.content ol{margin-bottom:14px;padding-left:24px}
+.content li{margin-bottom:6px}
+.content blockquote{border-left:3px solid #c9a87c;padding:8px 16px;margin:16px 0;color:#6b5b5b;background:#fdf8f2;border-radius:0 6px 6px 0}
+.content code{background:#f0e8dc;padding:2px 6px;border-radius:4px;font-size:.9em}
+.content pre{background:#2d2418;color:#e8dcc8;padding:16px 20px;border-radius:8px;overflow-x:auto;margin-bottom:14px;font-size:14px;line-height:1.5}
+.content a{color:#c0392b;text-decoration:none}
+.content a:hover{text-decoration:underline}
+.content table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.content th,.content td{border:1px solid #e8d5c4;padding:8px 12px;text-align:left;font-size:14px}
+.content th{background:#fdf6ec;font-weight:600}
+.content img{max-width:100%;border-radius:8px}
+.back{margin-top:40px;padding-top:16px;border-top:1px solid #e8d5c4}
+.back a{color:#9b8c7c;font-size:14px;text-decoration:none}
+.back a:hover{color:#6a3e1e}
+@media(max-width:600px){
+  article{padding:24px 20px}
+  h1{font-size:22px}
+  .content table{font-size:12px}
+}
+</style>
+<article>
+<h1>学术前沿周报 · 2026年10月第4周</h1>
+<div class="meta">学术前沿周报 · 2026-10-25 · 学术前沿周报 · 阿森智库</div>
+<div class="content">
+
+<p><strong>采集窗口</strong>：2026.10.19—10.25 ｜ <strong>覆盖方向</strong>：AI/大模型、半导体/存储、机器人/具身智能、新能源/碳中和、生物医药 ｜ 本期共 141 条一手论文（arXiv 10.18—10.22 新投稿）+ 约 200 条产业信号</p>
+<h2>一、本周趋势信号</h2>
+<p><strong>信号1｜存储：涨价开始"分化"，而推理研究集体把 KV Cache 推到 SSD 上——同一个品类被两条曲线同时拉扯</strong></p>
+<p>本周有两组互相独立的证据落在同一处。产业侧，群智咨询 10 月 20 日给出 Q4 判断：涨价仍在继续，但涨幅显著分化，上涨高度集中于 AI 服务器相关产品，普通消费级存储涨势明显减弱，供需博弈的重心正从"整体紧缺"转向"结构性错配"。国内数据也在印证这一点：9 月数据存储设备出厂价环比 +1.7%，较上月的 2.1% 已收窄（国家统计局数据，10 月 14 日报道）；而美银 9 月下旬渠道调研显示 2026Q3 多数 DRAM 均价环比 +20%~30%、NAND 超 15%，大型云厂商已同意 2027Q1 采购价高于 2026Q4。日经口径的 SSD 合约价更直观：TLC 256GB 从去年同期 33.3 美元涨到 134.2 美元，同比 +303%，连续六季上涨，2026 年企业级 SSD 出货预估 7362 万个、同比增三成。涨价不是消失了，是被集中到了服务器相关品类。</p>
+<p>技术侧，本周 arXiv 出现一个密度极高的 KV Cache 存储侧集群。Gandalf（arXiv:2610.30791）直接点出问题的严重性：多轮对话与 agent 负载下，KV Cache 的写入总量远超 SSD 容量，会把 SSD 寿命从"数年"压缩到"数月"；它的解法不是简单降写入，而是按 attention 类型做准入——优先放全注意力 KV，保住命中率的同时延长寿命。同周 UlaCache（arXiv:2610.29820）用统一逻辑地址空间跨 GPU KV 池与 CPU 内存做稀疏注意力 KV 管理；CXLResume（arXiv:2610.27636）把内存服务的主堆对象留在共享内存、只 checkpoint 执行状态；RIFT（arXiv:2610.31098）揭示"decode staleness"——以 prefill 为准的压缩策略随输出变长而失效；MoEZip（arXiv:2610.30206）指出 KV 驱逐会改变 MoE 的专家路由、进而损伤质量；KPage（arXiv:2610.28096）在加载阶段跨块压缩 K/V 页，五个工作负载上比 NVIDIA BSA 平均快 1.77 倍。</p>
+<p><strong>判断</strong>：企业级 SSD 的需求正在被拆成两条曲线——容量需求看层级重排（HBM/DRAM/SSD 分级驻留），可靠性需求看写放大与寿命。过去以"单盘带宽/IOPS"为规格主轴的叙事，正在被"写耐久 + 层级适配"取代。</p>
+<p><strong>信号2｜AI Agent：研究焦点从"能力"转向"状态治理"——删除后的残留、缺证时的越权、异步协作的共享内存</strong></p>
+<p>本周四条论文指向同一件事：agent 的外部状态正在变成需要被审计、被删除、被共享的一等对象。AfterDeleteBench（arXiv:2610.31366）做了一次行为学审计：agent 删除原始记忆记录后，由其派生的摘要仍携带信息；在主要设定下，单次查询即可从 Qwen2.5-7B-Instruct 中恢复被删秘密，比例约为三分之二，而从未接触过该秘密的对照组恢复率为零。更关键的是，恢复不需要逐字残留——当完整字符串不存在、只有分散存储的组件加一条公开的组合规则时，跨 Qwen、Mistral、Phi-3 的精确重建成功率仍达 62%—99%。EpiSEM-Bench（arXiv:2610.31650）则从另一个方向压测：300 对 unsafe/safe 任务覆盖六个领域，当工具响应"少给了一个关键事实"时，agent 会执行被禁止的动作——即便用户请求无害、每条返回语句为真。工程侧，Muffin（arXiv:2610.31355）提出异步 agent 之间的共享内存缓冲区协议，替代同步轮流发言式的多智能体讨论；HERD（arXiv:2610.31401）把 harness 演化和递归蒸馏结合，用非参数化载体承接持续学习。治理侧还有 Contestable Agents（arXiv:2610.31553）：让 AI 生成的元数据留下"人到底审了什么"的可争议记录。</p>
+<p><strong>判断</strong>：agent 的"状态"不再只是工程实现细节——它同时是合规对象、审计对象和成本对象。谁能让状态可追溯、可删除、可回放，谁就拿到了企业级 agent 的入场券。</p>
+<p><strong>信号3｜具身智能：触觉从传感器件变成模型的一等输入，政策口径首次给出全年 10 万台</strong></p>
+<p>10 月 19 日国新办发布会上，工信部科技司司长魏巍给出官方口径：今年上半年我国人形机器人整机产品突破 400 款、产量超 4 万台，预计全年突破 10 万台；工信部将以人形机器人为"小切口"带动具身智能产业，已在仓储物流、餐饮零售、家庭服务等 300 多个重点场景推动验证部署。供给端同步放量：长盈精密 10 月 21 日披露，1—8 月累计交付人形机器人精密零组件超过 110 万件，第三、四季度订单增速较上半年进一步加快。</p>
+<p>技术侧，本周触觉研究成簇出现。OpenTac（arXiv:2610.31661）给出可定制的电阻式触觉皮肤，并用结构变形覆盖层把切向载荷转成空间变化的压力分布，附自动生成制造文件的设计工具——把"做一块触觉皮肤"变成可复制的工程动作。GelSlim 5.0（arXiv:2610.31334）用单个指尖相机、通过切换照明先后获取视觉与触觉图像，绕开多相机外参标定。T-WLA（arXiv:2610.28814）针对"接触条件在视觉策略更新前就已变化"的时序问题，用共享视觉记忆同时驱动动作生成与轻量触觉修正——慢视觉、快触觉。PhysCanvas（arXiv:2610.28613）把多视角 RGB、触觉图像、marker 位移、任务状态和动作统一进一个视觉空间，构建视觉—触觉世界模型用于策略评估。GPT-6-Astra（arXiv:2610.28457）则给出一个更激进的结论：通用多模态模型在接触密集操作上可以直接充当触觉策略，效果超过专用视觉—触觉—语言—动作模型。综述层面，Tactile-Based Robotic Manipulation（arXiv:2610.30438）把三十年研究划成"力学驱动→数据驱动"两段；Memory before Goal（arXiv:2610.31166）指出人形移动操作是非马尔可夫的，提出 WholeBodyMem 目标引导感知记忆与 HuMeGo 基准。</p>
+<p><strong>判断</strong>：触觉的数据采集、清洗与回放，正在成为具身智能最真实的新负载；而这类负载的特征是"高频写入 + 强时序 + 必须可回放"，与存储系统的能力高度耦合。</p>
+<p><strong>信号4｜生物医药与新能源：价值从"单个分子/单个电芯"转向"平台化交付能力"</strong></p>
+<p>生物医药本周被两笔 ADC 交易连续占据。10 月 17 日翰森制药与罗氏签署第二份 ADC 战略合作，10 月 19 日晚公告：4 亿美元首付款 + 1.1 亿美元一周年付款 + 潜在超 150 亿美元里程碑，总额超 155 亿美元，为中国 ADC 出海潜在总规模最大的一笔。值得注意的不是金额，而是结构：交易标的不是已获临床验证的分子，而是两个临床前 ADC 项目，加多个由罗氏提议靶点、依托翰森自有 ADC 平台开发的资产；且翰森将主导早期开发至全球 Ia 期完成，罗氏负责中国以外后期开发。10 月 21 日，和黄医药与 GSK 的 KRAS-EGFR 抗体靶向偶联药物 HMPL-A830 完成交割：预计短期收到 1.1 亿美元首付款 + 最高 11.85 亿美元里程碑，总额约 12.95 亿美元——而该分子 2026 年 9 月 24 日才完成首例患者给药，尚无任何人体数据可供定价。上半年中国创新药 License-out 潜在总额已达 997 亿美元，相当于 2025 年全年的约 73.5%。</p>
+<p>新能源侧，固态电池本周从发布会走进产线。10 月 20 日奇瑞全球创新大会公布犀牛 S 固态电池：电芯能量密度 400Wh/kg，工作温域 -40℃ 至 100℃，通过 200℃ 热箱测试，中试线计划 2027 年投用，当前集中攻克电池包系统与 DMS 管理。10 月 21 日东风在 2026 世界智能网联汽车大会披露：350Wh/kg 快充型混合固液电池已完成寒区测试、进入量产应用准备，计划 2026Q4 量产上车、2027 年交付 5 万辆自研固态电池车型；400Wh/kg 全固态仍在研发试制与整车验证。同一天，清陶昆山固态动力电池项目一期 10GWh 投产（总投资 80 亿元，由上汽华域与清陶合资），天赐材料九江 100 吨硫化锂及固态电解质中试线建成投运、已开始向海外客户送样测试。</p>
+<p><strong>判断</strong>：两条看似无关的线其实是同一个结构变化——定价对象从"一个分子""一个电芯"变成"一套能持续交付的工程化能力"。跨国药企买的是 ADC 平台的持续产出，车企和电池厂比的是中试线良率与产线改造速度。</p>
+<h2>二、产业关联研判</h2>
+<p><strong>① BOM 与毛利：结构性错配下，采购要按"服务器相关 / 消费级"分轨，而不是整体锁价。</strong></p>
+<p>本周最有用的一条产业判断是"涨价分化、重心转向结构性错配"（群智咨询 10/20）：继续按"整体涨价 X%"的心理预期做年度采购，会同时犯两个错——在 AI 服务器相关品类上锁量不足，在消费级品类上锁价过高。具体动作建议：把 2027 年主料需求按用途拆成两轨，服务器/企业级相关料号优先拿长协与预付款换交付保障（产业口径显示，头部原厂 2027 年约 80% 产能已被五年期长协锁定，剩余份额靠抢；该判断来自 10 月中旬韩媒与国内报道，需以正式公告为准），消费级料号则利用涨幅收敛的窗口做价格回调谈判。同时把 9 月国内数据存储设备出厂价环比收窄至 +1.7% 这条统计数据（10/14）纳入报价联动条款的触发条件——它比任何单一机构的预测都更接近真实出厂价。</p>
+<p><strong>② 技术路线与产品：企业级 SSD 的规格主轴应从"单盘性能"改成"写耐久 + 层级适配"。</strong></p>
+<p>本周 arXiv 集群把 SSD 写耐久从"隐性工程参数"推到了显性竞争指标：Gandalf 证明长上下文与 agent 负载下 KV Cache 写入总量会让 SSD 寿命从数年掉到数月，并用 attention 类型做准入排序；RIFT 指出压缩策略会随时间失效（decode staleness）；MoEZip 指出 KV 驱逐会改变专家路由。这些结论合起来给出一条清晰的产品含义：下一代企业级 SSD 的卖点不是"再快 20%"，而是"在 KV Cache 卸载场景下的可预期寿命"。落地建议：把 DWPD/写入放大在 KV 卸载负载下的实测曲线做成标准交付材料，配合分层驻留（显存/DRAM/SSD）的容量配比建议一起送样——客户真实的采购问题是"我需要多少容量、能用多久"，而不是"你的盘有多快"。</p>
+<p><strong>③ 研发投入与场景卡位：触觉数据回放、agent 状态审计，这两类新负载都需要"可回放存储"。</strong></p>
+<p>本周两个独立方向都指向同一个能力：可回放的时序数据底座。具身智能侧，触觉数据是高频、强时序、必须可回放（PhysCanvas 用触觉世界模型做策略评估，T-WLA 靠共享视觉记忆做触觉修正）；AI 侧，agent 状态需要可追溯、可删除、可验证删除（AfterDeleteBench 的结论是：删除原始记录不等于删除信息，派生摘要仍可恢复）。这两类负载都不是"更大容量"能解决的，而是"更细粒度的写入语义 + 可验证的生命周期管理"。建议：把这两条作为差异化场景立项——面向机器人集成商做"采集—训练—回放"一体化存储验证，面向企业 agent 客户做"状态留存与合规删除"的存储接口预研。这两件事的技术底盘同源，投入一次可覆盖两个市场。</p>
+<h2>三、关键论文速览</h2>
+<table>
+<thead><tr><th>方向</th><th>论文/来源</th><th>核心发现</th><th>产业关联度</th></tr></thead>
+<tbody>
+<tr><td>半导体/存储</td><td>Gandalf（arXiv:2610.30791，10/22）</td><td>KV Cache 卸载场景下 SSD 写入总量超容量、寿命由数年降至数月；按 attention 类型做准入可延寿且不损命中率</td><td>高</td></tr>
+<tr><td>半导体/存储</td><td>UlaCache（arXiv:2610.29820，10/21）</td><td>统一逻辑地址空间跨 GPU KV 池与 CPU 内存管理稀疏注意力 KV，仅传输缺失条目</td><td>高</td></tr>
+<tr><td>半导体/存储</td><td>RIFT（arXiv:2610.31098，10/22）</td><td>揭示 decode staleness：以 prefill 为准的 KV 压缩随输出变长而失效</td><td>中</td></tr>
+<tr><td>半导体/存储</td><td>3D-MoE（arXiv:2610.26991，10/19）</td><td>3D 堆叠近存处理 + 专家互补性感知调度，缓解 MoE 解码的内存墙与负载倾斜</td><td>中</td></tr>
+<tr><td>AI Agent</td><td>AfterDeleteBench（arXiv:2610.31366，10/22）</td><td>删除记忆后信息仍可恢复：主设定约三分之二，组件+公开组合规则重建率 62%—99%</td><td>高</td></tr>
+<tr><td>AI Agent</td><td>EpiSEM-Bench（arXiv:2610.31650，10/22）</td><td>300 对任务证明：工具响应缺失关键事实时，agent 会执行被禁止动作</td><td>中</td></tr>
+<tr><td>AI Agent</td><td>Muffin（arXiv:2610.31355，10/22）</td><td>异步多智能体共享内存缓冲区协议，替代同步轮流发言</td><td>中</td></tr>
+<tr><td>机器人</td><td>OpenTac（arXiv:2610.31661，10/22）</td><td>可定制电阻式触觉皮肤 + 自动生成制造文件的设计工具链</td><td>中</td></tr>
+<tr><td>机器人</td><td>T-WLA（arXiv:2610.28814，10/20）</td><td>共享视觉记忆同时驱动动作生成与触觉修正，快慢双频解耦</td><td>中</td></tr>
+<tr><td>机器人</td><td>GPT-6-Astra（arXiv:2610.28457，10/20）</td><td>通用多模态模型直接充当触觉策略，超过专用视觉—触觉—语言—动作模型</td><td>中</td></tr>
+<tr><td>生物医药</td><td>recAMPLIFY（arXiv:2610.26747，10/19）</td><td>递归预训练迁移到掩码蛋白语言模型，以测试时扩展替代纯参数扩展</td><td>低</td></tr>
+<tr><td>新能源</td><td>SEI 生长一致性建模（arXiv:2610.29775，10/21）</td><td>以电子扩散机制统一建模 SEI 生长，跨电芯规格与工况验证 LFP/石墨电池衰减</td><td>低</td></tr>
+</tbody></table>
+<h2>四、下周关注</h2>
+<ol>
+<li><strong>三季度存储合约价落地幅度</strong>——群智咨询所说的"分化"若在 10 月底至 11 月初的实际报价中被证实，2027 年度框架谈判的谈判结构就要改成"品类分轨"而不是"总量锁价"。</li>
+<li><strong>KV Cache 卸载的产品化节奏</strong>——产业侧已有以 DPU 硬化 KV 语义的智能盘框类产品，本周论文群证明学术界正在解决其寿命与命中率矛盾；两者一旦对齐，企业级 SSD 的规格书会被重写。</li>
+<li><strong>固态电池中试线良率数据</strong>——奇瑞 2027 中试线、清陶昆山一期 10GWh 的实际爬坡曲线，比任何产能规划都更能判断 2027 装车窗口是否可兑现。</li>
+<li><strong>agent 记忆删除的合规要求</strong>——AfterDeleteBench 这类"删除不等于删除"的实证，很可能先于技术方案变成客户侧的合规问询项。</li>
+<li><strong>人形机器人全年产量能否兑现 10 万台</strong>——工信部口径已给出，Q4 的交付数据将是第一个可验证的检验点。</li>
+</ol>
+<p><strong>一句话总结</strong>：存储涨价开始分化、推理研究集体把 KV Cache 推上 SSD；agent 的重点从"能做什么"转向"状态归谁管、能不能删干净"；生物医药与固态电池同时从"卖单点"转向"卖可持续交付的工程化能力"。</p>
+</div>
+<div class="back"><a href="../index.html">← 返回博客首页</a></div>
+</article>
+</html>
