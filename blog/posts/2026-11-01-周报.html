@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学术前沿周报 · 2026年11月第1周 — 阿森智库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC','STSong','Songti SC',serif;background:#faf6f0;color:#3d2f2f;line-height:1.85;padding:20px}
+article{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;padding:40px 48px;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+h1{font-size:28px;color:#6a3e1e;margin-bottom:8px}
+.meta{color:#9b8c7c;font-size:14px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid #e8d5c4}
+.content h2{font-size:20px;color:#8b5e3c;margin:28px 0 12px}
+.content h3{font-size:17px;color:#6a3e1e;margin:20px 0 8px}
+.content p{margin-bottom:14px}
+.content ul,.content ol{margin-bottom:14px;padding-left:24px}
+.content li{margin-bottom:6px}
+.content blockquote{border-left:3px solid #c9a87c;padding:8px 16px;margin:16px 0;color:#6b5b5b;background:#fdf8f2;border-radius:0 6px 6px 0}
+.content code{background:#f0e8dc;padding:2px 6px;border-radius:4px;font-size:.9em}
+.content pre{background:#2d2418;color:#e8dcc8;padding:16px 20px;border-radius:8px;overflow-x:auto;margin-bottom:14px;font-size:14px;line-height:1.5}
+.content a{color:#c0392b;text-decoration:none}
+.content a:hover{text-decoration:underline}
+.content table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.content th,.content td{border:1px solid #e8d5c4;padding:8px 12px;text-align:left;font-size:14px}
+.content th{background:#fdf6ec;font-weight:600}
+.content img{max-width:100%;border-radius:8px}
+.back{margin-top:40px;padding-top:16px;border-top:1px solid #e8d5c4}
+.back a{color:#9b8c7c;font-size:14px;text-decoration:none}
+.back a:hover{color:#6a3e1e}
+@media(max-width:600px){
+  article{padding:24px 20px}
+  h1{font-size:22px}
+  .content table{font-size:12px}
+}
+</style>
+<article>
+<h1>学术前沿周报 · 2026年11月第1周</h1>
+<div class="meta">学术前沿周报 · 2026-11-01 · 学术前沿周报 · 阿森智库</div>
+<div class="content">
+<h1>学术前沿周报 · 2026年11月第1周</h1>
+<p><strong>采集窗口</strong>：2026.10.26—11.01 ｜ <strong>覆盖方向</strong>：AI/大模型、半导体/存储、机器人/具身智能、新能源/碳中和、生物医药 ｜ 本期共 <strong>223 条一手论文</strong>（arXiv 10.19—10.29 新投稿）+ <strong>220 条产业信号</strong>（Metaso scholar/webpage 双路）｜ <strong>元数据</strong>：11 路 scholar + 11 路 webpage 检索、15 组 arXiv 关键词组合去重</p>
+<h2>一、本周趋势信号</h2>
+<p><strong>信号1｜KV Cache 卸载从"论文技巧"变成"存储系统工程"——同周五个系统级方案，把 SSD 直接放上推理关键读路径</strong></p>
+<p>上周的判断是"KV Cache 正在变成存储问题"，本周 arXiv 给出了系统层的第一批完整答案，而且不约而同地把前提推翻重写。FlatCake（arXiv:2610.38355，10/28）开篇就否掉了 DRAM 作为中间缓存的传统分层：生产负载呈双峰分布——要么是一次性写入但重用距离极长的块，要么是几 GB 规模、直接超过 DRAM 容量的 agentic 会话，两种情况都让 SSD 落到关键读路径上；更麻烦的是 DRAM 暂存缓冲在负载下被在途前缀占满会让 prefetch 被中止，而按驱逐顺序排布又会让同一个会话的块散落在 SSD 各处、无法大块顺序读。KVStream（arXiv:2610.31827，10/22）的观察更实用：单个节点本地 NVMe 扛下了全部前缀检索，而节点上已经挂载的并行文件系统或云文件存储"几乎不承载推理流量"——它把前缀检索重构为跨层聚合带宽调度，一次批量读一个 step 的块、把写推迟到前向之后、每层各存一份副本、空闲的层自适应认领未读块。</p>
+<p>同周的 SARIA（arXiv:2610.31169，10/22）解决的是"全部持久化会烧掉 SSD 寿命"：利用 agent 会话级的时间局部性做选择性准入与协同 reload。SARP（arXiv:2610.26849，10/19）把索引本身放到 SSD 上，用稀疏内存路由同时满足前缀匹配性能与崩溃恢复速度。WAKMan（arXiv:2610.36355，10/26）在 20 种流量混合下实测：agentic 步骤秒级返回、偏好 recency；热门 prompt 与长对话偏好 frequency——<strong>没有任何单一驱逐策略在所有混合下最优</strong>，vLLM 默认 LRU 在多数混合里都在输。下游侧 uGDS（arXiv:2610.30868，10/22）开源了用户态 GPU Direct Storage，砍掉每请求的内核路径与流序全序约束；WorldPager（arXiv:2610.35529，10/26）证明世界模型的 KV 记忆是容量受限而非带宽受限，且访问集在计算前已知（相机位姿是输入）；DeepInfer-Mac（arXiv:2610.36564，10/27）把 750B 级 MoE 塞进 24GB 笔记本——338GiB 权重放在内置 SSD，实测 0.21—0.72 tokens/s。硬件侧的对照是 HBF：SanDisk 与 SK 海力士已把高带宽闪存标准做成交付物，512GB/栈、1.6TB/s 读带宽、HBM4 兼容封装，2026 下半年送样、2027 年初首批推理设备（引自 arXiv:2606.02775 的引述；HBFSim 记载规范于 2026-08-03 发布）。</p>
+<p><strong>判断</strong>：这一批工作的共同点不是"用 SSD 换容量"，而是<strong>承认分层缓存的前提已经不成立，重新做数据布局</strong>。企业级 SSD 的竞争维度因此从"单盘带宽/IOPS"扩成三条：写耐久（寿命）、布局友好度（能否支撑大块顺序读与平铺索引）、跨层调度参与度（能否被推理引擎当聚合带宽池用）。第三条是新的——它意味着客户既有文件系统/分布式存储不是被替代，而是被重新拉进推理路径。</p>
+<p><strong>信号2｜涨价从"预测"进入"合约兑现期"：Q4 落地 +10~20%，HBM4 三倍定价把常规 DRAM 一起拖进同一周期</strong></p>
+<p>上周还在讨论"分化"，本周价格开始以合约形式落定。TrendForce 口径（10 月 1 日）：2026Q4 常规 DRAM 合约价环比 +10%~15%，纳入 HBM 后整体 DRAM +15%~20%，NAND 合约价 +15%~20%，涨价压力主要来自云厂商扩大 AI 基础设施采购，原厂优先排产 HBM、服务器 DRAM 与企业级 SSD。10 月 29 日财联社引群智咨询分析师：2026 年 AI 服务器使用的 HBM 与 DDR5 企业级内存已约占 DRAM 晶圆产能的一半，2027 年还会更高。原厂报表早已反映：美光 2026 财年 DRAM 平均售价同比 +180%、NAND +200%。定价权的证据在 HBM4——韩媒《每日经济》10 月 2 日报道，三星向主要客户提出的 2027 年 HBM4 报价落在每 Gb 4 美元左右，接近 HBM3E 的三倍；TrendForce 9 月 29 日把 2027 年 HBM 综合均价预期上调至同比 +121%。传导到整机很直观：服务器内存从 380 美元走到 2050 美元只用了 10 个月，约 5 倍（9 月 30 日报道）。</p>
+<p>同日还有一条容易被忽略的成本信号：伯恩斯坦 10 月研报把英伟达 Rubin NVL72 单机柜成本从 910 万美元下调到 752 万美元（-17%），下调原因正是<strong>对 HBM 价格与 NAND 容量预期的调整</strong>——也就是说，机柜级 BOM 的核心变量已经从 GPU 数量转向存储配置。</p>
+<p><strong>判断</strong>：这一轮不是"周期反弹"，而是<strong>产能排序权的重新分配</strong>——HBM 用高价和年度长约锁定晶圆，常规 DRAM 的边际供给被压缩，连与 HBM 无关的一颗服务器 DDR5 都在吃同样的涨价。对下游，2027 年度框架谈判的前提条件变了：能不能按"服务器相关/消费级"分轨锁量锁价，比整机压价更重要。</p>
+<p><strong>信号3｜Agent 记忆祛魅：三篇反调论文同周出现——记忆是弱模型的昂贵补丁，压缩本身就是信任边界</strong></p>
+<p>上周的叙事是"状态治理"，本周出现了直接的祛魅。MemoryTax（arXiv:2610.29823，10/21）做了一次带成本的对照实验：一个 419 轮、152 个问题的对话，四种记忆方法（全上下文/BM25/Mem0/Zep）× 三个 coding agent（Pi/Codex/Claude Code）× 三个模型（GPT-4o-mini、GPT-6 Luna、Claude Opus 5.5），逐 roll-out 记账。结论刺耳：Mem0 只在 GPT-4o-mini 上优于全上下文，而且它构建记忆的成本本身就超过一整次全上下文运行——<strong>记忆是弱模型的昂贵补丁，模型一强，自己搜原始历史就够了</strong>。Raw-RAG（arXiv:2610.30755，10/22）从另一侧印证：一个朴素 RAG 基线（对原始历史做稠密检索+重排）在 LoCoMo、LongMemEval、MEME、MemoryAgentBench 四个基准的 7 个模型设置里拿下 6 个第一，比最强 agentic memory 高 0.13—5.53 分，原因是证据覆盖率更高、抵消了利用率偏低。</p>
+<p>更值得企业客户关注的是 Compaction Laundering（arXiv:2610.29869，10/21）：coding agent 跑久了必须压缩上下文，而主流开源 harness 在压缩前会把结构化对话摊平成单一字符串（用 <code>[User]:</code> 这类文本标签标记消息），<strong>这一步在代码层销毁了消息来源信息</strong>。攻击者只要控制 agent 读到的任何内容，就能伪造一条用户指令，在压缩后作为"真实指令"存活下来——在 pi、opencode、Cline、Aider、OpenHands 五个 harness 上，伪造审批的洗白成功率 87%—100%，上下文可达约 908,000 token。</p>
+<p><strong>判断</strong>：agent 记忆正在从"加结构"转向"可审计 + 可算账"。这对存储侧是明确的机会面：压缩、摘要、卸载每一步都在改写"原始证据去哪了"，谁能在存储层保留不可篡改的原始轨迹与来源标记，谁就承接了 agent 落地后的合规底座。</p>
+<p><strong>信号4｜算力的第一性约束从芯片转向电与钱：1GW 数据中心 346—395 亿美元、PUE 红线 1.15、能耗已占 Token 成本四成</strong></p>
+<p>资本侧的规模已经不是"增长"而是"量级"：2026 年全球主要云厂商资本开支指引上修至约 8300 亿美元（9 月 4 日），Bloomberg Intelligence 10 月 8 日测算超大规模云企业 2026 年数据中心支出约 7130 亿美元、同比增长逾一倍；摩根士丹利预计北美四大厂从 2026 年 9170 亿美元升至 2027 年 1.47 万亿、2028 年 1.64 万亿，同期部署容量从 2025 年 35GW 扩到 2028 年 145GW。伯恩斯坦给出的单位成本是 1GW 数据中心需 346—395 亿美元。物理侧同时收紧：2026 年新建大型/超大型数据中心 PUE 要求降至 1.15 以内，东数西算口径东部 1.25、西部 1.2，上海等地要求新建智算中心液冷机柜占比超 50%；2026Q1 国内新建大型 AI 数据中心液冷渗透率已达 70%（同比 +300%）；行业测算能耗约占 Token 成本的 40%。</p>
+<p>学术侧本周补上了两块原来缺失的度量。LLM-PowerTrace（arXiv:2610.38315，10/28）发布了 100ms 粒度的逐 GPU 功率轨迹数据集，指出算力负荷对电网的影响不只取决于总能耗，还取决于亚秒到分钟级的峰值、爬坡与多卡同步波动——过去只有"每 token 焦耳"这种聚合量，动态特性无人建模。Context Is Not Free（arXiv:2610.35230，10/26）则指出碳感知路由的一个隐藏成本：多轮会话是有状态 web 会话，每一轮复用历史 KV cache，而这部分 cache 只存在于最初服务的那一地；把某一轮搬到更"绿"的区域，就要重算整段历史，其碳成本随对话变长而增长，可能超过搬迁节省——<strong>存储位置决定了调度自由度</strong>。</p>
+<p><strong>判断</strong>：能效正在从"机房指标"变成"产品参数"。存储侧的能效叙事要跟着改口：不是"每 TB 多少瓦"，而是"每瓦有效带宽 + 缓存命中省下的重算量"。这也是唯一能把存储与电价直接挂钩的量化口径。</p>
+<p><strong>信号5｜具身智能在退潮中务实化：VLA 与 WAM 之争被证明是伪命题，量化与一步生成成为主线</strong></p>
+<p>本周机器人方向的技术论文密度高但基调明显务实。JAM（arXiv:2610.37219，10/27）做了一件纠偏的事：VLA 与 WAM 的路线之争其实捆绑了三个可分离的选择——骨干初始化来源、施加在未来观测上的目标、以及推理时是否保留产生该目标的机制；把三者解耦后，两派可以统一进同一个框架（预训练视觉骨干 + 动作专家 + 动作损失 + 前瞻损失）。OSWAM（arXiv:2610.35850，10/26）解决部署延迟：直出策略的世界动作模型仍要几十步去噪，简单减步会把多步轨迹压成粗糙更新、动作质量崩，它用一步生成顶掉整个去噪链。QbD-VLA（arXiv:2610.38661，10/28）用短闭环评估的<strong>任务成功率</strong>直接驱动混合精度位宽分配，替代基于校准数据的敏感度估计——把量化从"精度守恒"问题改成"任务守恒"问题。此外 DexSuite 打通跨臂/跨手/跨任务的操作框架，CARD 做接触锚定的重定向，另有一篇给出连杆驱动、关节结构对齐人类的灵巧手。</p>
+<p>产业侧的政策与产能口径已经把"演示期"划上句号：工信部 10 月 19 日明确以人形机器人为"小切口"带动具身智能产业，上半年整机超 400 款、产量超 4 万台，全年预计破 10 万台，已在 300 多个重点场景推动验证；10 月 23 日人形机器人新增 6 项国家标准；特斯拉 Optimus 计划 2026 年底在弗里蒙特（原 Model S/X 产线改造）启动量产，2026 年投入 250 亿美元；Figure 的 BotQ 工厂设计年产能 1.2 万台；宇树 H2 定价 29,900 美元、2025 年出货约 5500 台，仍是全球出货量第一。</p>
+<p><strong>判断</strong>：泡沫退去后留下的是良率、时延与成本三件事。对上游方案商，机器人不再是"算力客户"而是"边缘存储与实时性客户"——多机数据回传、训练集版本管理、端侧模型热更新，都是可交付的存储需求。</p>
+<p><strong>信号6｜新能源与生物医药：界面工程成为固态电池唯一主线，药物设计开始受算力成本约束</strong></p>
+<p>固态电池本周的论文几乎全部集中在界面：硫化物全固态锂金属电池的碘—氧化物—硫化物复合电解质界面增强（10 月 5 日）、非晶锂三元金属氯化物固态电解质的计算筛选（10 月 25 日）、空位增强的锂固溶体负极计算筛选（10 月 23 日）、硫化物电解质表面保护涂层的模拟+光谱联合设计（10 月 23 日）、SEI 电子扩散机制的一致性建模并跨电芯规格验证（10 月 21 日）。产业节奏与之对齐：2026 年是半固态规模化装车年，全固态进入中试与小批建设，全年固态电池装车预计 60 万—70 万辆、其中 50 万—60 万辆集中在下半年；行业普遍预期 2027 年全固态上车、2030 年规模化。</p>
+<p>生物医药侧本周出现了与算力主线的直接交汇。TACFormer（arXiv:2610.39891，10/29）把 PROTAC 设计从"连接子生成"重构成目标条件化的整体生成，同时建模 POI 与 E3 两端配体。Agent-guided epitope excision（arXiv:2610.33195，10/23）更值得记：把靶点截断为局部界面窗口，在 15 个靶点、3,666 个设计上验证，截断窗口与全靶点结合界面的中位 CαRMSD 仅 0.37 Å，并在 FAP（719 残基胞外域）上把 RFdiffusion 与 AlphaFold3 的 GPU 时间减少约 88%。商业侧，2026 年至今中国创新药 License-out 总额约 943 亿美元、同比 +80.8%，首付款 55 亿美元、同比 +124.2%。</p>
+<p><strong>判断</strong>：两条线都指向同一件事——<strong>瓶颈从"想得到"变成"算得起、做得出来"</strong>。药物设计现在也要做显存与算时的预算管理，这与推理侧的存储/算力约束是同一类问题。</p>
+<h2>二、中科领创关联研判</h2>
+<p><strong>① 产品规格：企业级 SSD 与 KV 卸载盘应从"单盘性能"改写为"写耐久 + 布局友好 + 跨层可调度"。</strong></p>
+<p>本周五个系统级方案的共同前提值得直接写进方案书：DRAM 不再能当有效中间缓存、按驱逐顺序布局会破坏顺序读、单节点 NVMe 会独自扛下全部前缀检索。对应的可验证指标建议三条：写放大与 DWPD 在 agentic 负载下的实测衰减（Gandalf、SARIA 都指向"eager persist 会几个月烧完寿命"）、大块顺序读能力（FlatCake 的核心诉求）、以及能否被上层以聚合带宽池方式调度（KVStream 的核心诉求）。第三条最有差异化：客户机房里已部署的并行文件系统/分布式存储此前"几乎不承载推理流量"，把它接进推理读路径等于把闲置带宽变现。</p>
+<p><strong>② 商务：2027 年度框架按"服务器相关/消费级"分轨，而不是总量锁价。</strong></p>
+<p>依据三条可核验的事实：Q4 合约价（常规 DRAM +10~15%、含 HBM 整体 +15~20%、NAND +15~20%）、美光 FY2026 DRAM/NAND 均价同比 +180%/+200%、HBM4 2027 年报价接近 HBM3E 三倍。含义很直接——原厂利润表已经修复，靠压单价拿不到空间，谈判资源应全部转向"交付保障 + 品类配额"：服务器/企业级料号用长协与预付款换确定性，消费级料号利用涨幅收敛窗口做回调。同时把机柜侧变量纳入报价联动：Rubin NVL72 单柜成本因存储配置预期下调 17%，说明整机 BOM 的敏感项已经从计算转向存储。</p>
+<p><strong>③ 方案：算—存—网—电—热整体设计成为投标门槛，"能效"要换成存储能说清的口径。</strong></p>
+<p>PUE 1.15 红线、液冷机柜占比 50% 要求、能耗占 Token 成本约 40%——这三条组合起来，意味着单卖存储盒子的方案越来越难进大项目。可用的量化口径是"每瓦有效带宽"与"缓存命中省下的重算量"：KV 命中率提升直接减少 prefill 重算，重算就是电费与碳排。Context Is Not Free 还给了一条反向论据：跨地域调度受制于 KV 所在位置，存储布局直接决定客户的调度自由度——这是把存储从成本项讲成战略项的最好材料。</p>
+<p><strong>④ 风险：Agent 接入企业系统后，"压缩即信任边界"会变成审计问询项。</strong></p>
+<p>Compaction Laundering 在五个主流开源 harness 上 87%—100% 的洗白成功率，说明这不是模型能力问题而是工程结构问题。一旦客户把 agent 接进 ERP、报价、审批流，第一个问询一定是"原始证据在哪、能不能证明没被改过"。存储层的不可篡改原始轨迹（WORM/版本化快照/来源标记留存）是可以直接交付的回答，也是这一轮 agent 落地里最少被提及、最容易形成差异的环节。</p>
+<h2>三、关键论文速览</h2>
+<p><strong>存储 / 系统</strong></p>
+<ul>
+<li><strong>FlatCake</strong>（arXiv:2610.38355，10/28）：扁平化 KV Cache 存储架构，否掉 DRAM 中间缓存前提，采用平铺布局支持大块顺序读 ｜ 产业关联度：高</li>
+<li><strong>SARIA</strong>（arXiv:2610.31169，10/22）：利用会话级时间局部性做选择性准入 + DRAM/SSD 协同 reload，兼顾命中率与 SSD 寿命 ｜ 高</li>
+<li><strong>SARP</strong>（arXiv:2610.26849，10/19）：KV Cache 的 on-SSD 索引，稀疏内存路由实现前缀匹配与崩溃快速恢复 ｜ 高</li>
+<li><strong>KVStream</strong>（arXiv:2610.31827，10/22）：把前缀检索重构为跨存储层的聚合带宽调度，让并行文件系统参与推理 ｜ 高</li>
+<li><strong>WAKMan</strong>（arXiv:2610.36355，10/26）：20 种流量混合下无单一驱逐策略最优，agentic 偏 recency、长对话偏 frequency ｜ 高</li>
+<li><strong>Callosal</strong>（arXiv:2610.36347，10/26）：以共享分解内存为中心的集群页缓存，取代 NFS 式集中式元数据路径 ｜ 中</li>
+<li><strong>uGDS</strong>（arXiv:2610.30868，10/22）：开源用户态 GPU Direct Storage，去内核控制路径、放宽流序全序约束 ｜ 中</li>
+<li><strong>WorldPager</strong>（arXiv:2610.35529，10/26）：世界模型 KV 记忆是容量受限而非带宽受限，访问集可预知时可做到零停顿 ｜ 中</li>
+<li><strong>DeepInfer-Mac</strong>（arXiv:2610.36564，10/27）：338GiB 权重驻留内置 SSD，24GB 笔记本跑 750B 级 MoE，0.21—0.72 tok/s ｜ 中</li>
+</ul>
+<p><strong>AI / Agent</strong></p>
+<ul>
+<li><strong>MemoryTax</strong>（arXiv:2610.29823，10/21）：带成本的记忆对照实验，Mem0 仅在弱模型上胜出且构建成本超过一次全上下文 ｜ 高</li>
+<li><strong>Raw-RAG</strong>（arXiv:2610.30755，10/22）：朴素原始历史检索在 4 个记忆基准 7 个设置中 6 个第一，覆盖率胜过利用率 ｜ 高</li>
+<li><strong>Compaction Laundering</strong>（arXiv:2610.29869，10/21）：上下文压缩销毁消息来源，伪造指令洗白率 87%—100% ｜ 高</li>
+<li><strong>LLM-PowerTrace</strong>（arXiv:2610.38315，10/28）：100ms 粒度逐 GPU 功率轨迹数据集，补齐算力负荷的动态特性 ｜ 中</li>
+<li><strong>Context Is Not Free</strong>（arXiv:2610.35230，10/26）：碳感知路由必须计入 KV Cache 重算成本，存储位置决定调度自由度 ｜ 中</li>
+</ul>
+<p><strong>机器人 / 具身智能</strong></p>
+<ul>
+<li><strong>JAM: Just Action Model</strong>（arXiv:2610.37219，10/27）：解耦 VLA/WAM 的三个捆绑选择，两派统一进同一框架 ｜ 中</li>
+<li><strong>OSWAM</strong>（arXiv:2610.35850，10/26）：一步动作生成替掉几十步去噪，面向实时部署 ｜ 中</li>
+<li><strong>QbD-VLA</strong>（arXiv:2610.38661，10/28）：以任务成功率驱动 VLA 混合精度位宽分配 ｜ 中</li>
+<li><strong>Recursive Self-Improvement in Physical AI</strong>（arXiv:2610.38266，10/28）：梳理具身系统自我改进的机制、证据与评估 ｜ 低</li>
+</ul>
+<p><strong>新能源 / 生物医药</strong></p>
+<ul>
+<li><strong>Agent-guided epitope excision</strong>（arXiv:2610.33195，10/23）：靶点界面窗口截断，中位 CαRMSD 0.37 Å，GPU 时间省约 88% ｜ 中</li>
+<li><strong>TACFormer</strong>（arXiv:2610.39891，10/29）：目标条件化的 PROTAC 整体生成模型 ｜ 低</li>
+<li><strong>非晶锂三元金属氯化物固态电解质计算筛选</strong>（arXiv，10/25）：为氯化物路线提供高通量筛选口径 ｜ 低</li>
+</ul>
+<h2>四、下周关注</h2>
+<ol>
+<li><strong>11 月首周的实际成交价</strong>——TrendForce 的 Q4 合约涨幅（DRAM +10~15%、含 HBM +15~20%、NAND +15~20%）是否被渠道成交证实，决定 2027 框架是"分轨锁量"还是"整体锁价"。</li>
+<li><strong>HBF 送样节奏</strong>——规范已发布、2026H2 送样、2027 初首批推理设备；HBF 与企业在售 SSD 的规格对标一旦成型，产品线叙事要重排。</li>
+<li><strong>KV 卸载的产品化</strong>——学术界本周已解决布局、索引、寿命、跨层调度四件事；产业侧若出现整机级方案，企业级 SSD 规格书会被重写。</li>
+<li><strong>agent 记忆的合规问询</strong>——Compaction Laundering 这类结果一旦进入客户安全评审清单，存储侧的不可篡改轨迹会成为准入条件而非加分项。</li>
+<li><strong>Optimus 年底量产与工信部 10 万台口径的 Q4 交付数据</strong>——这是判断具身智能是"量产元年"还是"产能故事"的第一个硬检验点。</li>
+</ol>
+<p><strong>一句话总结</strong>：KV Cache 正式把 SSD 拉上推理关键路径，存储的竞争维度从单盘性能变成写耐久、布局与跨层调度；涨价从预测进入合约兑现，HBM4 用三倍定价把常规 DRAM 一起拖进同一周期；agent 记忆被祛魅、压缩被证明是信任边界；算力的第一性约束已经是电与钱。</p>
+<div class="back"><a href="../index.html">← 返回博客首页</a></div>
+</article>
+</html>
