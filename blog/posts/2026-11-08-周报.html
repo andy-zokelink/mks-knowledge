@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学术前沿周报 · 2026年11月第1周 — 阿森智库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC','STSong','Songti SC',serif;background:#faf6f0;color:#3d2f2f;line-height:1.85;padding:20px}
+article{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;padding:40px 48px;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+h1{font-size:28px;color:#6a3e1e;margin-bottom:8px}
+.meta{color:#9b8c7c;font-size:14px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid #e8d5c4}
+.content h1{font-size:24px;color:#6a3e1e;margin:0 0 16px}
+.content h2{font-size:20px;color:#8b5e3c;margin:28px 0 12px}
+.content h3{font-size:17px;color:#6a3e1e;margin:20px 0 8px}
+.content p{margin-bottom:14px}
+.content ul,.content ol{margin-bottom:14px;padding-left:24px}
+.content li{margin-bottom:6px}
+.content blockquote{border-left:3px solid #c9a87c;padding:8px 16px;margin:16px 0;color:#6b5b5b;background:#fdf8f2;border-radius:0 6px 6px 0}
+.content code{background:#f0e8dc;padding:2px 6px;border-radius:4px;font-size:.9em}
+.content pre{background:#2d2418;color:#e8dcc8;padding:16px 20px;border-radius:8px;overflow-x:auto;margin-bottom:14px;font-size:14px;line-height:1.5}
+.content a{color:#c0392b;text-decoration:none}
+.content a:hover{text-decoration:underline}
+.content table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.content th,.content td{border:1px solid #e8d5c4;padding:8px 12px;text-align:left;font-size:14px}
+.content th{background:#fdf6ec;font-weight:600}
+.content img{max-width:100%;border-radius:8px}
+.back{margin-top:40px;padding-top:16px;border-top:1px solid #e8d5c4}
+.back a{color:#9b8c7c;font-size:14px;text-decoration:none}
+.back a:hover{color:#6a3e1e}
+@media(max-width:600px){
+  article{padding:24px 20px}
+  h1{font-size:22px}
+  .content table{font-size:12px}
+}
+</style>
+<article>
+<h1>学术前沿周报 · 2026年11月第1周</h1>
+<div class="meta">学术前沿周报 · 2026-11-08 · 阿森智库</div>
+<div class="content">
+<p><strong>采集窗口</strong>：2026.11.02—11.08 ｜ <strong>覆盖方向</strong>：存储与半导体、AI/大模型推理系统、机器人/具身智能、新能源、生物医药 ｜ <strong>本期共 382 条一手论文 + 96 条产业信号</strong> ｜ <strong>元数据</strong>：arXiv 投稿窗口 11.01—11.09、38 组关键词；Metaso scholar + webpage 双路，五大方向</p>
+<h2>一、本周趋势信号</h2>
+<p><strong>信号1｜企业级 SSD 涨幅居全品类之首，存储占整机 BOM 首超 SoC：定价权转向介质</strong></p>
+<p>TrendForce Q4 预测中，企业级 SSD 合约价环比 +23~28%，高于一般型 DRAM（+10~15%）、PC DRAM（+13~18%）与 NAND Flash（+15~20%），为各品类涨幅之最；驱动源是北美云厂商扩采与 AI 应用对大容量高可靠存储的需求，原厂 321 层 NAND 先进产能优先供给企业级 SSD。同期 10 月 DDR4 8Gb 合约均价 27.5 美元、环比 +5.77%，较 2016 年 6 月 2.9 美元起点累计涨约 9.5 倍；原厂库存仅剩 2~4 周，先进产能系统性流向 HBM 与服务器 DRAM，韩国厂商 2027 年 PC DRAM 产量将较今年下滑 20% 以上。Q1→Q3 合约价环比涨幅从 93~98% 收敛至 13~18%，但涨幅放缓不等于价格回落。后果已传导至整机：存储芯片 BOM 占比从 10~15% 升至 30~40%，首次超过 SoC 成为最贵单一部件；拆机内存占比上升未改变趋势，质量一致性与保修风险是硬约束。<strong>判断</strong>：整机成本谈判重心从算力芯片转向存储介质，Q4 至 2027 上半年企业级 SSD 与服务器 DRAM 维持卖方市场，报价模型须按周跟随合约价重定价，长协锁定是唯一对冲手段。</p>
+<p><strong>信号2｜HBF 从标准走向系统级论证：只读权重与可变数据分介质部署，SSD/DRAM 正式进入推理关键路径</strong></p>
+<p>本周一批系统工作把廉价介质放进万亿参数推理的关键路径。HyPAIC（2611.04144）提出个人 AI 计算机架构：只读权重置 HBF（容量为 HBM 的 10 倍以上、TB/s 级带宽），可变运行数据置 LPDDR，以预取与写耐久管理化解 HBF 的延迟短板，单机承载 trillion-parameter MoE 本地推理。配套卸载技术同期批量成熟：FlashOffloading（2611.07542）在国产昇腾平台上把 KV cache 全量卸载至主机 DRAM，prefill 滚动缓存 + decode 热缓存 + 反稀疏索引 + 计算加载重叠，TPOT SLO 下换吞吐；vExpert（2611.06057）将 MoE 专家的 DRAM 驻留升级为全冗余虚拟化，联合建模 H2D 延迟、PCIe 争用与负载不均衡，在 DeepSeek-V3.1 上解决专家热点的跨节点搬运；StrataFlux（2611.08363）以主机 RAM/SSD 作低比特量化精度恢复源，2-bit Llama-3.1-8B 困惑度 9.46→8.40、吞吐保持 95.4%；LeanSparse（2611.04671）分离稀疏注意力索引键与 KV 驻留，压缩 decode 常驻显存。共同结论：HBM 容量墙被 DRAM/SSD 带宽墙替代，介质越廉价，软件层索引、预取、调度的价值越高。<strong>判断</strong>：推理系统差异化竞争已从 GPU 选型转移到存储层次设计，能交付"介质分层 + 卸载调度"整体方案的厂商，客单价将比单卖盘高一个量级。</p>
+<p><strong>信号3｜token 的能耗与美元成本出现解析律：推理采购从经验试错转向可计算</strong></p>
+<p>token 成本此前无解析模型，本周三篇工作补齐。SIMPLE Law（2611.03330）从架构超参数推导四参数闭式能耗律：prefill 能耗随 hidden dimension 平方增长，decode 拆为 KV-cache 成本与下一 token 计算，13 个稠密模型、H100 上 R²=0.969、MAPE 11.97%，误差仅为 SOTA 拟合模型的 1/3 左右，且无需逐模型标定——新模型的单位 token 能耗可在部署前算出。ROCm InferaSim（2611.04032）把同思路用于配置选型：穷举评测需约 25,000 GPU 小时，其 anchor 测量 + 解析外推把成本压到几次短测，在 MI355X 上自动搜出最优切分/精度/调度组合。Cluster Efficiency（2611.02975）引入 tokens/dollar 与 tokens/joule 指标，Tenstorrent Galaxy（Blackhole 集群）在三年购置+电费口径下实现 8 卡 RTX PRO 6000 Blackwell 服务器的 1.07~2.24 倍每美元 token 产出。产业数据同频：我国 AI 推理数据量首次超过训练数据量，日均词元调用 175 万亿；智谱上半年 API 收入 8.25 亿元、同比 +2736%，单位 token 推理成本较年初降约 80%。<strong>判断</strong>：能耗与美元成本可事前解析后，客户评估推理基建从"峰值算力"转向"每 token 成本证明"，采购结构从 GPU 单点采购转向算力+介质+互联的整栈配比。</p>
+<p><strong>信号4｜具身智能分岔：性能赛道没停，但本周论文和产业口径同时转向"运行安全"</strong></p>
+<p>本周机器人方向的论文不再集中在"自由度/灵巧手参数"，而是集中在出错前后。ReflexArc（2611.04424）给出了一个硬约束：学到的全身策略跑在 50 Hz，一个策略周期就是 20 毫秒，而接触冲击的首个峰值在几十毫秒内到达——意味着靠上层策略反应物理上已经晚了。它的解法是在学到的全身控制之下另建一条瞬时反射通路，从全身触觉直接检测危险接触、解全身退让位姿，绕开策略周期。TactileLab（2611.07881）解决反射要靠的触觉从哪来：用刚体仿真＋光流式"模拟触觉流"表达切向形变，替代昂贵的软体仿真，把剪切敏感触觉的强化学习做成可规模化。VLA-Tug（2611.08425）把失败监控做成 VLA 主干潜层上的轻量探针，对漏检率与误报率给出有界保证，且轻到能在边缘跑；T3R（2611.08413）免训练两段式精炼视觉 token，剪掉空间无关的 patch 并重分配注意力，同时降开销、抗分布偏移；La-JEPA（2611.08156）在 V-JEPA 2.1 特征空间里从零训一个紧凑世界动作模型，训练时联合预测未来特征与动作、推理时只出动作；AffectiveVLA（2611.07712）在宇树 G1 上做意图门控——轻量 RGB 模型先判人类交互意图，置信度低直接压制动作执行，接触期按交互类型调阻抗，语音触发机械闭锁兜底。</p>
+<p>产业侧同期给了对照：工信部口径上半年整机超 400 款、产量超 4 万台、全年预计破 10 万台，已推 300 多个重点场景验证；IDC 口径上半年全球出货近 2.5 万台、同比 +432.1%，中国占约 97%。但高工咨询在 11 月 3 日行业年会上给的全年预期只有整机出货超 5 万台、市场规模超 100 亿元，同时明确"增速低于年初预期、四季度起融资遇冷、未来三年或有 15% 以上企业被淘汰"。</p>
+<p><strong>判断</strong>：具身智能正在分出两个赛道——"性能赛道"比自由度与演示效果，"运行安全赛道"比失败率与停机时间。本周六篇论文全部落在后者：反射回路对付毫秒级冲击、触觉仿真喂反射、失败探针与 token 精炼对付分布偏移。这与算力侧同一周发生的事同构：从"峰值指标"转向"SLO 与可证明的边界"。对采购方，这意味着验收清单要改写——问的不是能做什么动作，而是出错时多久停、谁来兜底。</p>
+<h2>二、中科领创关联研判</h2>
+<p><strong>①产品组合与报价模型</strong>：Q4 企业级 SSD +23~28%、BOM 占比 30~40% 意味着客户毛利被存储吞噬，议价空间在"怎么省存储"而非单价。报价改三档：随行就市月价（现货+长协混合）、容量保障年价（预付锁量）、TCO 优化方案价（分层设计，利润放软件与服务）。企业级 SSD 涨幅最高，应加大 321 层 NAND 渠道长协采购量，防 2027 年 Q1 旺季断供。<br />
+<strong>②FDP/zNS 的定位</strong>：FDP collector selectivity 论文（2611.04234）给出量化结论——放置标签的价值由回收策略决定：两分类标签在最适配回收算法下值 65% 备用容量节省，但 20% 标签错误率（学习型分类器典型水平）下转为净损失，47/48 组合成配置与一组真实邮件 trace 同形状。标签质量来自对客户工作负载的持续观测，本质是服务而非硬件功能。FDP/zNS 应打包进"数据放置评估+调优"年度服务，先测后签、按容量节省分成收费，不单卖盘。<br />
+<strong>③HBF/本地推理盒子</strong>：HyPAIC 证明万亿 MoE 本地化架构可行，但 HBF 生态（驱动、预取、写耐久）2027 年未成熟。2027 品类机会在"LPDDR 统一内存 + 主机 DRAM/SSD 卸载"的中间形态（StrataFlux、FlashOffloading 已双验证），目标客户是推理数据量反超训练后、有本地化与数据安全诉求的政企。提前动作：在昇腾/国产 UMA 平台复现 FlashOffloading 类卸载方案，沉淀 KV 卸载与精度恢复调优手册。<br />
+<strong>④算力侧存算配比</strong>：以 SIMPLE Law 与 InferaSim 为工具，按客户序列长度分布×并发×精度计算 HBM 容量带宽、DRAM 扩容、SSD 卸载三级配置，交付时附 tokens/dollar 与 tokens/joule 报告；内部建立集群效率评估模板，作为方案竞标的标准产出物。</p>
+<h2>三、关键论文速览</h2>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>论文（arXiv ID + 日期）</th>
+<th>核心发现</th>
+<th>产业关联度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI/大模型</td>
+<td>HyPAIC（2611.04144，11-03）</td>
+<td>只读权重置 HBF、可变数据置 LPDDR，万亿 MoE 单机本地推理可行</td>
+<td>高</td>
+</tr>
+<tr>
+<td>AI/大模型</td>
+<td>FlashOffloading（2611.07542，11-05）</td>
+<td>KV cache 全卸载至主机 DRAM，昇腾平台上 TPOT SLO 下吞吐提升</td>
+<td>高</td>
+</tr>
+<tr>
+<td>AI/大模型</td>
+<td>SIMPLE Law（2611.03330，11-02）</td>
+<td>四参数闭式能耗律 R²=0.969，无需逐模型标定</td>
+<td>高</td>
+</tr>
+<tr>
+<td>AI/大模型</td>
+<td>vExpert（2611.06057，11-04）</td>
+<td>MoE 专家 DRAM 全冗余虚拟化，联合建模 H2D/PCIe/负载不均衡</td>
+<td>高</td>
+</tr>
+<tr>
+<td>半导体/存储</td>
+<td>FDP Collector Selectivity（2611.04234，11-03）</td>
+<td>标签价值由回收策略决定：最优值 65% 备用容量，20% 标签错误转净损失</td>
+<td>高</td>
+</tr>
+<tr>
+<td>AI/大模型</td>
+<td>Cluster Efficiency（2611.02975，11-02）</td>
+<td>Blackhole 集群 tokens/dollar 达 8 卡 RTX PRO 6000 的 1.07~2.24 倍</td>
+<td>中</td>
+</tr>
+<tr>
+<td>AI/大模型</td>
+<td>ROCm InferaSim（2611.04032，11-02）</td>
+<td>anchor+解析外推替代 25,000 GPU 小时穷举，自动搜索最优配置</td>
+<td>中</td>
+</tr>
+<tr>
+<td>半导体/存储</td>
+<td>StrataFlux（2611.08363，11-05）</td>
+<td>RAM/SSD 作精度恢复源，2-bit 权重困惑度 9.46→8.40、吞吐保持 95.4%</td>
+<td>中</td>
+</tr>
+</tbody>
+</table>
+<h2>四、副线观察</h2>
+<p><strong>新能源</strong>：产业侧信号密集且方向一致：前三季度储能电池出货 839.3GWh、+96.3%，源网侧占 74.7%；逆变器/储能端两年来首次主动提价 5~15%；七部门"十五五"规划定调固态电池 2027 小批量、2030 规模化；Q3 光伏装机 38.76GW、同比 +38%。"反内卷"进入制度层：11 月多晶硅排产环比 -10%、开工率约 31%。阳光电源 Q4 储能出货 20GWh+、明年接近翻倍。值得注意的是学术侧本周三篇同向论文，主题不是电芯而是<strong>算力负荷</strong>：AI 数据中心的振荡功率分量一旦与电网薄弱模式重合就会引发大频偏（2611.05939 用滑动窗口 N4SID 做模式辨识＋闭环重调 HESS 抑制支路）、贝叶斯优化的 HESS 平滑控制（2611.03436）、以及用多项式扩散模型做电价与负荷联合预测来驱动数据中心电池调度（2611.08470）。算力侧与储能侧第一次在同一个问题上交汇——数据中心开始被当作电力系统里的一个不稳定负荷来治理。</p>
+<p><strong>生物医药</strong>：产业侧是本周最热的另一极：前三季度创新药对外技术授权约 1300 亿美元、接近去年全年；11/4 中国生物制药与勃林格殷格翰达成六项临床前肿瘤项目授权，首付及近期款 3.58 亿美元、里程碑最高 70 亿美元，刷新公司纪录；ESMO 中国 28~29 项 LBA 约占大会三分之一。学术侧同周出现一批"agentic 药物发现"整建制工作：PharmAgents2 提出 Paper2Skill 从公开文献抽取可迁移的科研决策知识，配套发布 PharmAgents-Bench v0.1（121 题、九类决策场景）；El Agente Fármaco 把发现目标直接翻译成工具调用序列；ProteoCraft 把蛋白质设计重构为"提案—验证"搜索；iGC 用强化学习叠加体细胞超突变先验做抗体亲和力成熟。风险同周落地：美财政部依 COINS Act 发布 NPRM，拟将生物技术纳入对外投资监管。BD 高景气与监管收紧并存，2027 年出海结构将从"授权换现金"转向"技术平台＋海外产能"。</p>
+<h2>五、下周关注</h2>
+<ul>
+<li>看 11 月合约价落定后的现货走势：DDR4 8Gb 是否站上 27.5 美元上方、企业级 SSD 合约价能否兑现 +23~28% 区间。</li>
+<li>看 2027 年 HBM 年度合约执行口径：SK 海力士/三星称量价已议定，等集邦等第三方对 2027 涨幅区间的确认。</li>
+<li>看 arXiv 是否出现国产平台跟进 FlashOffloading/HBF 的系统评测，以及 KV 卸载类论文的产业化落地信号。</li>
+<li>11 月 15 日《光伏制造行业规范条件（2026 年本）》征求意见截止、11 月 17—20 日成都光伏储能大会，验证储能提价延续性；11 月 14 日苏州创新药大会公布商保目录新增名单。</li>
+</ul>
+</div>
+<div class="back"><a href="../index.html">← 返回阿森智库</a></div>
+</article>
+</html>
